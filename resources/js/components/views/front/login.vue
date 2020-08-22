@@ -97,11 +97,13 @@ export default {
 
 
 <style lang="scss" scoped>
+@import "~/_variables.scss";
+
 .welcome-form {
   width: 400px;
   height: 360px;
   margin: auto;
-  background-color: #f4f4f4;
+  background-color: $bg-color;
   border-radius: 30px;
   border: none;
 

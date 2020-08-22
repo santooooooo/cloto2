@@ -1,8 +1,8 @@
 import VueRouter from "vue-router";
 
-import index from "./components/views/front/index.vue";
-import register from "./components/views/front/register.vue";
-import login from "./components/views/front/login.vue";
+import index from "@/components/views/front/index.vue";
+import register from "@/components/views/front/register.vue";
+import login from "@/components/views/front/login.vue";
 
 const router = new VueRouter({
     mode: "history",

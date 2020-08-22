@@ -2139,7 +2139,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _tools_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../tools/validate */ "./resources/js/tools/validate.js");
+/* harmony import */ var _tools_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/tools/validate */ "./resources/js/tools/validate.js");
 //
 //
 //
@@ -54978,9 +54978,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var _components_views_front_index_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/views/front/index.vue */ "./resources/js/components/views/front/index.vue");
-/* harmony import */ var _components_views_front_register_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/views/front/register.vue */ "./resources/js/components/views/front/register.vue");
-/* harmony import */ var _components_views_front_login_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/views/front/login.vue */ "./resources/js/components/views/front/login.vue");
+/* harmony import */ var _components_views_front_index_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/views/front/index.vue */ "./resources/js/components/views/front/index.vue");
+/* harmony import */ var _components_views_front_register_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/views/front/register.vue */ "./resources/js/components/views/front/register.vue");
+/* harmony import */ var _components_views_front_login_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/views/front/login.vue */ "./resources/js/components/views/front/login.vue");
 
 
 

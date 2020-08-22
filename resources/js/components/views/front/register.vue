@@ -138,7 +138,7 @@
 
 
 <script>
-import * as validate from "../../../tools/validate";
+import * as validate from "@/tools/validate";
 
 export default {
   props: {
@@ -275,11 +275,13 @@ export default {
 
 
 <style lang="scss" scoped>
+@import "~/_variables.scss";
+
 .welcome-form {
   width: 400px;
   height: 470px;
   margin: auto;
-  background-color: #f4f4f4;
+  background-color: $bg-color;
   border-radius: 30px;
   border: none;
 
