@@ -97,7 +97,7 @@ export default {
 
 
 <style lang="scss" scoped>
-@import "~/_variables.scss";
+@import "~/_variables";
 
 .welcome-form {
   width: 400px;
