@@ -13,10 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//*** トップ ***//
+// Vue-routerで管理
+Route::get('/', 'FrontController@index')->name('index');
+Route::get('/register', 'FrontController@index')->name('register');
+Route::get('/login', 'FrontController@index')->name('login');
+//*** END トップ ***//
