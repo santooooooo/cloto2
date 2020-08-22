@@ -1,5 +1,5 @@
 <template>
-  <div class="welcome-top__welcome row">
+  <div class="welcome-form row">
     <div>
       <h1>{{ word }}</h1>
 
@@ -24,21 +24,22 @@
   </div>
 </template>
 
+
 <script>
 export default {
   props: {
     user: {
-      type: String
-    }
+      type: String,
+    },
   },
   data() {
     return {
       mode: 1,
       loop: 0,
-      word: "　"
+      word: "　",
     };
   },
-  created: function() {
+  created: function () {
     setInterval(() => {
       if (this.mode) {
         this.loop++;
@@ -48,7 +49,7 @@ export default {
     }, 500);
   },
   watch: {
-    loop: function(i) {
+    loop: function (i) {
       switch (i) {
         case 0:
           this.mode = 1;
@@ -108,7 +109,21 @@ export default {
           this.word = "共";
           break;
       }
-    }
-  }
+    },
+  },
 };
 </script>
+
+<style lang="scss" scoped>
+.welcome-form {
+  margin: auto;
+
+  h1 {
+    font-weight: bold;
+  }
+
+  .btn {
+    margin: 10px;
+  }
+}
+</style>

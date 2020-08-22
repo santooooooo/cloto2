@@ -3,13 +3,13 @@
 @section('title', 'CLOTO')
 
 @section('top')
-<div class="welcome-top container">
+<div class="welcome container">
     <div class="row">
-        <div class="welcome-top__cloto-icon col-6">
+        <div class="welcome__cloto-icon col-6">
             <img src="/storage/web/top.png">
         </div>
 
-        <div class="welcome-top__content col-6 d-flex align-items-center" id="welcome-form">
+        <div class="welcome__content col-6 d-flex align-items-center" id="welcome-form">
             @guest
             @if ($errors->any())
             <router-view v-bind:errors="{{ $errors }}" />

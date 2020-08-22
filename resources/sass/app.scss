@@ -6,3 +6,91 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// Parts
+@import "parts";
+
+html {
+    word-break: break-all;
+}
+
+body {
+    font-size: 12px;
+    background-color: $bg-color;
+}
+
+//*** index ***//
+.welcome {
+    $top-height: 500px;
+
+    background-color: $top-bg-color;
+    min-width: 100%;
+    max-height: $top-height;
+    position: relative;
+
+    &__cloto-icon {
+        padding: 0;
+
+        img {
+            max-height: $top-height;
+            height: auto;
+        }
+    }
+
+    &__content {
+        text-align: center;
+    }
+}
+
+
+.index {
+    background-color: $index-bg-color;
+    text-align: center;
+
+    &__container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 10px 0;
+        border: none;
+    }
+
+    &__concept {
+        margin-top: 5em;
+        font-size: large;
+        font-weight: bold;
+    }
+
+    &__value {
+        margin: 5em 0 1em;
+        font-weight: bold;
+    }
+
+    &__content {
+        margin-bottom: 2em;
+    }
+
+    &__intro-img {
+        height: 430px;
+        max-width: 70%;
+        border-radius: 5px;
+    }
+
+    &__intro-body {
+        h2 {
+            margin: 1em;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 2em;
+            opacity: 0.6;
+        }
+    }
+
+    &__conclude {
+        margin: 5em 0;
+        font-size: x-large;
+        font-weight: bold;
+    }
+}
+//*** END index ***//
