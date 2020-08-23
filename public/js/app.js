@@ -2264,32 +2264,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    errors: {
-      type: Object
-    }
-  },
   data: function data() {
     return {
-      login: null,
-      password: null,
+      error: "",
+      login: "",
+      password: "",
+      remember: false,
       isButtonDisabled: true,
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute("content")
     };
   },
   watch: {
     login: function login() {
+      this.error = "";
       this.changeButton();
     },
     password: function password() {
+      this.error = "";
       this.changeButton();
     }
   },
@@ -2300,13 +2292,20 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.isButtonDisabled = true;
       }
-    }
-  },
-  mounted: function mounted() {
-    if (typeof this.errors !== "undefined") {
-      if (typeof this.errors.login !== "undefined") {
-        alert(this.errors.login);
-      }
+    },
+    submit: function submit() {
+      var self = this;
+      var url = "/login";
+      var params = {
+        login: this.login,
+        password: this.password,
+        remember: this.remember
+      };
+      axios.post(url, params).then(function (response) {
+        location.href = "/";
+      })["catch"](function (response) {
+        self.error = response.response.data.errors.login[0];
+      });
     }
   }
 });
@@ -7056,7 +7055,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".welcome-form[data-v-2c001988] {\n  width: 400px;\n  height: 360px;\n  margin: auto;\n  background-color: #f4f4f4;\n  border-radius: 30px;\n  border: none;\n}\n.welcome-form .form-group[data-v-2c001988] {\n  margin: 10px 0;\n}\n.welcome-form .form-group div[data-v-2c001988] {\n  margin: 0 auto;\n}\n.welcome-form .form-group input[type=text][data-v-2c001988],\n.welcome-form .form-group input[type=password][data-v-2c001988] {\n  width: 250px;\n  margin: 0 auto;\n  border-radius: 30px;\n}\n.welcome-form__feedback--margin[data-v-2c001988] {\n  width: 100%;\n  margin-top: 0.25rem;\n  font-size: 1em;\n}", ""]);
+exports.push([module.i, ".welcome-form[data-v-2c001988] {\n  width: 400px;\n  height: 360px;\n  margin: auto;\n  background-color: #f4f4f4;\n  border-radius: 30px;\n  border: none;\n}\n.welcome-form .alert[data-v-2c001988] {\n  position: absolute;\n  top: 0;\n  width: 400px;\n  border-radius: 30px 30px 0 0;\n}\n.welcome-form .form-group[data-v-2c001988] {\n  margin: 10px 0;\n}\n.welcome-form .form-group div[data-v-2c001988] {\n  margin: 0 auto;\n}\n.welcome-form .form-group input[type=text][data-v-2c001988],\n.welcome-form .form-group input[type=password][data-v-2c001988] {\n  width: 250px;\n  margin: 0 auto;\n  border-radius: 30px;\n}\n.welcome-form__feedback--margin[data-v-2c001988] {\n  width: 100%;\n  margin-top: 0.25rem;\n  font-size: 1em;\n}", ""]);
 
 // exports
 
@@ -39215,6 +39214,13 @@ var render = function() {
     "div",
     { staticClass: "welcome-form card justify-content-center" },
     [
+      _vm.error
+        ? _c("div", {
+            staticClass: "alert alert-danger",
+            domProps: { textContent: _vm._s(_vm.error) }
+          })
+        : _vm._e(),
+      _vm._v(" "),
       _c("form", { attrs: { method: "POST", action: "/login" } }, [
         _c("div", { staticClass: "form-group row" }, [
           _c("input", {
@@ -39229,7 +39235,6 @@ var render = function() {
             staticClass: "form-control",
             attrs: {
               type: "text",
-              name: "login",
               placeholder: "ユーザー名 または メールアドレス"
             },
             domProps: { value: _vm.login },
@@ -39259,11 +39264,7 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            attrs: {
-              type: "password",
-              name: "password",
-              placeholder: "パスワード"
-            },
+            attrs: { type: "password", placeholder: "パスワード" },
             domProps: { value: _vm.password },
             on: {
               input: function($event) {
@@ -39280,7 +39281,57 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(0),
+        _c("div", { staticClass: "form-group row" }, [
+          _c("div", { staticClass: "custom-control custom-radio" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.remember,
+                  expression: "remember"
+                }
+              ],
+              staticClass: "custom-control-input",
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.remember)
+                  ? _vm._i(_vm.remember, null) > -1
+                  : _vm.remember
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.remember,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.remember = $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        (_vm.remember = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
+                    }
+                  } else {
+                    _vm.remember = $$c
+                  }
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "custom-control-label",
+                attrs: { for: "remember" }
+              },
+              [_vm._v("ログイン情報を記憶する")]
+            )
+          ])
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "form-group row" }, [
           _c("div", [
@@ -39289,7 +39340,8 @@ var render = function() {
                 "button",
                 {
                   staticClass: "btn btn-cloto-primary",
-                  attrs: { type: "submit", disabled: _vm.isButtonDisabled }
+                  attrs: { type: "button", disabled: _vm.isButtonDisabled },
+                  on: { click: _vm.submit }
                 },
                 [_vm._v("ログイン")]
               )
@@ -39316,27 +39368,7 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row" }, [
-      _c("div", { staticClass: "custom-control custom-radio" }, [
-        _c("input", {
-          staticClass: "custom-control-input",
-          attrs: { type: "checkbox", name: "remember", id: "remember" }
-        }),
-        _vm._v(" "),
-        _c(
-          "label",
-          { staticClass: "custom-control-label", attrs: { for: "remember" } },
-          [_vm._v("ログイン情報を記憶する")]
-        )
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

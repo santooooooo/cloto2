@@ -1,31 +1,23 @@
 <template>
   <div class="welcome-form card justify-content-center">
+    <!-- エラーメッセージ -->
+    <div class="alert alert-danger" v-if="error" v-text="error"></div>
+
+    <!-- ログインフォーム -->
     <form method="POST" action="/login">
       <div class="form-group row">
-        <input
-          type="text"
-          class="form-control"
-          name="login"
-          v-model="login"
-          placeholder="ユーザー名 または メールアドレス"
-        />
+        <input type="text" class="form-control" v-model="login" placeholder="ユーザー名 または メールアドレス" />
         <div class="welcome-form__feedback--margin">&nbsp;</div>
       </div>
 
       <div class="form-group row">
-        <input
-          type="password"
-          class="form-control"
-          name="password"
-          v-model="password"
-          placeholder="パスワード"
-        />
+        <input type="password" class="form-control" v-model="password" placeholder="パスワード" />
         <div class="welcome-form__feedback--margin">&nbsp;</div>
       </div>
 
       <div class="form-group row">
         <div class="custom-control custom-radio">
-          <input class="custom-control-input" type="checkbox" name="remember" id="remember" />
+          <input class="custom-control-input" type="checkbox" v-model="remember" />
           <label class="custom-control-label" for="remember">ログイン情報を記憶する</label>
         </div>
       </div>
@@ -34,9 +26,10 @@
         <div>
           <div>
             <button
-              type="submit"
+              type="button"
               class="btn btn-cloto-primary"
               v-bind:disabled="isButtonDisabled"
+              @click="submit"
             >ログイン</button>
           </div>
           <div class="mt-3">
@@ -53,15 +46,12 @@
 
 <script>
 export default {
-  props: {
-    errors: {
-      type: Object,
-    },
-  },
   data() {
     return {
-      login: null,
-      password: null,
+      error: "",
+      login: "",
+      password: "",
+      remember: false,
       isButtonDisabled: true,
       csrf: document
         .querySelector('meta[name="csrf-token"]')
@@ -70,9 +60,11 @@ export default {
   },
   watch: {
     login: function () {
+      this.error = "";
       this.changeButton();
     },
     password: function () {
+      this.error = "";
       this.changeButton();
     },
   },
@@ -84,13 +76,25 @@ export default {
         this.isButtonDisabled = true;
       }
     },
-  },
-  mounted() {
-    if (typeof this.errors !== "undefined") {
-      if (typeof this.errors.login !== "undefined") {
-        alert(this.errors.login);
-      }
-    }
+    submit: function () {
+      var self = this;
+
+      var url = "/login";
+      var params = {
+        login: this.login,
+        password: this.password,
+        remember: this.remember,
+      };
+
+      axios
+        .post(url, params)
+        .then(function (response) {
+          location.href = "/";
+        })
+        .catch(function (response) {
+          self.error = response.response.data.errors.login[0];
+        });
+    },
   },
 };
 </script>
@@ -106,6 +110,13 @@ export default {
   background-color: $bg-color;
   border-radius: 30px;
   border: none;
+
+  .alert {
+    position: absolute;
+    top: 0;
+    width: 400px;
+    border-radius: 30px 30px 0 0;
+  }
 
   .form-group {
     margin: 10px 0;
