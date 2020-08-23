@@ -72,7 +72,7 @@ export default {
   mounted() {
     var endpoint = "/api/user/" + this.$route.params.username;
 
-    axios.get(endpoint).then((response) => {
+    this.$http.get(endpoint).then((response) => {
       this.user = response.data.user;
       this.authId = response.data.authId;
 

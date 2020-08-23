@@ -2262,8 +2262,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2271,8 +2269,7 @@ __webpack_require__.r(__webpack_exports__);
       login: "",
       password: "",
       remember: false,
-      isButtonDisabled: true,
-      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+      isButtonDisabled: true
     };
   },
   watch: {
@@ -2301,7 +2298,7 @@ __webpack_require__.r(__webpack_exports__);
         password: this.password,
         remember: this.remember
       };
-      axios.post(url, params).then(function (response) {
+      this.$http.post(url, params).then(function (response) {
         location.href = "/";
       })["catch"](function (response) {
         self.error = response.response.data.errors.login[0];
@@ -2668,7 +2665,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     var endpoint = "/api/user/" + this.$route.params.username;
-    axios.get(endpoint).then(function (response) {
+    this.$http.get(endpoint).then(function (response) {
       _this.user = response.data.user;
       _this.authId = response.data.authId;
 
@@ -39463,12 +39460,7 @@ var render = function() {
               1
             )
           ])
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "hidden", name: "_token" },
-          domProps: { value: _vm.csrf }
-        })
+        ])
       ])
     ]
   )
@@ -55290,6 +55282,11 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /**
+ * Vueプロトタイプの設定
+ */
+
+Vue.prototype.$http = window.axios;
+/**
  * Vueコンポーネントの読み込み
  */
 
@@ -55335,7 +55332,10 @@ try {
 
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common = {
+  'X-CSRF-TOKEN': window.Laravel.csrfToken,
+  'X-Requested-With': 'XMLHttpRequest'
+};
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

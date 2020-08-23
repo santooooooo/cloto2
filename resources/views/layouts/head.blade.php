@@ -5,13 +5,16 @@
 <title>@yield('title')</title>
 
 <!-- CSRF Token -->
-<meta name="csrf-token" content="{{ csrf_token() }}">
+<script>
+    window.Laravel = {
+        csrfToken: "{{ csrf_token() }}"
+    };
+</script>
 
 <!-- Favicon -->
 <link rel="shortcut icon" href="{{ config('consts.storage.system').'favicon.ico' }}">
 
 <!-- Scripts -->
-{{-- <script src="{{ asset('js/bootstrap.js') }}"></script> --}}
 <script src="{{ asset('js/app.js') }}" defer></script>
 
 <!-- Fonts -->

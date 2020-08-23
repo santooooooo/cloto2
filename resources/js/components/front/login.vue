@@ -37,8 +37,6 @@
           </div>
         </div>
       </div>
-
-      <input type="hidden" name="_token" :value="csrf" />
     </form>
   </div>
 </template>
@@ -53,9 +51,6 @@ export default {
       password: "",
       remember: false,
       isButtonDisabled: true,
-      csrf: document
-        .querySelector('meta[name="csrf-token"]')
-        .getAttribute("content"),
     };
   },
   watch: {
@@ -86,7 +81,7 @@ export default {
         remember: this.remember,
       };
 
-      axios
+      this.$http
         .post(url, params)
         .then(function (response) {
           location.href = "/";

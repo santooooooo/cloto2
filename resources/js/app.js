@@ -4,6 +4,10 @@
 require('./bootstrap');
 window.Vue = require("vue");
 
+/**
+ * Vueプロトタイプの設定
+ */
+Vue.prototype.$http = window.axios;
 
 /**
  * Vueコンポーネントの読み込み
@@ -19,5 +23,5 @@ import router from "./router";
 
 const app = new Vue({
     el: '#app',
-    router: router
+    router
 });
