@@ -2,9 +2,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
-import index from "@/components/views/front/index.vue";
-import register from "@/components/views/front/register.vue";
-import login from "@/components/views/front/login.vue";
+import index from "@/components/front/index.vue";
+import register from "@/components/front/register.vue";
+import login from "@/components/front/login.vue";
 
 const router = new VueRouter({
     mode: "history",
