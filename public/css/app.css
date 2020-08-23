@@ -11170,10 +11170,6 @@ body {
   margin: 1em auto;
 }
 
-.profile-edit__form-content--icon .dragLeave {
-  background-color: #f4f4f4;
-}
-
 .profile-edit__form-content--button {
   margin: 2em 0;
 }

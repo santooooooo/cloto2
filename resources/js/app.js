@@ -8,7 +8,8 @@ window.Vue = require("vue");
 /**
  * Vueコンポーネントの読み込み
  */
-require("./components");
+Vue.component('image-upload-area', require('./components/form/imageDropUpload.vue').default);
+
 
 /**
  * Vueの定義

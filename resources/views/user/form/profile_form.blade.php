@@ -17,8 +17,7 @@
 
 
         {{-- アイコン --}}
-        <script src="{{ asset('js/tools/imageDropUpload.js') }}" defer></script>
-        <div class="profile-edit__form-content--icon form-group" id="image-upload">
+        <div class="profile-edit__form-content--icon form-group">
             <image-upload-area :no-change-crop-ratio=true ratio-x="1" ratio-y="1"></image-upload-area>
         </div>
 
