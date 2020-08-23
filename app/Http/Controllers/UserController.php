@@ -57,7 +57,7 @@ class UserController extends Controller
     }
 
     /**
-     * ユーザー情報の更新
+     * ユーザーデータ変更ページ
      *
      * @param  String $username
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -68,10 +68,10 @@ class UserController extends Controller
     }
 
     /**
-     * ユーザー情報の更新
+     * ユーザーデータの更新
      *
-     * @param  String $username
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param  UserRequest $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function update(UserRequest $request)
     {
