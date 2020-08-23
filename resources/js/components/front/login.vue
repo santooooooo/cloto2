@@ -72,9 +72,7 @@ export default {
       }
     },
     submit: function () {
-      var self = this;
-
-      var url = "/login";
+      var endpoint = "/login";
       var params = {
         login: this.login,
         password: this.password,
@@ -82,12 +80,12 @@ export default {
       };
 
       this.$http
-        .post(url, params)
-        .then(function (response) {
+        .post(endpoint, params)
+        .then((response) => {
           location.href = "/";
         })
-        .catch(function (response) {
-          self.error = response.response.data.errors.login[0];
+        .catch((response) => {
+          this.error = response.response.data.errors.login[0];
         });
     },
   },

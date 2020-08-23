@@ -2291,17 +2291,18 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     submit: function submit() {
-      var self = this;
-      var url = "/login";
+      var _this = this;
+
+      var endpoint = "/login";
       var params = {
         login: this.login,
         password: this.password,
         remember: this.remember
       };
-      this.$http.post(url, params).then(function (response) {
+      this.$http.post(endpoint, params).then(function (response) {
         location.href = "/";
       })["catch"](function (response) {
-        self.error = response.response.data.errors.login[0];
+        _this.error = response.response.data.errors.login[0];
       });
     }
   }
