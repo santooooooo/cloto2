@@ -1,4 +1,6 @@
+import Vue from "vue";
 import VueRouter from "vue-router";
+Vue.use(VueRouter);
 
 import index from "@/components/views/front/index.vue";
 import register from "@/components/views/front/register.vue";

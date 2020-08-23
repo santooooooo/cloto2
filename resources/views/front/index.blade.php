@@ -9,7 +9,7 @@
             <img src="/storage/web/top.png">
         </div>
 
-        <div class="welcome__content col-6 d-flex align-items-center" id="welcome-form">
+        <div class="welcome__content col-6 d-flex align-items-center">
             @guest
             @if ($errors->any())
             <router-view v-bind:errors="{{ $errors }}" />

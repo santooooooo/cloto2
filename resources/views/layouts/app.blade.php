@@ -9,9 +9,10 @@
 
     @include('layouts.header')
 
-    @yield('top')
-
-    @yield('content')
+    <div id="app">
+        @yield('top')
+        @yield('content')
+    </div>
 
     @include('layouts.footer')
 

@@ -7,6 +7,15 @@ window.Vue = require("vue");
 
 /**
  * Vueコンポーネントの読み込み
- * !!! 必ず最後にすること !!!
  */
 require("./components");
+
+/**
+ * Vueの定義
+ */
+import router from "./router";
+
+const app = new Vue({
+    el: '#app',
+    router: router
+});
