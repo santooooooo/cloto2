@@ -9,6 +9,7 @@ window.Vue = require("vue");
  * Vueコンポーネントの読み込み
  */
 Vue.component('image-upload-area', require('./components/form/imageDropUpload.vue').default);
+Vue.component('profile', require('./components/user/profile.vue').default);
 
 
 /**

@@ -23,7 +23,7 @@ Route::get('/login', 'FrontController@index')->name('login');
 //*** END トップ ***//
 
 
-Route::group(['middleware' => ['auth']], function () {
+// Route::group(['middleware' => ['auth']], function () {
     Route::get('/{any}', function () {
         return view('front.index');
     })->where('any','.*');
@@ -36,4 +36,4 @@ Route::group(['middleware' => ['auth']], function () {
     // Route::get('/users/{username}/edit', 'UserController@edit')->name('user_edit');
     // // プロフィール保存
     // Route::post('/users/update', 'UserController@update')->name('user_update');
-});
+// });

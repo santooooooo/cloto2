@@ -1,5 +1,8 @@
 <template>
-  <div class="container mt-3 mb-3">{{ $route.params }}</div>
+  <div>
+    <profile></profile>
+    <div class="container mt-3 mb-3">This is test.</div>
+  </div>
 </template>
 
 <script>
