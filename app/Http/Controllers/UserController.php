@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -100,7 +100,7 @@ class UserController extends Controller
         // データの更新
         $edit_user->update($param);
 
-        return redirect(route('user_page', ['username' => $param['username']]))
+        return redirect(route('user_show', ['username' => $param['username']]))
             ->with('success', 'プロフィールを更新しました！');
     }
 }
