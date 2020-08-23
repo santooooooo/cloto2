@@ -21,3 +21,16 @@ Route::get('/', 'FrontController@index')->name('index');
 Route::get('/register', 'FrontController@index')->name('register');
 Route::get('/login', 'FrontController@index')->name('login');
 //*** END トップ ***//
+
+
+Route::group(['middleware' => ['auth']], function () {
+
+    //*** ユーザー ***//
+    // ユーザーページ
+    Route::get('/users/{username}', 'UserController@show')->name('user_show');
+
+    // プロフィール編集フォーム
+    Route::get('/users/{username}/edit', 'UserController@edit')->name('user_edit');
+    // プロフィール保存
+    Route::post('/users/update', 'UserController@update')->name('user_update');
+});
