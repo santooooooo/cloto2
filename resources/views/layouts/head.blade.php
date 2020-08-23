@@ -8,7 +8,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <!-- Favicon -->
-<link rel="shortcut icon" href="/storage/web/favicon.ico">
+<link rel="shortcut icon" href="{{ config('consts.storage.system').'favicon.ico' }}">
 
 <!-- Scripts -->
 {{-- <script src="{{ asset('js/bootstrap.js') }}"></script> --}}
@@ -29,4 +29,4 @@
 <meta name="twitter:site" content="@cloto_jp">
 <meta name="twitter:title" content="CLOTO">
 <meta name="twitter:description" content="「チュートリアル学習も終わり、いよいよ腕試し！！」そんな駆け出しエンジニアのみなさん、朗報です！">
-<meta name="twitter:image" content="{{ config('app.url') . '/storage/web/twitter-card.png' }}">
+<meta name="twitter:image" content="{{ config('app.url').config('consts.storage.system').'twitter-card.png' }}">

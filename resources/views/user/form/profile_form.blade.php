@@ -6,7 +6,7 @@
 <div class="profile-edit__container card">
     {{-- アイコン表示 --}}
     <div class="profile-edit__icon-show">
-        <img src="/storage/user/icon/{{ $user->icon }}" class="rounded-circle" width="100" height="100">
+        <img src="{{ config('consts.storage.icon').$user->icon }}" class="rounded-circle" width="100" height="100">
     </div>
 
     <form method="POST" action="{{ route('user_update') }}" enctype="multipart/form-data" class="image-upload">

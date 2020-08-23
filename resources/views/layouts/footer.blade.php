@@ -1,6 +1,6 @@
 <footer class="footer">
     <div class="footer__logo row">
-        <img src="/storage/web/logo-name.svg">
+        <img src="{{ config('consts.storage.system').'logo-name.svg' }}">
     </div>
 
     <div class="footer__site-map row text-center">

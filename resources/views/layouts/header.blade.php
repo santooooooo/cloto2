@@ -1,6 +1,6 @@
 <nav class="nav navbar navbar-expand-md navbar-light shadow-sm" id="navbar">
     <a class="nav__logo" href="{{ route('index') }}">
-        <img src="/storage/web/header-logo.svg">
+        <img src="{{ config('consts.storage.system').'header-logo.svg' }}">
     </a>
 
     <div class="collapse navbar-collapse">
@@ -19,7 +19,7 @@
             <li class="dropdown">
                 <a class="nav__link--username dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                     aria-haspopup="true" aria-expanded="false">
-                    <img src="/storage/user/icon/{{ Auth::user()->icon }}" class="rounded-circle" width="30"
+                    <img src="{{ config('consts.storage.icon').Auth::user()->icon }}" class="rounded-circle" width="30"
                         height="30" />
                     　 {{ Auth::user()->username }}
                 </a>

@@ -6,7 +6,7 @@
 <div class="welcome container">
     <div class="row">
         <div class="welcome__cloto-icon col-6">
-            <img src="/storage/web/top.png">
+            <img src="{{ config('consts.storage.system').'top.png' }}">
         </div>
 
         <div class="welcome__content col-6 d-flex align-items-center">
@@ -48,7 +48,7 @@
 
         <div class="index__content row">
             <div class="col-md-6">
-                <img class="index__intro-img" src="/storage/web/1st.png">
+                <img class="index__intro-img" src="{{ config('consts.storage.system').'1st.png' }}">
             </div>
             <div class="index__intro-body col-md-6">
                 <h2>1.創りたいものを提案</h2>
@@ -64,7 +64,7 @@
 
         <div class="index__content row">
             <div class="col-md-6">
-                <img class="index__intro-img" src="/storage/web/2nd.png">
+                <img class="index__intro-img" src="{{ config('consts.storage.system').'2nd.png' }}">
             </div>
             <div class="index__intro-body col-md-6">
                 <h2>2.目標を直感的に選べる</h2>
@@ -81,7 +81,7 @@
 
         <div class="index__content row">
             <div class="col-md-6">
-                <img class="index__intro-img" src="/storage/web/3rd.png">
+                <img class="index__intro-img" src="{{ config('consts.storage.system').'3rd.png' }}">
             </div>
             <div class="index__intro-body col-md-6">
                 <h2>3.影響し合えるコミュニティ</h2>
@@ -99,7 +99,7 @@
 
         <div class="index__content row">
             <div class="col-md-6">
-                <img class="index__intro-img" src="/storage/web/4th.png">
+                <img class="index__intro-img" src="{{ config('consts.storage.system').'4th.png' }}">
             </div>
             <div class="index__intro-body col-md-6">
                 <h2>4.教え合える交流スペース</h2>
@@ -116,7 +116,7 @@
 
         <div class="index__content row">
             <div class="col-md-6">
-                <img class="index__intro-img" src="/storage/web/5th.png">
+                <img class="index__intro-img" src="{{ config('consts.storage.system').'5th.png' }}">
             </div>
             <div class="index__intro-body col-md-6">
                 <h2>5.活動の記録と共有</h2>
