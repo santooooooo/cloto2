@@ -38739,7 +38739,7 @@ var render = function() {
                 "a",
                 {
                   staticClass: "btn btn-cloto-primary",
-                  attrs: { href: "/" + _vm.user }
+                  attrs: { href: "/users/" + _vm.user }
                 },
                 [_vm._v("マイページ")]
               )

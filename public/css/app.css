@@ -11046,3 +11046,147 @@ body {
   font-weight: bold;
 }
 
+.user-profile {
+  padding: 1em 0;
+  background-color: #fffbeb;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.user-profile__content {
+  margin: 0 auto;
+  background-color: #f4f4f4;
+  width: 500px;
+  border: none;
+  border-radius: 30px;
+}
+
+.user-profile__user {
+  height: 170px;
+  margin-top: 1em;
+  text-align: center;
+  font-weight: bold;
+}
+
+.user-profile__user--handlename {
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 0;
+}
+
+.user-profile__user--username {
+  text-align: center;
+}
+
+.user-profile__button {
+  height: 60px;
+  margin-top: 2em;
+  text-align: center;
+}
+
+.user-profile__sns-container {
+  height: 30px;
+  margin-bottom: 2em;
+  text-align: center;
+}
+
+.user-profile__sns-container div {
+  margin: 0 auto;
+}
+
+.user-profile .user-profile__sns--web,
+.user-profile .user-profile__sns--qiita,
+.user-profile .user-profile__sns--github,
+.user-profile .user-profile__sns--twitter,
+.user-profile .user-profile__sns {
+  margin: 0 1em;
+}
+
+.user-profile__sns--twitter {
+  color: #00acee;
+}
+
+.user-profile__sns--twitter:hover {
+  color: #00acee;
+}
+
+.user-profile__sns--github {
+  color: #000000;
+}
+
+.user-profile__sns--github:hover {
+  color: #000000;
+}
+
+.user-profile__sns--qiita {
+  color: #4cb10d;
+}
+
+.user-profile__sns--qiita:hover {
+  color: #4cb10d;
+}
+
+.user-profile__sns--web {
+  color: #000000;
+}
+
+.user-profile__sns--web:hover {
+  color: #000000;
+}
+
+.user-profile__meta-container {
+  height: 70px;
+  padding: 0 15px;
+}
+
+.user-profile__meta-container div p {
+  text-align: center;
+}
+
+.user-profile__introduction {
+  margin: 1em;
+  padding: 0.5em;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 30px;
+}
+
+.user-profile__introduction p {
+  margin: 0;
+}
+
+.profile-edit__container {
+  width: 60%;
+  margin: 2em auto;
+  border: none;
+}
+
+.profile-edit__container form {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.profile-edit__icon-show {
+  margin: 1em auto;
+}
+
+.profile-edit__form-content--icon .dragLeave {
+  background-color: #f4f4f4;
+}
+
+.profile-edit__form-content--button {
+  margin: 2em 0;
+}
+
+.profile-edit__form-content--button div {
+  margin: 0 auto;
+}
+
+.profile-edit__form-content--button div input {
+  margin-right: 1em;
+}
+
+.profile-edit__form-content--button div a {
+  margin-left: 1em;
+}
+

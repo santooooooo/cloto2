@@ -5,7 +5,7 @@
 
       <div v-if="user">
         <div class="button">
-          <a class="btn btn-cloto-primary" v-bind:href="'/'+user">マイページ</a>
+          <a class="btn btn-cloto-primary" v-bind:href="'/users/'+user">マイページ</a>
         </div>
         <div class="button">
           <a class="btn btn-cloto-primary" href="/course/all">コース一覧</a>
