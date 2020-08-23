@@ -10,6 +10,7 @@
     @include('layouts.header')
 
     <div id="app">
+        {{-- <router-view /> --}}
         @yield('top')
         @yield('content')
     </div>

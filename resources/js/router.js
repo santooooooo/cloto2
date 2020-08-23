@@ -5,6 +5,7 @@ Vue.use(VueRouter);
 import index from "@/components/front/index.vue";
 import register from "@/components/front/register.vue";
 import login from "@/components/front/login.vue";
+import userPage from "@/components/user/userPage.vue";
 
 const router = new VueRouter({
     mode: "history",
@@ -25,10 +26,10 @@ const router = new VueRouter({
             component: login
         },
         {
-            path: "/course/all",
-            name: "course_all",
-            component: index
-        }
+            path: "/user/:username",
+            name: "userPage",
+            component: userPage
+        },
     ]
 });
 

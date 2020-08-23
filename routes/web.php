@@ -24,13 +24,16 @@ Route::get('/login', 'FrontController@index')->name('login');
 
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/{any}', function () {
+        return view('front.index');
+    })->where('any','.*');
 
-    //*** ユーザー ***//
-    // ユーザーページ
-    Route::get('/users/{username}', 'UserController@show')->name('user_show');
+    // //*** ユーザー ***//
+    // // ユーザーページ
+    // Route::get('/users/{username}', 'UserController@show')->name('user_show');
 
-    // プロフィール編集フォーム
-    Route::get('/users/{username}/edit', 'UserController@edit')->name('user_edit');
-    // プロフィール保存
-    Route::post('/users/update', 'UserController@update')->name('user_update');
+    // // プロフィール編集フォーム
+    // Route::get('/users/{username}/edit', 'UserController@edit')->name('user_edit');
+    // // プロフィール保存
+    // Route::post('/users/update', 'UserController@update')->name('user_update');
 });

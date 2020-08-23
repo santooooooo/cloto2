@@ -5,19 +5,19 @@
 
       <div v-if="user">
         <div class="button">
-          <a class="btn btn-cloto-primary" v-bind:href="'/users/'+user">マイページ</a>
-        </div>
-        <div class="button">
-          <a class="btn btn-cloto-primary" href="/course/all">コース一覧</a>
+          <router-link
+            class="btn btn-cloto-primary"
+            :to="{ name: 'userPage', params: { username: user } }"
+          >マイページ</router-link>
         </div>
       </div>
 
       <div v-else>
         <div class="button">
-          <router-link class="btn btn-cloto-primary" to="/register">さあ飛び込もう！</router-link>
+          <router-link class="btn btn-cloto-primary" :to="{ name: 'register' }">さあ飛び込もう！</router-link>
         </div>
         <div class="button">
-          <router-link class="btn btn-cloto-primary" to="/login">もう会員ですか？</router-link>
+          <router-link class="btn btn-cloto-primary" :to="{ name: 'login' }">もう会員ですか？</router-link>
         </div>
       </div>
     </div>
@@ -120,10 +120,6 @@ export default {
 
   h1 {
     font-weight: bold;
-  }
-
-  .btn {
-    margin: 10px;
   }
 }
 </style>

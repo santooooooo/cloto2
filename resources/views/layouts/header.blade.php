@@ -25,8 +25,8 @@
                 </a>
 
                 <div class="nav__dropdown-menu dropdown-menu">
-                    <a class="dropdown-item"
-                        href="{{ route('user_show', ['username' => Auth::user()->username]) }}">マイページ</a>
+                    {{-- <a class="dropdown-item"
+                        href="{{ route('user_show', ['username' => Auth::user()->username]) }}">マイページ</a> --}}
                     <a class="dropdown-item" href="{{ route('logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         ログアウト
