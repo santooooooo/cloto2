@@ -19,12 +19,14 @@
             <li class="dropdown">
                 <a class="nav__link--username dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                     aria-haspopup="true" aria-expanded="false">
-                    　{{ Auth::user()->username }}
+                    <img src="/storage/user/icon/{{ Auth::user()->icon }}" class="rounded-circle" width="30"
+                        height="30" />
+                    　 {{ Auth::user()->username }}
                 </a>
 
                 <div class="nav__dropdown-menu dropdown-menu">
-                    {{-- <a class="dropdown-item"
-                        href="{{ route('user_page', ['username' => Auth::user()->username]) }}">マイページ</a> --}}
+                    <a class="dropdown-item"
+                        href="{{ route('user_show', ['username' => Auth::user()->username]) }}">マイページ</a>
                     <a class="dropdown-item" href="{{ route('logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         ログアウト

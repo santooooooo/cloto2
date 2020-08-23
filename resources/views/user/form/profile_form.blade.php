@@ -107,7 +107,7 @@
 
 
         {{-- ボタン --}}
-        <div class="profile-edit__form-content--button row">
+        <div class="profile-edit__button row">
             <div class="buttonSet mx-auto">
                 <input type="submit" name="send" value="更新" class="btn btn-primary btn-sm">
                 <a href="{{ route('user_show', ['username' => $user->username]) }}"
