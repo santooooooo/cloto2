@@ -34,6 +34,15 @@ const app = new Vue({
             AuthUser: '',   // ログインユーザー
         }
     },
+    methods: {
+        AuthCheck: function () {    // ログインチェック
+            if (typeof this.AuthUser.user_id === 'undefined') {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    },
     mounted() {
         // ログインユーザーの取得
         this.$http.get(this.$endpoint('AuthUser'))

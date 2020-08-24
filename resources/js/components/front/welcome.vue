@@ -3,11 +3,11 @@
     <div>
       <h1>{{ word }}</h1>
 
-      <div v-if="user">
+      <div v-if="$root.AuthCheck()">
         <div class="button">
           <router-link
             class="btn btn-cloto-primary"
-            :to="{ name: 'userPage', params: { username: user } }"
+            :to="{ name: 'userPage', params: { username: $root.AuthUser.username } }"
           >マイページ</router-link>
         </div>
       </div>
@@ -27,11 +27,6 @@
 
 <script>
 export default {
-  props: {
-    user: {
-      type: String,
-    },
-  },
   data() {
     return {
       mode: 1,
@@ -39,7 +34,7 @@ export default {
       word: "　",
     };
   },
-  created: function () {
+  mounted() {
     setInterval(() => {
       if (this.mode) {
         this.loop++;
@@ -113,6 +108,7 @@ export default {
   },
 };
 </script>
+
 
 <style lang="scss" scoped>
 .welcome-form {

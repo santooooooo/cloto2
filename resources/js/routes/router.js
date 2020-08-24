@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 import home from "@/components/front/layout.vue";
-import index from "@/components/front/index.vue";
+import welcome from "@/components/front/welcome.vue";
 import register from "@/components/front/register.vue";
 import login from "@/components/front/login.vue";
 import userPage from "@/components/user/userPage.vue";
@@ -13,12 +13,11 @@ const router = new VueRouter({
     routes: [
         {
             path: "/",
-            name: "home",
             component: home,
             children: [
                 {
                     path: "",
-                    component: index
+                    component: welcome
                 },
                 {
                     path: "register",
