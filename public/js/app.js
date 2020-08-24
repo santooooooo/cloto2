@@ -2260,8 +2260,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2293,14 +2291,14 @@ __webpack_require__.r(__webpack_exports__);
     submit: function submit() {
       var _this = this;
 
-      var endpoint = "/login";
+      var endpoint = this.$endpoint("login");
       var params = {
         login: this.login,
         password: this.password,
         remember: this.remember
       };
       this.$http.post(endpoint, params).then(function (response) {
-        location.href = "/";
+        location.href = _this.$endpoint("index");
       })["catch"](function (response) {
         _this.error = response.response.data.errors.login[0];
       });
@@ -2665,7 +2663,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    var endpoint = "/api/user/" + this.$route.params.username;
+    var endpoint = this.$endpoint("user_show", [this.$route.params.username]);
     this.$http.get(endpoint).then(function (response) {
       _this.user = response.data.user;
       _this.authId = response.data.authId;
@@ -39324,143 +39322,138 @@ var render = function() {
           })
         : _vm._e(),
       _vm._v(" "),
-      _c("form", { attrs: { method: "POST", action: "/login" } }, [
-        _c("div", { staticClass: "form-group row" }, [
+      _c("div", { staticClass: "form-group row" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.login,
+              expression: "login"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            placeholder: "ユーザー名 または メールアドレス"
+          },
+          domProps: { value: _vm.login },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.login = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "welcome-form__feedback--margin" }, [
+          _vm._v(" ")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.password,
+              expression: "password"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "password", placeholder: "パスワード" },
+          domProps: { value: _vm.password },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.password = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "welcome-form__feedback--margin" }, [
+          _vm._v(" ")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("div", { staticClass: "custom-control custom-radio" }, [
           _c("input", {
             directives: [
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.login,
-                expression: "login"
+                value: _vm.remember,
+                expression: "remember"
               }
             ],
-            staticClass: "form-control",
-            attrs: {
-              type: "text",
-              placeholder: "ユーザー名 または メールアドレス"
+            staticClass: "custom-control-input",
+            attrs: { type: "checkbox" },
+            domProps: {
+              checked: Array.isArray(_vm.remember)
+                ? _vm._i(_vm.remember, null) > -1
+                : _vm.remember
             },
-            domProps: { value: _vm.login },
             on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.login = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "welcome-form__feedback--margin" }, [
-            _vm._v(" ")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.password,
-                expression: "password"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "password", placeholder: "パスワード" },
-            domProps: { value: _vm.password },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.password = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "welcome-form__feedback--margin" }, [
-            _vm._v(" ")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c("div", { staticClass: "custom-control custom-radio" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.remember,
-                  expression: "remember"
-                }
-              ],
-              staticClass: "custom-control-input",
-              attrs: { type: "checkbox" },
-              domProps: {
-                checked: Array.isArray(_vm.remember)
-                  ? _vm._i(_vm.remember, null) > -1
-                  : _vm.remember
-              },
-              on: {
-                change: function($event) {
-                  var $$a = _vm.remember,
-                    $$el = $event.target,
-                    $$c = $$el.checked ? true : false
-                  if (Array.isArray($$a)) {
-                    var $$v = null,
-                      $$i = _vm._i($$a, $$v)
-                    if ($$el.checked) {
-                      $$i < 0 && (_vm.remember = $$a.concat([$$v]))
-                    } else {
-                      $$i > -1 &&
-                        (_vm.remember = $$a
-                          .slice(0, $$i)
-                          .concat($$a.slice($$i + 1)))
-                    }
+              change: function($event) {
+                var $$a = _vm.remember,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = null,
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 && (_vm.remember = $$a.concat([$$v]))
                   } else {
-                    _vm.remember = $$c
+                    $$i > -1 &&
+                      (_vm.remember = $$a
+                        .slice(0, $$i)
+                        .concat($$a.slice($$i + 1)))
                   }
+                } else {
+                  _vm.remember = $$c
                 }
               }
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "custom-control-label",
-                attrs: { for: "remember" }
-              },
-              [_vm._v("ログイン情報を記憶する")]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            { staticClass: "custom-control-label", attrs: { for: "remember" } },
+            [_vm._v("ログイン情報を記憶する")]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("div", [
           _c("div", [
-            _c("div", [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-cloto-primary",
-                  attrs: { type: "button", disabled: _vm.isButtonDisabled },
-                  on: { click: _vm.submit }
-                },
-                [_vm._v("ログイン")]
-              )
-            ]),
-            _vm._v(" "),
             _c(
-              "div",
-              { staticClass: "mt-3" },
-              [
-                _c("router-link", { attrs: { to: "/register" } }, [
-                  _vm._v("新規登録はこちら")
-                ])
-              ],
-              1
+              "button",
+              {
+                staticClass: "btn btn-cloto-primary",
+                attrs: { type: "button", disabled: _vm.isButtonDisabled },
+                on: { click: _vm.submit }
+              },
+              [_vm._v("ログイン")]
             )
-          ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "mt-3" },
+            [
+              _c("router-link", { attrs: { to: "/register" } }, [
+                _vm._v("新規登録はこちら")
+              ])
+            ],
+            1
+          )
         ])
       ])
     ]
@@ -55275,18 +55268,20 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
+/* harmony import */ var _routes_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes/router */ "./resources/js/routes/router.js");
 /**
  * 必要なライブラリの読み込み
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+window.API = __webpack_require__(/*! ./routes/api */ "./resources/js/routes/api.js");
 /**
  * Vueプロトタイプの設定
  */
 
 Vue.prototype.$http = window.axios;
+Vue.prototype.$endpoint = window.API.getEndpoint;
 /**
  * Vueコンポーネントの読み込み
  */
@@ -55300,7 +55295,7 @@ Vue.component('profile', __webpack_require__(/*! ./components/user/profile.vue *
 
 var app = new Vue({
   el: '#app',
-  router: _router__WEBPACK_IMPORTED_MODULE_0__["default"]
+  router: _routes_router__WEBPACK_IMPORTED_MODULE_0__["default"]
 });
 
 /***/ }),
@@ -55839,10 +55834,89 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/router.js":
-/*!********************************!*\
-  !*** ./resources/js/router.js ***!
-  \********************************/
+/***/ "./resources/js/routes/api.js":
+/*!************************************!*\
+  !*** ./resources/js/routes/api.js ***!
+  \************************************/
+/*! exports provided: getEndpoint, setParams */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getEndpoint", function() { return getEndpoint; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setParams", function() { return setParams; });
+/**
+ * パラメータ置換用の記号
+ */
+var replaceChar = ['#', '*', '$'];
+/**
+ * API一覧
+ */
+
+var index = '/';
+var login = '/login';
+var user_show = '/api/user/' + replaceChar[0];
+/**
+ * エンドポイントの取得
+ *
+ * @param {String} name 取得するAPI名
+ * @param {Array} params APIに必要なパラメータ
+ * @return {String} エンドポイント
+ */
+
+function getEndpoint(name, params) {
+  var endpoint = '';
+
+  switch (name) {
+    case 'index':
+      endpoint = index;
+      break;
+
+    case 'login':
+      endpoint = login;
+      break;
+
+    case 'user_show':
+      endpoint = setParams(user_show, params);
+      break;
+  }
+
+  return endpoint;
+}
+/**
+ * パラメータの置換
+ *
+ * @param {String} url 置換前のURL
+ * @param {Array} params 置換するパラメータ
+ * @return {String} 置換したURL
+ */
+
+function setParams(url, params) {
+  var endpoint = '';
+
+  switch (params.length) {
+    case 1:
+      endpoint = url.replace(replaceChar[0], params[0]);
+      break;
+
+    case 2:
+      endpoint = url.replace(replaceChar[0], params[0]).replace(replaceChar[1], params[1]);
+      break;
+
+    case 3:
+      endpoint = url.replace(replaceChar[0], params[0]).replace(replaceChar[2], params[2]).replace(replaceChar[2], params[2]);
+      break;
+  }
+
+  return endpoint;
+}
+
+/***/ }),
+
+/***/ "./resources/js/routes/router.js":
+/*!***************************************!*\
+  !*** ./resources/js/routes/router.js ***!
+  \***************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

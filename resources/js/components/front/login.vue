@@ -4,40 +4,38 @@
     <div class="alert alert-danger" v-if="error" v-text="error"></div>
 
     <!-- ログインフォーム -->
-    <form method="POST" action="/login">
-      <div class="form-group row">
-        <input type="text" class="form-control" v-model="login" placeholder="ユーザー名 または メールアドレス" />
-        <div class="welcome-form__feedback--margin">&nbsp;</div>
-      </div>
+    <div class="form-group row">
+      <input type="text" class="form-control" v-model="login" placeholder="ユーザー名 または メールアドレス" />
+      <div class="welcome-form__feedback--margin">&nbsp;</div>
+    </div>
 
-      <div class="form-group row">
-        <input type="password" class="form-control" v-model="password" placeholder="パスワード" />
-        <div class="welcome-form__feedback--margin">&nbsp;</div>
-      </div>
+    <div class="form-group row">
+      <input type="password" class="form-control" v-model="password" placeholder="パスワード" />
+      <div class="welcome-form__feedback--margin">&nbsp;</div>
+    </div>
 
-      <div class="form-group row">
-        <div class="custom-control custom-radio">
-          <input class="custom-control-input" type="checkbox" v-model="remember" />
-          <label class="custom-control-label" for="remember">ログイン情報を記憶する</label>
-        </div>
+    <div class="form-group row">
+      <div class="custom-control custom-radio">
+        <input class="custom-control-input" type="checkbox" v-model="remember" />
+        <label class="custom-control-label" for="remember">ログイン情報を記憶する</label>
       </div>
+    </div>
 
-      <div class="form-group row">
+    <div class="form-group row">
+      <div>
         <div>
-          <div>
-            <button
-              type="button"
-              class="btn btn-cloto-primary"
-              v-bind:disabled="isButtonDisabled"
-              @click="submit"
-            >ログイン</button>
-          </div>
-          <div class="mt-3">
-            <router-link to="/register">新規登録はこちら</router-link>
-          </div>
+          <button
+            type="button"
+            class="btn btn-cloto-primary"
+            v-bind:disabled="isButtonDisabled"
+            @click="submit"
+          >ログイン</button>
+        </div>
+        <div class="mt-3">
+          <router-link to="/register">新規登録はこちら</router-link>
         </div>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -72,7 +70,7 @@ export default {
       }
     },
     submit: function () {
-      var endpoint = "/login";
+      var endpoint = this.$endpoint("login");
       var params = {
         login: this.login,
         password: this.password,
@@ -82,7 +80,7 @@ export default {
       this.$http
         .post(endpoint, params)
         .then((response) => {
-          location.href = "/";
+          location.href = this.$endpoint("index");
         })
         .catch((response) => {
           this.error = response.response.data.errors.login[0];
