@@ -4,12 +4,14 @@
 require('./bootstrap');
 window.Vue = require("vue");
 window.API = require('./routes/api');
+window.Storage = require('./consts/storage');
 
 /**
  * Vueプロトタイプの設定
  */
 Vue.prototype.$http = window.axios;
 Vue.prototype.$endpoint = window.API.getEndpoint;
+Vue.prototype.$storage = window.Storage.getStoragePath;
 
 /**
  * Vueコンポーネントの読み込み

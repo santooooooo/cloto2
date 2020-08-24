@@ -2647,11 +2647,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -39894,7 +39889,7 @@ var render = function() {
           _c("img", {
             staticClass: "rounded-circle",
             attrs: {
-              src: "/storage/user/icon/" + _vm.user.icon,
+              src: _vm.$storage("icon") + _vm.user.icon,
               width: "100",
               height: "100"
             }
@@ -55276,12 +55271,14 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 window.API = __webpack_require__(/*! ./routes/api */ "./resources/js/routes/api.js");
+window.Storage = __webpack_require__(/*! ./consts/storage */ "./resources/js/consts/storage.js");
 /**
  * Vueプロトタイプの設定
  */
 
 Vue.prototype.$http = window.axios;
 Vue.prototype.$endpoint = window.API.getEndpoint;
+Vue.prototype.$storage = window.Storage.getStoragePath;
 /**
  * Vueコンポーネントの読み込み
  */
@@ -55834,6 +55831,50 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/consts/storage.js":
+/*!****************************************!*\
+  !*** ./resources/js/consts/storage.js ***!
+  \****************************************/
+/*! exports provided: getStoragePath */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getStoragePath", function() { return getStoragePath; });
+/**
+ * ディレクトリパスの取得：this.$storage('ディレクトリ名');
+ */
+
+/**
+ * ディレクトリ一覧
+ */
+var system = '/storage/system/';
+var icon = '/storage/user/icon/';
+/**
+ * パスの取得
+ *
+ * @param {String} name 取得するディレクトリ
+ * @return {String} ディレクトリのパス
+ */
+
+function getStoragePath(name) {
+  var path = '';
+
+  switch (name) {
+    case 'system':
+      path = system;
+      break;
+
+    case 'icon':
+      path = icon;
+      break;
+  }
+
+  return path;
+}
+
+/***/ }),
+
 /***/ "./resources/js/routes/api.js":
 /*!************************************!*\
   !*** ./resources/js/routes/api.js ***!
@@ -55845,6 +55886,11 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getEndpoint", function() { return getEndpoint; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setParams", function() { return setParams; });
+/**
+ * APIの取得
+ * 使用方法：this.$endpoint('API名', [パラメータ1, パラメータ2, パラメータ3]);
+ */
+
 /**
  * パラメータ置換用の記号
  */

@@ -5,12 +5,7 @@
       <div class="row">
         <!-- アイコンとユーザー名 -->
         <div class="user-profile__user col-md-5">
-          <img
-            :src="'/storage/user/icon/' + user.icon"
-            class="rounded-circle"
-            width="100"
-            height="100"
-          />
+          <img :src="$storage('icon') + user.icon" class="rounded-circle" width="100" height="100" />
           <p class="user-profile__user--handlename">{{ user.handlename }}</p>
           <p class="user-profile__user--username">{{ '@' + user.username }}</p>
         </div>
