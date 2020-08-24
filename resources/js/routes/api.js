@@ -10,7 +10,7 @@ const replaceChar = ['#', '*', '$'];
 /**
  * API一覧
  */
-const index = '/';
+const home = '/';
 const login = '/login';
 const user_show = '/api/user/' + replaceChar[0];
 
@@ -26,8 +26,8 @@ const user_show = '/api/user/' + replaceChar[0];
 export function getEndpoint(name, params) {
     var endpoint = '';
     switch (name) {
-        case 'index':
-            endpoint = index;
+        case 'home':
+            endpoint = home;
             break;
         case 'login':
             endpoint = login;

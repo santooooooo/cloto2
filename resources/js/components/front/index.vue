@@ -121,5 +121,9 @@ export default {
   h1 {
     font-weight: bold;
   }
+
+  .button {
+    margin: 10px;
+  }
 }
 </style>

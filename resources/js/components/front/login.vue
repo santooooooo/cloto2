@@ -80,7 +80,7 @@ export default {
       this.$http
         .post(endpoint, params)
         .then((response) => {
-          location.href = this.$endpoint("index");
+          location.href = this.$endpoint("home");
         })
         .catch((response) => {
           this.error = response.response.data.errors.login[0];
