@@ -12,6 +12,7 @@ const replaceChar = ['#', '*', '$'];
  */
 const home = '/';
 const login = '/login';
+const AuthUser = '/api/auth';
 const user_show = '/api/user/' + replaceChar[0];
 
 
@@ -31,6 +32,9 @@ export function getEndpoint(name, params) {
             break;
         case 'login':
             endpoint = login;
+            break;
+        case 'AuthUser':
+            endpoint = AuthUser;
             break;
         case 'user_show':
             endpoint = setParams(user_show, params);

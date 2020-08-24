@@ -55612,7 +55612,21 @@ Vue.component('profile', __webpack_require__(/*! ./components/user/profile.vue *
 
 var app = new Vue({
   el: '#app',
-  router: _routes_router__WEBPACK_IMPORTED_MODULE_0__["default"]
+  router: _routes_router__WEBPACK_IMPORTED_MODULE_0__["default"],
+  data: function data() {
+    return {
+      AuthUser: '' // ログインユーザー
+
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    // ログインユーザーの取得
+    this.$http.get(this.$endpoint('AuthUser')).then(function (response) {
+      _this.AuthUser = response.data;
+    });
+  }
 });
 
 /***/ }),
@@ -56291,6 +56305,7 @@ var replaceChar = ['#', '*', '$'];
 
 var home = '/';
 var login = '/login';
+var AuthUser = '/api/auth';
 var user_show = '/api/user/' + replaceChar[0];
 /**
  * エンドポイントの取得
@@ -56310,6 +56325,10 @@ function getEndpoint(name, params) {
 
     case 'login':
       endpoint = login;
+      break;
+
+    case 'AuthUser':
+      endpoint = AuthUser;
       break;
 
     case 'user_show':

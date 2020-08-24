@@ -24,6 +24,16 @@ class UserController extends Controller
 
     
     /**
+     * ログインユーザーの取得
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getAuthUser()
+    {
+        return response()->json(Auth::user());
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

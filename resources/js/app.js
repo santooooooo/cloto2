@@ -28,5 +28,17 @@ import router from "./routes/router";
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    data() {
+        return {
+            AuthUser: '',   // ログインユーザー
+        }
+    },
+    mounted() {
+        // ログインユーザーの取得
+        this.$http.get(this.$endpoint('AuthUser'))
+            .then((response) => {
+                this.AuthUser = response.data;
+            });
+    }
 });
