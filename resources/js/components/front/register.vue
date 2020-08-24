@@ -126,12 +126,12 @@
             >登録</button>
           </div>
           <div class="mt-3">
-            <router-link to="/login">もう会員ですか？</router-link>
+            <router-link :to="{ name: 'login' }">もう会員ですか？</router-link>
           </div>
         </div>
       </div>
 
-      <input type="hidden" name="_token" :value="csrf" />
+      <input type="hidden" name="_token" :value="$csrf" />
     </form>
   </div>
 </template>
@@ -168,9 +168,6 @@ export default {
       passwordConfirmation: null,
       handlename: null,
       isButtonDisabled: true,
-      csrf: document
-        .querySelector('meta[name="csrf-token"]')
-        .getAttribute("content"),
     };
   },
   watch: {

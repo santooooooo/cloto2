@@ -1,4 +1,8 @@
 /**
+ * エンドポイントの取得：this.$endpoint('エンドポイント名', ['パラメータ1', 'パラメータ2', 'パラメータ3']);
+ */
+
+/**
  * パラメータ置換用の記号
  */
 const replaceChar = ['#', '*', '$'];
@@ -15,8 +19,8 @@ const user_show = '/api/user/' + replaceChar[0];
 /**
  * エンドポイントの取得
  *
- * @param {String} name 取得するAPI名
- * @param {Array} params APIに必要なパラメータ
+ * @param {String} name 取得するエンドポイント名
+ * @param {Array} params 必要なパラメータ
  * @return {String} エンドポイント
  */
 export function getEndpoint(name, params) {

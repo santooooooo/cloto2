@@ -10,6 +10,7 @@ window.Storage = require('./consts/storage');
  * Vueプロトタイプの設定
  */
 Vue.prototype.$http = window.axios;
+Vue.prototype.$csrf = window.Laravel.csrfToken;
 Vue.prototype.$endpoint = window.API.getEndpoint;
 Vue.prototype.$storage = window.Storage.getStoragePath;
 

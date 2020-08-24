@@ -32,7 +32,7 @@
           >ログイン</button>
         </div>
         <div class="mt-3">
-          <router-link to="/register">新規登録はこちら</router-link>
+          <router-link :to="{ name: 'register' }">新規登録はこちら</router-link>
         </div>
       </div>
     </div>

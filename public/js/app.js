@@ -2479,8 +2479,7 @@ __webpack_require__.r(__webpack_exports__);
       password: null,
       passwordConfirmation: null,
       handlename: null,
-      isButtonDisabled: true,
-      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+      isButtonDisabled: true
     };
   },
   watch: {
@@ -39443,7 +39442,7 @@ var render = function() {
             "div",
             { staticClass: "mt-3" },
             [
-              _c("router-link", { attrs: { to: "/register" } }, [
+              _c("router-link", { attrs: { to: { name: "register" } } }, [
                 _vm._v("新規登録はこちら")
               ])
             ],
@@ -39843,7 +39842,7 @@ var render = function() {
               "div",
               { staticClass: "mt-3" },
               [
-                _c("router-link", { attrs: { to: "/login" } }, [
+                _c("router-link", { attrs: { to: { name: "login" } } }, [
                   _vm._v("もう会員ですか？")
                 ])
               ],
@@ -39854,7 +39853,7 @@ var render = function() {
         _vm._v(" "),
         _c("input", {
           attrs: { type: "hidden", name: "_token" },
-          domProps: { value: _vm.csrf }
+          domProps: { value: _vm.$csrf }
         })
       ])
     ]
@@ -55277,6 +55276,7 @@ window.Storage = __webpack_require__(/*! ./consts/storage */ "./resources/js/con
  */
 
 Vue.prototype.$http = window.axios;
+Vue.prototype.$csrf = window.Laravel.csrfToken;
 Vue.prototype.$endpoint = window.API.getEndpoint;
 Vue.prototype.$storage = window.Storage.getStoragePath;
 /**
@@ -55887,8 +55887,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getEndpoint", function() { return getEndpoint; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setParams", function() { return setParams; });
 /**
- * APIの取得
- * 使用方法：this.$endpoint('API名', [パラメータ1, パラメータ2, パラメータ3]);
+ * エンドポイントの取得：this.$endpoint('エンドポイント名', ['パラメータ1', 'パラメータ2', 'パラメータ3']);
  */
 
 /**
@@ -55905,8 +55904,8 @@ var user_show = '/api/user/' + replaceChar[0];
 /**
  * エンドポイントの取得
  *
- * @param {String} name 取得するAPI名
- * @param {Array} params APIに必要なパラメータ
+ * @param {String} name 取得するエンドポイント名
+ * @param {Array} params 必要なパラメータ
  * @return {String} エンドポイント
  */
 
