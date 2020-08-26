@@ -1,16 +1,16 @@
 <nav class="nav navbar navbar-expand-md navbar-light shadow-sm" id="navbar">
-    <a class="nav__logo" href="{{ route('index') }}">
+    <a class="nav__logo" href="#">
         <img src="{{ config('consts.storage.system').'header-logo.svg' }}">
     </a>
 
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav ml-auto">
             <li class="nav__item">
-                <a class="nav-link" href="{{ route('register') }}">新規登録</a>
+                <a class="nav-link" href="#">新規登録</a>
             </li>
 
             <li class="nav__item">
-                <a class="nav-link" href="{{ route('login') }}">ログイン</a>
+                <a class="nav-link" href="#">ログイン</a>
             </li>
         </ul>
 

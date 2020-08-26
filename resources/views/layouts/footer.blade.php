@@ -6,7 +6,7 @@
     <div class="footer__site-map row text-center">
         <div class="col-md-6">
             <span class="footer__link"><i class="fas fa-chevron-right"></i> <a
-                    href="{{ route('index') }}">トップ</a></span>
+                    href="#">トップ</a></span>
 
             <span class="footer__link"><i class="fas fa-chevron-right"></i> <a href="#">ヘルプ</a></span>
             <span class="footer__link"><i class="fas fa-chevron-right"></i> <a href="#">利用規約</a></span>
