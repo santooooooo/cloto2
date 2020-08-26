@@ -7,6 +7,7 @@ import welcome from "@/components/front/welcome.vue";
 import register from "@/components/front/register.vue";
 import login from "@/components/front/login.vue";
 import userPage from "@/components/user/userPage.vue";
+import profileEdit from "@/components/user/profileEdit.vue";
 
 const router = new VueRouter({
     mode: "history",
@@ -35,6 +36,11 @@ const router = new VueRouter({
             path: "/user/:username",
             name: "userPage",
             component: userPage
+        },
+        {
+            path: "/user/:username/edit",
+            name: "profileEdit",
+            component: profileEdit
         },
     ]
 });

@@ -158,10 +158,10 @@ export default {
     },
   },
   mounted: function () {
-    const form = document.getElementsByClassName("image-upload");
-    form[0].addEventListener("formdata", (event) => {
-      event.formData.set("upload_image", this.blobData, "upload.jpg");
-    });
+    // const form = document.getElementsByClassName("image-upload");
+    // form[0].addEventListener("formdata", (event) => {
+    //   event.formData.set("upload_image", this.blobData, "upload.jpg");
+    // });
   },
 };
 </script>

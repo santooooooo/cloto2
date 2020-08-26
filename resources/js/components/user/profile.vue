@@ -13,7 +13,11 @@
         <div class="col-md-7">
           <div class="user-profile__button">
             <!-- マイページの場合 -->
-            <a href="#" class="btn btn-cloto-primary" v-if="user.user_id == authId">編集する</a>
+            <router-link
+              class="btn btn-cloto-primary"
+              :to="{ name: 'profileEdit', params: { username: $root.AuthUser.username } }"
+              v-if="user.user_id == authId"
+            >編集する</router-link>
           </div>
           <!-- ボタン類 -->
           <div class="user-profile__sns-container" v-if="sns || user.web">
