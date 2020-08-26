@@ -1,7 +1,7 @@
 <template>
   <div class="profile-edit__container card">
     <!-- アイコン表示 -->
-    <div class="profile-edit__icon-show">
+    <div class="profile-edit__icon">
       <img
         :src="$storage('icon') + $root.AuthUser.icon"
         class="rounded-circle"
@@ -14,7 +14,7 @@
     <input type="hidden" name="user_id" :value="$root.AuthUser.user_id" />
 
     <!-- アイコン -->
-    <div class="profile-edit__form-content--icon form-group">
+    <div class="form-group">
       <image-upload-area :no-change-crop-ratio="true" ratio-x="1" ratio-y="1"></image-upload-area>
     </div>
 
@@ -157,9 +157,39 @@
   </div>
 </template>
 
+
 <script>
 export default {};
 </script>
 
-<style>
+
+<style lang="scss" scoped>
+.profile-edit {
+  &__container {
+    width: 60%;
+    margin: 2em auto;
+    padding: 1em 10em;
+    border: none;
+  }
+
+  &__icon {
+    margin: 1em auto;
+  }
+
+  &__button {
+    margin: 2em 0;
+
+    div {
+      margin: 0 auto;
+
+      input {
+        margin-right: 1em;
+      }
+
+      a {
+        margin-left: 1em;
+      }
+    }
+  }
+}
 </style>
