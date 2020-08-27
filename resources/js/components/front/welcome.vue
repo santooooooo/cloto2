@@ -3,7 +3,7 @@
     <div>
       <h1>{{ word }}</h1>
 
-      <div v-if="$root.AuthCheck">
+      <div v-if="$root.AuthCheck()">
         <div class="button">
           <router-link
             class="btn btn-cloto-primary"

@@ -40393,7 +40393,7 @@ var render = function() {
     _c("div", [
       _c("h1", [_vm._v(_vm._s(_vm.word))]),
       _vm._v(" "),
-      _vm.$root.AuthCheck
+      _vm.$root.AuthCheck()
         ? _c("div", [
             _c(
               "div",
@@ -56208,14 +56208,14 @@ var app = new Vue({
     }
   },
   mounted: function mounted() {
-    this.GetAuthUser;
+    this.GetAuthUser();
   },
   watch: {
     '$route': function $route(to, from) {
       // ページ遷移イベント
       if (to.path !== from.path) {
         // ログインユーザーの同期
-        this.GetAuthUser;
+        this.GetAuthUser();
       }
     }
   }

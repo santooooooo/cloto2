@@ -50,13 +50,13 @@ const app = new Vue({
         }
     },
     mounted() {
-        this.GetAuthUser;
+        this.GetAuthUser();
     },
     watch: {
         '$route': function (to, from) { // ページ遷移イベント
             if (to.path !== from.path) {
                 // ログインユーザーの同期
-                this.GetAuthUser;
+                this.GetAuthUser();
             }
         }
     }
