@@ -2,7 +2,7 @@
 <html lang="ja">
 
 <head>
-    @include('layouts.head')
+    @include('head')
 </head>
 
 <body>
