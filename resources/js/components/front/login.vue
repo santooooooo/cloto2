@@ -42,6 +42,13 @@
 
 <script>
 export default {
+  head: {
+    title() {
+      return {
+        inner: "ログイン",
+      };
+    },
+  },
   data() {
     return {
       error: "",

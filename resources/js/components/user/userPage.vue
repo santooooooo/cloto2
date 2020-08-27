@@ -10,7 +10,7 @@ export default {
   head: {
     title() {
       return {
-        inner: "test",
+        inner: this.$route.params.username,
       };
     },
   },

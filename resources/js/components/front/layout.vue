@@ -132,6 +132,21 @@
 </template>
 
 
+<script>
+export default {
+  head: {
+    title() {
+      return {
+        inner: "CLOTO",
+        separator: " ",
+        complement: " ",
+      };
+    },
+  },
+};
+</script>
+
+
 <style lang="scss" scoped>
 @import "~/_variables";
 

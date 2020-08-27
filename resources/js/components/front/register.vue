@@ -141,6 +141,13 @@
 import * as validate from "@/tools/validate";
 
 export default {
+  head: {
+    title() {
+      return {
+        inner: "新規登録",
+      };
+    },
+  },
   props: {
     errors: {
       type: Object,

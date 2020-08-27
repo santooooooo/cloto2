@@ -159,7 +159,15 @@
 
 
 <script>
-export default {};
+export default {
+  head: {
+    title() {
+      return {
+        inner: this.$route.params.username + " - " + "編集",
+      };
+    },
+  },
+};
 </script>
 
 
