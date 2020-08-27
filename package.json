@@ -26,6 +26,7 @@
     "dependencies": {
         "laravel-mix-alias": "^1.0.2",
         "vue-cropper": "^0.5.5",
+        "vue-head": "^2.2.0",
         "vue-router": "^3.4.3"
     }
 }

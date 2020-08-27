@@ -6,7 +6,15 @@
 </template>
 
 <script>
-export default {};
+export default {
+  head: {
+    title() {
+      return {
+        inner: "test",
+      };
+    },
+  },
+};
 </script>
 
 <style>

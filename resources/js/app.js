@@ -26,24 +26,30 @@ Vue.component('profile', require('./components/user/profile.vue').default);
 /**
  * Vueの定義
  */
+import VueHead from 'vue-head';
 import router from "./routes/router";
+
+Vue.use(VueHead, {
+    separator: '|',
+    complement: 'CLOTO'
+});
 
 const app = new Vue({
     el: '#app',
     router,
     data() {
         return {
-            AuthUser: '',   // ログインユーザー
+            AuthUser: '', // ログインユーザー
         }
     },
     methods: {
-        SyncAuthUser: function () {  // ログインユーザーの同期
+        SyncAuthUser: function () { // ログインユーザーの同期
             this.$http.get(this.$endpoint('GET:AuthUser'))
                 .then((response) => {
                     this.AuthUser = response.data;
                 });
         },
-        AuthCheck: function () {    // ログインチェック
+        AuthCheck: function () { // ログインチェック
             if (typeof this.AuthUser.user_id === 'undefined') {
                 return false;
             } else {
