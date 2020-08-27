@@ -35,6 +35,12 @@ const app = new Vue({
         }
     },
     methods: {
+        GetAuthUser: function () {  // ログインユーザーの取得
+            this.$http.get(this.$endpoint('AuthUser'))
+                .then((response) => {
+                    this.AuthUser = response.data;
+                });
+        },
         AuthCheck: function () {    // ログインチェック
             if (typeof this.AuthUser.user_id === 'undefined') {
                 return false;
@@ -44,10 +50,14 @@ const app = new Vue({
         }
     },
     mounted() {
-        // ログインユーザーの取得
-        this.$http.get(this.$endpoint('AuthUser'))
-            .then((response) => {
-                this.AuthUser = response.data;
-            });
+        this.GetAuthUser;
+    },
+    watch: {
+        '$route': function (to, from) { // ページ遷移イベント
+            if (to.path !== from.path) {
+                // ログインユーザーの同期
+                this.GetAuthUser;
+            }
+        }
     }
 });

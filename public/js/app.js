@@ -56190,6 +56190,14 @@ var app = new Vue({
     };
   },
   methods: {
+    GetAuthUser: function GetAuthUser() {
+      var _this = this;
+
+      // ログインユーザーの取得
+      this.$http.get(this.$endpoint('AuthUser')).then(function (response) {
+        _this.AuthUser = response.data;
+      });
+    },
     AuthCheck: function AuthCheck() {
       // ログインチェック
       if (typeof this.AuthUser.user_id === 'undefined') {
@@ -56200,12 +56208,16 @@ var app = new Vue({
     }
   },
   mounted: function mounted() {
-    var _this = this;
-
-    // ログインユーザーの取得
-    this.$http.get(this.$endpoint('AuthUser')).then(function (response) {
-      _this.AuthUser = response.data;
-    });
+    this.GetAuthUser;
+  },
+  watch: {
+    '$route': function $route(to, from) {
+      // ページ遷移イベント
+      if (to.path !== from.path) {
+        // ログインユーザーの同期
+        this.GetAuthUser;
+      }
+    }
   }
 });
 
