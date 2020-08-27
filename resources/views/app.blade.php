@@ -9,10 +9,11 @@
 
     <div id="app">
         <vue-header></vue-header>
-        <router-view />
-    </div>
+        
+        <router-view></router-view>
 
-    @include('layouts.footer')
+        <vue-footer></vue-footer>
+    </div>
 
 </body>
 
