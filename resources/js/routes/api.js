@@ -11,9 +11,9 @@ const replaceChar = ['#', '*', '$'];
  * API一覧
  */
 const home = '/';
-const login = '/login';
-const AuthUser = '/api/auth';
-const user_show = '/api/user/' + replaceChar[0];
+const POST_login = '/api/login';
+const GET_AuthUser = '/api/auth';
+const GET_userShow = '/api/user/' + replaceChar[0];
 
 
 
@@ -30,14 +30,17 @@ export function getEndpoint(name, params) {
         case 'home':
             endpoint = home;
             break;
-        case 'login':
-            endpoint = login;
+
+        case 'POST:login':
+            endpoint = POST_login;
             break;
-        case 'AuthUser':
-            endpoint = AuthUser;
+
+        case 'GET:AuthUser':
+            endpoint = GET_AuthUser;
             break;
-        case 'user_show':
-            endpoint = setParams(user_show, params);
+
+        case 'GET:userShow':
+            endpoint = setParams(GET_userShow, params);
             break;
     }
 

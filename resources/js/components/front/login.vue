@@ -70,7 +70,7 @@ export default {
       }
     },
     submit: function () {
-      var endpoint = this.$endpoint("login");
+      var endpoint = this.$endpoint("POST:login");
       var params = {
         login: this.login,
         password: this.password,
@@ -80,7 +80,7 @@ export default {
       this.$http
         .post(endpoint, params)
         .then((response) => {
-          location.href = this.$endpoint("home");
+          this.$router.push({ name: "home" });
         })
         .catch((response) => {
           this.error = response.response.data.errors.login[0];

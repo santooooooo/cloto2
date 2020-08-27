@@ -1,3 +1,10 @@
+/**
+ * ルーティングの取得方法
+ * <router-link : to="{ name: 'user', params: { userId: 123 }}">User</router-link>
+ * this.$router.push({ name: 'user', params: { userId: 123 }});
+ */
+
+
 import Vue from "vue";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
@@ -18,6 +25,7 @@ const router = new VueRouter({
             children: [
                 {
                     path: "",
+                    name: "home",
                     component: welcome
                 },
                 {

@@ -2161,14 +2161,16 @@ __webpack_require__.r(__webpack_exports__);
     submit: function submit() {
       var _this = this;
 
-      var endpoint = this.$endpoint("login");
+      var endpoint = this.$endpoint("POST:login");
       var params = {
         login: this.login,
         password: this.password,
         remember: this.remember
       };
       this.$http.post(endpoint, params).then(function (response) {
-        location.href = _this.$endpoint("home");
+        _this.$router.push({
+          name: "home"
+        });
       })["catch"](function (response) {
         _this.error = response.response.data.errors.login[0];
       });
@@ -56987,9 +56989,9 @@ var replaceChar = ['#', '*', '$'];
  */
 
 var home = '/';
-var login = '/login';
-var AuthUser = '/api/auth';
-var user_show = '/api/user/' + replaceChar[0];
+var POST_login = '/api/login';
+var GET_AuthUser = '/api/auth';
+var GET_userShow = '/api/user/' + replaceChar[0];
 /**
  * エンドポイントの取得
  *
@@ -57006,16 +57008,16 @@ function getEndpoint(name, params) {
       endpoint = home;
       break;
 
-    case 'login':
-      endpoint = login;
+    case 'POST:login':
+      endpoint = POST_login;
       break;
 
-    case 'AuthUser':
-      endpoint = AuthUser;
+    case 'GET:AuthUser':
+      endpoint = GET_AuthUser;
       break;
 
-    case 'user_show':
-      endpoint = setParams(user_show, params);
+    case 'GET:userShow':
+      endpoint = setParams(GET_userShow, params);
       break;
   }
 
@@ -57069,6 +57071,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_front_login_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/components/front/login.vue */ "./resources/js/components/front/login.vue");
 /* harmony import */ var _components_user_userPage_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/components/user/userPage.vue */ "./resources/js/components/user/userPage.vue");
 /* harmony import */ var _components_user_profileEdit_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @/components/user/profileEdit.vue */ "./resources/js/components/user/profileEdit.vue");
+/**
+ * ルーティングの取得方法
+ * <router-link : to="{ name: 'user', params: { userId: 123 }}">User</router-link>
+ * this.$router.push({ name: 'user', params: { userId: 123 }});
+ */
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
@@ -57085,6 +57092,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     component: _components_front_layout_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     children: [{
       path: "",
+      name: "home",
       component: _components_front_welcome_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
     }, {
       path: "register",
