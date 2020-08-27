@@ -12,6 +12,7 @@ const replaceChar = ['#', '*', '$'];
  */
 const home = '/';
 const POST_login = '/api/login';
+const POST_logout = '/api/logout';
 const GET_AuthUser = '/api/auth';
 const GET_userShow = '/api/user/' + replaceChar[0];
 
@@ -33,6 +34,10 @@ export function getEndpoint(name, params) {
 
         case 'POST:login':
             endpoint = POST_login;
+            break;
+
+        case 'POST:logout':
+            endpoint = POST_logout;
             break;
 
         case 'GET:AuthUser':

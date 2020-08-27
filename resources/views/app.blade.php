@@ -7,9 +7,8 @@
 
 <body>
 
-    @include('layouts.header')
-
     <div id="app">
+        <vue-header></vue-header>
         <router-view />
     </div>
 

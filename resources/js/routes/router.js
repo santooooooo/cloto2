@@ -1,7 +1,8 @@
 /**
  * ルーティングの取得方法
- * <router-link : to="{ name: 'user', params: { userId: 123 }}">User</router-link>
+ * <router-link :to="{ name: 'user', params: { userId: 123 }}">User</router-link>
  * this.$router.push({ name: 'user', params: { userId: 123 }});
+ * let path = this.$router.resolve({ name: 'user', params: { userId: 123 }}).href;
  */
 
 

@@ -17,6 +17,7 @@ Vue.prototype.$storage = window.Storage.getStoragePath;
 /**
  * Vueコンポーネントの読み込み
  */
+Vue.component('vue-header', require('./components/layouts/vueHeader.vue').default);
 Vue.component('image-upload-area', require('./components/form/imageDropUpload.vue').default);
 Vue.component('profile', require('./components/user/profile.vue').default);
 
@@ -35,7 +36,7 @@ const app = new Vue({
         }
     },
     methods: {
-        GetAuthUser: function () {  // ログインユーザーの取得
+        SyncAuthUser: function () {  // ログインユーザーの同期
             this.$http.get(this.$endpoint('GET:AuthUser'))
                 .then((response) => {
                     this.AuthUser = response.data;
@@ -50,13 +51,13 @@ const app = new Vue({
         }
     },
     mounted() {
-        this.GetAuthUser();
+        this.SyncAuthUser();
     },
     watch: {
         '$route': function (to, from) { // ページ遷移イベント
             if (to.path !== from.path) {
                 // ログインユーザーの同期
-                this.GetAuthUser();
+                this.SyncAuthUser();
             }
         }
     }
