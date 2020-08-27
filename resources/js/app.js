@@ -18,7 +18,7 @@ Vue.prototype.$storage = window.Storage.getStoragePath;
  * Vueコンポーネントの読み込み
  */
 Vue.component('vue-header', require('./components/layouts/vueHeader.vue').default);
-Vue.component('image-upload-area', require('./components/form/imageDropUpload.vue').default);
+Vue.component('image-drop-upload', require('./components/form/imageDropUpload.vue').default);
 Vue.component('profile', require('./components/user/profile.vue').default);
 
 

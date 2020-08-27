@@ -40854,7 +40854,7 @@ var render = function() {
       "div",
       { staticClass: "form-group" },
       [
-        _c("image-upload-area", {
+        _c("image-drop-upload", {
           attrs: {
             "no-change-crop-ratio": true,
             "ratio-x": "1",
@@ -56398,7 +56398,7 @@ Vue.prototype.$storage = window.Storage.getStoragePath;
  */
 
 Vue.component('vue-header', __webpack_require__(/*! ./components/layouts/vueHeader.vue */ "./resources/js/components/layouts/vueHeader.vue")["default"]);
-Vue.component('image-upload-area', __webpack_require__(/*! ./components/form/imageDropUpload.vue */ "./resources/js/components/form/imageDropUpload.vue")["default"]);
+Vue.component('image-drop-upload', __webpack_require__(/*! ./components/form/imageDropUpload.vue */ "./resources/js/components/form/imageDropUpload.vue")["default"]);
 Vue.component('profile', __webpack_require__(/*! ./components/user/profile.vue */ "./resources/js/components/user/profile.vue")["default"]);
 /**
  * Vueの定義

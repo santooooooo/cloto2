@@ -15,7 +15,7 @@
 
     <!-- アイコン -->
     <div class="form-group">
-      <image-upload-area :no-change-crop-ratio="true" ratio-x="1" ratio-y="1"></image-upload-area>
+      <image-drop-upload :no-change-crop-ratio="true" ratio-x="1" ratio-y="1"></image-drop-upload>
     </div>
 
     <!-- ユーザー名 -->
