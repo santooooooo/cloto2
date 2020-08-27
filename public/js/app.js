@@ -40393,7 +40393,7 @@ var render = function() {
     _c("div", [
       _c("h1", [_vm._v(_vm._s(_vm.word))]),
       _vm._v(" "),
-      _vm.$root.AuthCheck()
+      _vm.$root.AuthCheck
         ? _c("div", [
             _c(
               "div",
@@ -56194,7 +56194,7 @@ var app = new Vue({
       var _this = this;
 
       // ログインユーザーの取得
-      this.$http.get(this.$endpoint('AuthUser')).then(function (response) {
+      this.$http.get(this.$endpoint('GET:AuthUser')).then(function (response) {
         _this.AuthUser = response.data;
       });
     },

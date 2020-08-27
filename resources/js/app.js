@@ -36,7 +36,7 @@ const app = new Vue({
     },
     methods: {
         GetAuthUser: function () {  // ログインユーザーの取得
-            this.$http.get(this.$endpoint('AuthUser'))
+            this.$http.get(this.$endpoint('GET:AuthUser'))
                 .then((response) => {
                     this.AuthUser = response.data;
                 });
