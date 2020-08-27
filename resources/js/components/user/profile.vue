@@ -70,7 +70,9 @@ export default {
     };
   },
   mounted() {
-    var endpoint = this.$endpoint("user_show", [this.$route.params.username]);
+    var endpoint = this.$endpoint("GET:userShow", [
+      this.$route.params.username,
+    ]);
 
     this.$http.get(endpoint).then((response) => {
       this.user = response.data.user;

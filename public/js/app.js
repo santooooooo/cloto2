@@ -2656,7 +2656,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    var endpoint = this.$endpoint("user_show", [this.$route.params.username]);
+    var endpoint = this.$endpoint("GET:userShow", [this.$route.params.username]);
     this.$http.get(endpoint).then(function (response) {
       _this.user = response.data.user;
       _this.authId = response.data.authId;
