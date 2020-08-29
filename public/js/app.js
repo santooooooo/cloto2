@@ -1983,7 +1983,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "image-drop-upload",
   components: {
     VueCropper: vue_cropper__WEBPACK_IMPORTED_MODULE_0__["VueCropper"]
   },
@@ -2013,8 +2012,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         fixedNumber: [this.ratioX, this.ratioY],
         fixedBox: false,
         canMove: true
-      },
-      blobData: ""
+      }
     };
   },
   methods: {
@@ -2056,8 +2054,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         _this2.preview = data;
       });
       this.$refs.cropper.getCropBlob(function (data) {
-        // 保存データ
-        _this2.blobData = data;
+        // 親コンポーネントのformDataに画像を追加
+        _this2.$parent.formData.append("upload-image", data, "image.png");
       });
     },
     changeStyle: function changeStyle(status) {
@@ -2069,11 +2067,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         this.dragOver = false;
       }
     }
-  },
-  mounted: function mounted() {// const form = document.getElementsByClassName("image-upload");
-    // form[0].addEventListener("formdata", (event) => {
-    //   event.formData.set("upload_image", this.blobData, "upload.jpg");
-    // });
   }
 });
 
@@ -3099,6 +3092,16 @@ __webpack_require__.r(__webpack_exports__);
       return {
         inner: this.$route.params.username + " - " + "編集"
       };
+    }
+  },
+  data: function data() {
+    return {
+      formData: new FormData()
+    };
+  },
+  methods: {
+    submit: function submit() {
+      console.log(this.formData.get("upload-image"));
     }
   }
 });
@@ -41634,10 +41637,15 @@ var render = function() {
         "div",
         { staticClass: "buttonSet mx-auto" },
         [
-          _c("input", {
-            staticClass: "btn btn-primary btn-sm",
-            attrs: { type: "submit", name: "send", value: "更新" }
-          }),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary btn-sm",
+              attrs: { type: "button" },
+              on: { click: _vm.submit }
+            },
+            [_vm._v("更新")]
+          ),
           _vm._v(" "),
           _c(
             "router-link",

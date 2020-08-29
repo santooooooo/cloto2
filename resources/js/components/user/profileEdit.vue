@@ -147,7 +147,7 @@
     <!-- ボタン -->
     <div class="profile-edit__button row">
       <div class="buttonSet mx-auto">
-        <input type="submit" name="send" value="更新" class="btn btn-primary btn-sm" />
+        <button type="button" class="btn btn-primary btn-sm" @click="submit">更新</button>
         <router-link
           class="btn btn-secondary btn-sm btn-danger"
           :to="{ name: 'userPage', params: { username: this.$route.params.username } }"
@@ -165,6 +165,16 @@ export default {
       return {
         inner: this.$route.params.username + " - " + "編集",
       };
+    },
+  },
+  data() {
+    return {
+      formData: new FormData(),
+    };
+  },
+  methods: {
+    submit: function () {
+      console.log(this.formData.get("upload-image"));
     },
   },
 };

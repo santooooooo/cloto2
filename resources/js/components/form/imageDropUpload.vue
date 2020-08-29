@@ -71,7 +71,6 @@
 import { VueCropper } from "vue-cropper";
 
 export default {
-  name: "image-drop-upload",
   components: {
     VueCropper,
   },
@@ -99,7 +98,6 @@ export default {
         fixedBox: false,
         canMove: true,
       },
-      blobData: "",
     };
   },
   methods: {
@@ -143,8 +141,8 @@ export default {
       });
 
       this.$refs.cropper.getCropBlob((data) => {
-        // 保存データ
-        this.blobData = data;
+        // 親コンポーネントのformDataに画像を追加
+        this.$parent.formData.append("upload-image", data, "image.png");
       });
     },
     changeStyle: function (status) {
@@ -156,12 +154,6 @@ export default {
         this.dragOver = false;
       }
     },
-  },
-  mounted: function () {
-    // const form = document.getElementsByClassName("image-upload");
-    // form[0].addEventListener("formdata", (event) => {
-    //   event.formData.set("upload_image", this.blobData, "upload.jpg");
-    // });
   },
 };
 </script>
