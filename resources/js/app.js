@@ -35,7 +35,6 @@ Vue.use(VueHead, {
 });
 
 const app = new Vue({
-    el: '#app',
     router,
     data() {
         return {
@@ -57,8 +56,12 @@ const app = new Vue({
             }
         }
     },
-    mounted() {
-        this.SyncAuthUser();
+    async created() {
+        // ログインユーザーの初回同期
+        var response = await this.$http.get(this.$endpoint('GET:AuthUser'));
+        this.AuthUser = response.data;
+        // 同期完了後にマウント
+        this.$mount('#app');
     },
     watch: {
         '$route': function (to, from) { // ページ遷移イベント
