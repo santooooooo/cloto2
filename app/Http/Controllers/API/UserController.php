@@ -4,11 +4,15 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    // アイコン保存ディレクトリ
+    const ICON_STORE_DIR = 'public/user/icon/';
+
+
     /** @var User */
     protected $user;
 
@@ -17,7 +21,7 @@ class UserController extends Controller
      *
      * @return void
      */
-    function __construct(User $user)
+    public function __construct(User $user)
     {
         $this->user = $user;
     }
@@ -57,7 +61,7 @@ class UserController extends Controller
     /**
      * ユーザーデータの表示
      *
-     * @param  String $username
+     * @param  String $username ユーザー名
      * @return \Illuminate\Http\Response
      */
     public function show(String $username)
@@ -66,15 +70,41 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * ユーザーデータの更新
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  String $username ユーザー名
+     * @param  UserRequest $request 更新内容
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(String $username, UserRequest $request)
     {
-        //
+        $param = $request->toArray();
+
+        // 更新するユーザーを取得
+        $edit_user = User::where('username', $username)->first();
+
+        // アイコンの処理
+        if (!empty($param['upload-image'])) {
+            // 削除処理
+            if ($edit_user->icon != 'default.jpg') {
+                // 初期値以外の場合には削除
+                Storage::delete(self::ICON_STORE_DIR . $edit_user->icon);
+            }
+
+            // 保存処理
+            $savename = $request->file('upload-image')->hashName();
+            $request->file('upload-image')->storeAs(self::ICON_STORE_DIR, $savename);
+
+            $param['icon'] = $savename;
+        }
+
+        // SNSの処理
+        $param['sns'] = array('twitter' => $param['twitter'], 'github' => $param['github'], 'qiita' => $param['qiita']);
+
+        // データの更新
+        $edit_user->update($param);
+
+        return response()->json('OK');
     }
 
     /**

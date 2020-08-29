@@ -15,6 +15,7 @@ const POST_login = '/api/login';
 const POST_logout = '/api/logout';
 const GET_AuthUser = '/api/auth';
 const GET_userShow = '/api/user/' + replaceChar[0];
+const POST_profileUpdate = '/api/user/' + replaceChar[0] + '/update';
 
 
 
@@ -46,6 +47,10 @@ export function getEndpoint(name, params) {
 
         case 'GET:userShow':
             endpoint = setParams(GET_userShow, params);
+            break;
+
+        case 'POST:profileUpdate':
+            endpoint = setParams(POST_profileUpdate, params);
             break;
     }
 
