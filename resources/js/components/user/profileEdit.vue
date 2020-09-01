@@ -10,9 +10,6 @@
       />
     </div>
 
-    <!-- ユーザーID -->
-    <input type="hidden" name="user_id" :value="$root.AuthUser.user_id" />
-
     <!-- アイコン -->
     <div class="form-group">
       <image-drop-upload :no-change-crop-ratio="true" ratio-x="1" ratio-y="1"></image-drop-upload>
@@ -21,19 +18,13 @@
     <!-- ユーザー名 -->
     <div class="form-group">
       <label for="username">ユーザー名</label>
-      <input
-        type="text"
-        class="form-control"
-        name="username"
-        id="username"
-        :value="$root.AuthUser.username"
-      />
+      <input type="text" class="form-control" name="username" id="username" v-model="username" />
     </div>
 
     <!-- メールアドレス -->
     <div class="form-group">
       <label for="email">メールアドレス</label>
-      <input type="text" class="form-control" name="email" id="email" :value="$root.AuthUser.email" />
+      <input type="text" class="form-control" name="email" id="email" v-model="email" />
     </div>
 
     <!-- ハンドルネーム -->
@@ -44,7 +35,7 @@
         class="form-control"
         name="handlename"
         id="handlename"
-        :value="$root.AuthUser.handlename"
+        v-model="handlename"
       />
     </div>
 
@@ -62,7 +53,7 @@
         name="twitter"
         id="twitter"
         placeholder="Twitter 例：CLOTO_JP"
-        value
+        v-model="twitter"
       />
     </div>
 
@@ -80,7 +71,7 @@
         name="github"
         id="github"
         placeholder="GitHub 例：CLOTO_JP"
-        value
+        v-model="github"
       />
     </div>
 
@@ -98,7 +89,7 @@
         name="qiita"
         id="qiita"
         placeholder="Qiita 例：CLOTO_JP"
-        value
+        v-model="qiita"
       />
     </div>
 
@@ -116,7 +107,7 @@
         name="web"
         id="web"
         placeholder="Webサイト 例：https://cloto.jp"
-        :value="$root.AuthUser.web"
+        v-model="web"
       />
     </div>
 
@@ -129,12 +120,12 @@
         id="introduction"
         rows="4"
         cols="40"
-        v-model="$root.AuthUser.introduction"
+        v-model="introduction"
       ></textarea>
     </div>
 
     <!-- 通知設定 -->
-    <div class="form-group">
+    <!-- <div class="form-group">
       メール通知設定
       <div class="input-group-prepend">
         <div class="input-group-text">
@@ -142,7 +133,7 @@
           <input type="radio" name="setting_notification" value="Database" />受け取らない
         </div>
       </div>
-    </div>
+    </div>-->
 
     <!-- ボタン -->
     <div class="profile-edit__button row">
@@ -170,11 +161,66 @@ export default {
   data() {
     return {
       formData: new FormData(),
+      username: this.$root.AuthUser.username,
+      email: this.$root.AuthUser.email,
+      handlename: this.$root.AuthUser.handlename,
+      twitter: this.$root.AuthUser.sns.twitter,
+      github: this.$root.AuthUser.sns.github,
+      qiita: this.$root.AuthUser.sns.qiita,
+      web: this.$root.AuthUser.web,
+      introduction: this.$root.AuthUser.introduction,
     };
   },
   methods: {
     submit: function () {
-      console.log(this.formData.get("upload-image"));
+      // データの作成
+      this.formData.append("username", this.username);
+      this.formData.append("email", this.email);
+      this.formData.append("handlename", this.handlename);
+      if (this.twitter === null) {
+        this.formData.append("twitter", "");
+      } else {
+        this.formData.append("twitter", this.twitter);
+      }
+      if (this.github === null) {
+        this.formData.append("github", "");
+      } else {
+        this.formData.append("github", this.github);
+      }
+      if (this.qiita === null) {
+        this.formData.append("qiita", "");
+      } else {
+        this.formData.append("qiita", this.qiita);
+      }
+      if (this.web === null) {
+        this.formData.append("web", "");
+      } else {
+        this.formData.append("web", this.web);
+      }
+      if (this.introduction === null) {
+        this.formData.append("introduction", "");
+      } else {
+        this.formData.append("introduction", this.introduction);
+      }
+
+      // データの送信
+      this.$http
+        .post(
+          this.$endpoint("POST:profileUpdate", [this.$route.params.username]),
+          this.formData,
+          {
+            headers: { "content-type": "multipart/form-data" },
+          }
+        )
+        .then((response) => {
+          this.$router.push({
+            name: "userPage",
+            params: { username: this.$route.params.username },
+          });
+        })
+        .catch((error) => {
+          new Error(error);
+        });
     },
   },
 };

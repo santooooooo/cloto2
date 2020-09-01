@@ -24,7 +24,6 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|integer',
             'username' => 'required|string|max:10',
             'email' => 'required|email',
             'upload_image'     => 'nullable|image',
@@ -40,8 +39,6 @@ class UserRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_id.required' => 'ユーザーIDは必須です．',
-            'user_id.integer' => 'ユーザーIDエラー',
             'username.required'     => 'ユーザー名は必須です．',
             'username.string'       => 'ユーザー名は文字列を入力してください．',
             'username.max'          => 'ユーザー名は:max文字以内で入力してください．',
