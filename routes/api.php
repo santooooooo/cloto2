@@ -21,5 +21,5 @@ Route::group(['middleware' => 'api'], function () {
 
     Route::get('/auth', 'API\UserController@getAuthUser')->name('AuthUser');
     Route::get('/user/{username}', 'API\UserController@show')->name('userShow');
-    Route::post('/user/{username}/update', 'API\UserController@update')->name('profileUpdate');
+    Route::post('/user/update', 'API\UserController@update')->name('profileUpdate');
 });

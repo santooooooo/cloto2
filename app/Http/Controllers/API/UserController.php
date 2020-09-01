@@ -73,16 +73,15 @@ class UserController extends Controller
     /**
      * ユーザーデータの更新
      *
-     * @param  String $username ユーザー名
      * @param  UserRequest $request 更新内容
      * @return \Illuminate\Http\Response
      */
-    public function update(String $username, UserRequest $request)
+    public function update(UserRequest $request)
     {
         $param = $request->toArray();
 
         // 更新するユーザーを取得
-        $edit_user = User::where('username', $username)->first();
+        $edit_user = User::where('username', $request['username'])->first();
 
         // アイコンの処理
         if (!empty($param['upload-image'])) {

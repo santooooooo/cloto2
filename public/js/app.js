@@ -3150,7 +3150,7 @@ __webpack_require__.r(__webpack_exports__);
       } // データの送信
 
 
-      this.$http.post(this.$endpoint("POST:profileUpdate", [this.$route.params.username]), this.formData, {
+      this.$http.post(this.$endpoint("POST:profileUpdate"), this.formData, {
         headers: {
           "content-type": "multipart/form-data"
         }
@@ -59008,17 +59008,17 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * パラメータ置換用の記号
  */
-var replaceChar = ['#', '*', '$'];
+var replaceChar = ["#", "*", "$"];
 /**
  * API一覧
  */
 
-var home = '/';
-var POST_login = '/api/login';
-var POST_logout = '/api/logout';
-var GET_AuthUser = '/api/auth';
-var GET_userShow = '/api/user/' + replaceChar[0];
-var POST_profileUpdate = '/api/user/' + replaceChar[0] + '/update';
+var home = "/";
+var POST_login = "/api/login";
+var POST_logout = "/api/logout";
+var GET_AuthUser = "/api/auth";
+var GET_userShow = "/api/user/" + replaceChar[0];
+var POST_profileUpdate = "/api/user/update";
 /**
  * エンドポイントの取得
  *
@@ -59028,31 +59028,31 @@ var POST_profileUpdate = '/api/user/' + replaceChar[0] + '/update';
  */
 
 function getEndpoint(name, params) {
-  var endpoint = '';
+  var endpoint = "";
 
   switch (name) {
-    case 'home':
+    case "home":
       endpoint = home;
       break;
 
-    case 'POST:login':
+    case "POST:login":
       endpoint = POST_login;
       break;
 
-    case 'POST:logout':
+    case "POST:logout":
       endpoint = POST_logout;
       break;
 
-    case 'GET:AuthUser':
+    case "GET:AuthUser":
       endpoint = GET_AuthUser;
       break;
 
-    case 'GET:userShow':
+    case "GET:userShow":
       endpoint = setParams(GET_userShow, params);
       break;
 
-    case 'POST:profileUpdate':
-      endpoint = setParams(POST_profileUpdate, params);
+    case "POST:profileUpdate":
+      endpoint = POST_profileUpdate;
       break;
   }
 
@@ -59067,7 +59067,7 @@ function getEndpoint(name, params) {
  */
 
 function setParams(url, params) {
-  var endpoint = '';
+  var endpoint = "";
 
   switch (params.length) {
     case 1:

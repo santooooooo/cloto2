@@ -5,19 +5,17 @@
 /**
  * パラメータ置換用の記号
  */
-const replaceChar = ['#', '*', '$'];
+const replaceChar = ["#", "*", "$"];
 
 /**
  * API一覧
  */
-const home = '/';
-const POST_login = '/api/login';
-const POST_logout = '/api/logout';
-const GET_AuthUser = '/api/auth';
-const GET_userShow = '/api/user/' + replaceChar[0];
-const POST_profileUpdate = '/api/user/' + replaceChar[0] + '/update';
-
-
+const home = "/";
+const POST_login = "/api/login";
+const POST_logout = "/api/logout";
+const GET_AuthUser = "/api/auth";
+const GET_userShow = "/api/user/" + replaceChar[0];
+const POST_profileUpdate = "/api/user/update";
 
 /**
  * エンドポイントの取得
@@ -27,30 +25,30 @@ const POST_profileUpdate = '/api/user/' + replaceChar[0] + '/update';
  * @return {String} エンドポイント
  */
 export function getEndpoint(name, params) {
-    var endpoint = '';
+    var endpoint = "";
     switch (name) {
-        case 'home':
+        case "home":
             endpoint = home;
             break;
 
-        case 'POST:login':
+        case "POST:login":
             endpoint = POST_login;
             break;
 
-        case 'POST:logout':
+        case "POST:logout":
             endpoint = POST_logout;
             break;
 
-        case 'GET:AuthUser':
+        case "GET:AuthUser":
             endpoint = GET_AuthUser;
             break;
 
-        case 'GET:userShow':
+        case "GET:userShow":
             endpoint = setParams(GET_userShow, params);
             break;
 
-        case 'POST:profileUpdate':
-            endpoint = setParams(POST_profileUpdate, params);
+        case "POST:profileUpdate":
+            endpoint = POST_profileUpdate;
             break;
     }
 
@@ -65,16 +63,21 @@ export function getEndpoint(name, params) {
  * @return {String} 置換したURL
  */
 export function setParams(url, params) {
-    var endpoint = '';
+    var endpoint = "";
     switch (params.length) {
         case 1:
             endpoint = url.replace(replaceChar[0], params[0]);
             break;
         case 2:
-            endpoint = url.replace(replaceChar[0], params[0]).replace(replaceChar[1], params[1]);
+            endpoint = url
+                .replace(replaceChar[0], params[0])
+                .replace(replaceChar[1], params[1]);
             break;
         case 3:
-            endpoint = url.replace(replaceChar[0], params[0]).replace(replaceChar[2], params[2]).replace(replaceChar[2], params[2]);
+            endpoint = url
+                .replace(replaceChar[0], params[0])
+                .replace(replaceChar[2], params[2])
+                .replace(replaceChar[2], params[2]);
             break;
     }
 

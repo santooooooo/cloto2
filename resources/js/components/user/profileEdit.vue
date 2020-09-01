@@ -205,13 +205,9 @@ export default {
 
       // データの送信
       this.$http
-        .post(
-          this.$endpoint("POST:profileUpdate", [this.$route.params.username]),
-          this.formData,
-          {
-            headers: { "content-type": "multipart/form-data" },
-          }
-        )
+        .post(this.$endpoint("POST:profileUpdate"), this.formData, {
+          headers: { "content-type": "multipart/form-data" },
+        })
         .then((response) => {
           this.$router.push({
             name: "userPage",
