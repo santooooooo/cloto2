@@ -6,15 +6,8 @@
 </head>
 
 <body>
-
-    <div id="app">
-        <vue-header></vue-header>
-        
-        <router-view></router-view>
-
-        <vue-footer></vue-footer>
-    </div>
-
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
 </body>
 
 </html>
