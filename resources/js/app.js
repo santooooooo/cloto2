@@ -27,6 +27,7 @@ Vue.component('profile', require('./components/user/Profile.vue').default);
  */
 import VueHead from 'vue-head';
 import router from './router';
+import store from './store';
 
 Vue.use(VueHead, {
   separator: '|',
@@ -35,6 +36,7 @@ Vue.use(VueHead, {
 
 const app = new Vue({
   router,
+  store,
   data() {
     return {
       AuthUser: '', // ログインユーザー
