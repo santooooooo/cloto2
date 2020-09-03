@@ -2498,12 +2498,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   head: {
     title: function title() {
       return {
-        inner: "新規登録"
+        inner: '新規登録'
       };
     }
   },
@@ -2514,8 +2541,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      errorUsername: "　",
-      errorEmail: "　",
+      errorUsername: '　',
+      errorEmail: '　',
       Valid: _tools_validate__WEBPACK_IMPORTED_MODULE_0__["Valid"],
       InValid: _tools_validate__WEBPACK_IMPORTED_MODULE_0__["InValid"],
       Empty: _tools_validate__WEBPACK_IMPORTED_MODULE_0__["Empty"],
@@ -2614,13 +2641,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    if (typeof this.errors !== "undefined") {
-      if (typeof this.errors.username !== "undefined") {
-        this.errorUsername = "そのユーザー名は使われています(・o・)";
+    if (typeof this.errors !== 'undefined') {
+      if (typeof this.errors.username !== 'undefined') {
+        this.errorUsername = 'そのユーザー名は使われています(・o・)';
       }
 
-      if (typeof this.errors.email !== "undefined") {
-        this.errorEmail = "そのメールアドレスは使われています(ー_ー)!!";
+      if (typeof this.errors.email !== 'undefined') {
+        this.errorEmail = 'そのメールアドレスは使われています(ー_ー)!!';
       }
     }
   }
@@ -41455,380 +41482,410 @@ var render = function() {
       attrs: { id: "register" }
     },
     [
-      _c("form", { attrs: { method: "POST", action: "/register" } }, [
-        _c("div", { staticClass: "form-group row" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.username,
-                expression: "username"
-              }
-            ],
-            staticClass: "form-control",
-            class: _vm.changeFormClass(0),
-            attrs: {
-              type: "text",
-              name: "username",
-              placeholder: "ユーザー名"
-            },
-            domProps: { value: _vm.username },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+      _c(
+        "form",
+        { attrs: { method: "POST", action: _vm.$endpoint("POST:register") } },
+        [
+          _c("div", { staticClass: "form-group row" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.username,
+                  expression: "username"
                 }
-                _vm.username = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.statuses[0] === _vm.Empty
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "welcome-form__feedback--invalid invalid-feedback"
-                },
-                [_vm._v(_vm._s(_vm.errorUsername))]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[0] === _vm.Valid
-            ? _c(
-                "div",
-                { staticClass: "welcome-form__feedback--valid valid-feedback" },
-                [_vm._v("ええやん！")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[0] === _vm.InValid
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "welcome-form__feedback--invalid invalid-feedback"
-                },
-                [_vm._v("英数字の組み合わせを入力してください！")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[0] === _vm.TooShort
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "welcome-form__feedback--invalid invalid-feedback"
-                },
-                [_vm._v("もっと長く！")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[0] === _vm.TooLong
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "welcome-form__feedback--invalid invalid-feedback"
-                },
-                [_vm._v("もっと短く～")]
-              )
-            : _vm._e()
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.email,
-                expression: "email"
-              }
-            ],
-            staticClass: "form-control",
-            class: _vm.changeFormClass(1),
-            attrs: {
-              type: "email",
-              name: "email",
-              placeholder: "メールアドレス"
-            },
-            domProps: { value: _vm.email },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.email = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.statuses[1] === _vm.Empty
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "welcome-form__feedback--invalid invalid-feedback"
-                },
-                [_vm._v(_vm._s(_vm.errorEmail))]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[1] === _vm.Valid
-            ? _c(
-                "div",
-                { staticClass: "welcome-form__feedback--valid valid-feedback" },
-                [_vm._v("ええやん！")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[1] === _vm.InValid
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "welcome-form__feedback--invalid invalid-feedback"
-                },
-                [_vm._v("メールアドレスを入力してください！")]
-              )
-            : _vm._e()
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.password,
-                expression: "password"
-              }
-            ],
-            staticClass: "form-control",
-            class: _vm.changeFormClass(2),
-            attrs: {
-              type: "password",
-              name: "password",
-              placeholder: "パスワード"
-            },
-            domProps: { value: _vm.password },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.password = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.statuses[2] === _vm.Empty
-            ? _c("div", { staticClass: "welcome-form__feedback--margin" }, [
-                _vm._v(" ")
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[2] === _vm.Valid
-            ? _c(
-                "div",
-                { staticClass: "welcome-form__feedback--valid valid-feedback" },
-                [_vm._v("ええやん！")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[2] === _vm.InValid
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "welcome-form__feedback--invalid invalid-feedback"
-                },
-                [_vm._v("パスワードを入力してください！")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[2] === _vm.TooShort
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "welcome-form__feedback--invalid invalid-feedback"
-                },
-                [_vm._v("もっと長く！")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[2] === _vm.TooLong
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "welcome-form__feedback--invalid invalid-feedback"
-                },
-                [_vm._v("もっと短く～")]
-              )
-            : _vm._e()
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.passwordConfirmation,
-                expression: "passwordConfirmation"
-              }
-            ],
-            staticClass: "form-control",
-            class: _vm.changeFormClass(3),
-            attrs: {
-              type: "password",
-              name: "password_confirmation",
-              placeholder: "パスワード（再入力）"
-            },
-            domProps: { value: _vm.passwordConfirmation },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.passwordConfirmation = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.statuses[3] === _vm.Empty
-            ? _c("div", { staticClass: "welcome-form__feedback--margin" }, [
-                _vm._v(" ")
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[3] === _vm.Valid
-            ? _c(
-                "div",
-                { staticClass: "welcome-form__feedback--valid valid-feedback" },
-                [_vm._v("ええやん！")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[3] === _vm.InValid
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "welcome-form__feedback--invalid invalid-feedback"
-                },
-                [_vm._v("パスワードが異なります！")]
-              )
-            : _vm._e()
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.handlename,
-                expression: "handlename"
-              }
-            ],
-            staticClass: "form-control",
-            class: _vm.changeFormClass(4),
-            attrs: { type: "text", name: "handlename", placeholder: "表示名" },
-            domProps: { value: _vm.handlename },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.handlename = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.statuses[4] === _vm.Empty
-            ? _c("div", { staticClass: "welcome-form__feedback--margin" }, [
-                _vm._v(" ")
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[4] === _vm.Valid
-            ? _c(
-                "div",
-                { staticClass: "welcome-form__feedback--valid valid-feedback" },
-                [_vm._v("ええやん！")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[4] === _vm.InValid
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "welcome-form__feedback--invalid invalid-feedback"
-                },
-                [_vm._v("使えない文字が入力されています！")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[4] === _vm.TooShort
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "welcome-form__feedback--invalid invalid-feedback"
-                },
-                [_vm._v("もっと長く！")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.statuses[4] === _vm.TooLong
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "welcome-form__feedback--invalid invalid-feedback"
-                },
-                [_vm._v("もっと短く～")]
-              )
-            : _vm._e()
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c("div", [
-            _c("div", [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-cloto-primary",
-                  attrs: { type: "submit", disabled: _vm.isButtonDisabled }
-                },
-                [_vm._v("登録")]
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "mt-3" },
-              [
-                _c("router-link", { attrs: { to: { name: "login" } } }, [
-                  _vm._v("もう会員ですか？")
-                ])
               ],
-              1
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "hidden", name: "_token" },
-          domProps: { value: _vm.$csrf }
-        })
-      ])
+              staticClass: "form-control",
+              class: _vm.changeFormClass(0),
+              attrs: {
+                type: "text",
+                name: "username",
+                placeholder: "ユーザー名"
+              },
+              domProps: { value: _vm.username },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.username = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.statuses[0] === _vm.Empty
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "welcome-form__feedback--invalid invalid-feedback"
+                  },
+                  [
+                    _vm._v(
+                      "\n        " + _vm._s(_vm.errorUsername) + "\n      "
+                    )
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[0] === _vm.Valid
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "welcome-form__feedback--valid valid-feedback"
+                  },
+                  [_vm._v("\n        ええやん！\n      ")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[0] === _vm.InValid
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "welcome-form__feedback--invalid invalid-feedback"
+                  },
+                  [
+                    _vm._v(
+                      "\n        英数字の組み合わせを入力してください！\n      "
+                    )
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[0] === _vm.TooShort
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "welcome-form__feedback--invalid invalid-feedback"
+                  },
+                  [_vm._v("\n        もっと長く！\n      ")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[0] === _vm.TooLong
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "welcome-form__feedback--invalid invalid-feedback"
+                  },
+                  [_vm._v("\n        もっと短く～\n      ")]
+                )
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group row" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.email,
+                  expression: "email"
+                }
+              ],
+              staticClass: "form-control",
+              class: _vm.changeFormClass(1),
+              attrs: {
+                type: "email",
+                name: "email",
+                placeholder: "メールアドレス"
+              },
+              domProps: { value: _vm.email },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.email = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.statuses[1] === _vm.Empty
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "welcome-form__feedback--invalid invalid-feedback"
+                  },
+                  [_vm._v("\n        " + _vm._s(_vm.errorEmail) + "\n      ")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[1] === _vm.Valid
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "welcome-form__feedback--valid valid-feedback"
+                  },
+                  [_vm._v("\n        ええやん！\n      ")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[1] === _vm.InValid
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "welcome-form__feedback--invalid invalid-feedback"
+                  },
+                  [
+                    _vm._v(
+                      "\n        メールアドレスを入力してください！\n      "
+                    )
+                  ]
+                )
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group row" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.password,
+                  expression: "password"
+                }
+              ],
+              staticClass: "form-control",
+              class: _vm.changeFormClass(2),
+              attrs: {
+                type: "password",
+                name: "password",
+                placeholder: "パスワード"
+              },
+              domProps: { value: _vm.password },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.password = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.statuses[2] === _vm.Empty
+              ? _c("div", { staticClass: "welcome-form__feedback--margin" }, [
+                  _vm._v(" ")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[2] === _vm.Valid
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "welcome-form__feedback--valid valid-feedback"
+                  },
+                  [_vm._v("\n        ええやん！\n      ")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[2] === _vm.InValid
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "welcome-form__feedback--invalid invalid-feedback"
+                  },
+                  [_vm._v("\n        パスワードを入力してください！\n      ")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[2] === _vm.TooShort
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "welcome-form__feedback--invalid invalid-feedback"
+                  },
+                  [_vm._v("\n        もっと長く！\n      ")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[2] === _vm.TooLong
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "welcome-form__feedback--invalid invalid-feedback"
+                  },
+                  [_vm._v("\n        もっと短く～\n      ")]
+                )
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group row" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.passwordConfirmation,
+                  expression: "passwordConfirmation"
+                }
+              ],
+              staticClass: "form-control",
+              class: _vm.changeFormClass(3),
+              attrs: {
+                type: "password",
+                name: "password_confirmation",
+                placeholder: "パスワード（再入力）"
+              },
+              domProps: { value: _vm.passwordConfirmation },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.passwordConfirmation = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.statuses[3] === _vm.Empty
+              ? _c("div", { staticClass: "welcome-form__feedback--margin" }, [
+                  _vm._v(" ")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[3] === _vm.Valid
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "welcome-form__feedback--valid valid-feedback"
+                  },
+                  [_vm._v("\n        ええやん！\n      ")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[3] === _vm.InValid
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "welcome-form__feedback--invalid invalid-feedback"
+                  },
+                  [_vm._v("\n        パスワードが異なります！\n      ")]
+                )
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group row" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.handlename,
+                  expression: "handlename"
+                }
+              ],
+              staticClass: "form-control",
+              class: _vm.changeFormClass(4),
+              attrs: {
+                type: "text",
+                name: "handlename",
+                placeholder: "表示名"
+              },
+              domProps: { value: _vm.handlename },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.handlename = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.statuses[4] === _vm.Empty
+              ? _c("div", { staticClass: "welcome-form__feedback--margin" }, [
+                  _vm._v(" ")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[4] === _vm.Valid
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "welcome-form__feedback--valid valid-feedback"
+                  },
+                  [_vm._v("\n        ええやん！\n      ")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[4] === _vm.InValid
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "welcome-form__feedback--invalid invalid-feedback"
+                  },
+                  [_vm._v("\n        使えない文字が入力されています！\n      ")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[4] === _vm.TooShort
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "welcome-form__feedback--invalid invalid-feedback"
+                  },
+                  [_vm._v("\n        もっと長く！\n      ")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.statuses[4] === _vm.TooLong
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "welcome-form__feedback--invalid invalid-feedback"
+                  },
+                  [_vm._v("\n        もっと短く～\n      ")]
+                )
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group row" }, [
+            _c("div", [
+              _c("div", [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-cloto-primary",
+                    attrs: { type: "submit", disabled: _vm.isButtonDisabled }
+                  },
+                  [_vm._v("\n            登録\n          ")]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "mt-3" },
+                [
+                  _c("router-link", { attrs: { to: { name: "login" } } }, [
+                    _vm._v("もう会員ですか？")
+                  ])
+                ],
+                1
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            attrs: { type: "hidden", name: "_token" },
+            domProps: { value: _vm.$csrf }
+          })
+        ]
+      )
     ]
   )
 }
@@ -59015,17 +59072,18 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * パラメータ置換用の記号
  */
-var replaceChar = ["#", "*", "$"];
+var replaceChar = ['#', '*', '$'];
 /**
  * API一覧
  */
 
-var home = "/";
-var POST_login = "/api/login";
-var POST_logout = "/api/logout";
-var GET_AuthUser = "/api/auth";
-var GET_userShow = "/api/user/" + replaceChar[0];
-var POST_profileUpdate = "/api/user/update";
+var home = '/';
+var POST_register = '/api/register';
+var POST_login = '/api/login';
+var POST_logout = '/api/logout';
+var GET_AuthUser = '/api/auth';
+var GET_userShow = '/api/user/' + replaceChar[0];
+var POST_profileUpdate = '/api/user/update';
 /**
  * エンドポイントの取得
  *
@@ -59035,30 +59093,34 @@ var POST_profileUpdate = "/api/user/update";
  */
 
 function getEndpoint(name, params) {
-  var endpoint = "";
+  var endpoint = '';
 
   switch (name) {
-    case "home":
+    case 'home':
       endpoint = home;
       break;
 
-    case "POST:login":
+    case 'POST:register':
+      endpoint = POST_register;
+      break;
+
+    case 'POST:login':
       endpoint = POST_login;
       break;
 
-    case "POST:logout":
+    case 'POST:logout':
       endpoint = POST_logout;
       break;
 
-    case "GET:AuthUser":
+    case 'GET:AuthUser':
       endpoint = GET_AuthUser;
       break;
 
-    case "GET:userShow":
+    case 'GET:userShow':
       endpoint = setParams(GET_userShow, params);
       break;
 
-    case "POST:profileUpdate":
+    case 'POST:profileUpdate':
       endpoint = POST_profileUpdate;
       break;
   }
@@ -59074,7 +59136,7 @@ function getEndpoint(name, params) {
  */
 
 function setParams(url, params) {
-  var endpoint = "";
+  var endpoint = '';
 
   switch (params.length) {
     case 1:

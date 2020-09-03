@@ -1,6 +1,6 @@
 <template>
   <div class="welcome-form card justify-content-center" id="register">
-    <form method="POST" action="/register">
+    <form method="POST" :action="$endpoint('POST:register')">
       <div class="form-group row">
         <input
           type="text"
@@ -10,23 +10,30 @@
           v-bind:class="changeFormClass(0)"
           placeholder="ユーザー名"
         />
+        <div class="welcome-form__feedback--invalid invalid-feedback" v-if="statuses[0] === Empty">
+          {{ errorUsername }}
+        </div>
+        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[0] === Valid">
+          ええやん！
+        </div>
         <div
           class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[0]===Empty"
-        >{{ errorUsername }}</div>
-        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[0]===Valid">ええやん！</div>
+          v-if="statuses[0] === InValid"
+        >
+          英数字の組み合わせを入力してください！
+        </div>
         <div
           class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[0]===InValid"
-        >英数字の組み合わせを入力してください！</div>
+          v-if="statuses[0] === TooShort"
+        >
+          もっと長く！
+        </div>
         <div
           class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[0]===TooShort"
-        >もっと長く！</div>
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[0]===TooLong"
-        >もっと短く～</div>
+          v-if="statuses[0] === TooLong"
+        >
+          もっと短く～
+        </div>
       </div>
 
       <div class="form-group row">
@@ -38,15 +45,18 @@
           v-bind:class="changeFormClass(1)"
           placeholder="メールアドレス"
         />
+        <div class="welcome-form__feedback--invalid invalid-feedback" v-if="statuses[1] === Empty">
+          {{ errorEmail }}
+        </div>
+        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[1] === Valid">
+          ええやん！
+        </div>
         <div
           class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[1]===Empty"
-        >{{ errorEmail }}</div>
-        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[1]===Valid">ええやん！</div>
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[1]===InValid"
-        >メールアドレスを入力してください！</div>
+          v-if="statuses[1] === InValid"
+        >
+          メールアドレスを入力してください！
+        </div>
       </div>
 
       <div class="form-group row">
@@ -58,20 +68,28 @@
           v-bind:class="changeFormClass(2)"
           placeholder="パスワード"
         />
-        <div class="welcome-form__feedback--margin" v-if="statuses[2]===Empty">&nbsp;</div>
-        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[2]===Valid">ええやん！</div>
+        <div class="welcome-form__feedback--margin" v-if="statuses[2] === Empty">&nbsp;</div>
+        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[2] === Valid">
+          ええやん！
+        </div>
         <div
           class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[2]===InValid"
-        >パスワードを入力してください！</div>
+          v-if="statuses[2] === InValid"
+        >
+          パスワードを入力してください！
+        </div>
         <div
           class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[2]===TooShort"
-        >もっと長く！</div>
+          v-if="statuses[2] === TooShort"
+        >
+          もっと長く！
+        </div>
         <div
           class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[2]===TooLong"
-        >もっと短く～</div>
+          v-if="statuses[2] === TooLong"
+        >
+          もっと短く～
+        </div>
       </div>
 
       <div class="form-group row">
@@ -83,12 +101,16 @@
           v-bind:class="changeFormClass(3)"
           placeholder="パスワード（再入力）"
         />
-        <div class="welcome-form__feedback--margin" v-if="statuses[3]===Empty">&nbsp;</div>
-        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[3]===Valid">ええやん！</div>
+        <div class="welcome-form__feedback--margin" v-if="statuses[3] === Empty">&nbsp;</div>
+        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[3] === Valid">
+          ええやん！
+        </div>
         <div
           class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[3]===InValid"
-        >パスワードが異なります！</div>
+          v-if="statuses[3] === InValid"
+        >
+          パスワードが異なります！
+        </div>
       </div>
 
       <div class="form-group row">
@@ -100,30 +122,36 @@
           v-bind:class="changeFormClass(4)"
           placeholder="表示名"
         />
-        <div class="welcome-form__feedback--margin" v-if="statuses[4]===Empty">&nbsp;</div>
-        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[4]===Valid">ええやん！</div>
+        <div class="welcome-form__feedback--margin" v-if="statuses[4] === Empty">&nbsp;</div>
+        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[4] === Valid">
+          ええやん！
+        </div>
         <div
           class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[4]===InValid"
-        >使えない文字が入力されています！</div>
+          v-if="statuses[4] === InValid"
+        >
+          使えない文字が入力されています！
+        </div>
         <div
           class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[4]===TooShort"
-        >もっと長く！</div>
+          v-if="statuses[4] === TooShort"
+        >
+          もっと長く！
+        </div>
         <div
           class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[4]===TooLong"
-        >もっと短く～</div>
+          v-if="statuses[4] === TooLong"
+        >
+          もっと短く～
+        </div>
       </div>
 
       <div class="form-group row">
         <div>
           <div>
-            <button
-              type="submit"
-              class="btn btn-cloto-primary"
-              v-bind:disabled="isButtonDisabled"
-            >登録</button>
+            <button type="submit" class="btn btn-cloto-primary" v-bind:disabled="isButtonDisabled">
+              登録
+            </button>
           </div>
           <div class="mt-3">
             <router-link :to="{ name: 'login' }">もう会員ですか？</router-link>
@@ -136,15 +164,14 @@
   </div>
 </template>
 
-
 <script>
-import * as validate from "@/tools/validate";
+import * as validate from '@/tools/validate';
 
 export default {
   head: {
     title() {
       return {
-        inner: "新規登録",
+        inner: '新規登録',
       };
     },
   },
@@ -155,20 +182,14 @@ export default {
   },
   data() {
     return {
-      errorUsername: "　",
-      errorEmail: "　",
+      errorUsername: '　',
+      errorEmail: '　',
       Valid: validate.Valid,
       InValid: validate.InValid,
       Empty: validate.Empty,
       TooShort: validate.TooShort,
       TooLong: validate.TooLong,
-      statuses: [
-        validate.Empty,
-        validate.Empty,
-        validate.Empty,
-        validate.Empty,
-        validate.Empty,
-      ],
+      statuses: [validate.Empty, validate.Empty, validate.Empty, validate.Empty, validate.Empty],
       username: null,
       email: null,
       password: null,
@@ -178,7 +199,7 @@ export default {
     };
   },
   watch: {
-    username: function () {
+    username: function() {
       if (this.username) {
         this.statuses[0] = this.checkUserName();
       } else {
@@ -187,7 +208,7 @@ export default {
 
       this.checkErrors();
     },
-    email: function () {
+    email: function() {
       if (this.email) {
         this.statuses[1] = this.checkEmail();
       } else {
@@ -196,7 +217,7 @@ export default {
 
       this.checkErrors();
     },
-    password: function () {
+    password: function() {
       if (this.password) {
         this.statuses[2] = this.checkPassword();
       } else {
@@ -212,7 +233,7 @@ export default {
 
       this.checkErrors();
     },
-    passwordConfirmation: function () {
+    passwordConfirmation: function() {
       if (this.passwordConfirmation) {
         this.statuses[3] = this.checkPasswordConfirmation();
       } else {
@@ -221,7 +242,7 @@ export default {
 
       this.checkErrors();
     },
-    handlename: function () {
+    handlename: function() {
       if (this.handlename) {
         this.statuses[4] = this.checkHandleName();
       } else {
@@ -232,7 +253,7 @@ export default {
     },
   },
   methods: {
-    checkErrors: function () {
+    checkErrors: function() {
       if (validate.validErrors(this.statuses) === this.Valid) {
         // エラーが無くなればボタンを有効化
         this.isButtonDisabled = false;
@@ -241,45 +262,41 @@ export default {
         this.isButtonDisabled = true;
       }
     },
-    checkUserName: function () {
+    checkUserName: function() {
       return validate.validUserName(this.username);
     },
-    checkEmail: function () {
+    checkEmail: function() {
       return validate.validEmail(this.email);
     },
-    checkPassword: function () {
+    checkPassword: function() {
       return validate.validPassword(this.password);
     },
-    checkPasswordConfirmation: function () {
-      return validate.validPasswordConfirmation(
-        this.password,
-        this.passwordConfirmation
-      );
+    checkPasswordConfirmation: function() {
+      return validate.validPasswordConfirmation(this.password, this.passwordConfirmation);
     },
-    checkHandleName: function () {
+    checkHandleName: function() {
       return validate.validHandleName(this.handlename);
     },
 
-    changeFormClass: function (index) {
+    changeFormClass: function(index) {
       return validate.getFormClass(this.statuses[index]);
     },
   },
   mounted() {
-    if (typeof this.errors !== "undefined") {
-      if (typeof this.errors.username !== "undefined") {
-        this.errorUsername = "そのユーザー名は使われています(・o・)";
+    if (typeof this.errors !== 'undefined') {
+      if (typeof this.errors.username !== 'undefined') {
+        this.errorUsername = 'そのユーザー名は使われています(・o・)';
       }
-      if (typeof this.errors.email !== "undefined") {
-        this.errorEmail = "そのメールアドレスは使われています(ー_ー)!!";
+      if (typeof this.errors.email !== 'undefined') {
+        this.errorEmail = 'そのメールアドレスは使われています(ー_ー)!!';
       }
     }
   },
 };
 </script>
 
-
 <style lang="scss" scoped>
-@import "~/_variables";
+@import '~/_variables';
 
 .welcome-form {
   width: 400px;
@@ -296,9 +313,9 @@ export default {
       margin: 0 auto;
     }
 
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
+    input[type='text'],
+    input[type='email'],
+    input[type='password'] {
       width: 250px;
       margin: 0 auto;
       border-radius: 30px;
