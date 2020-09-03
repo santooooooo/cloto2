@@ -3,7 +3,7 @@
  */
 require('./bootstrap');
 window.Vue = require('vue');
-window.API = require('./routes/api');
+window.API = require('./api');
 window.Storage = require('./consts/storage');
 
 /**
@@ -17,16 +17,16 @@ Vue.prototype.$storage = window.Storage.getStoragePath;
 /**
  * Vueコンポーネントの読み込み
  */
-Vue.component('vue-header', require('./components/layouts/vueHeader.vue').default);
-Vue.component('vue-footer', require('./components/layouts/vueFooter.vue').default);
-Vue.component('image-drop-upload', require('./components/form/imageDropUpload.vue').default);
-Vue.component('profile', require('./components/user/profile.vue').default);
+Vue.component('vue-header', require('./components/layouts/VueHeader.vue').default);
+Vue.component('vue-footer', require('./components/layouts/VueFooter.vue').default);
+Vue.component('image-drop-upload', require('./components/form/ImageDropUpload.vue').default);
+Vue.component('profile', require('./components/user/Profile.vue').default);
 
 /**
  * Vueの定義
  */
 import VueHead from 'vue-head';
-import router from './routes/router';
+import router from './router';
 
 Vue.use(VueHead, {
   separator: '|',
