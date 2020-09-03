@@ -57981,10 +57981,10 @@ Vue.prototype.$storage = window.Storage.getStoragePath;
  * Vueコンポーネントの読み込み
  */
 
-Vue.component("vue-header", __webpack_require__(/*! ./components/layouts/vueHeader.vue */ "./resources/js/components/layouts/vueHeader.vue")["default"]);
-Vue.component("vue-footer", __webpack_require__(/*! ./components/layouts/vueFooter.vue */ "./resources/js/components/layouts/vueFooter.vue")["default"]);
-Vue.component("image-drop-upload", __webpack_require__(/*! ./components/form/imageDropUpload.vue */ "./resources/js/components/form/imageDropUpload.vue")["default"]);
-Vue.component("profile", __webpack_require__(/*! ./components/user/profile.vue */ "./resources/js/components/user/profile.vue")["default"]);
+Vue.component('vue-header', __webpack_require__(/*! ./components/layouts/vueHeader.vue */ "./resources/js/components/layouts/vueHeader.vue")["default"]);
+Vue.component('vue-footer', __webpack_require__(/*! ./components/layouts/vueFooter.vue */ "./resources/js/components/layouts/vueFooter.vue")["default"]);
+Vue.component('image-drop-upload', __webpack_require__(/*! ./components/form/imageDropUpload.vue */ "./resources/js/components/form/imageDropUpload.vue")["default"]);
+Vue.component('profile', __webpack_require__(/*! ./components/user/profile.vue */ "./resources/js/components/user/profile.vue")["default"]);
 /**
  * Vueの定義
  */
@@ -57992,14 +57992,14 @@ Vue.component("profile", __webpack_require__(/*! ./components/user/profile.vue *
 
 
 Vue.use(vue_head__WEBPACK_IMPORTED_MODULE_1___default.a, {
-  separator: "|",
-  complement: "CLOTO"
+  separator: '|',
+  complement: 'CLOTO'
 });
 var app = new Vue({
   router: _routes_router__WEBPACK_IMPORTED_MODULE_2__["default"],
   data: function data() {
     return {
-      AuthUser: "" // ログインユーザー
+      AuthUser: '' // ログインユーザー
 
     };
   },
@@ -58008,14 +58008,17 @@ var app = new Vue({
       var _this = this;
 
       // ログインユーザーの同期
-      this.$http.get(this.$endpoint("GET:AuthUser")).then(function (response) {
+      this.$http.get(this.$endpoint('GET:AuthUser')).then(function (response) {
         _this.AuthUser = response.data;
-        _this.AuthUser.sns = JSON.parse(_this.AuthUser.sns);
+
+        if (typeof _this.AuthUser.sns !== 'undefined') {
+          _this.AuthUser.sns = JSON.parse(_this.AuthUser.sns);
+        }
       });
     },
     AuthCheck: function AuthCheck() {
       // ログインチェック
-      if (typeof this.AuthUser.user_id === "undefined") {
+      if (typeof this.AuthUser.user_id === 'undefined') {
         return false;
       } else {
         return true;
@@ -58032,14 +58035,18 @@ var app = new Vue({
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return _this2.$http.get(_this2.$endpoint("GET:AuthUser"));
+              return _this2.$http.get(_this2.$endpoint('GET:AuthUser'));
 
             case 2:
               response = _context.sent;
               _this2.AuthUser = response.data;
-              _this2.AuthUser.sns = JSON.parse(_this2.AuthUser.sns); // 同期完了後にマウント
 
-              _this2.$mount("#app");
+              if (typeof _this2.AuthUser.sns !== 'undefined') {
+                _this2.AuthUser.sns = JSON.parse(_this2.AuthUser.sns);
+              } // 同期完了後にマウント
+
+
+              _this2.$mount('#app');
 
             case 6:
             case "end":
