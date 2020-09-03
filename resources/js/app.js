@@ -28,6 +28,7 @@ Vue.component('profile', require('./components/user/Profile.vue').default);
 import VueHead from 'vue-head';
 import router from './router';
 import store from './store';
+import vuetify from './plugins/vuetify';
 
 Vue.use(VueHead, {
   separator: '|',
@@ -37,6 +38,7 @@ Vue.use(VueHead, {
 const app = new Vue({
   router,
   store,
+  vuetify,
   data() {
     return {
       AuthUser: '', // ログインユーザー
