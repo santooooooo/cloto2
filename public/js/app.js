@@ -2120,6 +2120,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -2172,23 +2180,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
-    logout: function logout() {
-      var _this = this;
+    logout: function () {
+      var _logout = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return this.$store.dispatch('auth/logout');
 
-      this.$http.post(this.$endpoint("POST:logout")).then(function (response) {
-        // ログインユーザーの同期
-        _this.$root.SyncAuthUser(); // トップページへリダイレクト
+              case 2:
+                // トップページへリダイレクト
+                if (this.$route.path != this.$router.resolve({
+                  name: 'home'
+                }).href) {
+                  this.$router.push({
+                    name: 'home'
+                  });
+                }
 
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
 
-        if (_this.$route.path != _this.$router.resolve({
-          name: "home"
-        }).href) {
-          _this.$router.push({
-            name: "home"
-          });
-        }
-      });
-    }
+      function logout() {
+        return _logout.apply(this, arguments);
+      }
+
+      return logout;
+    }()
   }
 });
 
@@ -2456,6 +2480,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -2502,54 +2534,74 @@ __webpack_require__.r(__webpack_exports__);
   head: {
     title: function title() {
       return {
-        inner: "ログイン"
+        inner: 'ログイン'
       };
     }
   },
   data: function data() {
     return {
-      error: "",
-      login: "",
-      password: "",
+      error: '',
+      loginField: '',
+      password: '',
       remember: false,
       isButtonDisabled: true
     };
   },
   watch: {
-    login: function login() {
-      this.error = "";
+    loginField: function loginField() {
+      this.error = '';
       this.changeButton();
     },
     password: function password() {
-      this.error = "";
+      this.error = '';
       this.changeButton();
     }
   },
   methods: {
     changeButton: function changeButton() {
-      if (this.login && this.password) {
+      if (this.loginField && this.password) {
         this.isButtonDisabled = false;
       } else {
         this.isButtonDisabled = true;
       }
     },
-    submit: function submit() {
-      var _this = this;
+    login: function () {
+      var _login = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var params;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                // データの作成
+                params = {
+                  loginField: this.loginField,
+                  password: this.password,
+                  remember: this.remember
+                }; // ログイン処理
 
-      var endpoint = this.$endpoint("POST:login");
-      var params = {
-        login: this.login,
-        password: this.password,
-        remember: this.remember
-      };
-      this.$http.post(endpoint, params).then(function (response) {
-        _this.$router.push({
-          name: "home"
-        });
-      })["catch"](function (response) {
-        _this.error = response.response.data.errors.login[0];
-      });
-    }
+                _context.next = 3;
+                return this.$store.dispatch('auth/login', params);
+
+              case 3:
+                // ページ遷移
+                this.$router.push({
+                  name: 'home'
+                });
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function login() {
+        return _login.apply(this, arguments);
+      }
+
+      return login;
+    }()
   }
 });
 
@@ -41774,8 +41826,8 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.login,
-              expression: "login"
+              value: _vm.loginField,
+              expression: "loginField"
             }
           ],
           staticClass: "form-control",
@@ -41783,13 +41835,13 @@ var render = function() {
             type: "text",
             placeholder: "ユーザー名 または メールアドレス"
           },
-          domProps: { value: _vm.login },
+          domProps: { value: _vm.loginField },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.login = $event.target.value
+              _vm.loginField = $event.target.value
             }
           }
         }),
@@ -41884,7 +41936,7 @@ var render = function() {
               {
                 staticClass: "btn btn-cloto-primary",
                 attrs: { type: "button", disabled: _vm.isButtonDisabled },
-                on: { click: _vm.submit }
+                on: { click: _vm.login }
               },
               [_vm._v("ログイン")]
             )
@@ -103926,10 +103978,93 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var state = {};
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../api */ "./resources/js/api.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+var state = {
+  user: null
+};
 var getters = {};
-var mutations = {};
-var actions = {};
+var mutations = {
+  setUser: function setUser(state, user) {
+    state.user = user;
+  }
+};
+var actions = {
+  register: function register(context, data) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return axios.post(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('POST:register'), data);
+
+            case 2:
+              response = _context.sent;
+              context.commit('setUser', response.data);
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  login: function login(context, data) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      var response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return axios.post(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('POST:login'), data);
+
+            case 2:
+              response = _context2.sent;
+              context.commit('setUser', response.data);
+
+            case 4:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
+  },
+  logout: function logout(context) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+      var response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return axios.post(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('POST:logout'));
+
+            case 2:
+              response = _context3.sent;
+              context.commit('setUser', null);
+
+            case 4:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }))();
+  }
+};
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: state,

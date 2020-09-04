@@ -5,7 +5,7 @@
 
     <!-- ログインフォーム -->
     <div class="form-group row">
-      <input type="text" class="form-control" v-model="login" placeholder="ユーザー名 または メールアドレス" />
+      <input type="text" class="form-control" v-model="loginField" placeholder="ユーザー名 または メールアドレス" />
       <div class="welcome-form__feedback--margin">&nbsp;</div>
     </div>
 
@@ -28,7 +28,7 @@
             type="button"
             class="btn btn-cloto-primary"
             v-bind:disabled="isButtonDisabled"
-            @click="submit"
+            @click="login"
           >ログイン</button>
         </div>
         <div class="mt-3">
@@ -45,53 +45,50 @@ export default {
   head: {
     title() {
       return {
-        inner: "ログイン",
+        inner: 'ログイン',
       };
     },
   },
   data() {
     return {
-      error: "",
-      login: "",
-      password: "",
+      error: '',
+      loginField: '',
+      password: '',
       remember: false,
       isButtonDisabled: true,
     };
   },
   watch: {
-    login: function () {
-      this.error = "";
+    loginField: function () {
+      this.error = '';
       this.changeButton();
     },
     password: function () {
-      this.error = "";
+      this.error = '';
       this.changeButton();
     },
   },
   methods: {
     changeButton: function () {
-      if (this.login && this.password) {
+      if (this.loginField && this.password) {
         this.isButtonDisabled = false;
       } else {
         this.isButtonDisabled = true;
       }
     },
-    submit: function () {
-      var endpoint = this.$endpoint("POST:login");
+    login: async function () {
+      // データの作成
       var params = {
-        login: this.login,
+        loginField: this.loginField,
         password: this.password,
         remember: this.remember,
       };
 
-      this.$http
-        .post(endpoint, params)
-        .then((response) => {
-          this.$router.push({ name: "home" });
-        })
-        .catch((response) => {
-          this.error = response.response.data.errors.login[0];
-        });
+      // ログイン処理
+      await this.$store.dispatch('auth/login', params);
+
+      // ページ遷移
+      this.$router.push({ name: 'home' });
     },
   },
 };
@@ -99,7 +96,7 @@ export default {
 
 
 <style lang="scss" scoped>
-@import "~/_variables";
+@import '~/_variables';
 
 .welcome-form {
   width: 400px;
@@ -123,8 +120,8 @@ export default {
       margin: 0 auto;
     }
 
-    input[type="text"],
-    input[type="password"] {
+    input[type='text'],
+    input[type='password'] {
       width: 250px;
       margin: 0 auto;
       border-radius: 30px;

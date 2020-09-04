@@ -51,15 +51,14 @@
 <script>
 export default {
   methods: {
-    logout: function () {
-      this.$http.post(this.$endpoint("POST:logout")).then((response) => {
-        // ログインユーザーの同期
-        this.$root.SyncAuthUser();
-        // トップページへリダイレクト
-        if (this.$route.path != this.$router.resolve({ name: "home" }).href) {
-          this.$router.push({ name: "home" });
-        }
-      });
+    logout: async function () {
+      // ログアウト処理
+      await this.$store.dispatch('auth/logout');
+
+      // トップページへリダイレクト
+      if (this.$route.path != this.$router.resolve({ name: 'home' }).href) {
+        this.$router.push({ name: 'home' });
+      }
     },
   },
 };
@@ -67,7 +66,7 @@ export default {
 
 
 <style lang="scss" scoped>
-@import "~/_variables";
+@import '~/_variables';
 
 .nav {
   background-color: $main-color;
