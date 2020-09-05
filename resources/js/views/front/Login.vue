@@ -1,9 +1,23 @@
 <template>
-  <div class="welcome-form card justify-content-center">
-    <!-- エラーメッセージ -->
+  <v-card class="mx-auto" max-width="344">
+    <v-card-text>
+      <v-form>
+        <v-container>
+          <v-row>
+            <v-col>
+              <v-text-field label="Regular"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn text color="deep-purple accent-4">Learn More</v-btn>
+    </v-card-actions>
+  </v-card>
+  <!-- <div class="welcome-form card justify-content-center">
     <div class="alert alert-danger" v-if="error" v-text="error"></div>
 
-    <!-- ログインフォーム -->
     <div class="form-group row">
       <input type="text" class="form-control" v-model="loginField" placeholder="ユーザー名 または メールアドレス" />
       <div class="welcome-form__feedback--margin">&nbsp;</div>
@@ -36,7 +50,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>-->
 </template>
 
 

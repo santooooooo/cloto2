@@ -2530,6 +2530,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   head: {
     title: function title() {
@@ -41810,151 +41824,50 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
-    { staticClass: "welcome-form card justify-content-center" },
+    "v-card",
+    { staticClass: "mx-auto", attrs: { "max-width": "344" } },
     [
-      _vm.error
-        ? _c("div", {
-            staticClass: "alert alert-danger",
-            domProps: { textContent: _vm._s(_vm.error) }
-          })
-        : _vm._e(),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group row" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.loginField,
-              expression: "loginField"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            type: "text",
-            placeholder: "ユーザー名 または メールアドレス"
-          },
-          domProps: { value: _vm.loginField },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.loginField = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "welcome-form__feedback--margin" }, [
-          _vm._v(" ")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group row" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.password,
-              expression: "password"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "password", placeholder: "パスワード" },
-          domProps: { value: _vm.password },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.password = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "welcome-form__feedback--margin" }, [
-          _vm._v(" ")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group row" }, [
-        _c("div", { staticClass: "custom-control custom-radio" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.remember,
-                expression: "remember"
-              }
-            ],
-            staticClass: "custom-control-input",
-            attrs: { type: "checkbox" },
-            domProps: {
-              checked: Array.isArray(_vm.remember)
-                ? _vm._i(_vm.remember, null) > -1
-                : _vm.remember
-            },
-            on: {
-              change: function($event) {
-                var $$a = _vm.remember,
-                  $$el = $event.target,
-                  $$c = $$el.checked ? true : false
-                if (Array.isArray($$a)) {
-                  var $$v = null,
-                    $$i = _vm._i($$a, $$v)
-                  if ($$el.checked) {
-                    $$i < 0 && (_vm.remember = $$a.concat([$$v]))
-                  } else {
-                    $$i > -1 &&
-                      (_vm.remember = $$a
-                        .slice(0, $$i)
-                        .concat($$a.slice($$i + 1)))
-                  }
-                } else {
-                  _vm.remember = $$c
-                }
-              }
-            }
-          }),
-          _vm._v(" "),
+      _c(
+        "v-card-text",
+        [
           _c(
-            "label",
-            { staticClass: "custom-control-label", attrs: { for: "remember" } },
-            [_vm._v("ログイン情報を記憶する")]
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group row" }, [
-        _c("div", [
-          _c("div", [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-cloto-primary",
-                attrs: { type: "button", disabled: _vm.isButtonDisabled },
-                on: { click: _vm.login }
-              },
-              [_vm._v("ログイン")]
-            )
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "mt-3" },
+            "v-form",
             [
-              _c("router-link", { attrs: { to: { name: "register" } } }, [
-                _vm._v("新規登録はこちら")
-              ])
+              _c(
+                "v-container",
+                [
+                  _c(
+                    "v-row",
+                    [
+                      _c(
+                        "v-col",
+                        [_c("v-text-field", { attrs: { label: "Regular" } })],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
             ],
             1
           )
-        ])
-      ])
-    ]
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card-actions",
+        [
+          _c("v-btn", { attrs: { text: "", color: "deep-purple accent-4" } }, [
+            _vm._v("Learn More")
+          ])
+        ],
+        1
+      )
+    ],
+    1
   )
 }
 var staticRenderFns = []
