@@ -2289,18 +2289,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       user: {},
-      authId: "",
+      authId: '',
       sns: {}
     };
   },
   mounted: function mounted() {
     var _this = this;
 
-    var endpoint = this.$endpoint("GET:userShow", [this.$route.params.username]);
+    var endpoint = this.$endpoint('GET:userShow', [this.$route.params.username]);
     this.$http.get(endpoint).then(function (response) {
       _this.user = response.data.user;
       _this.authId = response.data.authId;
@@ -2962,13 +2970,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       mode: 1,
       loop: 0,
-      word: "　"
+      word: '　'
     };
   },
   mounted: function mounted() {
@@ -2987,60 +2994,60 @@ __webpack_require__.r(__webpack_exports__);
       switch (i) {
         case 0:
           this.mode = 1;
-          this.word = "　";
+          this.word = '　';
           break;
 
         case 1:
-          this.word = "　";
+          this.word = '　';
           break;
 
         case 2:
-          this.word = "競";
+          this.word = '競';
           break;
 
         case 3:
-          this.word = "競争";
+          this.word = '競争';
           break;
 
         case 4:
-          this.word = "競争よ";
+          this.word = '競争よ';
           break;
 
         case 5:
-          this.word = "競争より";
+          this.word = '競争より';
           break;
 
         case 6:
-          this.word = "競争よ";
+          this.word = '競争よ';
           break;
 
         case 7:
-          this.word = "競争";
+          this.word = '競争';
           break;
 
         case 8:
-          this.word = "競";
+          this.word = '競';
           break;
 
         case 9:
-          this.word = "　";
+          this.word = '　';
           break;
 
         case 10:
-          this.word = "共";
+          this.word = '共';
           break;
 
         case 11:
-          this.word = "共創";
+          this.word = '共創';
           break;
 
         case 12:
-          this.word = "共創";
+          this.word = '共創';
           break;
 
         case 13:
           this.mode = 0;
-          this.word = "共";
+          this.word = '共';
           break;
       }
     }
@@ -3213,21 +3220,21 @@ __webpack_require__.r(__webpack_exports__);
   head: {
     title: function title() {
       return {
-        inner: this.$route.params.username + " - " + "編集"
+        inner: this.$route.params.username + ' - ' + '編集'
       };
     }
   },
   data: function data() {
     return {
       formData: new FormData(),
-      username: this.$root.AuthUser.username,
-      email: this.$root.AuthUser.email,
-      handlename: this.$root.AuthUser.handlename,
-      twitter: this.$root.AuthUser.sns.twitter,
-      github: this.$root.AuthUser.sns.github,
-      qiita: this.$root.AuthUser.sns.qiita,
-      web: this.$root.AuthUser.web,
-      introduction: this.$root.AuthUser.introduction
+      username: this.$store.getters['auth/user'].username,
+      email: this.$store.getters['auth/user'].email,
+      handlename: this.$store.getters['auth/user'].handlename,
+      twitter: this.$store.getters['auth/user'].sns.twitter,
+      github: this.$store.getters['auth/user'].sns.github,
+      qiita: this.$store.getters['auth/user'].sns.qiita,
+      web: this.$store.getters['auth/user'].web,
+      introduction: this.$store.getters['auth/user'].introduction
     };
   },
   methods: {
@@ -3235,50 +3242,50 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       // データの作成
-      this.formData.append("username", this.username);
-      this.formData.append("email", this.email);
-      this.formData.append("handlename", this.handlename);
+      this.formData.append('username', this.username);
+      this.formData.append('email', this.email);
+      this.formData.append('handlename', this.handlename);
 
       if (this.twitter === null) {
-        this.formData.append("twitter", "");
+        this.formData.append('twitter', '');
       } else {
-        this.formData.append("twitter", this.twitter);
+        this.formData.append('twitter', this.twitter);
       }
 
       if (this.github === null) {
-        this.formData.append("github", "");
+        this.formData.append('github', '');
       } else {
-        this.formData.append("github", this.github);
+        this.formData.append('github', this.github);
       }
 
       if (this.qiita === null) {
-        this.formData.append("qiita", "");
+        this.formData.append('qiita', '');
       } else {
-        this.formData.append("qiita", this.qiita);
+        this.formData.append('qiita', this.qiita);
       }
 
       if (this.web === null) {
-        this.formData.append("web", "");
+        this.formData.append('web', '');
       } else {
-        this.formData.append("web", this.web);
+        this.formData.append('web', this.web);
       }
 
       if (this.introduction === null) {
-        this.formData.append("introduction", "");
+        this.formData.append('introduction', '');
       } else {
-        this.formData.append("introduction", this.introduction);
+        this.formData.append('introduction', this.introduction);
       } // データの送信
 
 
-      this.$http.post(this.$endpoint("POST:profileUpdate"), this.formData, {
+      this.$http.post(this.$endpoint('POST:profileUpdate'), this.formData, {
         headers: {
-          "content-type": "multipart/form-data"
+          'content-type': 'multipart/form-data'
         }
       }).then(function (response) {
         _this.$router.push({
-          name: "userPage",
+          name: 'userPage',
           params: {
-            username: _this.$route.params.username
+            username: _this.$store.getters['auth/user'].username
           }
         });
       })["catch"](function (error) {
@@ -41456,7 +41463,9 @@ var render = function() {
                       attrs: {
                         to: {
                           name: "profileEdit",
-                          params: { username: _vm.$root.AuthUser.username }
+                          params: {
+                            username: _vm.$store.getters["auth/user"].username
+                          }
                         }
                       }
                     },
@@ -42437,7 +42446,7 @@ var render = function() {
     _c("div", [
       _c("h1", [_vm._v(_vm._s(_vm.word))]),
       _vm._v(" "),
-      _vm.$root.AuthCheck()
+      _vm.$store.getters["auth/check"]
         ? _c("div", [
             _c(
               "div",
@@ -42450,7 +42459,9 @@ var render = function() {
                     attrs: {
                       to: {
                         name: "userPage",
-                        params: { username: _vm.$root.AuthUser.username }
+                        params: {
+                          username: _vm.$store.getters["auth/user"].username
+                        }
                       }
                     }
                   },
@@ -42523,7 +42534,7 @@ var render = function() {
       _c("img", {
         staticClass: "rounded-circle",
         attrs: {
-          src: _vm.$storage("icon") + _vm.$root.AuthUser.icon,
+          src: _vm.$storage("icon") + _vm.$store.getters["auth/user"].icon,
           width: "100",
           height: "100"
         }
@@ -42816,7 +42827,7 @@ var render = function() {
               attrs: {
                 to: {
                   name: "userPage",
-                  params: { username: this.$route.params.username }
+                  params: { username: _vm.$store.getters["auth/user"].username }
                 }
               }
             },
@@ -103259,8 +103270,7 @@ var home = '/';
 var POST_register = '/api/register';
 var POST_login = '/api/login';
 var POST_logout = '/api/logout';
-var GET_currentUser = '/api/user';
-var GET_AuthUser = '/api/auth';
+var GET_authUser = '/api/user';
 var GET_userShow = '/api/user/' + replaceChar[0];
 var POST_profileUpdate = '/api/user/update';
 /**
@@ -103291,12 +103301,8 @@ function getEndpoint(name, params) {
       endpoint = POST_logout;
       break;
 
-    case 'GET:currentUser':
-      endpoint = GET_currentUser;
-      break;
-
-    case 'GET:AuthUser':
-      endpoint = GET_AuthUser;
+    case 'GET:authUser':
+      endpoint = GET_authUser;
       break;
 
     case 'GET:userShow':
@@ -103349,20 +103355,12 @@ function setParams(url, params) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vue_head__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-head */ "./node_modules/vue-head/vue-head.js");
-/* harmony import */ var vue_head__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_head__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
-/* harmony import */ var _plugins_vuetify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./plugins/vuetify */ "./resources/js/plugins/vuetify.js");
-/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
+/* harmony import */ var vue_head__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-head */ "./node_modules/vue-head/vue-head.js");
+/* harmony import */ var vue_head__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_head__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
+/* harmony import */ var _plugins_vuetify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./plugins/vuetify */ "./resources/js/plugins/vuetify.js");
+/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
 /**
  * 必要なライブラリの読み込み
  */
@@ -103396,70 +103394,20 @@ Vue.component('profile', __webpack_require__(/*! ./components/user/Profile.vue *
 
 
 
-Vue.use(vue_head__WEBPACK_IMPORTED_MODULE_1___default.a, {
+Vue.use(vue_head__WEBPACK_IMPORTED_MODULE_0___default.a, {
   separator: '|',
   complement: 'CLOTO'
 });
-var app = new Vue({
-  router: _router__WEBPACK_IMPORTED_MODULE_2__["default"],
-  store: _store__WEBPACK_IMPORTED_MODULE_3__["default"],
-  vuetify: _plugins_vuetify__WEBPACK_IMPORTED_MODULE_4__["default"],
+new Vue({
+  router: _router__WEBPACK_IMPORTED_MODULE_1__["default"],
+  store: _store__WEBPACK_IMPORTED_MODULE_2__["default"],
+  vuetify: _plugins_vuetify__WEBPACK_IMPORTED_MODULE_3__["default"],
   render: function render(h) {
-    return h(_App_vue__WEBPACK_IMPORTED_MODULE_5__["default"]);
-  },
-  data: function data() {
-    return {
-      AuthUser: '' // ログインユーザー
-
-    };
-  },
-  methods: {
-    SyncAuthUser: function SyncAuthUser() {
-      var _this = this;
-
-      // ログインユーザーの同期
-      this.$http.get(this.$endpoint('GET:AuthUser')).then(function (response) {
-        _this.AuthUser = response.data;
-
-        if (typeof _this.AuthUser.sns !== 'undefined') {
-          _this.AuthUser.sns = JSON.parse(_this.AuthUser.sns);
-        }
-      });
-    },
-    AuthCheck: function AuthCheck() {
-      // ログインチェック
-      if (typeof this.AuthUser.user_id === 'undefined') {
-        return false;
-      } else {
-        return true;
-      }
-    }
+    return h(_App_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
   },
   created: function created() {
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return _store__WEBPACK_IMPORTED_MODULE_3__["default"].dispatch('auth/currentUser');
-
-            case 2:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))();
-  },
-  watch: {
-    $route: function $route(to, from) {
-      // ページ遷移イベント
-      if (to.path !== from.path) {
-        // ログインユーザーの同期
-        this.SyncAuthUser();
-      }
-    }
+    // ログインユーザーの取得
+    _store__WEBPACK_IMPORTED_MODULE_2__["default"].dispatch('auth/authUser');
   }
 }).$mount('#app');
 
@@ -104080,7 +104028,7 @@ var actions = {
       }, _callee3);
     }))();
   },
-  currentUser: function currentUser(context) {
+  authUser: function authUser(context) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
       var response, user;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
@@ -104088,7 +104036,7 @@ var actions = {
           switch (_context4.prev = _context4.next) {
             case 0:
               _context4.next = 2;
-              return axios.get(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('GET:currentUser'));
+              return axios.get(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('GET:authUser'));
 
             case 2:
               response = _context4.sent;

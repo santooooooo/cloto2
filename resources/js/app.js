@@ -36,52 +36,13 @@ Vue.use(VueHead, {
   complement: 'CLOTO',
 });
 
-const app = new Vue({
+new Vue({
   router,
   store,
   vuetify,
   render: h => h(App),
-  data() {
-    return {
-      AuthUser: '', // ログインユーザー
-    };
-  },
-  methods: {
-    SyncAuthUser: function() {
-      // ログインユーザーの同期
-      this.$http.get(this.$endpoint('GET:AuthUser')).then(response => {
-        this.AuthUser = response.data;
-        if (typeof this.AuthUser.sns !== 'undefined') {
-          this.AuthUser.sns = JSON.parse(this.AuthUser.sns);
-        }
-      });
-    },
-    AuthCheck: function() {
-      // ログインチェック
-      if (typeof this.AuthUser.user_id === 'undefined') {
-        return false;
-      } else {
-        return true;
-      }
-    },
-  },
-  async created() {
-    // ログインユーザーの初回同期
-    await store.dispatch('auth/currentUser');
-    // this.AuthUser = response.data;
-    // if (typeof this.AuthUser.sns !== 'undefined') {
-    //   this.AuthUser.sns = JSON.parse(this.AuthUser.sns);
-    // }
-    // 同期完了後にマウント
-    // this.$mount('#app');
-  },
-  watch: {
-    $route: function(to, from) {
-      // ページ遷移イベント
-      if (to.path !== from.path) {
-        // ログインユーザーの同期
-        this.SyncAuthUser();
-      }
-    },
+  created() {
+    // ログインユーザーの取得
+    store.dispatch('auth/authUser');
   },
 }).$mount('#app');

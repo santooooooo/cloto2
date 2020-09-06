@@ -28,8 +28,9 @@ const actions = {
     const response = await axios.post($endpoint('POST:logout'));
     context.commit('setUser', null);
   },
-  async currentUser(context) {
-    const response = await axios.get($endpoint('GET:currentUser'));
+  async authUser(context) {
+    // ログインユーザーの取得
+    const response = await axios.get($endpoint('GET:authUser'));
     const user = response.data || null;
     context.commit('setUser', user);
   },

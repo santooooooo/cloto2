@@ -14,14 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/user', fn () => Auth::user())->name('user');
+Route::post('/register', 'Auth\RegisterController@register')->name('register');
+Route::post('/login', 'Auth\LoginController@login')->name('login');
+Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::group(['middleware' => 'api'], function () {
-    Route::post('/login', 'Auth\LoginController@login');
-    Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
-    Route::post('/register', 'Auth\RegisterController@register');
-
-    Route::get('/auth', 'API\UserController@getAuthUser')->name('AuthUser');
-    Route::get('/user/{username}', 'API\UserController@show')->name('userShow');
-    Route::post('/user/update', 'API\UserController@update')->name('profileUpdate');
-});
+Route::get('/user', fn () => Auth::user())->name('authUser');
+Route::get('/user/{username}', 'API\UserController@show')->name('userShow');
+Route::post('/user/update', 'API\UserController@update')->name('profileUpdate');
