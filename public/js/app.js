@@ -103355,12 +103355,20 @@ function setParams(url, params) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_head__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-head */ "./node_modules/vue-head/vue-head.js");
-/* harmony import */ var vue_head__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_head__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
-/* harmony import */ var _plugins_vuetify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./plugins/vuetify */ "./resources/js/plugins/vuetify.js");
-/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_head__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-head */ "./node_modules/vue-head/vue-head.js");
+/* harmony import */ var vue_head__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_head__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
+/* harmony import */ var _plugins_vuetify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./plugins/vuetify */ "./resources/js/plugins/vuetify.js");
+/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 /**
  * 必要なライブラリの読み込み
  */
@@ -103394,22 +103402,41 @@ Vue.component('profile', __webpack_require__(/*! ./components/user/Profile.vue *
 
 
 
-Vue.use(vue_head__WEBPACK_IMPORTED_MODULE_0___default.a, {
+Vue.use(vue_head__WEBPACK_IMPORTED_MODULE_1___default.a, {
   separator: '|',
   complement: 'CLOTO'
 });
-new Vue({
-  router: _router__WEBPACK_IMPORTED_MODULE_1__["default"],
-  store: _store__WEBPACK_IMPORTED_MODULE_2__["default"],
-  vuetify: _plugins_vuetify__WEBPACK_IMPORTED_MODULE_3__["default"],
+var app = new Vue({
+  router: _router__WEBPACK_IMPORTED_MODULE_2__["default"],
+  store: _store__WEBPACK_IMPORTED_MODULE_3__["default"],
+  vuetify: _plugins_vuetify__WEBPACK_IMPORTED_MODULE_4__["default"],
   render: function render(h) {
-    return h(_App_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
-  },
-  created: function created() {
-    // ログインユーザーの取得
-    _store__WEBPACK_IMPORTED_MODULE_2__["default"].dispatch('auth/authUser');
+    return h(_App_vue__WEBPACK_IMPORTED_MODULE_5__["default"]);
   }
-}).$mount('#app');
+});
+/**
+ * Vueのマウント
+ */
+
+_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          _context.next = 2;
+          return _store__WEBPACK_IMPORTED_MODULE_3__["default"].dispatch('auth/authUser');
+
+        case 2:
+          /** マウント */
+          app.$mount('#app');
+
+        case 3:
+        case "end":
+          return _context.stop();
+      }
+    }
+  }, _callee);
+}))();
 
 /***/ }),
 

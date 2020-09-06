@@ -36,13 +36,20 @@ Vue.use(VueHead, {
   complement: 'CLOTO',
 });
 
-new Vue({
+const app = new Vue({
   router,
   store,
   vuetify,
   render: h => h(App),
-  created() {
-    // ログインユーザーの取得
-    store.dispatch('auth/authUser');
-  },
-}).$mount('#app');
+});
+
+/**
+ * Vueのマウント
+ */
+(async function() {
+  /** 前処理 */
+  await store.dispatch('auth/authUser');
+
+  /** マウント */
+  app.$mount('#app');
+})();
