@@ -14,6 +14,7 @@ const home = '/';
 const POST_register = '/api/register';
 const POST_login = '/api/login';
 const POST_logout = '/api/logout';
+const GET_currentUser = '/api/user';
 const GET_AuthUser = '/api/auth';
 const GET_userShow = '/api/user/' + replaceChar[0];
 const POST_profileUpdate = '/api/user/update';
@@ -42,6 +43,10 @@ export function getEndpoint(name, params) {
 
     case 'POST:logout':
       endpoint = POST_logout;
+      break;
+
+    case 'GET:currentUser':
+      endpoint = GET_currentUser;
       break;
 
     case 'GET:AuthUser':

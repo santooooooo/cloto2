@@ -67,13 +67,13 @@ const app = new Vue({
   },
   async created() {
     // ログインユーザーの初回同期
-    var response = await this.$http.get(this.$endpoint('GET:AuthUser'));
-    this.AuthUser = response.data;
-    if (typeof this.AuthUser.sns !== 'undefined') {
-      this.AuthUser.sns = JSON.parse(this.AuthUser.sns);
-    }
+    await store.dispatch('auth/currentUser');
+    // this.AuthUser = response.data;
+    // if (typeof this.AuthUser.sns !== 'undefined') {
+    //   this.AuthUser.sns = JSON.parse(this.AuthUser.sns);
+    // }
     // 同期完了後にマウント
-    this.$mount('#app');
+    // this.$mount('#app');
   },
   watch: {
     $route: function(to, from) {
@@ -84,4 +84,4 @@ const app = new Vue({
       }
     },
   },
-});
+}).$mount('#app');

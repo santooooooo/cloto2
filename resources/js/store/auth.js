@@ -28,6 +28,11 @@ const actions = {
     const response = await axios.post($endpoint('POST:logout'));
     context.commit('setUser', null);
   },
+  async currentUser(context) {
+    const response = await axios.get($endpoint('GET:currentUser'));
+    const user = response.data || null;
+    context.commit('setUser', user);
+  },
 };
 
 export default {

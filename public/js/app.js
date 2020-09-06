@@ -103259,6 +103259,7 @@ var home = '/';
 var POST_register = '/api/register';
 var POST_login = '/api/login';
 var POST_logout = '/api/logout';
+var GET_currentUser = '/api/user';
 var GET_AuthUser = '/api/auth';
 var GET_userShow = '/api/user/' + replaceChar[0];
 var POST_profileUpdate = '/api/user/update';
@@ -103288,6 +103289,10 @@ function getEndpoint(name, params) {
 
     case 'POST:logout':
       endpoint = POST_logout;
+      break;
+
+    case 'GET:currentUser':
+      endpoint = GET_currentUser;
       break;
 
     case 'GET:AuthUser':
@@ -103431,29 +103436,15 @@ var app = new Vue({
     }
   },
   created: function created() {
-    var _this2 = this;
-
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var response;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return _this2.$http.get(_this2.$endpoint('GET:AuthUser'));
+              return _store__WEBPACK_IMPORTED_MODULE_3__["default"].dispatch('auth/currentUser');
 
             case 2:
-              response = _context.sent;
-              _this2.AuthUser = response.data;
-
-              if (typeof _this2.AuthUser.sns !== 'undefined') {
-                _this2.AuthUser.sns = JSON.parse(_this2.AuthUser.sns);
-              } // 同期完了後にマウント
-
-
-              _this2.$mount('#app');
-
-            case 6:
             case "end":
               return _context.stop();
           }
@@ -103470,7 +103461,7 @@ var app = new Vue({
       }
     }
   }
-});
+}).$mount('#app');
 
 /***/ }),
 
@@ -104087,6 +104078,29 @@ var actions = {
           }
         }
       }, _callee3);
+    }))();
+  },
+  currentUser: function currentUser(context) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+      var response, user;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.next = 2;
+              return axios.get(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('GET:currentUser'));
+
+            case 2:
+              response = _context4.sent;
+              user = response.data || null;
+              context.commit('setUser', user);
+
+            case 5:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
     }))();
   }
 };
