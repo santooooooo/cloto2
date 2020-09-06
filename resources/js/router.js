@@ -13,6 +13,7 @@ import home from '@/views/front/Layout.vue';
 import welcome from '@/views/front/Welcome.vue';
 import register from '@/views/front/Register.vue';
 import login from '@/views/front/Login.vue';
+import SystemError from '@/views/errors/System.vue';
 import userPage from '@/views/user/UserPage.vue';
 import profileEdit from '@/views/user/ProfileEdit.vue';
 
@@ -39,6 +40,10 @@ const router = new VueRouter({
           component: login,
         },
       ],
+    },
+    {
+      path: '/500',
+      component: SystemError,
     },
     {
       path: '/user/:username',
