@@ -5,7 +5,7 @@
         <v-container>
           <v-row>
             <v-col>
-              <v-text-field label="Regular"></v-text-field>
+              <v-text-field label="test"></v-text-field>
             </v-col>
           </v-row>
         </v-container>
