@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <!-- <v-app> -->
+  <v-app>
     <!-- <v-app-bar app color="primary" dark> -->
     <vue-header></vue-header>
     <!-- </v-app-bar> -->
@@ -8,8 +7,7 @@
     <!-- <v-main> -->
     <router-view />
     <!-- </v-main> -->
-    <!-- </v-app> -->
-  </div>
+  </v-app>
 </template>
 
 <script>

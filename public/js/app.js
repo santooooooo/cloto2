@@ -1932,8 +1932,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
@@ -2452,18 +2450,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   head: {
     title: function title() {
       return {
-        inner: "CLOTO",
-        separator: " ",
-        complement: " "
+        inner: 'CLOTO',
+        separator: ' ',
+        complement: ' '
       };
     }
   }
@@ -2549,6 +2542,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   head: {
     title: function title() {
@@ -2564,7 +2592,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       password: '',
       remember: false,
       isButtonDisabled: true,
-      dialog: false
+      dialog: true
     };
   },
   watch: {
@@ -2592,6 +2620,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                //dialog = false;
                 // データの作成
                 params = {
                   loginField: this.loginField,
@@ -41007,7 +41036,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("vue-header"), _vm._v(" "), _c("router-view")], 1)
+  return _c("v-app", [_c("vue-header"), _vm._v(" "), _c("router-view")], 1)
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -41563,101 +41592,104 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "welcome container" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "welcome__cloto-icon col-6" }, [
-          _c("img", { attrs: { src: _vm.$storage("system") + "top.png" } })
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "welcome__content col-6 d-flex align-items-center" },
-          [_c("router-view")],
-          1
-        )
+  return _c(
+    "div",
+    [
+      _c("router-view"),
+      _vm._v(" "),
+      _c("div", { staticClass: "welcome container" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "welcome__cloto-icon col-6" }, [
+            _c("img", { attrs: { src: _vm.$storage("system") + "top.png" } })
+          ]),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "welcome__content col-6 d-flex align-items-center"
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "index" }, [
+        _c("div", { staticClass: "index__container" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("h1", { staticClass: "index__value" }, [
+            _vm._v("CLOTOが提供する5つの価値")
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("div", { staticClass: "index__content row" }, [
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("img", {
+                staticClass: "index__intro-img",
+                attrs: { src: _vm.$storage("system") + "1st.png" }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(1)
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("div", { staticClass: "index__content row" }, [
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("img", {
+                staticClass: "index__intro-img",
+                attrs: { src: _vm.$storage("system") + "2nd.png" }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(2)
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("div", { staticClass: "index__content row" }, [
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("img", {
+                staticClass: "index__intro-img",
+                attrs: { src: _vm.$storage("system") + "3rd.png" }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(3)
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("div", { staticClass: "index__content row" }, [
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("img", {
+                staticClass: "index__intro-img",
+                attrs: { src: _vm.$storage("system") + "4th.png" }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(4)
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("div", { staticClass: "index__content row" }, [
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("img", {
+                staticClass: "index__intro-img",
+                attrs: { src: _vm.$storage("system") + "5th.png" }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(5)
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _vm._m(6)
+        ])
       ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "index" }, [
-      _c("div", { staticClass: "index__container" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("h1", { staticClass: "index__value" }, [
-          _vm._v("CLOTOが提供する5つの価値")
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c("div", { staticClass: "index__content row" }, [
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("img", {
-              staticClass: "index__intro-img",
-              attrs: { src: _vm.$storage("system") + "1st.png" }
-            })
-          ]),
-          _vm._v(" "),
-          _vm._m(1)
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c("div", { staticClass: "index__content row" }, [
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("img", {
-              staticClass: "index__intro-img",
-              attrs: { src: _vm.$storage("system") + "2nd.png" }
-            })
-          ]),
-          _vm._v(" "),
-          _vm._m(2)
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c("div", { staticClass: "index__content row" }, [
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("img", {
-              staticClass: "index__intro-img",
-              attrs: { src: _vm.$storage("system") + "3rd.png" }
-            })
-          ]),
-          _vm._v(" "),
-          _vm._m(3)
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c("div", { staticClass: "index__content row" }, [
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("img", {
-              staticClass: "index__intro-img",
-              attrs: { src: _vm.$storage("system") + "4th.png" }
-            })
-          ]),
-          _vm._v(" "),
-          _vm._m(4)
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c("div", { staticClass: "index__content row" }, [
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("img", {
-              staticClass: "index__intro-img",
-              attrs: { src: _vm.$storage("system") + "5th.png" }
-            })
-          ]),
-          _vm._v(" "),
-          _vm._m(5)
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _vm._m(6)
-      ])
-    ])
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -41673,7 +41705,7 @@ var staticRenderFns = [
       _c("br"),
       _vm._v(" "),
       _c("br"),
-      _vm._v("「実際のプログラミングって大変．．．」\n        "),
+      _vm._v("「実際のプログラミングって大変．．．」 "),
       _c("br"),
       _vm._v("「何からしたらいいんだろう」\n        "),
       _c("br"),
@@ -41723,7 +41755,7 @@ var staticRenderFns = [
         ),
         _c("br"),
         _vm._v(
-          "似た目標を持った仲間が切磋琢磨している環境が\n            あなたの参加を待っています！\n          "
+          "似た目標を持った仲間が切磋琢磨している環境が あなたの参加を待っています！\n          "
         )
       ])
     ])
@@ -41741,7 +41773,7 @@ var staticRenderFns = [
         ),
         _c("br"),
         _vm._v(
-          "どんどん交流しスキルアップやモチベーションの維持に\n            繋げましょう！\n          "
+          "どんどん交流しスキルアップやモチベーションの維持に 繋げましょう！\n          "
         )
       ])
     ])
@@ -41783,7 +41815,7 @@ var staticRenderFns = [
         ),
         _c("br"),
         _vm._v(
-          "マイページはあなたのプロフィール欄であると同時に\n            あなたの活動や努力の証となります。\n            "
+          "マイページはあなたのプロフィール欄であると同時に\n            あなたの活動や努力の証となります。 "
         ),
         _c("br"),
         _vm._v(
@@ -41803,7 +41835,7 @@ var staticRenderFns = [
       _c("br"),
       _vm._v(" "),
       _c("br"),
-      _vm._v("プログラミングに出会った全ての人に\n        "),
+      _vm._v("プログラミングに出会った全ての人に "),
       _c("br"),
       _vm._v("「創る」喜びを届けたい。\n        "),
       _c("br"),
@@ -41835,45 +41867,69 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-card",
-    { staticClass: "mx-auto", attrs: { "max-width": "344" } },
+    "v-row",
+    { attrs: { justify: "center" } },
     [
       _c(
-        "v-card-text",
+        "v-dialog",
+        {
+          attrs: { "max-width": "800" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
         [
           _c(
-            "v-form",
+            "v-card",
             [
+              _c("v-spacer"),
+              _vm._v(" "),
               _c(
-                "v-container",
+                "v-card-text",
                 [
                   _c(
-                    "v-row",
+                    "v-form",
                     [
                       _c(
-                        "v-col",
+                        "v-container",
                         [
-                          _c("v-text-field", {
-                            attrs: { label: "Username" },
-                            model: {
-                              value: _vm.loginField,
-                              callback: function($$v) {
-                                _vm.loginField = $$v
-                              },
-                              expression: "loginField"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("v-text-field", {
-                            attrs: { label: "password" },
-                            model: {
-                              value: _vm.password,
-                              callback: function($$v) {
-                                _vm.password = $$v
-                              },
-                              expression: "password"
-                            }
-                          })
+                          _c(
+                            "v-row",
+                            [
+                              _c(
+                                "v-col",
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Username" },
+                                    model: {
+                                      value: _vm.loginField,
+                                      callback: function($$v) {
+                                        _vm.loginField = $$v
+                                      },
+                                      expression: "loginField"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    attrs: { label: "password" },
+                                    model: {
+                                      value: _vm.password,
+                                      callback: function($$v) {
+                                        _vm.password = $$v
+                                      },
+                                      expression: "password"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
                         ],
                         1
                       )
@@ -41882,35 +41938,38 @@ var render = function() {
                   )
                 ],
                 1
-              )
+              ),
+              _vm._v(" "),
+              _c("v-row", { attrs: { justify: "center" } }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-cloto-primary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.login()
+                        _vm.dialog = false
+                      }
+                    }
+                  },
+                  [_vm._v("\n          ログイン\n        ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "mt-3" },
+                  [
+                    _c("router-link", { attrs: { to: { name: "register" } } }, [
+                      _vm._v("Have not account")
+                    ])
+                  ],
+                  1
+                )
+              ])
             ],
             1
           )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-cloto-primary",
-          attrs: { type: "button" },
-          on: {
-            click: function($event) {
-              return _vm.login()
-            }
-          }
-        },
-        [_vm._v("ログイン")]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "mt-3" },
-        [
-          _c("router-link", { attrs: { to: { name: "register" } } }, [
-            _vm._v("Have not account")
-          ])
         ],
         1
       )
@@ -104897,8 +104956,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Owner\Desktop\CLOTO\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Owner\Desktop\CLOTO\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\shuto\CLOTO\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\shuto\CLOTO\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
