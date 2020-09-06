@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="344">
+  <!-- <v-card class="mx-auto" max-width="344">
     <v-card-text>
       <v-form>
         <v-container>
@@ -14,8 +14,8 @@
     <v-card-actions>
       <v-btn text color="deep-purple accent-4">Learn More</v-btn>
     </v-card-actions>
-  </v-card>
-  <!-- <div class="welcome-form card justify-content-center">
+  </v-card>-->
+  <div class="welcome-form card justify-content-center">
     <div class="alert alert-danger" v-if="error" v-text="error"></div>
 
     <div class="form-group row">
@@ -50,7 +50,7 @@
         </div>
       </div>
     </div>
-  </div>-->
+  </div>
 </template>
 
 

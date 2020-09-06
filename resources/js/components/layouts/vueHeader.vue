@@ -5,7 +5,7 @@
     </router-link>
 
     <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ml-auto" v-if="$root.AuthCheck()">
+      <ul class="navbar-nav ml-auto" v-if="$store.getters['auth/check']">
         <li class="dropdown">
           <a
             class="nav__link--username dropdown-toggle"
@@ -16,18 +16,18 @@
             aria-expanded="false"
           >
             <img
-              :src="$storage('icon') + $root.AuthUser.icon"
+              :src="$storage('icon') + $store.getters['auth/user'].icon"
               class="rounded-circle"
               width="30"
               height="30"
             />
-            {{ $root.AuthUser.username }}
+            {{ $store.getters['auth/user'].username }}
           </a>
 
           <div class="nav__dropdown-menu dropdown-menu">
             <router-link
               class="dropdown-item"
-              :to="{ name: 'userPage', params: { username: $root.AuthUser.username }}"
+              :to="{ name: 'userPage', params: { username: $store.getters['auth/user'].username }}"
             >マイページ</router-link>
             <button type="button" class="dropdown-item" @click="logout">ログアウト</button>
           </div>

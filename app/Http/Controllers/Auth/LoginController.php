@@ -40,7 +40,7 @@ class LoginController extends Controller
     }
 
     /**
-     * ユーザー名またはメールアドレスでログイン
+     * Get the login username to be used by the controller.
      *
      * @return string
      */
@@ -50,10 +50,10 @@ class LoginController extends Controller
     }
 
     /**
-     * ユーザー名またはメールアドレスでログイン
+     * Attempt to log the user into the application.
      *
-     * @param Request $request
-     * @return Login
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
      */
     protected function attemptLogin(Request $request)
     {
@@ -67,5 +67,31 @@ class LoginController extends Controller
         }
 
         return $this->guard()->attempt($credentials, $request->filled('remember'));
+    }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        return $user;
+    }
+
+    /**
+     * The user has logged out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    protected function loggedOut(Request $request)
+    {
+        // セッションを再生成する
+        $request->session()->regenerate();
+
+        return response()->json();
     }
 }

@@ -41293,7 +41293,7 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("div", { staticClass: "collapse navbar-collapse" }, [
-        _vm.$root.AuthCheck()
+        _vm.$store.getters["auth/check"]
           ? _c("ul", { staticClass: "navbar-nav ml-auto" }, [
               _c("li", { staticClass: "dropdown" }, [
                 _c(
@@ -41312,14 +41312,16 @@ var render = function() {
                     _c("img", {
                       staticClass: "rounded-circle",
                       attrs: {
-                        src: _vm.$storage("icon") + _vm.$root.AuthUser.icon,
+                        src:
+                          _vm.$storage("icon") +
+                          _vm.$store.getters["auth/user"].icon,
                         width: "30",
                         height: "30"
                       }
                     }),
                     _vm._v(
                       "\n          " +
-                        _vm._s(_vm.$root.AuthUser.username) +
+                        _vm._s(_vm.$store.getters["auth/user"].username) +
                         "\n        "
                     )
                   ]
@@ -41336,7 +41338,9 @@ var render = function() {
                         attrs: {
                           to: {
                             name: "userPage",
-                            params: { username: _vm.$root.AuthUser.username }
+                            params: {
+                              username: _vm.$store.getters["auth/user"].username
+                            }
                           }
                         }
                       },
@@ -41824,50 +41828,151 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-card",
-    { staticClass: "mx-auto", attrs: { "max-width": "344" } },
+    "div",
+    { staticClass: "welcome-form card justify-content-center" },
     [
-      _c(
-        "v-card-text",
-        [
+      _vm.error
+        ? _c("div", {
+            staticClass: "alert alert-danger",
+            domProps: { textContent: _vm._s(_vm.error) }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.loginField,
+              expression: "loginField"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            placeholder: "ユーザー名 または メールアドレス"
+          },
+          domProps: { value: _vm.loginField },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.loginField = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "welcome-form__feedback--margin" }, [
+          _vm._v(" ")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.password,
+              expression: "password"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "password", placeholder: "パスワード" },
+          domProps: { value: _vm.password },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.password = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "welcome-form__feedback--margin" }, [
+          _vm._v(" ")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("div", { staticClass: "custom-control custom-radio" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.remember,
+                expression: "remember"
+              }
+            ],
+            staticClass: "custom-control-input",
+            attrs: { type: "checkbox" },
+            domProps: {
+              checked: Array.isArray(_vm.remember)
+                ? _vm._i(_vm.remember, null) > -1
+                : _vm.remember
+            },
+            on: {
+              change: function($event) {
+                var $$a = _vm.remember,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = null,
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 && (_vm.remember = $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      (_vm.remember = $$a
+                        .slice(0, $$i)
+                        .concat($$a.slice($$i + 1)))
+                  }
+                } else {
+                  _vm.remember = $$c
+                }
+              }
+            }
+          }),
+          _vm._v(" "),
           _c(
-            "v-form",
+            "label",
+            { staticClass: "custom-control-label", attrs: { for: "remember" } },
+            [_vm._v("ログイン情報を記憶する")]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("div", [
+          _c("div", [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-cloto-primary",
+                attrs: { type: "button", disabled: _vm.isButtonDisabled },
+                on: { click: _vm.login }
+              },
+              [_vm._v("ログイン")]
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "mt-3" },
             [
-              _c(
-                "v-container",
-                [
-                  _c(
-                    "v-row",
-                    [
-                      _c(
-                        "v-col",
-                        [_c("v-text-field", { attrs: { label: "Regular" } })],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
+              _c("router-link", { attrs: { to: { name: "register" } } }, [
+                _vm._v("新規登録はこちら")
+              ])
             ],
             1
           )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-card-actions",
-        [
-          _c("v-btn", { attrs: { text: "", color: "deep-purple accent-4" } }, [
-            _vm._v("Learn More")
-          ])
-        ],
-        1
-      )
-    ],
-    1
+        ])
+      ])
+    ]
   )
 }
 var staticRenderFns = []
@@ -103904,7 +104009,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var state = {
   user: null
 };
-var getters = {};
+var getters = {
+  check: function check(state) {
+    return !!state.user;
+  },
+  user: function user(state) {
+    return state.user ? state.user : '';
+  }
+};
 var mutations = {
   setUser: function setUser(state, user) {
     state.user = user;

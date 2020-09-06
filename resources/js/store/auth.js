@@ -4,7 +4,10 @@ const state = {
   user: null,
 };
 
-const getters = {};
+const getters = {
+  check: state => !!state.user,
+  user: state => (state.user ? state.user : ''),
+};
 
 const mutations = {
   setUser(state, user) {
