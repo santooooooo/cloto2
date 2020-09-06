@@ -1,21 +1,26 @@
 <template>
-  <!-- <v-card class="mx-auto" max-width="344">
+  <v-card class="mx-auto" max-width="344">
     <v-card-text>
       <v-form>
         <v-container>
           <v-row>
             <v-col>
-              <v-text-field label="test"></v-text-field>
+              <v-text-field v-model="loginField" label="Username"></v-text-field>
+              <v-text-field v-model="password" label="password"></v-text-field>
             </v-col>
           </v-row>
         </v-container>
       </v-form>
     </v-card-text>
-    <v-card-actions>
-      <v-btn text color="deep-purple accent-4">Learn More</v-btn>
-    </v-card-actions>
-  </v-card>-->
-  <div class="welcome-form card justify-content-center">
+
+    <button v-on:click="login()" type="button" class="btn btn-cloto-primary">ログイン</button>
+
+    <div class="mt-3">
+      <router-link :to="{ name: 'register' }">Have not account</router-link>
+    </div>
+  </v-card>
+
+  <!-- <div class="welcome-form card justify-content-center">
     <div class="alert alert-danger" v-if="error" v-text="error"></div>
 
     <div class="form-group row">
@@ -50,7 +55,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>-->
 </template>
 
 
@@ -70,6 +75,7 @@ export default {
       password: '',
       remember: false,
       isButtonDisabled: true,
+      dialog: false,
     };
   },
   watch: {
@@ -97,6 +103,8 @@ export default {
         password: this.password,
         remember: this.remember,
       };
+
+      console.log(params);
 
       // ログイン処理
       await this.$store.dispatch('auth/login', params);
