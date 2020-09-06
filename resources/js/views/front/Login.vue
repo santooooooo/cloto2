@@ -1,24 +1,60 @@
 <template>
-  <v-card class="mx-auto" max-width="344">
-    <v-card-text>
-      <v-form>
-        <v-container>
-          <v-row>
-            <v-col>
-              <v-text-field v-model="loginField" label="Username"></v-text-field>
-              <v-text-field v-model="password" label="password"></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-form>
-    </v-card-text>
+  <v-row justify="center">
+    <v-dialog v-model="dialog" max-width="800">
+      <v-card>
+        <v-spacer></v-spacer>
+        <v-card-text>
+          <v-form>
+            <v-container>
+              <v-row>
+                <v-col>
+                  <v-text-field v-model="loginField" label="Username"></v-text-field>
+                  <v-text-field v-model="password" label="password"></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-form>
+        </v-card-text>
+        <v-row justify="center">
+          <button
+            v-on:click="
+              login();
+              dialog = false;
+            "
+            type="button"
+            class="btn btn-cloto-primary"
+          >
+            ログイン
+          </button>
 
-    <button v-on:click="login()" type="button" class="btn btn-cloto-primary">ログイン</button>
+          <div class="mt-3">
+            <router-link :to="{ name: 'register' }">Have not account</router-link>
+          </div>
+        </v-row>
+      </v-card>
+    </v-dialog>
+  </v-row>
 
-    <div class="mt-3">
-      <router-link :to="{ name: 'register' }">Have not account</router-link>
-    </div>
-  </v-card>
+  <!-- <v-card class="mx-auto" max-width="344">
+        <v-card-text>
+          <v-form>
+            <v-container>
+              <v-row>
+                <v-col>
+                  <v-text-field v-model="loginField" label="Username"></v-text-field>
+                  <v-text-field v-model="password" label="password"></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-form>
+        </v-card-text>
+
+        <button v-on:click="login()" type="button" class="btn btn-cloto-primary">ログイン</button>
+
+        <div class="mt-3">
+          <router-link :to="{ name: 'register' }">Have not account</router-link>
+        </div>
+      </v-card> -->
 
   <!-- <div class="welcome-form card justify-content-center">
     <div class="alert alert-danger" v-if="error" v-text="error"></div>
@@ -58,7 +94,6 @@
   </div>-->
 </template>
 
-
 <script>
 export default {
   head: {
@@ -75,7 +110,7 @@ export default {
       password: '',
       remember: false,
       isButtonDisabled: true,
-      dialog: false,
+      dialog: true,
     };
   },
   watch: {
@@ -97,6 +132,7 @@ export default {
       }
     },
     login: async function () {
+      //dialog = false;
       // データの作成
       var params = {
         loginField: this.loginField,
@@ -115,7 +151,6 @@ export default {
   },
 };
 </script>
-
 
 <style lang="scss" scoped>
 @import '~/_variables';
