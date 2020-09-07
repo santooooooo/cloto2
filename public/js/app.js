@@ -1920,6 +1920,7 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _consts_error__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/consts/error */ "./resources/js/consts/error.js");
 //
 //
 //
@@ -1934,7 +1935,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  computed: {
+    errorCode: function errorCode() {
+      return this.$store.state.error.code;
+    }
+  },
+  watch: {
+    errorCode: {
+      // エラー発生
+      handler: function handler(val) {
+        if (val === _consts_error__WEBPACK_IMPORTED_MODULE_0__["INTERNAL_SERVER_ERROR"]) {
+          this.$router.push({
+            name: 'INTERNAL_SERVER_ERROR'
+          });
+        }
+      },
+      immediate: true
+    },
+    $route: function $route() {
+      // エラーの初期化
+      this.$store.commit('error/setCode', null);
+    }
+  }
+});
 
 /***/ }),
 
@@ -2552,6 +2577,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   head: {
     title: function title() {
@@ -2577,6 +2606,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     password: function password() {
       this.error = '';
       this.changeButton();
+    }
+  },
+  computed: {
+    apiStatus: function apiStatus() {
+      return this.$store.state.auth.apiStatus;
+    },
+    loginErrors: function loginErrors() {
+      return this.$store.state.auth.loginErrorMessages;
     }
   },
   methods: {
@@ -2605,10 +2642,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return this.$store.dispatch('auth/login', params);
 
               case 3:
-                // ページ遷移
-                this.$router.push({
-                  name: 'home'
-                });
+                if (this.apiStatus) {
+                  // ページ遷移
+                  this.$router.push({
+                    name: 'home'
+                  });
+                }
 
               case 4:
               case "end":
@@ -2624,6 +2663,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return login;
     }()
+  },
+  created: function created() {
+    // エラーの初期化
+    this.$store.commit('auth/setLoginErrorMessages', null);
   }
 });
 
@@ -41864,11 +41907,18 @@ var render = function() {
     "div",
     { staticClass: "welcome-form card justify-content-center" },
     [
-      _vm.error
-        ? _c("div", {
-            staticClass: "alert alert-danger",
-            domProps: { textContent: _vm._s(_vm.error) }
-          })
+      _vm.loginErrors
+        ? _c("div", { staticClass: "errors" }, [
+            _vm.loginErrors.loginField
+              ? _c(
+                  "ul",
+                  _vm._l(_vm.loginErrors.loginField, function(msg) {
+                    return _c("li", { key: msg }, [_vm._v(_vm._s(msg))])
+                  }),
+                  0
+                )
+              : _vm._e()
+          ])
         : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "form-group row" }, [
@@ -103848,7 +103898,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!**************************************!*\
   !*** ./resources/js/consts/error.js ***!
   \**************************************/
-/*! exports provided: OK, CREATED, INTERNAL_SERVER_ERROR */
+/*! exports provided: OK, CREATED, INTERNAL_SERVER_ERROR, UNPROCESSABLE_ENTITY */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -103856,9 +103906,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OK", function() { return OK; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CREATED", function() { return CREATED; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "INTERNAL_SERVER_ERROR", function() { return INTERNAL_SERVER_ERROR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UNPROCESSABLE_ENTITY", function() { return UNPROCESSABLE_ENTITY; });
 var OK = 200;
 var CREATED = 201;
 var INTERNAL_SERVER_ERROR = 500;
+var UNPROCESSABLE_ENTITY = 422;
 
 /***/ }),
 
@@ -103985,6 +104037,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     }]
   }, {
     path: '/500',
+    name: 'INTERNAL_SERVER_ERROR',
     component: _views_errors_System_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
   }, {
     path: '/user/:username',
@@ -104023,7 +104076,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var state = {
   user: null,
-  apiStatus: null
+  apiStatus: null,
+  loginErrorMessages: null
 };
 var getters = {
   check: function check(state) {
@@ -104039,6 +104093,9 @@ var mutations = {
   },
   setApiStatus: function setApiStatus(state, status) {
     state.apiStatus = status;
+  },
+  setLoginErrorMessages: function setLoginErrorMessages(state, messages) {
+    state.loginErrorMessages = messages;
   }
 };
 var actions = {
@@ -104094,9 +104151,16 @@ var actions = {
             case 8:
               // エラー発生
               context.commit('setApiStatus', false);
-              context.commit('error/setCode', response.status, {
-                root: true
-              });
+
+              if (response.status === _consts_error__WEBPACK_IMPORTED_MODULE_2__["UNPROCESSABLE_ENTITY"]) {
+                // バリデーションエラー発生
+                context.commit('setLoginErrorMessages', response.data.errors);
+              } else {
+                // その他のエラー発生
+                context.commit('error/setCode', response.status, {
+                  root: true
+                });
+              }
 
             case 10:
             case "end":
@@ -104666,14 +104730,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!********************************************!*\
   !*** ./resources/js/views/front/Login.vue ***!
   \********************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Login_vue_vue_type_template_id_560c5e34_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Login.vue?vue&type=template&id=560c5e34&scoped=true& */ "./resources/js/views/front/Login.vue?vue&type=template&id=560c5e34&scoped=true&");
 /* harmony import */ var _Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Login.vue?vue&type=script&lang=js& */ "./resources/js/views/front/Login.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _Login_vue_vue_type_style_index_0_id_560c5e34_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Login.vue?vue&type=style&index=0&id=560c5e34&lang=scss&scoped=true& */ "./resources/js/views/front/Login.vue?vue&type=style&index=0&id=560c5e34&lang=scss&scoped=true&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _Login_vue_vue_type_style_index_0_id_560c5e34_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Login.vue?vue&type=style&index=0&id=560c5e34&lang=scss&scoped=true& */ "./resources/js/views/front/Login.vue?vue&type=style&index=0&id=560c5e34&lang=scss&scoped=true&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -104705,7 +104770,7 @@ component.options.__file = "resources/js/views/front/Login.vue"
 /*!*********************************************************************!*\
   !*** ./resources/js/views/front/Login.vue?vue&type=script&lang=js& ***!
   \*********************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

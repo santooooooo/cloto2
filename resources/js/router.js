@@ -43,6 +43,7 @@ const router = new VueRouter({
     },
     {
       path: '/500',
+      name: 'INTERNAL_SERVER_ERROR',
       component: SystemError,
     },
     {

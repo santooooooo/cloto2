@@ -1,9 +1,10 @@
 import { getEndpoint as $endpoint } from '@/api';
-import { OK } from '@/consts/error';
+import { OK, UNPROCESSABLE_ENTITY } from '@/consts/error';
 
 const state = {
   user: null,
   apiStatus: null,
+  loginErrorMessages: null,
 };
 
 const getters = {
@@ -17,6 +18,9 @@ const mutations = {
   },
   setApiStatus(state, status) {
     state.apiStatus = status;
+  },
+  setLoginErrorMessages(state, messages) {
+    state.loginErrorMessages = messages;
   },
 };
 
@@ -43,7 +47,13 @@ const actions = {
 
     // エラー発生
     context.commit('setApiStatus', false);
-    context.commit('error/setCode', response.status, { root: true });
+    if (response.status === UNPROCESSABLE_ENTITY) {
+      // バリデーションエラー発生
+      context.commit('setLoginErrorMessages', response.data.errors);
+    } else {
+      // その他のエラー発生
+      context.commit('error/setCode', response.status, { root: true });
+    }
   },
   async logout(context) {
     const response = await axios.post($endpoint('POST:logout'));
