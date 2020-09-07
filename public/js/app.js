@@ -103542,6 +103542,11 @@ try {
 
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+window.axios.interceptors.response.use(function (response) {
+  return response;
+}, function (error) {
+  return error.response || error;
+});
 window.axios.defaults.headers.common = {
   'X-CSRF-TOKEN': window.Laravel.csrfToken,
   'X-Requested-With': 'XMLHttpRequest'
@@ -104077,6 +104082,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var state = {
   user: null,
   apiStatus: null,
+  registerErrorMessages: null,
   loginErrorMessages: null
 };
 var getters = {
@@ -104094,6 +104100,9 @@ var mutations = {
   setApiStatus: function setApiStatus(state, status) {
     state.apiStatus = status;
   },
+  setRegisterErrorMessages: function setRegisterErrorMessages(state, messages) {
+    state.registerErrorMessages = messages;
+  },
   setLoginErrorMessages: function setLoginErrorMessages(state, messages) {
     state.loginErrorMessages = messages;
   }
@@ -104106,14 +104115,39 @@ var actions = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              // 初期化
+              context.commit('setApiStatus', null); // 登録リクエスト
+
+              _context.next = 3;
               return axios.post(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('POST:register'), data);
 
-            case 2:
+            case 3:
               response = _context.sent;
-              context.commit('setUser', response.data);
 
-            case 4:
+              if (!(response.status === _consts_error__WEBPACK_IMPORTED_MODULE_2__["CREATED"])) {
+                _context.next = 8;
+                break;
+              }
+
+              context.commit('setApiStatus', true);
+              context.commit('setUser', response.data);
+              return _context.abrupt("return", false);
+
+            case 8:
+              // エラー発生
+              context.commit('setApiStatus', false);
+
+              if (response.status === _consts_error__WEBPACK_IMPORTED_MODULE_2__["UNPROCESSABLE_ENTITY"]) {
+                // 入力値エラー発生
+                context.commit('setRegisterErrorMessages', response.data.errors);
+              } else {
+                // その他のエラー発生
+                context.commit('error/setCode', response.status, {
+                  root: true
+                });
+              }
+
+            case 10:
             case "end":
               return _context.stop();
           }
@@ -104132,9 +104166,7 @@ var actions = {
               context.commit('setApiStatus', null); // ログインリクエスト
 
               _context2.next = 3;
-              return axios.post(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('POST:login'), data)["catch"](function (err) {
-                return err.response || err;
-              });
+              return axios.post(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('POST:login'), data);
 
             case 3:
               response = _context2.sent;
@@ -104153,7 +104185,7 @@ var actions = {
               context.commit('setApiStatus', false);
 
               if (response.status === _consts_error__WEBPACK_IMPORTED_MODULE_2__["UNPROCESSABLE_ENTITY"]) {
-                // バリデーションエラー発生
+                // 入力値エラー発生
                 context.commit('setLoginErrorMessages', response.data.errors);
               } else {
                 // その他のエラー発生
@@ -104177,14 +104209,32 @@ var actions = {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              _context3.next = 2;
+              // 初期化
+              context.commit('setApiStatus', null); // ログアウトリクエスト
+
+              _context3.next = 3;
               return axios.post(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('POST:logout'));
 
-            case 2:
+            case 3:
               response = _context3.sent;
-              context.commit('setUser', null);
 
-            case 4:
+              if (!(response.status === _consts_error__WEBPACK_IMPORTED_MODULE_2__["OK"])) {
+                _context3.next = 8;
+                break;
+              }
+
+              context.commit('setApiStatus', true);
+              context.commit('setUser', null);
+              return _context3.abrupt("return", false);
+
+            case 8:
+              // エラー発生
+              context.commit('setApiStatus', false);
+              context.commit('error/setCode', response.status, {
+                root: true
+              });
+
+            case 10:
             case "end":
               return _context3.stop();
           }
