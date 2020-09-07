@@ -14,7 +14,7 @@ const home = '/';
 const POST_register = '/api/register';
 const POST_login = '/api/login';
 const POST_logout = '/api/logout';
-const GET_authUser = '/api/user';
+const GET_authUser = '/api/auth/user';
 const GET_userShow = '/api/user/' + replaceChar[0];
 const POST_profileUpdate = '/api/user/update';
 

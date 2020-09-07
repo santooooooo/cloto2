@@ -29,6 +29,12 @@ const mutations = {
 };
 
 const actions = {
+  async syncAuthUser(context) {
+    // ログインユーザーの取得
+    const response = await axios.get($endpoint('GET:authUser'));
+    const user = response.data || null;
+    context.commit('setUser', user);
+  },
   async register(context, data) {
     // 初期化
     context.commit('setApiStatus', null);
@@ -94,12 +100,6 @@ const actions = {
     // エラー発生
     context.commit('setApiStatus', false);
     context.commit('error/setCode', response.status, { root: true });
-  },
-  async authUser(context) {
-    // ログインユーザーの取得
-    const response = await axios.get($endpoint('GET:authUser'));
-    const user = response.data || null;
-    context.commit('setUser', user);
   },
 };
 

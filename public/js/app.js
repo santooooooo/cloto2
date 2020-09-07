@@ -103344,7 +103344,7 @@ var home = '/';
 var POST_register = '/api/register';
 var POST_login = '/api/login';
 var POST_logout = '/api/logout';
-var GET_authUser = '/api/user';
+var GET_authUser = '/api/auth/user';
 var GET_userShow = '/api/user/' + replaceChar[0];
 var POST_profileUpdate = '/api/user/update';
 /**
@@ -103498,7 +103498,7 @@ _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MOD
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return _store__WEBPACK_IMPORTED_MODULE_3__["default"].dispatch('auth/authUser');
+          return _store__WEBPACK_IMPORTED_MODULE_3__["default"].dispatch('auth/syncAuthUser');
 
         case 2:
           /** マウント */
@@ -104108,30 +104108,53 @@ var mutations = {
   }
 };
 var actions = {
-  register: function register(context, data) {
+  syncAuthUser: function syncAuthUser(context) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var response;
+      var response, user;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              _context.next = 2;
+              return axios.get(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('GET:authUser'));
+
+            case 2:
+              response = _context.sent;
+              user = response.data || null;
+              context.commit('setUser', user);
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  register: function register(context, data) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      var response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
               // 初期化
               context.commit('setApiStatus', null); // 登録リクエスト
 
-              _context.next = 3;
+              _context2.next = 3;
               return axios.post(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('POST:register'), data);
 
             case 3:
-              response = _context.sent;
+              response = _context2.sent;
 
               if (!(response.status === _consts_error__WEBPACK_IMPORTED_MODULE_2__["CREATED"])) {
-                _context.next = 8;
+                _context2.next = 8;
                 break;
               }
 
               context.commit('setApiStatus', true);
               context.commit('setUser', response.data);
-              return _context.abrupt("return", false);
+              return _context2.abrupt("return", false);
 
             case 8:
               // エラー発生
@@ -104149,36 +104172,36 @@ var actions = {
 
             case 10:
             case "end":
-              return _context.stop();
+              return _context2.stop();
           }
         }
-      }, _callee);
+      }, _callee2);
     }))();
   },
   login: function login(context, data) {
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
       var response;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
         while (1) {
-          switch (_context2.prev = _context2.next) {
+          switch (_context3.prev = _context3.next) {
             case 0:
               // 初期化
               context.commit('setApiStatus', null); // ログインリクエスト
 
-              _context2.next = 3;
+              _context3.next = 3;
               return axios.post(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('POST:login'), data);
 
             case 3:
-              response = _context2.sent;
+              response = _context3.sent;
 
               if (!(response.status === _consts_error__WEBPACK_IMPORTED_MODULE_2__["OK"])) {
-                _context2.next = 8;
+                _context3.next = 8;
                 break;
               }
 
               context.commit('setApiStatus', true);
               context.commit('setUser', response.data);
-              return _context2.abrupt("return", false);
+              return _context3.abrupt("return", false);
 
             case 8:
               // エラー発生
@@ -104196,36 +104219,36 @@ var actions = {
 
             case 10:
             case "end":
-              return _context2.stop();
+              return _context3.stop();
           }
         }
-      }, _callee2);
+      }, _callee3);
     }))();
   },
   logout: function logout(context) {
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
       var response;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
         while (1) {
-          switch (_context3.prev = _context3.next) {
+          switch (_context4.prev = _context4.next) {
             case 0:
               // 初期化
               context.commit('setApiStatus', null); // ログアウトリクエスト
 
-              _context3.next = 3;
+              _context4.next = 3;
               return axios.post(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('POST:logout'));
 
             case 3:
-              response = _context3.sent;
+              response = _context4.sent;
 
               if (!(response.status === _consts_error__WEBPACK_IMPORTED_MODULE_2__["OK"])) {
-                _context3.next = 8;
+                _context4.next = 8;
                 break;
               }
 
               context.commit('setApiStatus', true);
               context.commit('setUser', null);
-              return _context3.abrupt("return", false);
+              return _context4.abrupt("return", false);
 
             case 8:
               // エラー発生
@@ -104235,29 +104258,6 @@ var actions = {
               });
 
             case 10:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3);
-    }))();
-  },
-  authUser: function authUser(context) {
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
-      var response, user;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
-        while (1) {
-          switch (_context4.prev = _context4.next) {
-            case 0:
-              _context4.next = 2;
-              return axios.get(Object(_api__WEBPACK_IMPORTED_MODULE_1__["getEndpoint"])('GET:authUser'));
-
-            case 2:
-              response = _context4.sent;
-              user = response.data || null;
-              context.commit('setUser', user);
-
-            case 5:
             case "end":
               return _context4.stop();
           }

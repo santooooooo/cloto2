@@ -48,7 +48,7 @@ const app = new Vue({
  */
 (async function() {
   /** 前処理 */
-  await store.dispatch('auth/authUser');
+  await store.dispatch('auth/syncAuthUser');
 
   /** マウント */
   app.$mount('#app');
