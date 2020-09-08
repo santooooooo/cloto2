@@ -2864,36 +2864,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   head: {
@@ -42172,11 +42142,7 @@ var render = function() {
                     staticClass:
                       "welcome-form__feedback--invalid invalid-feedback"
                   },
-                  [
-                    _vm._v(
-                      "\n        " + _vm._s(_vm.errorUsername) + "\n      "
-                    )
-                  ]
+                  [_vm._v(_vm._s(_vm.errorUsername))]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -42186,7 +42152,7 @@ var render = function() {
                   {
                     staticClass: "welcome-form__feedback--valid valid-feedback"
                   },
-                  [_vm._v("\n        ええやん！\n      ")]
+                  [_vm._v("ええやん！")]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -42197,11 +42163,7 @@ var render = function() {
                     staticClass:
                       "welcome-form__feedback--invalid invalid-feedback"
                   },
-                  [
-                    _vm._v(
-                      "\n        英数字の組み合わせを入力してください！\n      "
-                    )
-                  ]
+                  [_vm._v("英数字の組み合わせを入力してください！")]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -42212,7 +42174,7 @@ var render = function() {
                     staticClass:
                       "welcome-form__feedback--invalid invalid-feedback"
                   },
-                  [_vm._v("\n        もっと長く！\n      ")]
+                  [_vm._v("もっと長く！")]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -42223,7 +42185,7 @@ var render = function() {
                     staticClass:
                       "welcome-form__feedback--invalid invalid-feedback"
                   },
-                  [_vm._v("\n        もっと短く～\n      ")]
+                  [_vm._v("もっと短く～")]
                 )
               : _vm._e()
           ]),
@@ -42263,7 +42225,7 @@ var render = function() {
                     staticClass:
                       "welcome-form__feedback--invalid invalid-feedback"
                   },
-                  [_vm._v("\n        " + _vm._s(_vm.errorEmail) + "\n      ")]
+                  [_vm._v(_vm._s(_vm.errorEmail))]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -42273,7 +42235,7 @@ var render = function() {
                   {
                     staticClass: "welcome-form__feedback--valid valid-feedback"
                   },
-                  [_vm._v("\n        ええやん！\n      ")]
+                  [_vm._v("ええやん！")]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -42284,11 +42246,7 @@ var render = function() {
                     staticClass:
                       "welcome-form__feedback--invalid invalid-feedback"
                   },
-                  [
-                    _vm._v(
-                      "\n        メールアドレスを入力してください！\n      "
-                    )
-                  ]
+                  [_vm._v("メールアドレスを入力してください！")]
                 )
               : _vm._e()
           ]),
@@ -42333,7 +42291,7 @@ var render = function() {
                   {
                     staticClass: "welcome-form__feedback--valid valid-feedback"
                   },
-                  [_vm._v("\n        ええやん！\n      ")]
+                  [_vm._v("ええやん！")]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -42344,7 +42302,7 @@ var render = function() {
                     staticClass:
                       "welcome-form__feedback--invalid invalid-feedback"
                   },
-                  [_vm._v("\n        パスワードを入力してください！\n      ")]
+                  [_vm._v("パスワードを入力してください！")]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -42355,7 +42313,7 @@ var render = function() {
                     staticClass:
                       "welcome-form__feedback--invalid invalid-feedback"
                   },
-                  [_vm._v("\n        もっと長く！\n      ")]
+                  [_vm._v("もっと長く！")]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -42366,7 +42324,7 @@ var render = function() {
                     staticClass:
                       "welcome-form__feedback--invalid invalid-feedback"
                   },
-                  [_vm._v("\n        もっと短く～\n      ")]
+                  [_vm._v("もっと短く～")]
                 )
               : _vm._e()
           ]),
@@ -42411,7 +42369,7 @@ var render = function() {
                   {
                     staticClass: "welcome-form__feedback--valid valid-feedback"
                   },
-                  [_vm._v("\n        ええやん！\n      ")]
+                  [_vm._v("ええやん！")]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -42422,7 +42380,7 @@ var render = function() {
                     staticClass:
                       "welcome-form__feedback--invalid invalid-feedback"
                   },
-                  [_vm._v("\n        パスワードが異なります！\n      ")]
+                  [_vm._v("パスワードが異なります！")]
                 )
               : _vm._e()
           ]),
@@ -42467,7 +42425,7 @@ var render = function() {
                   {
                     staticClass: "welcome-form__feedback--valid valid-feedback"
                   },
-                  [_vm._v("\n        ええやん！\n      ")]
+                  [_vm._v("ええやん！")]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -42478,7 +42436,7 @@ var render = function() {
                     staticClass:
                       "welcome-form__feedback--invalid invalid-feedback"
                   },
-                  [_vm._v("\n        使えない文字が入力されています！\n      ")]
+                  [_vm._v("使えない文字が入力されています！")]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -42489,7 +42447,7 @@ var render = function() {
                     staticClass:
                       "welcome-form__feedback--invalid invalid-feedback"
                   },
-                  [_vm._v("\n        もっと長く！\n      ")]
+                  [_vm._v("もっと長く！")]
                 )
               : _vm._e(),
             _vm._v(" "),
@@ -42500,7 +42458,7 @@ var render = function() {
                     staticClass:
                       "welcome-form__feedback--invalid invalid-feedback"
                   },
-                  [_vm._v("\n        もっと短く～\n      ")]
+                  [_vm._v("もっと短く～")]
                 )
               : _vm._e()
           ]),
@@ -42514,7 +42472,7 @@ var render = function() {
                     staticClass: "btn btn-cloto-primary",
                     attrs: { type: "submit", disabled: _vm.isButtonDisabled }
                   },
-                  [_vm._v("\n            登録\n          ")]
+                  [_vm._v("登録")]
                 )
               ]),
               _vm._v(" "),
@@ -42529,12 +42487,7 @@ var render = function() {
                 1
               )
             ])
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            attrs: { type: "hidden", name: "_token" },
-            domProps: { value: _vm.$csrf }
-          })
+          ])
         ]
       )
     ]
@@ -103508,7 +103461,6 @@ window.Storage = __webpack_require__(/*! ./consts/storage */ "./resources/js/con
  */
 
 Vue.prototype.$http = window.axios;
-Vue.prototype.$csrf = window.Laravel.csrfToken;
 Vue.prototype.$endpoint = window.API.getEndpoint;
 Vue.prototype.$storage = window.Storage.getStoragePath;
 /**
@@ -103600,7 +103552,7 @@ window.axios.interceptors.response.use(function (response) {
   return error.response || error;
 });
 window.axios.defaults.headers.common = {
-  'X-CSRF-TOKEN': window.Laravel.csrfToken,
+  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
   'X-Requested-With': 'XMLHttpRequest'
 };
 /**
