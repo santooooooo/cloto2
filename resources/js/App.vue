@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { INTERNAL_SERVER_ERROR } from '@/consts/error';
+import { UNAUTHORIZED, INTERNAL_SERVER_ERROR } from '@/consts/error';
 
 export default {
   computed: {
@@ -24,9 +24,17 @@ export default {
   watch: {
     errorCode: {
       // エラー発生
-      handler(val) {
+      async handler(val) {
         if (val === INTERNAL_SERVER_ERROR) {
           this.$router.push({ name: 'INTERNAL_SERVER_ERROR' });
+        } else if (val === UNAUTHORIZED) {
+          // トークンの再発行
+          await this.$http.get(this.$endpoint('GET:regenerateToken'));
+          // ストアのuserをクリア
+          this.$store.commit('auth/setUser', null);
+          // ログイン画面へ
+          // this.$router.push({ name: 'login' });
+          console.log('419');
         }
       },
       immediate: true,
