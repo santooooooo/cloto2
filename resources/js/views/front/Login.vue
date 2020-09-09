@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" max-width="800">
+    <v-dialog v-model="dialog" max-width="440">
       <v-card>
         <v-spacer></v-spacer>
         <v-card-text>
@@ -8,29 +8,30 @@
             <v-container>
               <v-row>
                 <v-col>
-                  <v-text-field v-model="loginField" label="Username"></v-text-field>
-                  <v-text-field v-model="password" label="password"></v-text-field>
+                  <img :src="$storage('system') + 'logo.png'" class="login-logo" alt="logo" width="35" height="35" />
+                  <h2>ログイン</h2>
+                  <v-text-field v-model="loginField" label="ユーザー名 または メールアドレス"></v-text-field>
+                  <v-text-field v-model="password" label="パスワード"></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
           </v-form>
-        </v-card-text>
-        <v-row justify="center">
-          <button
-            v-on:click="
+
+          <v-row justify="center">
+            <button
+              v-on:click="
               login();
               dialog = false;
             "
-            type="button"
-            class="btn btn-cloto-primary"
-          >
-            ログイン
-          </button>
+              type="button"
+              class="btn btn-cloto-primary"
+            >ログイン</button>
 
-          <div class="mt-3">
-            <router-link :to="{ name: 'register' }">Have not account</router-link>
-          </div>
-        </v-row>
+            <div class="mt-3">
+              <router-link :to="{ name: 'register' }">Have not account</router-link>
+            </div>
+          </v-row>
+        </v-card-text>
       </v-card>
     </v-dialog>
   </v-row>
@@ -54,7 +55,7 @@
         <div class="mt-3">
           <router-link :to="{ name: 'register' }">Have not account</router-link>
         </div>
-      </v-card> -->
+  </v-card>-->
 
   <!-- <div class="welcome-form card justify-content-center">
     <div class="alert alert-danger" v-if="error" v-text="error"></div>
@@ -155,42 +156,48 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
-.welcome-form {
-  width: 400px;
-  height: 360px;
-  margin: auto;
-  background-color: $bg-color;
-  border-radius: 30px;
-  border: none;
 
-  .alert {
-    position: absolute;
-    top: 0;
-    width: 400px;
-    border-radius: 30px 30px 0 0;
-  }
-
-  .form-group {
-    margin: 10px 0;
-
-    div {
-      margin: 0 auto;
-    }
-
-    input[type='text'],
-    input[type='password'] {
-      width: 250px;
-      margin: 0 auto;
-      border-radius: 30px;
-    }
-  }
-
-  &__feedback {
-    &--margin {
-      width: 100%;
-      margin-top: 0.25rem;
-      font-size: 1em;
-    }
-  }
+.login-logo{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
+// .welcome-form {
+//   width: 400px;
+//   height: 360px;
+//   margin: auto;
+//   background-color: $bg-color;
+//   border-radius: 30px;
+//   border: none;
+
+//   .alert {
+//     position: absolute;
+//     top: 0;
+//     width: 400px;
+//     border-radius: 30px 30px 0 0;
+//   }
+
+//   .form-group {
+//     margin: 10px 0;
+
+//     div {
+//       margin: 0 auto;
+//     }
+
+//     input[type='text'],
+//     input[type='password'] {
+//       width: 250px;
+//       margin: 0 auto;
+//       border-radius: 30px;
+//     }
+//   }
+
+//   &__feedback {
+//     &--margin {
+//       width: 100%;
+//       margin-top: 0.25rem;
+//       font-size: 1em;
+//     }
+//   }
+// }
 </style>

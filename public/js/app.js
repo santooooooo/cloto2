@@ -2577,6 +2577,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   head: {
     title: function title() {
@@ -7881,7 +7882,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".welcome-form[data-v-560c5e34] {\n  width: 400px;\n  height: 360px;\n  margin: auto;\n  background-color: #f4f4f4;\n  border-radius: 30px;\n  border: none;\n}\n.welcome-form .alert[data-v-560c5e34] {\n  position: absolute;\n  top: 0;\n  width: 400px;\n  border-radius: 30px 30px 0 0;\n}\n.welcome-form .form-group[data-v-560c5e34] {\n  margin: 10px 0;\n}\n.welcome-form .form-group div[data-v-560c5e34] {\n  margin: 0 auto;\n}\n.welcome-form .form-group input[type=text][data-v-560c5e34],\n.welcome-form .form-group input[type=password][data-v-560c5e34] {\n  width: 250px;\n  margin: 0 auto;\n  border-radius: 30px;\n}\n.welcome-form__feedback--margin[data-v-560c5e34] {\n  width: 100%;\n  margin-top: 0.25rem;\n  font-size: 1em;\n}", ""]);
+exports.push([module.i, ".login-logo[data-v-560c5e34] {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n}", ""]);
 
 // exports
 
@@ -41873,7 +41874,7 @@ var render = function() {
       _c(
         "v-dialog",
         {
-          attrs: { "max-width": "800" },
+          attrs: { "max-width": "440" },
           model: {
             value: _vm.dialog,
             callback: function($$v) {
@@ -41903,8 +41904,22 @@ var render = function() {
                               _c(
                                 "v-col",
                                 [
+                                  _c("img", {
+                                    staticClass: "login-logo",
+                                    attrs: {
+                                      src: _vm.$storage("system") + "logo.png",
+                                      alt: "logo",
+                                      width: "35",
+                                      height: "35"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("h2", [_vm._v("ログイン")]),
+                                  _vm._v(" "),
                                   _c("v-text-field", {
-                                    attrs: { label: "Username" },
+                                    attrs: {
+                                      label: "ユーザー名 または メールアドレス"
+                                    },
                                     model: {
                                       value: _vm.loginField,
                                       callback: function($$v) {
@@ -41915,7 +41930,7 @@ var render = function() {
                                   }),
                                   _vm._v(" "),
                                   _c("v-text-field", {
-                                    attrs: { label: "password" },
+                                    attrs: { label: "パスワード" },
                                     model: {
                                       value: _vm.password,
                                       callback: function($$v) {
@@ -41935,38 +41950,40 @@ var render = function() {
                       )
                     ],
                     1
-                  )
+                  ),
+                  _vm._v(" "),
+                  _c("v-row", { attrs: { justify: "center" } }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-cloto-primary",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            _vm.login()
+                            _vm.dialog = false
+                          }
+                        }
+                      },
+                      [_vm._v("ログイン")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "mt-3" },
+                      [
+                        _c(
+                          "router-link",
+                          { attrs: { to: { name: "register" } } },
+                          [_vm._v("Have not account")]
+                        )
+                      ],
+                      1
+                    )
+                  ])
                 ],
                 1
-              ),
-              _vm._v(" "),
-              _c("v-row", { attrs: { justify: "center" } }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-cloto-primary",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        _vm.login()
-                        _vm.dialog = false
-                      }
-                    }
-                  },
-                  [_vm._v("\n          ログイン\n        ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "mt-3" },
-                  [
-                    _c("router-link", { attrs: { to: { name: "register" } } }, [
-                      _vm._v("Have not account")
-                    ])
-                  ],
-                  1
-                )
-              ])
+              )
             ],
             1
           )
@@ -104956,8 +104973,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\shuto\CLOTO\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\shuto\CLOTO\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Owner\Desktop\CLOTO\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Owner\Desktop\CLOTO\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
