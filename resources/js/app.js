@@ -10,7 +10,6 @@ window.Storage = require('./consts/storage');
  * Vueプロトタイプの設定
  */
 Vue.prototype.$http = window.axios;
-Vue.prototype.$csrf = window.Laravel.csrfToken;
 Vue.prototype.$endpoint = window.API.getEndpoint;
 Vue.prototype.$storage = window.Storage.getStoragePath;
 
@@ -41,47 +40,15 @@ const app = new Vue({
   store,
   vuetify,
   render: h => h(App),
-  data() {
-    return {
-      AuthUser: '', // ログインユーザー
-    };
-  },
-  methods: {
-    SyncAuthUser: function() {
-      // ログインユーザーの同期
-      this.$http.get(this.$endpoint('GET:AuthUser')).then(response => {
-        this.AuthUser = response.data;
-        if (typeof this.AuthUser.sns !== 'undefined') {
-          this.AuthUser.sns = JSON.parse(this.AuthUser.sns);
-        }
-      });
-    },
-    AuthCheck: function() {
-      // ログインチェック
-      if (typeof this.AuthUser.user_id === 'undefined') {
-        return false;
-      } else {
-        return true;
-      }
-    },
-  },
-  async created() {
-    // ログインユーザーの初回同期
-    var response = await this.$http.get(this.$endpoint('GET:AuthUser'));
-    this.AuthUser = response.data;
-    if (typeof this.AuthUser.sns !== 'undefined') {
-      this.AuthUser.sns = JSON.parse(this.AuthUser.sns);
-    }
-    // 同期完了後にマウント
-    this.$mount('#app');
-  },
-  watch: {
-    $route: function(to, from) {
-      // ページ遷移イベント
-      if (to.path !== from.path) {
-        // ログインユーザーの同期
-        this.SyncAuthUser();
-      }
-    },
-  },
 });
+
+/**
+ * Vueのマウント
+ */
+(async function() {
+  /** 前処理 */
+  await store.dispatch('auth/syncAuthUser');
+
+  /** マウント */
+  app.$mount('#app');
+})();

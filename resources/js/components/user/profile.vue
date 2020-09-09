@@ -5,7 +5,12 @@
       <div class="row">
         <!-- アイコンとユーザー名 -->
         <div class="profile__user col-md-5">
-          <img :src="$storage('icon') + user.icon" class="rounded-circle" width="100" height="100" />
+          <img
+            :src="$storage('icon') + user.icon"
+            class="rounded-circle"
+            width="100"
+            height="100"
+          />
           <p class="profile__user--handlename">{{ user.handlename }}</p>
           <p class="profile__user--username">{{ '@' + user.username }}</p>
         </div>
@@ -15,9 +20,13 @@
             <!-- マイページの場合 -->
             <router-link
               class="btn btn-cloto-primary"
-              :to="{ name: 'profileEdit', params: { username: $root.AuthUser.username } }"
+              :to="{
+                name: 'profileEdit',
+                params: { username: $store.getters['auth/user'].username },
+              }"
               v-if="user.user_id == authId"
-            >編集する</router-link>
+              >編集する</router-link
+            >
           </div>
           <!-- ボタン類 -->
           <div class="profile__sns-container" v-if="sns || user.web">
@@ -59,22 +68,19 @@
   </div>
 </template>
 
-
 <script>
 export default {
   data() {
     return {
       user: {},
-      authId: "",
+      authId: '',
       sns: {},
     };
   },
   mounted() {
-    var endpoint = this.$endpoint("GET:userShow", [
-      this.$route.params.username,
-    ]);
+    var endpoint = this.$endpoint('GET:userShow', [this.$route.params.username]);
 
-    this.$http.get(endpoint).then((response) => {
+    this.$http.get(endpoint).then(response => {
       this.user = response.data.user;
       this.authId = response.data.authId;
 
@@ -86,9 +92,8 @@ export default {
 };
 </script>
 
-
 <style lang="scss" scoped>
-@import "~/_variables";
+@import '~/_variables';
 
 .profile {
   padding: 1em 0;

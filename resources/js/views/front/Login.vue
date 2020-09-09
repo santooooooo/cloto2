@@ -16,7 +16,11 @@
     </v-card-actions>
   </v-card>-->
   <div class="welcome-form card justify-content-center">
-    <div class="alert alert-danger" v-if="error" v-text="error"></div>
+    <div v-if="loginErrors" class="errors">
+      <ul v-if="loginErrors.loginField">
+        <li v-for="msg in loginErrors.loginField" :key="msg">{{ msg }}</li>
+      </ul>
+    </div>
 
     <div class="form-group row">
       <input type="text" class="form-control" v-model="loginField" placeholder="ユーザー名 または メールアドレス" />
@@ -82,6 +86,14 @@ export default {
       this.changeButton();
     },
   },
+  computed: {
+    apiStatus() {
+      return this.$store.state.auth.apiStatus;
+    },
+    loginErrors() {
+      return this.$store.state.auth.loginErrorMessages;
+    },
+  },
   methods: {
     changeButton: function () {
       if (this.loginField && this.password) {
@@ -101,9 +113,15 @@ export default {
       // ログイン処理
       await this.$store.dispatch('auth/login', params);
 
-      // ページ遷移
-      this.$router.push({ name: 'home' });
+      if (this.apiStatus) {
+        // ページ遷移
+        this.$router.push({ name: 'home' });
+      }
     },
+  },
+  created() {
+    // エラーの初期化
+    this.$store.commit('auth/setLoginErrorMessages', null);
   },
 };
 </script>
