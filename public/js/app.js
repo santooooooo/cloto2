@@ -1922,7 +1922,7 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _consts_error__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/consts/error */ "./resources/js/consts/error.js");
+/* harmony import */ var _consts_status__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/consts/status */ "./resources/js/consts/status.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -1961,7 +1961,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  if (!(val === _consts_error__WEBPACK_IMPORTED_MODULE_1__["INTERNAL_SERVER_ERROR"])) {
+                  if (!(val === _consts_status__WEBPACK_IMPORTED_MODULE_1__["INTERNAL_SERVER_ERROR"])) {
                     _context.next = 4;
                     break;
                   }
@@ -1974,7 +1974,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   break;
 
                 case 4:
-                  if (!(val === _consts_error__WEBPACK_IMPORTED_MODULE_1__["UNAUTHORIZED"])) {
+                  if (!(val === _consts_status__WEBPACK_IMPORTED_MODULE_1__["UNAUTHORIZED"])) {
                     _context.next = 9;
                     break;
                   }
@@ -103960,10 +103960,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/consts/error.js":
-/*!**************************************!*\
-  !*** ./resources/js/consts/error.js ***!
-  \**************************************/
+/***/ "./resources/js/consts/status.js":
+/*!***************************************!*\
+  !*** ./resources/js/consts/status.js ***!
+  \***************************************/
 /*! exports provided: OK, CREATED, UNAUTHORIZED, UNPROCESSABLE_ENTITY, INTERNAL_SERVER_ERROR */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -104133,7 +104133,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/api */ "./resources/js/api.js");
-/* harmony import */ var _consts_error__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/consts/error */ "./resources/js/consts/error.js");
+/* harmony import */ var _consts_status__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/consts/status */ "./resources/js/consts/status.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -104210,7 +104210,7 @@ var actions = {
             case 3:
               response = _context2.sent;
 
-              if (!(response.status === _consts_error__WEBPACK_IMPORTED_MODULE_2__["CREATED"])) {
+              if (!(response.status === _consts_status__WEBPACK_IMPORTED_MODULE_2__["CREATED"])) {
                 _context2.next = 8;
                 break;
               }
@@ -104223,7 +104223,7 @@ var actions = {
               // エラー発生
               context.commit('setApiStatus', false);
 
-              if (response.status === _consts_error__WEBPACK_IMPORTED_MODULE_2__["UNPROCESSABLE_ENTITY"]) {
+              if (response.status === _consts_status__WEBPACK_IMPORTED_MODULE_2__["UNPROCESSABLE_ENTITY"]) {
                 // 入力値エラー発生
                 context.commit('setRegisterErrorMessages', response.data.errors);
               } else {
@@ -104257,7 +104257,7 @@ var actions = {
             case 3:
               response = _context3.sent;
 
-              if (!(response.status === _consts_error__WEBPACK_IMPORTED_MODULE_2__["OK"])) {
+              if (!(response.status === _consts_status__WEBPACK_IMPORTED_MODULE_2__["OK"])) {
                 _context3.next = 8;
                 break;
               }
@@ -104270,7 +104270,7 @@ var actions = {
               // エラー発生
               context.commit('setApiStatus', false);
 
-              if (response.status === _consts_error__WEBPACK_IMPORTED_MODULE_2__["UNPROCESSABLE_ENTITY"]) {
+              if (response.status === _consts_status__WEBPACK_IMPORTED_MODULE_2__["UNPROCESSABLE_ENTITY"]) {
                 // 入力値エラー発生
                 context.commit('setLoginErrorMessages', response.data.errors);
               } else {
@@ -104304,7 +104304,7 @@ var actions = {
             case 3:
               response = _context4.sent;
 
-              if (!(response.status === _consts_error__WEBPACK_IMPORTED_MODULE_2__["OK"])) {
+              if (!(response.status === _consts_status__WEBPACK_IMPORTED_MODULE_2__["OK"])) {
                 _context4.next = 8;
                 break;
               }

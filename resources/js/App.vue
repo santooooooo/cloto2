@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { UNAUTHORIZED, INTERNAL_SERVER_ERROR } from '@/consts/error';
+import { UNAUTHORIZED, INTERNAL_SERVER_ERROR } from '@/consts/status';
 
 export default {
   computed: {

@@ -1,5 +1,5 @@
 import { getEndpoint as $endpoint } from '@/api';
-import { OK, CREATED, UNPROCESSABLE_ENTITY } from '@/consts/error';
+import { OK, CREATED, UNPROCESSABLE_ENTITY } from '@/consts/status';
 
 const state = {
   user: null,
