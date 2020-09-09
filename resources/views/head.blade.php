@@ -1,13 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- CSRF Token -->
-<script>
-    window.Laravel = {
-        csrfToken: "{{ csrf_token() }}"
-    };
-</script>
-
 <!-- Favicon -->
 <link rel="shortcut icon" href="{{ config('consts.storage.system').'favicon.ico' }}">
 
