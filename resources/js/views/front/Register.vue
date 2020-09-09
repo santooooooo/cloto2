@@ -120,9 +120,10 @@
         <div>
           <div>
             <button
-              type="submit"
+              type="button"
               class="btn btn-cloto-primary"
               v-bind:disabled="isButtonDisabled"
+              @click="register"
             >登録</button>
           </div>
           <div class="mt-3">
@@ -222,7 +223,33 @@ export default {
       this.checkErrors();
     },
   },
+  computed: {
+    apiStatus() {
+      return this.$store.state.auth.apiStatus;
+    },
+    registerErrors() {
+      return this.$store.state.auth.registerErrorMessages;
+    },
+  },
   methods: {
+    register: async function () {
+      // データの作成
+      var params = {
+        username: this.username,
+        email: this.email,
+        password: this.password,
+        password_confirmation: this.passwordConfirmation,
+        handlename: this.handlename,
+      };
+
+      // 新規登録処理
+      await this.$store.dispatch('auth/register', params);
+
+      if (this.apiStatus) {
+        // ページ遷移
+        this.$router.push({ name: 'home' });
+      }
+    },
     checkErrors: function () {
       if (validate.validErrors(this.statuses) === this.Valid) {
         // エラーが無くなればボタンを有効化
@@ -261,6 +288,9 @@ export default {
         this.errorEmail = 'そのメールアドレスは使われています(ー_ー)!!';
       }
     }
+
+    // エラーの初期化
+    this.$store.commit('auth/setLoginErrorMessages', null);
   },
 };
 </script>

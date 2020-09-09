@@ -2727,7 +2727,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _tools_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/tools/validate */ "./resources/js/tools/validate.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _tools_validate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/tools/validate */ "./resources/js/tools/validate.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
 //
 //
 //
@@ -2882,12 +2891,12 @@ __webpack_require__.r(__webpack_exports__);
     return {
       errorUsername: '　',
       errorEmail: '　',
-      Valid: _tools_validate__WEBPACK_IMPORTED_MODULE_0__["Valid"],
-      InValid: _tools_validate__WEBPACK_IMPORTED_MODULE_0__["InValid"],
-      Empty: _tools_validate__WEBPACK_IMPORTED_MODULE_0__["Empty"],
-      TooShort: _tools_validate__WEBPACK_IMPORTED_MODULE_0__["TooShort"],
-      TooLong: _tools_validate__WEBPACK_IMPORTED_MODULE_0__["TooLong"],
-      statuses: [_tools_validate__WEBPACK_IMPORTED_MODULE_0__["Empty"], _tools_validate__WEBPACK_IMPORTED_MODULE_0__["Empty"], _tools_validate__WEBPACK_IMPORTED_MODULE_0__["Empty"], _tools_validate__WEBPACK_IMPORTED_MODULE_0__["Empty"], _tools_validate__WEBPACK_IMPORTED_MODULE_0__["Empty"]],
+      Valid: _tools_validate__WEBPACK_IMPORTED_MODULE_1__["Valid"],
+      InValid: _tools_validate__WEBPACK_IMPORTED_MODULE_1__["InValid"],
+      Empty: _tools_validate__WEBPACK_IMPORTED_MODULE_1__["Empty"],
+      TooShort: _tools_validate__WEBPACK_IMPORTED_MODULE_1__["TooShort"],
+      TooLong: _tools_validate__WEBPACK_IMPORTED_MODULE_1__["TooLong"],
+      statuses: [_tools_validate__WEBPACK_IMPORTED_MODULE_1__["Empty"], _tools_validate__WEBPACK_IMPORTED_MODULE_1__["Empty"], _tools_validate__WEBPACK_IMPORTED_MODULE_1__["Empty"], _tools_validate__WEBPACK_IMPORTED_MODULE_1__["Empty"], _tools_validate__WEBPACK_IMPORTED_MODULE_1__["Empty"]],
       username: null,
       email: null,
       password: null,
@@ -2950,9 +2959,58 @@ __webpack_require__.r(__webpack_exports__);
       this.checkErrors();
     }
   },
+  computed: {
+    apiStatus: function apiStatus() {
+      return this.$store.state.auth.apiStatus;
+    },
+    registerErrors: function registerErrors() {
+      return this.$store.state.auth.registerErrorMessages;
+    }
+  },
   methods: {
+    register: function () {
+      var _register = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var params;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                // データの作成
+                params = {
+                  username: this.username,
+                  email: this.email,
+                  password: this.password,
+                  password_confirmation: this.passwordConfirmation,
+                  handlename: this.handlename
+                }; // 新規登録処理
+
+                _context.next = 3;
+                return this.$store.dispatch('auth/register', params);
+
+              case 3:
+                if (this.apiStatus) {
+                  // ページ遷移
+                  this.$router.push({
+                    name: 'home'
+                  });
+                }
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function register() {
+        return _register.apply(this, arguments);
+      }
+
+      return register;
+    }(),
     checkErrors: function checkErrors() {
-      if (_tools_validate__WEBPACK_IMPORTED_MODULE_0__["validErrors"](this.statuses) === this.Valid) {
+      if (_tools_validate__WEBPACK_IMPORTED_MODULE_1__["validErrors"](this.statuses) === this.Valid) {
         // エラーが無くなればボタンを有効化
         this.isButtonDisabled = false;
       } else {
@@ -2961,22 +3019,22 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     checkUserName: function checkUserName() {
-      return _tools_validate__WEBPACK_IMPORTED_MODULE_0__["validUserName"](this.username);
+      return _tools_validate__WEBPACK_IMPORTED_MODULE_1__["validUserName"](this.username);
     },
     checkEmail: function checkEmail() {
-      return _tools_validate__WEBPACK_IMPORTED_MODULE_0__["validEmail"](this.email);
+      return _tools_validate__WEBPACK_IMPORTED_MODULE_1__["validEmail"](this.email);
     },
     checkPassword: function checkPassword() {
-      return _tools_validate__WEBPACK_IMPORTED_MODULE_0__["validPassword"](this.password);
+      return _tools_validate__WEBPACK_IMPORTED_MODULE_1__["validPassword"](this.password);
     },
     checkPasswordConfirmation: function checkPasswordConfirmation() {
-      return _tools_validate__WEBPACK_IMPORTED_MODULE_0__["validPasswordConfirmation"](this.password, this.passwordConfirmation);
+      return _tools_validate__WEBPACK_IMPORTED_MODULE_1__["validPasswordConfirmation"](this.password, this.passwordConfirmation);
     },
     checkHandleName: function checkHandleName() {
-      return _tools_validate__WEBPACK_IMPORTED_MODULE_0__["validHandleName"](this.handlename);
+      return _tools_validate__WEBPACK_IMPORTED_MODULE_1__["validHandleName"](this.handlename);
     },
     changeFormClass: function changeFormClass(index) {
-      return _tools_validate__WEBPACK_IMPORTED_MODULE_0__["getFormClass"](this.statuses[index]);
+      return _tools_validate__WEBPACK_IMPORTED_MODULE_1__["getFormClass"](this.statuses[index]);
     }
   },
   mounted: function mounted() {
@@ -2988,7 +3046,10 @@ __webpack_require__.r(__webpack_exports__);
       if (typeof this.errors.email !== 'undefined') {
         this.errorEmail = 'そのメールアドレスは使われています(ー_ー)!!';
       }
-    }
+    } // エラーの初期化
+
+
+    this.$store.commit('auth/setLoginErrorMessages', null);
   }
 });
 
@@ -42470,7 +42531,8 @@ var render = function() {
                   "button",
                   {
                     staticClass: "btn btn-cloto-primary",
-                    attrs: { type: "submit", disabled: _vm.isButtonDisabled }
+                    attrs: { type: "button", disabled: _vm.isButtonDisabled },
+                    on: { click: _vm.register }
                   },
                   [_vm._v("登録")]
                 )
