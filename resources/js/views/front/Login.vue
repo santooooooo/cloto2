@@ -1,6 +1,7 @@
 <template>
   <v-row justify="center">
     <v-dialog v-model="dialog" max-width="440">
+      {{ dialog }}
       <v-card>
         <v-spacer></v-spacer>
         <v-card-text>
@@ -8,9 +9,18 @@
             <v-container>
               <v-row>
                 <v-col>
-                  <img :src="$storage('system') + 'logo.png'" class="login-logo" alt="logo" width="35" height="35" />
-                  <h2>ログイン</h2>
-                  <v-text-field v-model="loginField" label="ユーザー名 または メールアドレス"></v-text-field>
+                  <img
+                    :src="$storage('system') + 'logo.png'"
+                    class="login-logo"
+                    alt="logo"
+                    width="35"
+                    height="35"
+                  />
+                  <h2><b>ログイン</b></h2>
+                  <v-text-field
+                    v-model="loginField"
+                    label="ユーザー名 または メールアドレス"
+                  ></v-text-field>
                   <v-text-field v-model="password" label="パスワード"></v-text-field>
                 </v-col>
               </v-row>
@@ -20,12 +30,15 @@
           <v-row justify="center">
             <button
               v-on:click="
-              login();
-              dialog = false;
-            "
+                login();
+                dialog = false;
+              "
               type="button"
               class="btn btn-cloto-primary"
-            >ログイン</button>
+              v-bind:disabled="isPush"
+            >
+              ログイン
+            </button>
 
             <div class="mt-3">
               <router-link :to="{ name: 'register' }">Have not account</router-link>
@@ -112,27 +125,45 @@ export default {
       remember: false,
       isButtonDisabled: true,
       dialog: true,
+      isPush: true,
     };
   },
+  computed: {
+    _allTexts() {
+      return [this.$data.loginField, this.$data.password];
+    },
+  },
   watch: {
-    loginField: function () {
+    loginField: function() {
       this.error = '';
       this.changeButton();
     },
-    password: function () {
+    password: function() {
       this.error = '';
       this.changeButton();
+    },
+    dialog: function() {
+      if (this.dialog === false) {
+        this.$router.push({ name: 'home' });
+      }
+    },
+    _allTexts(loginField, password) {
+      if (loginField && password) {
+        this.isPush = false;
+      } else {
+        this.isPush = true;
+      }
     },
   },
   methods: {
-    changeButton: function () {
+    changeButton: function() {
       if (this.loginField && this.password) {
         this.isButtonDisabled = false;
       } else {
         this.isButtonDisabled = true;
       }
     },
-    login: async function () {
+    login: async function() {
       //dialog = false;
       // データの作成
       var params = {
@@ -156,11 +187,14 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
-
-.login-logo{
+.login-logo {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+h2 {
+  margin-bottom: 1em;
 }
 // .welcome-form {
 //   width: 400px;
