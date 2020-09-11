@@ -74,24 +74,29 @@ export default {
     _allTexts() {
       return [this.loginField, this.password];
     },
+    apiStatus() {
+      return this.$store.state.auth.apiStatus;
+    },
+    loginErrors() {
+      return this.$store.state.auth.loginErrorMessages;
+    },
   },
   watch: {
-    dialog: function() {
+    dialog: function () {
       if (this.dialog === false) {
         this.$router.push({ name: 'home' });
       }
     },
     _allTexts(inputField) {
       if (inputField[0] != '' && inputField[1] != '') {
-        this.isPush = false; //ログインボタンの有効か
+        this.isPush = false; //ログインボタンの有効化
       } else {
         this.isPush = true; //ログインボタンの無効化
       }
     },
   },
   methods: {
-    login: async function() {
-      //dialog = false;
+    login: async function () {
       // データの作成
       var params = {
         loginField: this.loginField,
@@ -99,14 +104,18 @@ export default {
         remember: this.remember,
       };
 
-      console.log(params);
-
       // ログイン処理
       await this.$store.dispatch('auth/login', params);
 
-      // ページ遷移
-      this.$router.push({ name: 'home' });
+      if (this.apiStatus) {
+        // ページ遷移
+        this.$router.push({ name: 'home' });
+      }
     },
+  },
+  created() {
+    // エラーの初期化
+    this.$store.commit('auth/setLoginErrorMessages', null);
   },
 };
 </script>

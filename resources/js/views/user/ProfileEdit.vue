@@ -3,7 +3,7 @@
     <!-- アイコン表示 -->
     <div class="profile-edit__icon">
       <img
-        :src="$storage('icon') + $root.AuthUser.icon"
+        :src="$storage('icon') + $store.getters['auth/user'].icon"
         class="rounded-circle"
         width="100"
         height="100"
@@ -141,7 +141,7 @@
         <button type="button" class="btn btn-primary btn-sm" @click="submit">更新</button>
         <router-link
           class="btn btn-secondary btn-sm btn-danger"
-          :to="{ name: 'userPage', params: { username: this.$route.params.username } }"
+          :to="{ name: 'userPage', params: { username: $store.getters['auth/user'].username } }"
         >戻る</router-link>
       </div>
     </div>
@@ -154,64 +154,64 @@ export default {
   head: {
     title() {
       return {
-        inner: this.$route.params.username + " - " + "編集",
+        inner: this.$route.params.username + ' - ' + '編集',
       };
     },
   },
   data() {
     return {
       formData: new FormData(),
-      username: this.$root.AuthUser.username,
-      email: this.$root.AuthUser.email,
-      handlename: this.$root.AuthUser.handlename,
-      twitter: this.$root.AuthUser.sns.twitter,
-      github: this.$root.AuthUser.sns.github,
-      qiita: this.$root.AuthUser.sns.qiita,
-      web: this.$root.AuthUser.web,
-      introduction: this.$root.AuthUser.introduction,
+      username: this.$store.getters['auth/user'].username,
+      email: this.$store.getters['auth/user'].email,
+      handlename: this.$store.getters['auth/user'].handlename,
+      twitter: this.$store.getters['auth/user'].sns.twitter,
+      github: this.$store.getters['auth/user'].sns.github,
+      qiita: this.$store.getters['auth/user'].sns.qiita,
+      web: this.$store.getters['auth/user'].web,
+      introduction: this.$store.getters['auth/user'].introduction,
     };
   },
   methods: {
     submit: function () {
       // データの作成
-      this.formData.append("username", this.username);
-      this.formData.append("email", this.email);
-      this.formData.append("handlename", this.handlename);
+      this.formData.append('username', this.username);
+      this.formData.append('email', this.email);
+      this.formData.append('handlename', this.handlename);
       if (this.twitter === null) {
-        this.formData.append("twitter", "");
+        this.formData.append('twitter', '');
       } else {
-        this.formData.append("twitter", this.twitter);
+        this.formData.append('twitter', this.twitter);
       }
       if (this.github === null) {
-        this.formData.append("github", "");
+        this.formData.append('github', '');
       } else {
-        this.formData.append("github", this.github);
+        this.formData.append('github', this.github);
       }
       if (this.qiita === null) {
-        this.formData.append("qiita", "");
+        this.formData.append('qiita', '');
       } else {
-        this.formData.append("qiita", this.qiita);
+        this.formData.append('qiita', this.qiita);
       }
       if (this.web === null) {
-        this.formData.append("web", "");
+        this.formData.append('web', '');
       } else {
-        this.formData.append("web", this.web);
+        this.formData.append('web', this.web);
       }
       if (this.introduction === null) {
-        this.formData.append("introduction", "");
+        this.formData.append('introduction', '');
       } else {
-        this.formData.append("introduction", this.introduction);
+        this.formData.append('introduction', this.introduction);
       }
 
       // データの送信
       this.$http
-        .post(this.$endpoint("POST:profileUpdate"), this.formData, {
-          headers: { "content-type": "multipart/form-data" },
+        .post(this.$endpoint('POST:profileUpdate'), this.formData, {
+          headers: { 'content-type': 'multipart/form-data' },
         })
         .then((response) => {
           this.$router.push({
-            name: "userPage",
-            params: { username: this.$route.params.username },
+            name: 'userPage',
+            params: { username: this.$store.getters['auth/user'].username },
           });
         })
         .catch((error) => {
