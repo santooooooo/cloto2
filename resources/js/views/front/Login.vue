@@ -20,9 +20,17 @@
                   </h2>
                   <v-text-field
                     v-model="loginField"
+                    prepend-icon="fas fa-user"
                     label="ユーザー名 または メールアドレス"
                   ></v-text-field>
-                  <v-text-field v-model="password" label="パスワード"></v-text-field>
+                  <v-text-field
+                    prepend-icon="fas fa-lock "
+                    :append-icon="show1 ? 'far fa-eye' : 'far fa-eye-slash'"
+                    :type="show1 ? 'text' : 'password'"
+                    v-model="password"
+                    label="パスワード"
+                    @click:append="show1 = !show1"
+                  ></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
@@ -32,14 +40,11 @@
             <button
               v-on:click="
                 login();
-                dialog = false;
               "
               type="button"
               class="btn btn-cloto-primary"
               v-bind:disabled="isPush"
-            >
-              ログイン
-            </button>
+            >ログイン</button>
 
             <div class="mt-3">
               <router-link :to="{ name: 'register' }">Have not account</router-link>
@@ -62,6 +67,7 @@ export default {
   },
   data() {
     return {
+      show1: false,
       error: '',
       loginField: '',
       password: '',
