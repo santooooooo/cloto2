@@ -18,14 +18,18 @@
                   <h2>
                     <b>ログイン</b>
                   </h2>
-                  <v-text-field v-model="loginField" label="ユーザー名 または メールアドレス"></v-text-field>
+                  <v-text-field
+                    v-model="loginField"
+                    label="ユーザー名 または メールアドレス"
+                  ></v-text-field>
                   <v-text-field
                     v-model="password"
-                    :append-icon="show1 ? 'fas fa-eye' : 'fas fa-eye-slash'"
+                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show1 ? 'text' : 'password'"
                     label="パスワード"
                     @click:append="show1 = !show1"
                   ></v-text-field>
+                  <v-text-field prepend-icon="mdi-map-marker" label="test"></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
@@ -40,7 +44,9 @@
               type="button"
               class="btn btn-cloto-primary"
               v-bind:disabled="isPush"
-            >ログイン</button>
+            >
+              ログイン
+            </button>
 
             <div class="mt-3">
               <router-link :to="{ name: 'register' }">Have not account</router-link>
