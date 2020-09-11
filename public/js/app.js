@@ -2613,6 +2613,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   head: {
     title: function title() {
@@ -2623,6 +2628,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
+      show1: false,
       error: '',
       loginField: '',
       password: '',
@@ -42023,6 +42029,7 @@ var render = function() {
                                   _vm._v(" "),
                                   _c("v-text-field", {
                                     attrs: {
+                                      "prepend-icon": "fas fa-user",
                                       label: "ユーザー名 または メールアドレス"
                                     },
                                     model: {
@@ -42035,7 +42042,19 @@ var render = function() {
                                   }),
                                   _vm._v(" "),
                                   _c("v-text-field", {
-                                    attrs: { label: "パスワード" },
+                                    attrs: {
+                                      "prepend-icon": "fas fa-lock ",
+                                      "append-icon": _vm.show1
+                                        ? "far fa-eye"
+                                        : "far fa-eye-slash",
+                                      type: _vm.show1 ? "text" : "password",
+                                      label: "パスワード"
+                                    },
+                                    on: {
+                                      "click:append": function($event) {
+                                        _vm.show1 = !_vm.show1
+                                      }
+                                    },
                                     model: {
                                       value: _vm.password,
                                       callback: function($$v) {
@@ -42065,12 +42084,11 @@ var render = function() {
                         attrs: { type: "button", disabled: _vm.isPush },
                         on: {
                           click: function($event) {
-                            _vm.login()
-                            _vm.dialog = false
+                            return _vm.login()
                           }
                         }
                       },
-                      [_vm._v("\n            ログイン\n          ")]
+                      [_vm._v("ログイン")]
                     ),
                     _vm._v(" "),
                     _c(
@@ -105238,8 +105256,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\atsu3\GitHub\CLOTO\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\atsu3\GitHub\CLOTO\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Owner\Desktop\CLOTO\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Owner\Desktop\CLOTO\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
