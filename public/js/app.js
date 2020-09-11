@@ -2534,50 +2534,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   head: {
     title: function title() {
@@ -2592,28 +2548,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       loginField: '',
       password: '',
       remember: false,
-      isButtonDisabled: true,
-      dialog: true
+      dialog: true,
+      isPush: true
     };
   },
+  computed: {
+    _allTexts: function _allTexts() {
+      return [this.loginField, this.password];
+    }
+  },
   watch: {
-    loginField: function loginField() {
-      this.error = '';
-      this.changeButton();
+    dialog: function dialog() {
+      if (this.dialog === false) {
+        this.$router.push({
+          name: 'home'
+        });
+      }
     },
-    password: function password() {
-      this.error = '';
-      this.changeButton();
+    _allTexts: function _allTexts(inputField) {
+      if (inputField[0] != '' && inputField[1] != '') {
+        this.isPush = false; //ログインボタンの有効か
+      } else {
+        this.isPush = true; //ログインボタンの無効化
+      }
     }
   },
   methods: {
-    changeButton: function changeButton() {
-      if (this.loginField && this.password) {
-        this.isButtonDisabled = false;
-      } else {
-        this.isButtonDisabled = true;
-      }
-    },
     login: function () {
       var _login = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
         var params;
@@ -7882,7 +7842,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".login-logo[data-v-560c5e34] {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n}", ""]);
+exports.push([module.i, ".login-logo[data-v-560c5e34] {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n}\nh2[data-v-560c5e34] {\n  margin-bottom: 1em;\n}", ""]);
 
 // exports
 
@@ -41914,7 +41874,7 @@ var render = function() {
                                     }
                                   }),
                                   _vm._v(" "),
-                                  _c("h2", [_vm._v("ログイン")]),
+                                  _c("h2", [_c("b", [_vm._v("ログイン")])]),
                                   _vm._v(" "),
                                   _c("v-text-field", {
                                     attrs: {
@@ -41957,7 +41917,7 @@ var render = function() {
                       "button",
                       {
                         staticClass: "btn btn-cloto-primary",
-                        attrs: { type: "button" },
+                        attrs: { type: "button", disabled: _vm.isPush },
                         on: {
                           click: function($event) {
                             _vm.login()
@@ -41965,7 +41925,7 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v("ログイン")]
+                      [_vm._v("\n            ログイン\n          ")]
                     ),
                     _vm._v(" "),
                     _c(
@@ -104973,8 +104933,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Owner\Desktop\CLOTO\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Owner\Desktop\CLOTO\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\shuto\CLOTO\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\shuto\CLOTO\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
