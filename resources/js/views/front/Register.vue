@@ -1,138 +1,239 @@
 <template>
-  <div class="welcome-form card justify-content-center" id="register">
-    <form method="POST" :action="$endpoint('POST:register')">
-      <div class="form-group row">
-        <input
-          type="text"
-          class="form-control"
-          name="username"
-          v-model="username"
-          v-bind:class="changeFormClass(0)"
-          placeholder="ユーザー名"
-        />
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[0] === Empty"
-        >{{ errorUsername }}</div>
-        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[0] === Valid">ええやん！</div>
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[0] === InValid"
-        >英数字の組み合わせを入力してください！</div>
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[0] === TooShort"
-        >もっと長く！</div>
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[0] === TooLong"
-        >もっと短く～</div>
-      </div>
+  <v-row justify="center">
+    <v-dialog v-model="dialog" max-width="440">
+      <v-card>
+        <v-spacer></v-spacer>
+        <v-card-text>
+          <v-form>
+            <v-container>
+              <v-row>
+                <v-col>
+                  <h2>
+                    <b>新規登録</b>
+                  </h2>
+                  <v-text-field
+                    v-model="username"
+                    prepend-icon="fas fa-user"
+                    label="ユーザー名"
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="email"
+                    prepend-icon="fas fa-envelope"
+                    label="メールアドレス"
+                  ></v-text-field>
+                  <v-text-field
+                    prepend-icon="fas fa-lock "
+                    :append-icon="show1 ? 'far fa-eye' : 'far fa-eye-slash'"
+                    :type="show1 ? 'text' : 'password'"
+                    v-model="password"
+                    label="パスワード"
+                    @click:append="show1 = !show1"
+                  ></v-text-field>
+                  <v-text-field
+                    prepend-icon="fas fa-lock "
+                    :append-icon="show1 ? 'far fa-eye' : 'far fa-eye-slash'"
+                    :type="show1 ? 'text' : 'passwordConfirmation'"
+                    v-model="passwordConfirmation"
+                    label="パスワード再入力"
+                    @click:append="show1 = !show1"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-form>
 
-      <div class="form-group row">
-        <input
-          type="email"
-          class="form-control"
-          name="email"
-          v-model="email"
-          v-bind:class="changeFormClass(1)"
-          placeholder="メールアドレス"
-        />
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[1] === Empty"
-        >{{ errorEmail }}</div>
-        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[1] === Valid">ええやん！</div>
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[1] === InValid"
-        >メールアドレスを入力してください！</div>
-      </div>
-
-      <div class="form-group row">
-        <input
-          type="password"
-          class="form-control"
-          name="password"
-          v-model="password"
-          v-bind:class="changeFormClass(2)"
-          placeholder="パスワード"
-        />
-        <div class="welcome-form__feedback--margin" v-if="statuses[2] === Empty">&nbsp;</div>
-        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[2] === Valid">ええやん！</div>
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[2] === InValid"
-        >パスワードを入力してください！</div>
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[2] === TooShort"
-        >もっと長く！</div>
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[2] === TooLong"
-        >もっと短く～</div>
-      </div>
-
-      <div class="form-group row">
-        <input
-          type="password"
-          class="form-control"
-          name="password_confirmation"
-          v-model="passwordConfirmation"
-          v-bind:class="changeFormClass(3)"
-          placeholder="パスワード（再入力）"
-        />
-        <div class="welcome-form__feedback--margin" v-if="statuses[3] === Empty">&nbsp;</div>
-        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[3] === Valid">ええやん！</div>
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[3] === InValid"
-        >パスワードが異なります！</div>
-      </div>
-
-      <div class="form-group row">
-        <input
-          type="text"
-          class="form-control"
-          name="handlename"
-          v-model="handlename"
-          v-bind:class="changeFormClass(4)"
-          placeholder="表示名"
-        />
-        <div class="welcome-form__feedback--margin" v-if="statuses[4] === Empty">&nbsp;</div>
-        <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[4] === Valid">ええやん！</div>
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[4] === InValid"
-        >使えない文字が入力されています！</div>
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[4] === TooShort"
-        >もっと長く！</div>
-        <div
-          class="welcome-form__feedback--invalid invalid-feedback"
-          v-if="statuses[4] === TooLong"
-        >もっと短く～</div>
-      </div>
-
-      <div class="form-group row">
-        <div>
-          <div>
+          <v-row justify="center">
             <button
+              v-on:click="login()"
               type="button"
               class="btn btn-cloto-primary"
-              v-bind:disabled="isButtonDisabled"
-              @click="register"
-            >登録</button>
+              v-bind:disabled="isPush"
+            >
+              ログイン
+            </button>
+
+            <div class="mt-3">
+              <router-link :to="{ name: 'register' }">Have not account</router-link>
+            </div>
+          </v-row>
+        </v-card-text>
+      </v-card>
+      <!-- <div class="welcome-form card justify-content-center" id="register">
+        <form method="POST" :action="$endpoint('POST:register')">
+          <div class="form-group row">
+            <input
+              type="text"
+              class="form-control"
+              name="username"
+              v-model="username"
+              v-bind:class="changeFormClass(0)"
+              placeholder="ユーザー名"
+            />
+            <div
+              class="welcome-form__feedback--invalid invalid-feedback"
+              v-if="statuses[0] === Empty"
+            >
+              {{ errorUsername }}
+            </div>
+            <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[0] === Valid">
+              ええやん！
+            </div>
+            <div
+              class="welcome-form__feedback--invalid invalid-feedback"
+              v-if="statuses[0] === InValid"
+            >
+              英数字の組み合わせを入力してください！
+            </div>
+            <div
+              class="welcome-form__feedback--invalid invalid-feedback"
+              v-if="statuses[0] === TooShort"
+            >
+              もっと長く！
+            </div>
+            <div
+              class="welcome-form__feedback--invalid invalid-feedback"
+              v-if="statuses[0] === TooLong"
+            >
+              もっと短く～
+            </div>
           </div>
-          <div class="mt-3">
-            <router-link :to="{ name: 'login' }">もう会員ですか？</router-link>
+
+          <div class="form-group row">
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              v-model="email"
+              v-bind:class="changeFormClass(1)"
+              placeholder="メールアドレス"
+            />
+            <div
+              class="welcome-form__feedback--invalid invalid-feedback"
+              v-if="statuses[1] === Empty"
+            >
+              {{ errorEmail }}
+            </div>
+            <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[1] === Valid">
+              ええやん！
+            </div>
+            <div
+              class="welcome-form__feedback--invalid invalid-feedback"
+              v-if="statuses[1] === InValid"
+            >
+              メールアドレスを入力してください！
+            </div>
           </div>
-        </div>
-      </div>
-    </form>
-  </div>
+
+          <div class="form-group row">
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              v-model="password"
+              v-bind:class="changeFormClass(2)"
+              placeholder="パスワード"
+            />
+            <div class="welcome-form__feedback--margin" v-if="statuses[2] === Empty">&nbsp;</div>
+            <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[2] === Valid">
+              ええやん！
+            </div>
+            <div
+              class="welcome-form__feedback--invalid invalid-feedback"
+              v-if="statuses[2] === InValid"
+            >
+              パスワードを入力してください！
+            </div>
+            <div
+              class="welcome-form__feedback--invalid invalid-feedback"
+              v-if="statuses[2] === TooShort"
+            >
+              もっと長く！
+            </div>
+            <div
+              class="welcome-form__feedback--invalid invalid-feedback"
+              v-if="statuses[2] === TooLong"
+            >
+              もっと短く～
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <input
+              type="password"
+              class="form-control"
+              name="password_confirmation"
+              v-model="passwordConfirmation"
+              v-bind:class="changeFormClass(3)"
+              placeholder="パスワード（再入力）"
+            />
+            <div class="welcome-form__feedback--margin" v-if="statuses[3] === Empty">&nbsp;</div>
+            <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[3] === Valid">
+              ええやん！
+            </div>
+            <div
+              class="welcome-form__feedback--invalid invalid-feedback"
+              v-if="statuses[3] === InValid"
+            >
+              パスワードが異なります！
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <input
+              type="text"
+              class="form-control"
+              name="handlename"
+              v-model="handlename"
+              v-bind:class="changeFormClass(4)"
+              placeholder="表示名"
+            />
+            <div class="welcome-form__feedback--margin" v-if="statuses[4] === Empty">&nbsp;</div>
+            <div class="welcome-form__feedback--valid valid-feedback" v-if="statuses[4] === Valid">
+              ええやん！
+            </div>
+            <div
+              class="welcome-form__feedback--invalid invalid-feedback"
+              v-if="statuses[4] === InValid"
+            >
+              使えない文字が入力されています！
+            </div>
+            <div
+              class="welcome-form__feedback--invalid invalid-feedback"
+              v-if="statuses[4] === TooShort"
+            >
+              もっと長く！
+            </div>
+            <div
+              class="welcome-form__feedback--invalid invalid-feedback"
+              v-if="statuses[4] === TooLong"
+            >
+              もっと短く～
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div>
+              <div>
+                <button
+                  type="button"
+                  
+                  class="btn btn-cloto-primary"
+                  v-bind:disabled="isButtonDisabled"
+                  @click="register"
+                  
+                >
+                  登録
+                </button>
+              </div>
+              <div class="mt-3">
+                <router-link :to="{ name: 'login' }">もう会員ですか？</router-link>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>-->
+    </v-dialog>
+  </v-row>
 </template>
 
 <script>
@@ -167,9 +268,16 @@ export default {
       passwordConfirmation: null,
       handlename: null,
       isButtonDisabled: true,
+      dialog: true,
+      isPush: true,
     };
   },
   watch: {
+    dialog: function () {
+      if (this.dialog === false) {
+        this.$router.push({ name: 'home' });
+      }
+    },
     username: function () {
       if (this.username) {
         this.statuses[0] = this.checkUserName();
