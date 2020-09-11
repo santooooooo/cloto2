@@ -2613,13 +2613,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   head: {
     title: function title() {
@@ -2630,7 +2623,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      show1: false,
       error: '',
       loginField: '',
       password: '',
@@ -2642,6 +2634,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   computed: {
     _allTexts: function _allTexts() {
       return [this.loginField, this.password];
+    },
+    apiStatus: function apiStatus() {
+      return this.$store.state.auth.apiStatus;
+    },
+    loginErrors: function loginErrors() {
+      return this.$store.state.auth.loginErrorMessages;
     }
   },
   watch: {
@@ -2668,25 +2666,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                //dialog = false;
                 // データの作成
                 params = {
                   loginField: this.loginField,
                   password: this.password,
                   remember: this.remember
-                };
-                console.log(params); // ログイン処理
+                }; // ログイン処理
 
-                _context.next = 4;
+                _context.next = 3;
                 return this.$store.dispatch('auth/login', params);
 
-              case 4:
-                // ページ遷移
-                this.$router.push({
-                  name: 'home'
-                });
+              case 3:
+                if (this.apiStatus) {
+                  // ページ遷移
+                  this.$router.push({
+                    name: 'home'
+                  });
+                }
 
-              case 5:
+              case 4:
               case "end":
                 return _context.stop();
             }
@@ -2700,6 +2698,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return login;
     }()
+  },
+  created: function created() {
+    // エラーの初期化
+    this.$store.commit('auth/setLoginErrorMessages', null);
   }
 });
 
@@ -42033,31 +42035,13 @@ var render = function() {
                                   }),
                                   _vm._v(" "),
                                   _c("v-text-field", {
-                                    attrs: {
-                                      "append-icon": _vm.show1
-                                        ? "mdi-eye"
-                                        : "mdi-eye-off",
-                                      type: _vm.show1 ? "text" : "password",
-                                      label: "パスワード"
-                                    },
-                                    on: {
-                                      "click:append": function($event) {
-                                        _vm.show1 = !_vm.show1
-                                      }
-                                    },
+                                    attrs: { label: "パスワード" },
                                     model: {
                                       value: _vm.password,
                                       callback: function($$v) {
                                         _vm.password = $$v
                                       },
                                       expression: "password"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("v-text-field", {
-                                    attrs: {
-                                      "prepend-icon": "mdi-map-marker",
-                                      label: "test"
                                     }
                                   })
                                 ],
@@ -105254,8 +105238,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\shuto\CLOTO\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\shuto\CLOTO\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\atsu3\GitHub\CLOTO\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\atsu3\GitHub\CLOTO\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
