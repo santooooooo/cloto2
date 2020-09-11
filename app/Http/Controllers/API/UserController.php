@@ -29,16 +29,6 @@ class UserController extends Controller
 
     
     /**
-     * ログインユーザーの取得
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getAuthUser()
-    {
-        return response()->json(Auth::user());
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -81,7 +71,7 @@ class UserController extends Controller
         $param = $request->toArray();
 
         // 更新するユーザーを取得
-        $edit_user = User::where('username', $request['username'])->first();
+        $edit_user = $this->user->where('username', $request['username'])->first();
 
         // アイコンの処理
         if (!empty($param['upload-image'])) {

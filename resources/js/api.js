@@ -11,10 +11,11 @@ const replaceChar = ['#', '*', '$'];
  * API一覧
  */
 const home = '/';
+const GET_regenerateToken = '/api/regenerate-token';
 const POST_register = '/api/register';
 const POST_login = '/api/login';
 const POST_logout = '/api/logout';
-const GET_AuthUser = '/api/auth';
+const GET_authUser = '/api/auth/user';
 const GET_userShow = '/api/user/' + replaceChar[0];
 const POST_profileUpdate = '/api/user/update';
 
@@ -32,6 +33,10 @@ export function getEndpoint(name, params) {
       endpoint = home;
       break;
 
+    case 'GET:regenerateToken':
+      endpoint = GET_regenerateToken;
+      break;
+
     case 'POST:register':
       endpoint = POST_register;
       break;
@@ -44,8 +49,8 @@ export function getEndpoint(name, params) {
       endpoint = POST_logout;
       break;
 
-    case 'GET:AuthUser':
-      endpoint = GET_AuthUser;
+    case 'GET:authUser':
+      endpoint = GET_authUser;
       break;
 
     case 'GET:userShow':
