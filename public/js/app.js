@@ -2614,12 +2614,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   head: {
     title: function title() {
@@ -42035,8 +42029,8 @@ var render = function() {
                                   _c("v-text-field", {
                                     attrs: {
                                       "append-icon": _vm.show1
-                                        ? "mdi-eye"
-                                        : "mdi-eye-off",
+                                        ? "fas fa-eye"
+                                        : "fas fa-eye-slash",
                                       type: _vm.show1 ? "text" : "password",
                                       label: "パスワード"
                                     },
@@ -42051,13 +42045,6 @@ var render = function() {
                                         _vm.password = $$v
                                       },
                                       expression: "password"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("v-text-field", {
-                                    attrs: {
-                                      "prepend-icon": "mdi-map-marker",
-                                      label: "test"
                                     }
                                   })
                                 ],
@@ -42086,7 +42073,7 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v("\n            ログイン\n          ")]
+                      [_vm._v("ログイン")]
                     ),
                     _vm._v(" "),
                     _c(
