@@ -22,14 +22,7 @@
                     v-model="loginField"
                     label="ユーザー名 または メールアドレス"
                   ></v-text-field>
-                  <v-text-field
-                    v-model="password"
-                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :type="show1 ? 'text' : 'password'"
-                    label="パスワード"
-                    @click:append="show1 = !show1"
-                  ></v-text-field>
-                  <v-text-field prepend-icon="mdi-map-marker" label="test"></v-text-field>
+                  <v-text-field v-model="password" label="パスワード"></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
@@ -67,10 +60,8 @@ export default {
       };
     },
   },
-
   data() {
     return {
-      show1: false,
       error: '',
       loginField: '',
       password: '',
@@ -83,9 +74,15 @@ export default {
     _allTexts() {
       return [this.loginField, this.password];
     },
+    apiStatus() {
+      return this.$store.state.auth.apiStatus;
+    },
+    loginErrors() {
+      return this.$store.state.auth.loginErrorMessages;
+    },
   },
   watch: {
-    dialog: function() {
+    dialog: function () {
       if (this.dialog === false) {
         this.$router.push({ name: 'home' });
       }
@@ -99,8 +96,7 @@ export default {
     },
   },
   methods: {
-    login: async function() {
-      //dialog = false;
+    login: async function () {
       // データの作成
       var params = {
         loginField: this.loginField,
@@ -108,14 +104,18 @@ export default {
         remember: this.remember,
       };
 
-      console.log(params);
-
       // ログイン処理
       await this.$store.dispatch('auth/login', params);
 
-      // ページ遷移
-      this.$router.push({ name: 'home' });
+      if (this.apiStatus) {
+        // ページ遷移
+        this.$router.push({ name: 'home' });
+      }
     },
+  },
+  created() {
+    // エラーの初期化
+    this.$store.commit('auth/setLoginErrorMessages', null);
   },
 };
 </script>
