@@ -38,6 +38,9 @@
                     >
                       ログイン
                     </button>
+                    <v-alert type="error" v-if="loginErrors">
+                      <span v-for="msg in loginErrors.loginField" :key="msg">{{ msg }}</span>
+                    </v-alert>
                   </div>
                 </v-col>
               </v-row>
