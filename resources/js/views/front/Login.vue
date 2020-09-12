@@ -8,12 +8,16 @@
             <v-container>
               <v-row>
                 <v-col>
+                  <v-alert type="error" v-if="loginErrors">
+                    <span v-for="msg in loginErrors.loginField" :key="msg">{{ msg }}</span>
+                  </v-alert>
                   <img
                     :src="$storage('system') + 'logo.png'"
                     class="login-logo"
                     alt="logo"
                     width="35"
                     height="35"
+                    v-if="!loginErrors"
                   />
                   <h2 class="place">
                     <b>ログイン</b>
@@ -38,9 +42,6 @@
                     >
                       ログイン
                     </button>
-                    <v-alert type="error" v-if="loginErrors">
-                      <span v-for="msg in loginErrors.loginField" :key="msg">{{ msg }}</span>
-                    </v-alert>
                   </div>
                 </v-col>
               </v-row>
