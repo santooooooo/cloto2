@@ -19,6 +19,7 @@ Vue.prototype.$storage = window.Storage.getStoragePath;
 Vue.component('vue-header', require('./components/layouts/VueHeader.vue').default);
 Vue.component('vue-footer', require('./components/layouts/VueFooter.vue').default);
 Vue.component('room', require('./components/front/Room.vue').default);
+Vue.component('timetable', require('./components/front/Timetable.vue').default);
 Vue.component('image-drop-upload', require('./components/form/ImageDropUpload.vue').default);
 Vue.component('profile', require('./components/user/Profile.vue').default);
 
