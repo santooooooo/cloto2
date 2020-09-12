@@ -2619,6 +2619,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   head: {
     title: function title() {
@@ -42063,28 +42066,51 @@ var render = function() {
                                     }
                                   }),
                                   _vm._v(" "),
-                                  _c("div", { staticClass: "btn login" }, [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-cloto-primary",
-                                        attrs: {
-                                          type: "button",
-                                          disabled: _vm.isPush
-                                        },
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.login()
+                                  _c(
+                                    "div",
+                                    { staticClass: "btn login" },
+                                    [
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass: "btn btn-cloto-primary",
+                                          attrs: {
+                                            type: "button",
+                                            disabled: _vm.isPush
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.login()
+                                            }
                                           }
-                                        }
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                    ログイン\n                  "
-                                        )
-                                      ]
-                                    )
-                                  ])
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                    ログイン\n                  "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm.loginErrors
+                                        ? _c(
+                                            "v-alert",
+                                            { attrs: { type: "error" } },
+                                            _vm._l(
+                                              _vm.loginErrors.loginField,
+                                              function(msg) {
+                                                return _c(
+                                                  "span",
+                                                  { key: msg },
+                                                  [_vm._v(_vm._s(msg))]
+                                                )
+                                              }
+                                            ),
+                                            0
+                                          )
+                                        : _vm._e()
+                                    ],
+                                    1
+                                  )
                                 ],
                                 1
                               )
