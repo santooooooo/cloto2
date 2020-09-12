@@ -18,6 +18,7 @@ Vue.prototype.$storage = window.Storage.getStoragePath;
  */
 Vue.component('vue-header', require('./components/layouts/VueHeader.vue').default);
 Vue.component('vue-footer', require('./components/layouts/VueFooter.vue').default);
+Vue.component('room', require('./components/front/Room.vue').default);
 Vue.component('image-drop-upload', require('./components/form/ImageDropUpload.vue').default);
 Vue.component('profile', require('./components/user/Profile.vue').default);
 
@@ -39,13 +40,13 @@ const app = new Vue({
   router,
   store,
   vuetify,
-  render: h => h(App),
+  render: (h) => h(App),
 });
 
 /**
  * Vueのマウント
  */
-(async function() {
+(async function () {
   /** 前処理 */
   await store.dispatch('auth/syncAuthUser');
 
