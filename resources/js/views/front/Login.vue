@@ -8,48 +8,53 @@
             <v-container>
               <v-row>
                 <v-col>
+                  <v-alert type="error" v-if="loginErrors">
+                    <span v-for="msg in loginErrors.loginField" :key="msg">{{ msg }}</span>
+                  </v-alert>
                   <img
                     :src="$storage('system') + 'logo.png'"
                     class="login-logo"
                     alt="logo"
                     width="35"
                     height="35"
+                    v-if="!loginErrors"
                   />
-                  <h2>
+                  <h2 class="place">
                     <b>ログイン</b>
                   </h2>
                   <v-text-field
                     v-model="loginField"
-                    prepend-icon="fas fa-user"
                     label="ユーザー名 または メールアドレス"
                   ></v-text-field>
                   <v-text-field
-                    prepend-icon="fas fa-lock "
                     :append-icon="show1 ? 'far fa-eye' : 'far fa-eye-slash'"
                     :type="show1 ? 'text' : 'password'"
                     v-model="password"
                     label="パスワード"
                     @click:append="show1 = !show1"
                   ></v-text-field>
+                  <div class="btn login">
+                    <button
+                      v-on:click="login()"
+                      type="button"
+                      class="btn btn-cloto-primary"
+                      v-bind:disabled="isPush"
+                    >
+                      ログイン
+                    </button>
+                  </div>
                 </v-col>
               </v-row>
             </v-container>
           </v-form>
 
-          <v-row justify="center">
-            <button
-              v-on:click="
-                login();
-              "
-              type="button"
-              class="btn btn-cloto-primary"
-              v-bind:disabled="isPush"
-            >ログイン</button>
-
-            <div class="mt-3">
-              <router-link :to="{ name: 'register' }">Have not account</router-link>
-            </div>
-          </v-row>
+          <div class="mt-3">
+            <p>
+              アカウントをお持ちでない方は<router-link :to="{ name: 'register' }"
+                >こちら</router-link
+              >
+            </p>
+          </div>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -71,7 +76,6 @@ export default {
       error: '',
       loginField: '',
       password: '',
-      remember: false,
       dialog: true,
       isPush: true,
     };
@@ -107,7 +111,6 @@ export default {
       var params = {
         loginField: this.loginField,
         password: this.password,
-        remember: this.remember,
       };
 
       // ログイン処理
@@ -131,11 +134,24 @@ export default {
 
 .login-logo {
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
 }
 
 h2 {
   margin-bottom: 1em;
+}
+
+.place {
+  text-align: center;
+  margin-top: 19px;
+}
+
+.btn {
+  display: block;
+  margin: 0 auto;
+}
+
+.mt-3 {
+  text-align: center;
 }
 </style>
