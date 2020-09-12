@@ -8,7 +8,7 @@
       <div class="col-md-6">
         <span class="footer__link">
           <i class="fas fa-chevron-right"></i>
-          <router-link :to="{ name: 'home' }">トップ</router-link>
+          <router-link :to="{ name: 'index' }">トップ</router-link>
         </span>
 
         <span class="footer__link">
@@ -46,9 +46,8 @@
   </footer>
 </template>
 
-
 <style lang="scss" scoped>
-@import "~/_variables";
+@import '~/_variables';
 
 .footer {
   width: 100%;

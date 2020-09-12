@@ -4,9 +4,12 @@
     <vue-header></vue-header>
     <!-- </v-app-bar> -->
 
-    <!-- <v-main> -->
-    <router-view />
-    <!-- </v-main> -->
+    <v-main>
+      <div class="welcome__cloto-icon col-6" v-if="!$store.getters['auth/check']">
+        <img :src="$storage('system') + 'top.png'" />
+      </div>
+      <router-view />
+    </v-main>
   </v-app>
 </template>
 
