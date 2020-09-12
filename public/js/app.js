@@ -2618,6 +2618,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   head: {
     title: function title() {
@@ -2632,7 +2633,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       error: '',
       loginField: '',
       password: '',
-      remember: false,
       dialog: true,
       isPush: true
     };
@@ -2675,8 +2675,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 // データの作成
                 params = {
                   loginField: this.loginField,
-                  password: this.password,
-                  remember: this.remember
+                  password: this.password
                 }; // ログイン処理
 
                 _context.next = 3;
@@ -7967,7 +7966,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".login-logo[data-v-560c5e34] {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n}\nh2[data-v-560c5e34] {\n  margin-bottom: 1em;\n}", ""]);
+exports.push([module.i, ".login-logo[data-v-560c5e34] {\n  display: block;\n  margin: 0 auto;\n}\nh2[data-v-560c5e34] {\n  margin-bottom: 1em;\n}\n.place[data-v-560c5e34] {\n  text-align: center;\n  margin-top: 19px;\n}\n.btn[data-v-560c5e34] {\n  display: block;\n  margin: 0 auto;\n}\n.mt-3[data-v-560c5e34] {\n  text-align: center;\n}", ""]);
 
 // exports
 
@@ -42025,11 +42024,12 @@ var render = function() {
                                     }
                                   }),
                                   _vm._v(" "),
-                                  _c("h2", [_c("b", [_vm._v("ログイン")])]),
+                                  _c("h2", { staticClass: "place" }, [
+                                    _c("b", [_vm._v("ログイン")])
+                                  ]),
                                   _vm._v(" "),
                                   _c("v-text-field", {
                                     attrs: {
-                                      "prepend-icon": "fas fa-user",
                                       label: "ユーザー名 または メールアドレス"
                                     },
                                     model: {
@@ -42043,7 +42043,6 @@ var render = function() {
                                   _vm._v(" "),
                                   _c("v-text-field", {
                                     attrs: {
-                                      "prepend-icon": "fas fa-lock ",
                                       "append-icon": _vm.show1
                                         ? "far fa-eye"
                                         : "far fa-eye-slash",
@@ -42062,7 +42061,30 @@ var render = function() {
                                       },
                                       expression: "password"
                                     }
-                                  })
+                                  }),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "btn login" }, [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-cloto-primary",
+                                        attrs: {
+                                          type: "button",
+                                          disabled: _vm.isPush
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.login()
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                    ログイン\n                  "
+                                        )
+                                      ]
+                                    )
+                                  ])
                                 ],
                                 1
                               )
@@ -42076,29 +42098,15 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _c("v-row", { attrs: { justify: "center" } }, [
+                  _c("div", { staticClass: "mt-3" }, [
                     _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-cloto-primary",
-                        attrs: { type: "button", disabled: _vm.isPush },
-                        on: {
-                          click: function($event) {
-                            return _vm.login()
-                          }
-                        }
-                      },
-                      [_vm._v("ログイン")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "mt-3" },
+                      "p",
                       [
+                        _vm._v("\n            アカウントをお持ちでない方は"),
                         _c(
                           "router-link",
                           { attrs: { to: { name: "register" } } },
-                          [_vm._v("Have not account")]
+                          [_vm._v("こちら")]
                         )
                       ],
                       1
