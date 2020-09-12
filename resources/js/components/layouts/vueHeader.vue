@@ -1,6 +1,6 @@
 <template>
   <nav class="nav navbar navbar-expand-md navbar-light shadow-sm">
-    <router-link class="nav__logo" :to="{ name: 'home' }">
+    <router-link class="nav__logo" :to="{ name: 'index' }">
       <img :src="$storage('system') + 'header-logo.svg'" />
     </router-link>
 
@@ -27,8 +27,9 @@
           <div class="nav__dropdown-menu dropdown-menu">
             <router-link
               class="dropdown-item"
-              :to="{ name: 'userPage', params: { username: $store.getters['auth/user'].username }}"
-            >マイページ</router-link>
+              :to="{ name: 'userPage', params: { username: $store.getters['auth/user'].username } }"
+              >マイページ</router-link
+            >
             <button type="button" class="dropdown-item" @click="logout">ログアウト</button>
           </div>
         </li>
@@ -47,7 +48,6 @@
   </nav>
 </template>
 
-
 <script>
 export default {
   methods: {
@@ -56,14 +56,13 @@ export default {
       await this.$store.dispatch('auth/logout');
 
       // トップページへリダイレクト
-      if (this.$route.path != this.$router.resolve({ name: 'home' }).href) {
-        this.$router.push({ name: 'home' });
+      if (this.$route.path != this.$router.resolve({ name: 'index' }).href) {
+        this.$router.push({ name: 'index' });
       }
     },
   },
 };
 </script>
-
 
 <style lang="scss" scoped>
 @import '~/_variables';

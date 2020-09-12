@@ -147,7 +147,7 @@ export default {
     dialog: function () {
       // モーダルが閉じたらリダイレクト
       if (this.dialog === false) {
-        this.$router.push({ name: 'home' });
+        this.$router.push({ name: 'index' });
       }
     },
     _allTexts(inputField) {

@@ -32,7 +32,7 @@
 
                 <v-text-field
                   :append-icon="showPassword ? 'far fa-eye' : 'far fa-eye-slash'"
-                  :type="show ? 'text' : 'password'"
+                  :type="showPassword ? 'text' : 'password'"
                   v-model="password"
                   label="パスワード"
                   @click:append="showPassword = !showPassword"
@@ -95,7 +95,7 @@ export default {
     dialog: function () {
       // モーダルが閉じたらリダイレクト
       if (this.dialog === false) {
-        this.$router.push({ name: 'home' });
+        this.$router.push({ name: 'index' });
       }
     },
     _allTexts(inputField) {
