@@ -2969,6 +2969,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   head: {
@@ -2984,6 +3004,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   data: function data() {
+    var _this = this;
+
     return {
       errorUsername: '　',
       errorEmail: '　',
@@ -2993,17 +3015,53 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       TooShort: _tools_validate__WEBPACK_IMPORTED_MODULE_1__["TooShort"],
       TooLong: _tools_validate__WEBPACK_IMPORTED_MODULE_1__["TooLong"],
       statuses: [_tools_validate__WEBPACK_IMPORTED_MODULE_1__["Empty"], _tools_validate__WEBPACK_IMPORTED_MODULE_1__["Empty"], _tools_validate__WEBPACK_IMPORTED_MODULE_1__["Empty"], _tools_validate__WEBPACK_IMPORTED_MODULE_1__["Empty"], _tools_validate__WEBPACK_IMPORTED_MODULE_1__["Empty"]],
-      username: null,
-      email: null,
-      password: null,
-      passwordConfirmation: null,
-      handlename: null,
+      username: '',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
+      handlename: '',
       isButtonDisabled: true,
       dialog: true,
-      isPush: true
+      isPush: true,
+      show1: false,
+      show2: false,
+      rules: {
+        required: function required(value) {
+          return !!value || '必須項目です';
+        },
+        passMin: function passMin(v) {
+          return v.length >= 8 || '８文字以上です';
+        },
+        userMin: function userMin(v) {
+          return v.length >= 4 || '4文字以上です';
+        },
+        userMax: function userMax(v) {
+          return v.length <= 16 || '16文字以下です';
+        },
+        handleMax: function handleMax(v) {
+          return v.length <= 16 || '20文字以下です';
+        },
+        passMatch: function passMatch(v) {
+          return v === _this.password || 'パスワードが一致しません';
+        },
+        emailMatch: function emailMatch() {
+          return "The email and password you entered don't match";
+        },
+        email: function email(value) {
+          var pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return pattern.test(value) || '無効なメールアドレス.';
+        }
+      }
     };
   },
   watch: {
+    _allTexts: function _allTexts(inputField) {
+      if (inputField[0] != '' && inputField[1] != '' && inputField[2] != '' && inputField[3] != '' && inputField[4] != '') {
+        this.isPush = false; //ログインボタンの有効化
+      } else {
+        this.isPush = true; //ログインボタンの無効化
+      }
+    },
     dialog: function dialog() {
       if (this.dialog === false) {
         this.$router.push({
@@ -3065,6 +3123,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   computed: {
+    _allTexts: function _allTexts() {
+      return [this.username, this.email, this.password, this.passwordConfirmation, this.handlename];
+    },
     apiStatus: function apiStatus() {
       return this.$store.state.auth.apiStatus;
     },
@@ -8096,7 +8157,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".welcome-form[data-v-47979e28] {\n  width: 400px;\n  height: 470px;\n  margin: auto;\n  background-color: #f4f4f4;\n  border-radius: 30px;\n  border: none;\n}\n.welcome-form .form-group[data-v-47979e28] {\n  margin: 10px 0;\n}\n.welcome-form .form-group div[data-v-47979e28] {\n  margin: 0 auto;\n}\n.welcome-form .form-group input[type=text][data-v-47979e28],\n.welcome-form .form-group input[type=email][data-v-47979e28],\n.welcome-form .form-group input[type=password][data-v-47979e28] {\n  width: 250px;\n  margin: 0 auto;\n  border-radius: 30px;\n}\n.welcome-form__feedback--valid[data-v-47979e28], .welcome-form__feedback--invalid[data-v-47979e28] {\n  display: block;\n  font-size: 1em;\n}\n.welcome-form__feedback--margin[data-v-47979e28] {\n  width: 100%;\n  margin-top: 0.25rem;\n  font-size: 1em;\n}", ""]);
+exports.push([module.i, ".login-logo[data-v-47979e28] {\n  display: block;\n  margin: 1em auto;\n}\n.welcome-form[data-v-47979e28] {\n  width: 400px;\n  height: 470px;\n  margin: auto;\n  background-color: #f4f4f4;\n  border-radius: 30px;\n  border: none;\n}\n.welcome-form .form-group[data-v-47979e28] {\n  margin: 10px 0;\n}\n.welcome-form .form-group div[data-v-47979e28] {\n  margin: 0 auto;\n}\n.welcome-form .form-group input[type=text][data-v-47979e28],\n.welcome-form .form-group input[type=email][data-v-47979e28],\n.welcome-form .form-group input[type=password][data-v-47979e28] {\n  width: 250px;\n  margin: 0 auto;\n  border-radius: 30px;\n}\n.welcome-form__feedback--valid[data-v-47979e28], .welcome-form__feedback--invalid[data-v-47979e28] {\n  display: block;\n  font-size: 1em;\n}\n.welcome-form__feedback--margin[data-v-47979e28] {\n  width: 100%;\n  margin-top: 0.25rem;\n  font-size: 1em;\n}\n.welcome-form .btn[data-v-47979e28] {\n  display: block;\n  text-align: center;\n}", ""]);
 
 // exports
 
@@ -42286,12 +42347,29 @@ var render = function() {
                               _c(
                                 "v-col",
                                 [
-                                  _c("h2", [_c("b", [_vm._v("新規登録")])]),
+                                  _c("img", {
+                                    staticClass: "login-logo",
+                                    attrs: {
+                                      src: _vm.$storage("system") + "logo.png",
+                                      alt: "logo",
+                                      width: "35",
+                                      height: "35"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("h2", { staticClass: "text-center" }, [
+                                    _c("b", [_vm._v("新規登録")])
+                                  ]),
                                   _vm._v(" "),
                                   _c("v-text-field", {
                                     attrs: {
-                                      "prepend-icon": "fas fa-user",
-                                      label: "ユーザー名"
+                                      rules: [
+                                        _vm.rules.required,
+                                        _vm.rules.userMin,
+                                        _vm.rules.userMax
+                                      ],
+                                      label: "ユーザー名",
+                                      counter: "16"
                                     },
                                     model: {
                                       value: _vm.username,
@@ -42304,7 +42382,10 @@ var render = function() {
                                   _vm._v(" "),
                                   _c("v-text-field", {
                                     attrs: {
-                                      "prepend-icon": "fas fa-envelope",
+                                      rules: [
+                                        _vm.rules.required,
+                                        _vm.rules.email
+                                      ],
                                       label: "メールアドレス"
                                     },
                                     model: {
@@ -42317,12 +42398,17 @@ var render = function() {
                                   }),
                                   _vm._v(" "),
                                   _c("v-text-field", {
+                                    staticClass: "input-group--focused",
                                     attrs: {
-                                      "prepend-icon": "fas fa-lock ",
                                       "append-icon": _vm.show1
                                         ? "far fa-eye"
                                         : "far fa-eye-slash",
+                                      rules: [
+                                        _vm.rules.required,
+                                        _vm.rules.passMin
+                                      ],
                                       type: _vm.show1 ? "text" : "password",
+                                      counter: "64",
                                       label: "パスワード"
                                     },
                                     on: {
@@ -42341,18 +42427,20 @@ var render = function() {
                                   _vm._v(" "),
                                   _c("v-text-field", {
                                     attrs: {
-                                      "prepend-icon": "fas fa-lock ",
-                                      "append-icon": _vm.show1
+                                      "append-icon": _vm.show2
                                         ? "far fa-eye"
                                         : "far fa-eye-slash",
-                                      type: _vm.show1
-                                        ? "text"
-                                        : "passwordConfirmation",
+                                      rules: [
+                                        _vm.rules.required,
+                                        _vm.rules.passMatch
+                                      ],
+                                      type: _vm.show2 ? "text" : "password",
+                                      counter: "64",
                                       label: "パスワード再入力"
                                     },
                                     on: {
                                       "click:append": function($event) {
-                                        _vm.show1 = !_vm.show1
+                                        _vm.show2 = !_vm.show2
                                       }
                                     },
                                     model: {
@@ -42361,6 +42449,24 @@ var render = function() {
                                         _vm.passwordConfirmation = $$v
                                       },
                                       expression: "passwordConfirmation"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      rules: [
+                                        _vm.rules.required,
+                                        _vm.rules.handleMax
+                                      ],
+                                      counter: "20",
+                                      label: "表示名"
+                                    },
+                                    model: {
+                                      value: _vm.handlename,
+                                      callback: function($$v) {
+                                        _vm.handlename = $$v
+                                      },
+                                      expression: "handlename"
                                     }
                                   })
                                 ],
@@ -42384,21 +42490,26 @@ var render = function() {
                         attrs: { type: "button", disabled: _vm.isPush },
                         on: {
                           click: function($event) {
-                            return _vm.login()
+                            return _vm.register()
                           }
                         }
                       },
-                      [_vm._v("\n            ログイン\n          ")]
-                    ),
-                    _vm._v(" "),
+                      [_vm._v("\n            登録\n          ")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("v-row", { attrs: { justify: "center" } }, [
                     _c(
                       "div",
                       { staticClass: "mt-3" },
                       [
+                        _vm._v(
+                          "\n            既にアカウントはお持ちの方は\n            "
+                        ),
                         _c(
                           "router-link",
-                          { attrs: { to: { name: "register" } } },
-                          [_vm._v("Have not account")]
+                          { attrs: { to: { name: "login" } } },
+                          [_vm._v("こちら")]
                         )
                       ],
                       1

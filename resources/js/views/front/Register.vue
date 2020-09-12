@@ -8,34 +8,51 @@
             <v-container>
               <v-row>
                 <v-col>
-                  <h2>
+                  <img
+                    :src="$storage('system') + 'logo.png'"
+                    class="login-logo"
+                    alt="logo"
+                    width="35"
+                    height="35"
+                  />
+                  <h2 class="text-center">
                     <b>新規登録</b>
                   </h2>
                   <v-text-field
                     v-model="username"
-                    prepend-icon="fas fa-user"
+                    :rules="[rules.required, rules.userMin, rules.userMax]"
                     label="ユーザー名"
+                    counter="16"
                   ></v-text-field>
                   <v-text-field
                     v-model="email"
-                    prepend-icon="fas fa-envelope"
+                    :rules="[rules.required, rules.email]"
                     label="メールアドレス"
                   ></v-text-field>
                   <v-text-field
-                    prepend-icon="fas fa-lock "
                     :append-icon="show1 ? 'far fa-eye' : 'far fa-eye-slash'"
+                    :rules="[rules.required, rules.passMin]"
                     :type="show1 ? 'text' : 'password'"
+                    class="input-group--focused"
                     v-model="password"
+                    counter="64"
                     label="パスワード"
                     @click:append="show1 = !show1"
                   ></v-text-field>
                   <v-text-field
-                    prepend-icon="fas fa-lock "
-                    :append-icon="show1 ? 'far fa-eye' : 'far fa-eye-slash'"
-                    :type="show1 ? 'text' : 'passwordConfirmation'"
+                    :append-icon="show2 ? 'far fa-eye' : 'far fa-eye-slash'"
+                    :rules="[rules.required, rules.passMatch]"
+                    :type="show2 ? 'text' : 'password'"
                     v-model="passwordConfirmation"
+                    counter="64"
                     label="パスワード再入力"
-                    @click:append="show1 = !show1"
+                    @click:append="show2 = !show2"
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="handlename"
+                    :rules="[rules.required, rules.handleMax]"
+                    counter="20"
+                    label="表示名"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -44,16 +61,19 @@
 
           <v-row justify="center">
             <button
-              v-on:click="login()"
+              v-on:click="register()"
               type="button"
               class="btn btn-cloto-primary"
               v-bind:disabled="isPush"
             >
-              ログイン
+              登録
             </button>
+          </v-row>
 
+          <v-row justify="center">
             <div class="mt-3">
-              <router-link :to="{ name: 'register' }">Have not account</router-link>
+              既にアカウントはお持ちの方は
+              <router-link :to="{ name: 'login' }">こちら</router-link>
             </div>
           </v-row>
         </v-card-text>
@@ -262,17 +282,45 @@ export default {
       TooShort: validate.TooShort,
       TooLong: validate.TooLong,
       statuses: [validate.Empty, validate.Empty, validate.Empty, validate.Empty, validate.Empty],
-      username: null,
-      email: null,
-      password: null,
-      passwordConfirmation: null,
-      handlename: null,
+      username: '',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
+      handlename: '',
       isButtonDisabled: true,
       dialog: true,
       isPush: true,
+      show1: false,
+      show2: false,
+      rules: {
+        required: (value) => !!value || '必須項目です',
+        passMin: (v) => v.length >= 8 || '８文字以上です',
+        userMin: (v) => v.length >= 4 || '4文字以上です',
+        userMax: (v) => v.length <= 16 || '16文字以下です',
+        handleMax: (v) => v.length <= 16 || '20文字以下です',
+        passMatch: (v) => v === this.password || 'パスワードが一致しません',
+        emailMatch: () => "The email and password you entered don't match",
+        email: (value) => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return pattern.test(value) || '無効なメールアドレス.';
+        },
+      },
     };
   },
   watch: {
+    _allTexts(inputField) {
+      if (
+        inputField[0] != '' &&
+        inputField[1] != '' &&
+        inputField[2] != '' &&
+        inputField[3] != '' &&
+        inputField[4] != ''
+      ) {
+        this.isPush = false; //ログインボタンの有効化
+      } else {
+        this.isPush = true; //ログインボタンの無効化
+      }
+    },
     dialog: function () {
       if (this.dialog === false) {
         this.$router.push({ name: 'home' });
@@ -332,6 +380,9 @@ export default {
     },
   },
   computed: {
+    _allTexts() {
+      return [this.username, this.email, this.password, this.passwordConfirmation, this.handlename];
+    },
     apiStatus() {
       return this.$store.state.auth.apiStatus;
     },
@@ -406,6 +457,11 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
+.login-logo {
+  display: block;
+  margin: 1em auto;
+}
+
 .welcome-form {
   width: 400px;
   height: 470px;
@@ -442,6 +498,12 @@ export default {
       margin-top: 0.25rem;
       font-size: 1em;
     }
+  }
+
+  .btn {
+    display: block;
+    // margin: 0, auto;
+    text-align: center;
   }
 }
 </style>
