@@ -1,64 +1,65 @@
 <template>
-  <v-row justify="center">
-    <v-dialog v-model="dialog" max-width="440">
-      <v-card>
-        <v-spacer></v-spacer>
-        <v-card-text>
-          <v-form>
-            <v-container>
-              <v-row>
-                <v-col>
-                  <v-alert type="error" v-if="loginErrors">
-                    <span v-for="msg in loginErrors.loginField" :key="msg">{{ msg }}</span>
-                  </v-alert>
-                  <img
-                    :src="$storage('system') + 'logo.png'"
-                    class="login-logo"
-                    alt="logo"
-                    width="35"
-                    height="35"
-                    v-if="!loginErrors"
-                  />
-                  <h2 class="place">
-                    <b>ログイン</b>
-                  </h2>
-                  <v-text-field
-                    v-model="loginField"
-                    label="ユーザー名 または メールアドレス"
-                  ></v-text-field>
-                  <v-text-field
-                    :append-icon="show1 ? 'far fa-eye' : 'far fa-eye-slash'"
-                    :type="show1 ? 'text' : 'password'"
-                    v-model="password"
-                    label="パスワード"
-                    @click:append="show1 = !show1"
-                  ></v-text-field>
-                  <div class="btn login">
-                    <button
-                      v-on:click="login()"
-                      type="button"
-                      class="btn btn-cloto-primary"
-                      v-bind:disabled="isPush"
-                    >
-                      ログイン
-                    </button>
-                  </div>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-form>
+  <v-dialog v-model="dialog" max-width="440">
+    <v-card>
+      <v-card-text>
+        <v-container>
+          <v-row>
+            <v-col>
+              <!-- エラーメッセージ -->
+              <v-alert type="error" v-if="loginErrors">
+                <span v-for="msg in loginErrors.loginField" :key="msg">{{ msg }}</span>
+              </v-alert>
 
-          <div class="mt-3">
-            <p>
-              アカウントをお持ちでない方は<router-link :to="{ name: 'register' }"
-                >こちら</router-link
-              >
-            </p>
-          </div>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-  </v-row>
+              <!-- ロゴ -->
+              <img
+                :src="$storage('system') + 'logo.png'"
+                class="login-logo"
+                alt="logo"
+                width="35"
+                height="35"
+                v-if="!loginErrors"
+              />
+
+              <!-- タイトル -->
+              <h2>ログイン</h2>
+
+              <!-- フォーム -->
+              <v-form>
+                <v-text-field
+                  v-model="loginField"
+                  label="ユーザー名 または メールアドレス"
+                ></v-text-field>
+
+                <v-text-field
+                  :append-icon="showPassword ? 'far fa-eye' : 'far fa-eye-slash'"
+                  :type="show ? 'text' : 'password'"
+                  v-model="password"
+                  label="パスワード"
+                  @click:append="showPassword = !showPassword"
+                ></v-text-field>
+
+                <v-row justify="center">
+                  <button
+                    v-on:click="login()"
+                    type="button"
+                    class="btn btn-cloto-primary"
+                    v-bind:disabled="isButtonDisabled"
+                  >
+                    ログイン
+                  </button>
+                </v-row>
+              </v-form>
+            </v-col>
+          </v-row>
+        </v-container>
+
+        <!-- 新規登録画面へのリンク -->
+        <v-row justify="center">
+          アカウントをお持ちでない方は<router-link :to="{ name: 'register' }">こちら</router-link>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -72,12 +73,11 @@ export default {
   },
   data() {
     return {
-      show1: false,
-      error: '',
+      dialog: true,
       loginField: '',
       password: '',
-      dialog: true,
-      isPush: true,
+      showPassword: false,
+      isButtonDisabled: true,
     };
   },
   computed: {
@@ -93,15 +93,16 @@ export default {
   },
   watch: {
     dialog: function () {
+      // モーダルが閉じたらリダイレクト
       if (this.dialog === false) {
         this.$router.push({ name: 'home' });
       }
     },
     _allTexts(inputField) {
-      if (inputField[0] != '' && inputField[1] != '') {
-        this.isPush = false; //ログインボタンの有効化
+      if (inputField.indexOf('') === -1) {
+        this.isButtonDisabled = false; // ログインボタンの有効化
       } else {
-        this.isPush = true; //ログインボタンの無効化
+        this.isButtonDisabled = true; // ログインボタンの無効化
       }
     },
   },
@@ -138,20 +139,8 @@ export default {
 }
 
 h2 {
-  margin-bottom: 1em;
-}
-
-.place {
+  margin: 0.8em 0 0.5em 0;
   text-align: center;
-  margin-top: 19px;
-}
-
-.btn {
-  display: block;
-  margin: 0 auto;
-}
-
-.mt-3 {
-  text-align: center;
+  font-weight: bold;
 }
 </style>
