@@ -8,13 +8,23 @@
             <v-container>
               <v-row>
                 <v-col>
+                  <v-alert type="error" v-if="registerErrors">
+                    <span v-if="registerErrors.username">
+                      <span v-for="msg in registerErrors.username" :key="msg">{{ msg }}</span>
+                    </span>
+                    <span v-if="registerErrors.email">
+                      <span v-for="msg in registerErrors.email" :key="msg">{{ msg }}</span>
+                    </span>
+                  </v-alert>
                   <img
+                    v-if="!registerErrors"
                     :src="$storage('system') + 'logo.png'"
                     class="login-logo"
                     alt="logo"
                     width="35"
                     height="35"
                   />
+
                   <h2 class="text-center">
                     <b>新規登録</b>
                   </h2>
@@ -293,16 +303,16 @@ export default {
       show1: false,
       show2: false,
       rules: {
-        required: (value) => !!value || '必須項目です',
-        passMin: (v) => v.length >= 8 || '８文字以上です',
-        userMin: (v) => v.length >= 4 || '4文字以上です',
-        userMax: (v) => v.length <= 16 || '16文字以下です',
-        handleMax: (v) => v.length <= 16 || '20文字以下です',
+        required: (v) => !!v || '必須項目です',
+        passMin: (v) => v.length >= 8 || '8文字以上入力してください',
+        userMin: (v) => v.length >= 4 || '4文字以上入力してください',
+        userMax: (v) => v.length <= 16 || '16文字以下で入力してください',
+        handleMax: (v) => v.length <= 16 || '20文字以下で入力してください',
         passMatch: (v) => v === this.password || 'パスワードが一致しません',
-        emailMatch: () => "The email and password you entered don't match",
-        email: (value) => {
+
+        email: (v) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          return pattern.test(value) || '無効なメールアドレス.';
+          return pattern.test(v) || '無効なメールアドレス.';
         },
       },
     };
