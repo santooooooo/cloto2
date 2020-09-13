@@ -28,8 +28,7 @@
             <router-link
               class="dropdown-item"
               :to="{ name: 'userPage', params: { username: $store.getters['auth/user'].username } }"
-              >マイページ</router-link
-            >
+            >マイページ</router-link>
             <button type="button" class="dropdown-item" @click="logout">ログアウト</button>
           </div>
         </li>
@@ -68,7 +67,7 @@ export default {
 @import '~/_variables';
 
 .nav {
-  background-color: $main-color;
+  background-color: $primary;
   height: 50px;
   padding: 0 15px;
   font-weight: bold;

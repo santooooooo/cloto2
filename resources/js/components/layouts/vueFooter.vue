@@ -52,7 +52,7 @@
 .footer {
   width: 100%;
   padding: 20px;
-  background-color: $main-color;
+  background-color: $primary;
   color: $white;
 
   &__logo {
