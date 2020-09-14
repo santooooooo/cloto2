@@ -41,7 +41,7 @@
                   v-model="email"
                   :rules="[rules.required, rules.email]"
                   label="メールアドレス"
-                ></v-text-field>
+                ></v-text-field
 
                 <v-text-field
                   :append-icon="showPassword ? 'far fa-eye' : 'far fa-eye-slash'"
