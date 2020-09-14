@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +28,8 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/auth/user', fn () => Auth::user())->name('authUser');
 Route::get('/user/{username}', 'API\UserController@show')->name('userShow');
 Route::post('/user/update', 'API\UserController@update')->name('profileUpdate');
+
+Route::get('/room/{id}', 'API\RoomController@show')->name('roomShow');
+Route::post('/seat/sit/{seat}', 'API\SeatController@sit')->name('seatSit');
+Route::post('/seat/leave/{seat}', 'API\SeatController@leave')->name('seatLeave');
+Route::post('/seat/rest/{seat}', 'API\SeatController@rest')->name('seatRest');
