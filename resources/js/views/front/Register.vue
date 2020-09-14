@@ -41,7 +41,7 @@
                   v-model="email"
                   :rules="[rules.required, rules.email]"
                   label="メールアドレス"
-                ></v-text-field
+                ></v-text-field>
 
                 <v-text-field
                   :append-icon="showPassword ? 'far fa-eye' : 'far fa-eye-slash'"
@@ -77,9 +77,7 @@
                     type="button"
                     class="btn btn-cloto-primary"
                     v-bind:disabled="isButtonDisabled"
-                  >
-                    登録
-                  </button>
+                  >登録</button>
                 </v-row>
               </v-form>
             </v-col>
@@ -88,7 +86,8 @@
 
         <!-- ログイン画面へのリンク -->
         <v-row justify="center">
-          既にアカウントはお持ちの方は<router-link :to="{ name: 'login' }">こちら</router-link>
+          既にアカウントはお持ちの方は
+          <router-link :to="{ name: 'login' }">こちら</router-link>
         </v-row>
       </v-card-text>
     </v-card>
@@ -96,8 +95,6 @@
 </template>
 
 <script>
-import * as validate from '@/tools/validate';
-
 export default {
   head: {
     title() {

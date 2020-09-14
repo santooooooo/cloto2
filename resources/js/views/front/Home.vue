@@ -6,7 +6,7 @@
         <timetable></timetable>
       </v-col>
 
-      <v-col cols="12" md="8"> -->
+      <v-col cols="12" md="8">-->
       <room></room>
       <!-- </v-col> -->
     </v-row>
