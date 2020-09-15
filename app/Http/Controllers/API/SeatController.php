@@ -51,7 +51,7 @@ class SeatController extends Controller
      * @param  \App\Models\Seat  $seat
      * @return \Illuminate\Http\Response
      */
-    public function rest(Seat $seat)
+    public function break(Seat $seat)
     {
         if ($seat->user_id != Auth::id()) {
             return response()->json(
@@ -62,7 +62,7 @@ class SeatController extends Controller
             );
         }
 
-        $result = $seat->update(['status' => 'rest']);
+        $result = $seat->update(['status' => 'break']);
 
         return response()->json($result);
     }

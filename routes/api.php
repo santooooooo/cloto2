@@ -32,4 +32,4 @@ Route::post('/user/update', 'API\UserController@update')->name('profileUpdate');
 Route::get('/room/{id}', 'API\RoomController@show')->name('roomShow');
 Route::post('/seat/sit/{seat}', 'API\SeatController@sit')->name('seatSit');
 Route::post('/seat/leave/{seat}', 'API\SeatController@leave')->name('seatLeave');
-Route::post('/seat/rest/{seat}', 'API\SeatController@rest')->name('seatRest');
+Route::post('/seat/break/{seat}', 'API\SeatController@break')->name('seatBreak');
