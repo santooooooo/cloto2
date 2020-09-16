@@ -12,13 +12,12 @@ class SeatController extends Controller
     /**
      * 着席
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Seat  $seat
      * @return \Illuminate\Http\Response
      */
-    public function sit(Request $request, Seat $seat)
+    public function sit(Seat $seat)
     {
-        $result = $seat->update(['user_id' => $request['user_id'], 'status' => 'sitting']);
+        $result = $seat->update(['user_id' => Auth::id(), 'status' => 'sitting']);
 
         return response()->json($result);
     }
@@ -51,7 +50,7 @@ class SeatController extends Controller
      * @param  \App\Models\Seat  $seat
      * @return \Illuminate\Http\Response
      */
-    public function rest(Seat $seat)
+    public function break(Seat $seat)
     {
         if ($seat->user_id != Auth::id()) {
             return response()->json(
@@ -62,7 +61,7 @@ class SeatController extends Controller
             );
         }
 
-        $result = $seat->update(['status' => 'rest']);
+        $result = $seat->update(['status' => 'break']);
 
         return response()->json($result);
     }
