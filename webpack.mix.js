@@ -12,6 +12,14 @@ require('laravel-mix-alias');
  |
  */
 
+mix.webpackConfig({
+  devServer: {
+    proxy: {
+      '*': 'http://localhost:8000',
+    },
+  },
+});
+
 mix.alias({
   '@': '/resources/js',
   '~': '/resources/sass',
