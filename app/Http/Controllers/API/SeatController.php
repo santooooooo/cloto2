@@ -12,13 +12,12 @@ class SeatController extends Controller
     /**
      * 着席
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Seat  $seat
      * @return \Illuminate\Http\Response
      */
-    public function sit(Request $request, Seat $seat)
+    public function sit(Seat $seat)
     {
-        $result = $seat->update(['user_id' => $request['user_id'], 'status' => 'sitting']);
+        $result = $seat->update(['user_id' => Auth::id(), 'status' => 'sitting']);
 
         return response()->json($result);
     }
