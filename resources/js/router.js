@@ -16,6 +16,7 @@ import systemError from '@/views/errors/System.vue';
 import home from '@/views/front/Home.vue';
 import userPage from '@/views/user/UserPage.vue';
 import profileEdit from '@/views/user/ProfileEdit.vue';
+import room from '@/views/front/Room.vue';
 
 const router = new VueRouter({
   mode: 'history',
@@ -44,6 +45,11 @@ const router = new VueRouter({
       path: '/home',
       name: 'home',
       component: home,
+    },
+    {
+      path: '/room/:id',
+      name: 'room',
+      component: room,
     },
     {
       path: '/user/:username',

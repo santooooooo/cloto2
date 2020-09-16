@@ -18,6 +18,10 @@ const POST_logout = '/api/logout';
 const GET_authUser = '/api/auth/user';
 const GET_userShow = '/api/user/' + replaceChar[0];
 const POST_profileUpdate = '/api/user/update';
+const GET_roomShow = '/api/room/' + replaceChar[0];
+const POST_seatSit = '/api/seat/sit/' + replaceChar[0];
+const POST_seatLeave = '/api/seat/leave/' + replaceChar[0];
+const POST_seatBreak = '/api/seat/break/' + replaceChar[0];
 
 /**
  * エンドポイントの取得
@@ -59,6 +63,22 @@ export function getEndpoint(name, params) {
 
     case 'POST:profileUpdate':
       endpoint = POST_profileUpdate;
+      break;
+
+    case 'GET:roomShow':
+      endpoint = setParams(GET_roomShow, params);
+      break;
+
+    case 'POST:seatSit':
+      endpoint = setParams(POST_seatSit, params);
+      break;
+
+    case 'POST:seatLeave':
+      endpoint = setParams(POST_seatLeave, params);
+      break;
+
+    case 'POST:seatBreak':
+      endpoint = setParams(POST_seatBreak, params);
       break;
   }
 
