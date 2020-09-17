@@ -43,10 +43,10 @@ class User extends Authenticatable
     /**
      * Seat モデルのリレーション
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function seat()
     {
-        return $this->belongsTo('App\Models\Seat');
+        return $this->hasOne('App\Models\Seat');
     }
 }

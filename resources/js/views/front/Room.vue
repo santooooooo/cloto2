@@ -1,13 +1,15 @@
 <template>
-  <canvas :width="roomWidth" :height="roomHight" ref="canvas"></canvas>
-  <!-- <v-card class="mx-auto" max-width="344" outlined>
-    <h1>{{ this.room.name }}教室</h1>
-    <v-btn id="seat1" @click="seatAction('sit', 1)">着席</v-btn>
-    <v-btn id="seat2" @click="seatAction('sit', 2)">着席</v-btn>
-    <v-btn id="seat3" @click="seatAction('sit', 3)">着席</v-btn>
-    <v-btn @click="seatAction('leave', 1)">離席</v-btn>
-    <v-btn @click="seatAction('break', 1)">休憩</v-btn>
-  </v-card>-->
+  <div>
+    <canvas :width="roomWidth" :height="roomHight" ref="canvas"></canvas>
+    <v-card class="mx-auto" max-width="344" outlined>
+      <h1>{{ this.room.name }}教室</h1>
+      <v-btn id="seat1" @click="seatAction(1, 'sit')">着席</v-btn>
+      <v-btn id="seat2" @click="seatAction(2, 'sit')">着席</v-btn>
+      <v-btn id="seat3" @click="seatAction(3, 'sit')">着席</v-btn>
+      <v-btn @click="seatAction(1, 'leave')">離席</v-btn>
+      <v-btn @click="seatAction(2, 'break')">休憩</v-btn>
+    </v-card>
+  </div>
 </template>
 
 <script>
