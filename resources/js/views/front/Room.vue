@@ -72,7 +72,8 @@ export default {
                 // 初回取得
                 if (section.id <= 6) {
                   // section 1~6 の描画
-                  this.drawTable([seat.position_x, seat.position_y]);
+                  var position = JSON.parse(seat.position);
+                  this.drawTable([position.x, position.y]);
                 }
 
                 // ここに描画コードを入れる
@@ -211,11 +212,9 @@ export default {
       this.room.sections.forEach((section) => {
         // 座席のループ
         section.seats.forEach((seat) => {
-          var areaX = Number(seat.position_x);
-          var areaY = Number(seat.position_y);
-
-          if (areaX < mx && mx < areaX + this.tableSize) {
-            if (areaY < my && my < areaY + this.tableSize) {
+          var position = JSON.parse(seat.position);
+          if (position.x < mx && mx < position.x + this.tableSize) {
+            if (position.y < my && my < position.y + this.tableSize) {
               console.log(seat.id);
             }
           }
