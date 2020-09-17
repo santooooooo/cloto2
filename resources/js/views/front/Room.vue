@@ -10,7 +10,6 @@
   </v-card>-->
 </template>
 
-
 <script>
 export default {
   data() {
@@ -62,23 +61,30 @@ export default {
      * 教室の同期
      */
     syncRoom: function () {
-      this.$http.get(this.$endpoint('GET:roomShow', [this.$route.params.id])).then((response) => {
-        // セクションのループ
-        response.data.sections.forEach((section, sectionIndex) => {
-          // 座席のループ
-          section.seats.forEach((seat, seatIndex) => {
-            if (this.room.length === 0) {
-              // 初回取得
-              this.changeColor(seat.status, seat.id);
-            } else if (seat.status !== this.room.sections[sectionIndex].seats[seatIndex].status) {
-              // 現在の状態から変化があれば再描画
-              this.changeColor(seat.status, seat.id);
-            }
-          });
-        });
+      return this.$http
+        .get(this.$endpoint('GET:roomShow', [this.$route.params.id]))
+        .then((response) => {
+          // セクションのループ
+          response.data.sections.forEach((section, sectionIndex) => {
+            // 座席のループ
+            section.seats.forEach((seat, seatIndex) => {
+              if (this.room.length === 0) {
+                // 初回取得
+                if (section.id <= 6) {
+                  // section 1~6 の描画
+                  this.drawTable([seat.position_x, seat.position_y]);
+                }
 
-        this.room = response.data;
-      });
+                // ここに描画コードを入れる
+              } else if (seat.status !== this.room.sections[sectionIndex].seats[seatIndex].status) {
+                // 現在の状態から変化があれば再描画
+                this.changeColor(seat.status, seat.id);
+              }
+            });
+          });
+
+          this.room = response.data;
+        });
     },
     /**
      * 座席の描画
@@ -194,30 +200,39 @@ export default {
       ctx.strokeStyle = 'rgb(0,0,0)'; //枠線の色
       ctx.stroke();
     },
+
+    clickEvent: function (e) {
+      var rect = e.target.getBoundingClientRect();
+
+      var mx = e.clientX - rect.left;
+      var my = e.clientY - rect.top;
+
+      // セクションのループ
+      this.room.sections.forEach((section) => {
+        // 座席のループ
+        section.seats.forEach((seat) => {
+          var areaX = Number(seat.position_x);
+          var areaY = Number(seat.position_y);
+
+          if (areaX < mx && mx < areaX + this.tableSize) {
+            if (areaY < my && my < areaY + this.tableSize) {
+              console.log(seat.id);
+            }
+          }
+        });
+      });
+    },
   },
   async mounted() {
     // 初回取得
     await this.syncRoom();
 
+    this.$refs.canvas.onmousedown = this.clickEvent;
+
     // 同期開始
     // setInterval(this.syncRoom, 10000);
 
     var ctx = this.$refs.canvas.getContext('2d');
-
-    for (var i = 0; i <= 4; i++) {
-      this.drawTable(this.tableArea1);
-      this.drawTable(this.tableArea2);
-      this.drawTable(this.tableArea3);
-      this.drawTable(this.tableArea4);
-      this.drawTable(this.tableArea5);
-      this.drawTable(this.tableArea6);
-      this.tableArea1[0] += this.tableSize;
-      this.tableArea2[0] += this.tableSize;
-      this.tableArea3[0] += this.tableSize;
-      this.tableArea4[0] += this.tableSize;
-      this.tableArea5[0] += this.tableSize;
-      this.tableArea6[0] += this.tableSize;
-    }
 
     this.drawPartition(this.partition1, 300, this.partitionThick, 'vertical');
     this.drawPartition(this.partition2, 250, this.partitionThick, 'side');
@@ -246,38 +261,49 @@ export default {
     var img01 = new Image();
     img01.src = this.$storage('system') + 'logo.svg';
 
-    this.$refs.canvas.onmousedown = function (e) {
-      var rect = e.target.getBoundingClientRect();
+    // this.$refs.canvas.onmousedown = function (e) {
+    //   var rect = e.target.getBoundingClientRect();
 
-      var mx = e.clientX - rect.left;
-      var my = e.clientY - rect.top;
+    //   var mx = e.clientX - rect.left;
+    //   var my = e.clientY - rect.top;
 
-      if (10 <= mx && mx <= 60) {
-        if (10 <= my && my <= 60) {
-          ctx.fillStyle = 'red';
-          ctx.fillRect(10, 10, 50, 50);
-          ctx.drawImage(img01, 10, 10, 10, 10);
-        }
-      }
+    // // セクションのループ
+    // this.room.sections.forEach((section, sectionIndex) => {
+    //   // 座席のループ
+    //   section.seats.forEach((seat, seatIndex) => {
+    //     if (seat.position_x < mx && mx < seat.position_x + this.tableSize) {
+    //       if (seat.position_y < my && my < seat.position_y + this.tableSize) {
+    //         alert('テスト');
+    //       }
+    //     }
+    //   });
+    // });
 
-      //赤の領域内クリックの場合
-      if (70.424 <= mx && mx <= 120.425) {
-        if (10 <= my && my <= 60) {
-          alert('赤');
-        }
-      }
+    // if (10 <= mx && mx <= 60) {
+    //   if (10 <= my && my <= 60) {
+    //     ctx.fillStyle = 'red';
+    //     ctx.fillRect(10, 10, 50, 50);
+    //     ctx.drawImage(img01, 10, 10, 10, 10);
+    //   }
+    // }
 
-      //緑の領域内クリックの場合
-      if (130 <= mx && mx <= 180) {
-        if (10 <= my && my <= 60) {
-          alert('緑');
-        }
-      }
-    };
+    // //赤の領域内クリックの場合
+    // if (70.424 <= mx && mx <= 120.425) {
+    //   if (10 <= my && my <= 60) {
+    //     alert('赤');
+    //   }
+    // }
+
+    // //緑の領域内クリックの場合
+    // if (130 <= mx && mx <= 180) {
+    //   if (10 <= my && my <= 60) {
+    //     alert('緑');
+    //   }
+    // }
+    // };
   },
 };
 </script>
-
 
 <style lang="scss" scoped>
 @import '~/_variables';
