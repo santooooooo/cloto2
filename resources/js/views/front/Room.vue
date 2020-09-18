@@ -65,8 +65,7 @@ export default {
             // 初回取得
             if (section.id <= 6) {
               // section 1~6 の描画
-              var position = JSON.parse(seat.position);
-              this.drawTable(seat.id, [position.left, position.top]);
+              this.drawTable(seat.id, seat.position, seat.status);
             }
             // this.clickEvent();
           } else if (seat.status !== this.room.sections[sectionIndex].seats[seatIndex].status) {
@@ -119,21 +118,21 @@ export default {
     /**
      * 座席の描画
      *
-     * @param Number  seat_id 描画する座席
+     * @param Number  seatId  描画する座席
      * @param String  status  状態
      */
-    changeColor: function (seat_id, status) {
+    changeColor: function (seatId, status) {
       switch (status) {
         case 'sitting':
-          $('#seat' + seat_id).css('color', 'red');
+          $('#seat' + seatId).css('color', 'red');
           break;
 
         case 'break':
-          $('#seat' + seat_id).css('color', 'blue');
+          $('#seat' + seatId).css('color', 'blue');
           break;
 
         default:
-          $('#seat' + seat_id).css('color', 'white');
+          $('#seat' + seatId).css('color', 'white');
           break;
       }
     },
@@ -141,21 +140,21 @@ export default {
     /**
      * 座席状態の変更
      *
-     * @param Number  seat_id 変更する座席
+     * @param Number  seatId  変更する座席
      * @param String  status  状態
      */
-    seatAction: function (seat_id, status) {
+    seatAction: function (seatId, status) {
       switch (status) {
         case 'sit':
-          var endpoint = this.$endpoint('POST:seatSit', [seat_id]);
+          var endpoint = this.$endpoint('POST:seatSit', [seatId]);
           break;
 
         case 'leave':
-          var endpoint = this.$endpoint('POST:seatLeave', [seat_id]);
+          var endpoint = this.$endpoint('POST:seatLeave', [seatId]);
           break;
 
         case 'break':
-          var endpoint = this.$endpoint('POST:seatBreak', [seat_id]);
+          var endpoint = this.$endpoint('POST:seatBreak', [seatId]);
           break;
       }
 
@@ -168,17 +167,33 @@ export default {
     /**
      * テーブルの描画
      *
-     * @param Number  seat_id 変更する座席
-     * @param Array  position[x始点, y始点]
+     * @param Number  seatId    描画する座席
+     * @param JSON    position  描画位置
+     * @param String  status    座席状態
      */
-    drawTable: function (seatId, position) {
+    drawTable: function (seatId, position, status) {
+      var position = JSON.parse(position);
+      switch (status) {
+        case 'sitting':
+          var color = '#ff0000';
+          break;
+
+        case 'leave':
+          var color = '#ffffff';
+          break;
+
+        case 'break':
+          var color = '#000000';
+          break;
+      }
+
       this.canvas.add(
         new fabric.Rect({
           id: seatId,
-          fill: '#FF0000',
+          fill: color,
           stroke: 'black',
-          left: position[0],
-          top: position[1],
+          left: position.left,
+          top: position.top,
           width: this.tableSize,
           height: this.tableSize,
           strokeWidth: 4,
@@ -194,8 +209,8 @@ export default {
     /**
      * 長方形テーブルの描画
      *
-     * @param Array  position[x始点, y始点]
-     * @param Array  size[box幅, box高さ]
+     * @param Array  position [x始点, y始点]
+     * @param Array  size [box幅, box高さ]
      */
     drawBox: function (position, size) {
       this.canvas.add(
@@ -218,7 +233,7 @@ export default {
     /**
      * 区切りの描画
      *
-     * @param Array  position[x始点, y始点, x終点, y終点]
+     * @param Array  position [x始点, y始点, x終点, y終点]
      * @param Number  thick  区切りの太さ
      */
     drawPartition: function (position, thick) {
@@ -239,7 +254,7 @@ export default {
     /**
      * 円の描画
      *
-     * @param Array  position[x始点, y始点]
+     * @param Array  position [x始点, y始点]
      * @param Number radius 半径
      */
     drawCircle: function (position, radius) {
@@ -264,7 +279,7 @@ export default {
     /**
      * 楕円の描画
      *
-     * @param Array  position[x始点, y始点]
+     * @param Array  position [x始点, y始点]
      * @param Number radius 長半径
      */
     drawEllipse: function (position, radius) {
@@ -290,7 +305,7 @@ export default {
     /**
      * 三角形の描画
      *
-     * @param Array  position[x始点, y始点]
+     * @param Array  position [x始点, y始点]
      */
     drawTriangle: function (position) {
       this.canvas.add(
