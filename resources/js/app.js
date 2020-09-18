@@ -5,6 +5,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 window.API = require('./api');
 window.Storage = require('./consts/storage');
+const fabric = require('fabric').fabric;
 
 /**
  * Vueプロトタイプの設定
