@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas :width="roomWidth" :height="roomHight" ref="canvas"></canvas>
+    <canvas :width="roomWidth" :height="roomHight" ref="canvas" id="room"></canvas>
     <v-card class="mx-auto" max-width="344" outlined>
       <h1>{{ this.room.name }}教室</h1>
       <v-btn id="seat1" @click="seatAction(1, 'sit')">着席</v-btn>
@@ -16,6 +16,7 @@
 export default {
   data() {
     return {
+      canvas: '',
       room: [], // 教室データ
 
       roomWidth: 900,
@@ -24,27 +25,25 @@ export default {
       circleArea1: [300, 500],
       circleArea2: [500, 500], //中心座標
 
-      ellipseArea: [750, 1000],
+      ellipseArea: [750, 500],
 
-      triangleArea1: [100, 50],
-      triangleArea2: [100, 300],
+      triangleArea: [100, 100],
 
       //仕切りのx,y座標
-      partition1: [200, 50],
-      partition2: [300, 350],
-      partition3: [600, 350],
+      partition1: [200, 50, 200, 350],
+      partition2: [300, 350, 550, 350],
+      partition3: [600, 350, 850, 350],
       //部屋の仕切り　の始点x,y座標
       boxArea1: [50, 200],
       boxArea2: [50, 300],
-      // boxArea3: [600, 400],
 
       boxSize1: [100, 50],
       boxSize2: [100, 50],
 
-      boxPartition1: [200, 400],
-      boxPartition2: [400, 400],
-      boxPartition3: [600, 400],
-      boxPartition4: [200, 400],
+      boxPartition1: [200, 400, 900, 400],
+      boxPartition2: [200, 400, 200, 600],
+      boxPartition3: [400, 400, 400, 600],
+      boxPartition4: [600, 400, 600, 600],
 
       tableSize: 50,
       partitionThick: 8, //仕切りの厚さ
@@ -67,8 +66,9 @@ export default {
             if (section.id <= 6) {
               // section 1~6 の描画
               var position = JSON.parse(seat.position);
-              this.drawTable([position.x, position.y]);
+              this.drawTable(seat.id, [position.left, position.top]);
             }
+            // this.clickEvent();
           } else if (seat.status !== this.room.sections[sectionIndex].seats[seatIndex].status) {
             // 現在の状態から変化があれば再描画
             this.changeColor(seat.status, seat.id);
@@ -82,40 +82,46 @@ export default {
 
     /**
      * キャンバスクリックイベント
-     *
-     * @param Event event
      */
-    clickEvent: function (event) {
-      var rect = event.target.getBoundingClientRect();
-
-      // キャンバス上でのクリック座標
-      var mx = event.clientX - rect.left;
-      var my = event.clientY - rect.top;
-
-      // セクションのループ
-      this.room.sections.forEach((section) => {
-        // 座席のループ
-        section.seats.forEach((seat) => {
-          var position = JSON.parse(seat.position);
-
-          if (position.x < mx && mx < position.x + this.tableSize) {
-            if (position.y < my && my < position.y + this.tableSize) {
-              console.log(seat.id);
-
-              var img01 = new Image();
-              img01.src = this.$storage('system') + 'logo.svg';
-
-              // if (10 <= mx && mx <= 60) {
-              //   if (10 <= my && my <= 60) {
-              //     ctx.fillStyle = 'red';
-              //     ctx.fillRect(10, 10, 50, 50);
-              //     ctx.drawImage(img01, 10, 10, 10, 10);
-              //   }
-              // }
-            }
-          }
-        });
+    clickEvent: function () {
+      // this.canvas = new fabric.Canvas('room');
+      console.log(this.canvas);
+      this.canvas.on('mouse:down', function () {
+        var clickObject = this.canvas.getActiveObject();
+        console.log(clickObjct);
+        clickObject.set({ left: 20, top: 50 });
       });
+
+      // var rect = event.target.getBoundingClientRect();
+
+      // // キャンバス上でのクリック座標
+      // var mx = event.clientX - rect.left;
+      // var my = event.clientY - rect.top;
+
+      // // セクションのループ
+      // this.room.sections.forEach((section) => {
+      //   // 座席のループ
+      //   section.seats.forEach((seat) => {
+      //     var position = JSON.parse(seat.position);
+
+      //     if (position.left < mx && mx < position.left + this.tableSize) {
+      //       if (position.top < my && my < position.top + this.tableSize) {
+      //         console.log(seat.id);
+
+      //         var img01 = new Image();
+      //         img01.src = this.$storage('system') + 'logo.svg';
+
+      //         // if (10 <= mx && mx <= 60) {
+      //         //   if (10 <= my && my <= 60) {
+      //         //     ctx.fillStyle = 'red';
+      //         //     ctx.fillRect(10, 10, 50, 50);
+      //         //     ctx.drawImage(img01, 10, 10, 10, 10);
+      //         //   }
+      //         // }
+      //       }
+      //     }
+      //   });
+      // });
     },
 
     /**
@@ -167,92 +173,177 @@ export default {
       this.syncRoom();
     },
 
-    drawTable: function (base) {
-      var ctx = this.$refs.canvas.getContext('2d');
-
-      ctx.rect(base[0], base[1], this.tableSize, this.tableSize);
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = 'red';
-      ctx.stroke();
-
-      // for (var i = 0; i < num; i++) {
-      //   ctx.fillStyle = 'black';
-      //   ctx.fillRect(base[0], base[1], this.tableSize, this.tableSize);
-      //   base[0] += this.tableSize;
-      // }
+    /**
+     * テーブルの描画
+     *
+     * @param Number  seat_id 変更する座席
+     * @param Array  position[x始点, y始点]
+     */
+    drawTable: function (seatId, position) {
+      this.canvas.add(
+        new fabric.Rect({
+          id: seatId,
+          fill: '#FF0000',
+          left: position[0],
+          top: position[1],
+          width: this.tableSize,
+          height: this.tableSize,
+          strokeWidth: 4,
+          hasControls: false, // 図形周囲のコントロールボタンの無効化
+          hasBorders: false, // 図形周囲のボーダーの無効化
+          lockMovementX: true, // 横移動の禁止
+          lockMovementY: true, // 縦移動の禁止
+          hoverCursor: 'default', // カーソルの変更を禁止
+        })
+      );
     },
 
-    drawBox: function (base, size) {
-      var ctx = this.$refs.canvas.getContext('2d');
-      ctx.fillStyle = 'grey';
-      ctx.rect(base[0], base[1], size[0], size[1]);
-      ctx.lineWidth = 2;
-      ctx.stroke();
+    /**
+     * 長方形テーブルの描画
+     *
+     * @param Array  position[x始点, y始点]
+     * @param Array  size[box幅, box高さ]
+     */
+    drawBox: function (position, size) {
+      this.canvas.add(
+        new fabric.Rect({
+          fill: '#FF0000',
+          left: position[0],
+          top: position[1],
+          width: size[0],
+          height: size[1],
+          strokeWidth: 4,
+          hasControls: false, // 図形周囲のコントロールボタンの無効化
+          hasBorders: false, // 図形周囲のボーダーの無効化
+          lockMovementX: true, // 横移動の禁止
+          lockMovementY: true, // 縦移動の禁止
+          hoverCursor: 'default', // カーソルの変更を禁止
+        })
+      );
     },
 
-    drawPartition: function (base, length, thick, mode) {
-      var ctx = this.$refs.canvas.getContext('2d');
-
-      ctx.fillStyle = 'gray';
-      if (mode === 'vertical') {
-        ctx.fillRect(base[0], base[1], thick, length);
-      } else if (mode === 'side') {
-        ctx.fillRect(base[0], base[1], length, thick);
-      }
+    /**
+     * 区切りの描画
+     *
+     * @param Array  position[x始点, y始点, x終点, y終点]
+     * @param Number  thick  区切りの太さ
+     */
+    drawPartition: function (position, thick) {
+      this.canvas.add(
+        new fabric.Line(position, {
+          fill: 'red',
+          stroke: 'red',
+          strokeWidth: 10,
+          hasControls: false, // 図形周囲のコントロールボタンの無効化
+          hasBorders: false, // 図形周囲のボーダーの無効化
+          lockMovementX: true, // 横移動の禁止
+          lockMovementY: true, // 縦移動の禁止
+          hoverCursor: 'default', // カーソルの変更を禁止
+        })
+      );
     },
 
-    drawCircle: function (base, Radius) {
-      var ctx = this.$refs.canvas.getContext('2d');
-      ctx.fillStyle = 'green'; // 塗りつぶしの色
-      // パスの開始
-      ctx.beginPath();
-      ctx.arc(base[0], base[1], Radius, 0, 2 * Math.PI, false);
-      // arc(中心のx座標, 中心のy座標, 半径, 開始角度, 終了角度, 描く方向);
-      // 描画
-      ctx.fill();
+    /**
+     * 円の描画
+     *
+     * @param Array  position[x始点, y始点]
+     * @param Number radius 半径
+     */
+    drawCircle: function (position, radius) {
+      this.canvas.add(
+        new fabric.Circle({
+          fill: '#FF0000',
+          left: position[0],
+          top: position[1],
+          originX: 'center',
+          originY: 'center',
+          angle: 2 * Math.PI,
+          radius: radius,
+          hasControls: false, // 図形周囲のコントロールボタンの無効化
+          hasBorders: false, // 図形周囲のボーダーの無効化
+          lockMovementX: true, // 横移動の禁止
+          lockMovementY: true, // 縦移動の禁止
+          hoverCursor: 'default', // カーソルの変更を禁止
+        })
+      );
     },
 
-    drawEllipse: function (base, Radius) {
-      var ctx = this.$refs.canvas.getContext('2d');
-      ctx.beginPath();
-      ctx.fillStyle = '#0ff';
-      ctx.scale(1, 0.5);
-      ctx.arc(base[0], base[1], Radius, 0, 2 * Math.PI, false);
-      ctx.fill();
-      ctx.scale(1, 2);
+    /**
+     * 楕円の描画
+     *
+     * @param Array  position[x始点, y始点]
+     * @param Number radius 長半径
+     */
+    drawEllipse: function (position, radius) {
+      this.canvas.add(
+        new fabric.Ellipse({
+          fill: 'red',
+          left: position[0],
+          top: position[1],
+          originX: 'center',
+          originY: 'center',
+          strokeWidth: 100,
+          rx: radius,
+          ry: 40,
+          hasControls: false, // 図形周囲のコントロールボタンの無効化
+          hasBorders: false, // 図形周囲のボーダーの無効化
+          lockMovementX: true, // 横移動の禁止
+          lockMovementY: true, // 縦移動の禁止
+          hoverCursor: 'default', // カーソルの変更を禁止
+        })
+      );
     },
 
-    drawTriangle: function (base) {
-      var ctx = this.$refs.canvas.getContext('2d');
-
-      ctx.beginPath();
-      ctx.moveTo(base[0], base[1]); //最初の点の場所
-      ctx.lineTo(base[0] - 50, base[1] + 80); //2番目の点の場所
-      ctx.lineTo(base[0] + 50, base[1] + 80); //3番目の点の場所
-      ctx.closePath(); //三角形の最後の線 closeさせる
-      ctx.strokeStyle = 'rgb(0,0,0)'; //枠線の色
-      ctx.stroke();
+    /**
+     * 三角形の描画
+     *
+     * @param Array  position[x始点, y始点]
+     */
+    drawTriangle: function (position) {
+      this.canvas.add(
+        new fabric.Triangle({
+          fill: 'red',
+          left: position[0],
+          top: position[1],
+          originX: 'center',
+          originY: 'center',
+          width: 100,
+          height: 87,
+          hasControls: false, // 図形周囲のコントロールボタンの無効化
+          hasBorders: false, // 図形周囲のボーダーの無効化
+          lockMovementX: true, // 横移動の禁止
+          lockMovementY: true, // 縦移動の禁止
+          hoverCursor: 'default', // カーソルの変更を禁止
+        })
+      );
     },
   },
   mounted() {
+    this.canvas = new fabric.Canvas('room');
+    console.log(this.canvas);
+    this.canvas.on('mouse:down', function () {
+      var clickObject = this.canvas.getActiveObject();
+      console.log(clickObjct);
+      clickObject.set({ left: 20, top: 50 });
+    });
+
     // 初回取得
     this.syncRoom();
-
-    this.$refs.canvas.onmousedown = this.clickEvent;
+    // this.$refs.canvas.onmousedown = this.clickEvent;
 
     // 同期開始
     // setInterval(this.syncRoom, 10000);
 
     var ctx = this.$refs.canvas.getContext('2d');
 
-    this.drawPartition(this.partition1, 300, this.partitionThick, 'vertical');
-    this.drawPartition(this.partition2, 250, this.partitionThick, 'side');
-    this.drawPartition(this.partition3, 250, this.partitionThick, 'side');
+    this.drawPartition(this.partition1, this.partitionThick);
+    this.drawPartition(this.partition2, this.partitionThick);
+    this.drawPartition(this.partition3, this.partitionThick);
 
-    this.drawPartition(this.boxPartition1, 200, this.boxPartitionThick, 'vertical');
-    this.drawPartition(this.boxPartition2, 200, this.boxPartitionThick, 'vertical');
-    this.drawPartition(this.boxPartition3, 200, this.boxPartitionThick, 'vertical');
-    this.drawPartition(this.boxPartition4, 900, this.boxPartitionThick, 'side');
+    this.drawPartition(this.boxPartition1, this.boxPartitionThick);
+    this.drawPartition(this.boxPartition2, this.boxPartitionThick);
+    this.drawPartition(this.boxPartition3, this.boxPartitionThick);
+    this.drawPartition(this.boxPartition4, this.boxPartitionThick);
 
     //丸テーブル
     this.drawCircle(this.circleArea1, 50);
@@ -262,7 +353,7 @@ export default {
     this.drawEllipse(this.ellipseArea, 100);
 
     //三角形テーブル
-    this.drawTriangle(this.triangleArea1);
+    this.drawTriangle(this.triangleArea);
 
     //休憩テーブル（四角）
     this.drawBox(this.boxArea1, this.boxSize1);
