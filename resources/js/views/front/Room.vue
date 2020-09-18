@@ -65,9 +65,8 @@ export default {
             // 初回取得
             if (section.id <= 6) {
               // section 1~6 の描画
-              this.drawTable(seat.id, seat.position, seat.status);
+              this.drawTable(seat.id, section.role, seat.position, seat.status);
             }
-            // this.clickEvent();
           } else if (seat.status !== this.room.sections[sectionIndex].seats[seatIndex].status) {
             // 現在の状態から変化があれば再描画
             this.changeColor(seat.status, seat.id);
@@ -84,57 +83,38 @@ export default {
      */
     clickEvent: function () {
       var clickObject = this.canvas.getActiveObject();
+      console.log(clickObject);
+
       if (clickObject) {
-        console.log(clickObject);
-        clickObject.set({ fill: 'black' });
+        // フロントの状態を変更
+        this.changeStatus(clickObject, 'sitting');
+        // データベースへ状態を保存
+        this.seatAction(clickObject.id, 'sit');
       }
-      // var rect = event.target.getBoundingClientRect();
-      // // キャンバス上でのクリック座標
-      // var mx = event.clientX - rect.left;
-      // var my = event.clientY - rect.top;
-      // // セクションのループ
-      // this.room.sections.forEach((section) => {
-      //   // 座席のループ
-      //   section.seats.forEach((seat) => {
-      //     var position = JSON.parse(seat.position);
-      //     if (position.left < mx && mx < position.left + this.tableSize) {
-      //       if (position.top < my && my < position.top + this.tableSize) {
-      //         console.log(seat.id);
-      //         var img01 = new Image();
-      //         img01.src = this.$storage('system') + 'logo.svg';
-      //         // if (10 <= mx && mx <= 60) {
-      //         //   if (10 <= my && my <= 60) {
-      //         //     ctx.fillStyle = 'red';
-      //         //     ctx.fillRect(10, 10, 50, 50);
-      //         //     ctx.drawImage(img01, 10, 10, 10, 10);
-      //         //   }
-      //         // }
-      //       }
-      //     }
-      //   });
-      // });
     },
 
     /**
-     * 座席の描画
+     * 座席の状態の変更
      *
-     * @param Number  seatId  描画する座席
+     * @param Object  clickObject クリックされた座席
      * @param String  status  状態
      */
-    changeColor: function (seatId, status) {
+    changeStatus: function (clickObject, status) {
       switch (status) {
         case 'sitting':
-          $('#seat' + seatId).css('color', 'red');
+          var color = '#ff0000';
+          break;
+
+        case 'leave':
+          var color = '#ffffff';
           break;
 
         case 'break':
-          $('#seat' + seatId).css('color', 'blue');
-          break;
-
-        default:
-          $('#seat' + seatId).css('color', 'white');
+          var color = '#000000';
           break;
       }
+
+      clickObject.set({ fill: color });
     },
 
     /**
@@ -159,19 +139,17 @@ export default {
       }
 
       this.$http.post(endpoint);
-
-      // フロントと同期
-      this.syncRoom();
     },
 
     /**
      * テーブルの描画
      *
      * @param Number  seatId    描画する座席
+     * @param String  role      座席の役割
      * @param JSON    position  描画位置
      * @param String  status    座席状態
      */
-    drawTable: function (seatId, position, status) {
+    drawTable: function (seatId, role, position, status) {
       var position = JSON.parse(position);
       switch (status) {
         case 'sitting':
@@ -190,6 +168,7 @@ export default {
       this.canvas.add(
         new fabric.Rect({
           id: seatId,
+          role: role,
           fill: color,
           stroke: 'black',
           left: position.left,
