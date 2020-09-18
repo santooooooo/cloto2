@@ -14,21 +14,21 @@ class SeatsTableSeeder extends Seeder
     {
         $sections = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
-        $x = 300;
-        $y = 50;
+        $left = 300;
+        $top = 50;
         foreach ($sections as $index => $section) {
             // 各セクションに5席ずつ用意
             for ($i = 0; $i < 5; $i++) {
-                $position = json_encode(['x' => ($x + (50 * $i)), 'y' => $y]);
+                $position = json_encode(['left' => ($left + (50 * $i)), 'top' => $top]);
                 Seat::insert(['section_id' => $section, 'position' => $position]);
             }
 
             if (($index % 2) == 0) {
-                $x += 300;
+                $left += 300;
             }
             if (($index % 2) == 1) {
-                $x = 300;
-                $y += 100;
+                $left = 300;
+                $top += 100;
             }
         }
     }
