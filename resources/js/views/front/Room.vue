@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas :width="roomWidth" :height="roomHight" ref="canvas" id="room"></canvas>
+    <canvas :width="roomWidth" :height="roomHight" id="room"></canvas>
     <v-card class="mx-auto" max-width="344" outlined>
       <h1>{{ this.room.name }}教室</h1>
       <v-btn id="seat1" @click="seatAction(1, 'sit')">着席</v-btn>
@@ -16,7 +16,7 @@
 export default {
   data() {
     return {
-      canvas: '',
+      canvas: {},
       room: [], // 教室データ
 
       roomWidth: 900,
@@ -84,33 +84,25 @@ export default {
      * キャンバスクリックイベント
      */
     clickEvent: function () {
-      // this.canvas = new fabric.Canvas('room');
-      console.log(this.canvas);
-      this.canvas.on('mouse:down', function () {
-        var clickObject = this.canvas.getActiveObject();
-        console.log(clickObjct);
-        clickObject.set({ left: 20, top: 50 });
-      });
-
+      var clickObject = this.canvas.getActiveObject();
+      if (clickObject) {
+        console.log(clickObject);
+        clickObject.set({ fill: 'black' });
+      }
       // var rect = event.target.getBoundingClientRect();
-
       // // キャンバス上でのクリック座標
       // var mx = event.clientX - rect.left;
       // var my = event.clientY - rect.top;
-
       // // セクションのループ
       // this.room.sections.forEach((section) => {
       //   // 座席のループ
       //   section.seats.forEach((seat) => {
       //     var position = JSON.parse(seat.position);
-
       //     if (position.left < mx && mx < position.left + this.tableSize) {
       //       if (position.top < my && my < position.top + this.tableSize) {
       //         console.log(seat.id);
-
       //         var img01 = new Image();
       //         img01.src = this.$storage('system') + 'logo.svg';
-
       //         // if (10 <= mx && mx <= 60) {
       //         //   if (10 <= my && my <= 60) {
       //         //     ctx.fillStyle = 'red';
@@ -184,6 +176,7 @@ export default {
         new fabric.Rect({
           id: seatId,
           fill: '#FF0000',
+          stroke: 'black',
           left: position[0],
           top: position[1],
           width: this.tableSize,
@@ -320,21 +313,14 @@ export default {
   },
   mounted() {
     this.canvas = new fabric.Canvas('room');
-    console.log(this.canvas);
-    this.canvas.on('mouse:down', function () {
-      var clickObject = this.canvas.getActiveObject();
-      console.log(clickObjct);
-      clickObject.set({ left: 20, top: 50 });
-    });
+    this.canvas.selection = false; // エリア選択の無効化
+    this.canvas.on('mouse:down', this.clickEvent);
 
     // 初回取得
     this.syncRoom();
-    // this.$refs.canvas.onmousedown = this.clickEvent;
 
     // 同期開始
     // setInterval(this.syncRoom, 10000);
-
-    var ctx = this.$refs.canvas.getContext('2d');
 
     this.drawPartition(this.partition1, this.partitionThick);
     this.drawPartition(this.partition2, this.partitionThick);
