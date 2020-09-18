@@ -308,6 +308,10 @@ export default {
   mounted() {
     this.canvas = new fabric.Canvas('room');
     this.canvas.selection = false; // エリア選択の無効化
+    this.canvas.setBackgroundImage(
+      this.$storage('system') + 'floor.png',
+      this.canvas.renderAll.bind(this.canvas)
+    );
     this.canvas.on('mouse:down', this.clickEvent);
 
     // 初回取得
