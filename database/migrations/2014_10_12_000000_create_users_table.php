@@ -24,8 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('sns')->nullable();                      // SNS
             $table->string('web')->nullable();                      // Webページ
             $table->text('introduction')->nullable();               // 自己紹介
-            $table->string('setting_notification');                 // 通知の設定
-            $table->dateTime('timer_started_at')->nullable();       // タイマー開始日時
+            $table->unsignedInteger('seat_id')->nullable();         // 着席している座席ID
             $table->rememberToken();
             $table->dateTimes();
         });

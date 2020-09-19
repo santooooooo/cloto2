@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password', 'handlename', 'icon', 'sns', 'web', 'introduction', 'setting_notification'
+        'username', 'email', 'password', 'handlename', 'icon', 'sns', 'web', 'introduction', 'seat_id'
     ];
 
     /**
@@ -43,10 +43,10 @@ class User extends Authenticatable
     /**
      * Seat モデルのリレーション
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function seat()
     {
-        return $this->hasOne('App\Models\Seat');
+        return $this->belongsTo('App\Models\Seat');
     }
 }
