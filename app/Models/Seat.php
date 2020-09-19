@@ -14,7 +14,7 @@ class Seat extends Model
      * @var array
      */
     protected $fillable = [
-        'section_id', 'position', 'user_id', 'status'
+        'section_id', 'position', 'status'
     ];
 
     public $timestamps = false;
@@ -33,10 +33,10 @@ class Seat extends Model
     /**
      * User モデルのリレーション
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function user()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->hasOne('App\Models\User');
     }
 }

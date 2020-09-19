@@ -1,13 +1,11 @@
 <template>
   <div>
+    <v-btn @click="changeStatus(null, 'leave')">退席</v-btn>
+    <v-btn @click="changeStatus(null, 'break')">休憩</v-btn>
+
     <canvas :width="roomWidth" :height="roomHight" id="room"></canvas>
     <v-card class="mx-auto" max-width="344" outlined>
       <h1>{{ this.room.name }}教室</h1>
-      <v-btn id="seat1" @click="seatAction(1, 'sit')">着席</v-btn>
-      <v-btn id="seat2" @click="seatAction(2, 'sit')">着席</v-btn>
-      <v-btn id="seat3" @click="seatAction(3, 'sit')">着席</v-btn>
-      <v-btn @click="seatAction(1, 'leave')">離席</v-btn>
-      <v-btn @click="seatAction(2, 'break')">休憩</v-btn>
     </v-card>
   </div>
 </template>
@@ -51,6 +49,11 @@ export default {
       iconSize: 50,
     };
   },
+  computed: {
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
+  },
   methods: {
     /**
      * 教室の同期
@@ -87,20 +90,29 @@ export default {
       console.log(clickObject);
 
       if (clickObject) {
-        // フロントの状態を変更
-        this.changeStatus(clickObject, 'sitting');
-        // データベースへ状態を保存
-        this.seatAction(clickObject.id, 'sit');
+        // 着席処理
+        if (this.authUser.seat_id === null) {
+          this.changeStatus(clickObject, 'sitting');
+        }
       }
     },
 
     /**
-     * 座席の状態の変更
+     * 状態の変更
      *
-     * @param Object  clickObject クリックされた座席
+     * @param Object  changeObject 状態を変更する座席
      * @param String  status  状態
      */
-    changeStatus: function (clickObject, status) {
+    changeStatus: function (changeObject, status) {
+      if (changeObject === null) {
+        // 自分が着席中の座席を探索
+        this.canvas.getObjects().forEach((object) => {
+          if (object.id === this.authUser.seat_id) {
+            changeObject = object;
+          }
+        });
+      }
+
       switch (status) {
         case 'sitting':
           var color = '#ff0000';
@@ -115,7 +127,8 @@ export default {
           break;
       }
 
-      clickObject.set({ fill: color });
+      changeObject.set({ fill: color });
+
 
       console.log(this.$storage('icon') + this.$store.getters['auth/user'].icon);
 
@@ -142,6 +155,14 @@ export default {
           hoverCursor: 'default', // カーソルの変更を禁止
         })
       );
+
+
+      // 変更の適用
+      this.canvas.requestRenderAll();
+
+      // データベースへ状態を保存
+      this.seatAction(changeObject.id, status);
+
     },
 
     /**
@@ -159,9 +180,9 @@ export default {
      * @param Number  seatId  変更する座席
      * @param String  status  状態
      */
-    seatAction: function (seatId, status) {
+    seatAction: async function (seatId, status) {
       switch (status) {
-        case 'sit':
+        case 'sitting':
           var endpoint = this.$endpoint('POST:seatSit', [seatId]);
           break;
 
@@ -174,7 +195,10 @@ export default {
           break;
       }
 
-      this.$http.post(endpoint);
+      await this.$http.post(endpoint);
+
+      // ユーザーデータの同期
+      this.$store.dispatch('auth/syncAuthUser');
     },
 
     /**
@@ -192,12 +216,12 @@ export default {
           var color = '#ff0000';
           break;
 
-        case 'leave':
-          var color = '#ffffff';
-          break;
-
         case 'break':
           var color = '#000000';
+          break;
+
+        default:
+          var color = '#ffffff';
           break;
       }
 

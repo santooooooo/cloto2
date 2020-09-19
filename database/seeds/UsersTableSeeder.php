@@ -22,7 +22,6 @@ class UsersTableSeeder extends Seeder
                 'handlename' => $username,
                 'icon' => 'default.jpg',
                 'sns' => json_encode(['twitter' => '', 'github' => '', 'qiita' => '']),
-                'setting_notification' => 'All'
             ]);
         }
     }
