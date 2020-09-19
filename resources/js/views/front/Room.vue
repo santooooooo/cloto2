@@ -48,6 +48,7 @@ export default {
       tableSize: 50,
       partitionThick: 8, //仕切りの厚さ
       boxPartitionThick: 2, //休憩室仕切りの厚さ
+      iconSize: 50,
     };
   },
   methods: {
@@ -115,6 +116,41 @@ export default {
       }
 
       clickObject.set({ fill: color });
+
+      console.log(this.$storage('icon') + this.$store.getters['auth/user'].icon);
+
+      var icon = new Image();
+      icon.src = this.$storage('icon') + this.$store.getters['auth/user'].icon;
+
+      this.canvas.add(
+        new fabric.Image(icon, {
+          left: 10,
+          top: 10,
+          scaleX: this.iconSize / icon.naturalWidth,
+          scaleY: this.iconSize / icon.naturalHeight,
+          clipPath: new fabric.Circle({
+            scaleX: icon.naturalWidth / this.iconSize,
+            scaleY: icon.naturalHeight / this.iconSize,
+            radius: this.iconSize / 2,
+            originX: 'center',
+            originY: 'center',
+          }),
+          hasControls: false, // 図形周囲のコントロールボタンの無効化
+          hasBorders: false, // 図形周囲のボーダーの無効化
+          lockMovementX: true, // 横移動の禁止
+          lockMovementY: true, // 縦移動の禁止
+          hoverCursor: 'default', // カーソルの変更を禁止
+        })
+      );
+    },
+
+    /**
+     * アイコンの配置
+     *
+     * @param Object  clickObject クリックされた座席
+     */
+    putIcon: function (clickObject, icon) {
+      this.canvas.add(icon);
     },
 
     /**
