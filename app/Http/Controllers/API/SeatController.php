@@ -10,6 +10,20 @@ use Illuminate\Support\Facades\Auth;
 class SeatController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            return $next($request);
+        });
+    }
+
+
+    /**
      * 着席
      *
      * @param  \App\Models\Seat  $seat
@@ -17,7 +31,11 @@ class SeatController extends Controller
      */
     public function sit(Seat $seat)
     {
-        $result = $seat->update(['user_id' => Auth::id(), 'status' => 'sitting']);
+        // ユーザーと座席を紐付け
+        $this->user->seat()->associate($seat);
+
+        // 座席状態の更新
+        $result = $seat->update(['status' => 'sitting']);
 
         return response()->json($result);
     }
