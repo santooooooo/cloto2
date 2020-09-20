@@ -87,10 +87,15 @@ export default {
      */
     clickEvent: function () {
       var clickObject = this.canvas.getActiveObject();
-      console.log(clickObject);
+
+      //console.log(this.canvas.getObjects());
 
       if (clickObject) {
         // 着席処理
+        console.log(clickObject);
+        console.log(clickObject.left);
+        console.log(clickObject.top);
+        //this.canvas.remove(clickObject);
         if (this.authUser.seat_id === null) {
           this.changeStatus(clickObject, 'sitting');
         }
@@ -129,15 +134,15 @@ export default {
 
       changeObject.set({ fill: color });
 
-      console.log(this.$storage('icon') + this.$store.getters['auth/user'].icon);
+      //console.log(this.$storage('icon') + this.$store.getters['auth/user'].icon);
 
       var icon = new Image();
       icon.src = this.$storage('icon') + this.$store.getters['auth/user'].icon;
 
       this.canvas.add(
         new fabric.Image(icon, {
-          left: 280,
-          top: 50,
+          left: changeObject.left,
+          top: changeObject.top,
           scaleX: this.iconSize / icon.naturalWidth,
           scaleY: this.iconSize / icon.naturalHeight,
           clipPath: new fabric.Circle({
@@ -164,9 +169,9 @@ export default {
      *
      * @param Object  clickObject クリックされた座席
      */
-    putIcon: function (clickObject, icon) {
-      this.canvas.add(icon);
-    },
+    // putIcon: function (clickObject, icon) {
+    //   this.canvas.add(icon);
+    // },
 
     /**
      * 座席状態の変更
@@ -223,13 +228,14 @@ export default {
         new fabric.Rect({
           id: seatId,
           role: role,
-          fill: color,
+          fill: 'black',
           stroke: 'black',
+          opacity: 0.3,
           left: position.left,
           top: position.top,
           width: this.tableSize,
           height: this.tableSize,
-          strokeWidth: 4,
+          strokeWidth: 1,
           hasControls: false, // 図形周囲のコントロールボタンの無効化
           hasBorders: false, // 図形周囲のボーダーの無効化
           lockMovementX: true, // 横移動の禁止
