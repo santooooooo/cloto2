@@ -129,7 +129,6 @@ export default {
 
       changeObject.set({ fill: color });
 
-
       console.log(this.$storage('icon') + this.$store.getters['auth/user'].icon);
 
       var icon = new Image();
@@ -137,8 +136,8 @@ export default {
 
       this.canvas.add(
         new fabric.Image(icon, {
-          left: 10,
-          top: 10,
+          left: 280,
+          top: 50,
           scaleX: this.iconSize / icon.naturalWidth,
           scaleY: this.iconSize / icon.naturalHeight,
           clipPath: new fabric.Circle({
@@ -148,21 +147,16 @@ export default {
             originX: 'center',
             originY: 'center',
           }),
-          hasControls: false, // 図形周囲のコントロールボタンの無効化
-          hasBorders: false, // 図形周囲のボーダーの無効化
-          lockMovementX: true, // 横移動の禁止
-          lockMovementY: true, // 縦移動の禁止
+          selectable: false, // 図形の選択を禁止
           hoverCursor: 'default', // カーソルの変更を禁止
         })
       );
-
 
       // 変更の適用
       this.canvas.requestRenderAll();
 
       // データベースへ状態を保存
       this.seatAction(changeObject.id, status);
-
     },
 
     /**
@@ -366,7 +360,9 @@ export default {
     },
   },
   mounted() {
-    this.canvas = new fabric.Canvas('room');
+    this.canvas = new fabric.Canvas('room', {
+      preserveObjectStacking: true, // オブジェクトの重なり順の固定
+    });
     this.canvas.selection = false; // エリア選択の無効化
     this.canvas.setBackgroundImage(
       this.$storage('system') + 'floor.png',
