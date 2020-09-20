@@ -5,7 +5,7 @@
 
     <canvas :width="roomWidth" :height="roomHight" id="room"></canvas>
     <v-card class="mx-auto" max-width="344" outlined>
-      <h1>{{ this.room.name }}教室</h1>
+      <h1>{{ this.roomData.name }}教室</h1>
     </v-card>
   </div>
 </template>
@@ -15,39 +15,12 @@ export default {
   data() {
     return {
       canvas: {},
-      room: [], // 教室データ
       isDisabledClick: false, // クリック制御
-
-      roomWidth: 900,
-      roomHight: 600,
-
-      circleArea1: [300, 500],
-      circleArea2: [500, 500], //中心座標
-
-      ellipseArea: [750, 500],
-
-      triangleArea: [100, 100],
-
-      //仕切りのx,y座標
-      partition1: [200, 50, 200, 350],
-      partition2: [300, 350, 550, 350],
-      partition3: [600, 350, 850, 350],
-      //部屋の仕切り　の始点x,y座標
-      boxArea1: [50, 200],
-      boxArea2: [50, 300],
-
-      boxSize1: [100, 50],
-      boxSize2: [100, 50],
-
-      boxPartition1: [200, 400, 900, 400],
-      boxPartition2: [200, 400, 200, 600],
-      boxPartition3: [400, 400, 400, 600],
-      boxPartition4: [600, 400, 600, 600],
-
-      tableSize: 50,
-      partitionThick: 8, //仕切りの厚さ
-      boxPartitionThick: 2, //休憩室仕切りの厚さ
-      iconSize: 50,
+      roomData: [], // 教室データ
+      roomWidth: 900, // 教室サイズ
+      roomHight: 600, // 教室サイズ
+      clickAreaSize: 50, // クリックエリアサイズ
+      iconSize: 50, // アイコンサイズ
     };
   },
   computed: {
@@ -66,13 +39,13 @@ export default {
       response.data.sections.forEach((section, sectionIndex) => {
         // 座席のループ
         section.seats.forEach((seat, seatIndex) => {
-          if (this.room.length === 0) {
+          if (this.roomData.length === 0) {
             // 初回取得
             if (section.id <= 6) {
-              // section 1~6 の描画
-              this.drawTable(seat.id, section.role, seat.position, seat.status);
+              // section 1~6 のエリアの設定
+              this.setClickArea(seat.id, section.role, seat.position, seat.status);
             }
-          } else if (seat.status !== this.room.sections[sectionIndex].seats[seatIndex].status) {
+          } else if (seat.status !== this.roomData.sections[sectionIndex].seats[seatIndex].status) {
             // 現在の状態から変化があれば再描画
             this.changeColor(seat.status, seat.id);
           }
@@ -80,7 +53,7 @@ export default {
       });
 
       // データの更新
-      this.room = response.data;
+      this.roomData = response.data;
     },
 
     /**
@@ -148,28 +121,7 @@ export default {
 
       changeObject.set({ fill: color });
 
-      //console.log(this.$storage('icon') + this.$store.getters['auth/user'].icon);
-
-      var icon = new Image();
-      icon.src = this.$storage('icon') + this.$store.getters['auth/user'].icon;
-
-      this.canvas.add(
-        new fabric.Image(icon, {
-          left: changeObject.left,
-          top: changeObject.top,
-          scaleX: this.iconSize / icon.naturalWidth,
-          scaleY: this.iconSize / icon.naturalHeight,
-          clipPath: new fabric.Circle({
-            scaleX: icon.naturalWidth / this.iconSize,
-            scaleY: icon.naturalHeight / this.iconSize,
-            radius: this.iconSize / 2,
-            originX: 'center',
-            originY: 'center',
-          }),
-          selectable: false, // 図形の選択を禁止
-          hoverCursor: 'default', // カーソルの変更を禁止
-        })
-      );
+      this.putIcon(changeObject);
 
       // 変更の適用
       this.canvas.requestRenderAll();
@@ -180,15 +132,6 @@ export default {
       // クリックを有効化
       this.isDisabledClick = false;
     },
-
-    /**
-     * アイコンの配置
-     *
-     * @param Object  clickObject クリックされた座席
-     */
-    // putIcon: function (clickObject, icon) {
-    //   this.canvas.add(icon);
-    // },
 
     /**
      * 座席状態の変更
@@ -218,14 +161,14 @@ export default {
     },
 
     /**
-     * テーブルの描画
+     * クリックエリアの設定
      *
      * @param Number  seatId    描画する座席
      * @param String  role      座席の役割
      * @param JSON    position  描画位置
      * @param String  status    座席状態
      */
-    drawTable: function (seatId, role, position, status) {
+    setClickArea: function (seatId, role, position, status) {
       var position = JSON.parse(position);
       switch (status) {
         case 'sitting':
@@ -250,8 +193,8 @@ export default {
           opacity: 0.3,
           left: position.left,
           top: position.top,
-          width: this.tableSize,
-          height: this.tableSize,
+          width: this.clickAreaSize,
+          height: this.clickAreaSize,
           strokeWidth: 1,
           hasControls: false, // 図形周囲のコントロールボタンの無効化
           hasBorders: false, // 図形周囲のボーダーの無効化
@@ -263,120 +206,28 @@ export default {
     },
 
     /**
-     * 長方形テーブルの描画
+     * アイコンの配置
      *
-     * @param Array  position [x始点, y始点]
-     * @param Array  size [box幅, box高さ]
+     * @param Object  locatedObject 配置される座席
      */
-    drawBox: function (position, size) {
-      this.canvas.add(
-        new fabric.Rect({
-          fill: '#FF0000',
-          left: position[0],
-          top: position[1],
-          width: size[0],
-          height: size[1],
-          strokeWidth: 4,
-          hasControls: false, // 図形周囲のコントロールボタンの無効化
-          hasBorders: false, // 図形周囲のボーダーの無効化
-          lockMovementX: true, // 横移動の禁止
-          lockMovementY: true, // 縦移動の禁止
-          hoverCursor: 'default', // カーソルの変更を禁止
-        })
-      );
-    },
+    putIcon: function (locatedObject) {
+      var icon = new Image();
+      icon.src = this.$storage('icon') + this.$store.getters['auth/user'].icon;
 
-    /**
-     * 区切りの描画
-     *
-     * @param Array  position [x始点, y始点, x終点, y終点]
-     * @param Number  thick  区切りの太さ
-     */
-    drawPartition: function (position, thick) {
       this.canvas.add(
-        new fabric.Line(position, {
-          fill: 'red',
-          stroke: 'red',
-          strokeWidth: 10,
-          hasControls: false, // 図形周囲のコントロールボタンの無効化
-          hasBorders: false, // 図形周囲のボーダーの無効化
-          lockMovementX: true, // 横移動の禁止
-          lockMovementY: true, // 縦移動の禁止
-          hoverCursor: 'default', // カーソルの変更を禁止
-        })
-      );
-    },
-
-    /**
-     * 円の描画
-     *
-     * @param Array  position [x始点, y始点]
-     * @param Number radius 半径
-     */
-    drawCircle: function (position, radius) {
-      this.canvas.add(
-        new fabric.Circle({
-          fill: '#FF0000',
-          left: position[0],
-          top: position[1],
-          originX: 'center',
-          originY: 'center',
-          angle: 2 * Math.PI,
-          radius: radius,
-          hasControls: false, // 図形周囲のコントロールボタンの無効化
-          hasBorders: false, // 図形周囲のボーダーの無効化
-          lockMovementX: true, // 横移動の禁止
-          lockMovementY: true, // 縦移動の禁止
-          hoverCursor: 'default', // カーソルの変更を禁止
-        })
-      );
-    },
-
-    /**
-     * 楕円の描画
-     *
-     * @param Array  position [x始点, y始点]
-     * @param Number radius 長半径
-     */
-    drawEllipse: function (position, radius) {
-      this.canvas.add(
-        new fabric.Ellipse({
-          fill: 'red',
-          left: position[0],
-          top: position[1],
-          originX: 'center',
-          originY: 'center',
-          strokeWidth: 100,
-          rx: radius,
-          ry: 40,
-          hasControls: false, // 図形周囲のコントロールボタンの無効化
-          hasBorders: false, // 図形周囲のボーダーの無効化
-          lockMovementX: true, // 横移動の禁止
-          lockMovementY: true, // 縦移動の禁止
-          hoverCursor: 'default', // カーソルの変更を禁止
-        })
-      );
-    },
-
-    /**
-     * 三角形の描画
-     *
-     * @param Array  position [x始点, y始点]
-     */
-    drawTriangle: function (position) {
-      this.canvas.add(
-        new fabric.Triangle({
-          fill: 'red',
-          left: position[0],
-          top: position[1],
-          originX: 'center',
-          originY: 'center',
-          width: 100,
-          height: 87,
-          hasControls: false, // 図形周囲のコントロールボタンの無効化
-          hasBorders: false, // 図形周囲のボーダーの無効化
-          lockMovementX: true, // 横移動の禁止
-          lockMovementY: true, // 縦移動の禁止
+        new fabric.Image(icon, {
+          left: locatedObject.left,
+          top: locatedObject.top,
+          scaleX: this.iconSize / icon.naturalWidth,
+          scaleY: this.iconSize / icon.naturalHeight,
+          clipPath: new fabric.Circle({
+            scaleX: icon.naturalWidth / this.iconSize,
+            scaleY: icon.naturalHeight / this.iconSize,
+            radius: this.iconSize / 2,
+            originX: 'center',
+            originY: 'center',
+          }),
+          selectable: false, // 図形の選択を禁止
           hoverCursor: 'default', // カーソルの変更を禁止
         })
       );
@@ -398,29 +249,6 @@ export default {
 
     // 同期開始
     // setInterval(this.syncRoom, 10000);
-
-    this.drawPartition(this.partition1, this.partitionThick);
-    this.drawPartition(this.partition2, this.partitionThick);
-    this.drawPartition(this.partition3, this.partitionThick);
-
-    this.drawPartition(this.boxPartition1, this.boxPartitionThick);
-    this.drawPartition(this.boxPartition2, this.boxPartitionThick);
-    this.drawPartition(this.boxPartition3, this.boxPartitionThick);
-    this.drawPartition(this.boxPartition4, this.boxPartitionThick);
-
-    //丸テーブル
-    this.drawCircle(this.circleArea1, 50);
-    this.drawCircle(this.circleArea2, 50);
-
-    //楕円テーブル
-    this.drawEllipse(this.ellipseArea, 100);
-
-    //三角形テーブル
-    this.drawTriangle(this.triangleArea);
-
-    //休憩テーブル（四角）
-    this.drawBox(this.boxArea1, this.boxSize1);
-    this.drawBox(this.boxArea2, this.boxSize2);
   },
 };
 </script>
@@ -431,9 +259,5 @@ export default {
 canvas {
   border: 7px solid $gray;
   margin: 0 auto;
-}
-
-.login-logo {
-  margin-right: 1em;
 }
 </style>
