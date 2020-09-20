@@ -40,10 +40,7 @@ export default {
         section.seats.forEach((seat, seatIndex) => {
           if (this.roomData.length === 0) {
             // 初回取得
-            if (section.id <= 6) {
-              // section 1~6 のエリアの設定
-              this.setClickArea(seat.id, section.role, seat.position, seat.status);
-            }
+            this.setClickArea(seat.id, section.role, seat.position, seat.status);
           } else if (seat.status !== this.roomData.sections[sectionIndex].seats[seatIndex].status) {
             // 現在の状態から変化があれば再描画
             this.changeColor(seat.status, seat.id);
@@ -208,8 +205,8 @@ export default {
           fill: 'black',
           stroke: 'black',
           opacity: 0.3,
-          left: position.left,
-          top: position.top,
+          left: position.x,
+          top: position.y,
           originX: 'center',
           originY: 'center',
           radius: this.iconSize / 2,
@@ -234,8 +231,8 @@ export default {
 
       this.canvas.add(
         new fabric.Image(icon, {
-          left: locatedObject.left,
-          top: locatedObject.top,
+          left: locatedObject.x,
+          top: locatedObject.y,
           scaleX: this.iconSize / icon.naturalWidth,
           scaleY: this.iconSize / icon.naturalHeight,
           clipPath: new fabric.Circle({
