@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-btn @click="changeStatus(null, 'leave')">退席</v-btn>
-    <v-btn @click="changeStatus(null, 'break')">休憩</v-btn>
+    <v-btn @click="buttonClickEvent('leave')">退席</v-btn>
+    <v-btn @click="buttonClickEvent('break')">休憩</v-btn>
 
     <canvas :width="roomWidth" :height="roomHight" id="room"></canvas>
     <v-card class="mx-auto" max-width="344" outlined>
@@ -16,6 +16,7 @@ export default {
     return {
       canvas: {},
       room: [], // 教室データ
+      isDisabledClick: false, // クリック制御
 
       roomWidth: 900,
       roomHight: 600,
@@ -84,14 +85,29 @@ export default {
     /**
      * キャンバスクリックイベント
      */
-    clickEvent: function () {
-      var clickObject = this.canvas.getActiveObject();
-      console.log(clickObject);
+    canvasClickEvent: function () {
+      if (!this.isDisabledClick) {
+        var clickObject = this.canvas.getActiveObject();
 
-      if (clickObject) {
-        // 着席処理
-        if (this.authUser.seat_id === null) {
-          this.changeStatus(clickObject, 'sitting');
+        if (clickObject) {
+          // 着席処理
+          if (this.authUser.seat_id === null) {
+            this.changeStatus(clickObject, 'sitting');
+          }
+        }
+      }
+    },
+
+    /**
+     * ボタンクリックイベント
+     *
+     * @param String  status  遷移先の状態
+     */
+    buttonClickEvent: function (status) {
+      if (!this.isDisabledClick) {
+        // 状態変更処理
+        if (this.authUser.seat_id !== null) {
+          this.changeStatus(null, status);
         }
       }
     },
@@ -100,9 +116,12 @@ export default {
      * 状態の変更
      *
      * @param Object  changeObject 状態を変更する座席
-     * @param String  status  状態
+     * @param String  status  遷移先の状態
      */
-    changeStatus: function (changeObject, status) {
+    changeStatus: async function (changeObject, status) {
+      // クリックを無効化
+      this.isDisabledClick = true;
+
       if (changeObject === null) {
         // 自分が着席中の座席を探索
         this.canvas.getObjects().forEach((object) => {
@@ -132,7 +151,10 @@ export default {
       this.canvas.requestRenderAll();
 
       // データベースへ状態を保存
-      this.seatAction(changeObject.id, status);
+      await this.seatAction(changeObject.id, status);
+
+      // クリックを有効化
+      this.isDisabledClick = false;
     },
 
     /**
@@ -159,7 +181,7 @@ export default {
       await this.$http.post(endpoint);
 
       // ユーザーデータの同期
-      this.$store.dispatch('auth/syncAuthUser');
+      await this.$store.dispatch('auth/syncAuthUser');
     },
 
     /**
@@ -333,7 +355,7 @@ export default {
       this.$storage('system') + 'floor.png',
       this.canvas.renderAll.bind(this.canvas)
     );
-    this.canvas.on('mouse:down', this.clickEvent);
+    this.canvas.on('mouse:down', this.canvasClickEvent);
 
     // 初回取得
     this.syncRoom();
