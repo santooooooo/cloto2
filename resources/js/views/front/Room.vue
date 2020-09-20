@@ -47,6 +47,7 @@ export default {
       tableSize: 50,
       partitionThick: 8, //仕切りの厚さ
       boxPartitionThick: 2, //休憩室仕切りの厚さ
+      iconSize: 50,
     };
   },
   computed: {
@@ -147,6 +148,29 @@ export default {
 
       changeObject.set({ fill: color });
 
+      //console.log(this.$storage('icon') + this.$store.getters['auth/user'].icon);
+
+      var icon = new Image();
+      icon.src = this.$storage('icon') + this.$store.getters['auth/user'].icon;
+
+      this.canvas.add(
+        new fabric.Image(icon, {
+          left: changeObject.left,
+          top: changeObject.top,
+          scaleX: this.iconSize / icon.naturalWidth,
+          scaleY: this.iconSize / icon.naturalHeight,
+          clipPath: new fabric.Circle({
+            scaleX: icon.naturalWidth / this.iconSize,
+            scaleY: icon.naturalHeight / this.iconSize,
+            radius: this.iconSize / 2,
+            originX: 'center',
+            originY: 'center',
+          }),
+          selectable: false, // 図形の選択を禁止
+          hoverCursor: 'default', // カーソルの変更を禁止
+        })
+      );
+
       // 変更の適用
       this.canvas.requestRenderAll();
 
@@ -156,6 +180,15 @@ export default {
       // クリックを有効化
       this.isDisabledClick = false;
     },
+
+    /**
+     * アイコンの配置
+     *
+     * @param Object  clickObject クリックされた座席
+     */
+    // putIcon: function (clickObject, icon) {
+    //   this.canvas.add(icon);
+    // },
 
     /**
      * 座席状態の変更
@@ -212,13 +245,14 @@ export default {
         new fabric.Rect({
           id: seatId,
           role: role,
-          fill: color,
+          fill: 'black',
           stroke: 'black',
+          opacity: 0.3,
           left: position.left,
           top: position.top,
           width: this.tableSize,
           height: this.tableSize,
-          strokeWidth: 4,
+          strokeWidth: 1,
           hasControls: false, // 図形周囲のコントロールボタンの無効化
           hasBorders: false, // 図形周囲のボーダーの無効化
           lockMovementX: true, // 横移動の禁止
@@ -349,7 +383,9 @@ export default {
     },
   },
   mounted() {
-    this.canvas = new fabric.Canvas('room');
+    this.canvas = new fabric.Canvas('room', {
+      preserveObjectStacking: true, // オブジェクトの重なり順の固定
+    });
     this.canvas.selection = false; // エリア選択の無効化
     this.canvas.setBackgroundImage(
       this.$storage('system') + 'floor.png',
