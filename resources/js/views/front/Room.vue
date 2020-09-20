@@ -227,12 +227,14 @@ export default {
      */
     putIcon: function (locatedObject) {
       var icon = new Image();
-      icon.src = this.$storage('icon') + this.$store.getters['auth/user'].icon;
+      icon.src = this.$storage('icon') + this.authUser.icon;
 
       this.canvas.add(
         new fabric.Image(icon, {
-          left: locatedObject.x,
-          top: locatedObject.y,
+          left: locatedObject.left,
+          top: locatedObject.top,
+          originX: 'center',
+          originY: 'center',
           scaleX: this.iconSize / icon.naturalWidth,
           scaleY: this.iconSize / icon.naturalHeight,
           clipPath: new fabric.Circle({
