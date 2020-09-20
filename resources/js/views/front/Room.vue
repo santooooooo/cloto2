@@ -17,10 +17,9 @@ export default {
       canvas: {},
       isDisabledClick: false, // クリック制御
       roomData: [], // 教室データ
-      roomWidth: 900, // 教室サイズ
+      roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
-      clickAreaSize: 50, // クリックエリアサイズ
-      iconSize: 50, // アイコンサイズ
+      iconSize: 30, // アイコンサイズ
     };
   },
   computed: {
@@ -57,16 +56,34 @@ export default {
     },
 
     /**
+     * キャンバスマウスオーバーイベント
+     */
+    canvasMouseOver: function (event) {
+      if (event.target) {
+        event.target.set({ fill: '#ff0000' });
+        this.canvas.requestRenderAll();
+      }
+    },
+
+    /**
+     * キャンバスマウスオーバー解除イベント
+     */
+    canvasMouseOut: function (event) {
+      if (event.target) {
+        event.target.set({ fill: '#000000' });
+        this.canvas.requestRenderAll();
+      }
+    },
+
+    /**
      * キャンバスクリックイベント
      */
-    canvasClickEvent: function () {
+    canvasMouseDown: function (event) {
       if (!this.isDisabledClick) {
-        var clickObject = this.canvas.getActiveObject();
-
-        if (clickObject) {
+        if (event.target) {
           // 着席処理
           if (this.authUser.seat_id === null) {
-            this.changeStatus(clickObject, 'sitting');
+            this.changeStatus(event.target, 'sitting');
           }
         }
       }
@@ -185,7 +202,7 @@ export default {
       }
 
       this.canvas.add(
-        new fabric.Rect({
+        new fabric.Circle({
           id: seatId,
           role: role,
           fill: 'black',
@@ -193,8 +210,9 @@ export default {
           opacity: 0.3,
           left: position.left,
           top: position.top,
-          width: this.clickAreaSize,
-          height: this.clickAreaSize,
+          originX: 'center',
+          originY: 'center',
+          radius: this.iconSize / 2,
           strokeWidth: 1,
           hasControls: false, // 図形周囲のコントロールボタンの無効化
           hasBorders: false, // 図形周囲のボーダーの無効化
@@ -239,10 +257,13 @@ export default {
     });
     this.canvas.selection = false; // エリア選択の無効化
     this.canvas.setBackgroundImage(
-      this.$storage('system') + 'floor.png',
+      this.$storage('system') + 'room.svg',
       this.canvas.renderAll.bind(this.canvas)
     );
-    this.canvas.on('mouse:down', this.canvasClickEvent);
+
+    this.canvas.on('mouse:over', this.canvasMouseOver);
+    this.canvas.on('mouse:out', this.canvasMouseOut);
+    this.canvas.on('mouse:down', this.canvasMouseDown);
 
     // 初回取得
     this.syncRoom();
