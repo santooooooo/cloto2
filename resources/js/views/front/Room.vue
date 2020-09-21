@@ -42,6 +42,16 @@ export default {
           if (this.roomData.length === 0) {
             // 初回取得
             this.setClickArea(seat.id, section.role, seat.position, seat.status);
+
+            //既に参加している人を表示
+            if (seat.status === 'sitting') {
+              console.log(seat.id);
+
+              var position = JSON.parse(seat.position);
+              console.log(position);
+
+              this.putIcon(position.x, position.y, seat.user.icon);
+            }
           } else if (seat.status !== this.roomData.sections[sectionIndex].seats[seatIndex].status) {
             // 現在の状態から変化があれば再描画
             this.changeColor(seat.status, seat.id);
@@ -124,7 +134,7 @@ export default {
         case 'sitting':
           var color = '#ff0000';
           console.log(status);
-          this.putIcon(changeObject);
+          this.putIcon(changeObject.left, changeObject.top);
           break;
 
         case 'leave':
@@ -136,7 +146,7 @@ export default {
         case 'break':
           console.log(status);
           var color = '#000000';
-          this.putIcon(changeObject);
+          this.putIcon(changeObject.left, changeObject.top);
           break;
       }
 
@@ -228,14 +238,24 @@ export default {
     /**
      * アイコンの配置
      *
-     * @param Object  locatedObject 配置される座席
+     * @param Int x 配置される座席のx座標
+     * @param Int y 配置される座席のy座標
      */
-    putIcon: function (locatedObject) {
+    putIcon: function (x, y, z = this.authUser.icon) {
       var icon = new Image();
-      icon.src = this.$storage('icon') + this.authUser.icon;
+      // if (firstIcon === null) {
+      icon.src = this.$storage('icon') + z;
+      console.log(z);
+
+      // } else {
+      //   icon.src = this.$storage('icon') + firstIcon;
+
+      //   console.log(this.firstIcon);
+      // }
+
       this.iconObject = new fabric.Image(icon, {
-        left: locatedObject.left,
-        top: locatedObject.top,
+        left: x,
+        top: y,
         originX: 'center',
         originY: 'center',
         scaleX: this.iconSize / icon.naturalWidth,
@@ -252,6 +272,11 @@ export default {
       });
       this.canvas.add(this.iconObject);
     },
+
+    /**
+     * 退出するとき、アイコンを削除
+     *
+     **/
 
     removeIcon: function () {
       this.canvas.remove(this.iconObject);
@@ -277,7 +302,7 @@ export default {
     this.syncRoom();
 
     // 同期開始
-    // setInterval(this.syncRoom, 10000);
+    //setInterval(this.syncRoom, 10000);
   },
 };
 </script>
