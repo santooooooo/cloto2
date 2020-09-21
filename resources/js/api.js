@@ -22,6 +22,8 @@ const GET_roomShow = '/api/room/' + replaceChar[0];
 const POST_seatSit = '/api/seat/sit/' + replaceChar[0];
 const POST_seatLeave = '/api/seat/leave/' + replaceChar[0];
 const POST_seatBreak = '/api/seat/break/' + replaceChar[0];
+const GET_chatShow = '/api/chat/' + replaceChar[0];
+const POST_chatPost = '/api/chat/post';
 
 /**
  * エンドポイントの取得
@@ -79,6 +81,14 @@ export function getEndpoint(name, params) {
 
     case 'POST:seatBreak':
       endpoint = setParams(POST_seatBreak, params);
+      break;
+
+    case 'GET:chatShow':
+      endpoint = setParams(GET_chatShow, params);
+      break;
+
+    case 'POST:chatPost':
+      endpoint = POST_chatPost;
       break;
   }
 

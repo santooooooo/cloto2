@@ -7,6 +7,45 @@
     <v-card class="mx-auto" max-width="344" outlined>
       <h1>{{ this.roomData.name }}教室</h1>
     </v-card>
+
+    <v-row justify="center">
+      <v-dialog v-model="chatDialog" width="600px" scrollable persistent>
+        <v-card>
+          <v-card-title>チャット（ここに入室中のユーザーのアイコンを出したい）</v-card-title>
+          <v-divider></v-divider>
+          <v-card-text v-if="chatData.length">
+            <v-row v-for="chat in chatData" :key="chat.id">{{ chat.message }}</v-row>
+          </v-card-text>
+          <v-card-text v-else>
+            <v-row>メッセージがありません！</v-row>
+          </v-card-text>
+          <v-divider></v-divider>
+
+          <v-container>
+            <v-row>
+              <v-col>
+                <v-textarea
+                  outlined
+                  name="input-7-4"
+                  label="メッセージ"
+                  v-model="chatMessage"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+            <v-btn
+              color="blue darken-1"
+              text
+              v-bind:disabled="chatMessage === ''"
+              @click="postComment"
+              >メッセージ投稿</v-btn
+            >
+          </v-container>
+          <v-card-actions>
+            <v-btn color="blue darken-1" text @click="chatDialog = false">退出</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
   </div>
 </template>
 
@@ -20,6 +59,9 @@ export default {
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
       iconSize: 30, // アイコンサイズ
+      chatDialog: false, // チャットダイアログ制御
+      chatData: {}, // チャットデータ
+      chatMessage: '', // チャット入力メッセージ
     };
   },
   computed: {
@@ -40,12 +82,18 @@ export default {
         section.seats.forEach((seat, seatIndex) => {
           if (this.roomData.length === 0) {
             // 初回取得
-            this.setClickArea(seat.id, section.role, seat.position, seat.status);
+            this.setClickArea(seat.id, section.id, section.role, seat.position, seat.status);
 
-            //既に参加している人を表示
-            if (seat.status === 'sitting') {
+            // 誰かが座っている時
+            if (seat.status !== null) {
+              // 着席している人を表示
               var position = JSON.parse(seat.position);
               this.putIcon(position.x, position.y, seat.user.icon);
+
+              // ログインユーザーが座っており，座席が休憩室にある場合
+              if (seat.id === this.authUser.seat_id && section.role === '休憩') {
+                this.enterLounge(section.id);
+              }
             }
           } else if (seat.status !== this.roomData.sections[sectionIndex].seats[seatIndex].status) {
             // 現在の状態から変化があれば再描画
@@ -56,6 +104,27 @@ export default {
 
       // データの更新
       this.roomData = response.data;
+    },
+
+    /**
+     * 休憩室への入室
+     *
+     * @param Number  sectionId   入室する休憩室ID
+     */
+    enterLounge: async function (sectionId) {
+      var response = await this.$http.get(this.$endpoint('GET:chatShow', [sectionId]));
+      this.chatData = response.data;
+      this.chatDialog = true;
+    },
+
+    /**
+     * コメントの投稿
+     */
+    postComment: async function () {
+      var data = { message: this.chatMessage };
+
+      var response = await this.$http.post(this.$endpoint('POST:chatPost'), data);
+      this.chatData.push(response.data);
     },
 
     /**
@@ -86,7 +155,16 @@ export default {
         if (event.target) {
           // 着席処理
           if (this.authUser.seat_id === null) {
-            this.changeStatus(event.target, 'sitting');
+            switch (event.target.role) {
+              case '自習':
+                this.changeStatus(event.target, 'sitting');
+                break;
+
+              case '休憩':
+                this.changeStatus(event.target, 'break');
+                this.enterLounge(event.target.sectionId);
+                break;
+            }
           }
         }
       }
@@ -119,7 +197,7 @@ export default {
       if (changeObject === null) {
         // 自分が着席中の座席を探索
         this.canvas.getObjects().forEach((object) => {
-          if (object.id === this.authUser.seat_id) {
+          if (object.seatId === this.authUser.seat_id) {
             changeObject = object;
           }
         });
@@ -151,7 +229,7 @@ export default {
       this.canvas.requestRenderAll();
 
       // データベースへ状態を保存
-      await this.seatAction(changeObject.id, status);
+      await this.seatAction(changeObject.seatId, status);
 
       // クリックを有効化
       this.isDisabledClick = false;
@@ -187,12 +265,13 @@ export default {
     /**
      * クリックエリアの設定
      *
-     * @param Number  seatId    描画する座席
-     * @param String  role      座席の役割
-     * @param JSON    position  描画位置
-     * @param String  status    座席状態
+     * @param Number  seatId      描画する座席
+     * @param Number  sectionId   座席の区画
+     * @param String  role        座席の役割
+     * @param JSON    position    描画位置
+     * @param String  status      座席状態
      */
-    setClickArea: function (seatId, role, position, status) {
+    setClickArea: function (seatId, sectionId, role, position, status) {
       var position = JSON.parse(position);
       switch (status) {
         case 'sitting':
@@ -210,7 +289,8 @@ export default {
 
       this.canvas.add(
         new fabric.Circle({
-          id: seatId,
+          seatId: seatId,
+          sectionId: sectionId,
           role: role,
           fill: 'black',
           stroke: 'black',

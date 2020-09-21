@@ -36,4 +36,14 @@ class Section extends Model
     {
         return $this->hasMany('App\Models\Seat');
     }
+
+    /**
+     * Chat モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function chats()
+    {
+        return $this->hasMany('App\Models\Chat');
+    }
 }
