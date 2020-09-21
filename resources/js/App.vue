@@ -12,14 +12,7 @@
     </v-app-bar>
 
     <!-- ドロワーメニュー - 未ログイン時 -->
-    <v-navigation-drawer
-      app
-      dark
-      right
-      temporary
-      v-model="drawer"
-      v-if="!$store.getters['auth/check']"
-    >
+    <v-navigation-drawer app dark right temporary v-model="drawer" v-if="!authCheck">
       <v-list nav>
         <v-list-item :to="{ name: 'index' }">
           <v-list-item-icon>
@@ -54,16 +47,12 @@
     <v-navigation-drawer app dark right temporary v-model="drawer" v-else>
       <v-list-item two-line class="px-3">
         <v-list-item-avatar>
-          <img :src="$storage('icon') + $store.getters['auth/user'].icon" />
+          <img :src="$storage('icon') + authUser.icon" />
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title>{{ $store.getters['auth/user'].handlename }}</v-list-item-title>
-          <v-list-item-subtitle>
-            {{
-            '@' + $store.getters['auth/user'].username
-            }}
-          </v-list-item-subtitle>
+          <v-list-item-title>{{ authUser.handlename }}</v-list-item-title>
+          <v-list-item-subtitle>{{ '@' + authUser.username }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
@@ -79,9 +68,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item
-          :to="{ name: 'userPage', params: { username: $store.getters['auth/user'].username } }"
-        >
+        <v-list-item :to="{ name: 'userPage', params: { username: authUser.username } }">
           <v-list-item-icon>
             <v-icon>mdi-account</v-icon>
           </v-list-item-icon>
@@ -91,7 +78,7 @@
         </v-list-item>
       </v-list>
 
-      <template v-slot:append v-if="$store.getters['auth/check']">
+      <template v-slot:append v-if="authCheck">
         <div class="pa-2">
           <v-btn block @click="logout">ログアウト</v-btn>
         </div>
@@ -103,17 +90,36 @@
     <v-main>
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
-        <div class="welcome__cloto-icon col-6" v-if="!$store.getters['auth/check']">
+        <div class="welcome__cloto-icon col-6" v-if="!authCheck">
           <img :src="$storage('system') + 'top.png'" />
         </div>
 
         <!-- If using vue-router -->
         <router-view></router-view>
+
+        <!-- カルテモーダル -->
+        <v-row justify="center" v-if="authCheck">
+          <v-btn fixed dark fab bottom right color="pink" @click="dialog = true">
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+
+          <v-dialog v-model="dialog" persistent max-width="800">
+            <v-card>
+              <v-card-title class="headline">Use Google's location service?</v-card-title>
+              <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="green darken-1" text @click="dialog = false">Disagree</v-btn>
+                <v-btn color="green darken-1" text @click="dialog = false">Agree</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-row>
       </v-container>
     </v-main>
 
     <!-- フッター - 未ログイン時 -->
-    <v-footer app dark absolute padless v-if="!$store.getters['auth/check']">
+    <v-footer app dark absolute padless v-if="!authCheck">
       <v-row justify="center" no-gutters>
         <v-btn color="white" text rounded class="my-2" :to="{ name: 'index' }">トップページ</v-btn>
 
@@ -163,9 +169,16 @@ export default {
   data() {
     return {
       drawer: false, // ドロワーメニューの表示
+      dialog: false, // カルテモーダルの表示
     };
   },
   computed: {
+    authCheck() {
+      return this.$store.getters['auth/check'];
+    },
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
     errorCode() {
       return this.$store.state.error.code;
     },

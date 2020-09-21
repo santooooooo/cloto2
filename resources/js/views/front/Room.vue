@@ -61,10 +61,10 @@ export default {
       canvas: {},
       isDisabledClick: false, // クリック制御
       roomData: [], // 教室データ
-      roomWidth: 900, // 教室サイズ
+      roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
-      clickAreaSize: 50, // クリックエリアサイズ
-      iconSize: 50, // アイコンサイズ
+      iconSize: 30, // アイコンサイズ
+      iconObject: '', //アイコンのオブジェクトを格納
     };
   },
   computed: {
@@ -85,10 +85,7 @@ export default {
         section.seats.forEach((seat, seatIndex) => {
           if (this.roomData.length === 0) {
             // 初回取得
-            if (section.id <= 6) {
-              // section 1~6 のエリアの設定
-              this.setClickArea(seat.id, section.role, seat.position, seat.status);
-            }
+            this.setClickArea(seat.id, section.role, seat.position, seat.status);
           } else if (seat.status !== this.roomData.sections[sectionIndex].seats[seatIndex].status) {
             // 現在の状態から変化があれば再描画
             this.changeColor(seat.status, seat.id);
@@ -125,16 +122,34 @@ export default {
     },
 
     /**
+     * キャンバスマウスオーバーイベント
+     */
+    canvasMouseOver: function (event) {
+      if (event.target) {
+        event.target.set({ fill: '#ff0000' });
+        this.canvas.requestRenderAll();
+      }
+    },
+
+    /**
+     * キャンバスマウスオーバー解除イベント
+     */
+    canvasMouseOut: function (event) {
+      if (event.target) {
+        event.target.set({ fill: '#000000' });
+        this.canvas.requestRenderAll();
+      }
+    },
+
+    /**
      * キャンバスクリックイベント
      */
-    canvasClickEvent: function () {
+    canvasMouseDown: function (event) {
       if (!this.isDisabledClick) {
-        var clickObject = this.canvas.getActiveObject();
-        console.log(clickObject.role);
-        if (clickObject) {
+        if (event.target) {
           // 着席処理
           if (this.authUser.seat_id === null) {
-            this.changeStatus(clickObject, 'sitting');
+            this.changeStatus(event.target, 'sitting');
           }
         }
       }
@@ -176,20 +191,24 @@ export default {
       switch (status) {
         case 'sitting':
           var color = '#ff0000';
+          console.log(status);
+          this.putIcon(changeObject);
           break;
 
         case 'leave':
           var color = '#ffffff';
+          console.log(status);
+          this.removeIcon();
           break;
 
         case 'break':
+          console.log(status);
           var color = '#000000';
+          this.putIcon(changeObject);
           break;
       }
 
       changeObject.set({ fill: color });
-
-      this.putIcon(changeObject);
 
       // 変更の適用
       this.canvas.requestRenderAll();
@@ -253,16 +272,17 @@ export default {
       }
 
       this.canvas.add(
-        new fabric.Rect({
+        new fabric.Circle({
           id: seatId,
           role: role,
           fill: 'black',
           stroke: 'black',
           opacity: 0.3,
-          left: position.left,
-          top: position.top,
-          width: this.clickAreaSize,
-          height: this.clickAreaSize,
+          left: position.x,
+          top: position.y,
+          originX: 'center',
+          originY: 'center',
+          radius: this.iconSize / 2,
           strokeWidth: 1,
           hasControls: false, // 図形周囲のコントロールボタンの無効化
           hasBorders: false, // 図形周囲のボーダーの無効化
@@ -280,37 +300,46 @@ export default {
      */
     putIcon: function (locatedObject) {
       var icon = new Image();
-      icon.src = this.$storage('icon') + this.$store.getters['auth/user'].icon;
+      icon.src = this.$storage('icon') + this.authUser.icon;
+      this.iconObject = new fabric.Image(icon, {
+        left: locatedObject.left,
+        top: locatedObject.top,
+        originX: 'center',
+        originY: 'center',
+        scaleX: this.iconSize / icon.naturalWidth,
+        scaleY: this.iconSize / icon.naturalHeight,
+        clipPath: new fabric.Circle({
+          scaleX: icon.naturalWidth / this.iconSize,
+          scaleY: icon.naturalHeight / this.iconSize,
+          radius: this.iconSize / 2,
+          originX: 'center',
+          originY: 'center',
+        }),
+        selectable: false, // 図形の選択を禁止
+        hoverCursor: 'default', // カーソルの変更を禁止
+      });
+      this.canvas.add(this.iconObject);
+    },
 
-      this.canvas.add(
-        new fabric.Image(icon, {
-          left: locatedObject.left,
-          top: locatedObject.top,
-          scaleX: this.iconSize / icon.naturalWidth,
-          scaleY: this.iconSize / icon.naturalHeight,
-          clipPath: new fabric.Circle({
-            scaleX: icon.naturalWidth / this.iconSize,
-            scaleY: icon.naturalHeight / this.iconSize,
-            radius: this.iconSize / 2,
-            originX: 'center',
-            originY: 'center',
-          }),
-          selectable: false, // 図形の選択を禁止
-          hoverCursor: 'default', // カーソルの変更を禁止
-        })
-      );
+    removeIcon: function () {
+      this.canvas.remove(this.iconObject);
+      this.canvas.requestRenderAll();
     },
   },
+
   mounted() {
     this.canvas = new fabric.Canvas('room', {
       preserveObjectStacking: true, // オブジェクトの重なり順の固定
     });
     this.canvas.selection = false; // エリア選択の無効化
     this.canvas.setBackgroundImage(
-      this.$storage('system') + 'floor.png',
+      this.$storage('system') + 'room.png',
       this.canvas.renderAll.bind(this.canvas)
     );
-    this.canvas.on('mouse:down', this.canvasClickEvent);
+
+    this.canvas.on('mouse:over', this.canvasMouseOver);
+    this.canvas.on('mouse:out', this.canvasMouseOut);
+    this.canvas.on('mouse:down', this.canvasMouseDown);
 
     // 初回取得
     this.syncRoom();
