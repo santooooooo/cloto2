@@ -20,7 +20,6 @@ export default {
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
       iconSize: 30, // アイコンサイズ
-      iconObject: '', //アイコンのオブジェクトを格納
     };
   },
   computed: {
@@ -45,16 +44,12 @@ export default {
 
             //既に参加している人を表示
             if (seat.status === 'sitting') {
-              console.log(seat.id);
-
               var position = JSON.parse(seat.position);
-              console.log(position);
-
               this.putIcon(position.x, position.y, seat.user.icon);
             }
           } else if (seat.status !== this.roomData.sections[sectionIndex].seats[seatIndex].status) {
             // 現在の状態から変化があれば再描画
-            this.changeColor(seat.status, seat.id);
+            // this.changeColor(seat.status, seat.id);
           }
         });
       });
@@ -241,36 +236,32 @@ export default {
      * @param Int x 配置される座席のx座標
      * @param Int y 配置される座席のy座標
      */
-    putIcon: function (x, y, z = this.authUser.icon) {
+    putIcon: function (x, y, drawIcon = this.authUser.icon) {
       var icon = new Image();
-      // if (firstIcon === null) {
-      icon.src = this.$storage('icon') + z;
-      console.log(z);
 
-      // } else {
-      //   icon.src = this.$storage('icon') + firstIcon;
+      icon.onload = () => {
+        this.canvas.add(
+          new fabric.Image(icon, {
+            left: x,
+            top: y,
+            originX: 'center',
+            originY: 'center',
+            scaleX: this.iconSize / icon.naturalWidth,
+            scaleY: this.iconSize / icon.naturalHeight,
+            clipPath: new fabric.Circle({
+              scaleX: icon.naturalWidth / this.iconSize,
+              scaleY: icon.naturalHeight / this.iconSize,
+              radius: this.iconSize / 2,
+              originX: 'center',
+              originY: 'center',
+            }),
+            selectable: false, // 図形の選択を禁止
+            hoverCursor: 'default', // カーソルの変更を禁止
+          })
+        );
+      };
 
-      //   console.log(this.firstIcon);
-      // }
-
-      this.iconObject = new fabric.Image(icon, {
-        left: x,
-        top: y,
-        originX: 'center',
-        originY: 'center',
-        scaleX: this.iconSize / icon.naturalWidth,
-        scaleY: this.iconSize / icon.naturalHeight,
-        clipPath: new fabric.Circle({
-          scaleX: icon.naturalWidth / this.iconSize,
-          scaleY: icon.naturalHeight / this.iconSize,
-          radius: this.iconSize / 2,
-          originX: 'center',
-          originY: 'center',
-        }),
-        selectable: false, // 図形の選択を禁止
-        hoverCursor: 'default', // カーソルの変更を禁止
-      });
-      this.canvas.add(this.iconObject);
+      icon.src = this.$storage('icon') + drawIcon;
     },
 
     /**
@@ -302,7 +293,7 @@ export default {
     this.syncRoom();
 
     // 同期開始
-    //setInterval(this.syncRoom, 10000);
+    // setInterval(this.syncRoom, 10000);
   },
 };
 </script>
