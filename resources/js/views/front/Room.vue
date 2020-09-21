@@ -20,6 +20,7 @@ export default {
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
       iconSize: 30, // アイコンサイズ
+      iconObject: '', //アイコンのオブジェクトを格納
     };
   },
   computed: {
@@ -122,20 +123,24 @@ export default {
       switch (status) {
         case 'sitting':
           var color = '#ff0000';
+          console.log(status);
+          this.putIcon(changeObject);
           break;
 
         case 'leave':
           var color = '#ffffff';
+          console.log(status);
+          this.removeIcon();
           break;
 
         case 'break':
+          console.log(status);
           var color = '#000000';
+          this.putIcon(changeObject);
           break;
       }
 
       changeObject.set({ fill: color });
-
-      this.putIcon(changeObject);
 
       // 変更の適用
       this.canvas.requestRenderAll();
@@ -228,28 +233,32 @@ export default {
     putIcon: function (locatedObject) {
       var icon = new Image();
       icon.src = this.$storage('icon') + this.authUser.icon;
-
-      this.canvas.add(
-        new fabric.Image(icon, {
-          left: locatedObject.left,
-          top: locatedObject.top,
+      this.iconObject = new fabric.Image(icon, {
+        left: locatedObject.left,
+        top: locatedObject.top,
+        originX: 'center',
+        originY: 'center',
+        scaleX: this.iconSize / icon.naturalWidth,
+        scaleY: this.iconSize / icon.naturalHeight,
+        clipPath: new fabric.Circle({
+          scaleX: icon.naturalWidth / this.iconSize,
+          scaleY: icon.naturalHeight / this.iconSize,
+          radius: this.iconSize / 2,
           originX: 'center',
           originY: 'center',
-          scaleX: this.iconSize / icon.naturalWidth,
-          scaleY: this.iconSize / icon.naturalHeight,
-          clipPath: new fabric.Circle({
-            scaleX: icon.naturalWidth / this.iconSize,
-            scaleY: icon.naturalHeight / this.iconSize,
-            radius: this.iconSize / 2,
-            originX: 'center',
-            originY: 'center',
-          }),
-          selectable: false, // 図形の選択を禁止
-          hoverCursor: 'default', // カーソルの変更を禁止
-        })
-      );
+        }),
+        selectable: false, // 図形の選択を禁止
+        hoverCursor: 'default', // カーソルの変更を禁止
+      });
+      this.canvas.add(this.iconObject);
+    },
+
+    removeIcon: function () {
+      this.canvas.remove(this.iconObject);
+      this.canvas.requestRenderAll();
     },
   },
+
   mounted() {
     this.canvas = new fabric.Canvas('room', {
       preserveObjectStacking: true, // オブジェクトの重なり順の固定
