@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
+use App\Models\Section;
 use Illuminate\Http\Request;
 
 class ChatController extends Controller
@@ -32,12 +33,12 @@ class ChatController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Chat  $chat
+     * @param  \App\Models\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function show(Chat $chat)
+    public function show(Section $section)
     {
-        //
+        return response()->json($section->chats());
     }
 
     /**

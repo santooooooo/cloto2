@@ -34,5 +34,5 @@ Route::post('/seat/sit/{seat}', 'API\SeatController@sit')->name('seatSit');
 Route::post('/seat/leave/{seat}', 'API\SeatController@leave')->name('seatLeave');
 Route::post('/seat/break/{seat}', 'API\SeatController@break')->name('seatBreak');
 
-Route::get('/chat/{section_id}', 'API\ChatController@show')->name('showChat');
+Route::get('/chat/{section}', 'API\ChatController@show')->name('showChat');
 Route::post('/chat/post', 'API\ChatController@post')->name('postChat');
