@@ -9,11 +9,9 @@
     </v-card>
 
     <v-row justify="center">
-      <v-btn color="primary" dark @click="enterLounge(20)">Open Dialog</v-btn>
-
       <v-dialog v-model="chatDialog" width="600px" scrollable persistent>
         <v-card>
-          <v-card-title>Select Country</v-card-title>
+          <v-card-title>チャット（ここに入室中のユーザーのアイコンを出したい）</v-card-title>
           <v-divider></v-divider>
           <v-card-text v-if="chatData.length">
             <v-row v-for="chat in chatData" :key="chat.id">{{ chat.message }}</v-row>
@@ -29,7 +27,12 @@
                 <v-textarea outlined name="input-7-4" label="メッセージ" v-model="chatMessage"></v-textarea>
               </v-col>
             </v-row>
-            <v-btn color="blue darken-1" text @click="postComment()">メッセージ投稿</v-btn>
+            <v-btn
+              color="blue darken-1"
+              text
+              v-bind:disabled="chatMessage === ''"
+              @click="postComment"
+            >メッセージ投稿</v-btn>
           </v-container>
           <v-card-actions>
             <v-btn color="blue darken-1" text @click="chatDialog = false">退出</v-btn>
@@ -75,6 +78,11 @@ export default {
           if (this.roomData.length === 0) {
             // 初回取得
             this.setClickArea(seat.id, section.id, section.role, seat.position, seat.status);
+
+            // ログインユーザーが休憩室に居る場合
+            if (seat.id === this.authUser.seat_id && seat.status === 'break') {
+              this.enterLounge(section.id);
+            }
           } else if (seat.status !== this.roomData.sections[sectionIndex].seats[seatIndex].status) {
             // 現在の状態から変化があれば再描画
             this.changeColor(seat.status, seat.id);
@@ -100,14 +108,11 @@ export default {
     /**
      * コメントの投稿
      */
-    postComment: function () {
-      var data = {
-        userId: this.authUser.id,
-        // sectionId: this.,
-        message: this.chatMessage,
-      };
-      console.log(data);
-      // this.$http.post(this.$endpoint('POST:chatPost'), data);
+    postComment: async function () {
+      var data = { message: this.chatMessage };
+
+      var response = await this.$http.post(this.$endpoint('POST:chatPost'), data);
+      this.chatData.push(response.data);
     },
 
     /**

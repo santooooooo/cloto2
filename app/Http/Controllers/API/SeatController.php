@@ -76,14 +76,9 @@ class SeatController extends Controller
      */
     public function break(Seat $seat)
     {
-        if ($seat->id != $this->user->seat_id) {
-            return response()->json(
-                'エラーが発生しました．',
-                500,
-                [],
-                JSON_UNESCAPED_UNICODE
-            );
-        }
+        // ユーザーと座席を紐付け
+        $this->user->seat()->associate($seat);
+        $this->user->save();
 
         // 座席状態の更新
         $result = $seat->update(['status' => 'break']);
