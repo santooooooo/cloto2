@@ -235,33 +235,31 @@ export default {
      *
      * @param Int x 配置される座席のx座標
      * @param Int y 配置される座席のy座標
+     * @param String  iconFilename  アイコンファイル名
      */
-    putIcon: function (x, y, drawIcon = this.authUser.icon) {
-      var icon = new Image();
-
-      icon.onload = () => {
-        this.canvas.add(
-          new fabric.Image(icon, {
-            left: x,
-            top: y,
+    putIcon: function (x, y, iconFilename = this.authUser.icon) {
+      new fabric.Image.fromURL(this.$storage('icon') + iconFilename, (icon) => {
+        icon.set({
+          left: x,
+          top: y,
+          originX: 'center',
+          originY: 'center',
+          scaleX: this.iconSize / icon.width,
+          scaleY: this.iconSize / icon.height,
+          clipPath: new fabric.Circle({
+            scaleX: icon.width / this.iconSize,
+            scaleY: icon.height / this.iconSize,
+            radius: this.iconSize / 2,
             originX: 'center',
             originY: 'center',
-            scaleX: this.iconSize / icon.naturalWidth,
-            scaleY: this.iconSize / icon.naturalHeight,
-            clipPath: new fabric.Circle({
-              scaleX: icon.naturalWidth / this.iconSize,
-              scaleY: icon.naturalHeight / this.iconSize,
-              radius: this.iconSize / 2,
-              originX: 'center',
-              originY: 'center',
-            }),
-            selectable: false, // 図形の選択を禁止
-            hoverCursor: 'default', // カーソルの変更を禁止
-          })
-        );
-      };
+          }),
+          selectable: false, // 図形の選択を禁止
+          hoverCursor: 'default', // カーソルの変更を禁止
+        });
 
-      icon.src = this.$storage('icon') + drawIcon;
+        // 描画
+        this.canvas.add(icon);
+      });
     },
 
     /**
