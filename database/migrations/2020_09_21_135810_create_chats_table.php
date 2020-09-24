@@ -17,7 +17,8 @@ class CreateChatsTable extends Migration
             $table->increments('id');               // チャットID
             $table->unsignedInteger('user_id');     // ユーザーID
             $table->unsignedInteger('section_id');  // 所属する区画ID(どの部屋でのチャットか)
-            $table->text('message');                // メッセージ本文
+            $table->string('type');                 // メッセージタイプ
+            $table->text('data');                   // メッセージ内容
             $table->dateTimes();
         });
     }

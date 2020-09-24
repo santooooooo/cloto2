@@ -8,44 +8,42 @@
       <h1>{{ this.roomData.name }}教室</h1>
     </v-card>
 
-    <v-row justify="center">
-      <v-dialog v-model="chatDialog" width="600px" scrollable persistent>
-        <v-card>
-          <v-card-title>チャット（ここに入室中のユーザーのアイコンを出したい）</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text v-if="chatData.length">
-            <v-row v-for="chat in chatData" :key="chat.id">{{ chat.message }}</v-row>
-          </v-card-text>
-          <v-card-text v-else>
-            <v-row>メッセージがありません！</v-row>
-          </v-card-text>
-          <v-divider></v-divider>
-
-          <v-container>
-            <v-row>
-              <v-col>
-                <v-textarea
-                  outlined
-                  name="input-7-4"
-                  label="メッセージ"
-                  v-model="chatMessage"
-                ></v-textarea>
-              </v-col>
-            </v-row>
-            <v-btn
-              color="blue darken-1"
-              text
-              v-bind:disabled="chatMessage === ''"
-              @click="postComment"
-              >メッセージ投稿</v-btn
-            >
-          </v-container>
-          <v-card-actions>
-            <v-btn color="blue darken-1" text @click="chatDialog = false">退出</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-row>
+    <beautiful-chat
+      :open="openChat"
+      :close="closeChat"
+      :onMessageWasSent="onMessageWasSent"
+      :colors="chatColors"
+      :isOpen="isChatOpen"
+      :messageList="messageList"
+      :participants="chatParticipants"
+      :showCloseButton="true"
+      :showEmoji="true"
+      :showHeader="true"
+      :alwaysScrollToBottom="true"
+    >
+      <template v-slot:user-avatar="{ message, user }">
+        <div
+          style="
+            border-radius: 50%;
+            color: pink;
+            font-size: 15px;
+            line-height: 25px;
+            text-align: center;
+            background: tomato;
+            width: 25px !important;
+            height: 25px !important;
+            min-width: 30px;
+            min-height: 30px;
+            margin: 5px;
+            font-weight: bold;
+          "
+          v-if="message.data.type === 'text' && user && user.name"
+        >
+          {{ user.name.toUpperCase()[0] }}
+        </div>
+      </template>
+      <template v-slot:system-message-body="{ message }"> [System]: {{ message.text }} </template>
+    </beautiful-chat>
   </div>
 </template>
 
@@ -59,9 +57,34 @@ export default {
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
       iconSize: 30, // アイコンサイズ
-      chatDialog: false, // チャットダイアログ制御
-      chatData: {}, // チャットデータ
-      chatMessage: '', // チャット入力メッセージ
+      chatParticipants: [], // チャット参加者
+      messageList: [], // メッセージデータ
+      isChatOpen: false, // チャットモーダル制御
+      chatColors: {
+        // beautiful-chatの色設定
+        header: {
+          bg: '#D32F2F',
+          text: '#fff',
+        },
+        launcher: {
+          bg: '#D32F2F',
+        },
+        messageList: {
+          bg: '#fff',
+        },
+        sentMessage: {
+          bg: '#F44336',
+          text: '#fff',
+        },
+        receivedMessage: {
+          bg: '#eaeaea',
+          text: '#222222',
+        },
+        userInput: {
+          bg: '#fff',
+          text: '#212121',
+        },
+      },
     };
   },
   computed: {
@@ -70,6 +93,22 @@ export default {
     },
   },
   methods: {
+    onMessageWasSent(message) {
+      console.log(message);
+      var response = this.$http.post(this.$endpoint('POST:chatPost'), message);
+
+      this.messageList = [...this.messageList, Object.assign({}, message, { id: Math.random() })];
+      console.log('メッセージ送信');
+    },
+    openChat() {
+      this.isChatOpen = true;
+      console.log('チャットオープン');
+    },
+    closeChat() {
+      this.isChatOpen = false;
+      console.log('チャットクローズ');
+    },
+
     /**
      * 教室の同期
      */
@@ -107,14 +146,43 @@ export default {
     },
 
     /**
+     * 休憩室の同期
+     *
+     * @param Number  sectionId   入室している休憩室ID
+     */
+    syncLounge: async function (sectionId) {
+      var response = await this.$http.get(this.$endpoint('GET:chatShow', [sectionId]));
+
+      this.chatParticipants = response.data.chatParticipants;
+      this.messageList = response.data.messageList;
+
+      // システムメッセージの例
+      this.messageList.push({
+        type: 'system',
+        id: 13,
+        data: { text: 'You have been transferred to another operator', meta: '04-07-2018 15:57' },
+      });
+    },
+
+    /**
      * 休憩室への入室
      *
      * @param Number  sectionId   入室する休憩室ID
      */
     enterLounge: async function (sectionId) {
       var response = await this.$http.get(this.$endpoint('GET:chatShow', [sectionId]));
-      this.chatData = response.data;
-      this.chatDialog = true;
+
+      this.chatParticipants = response.data.chatParticipants;
+      this.messageList = response.data.messageList;
+
+      // システムメッセージの例
+      this.messageList.push({
+        type: 'system',
+        id: 13,
+        data: { text: 'You have been transferred to another operator', meta: '04-07-2018 15:57' },
+      });
+
+      this.openChat();
     },
 
     /**
@@ -345,8 +413,7 @@ export default {
     /**
      * 退出するとき、アイコンを削除
      *
-     **/
-
+     */
     removeIcon: function () {
       this.canvas.remove(this.iconObject);
       this.canvas.requestRenderAll();
@@ -354,6 +421,9 @@ export default {
   },
 
   mounted() {
+    /**
+     * キャンバスの設定
+     */
     this.canvas = new fabric.Canvas('room', {
       preserveObjectStacking: true, // オブジェクトの重なり順の固定
     });
@@ -382,5 +452,13 @@ export default {
 canvas {
   border: 7px solid $gray;
   margin: 0 auto;
+}
+</style>
+
+<style lang="scss">
+/* beautiful-chatのスタイル */
+.sc-launcher {
+  // モーダルオープンアイコンの無効化
+  display: none;
 }
 </style>
