@@ -126,17 +126,46 @@ export default {
             // 誰かが座っている時
             if (seat.status !== null) {
               // 着席している人を表示
+
               var position = JSON.parse(seat.position);
-              this.putIcon(position.x, position.y, seat.user.icon);
+              this.putIcon(position.x, position.y, seat.user);
 
               // ログインユーザーが座っており，座席が休憩室にある場合
               if (seat.id === this.authUser.seat_id && section.role === '休憩') {
                 this.enterLounge(section.id);
+                console.log(section);
               }
             }
           } else if (seat.status !== this.roomData.sections[sectionIndex].seats[seatIndex].status) {
             // 現在の状態から変化があれば再描画
             // this.changeColor(seat.status, seat.id);
+            switch (seat.status) {
+              case 'sitting':
+                var color = '#ff0000';
+                console.log('sitting された　シート');
+                var position = JSON.parse(seat.position);
+                this.putIcon(position.x, position.y, seat.user);
+                break;
+
+              case 'break':
+                console.log(status);
+                var color = '#000000';
+                break;
+
+              default:
+                var color = '#ffffff';
+                this.canvas.getObjects().forEach((object) => {
+                  var position = JSON.parse(seat.position);
+
+                  if (
+                    object.userId === this.roomData.sections[sectionIndex].seats[seatIndex].user.id
+                  ) {
+                    this.removeIcon(object);
+                  }
+                });
+
+                break;
+            }
           }
         });
       });
@@ -219,20 +248,76 @@ export default {
      * キャンバスクリックイベント
      */
     canvasMouseDown: function (event) {
-      if (!this.isDisabledClick) {
-        if (event.target) {
-          // 着席処理
-          if (this.authUser.seat_id === null) {
-            switch (event.target.role) {
-              case '自習':
-                this.changeStatus(event.target, 'sitting');
-                break;
+      // if (!this.isDisabledClick) {
+      //   if (event.target) {
+      //     // 着席処理
+      //     if (this.authUser.seat_id === null) {
+      //       switch (event.target.role) {
+      //         case '自習':
+      //           this.changeStatus(event.target, 'sitting');
+      //           break;
 
-              case '休憩':
-                this.changeStatus(event.target, 'break');
-                this.enterLounge(event.target.sectionId);
-                break;
-            }
+      //         case '休憩':
+      //           this.changeStatus(event.target, 'break');
+      //           this.enterLounge(event.target.sectionId);
+      //           break;
+      //       }
+      //     }
+      //   }
+      // }
+
+      // console.log(this.authUser.seat.section.role);
+      // if (this.authUser.section === null) {
+      //   //どこにも座っていなかったら
+      //   // console.log(this.authUser.seat.section.role);
+      //   // this.putIcon(event.target.left, event.target.top, this.authUser);
+
+      if (event.target) {
+        console.log('上の方' + this.authUser.seat.section.role);
+        console.log(event.target.role);
+        // 着席処理
+        if (this.authUser.seat_id != null) {
+          //どこかに座ってるとき
+          switch (this.authUser.seat.section.role) {
+            case '自習': //ユーザが座ってる場所が自習室なら
+              if (event.target.role != '自習') {
+                //押された場所が自習室じゃないとき
+                this.changeStatus(event.target, 'sitting');
+                /*依然座ってたところは状態をbreakにする
+                putIconで新しく座ったところに画像を配置
+                依然座っていたところのが画像をremoveする*/
+                //enterLounge チャット開く
+                //ユーザのroleの状態を休憩室に変更
+              }
+              break;
+
+            case '休憩':
+              if (event.target.role === '自習') {
+                //changeStatus 今座ってる場所と今から座る場所両方status変更
+                //  putIconで新しく座ったところに画像を配置
+                //依然座ってたところのアイコンをremoveして
+                //ユーザのroleの状態を自習に変更
+              }
+              if (event.target.role === '休憩室') {
+                //changeStatus 今座ってる場所と今から座る場所両方status変更
+                //  putIconで新しく座ったところに画像を配置
+                //依然座ってたところのアイコンをremoveして
+              }
+              // this.changeStatus(event.target, 'break');
+              // this.enterLounge(event.target.sectionId);
+              break;
+          }
+        } else {
+          //どこも座ってないとき
+          switch (event.target.role) {
+            case '自習':
+              this.changeStatus(event.target, 'sitting');
+              break;
+
+            case '休憩':
+              this.changeStatus(event.target, 'break');
+              this.enterLounge(event.target.sectionId);
+              break;
           }
         }
       }
@@ -263,6 +348,7 @@ export default {
       this.isDisabledClick = true;
 
       if (changeObject === null) {
+        // 退席ボタン or 休憩ボタンが押されたら
         // 自分が着席中の座席を探索
         this.canvas.getObjects().forEach((object) => {
           if (object.seatId === this.authUser.seat_id) {
@@ -274,20 +360,24 @@ export default {
       switch (status) {
         case 'sitting':
           var color = '#ff0000';
-          console.log(status);
-          this.putIcon(changeObject.left, changeObject.top);
+          this.putIcon(changeObject.left, changeObject.top, this.authUser);
           break;
 
         case 'leave':
           var color = '#ffffff';
-          console.log(status);
-          this.removeIcon();
+          this.canvas.getObjects().forEach((object) => {
+            if (object.userId === this.authUser.id) {
+              //changeObject = object;
+              this.removeIcon(object);
+            }
+          });
+
           break;
 
         case 'break':
           console.log(status);
           var color = '#000000';
-          this.putIcon(changeObject.left, changeObject.top);
+          this.putIcon(changeObject.left, changeObject.top, this.authUser);
           break;
       }
 
@@ -383,11 +473,12 @@ export default {
      *
      * @param Int x 配置される座席のx座標
      * @param Int y 配置される座席のy座標
-     * @param String  iconFilename  アイコンファイル名
+     * @param Object  user  描画するユーザー
      */
-    putIcon: function (x, y, iconFilename = this.authUser.icon) {
-      new fabric.Image.fromURL(this.$storage('icon') + iconFilename, (icon) => {
+    putIcon: function (x, y, user) {
+      new fabric.Image.fromURL(this.$storage('icon') + user.icon, (icon) => {
         icon.set({
+          userId: user.id,
           left: x,
           top: y,
           originX: 'center',
@@ -411,11 +502,12 @@ export default {
     },
 
     /**
-     * 退出するとき、アイコンを削除
+     * アイコンの削除
      *
+     * @param Object  removeObject  削除するアイコン
      */
-    removeIcon: function () {
-      this.canvas.remove(this.iconObject);
+    removeIcon: function (removeObject) {
+      this.canvas.remove(removeObject);
       this.canvas.requestRenderAll();
     },
   },
@@ -441,7 +533,7 @@ export default {
     this.syncRoom();
 
     // 同期開始
-    // setInterval(this.syncRoom, 10000);
+    //setInterval(this.syncRoom, 3000);
   },
 };
 </script>

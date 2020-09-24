@@ -106,7 +106,10 @@
           <v-dialog v-model="dialog" persistent max-width="800">
             <v-card>
               <v-card-title class="headline">Use Google's location service?</v-card-title>
-              <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+              <v-card-text
+                >Let Google help apps determine location. This means sending anonymous location data
+                to Google, even when no apps are running.</v-card-text
+              >
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="green darken-1" text @click="dialog = false">Disagree</v-btn>
@@ -129,7 +132,9 @@
 
         <v-btn color="white" text rounded class="my-2" :to="'hoge'">利用規約</v-btn>
 
-        <v-btn color="white" text rounded class="my-2" :to="'https://twitter.com/cloto_jp'">Twitter</v-btn>
+        <v-btn color="white" text rounded class="my-2" :to="'https://twitter.com/cloto_jp'"
+          >Twitter</v-btn
+        >
 
         <v-btn color="white" text rounded class="my-2" :to="'mailto:info@cloto.jp'">E-Mail</v-btn>
 
@@ -149,7 +154,9 @@
 
         <v-btn color="white" text rounded class="my-2" :to="'hoge'">利用規約</v-btn>
 
-        <v-btn color="white" text rounded class="my-2" :to="'https://twitter.com/cloto_jp'">Twitter</v-btn>
+        <v-btn color="white" text rounded class="my-2" :to="'https://twitter.com/cloto_jp'"
+          >Twitter</v-btn
+        >
 
         <v-btn color="white" text rounded class="my-2" :to="'mailto:info@cloto.jp'">E-Mail</v-btn>
 
