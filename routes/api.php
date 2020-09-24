@@ -25,7 +25,9 @@ Route::post('/register', 'Auth\RegisterController@register')->name('register');
 Route::post('/login', 'Auth\LoginController@login')->name('login');
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::get('/auth/user', fn () => Auth::user())->name('authUser');
+Route::get('/auth/user', function () {
+    return Auth::user()->load('seat.section');
+})->name('authUser');
 Route::get('/user/{username}', 'API\UserController@show')->name('userShow');
 Route::post('/user/update', 'API\UserController@update')->name('profileUpdate');
 

@@ -191,20 +191,76 @@ export default {
      * キャンバスクリックイベント
      */
     canvasMouseDown: function (event) {
-      if (!this.isDisabledClick) {
-        if (event.target) {
-          // 着席処理
-          if (this.authUser.seat_id === null) {
-            switch (event.target.role) {
-              case '自習':
-                this.changeStatus(event.target, 'sitting');
-                break;
+      // if (!this.isDisabledClick) {
+      //   if (event.target) {
+      //     // 着席処理
+      //     if (this.authUser.seat_id === null) {
+      //       switch (event.target.role) {
+      //         case '自習':
+      //           this.changeStatus(event.target, 'sitting');
+      //           break;
 
-              case '休憩':
-                this.changeStatus(event.target, 'break');
-                this.enterLounge(event.target.sectionId);
-                break;
-            }
+      //         case '休憩':
+      //           this.changeStatus(event.target, 'break');
+      //           this.enterLounge(event.target.sectionId);
+      //           break;
+      //       }
+      //     }
+      //   }
+      // }
+
+      // console.log(this.authUser.seat.section.role);
+      // if (this.authUser.section === null) {
+      //   //どこにも座っていなかったら
+      //   // console.log(this.authUser.seat.section.role);
+      //   // this.putIcon(event.target.left, event.target.top, this.authUser);
+
+      if (event.target) {
+        console.log('上の方' + this.authUser.seat.section.role);
+        console.log(event.target.role);
+        // 着席処理
+        if (this.authUser.seat_id != null) {
+          //どこかに座ってるとき
+          switch (this.authUser.seat.section.role) {
+            case '自習': //ユーザが座ってる場所が自習室なら
+              if (event.target.role != '自習') {
+                //押された場所が自習室じゃないとき
+                this.changeStatus(event.target, 'sitting');
+                /*依然座ってたところは状態をbreakにする
+                putIconで新しく座ったところに画像を配置
+                依然座っていたところのが画像をremoveする*/
+                //enterLounge チャット開く
+                //ユーザのroleの状態を休憩室に変更
+              }
+              break;
+
+            case '休憩':
+              if (event.target.role === '自習') {
+                //changeStatus 今座ってる場所と今から座る場所両方status変更
+                //  putIconで新しく座ったところに画像を配置
+                //依然座ってたところのアイコンをremoveして
+                //ユーザのroleの状態を自習に変更
+              }
+              if (event.target.role === '休憩室') {
+                //changeStatus 今座ってる場所と今から座る場所両方status変更
+                //  putIconで新しく座ったところに画像を配置
+                //依然座ってたところのアイコンをremoveして
+              }
+              // this.changeStatus(event.target, 'break');
+              // this.enterLounge(event.target.sectionId);
+              break;
+          }
+        } else {
+          //どこも座ってないとき
+          switch (event.target.role) {
+            case '自習':
+              this.changeStatus(event.target, 'sitting');
+              break;
+
+            case '休憩':
+              this.changeStatus(event.target, 'break');
+              this.enterLounge(event.target.sectionId);
+              break;
           }
         }
       }
@@ -417,7 +473,7 @@ export default {
     this.syncRoom();
 
     // 同期開始
-    setInterval(this.syncRoom, 3000);
+    //setInterval(this.syncRoom, 3000);
   },
 };
 </script>
