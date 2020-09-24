@@ -11,10 +11,21 @@
     <v-row justify="center">
       <v-dialog v-model="chatDialog" width="600px" scrollable persistent>
         <v-card>
-          <v-card-title>チャット（ここに入室中のユーザーのアイコンを出したい）</v-card-title>
+          <v-card-title>チャット（ここに入室中のユーザーのアイコンを出したい） </v-card-title>
+
           <v-divider></v-divider>
           <v-card-text v-if="chatData.length">
-            <v-row v-for="chat in chatData" :key="chat.id">{{ chat.message }}</v-row>
+            <v-row v-for="chat in chatData" :key="chat.id">
+              <v-avatar
+                ><img
+                  :src="$storage('icon') + $store.getters['auth/user'].icon"
+                  class="login-logo"
+                  alt="logo"
+                  width="35"
+                  height="35"
+                /> </v-avatar
+              >{{ chat.section_id }}{{ chat.message }}
+            </v-row>
           </v-card-text>
           <v-card-text v-else>
             <v-row>メッセージがありません！</v-row>
@@ -87,17 +98,46 @@ export default {
             // 誰かが座っている時
             if (seat.status !== null) {
               // 着席している人を表示
+
               var position = JSON.parse(seat.position);
-              this.putIcon(position.x, position.y, seat.user.icon);
+              this.putIcon(position.x, position.y, seat.user);
 
               // ログインユーザーが座っており，座席が休憩室にある場合
               if (seat.id === this.authUser.seat_id && section.role === '休憩') {
                 this.enterLounge(section.id);
+                console.log(section);
               }
             }
           } else if (seat.status !== this.roomData.sections[sectionIndex].seats[seatIndex].status) {
             // 現在の状態から変化があれば再描画
             // this.changeColor(seat.status, seat.id);
+            switch (seat.status) {
+              case 'sitting':
+                var color = '#ff0000';
+                console.log('sitting された　シート');
+                var position = JSON.parse(seat.position);
+                this.putIcon(position.x, position.y, seat.user);
+                break;
+
+              case 'break':
+                console.log(status);
+                var color = '#000000';
+                break;
+
+              default:
+                var color = '#ffffff';
+                this.canvas.getObjects().forEach((object) => {
+                  var position = JSON.parse(seat.position);
+
+                  if (
+                    object.userId === this.roomData.sections[sectionIndex].seats[seatIndex].user.id
+                  ) {
+                    this.removeIcon(object);
+                  }
+                });
+
+                break;
+            }
           }
         });
       });
@@ -195,6 +235,7 @@ export default {
       this.isDisabledClick = true;
 
       if (changeObject === null) {
+        // 退席ボタン or 休憩ボタンが押されたら
         // 自分が着席中の座席を探索
         this.canvas.getObjects().forEach((object) => {
           if (object.seatId === this.authUser.seat_id) {
@@ -206,20 +247,24 @@ export default {
       switch (status) {
         case 'sitting':
           var color = '#ff0000';
-          console.log(status);
-          this.putIcon(changeObject.left, changeObject.top);
+          this.putIcon(changeObject.left, changeObject.top, this.authUser);
           break;
 
         case 'leave':
           var color = '#ffffff';
-          console.log(status);
-          this.removeIcon();
+          this.canvas.getObjects().forEach((object) => {
+            if (object.userId === this.authUser.id) {
+              //changeObject = object;
+              this.removeIcon(object);
+            }
+          });
+
           break;
 
         case 'break':
           console.log(status);
           var color = '#000000';
-          this.putIcon(changeObject.left, changeObject.top);
+          this.putIcon(changeObject.left, changeObject.top, this.authUser);
           break;
       }
 
@@ -315,11 +360,12 @@ export default {
      *
      * @param Int x 配置される座席のx座標
      * @param Int y 配置される座席のy座標
-     * @param String  iconFilename  アイコンファイル名
+     * @param Object  user  描画するユーザー
      */
-    putIcon: function (x, y, iconFilename = this.authUser.icon) {
-      new fabric.Image.fromURL(this.$storage('icon') + iconFilename, (icon) => {
+    putIcon: function (x, y, user) {
+      new fabric.Image.fromURL(this.$storage('icon') + user.icon, (icon) => {
         icon.set({
+          userId: user.id,
           left: x,
           top: y,
           originX: 'center',
@@ -347,8 +393,8 @@ export default {
      *
      **/
 
-    removeIcon: function () {
-      this.canvas.remove(this.iconObject);
+    removeIcon: function (removeObject) {
+      this.canvas.remove(removeObject);
       this.canvas.requestRenderAll();
     },
   },
@@ -371,7 +417,7 @@ export default {
     this.syncRoom();
 
     // 同期開始
-    // setInterval(this.syncRoom, 10000);
+    setInterval(this.syncRoom, 3000);
   },
 };
 </script>
