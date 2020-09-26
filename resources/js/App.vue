@@ -11,10 +11,6 @@
     <v-main>
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
-        <div class="welcome__cloto-icon col-6" v-if="!authCheck">
-          <img :src="$storage('system') + 'top.png'" />
-        </div>
-
         <!-- If using vue-router -->
         <router-view></router-view>
       </v-container>
@@ -43,12 +39,6 @@ export default {
     };
   },
   computed: {
-    authCheck() {
-      return this.$store.getters['auth/check'];
-    },
-    authUser() {
-      return this.$store.getters['auth/user'];
-    },
     errorCode() {
       return this.$store.state.error.code;
     },
@@ -89,10 +79,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.top-logo {
-  max-height: 64px;
-  padding: 15px 0;
-}
-</style>
