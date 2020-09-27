@@ -93,20 +93,32 @@ export default {
     },
   },
   methods: {
+    /**
+     * チャットのオープン
+     */
+    openChat() {
+      this.isChatOpen = true;
+      console.log('チャットオープン');
+    },
+
+    /**
+     * チャットのクローズ
+     */
+    closeChat() {
+      this.isChatOpen = false;
+      this.changeStatus(null, 'leaveLounge');
+      console.log('チャットクローズ');
+    },
+
+    /**
+     * メッセージ送信
+     */
     onMessageWasSent(message) {
       console.log(message);
       var response = this.$http.post(this.$endpoint('POST:chatPost'), message);
 
       this.messageList = [...this.messageList, Object.assign({}, message, { id: Math.random() })];
       console.log('メッセージ送信');
-    },
-    openChat() {
-      this.isChatOpen = true;
-      console.log('チャットオープン');
-    },
-    closeChat() {
-      this.isChatOpen = false;
-      console.log('チャットクローズ');
     },
 
     /**
@@ -204,13 +216,6 @@ export default {
       this.chatParticipants = response.data.chatParticipants;
       this.messageList = response.data.messageList;
 
-      // システムメッセージの例
-      this.messageList.push({
-        type: 'system',
-        id: 13,
-        data: { text: 'You have been transferred to another operator', meta: '04-07-2018 15:57' },
-      });
-
       this.openChat();
     },
 
@@ -258,7 +263,7 @@ export default {
       //           break;
 
       //         case '休憩':
-      //           this.changeStatus(event.target, 'break');
+      //           this.changeStatus(event.target, 'enterLounge');
       //           this.enterLounge(event.target.sectionId);
       //           break;
       //       }
@@ -374,10 +379,19 @@ export default {
 
           break;
 
-        case 'break':
+        case 'enterLounge':
           console.log(status);
           var color = '#000000';
           this.putIcon(changeObject.left, changeObject.top, this.authUser);
+          break;
+
+        case 'leaveLounge':
+          var color = '#ffffff';
+          this.canvas.getObjects().forEach((object) => {
+            if (object.userId === this.authUser.id) {
+              this.removeIcon(object);
+            }
+          });
           break;
       }
 
@@ -409,8 +423,12 @@ export default {
           var endpoint = this.$endpoint('POST:seatLeave', [seatId]);
           break;
 
-        case 'break':
-          var endpoint = this.$endpoint('POST:seatBreak', [seatId]);
+        case 'enterLounge':
+          var endpoint = this.$endpoint('POST:enterLounge', [seatId]);
+          break;
+
+        case 'leaveLounge':
+          var endpoint = this.$endpoint('POST:leaveLounge', [seatId]);
           break;
       }
 
@@ -436,7 +454,7 @@ export default {
           var color = '#ff0000';
           break;
 
-        case 'break':
+        case 'enterLounge':
           var color = '#000000';
           break;
 
