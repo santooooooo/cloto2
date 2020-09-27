@@ -21,7 +21,8 @@ const POST_profileUpdate = '/api/user/update';
 const GET_roomShow = '/api/room/' + replaceChar[0];
 const POST_seatSit = '/api/seat/sit/' + replaceChar[0];
 const POST_seatLeave = '/api/seat/leave/' + replaceChar[0];
-const POST_seatBreak = '/api/seat/break/' + replaceChar[0];
+const POST_enterLounge = '/api/seat/enterlounge/' + replaceChar[0];
+const POST_leaveLounge = '/api/seat/leavelounge/' + replaceChar[0];
 const GET_chatShow = '/api/chat/' + replaceChar[0];
 const POST_chatPost = '/api/chat/post';
 
@@ -79,8 +80,12 @@ export function getEndpoint(name, params) {
       endpoint = setParams(POST_seatLeave, params);
       break;
 
-    case 'POST:seatBreak':
-      endpoint = setParams(POST_seatBreak, params);
+    case 'POST:enterLounge':
+      endpoint = setParams(POST_enterLounge, params);
+      break;
+
+    case 'POST:leaveLounge':
+      endpoint = setParams(POST_leaveLounge, params);
       break;
 
     case 'GET:chatShow':

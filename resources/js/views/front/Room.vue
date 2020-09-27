@@ -106,6 +106,7 @@ export default {
     },
     closeChat() {
       this.isChatOpen = false;
+      this.changeStatus(null, 'leaveLounge');
       console.log('チャットクローズ');
     },
 
@@ -258,7 +259,7 @@ export default {
       //           break;
 
       //         case '休憩':
-      //           this.changeStatus(event.target, 'break');
+      //           this.changeStatus(event.target, 'enterLounge');
       //           this.enterLounge(event.target.sectionId);
       //           break;
       //       }
@@ -374,10 +375,19 @@ export default {
 
           break;
 
-        case 'break':
+        case 'enterLounge':
           console.log(status);
           var color = '#000000';
           this.putIcon(changeObject.left, changeObject.top, this.authUser);
+          break;
+
+        case 'leaveLounge':
+          var color = '#ffffff';
+          this.canvas.getObjects().forEach((object) => {
+            if (object.userId === this.authUser.id) {
+              this.removeIcon(object);
+            }
+          });
           break;
       }
 
@@ -409,8 +419,12 @@ export default {
           var endpoint = this.$endpoint('POST:seatLeave', [seatId]);
           break;
 
-        case 'break':
-          var endpoint = this.$endpoint('POST:seatBreak', [seatId]);
+        case 'enterLounge':
+          var endpoint = this.$endpoint('POST:enterLounge', [seatId]);
+          break;
+
+        case 'leaveLounge':
+          var endpoint = this.$endpoint('POST:leaveLounge', [seatId]);
           break;
       }
 
@@ -436,7 +450,7 @@ export default {
           var color = '#ff0000';
           break;
 
-        case 'break':
+        case 'enterLounge':
           var color = '#000000';
           break;
 

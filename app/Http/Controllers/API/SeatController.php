@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Seat;
+use App\Models\Chat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -87,57 +88,58 @@ class SeatController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
+     * 休憩室入室
      *
      * @param  \App\Models\Seat  $seat
      * @return \Illuminate\Http\Response
      */
-    public function show(Seat $seat)
+    public function enter_lounge(Seat $seat)
     {
-        //
+        // ユーザーと座席を紐付け
+        $this->user->seat()->associate($seat);
+        $this->user->save();
+
+        // 座席状態の更新
+        $result = $seat->update(['status' => 'break']);
+
+        return response()->json($result);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Seat  $seat
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Seat $seat)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
+     * 休憩室退室
      *
      * @param  \App\Models\Seat  $seat
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Seat $seat)
+    public function leave_lounge(Seat $seat)
     {
-        //
+        $chat = Chat::where('section_id', $seat->section->id)->where('user_id', $this->user->id);
+
+        // 発言が存在する時
+        if ($chat) {
+            // 発言を削除
+            $result = $chat->delete();
+
+            if (empty($result)) {
+                return response()->json(
+                    'エラーが発生しました．',
+                    500,
+                    [],
+                    JSON_UNESCAPED_UNICODE
+                );
+            }
+        }
+
+        // 着席していた座席を離席状態に変更
+        $this->user->seat()->update(['status' => null]);
+
+        // ユーザーと座席を紐付け
+        $this->user->seat()->associate($seat);
+        $this->user->save();
+
+        // 座席状態の更新
+        $result = $seat->update(['status' => 'sitting']);
+
+        return response()->json($result);
     }
 }
