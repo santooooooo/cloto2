@@ -90,7 +90,7 @@ class SeatController extends Controller
     /**
      * 休憩室入室
      *
-     * @param  \App\Models\Seat  $seat
+     * @param  \App\Models\Seat  $seat  着席する座席
      * @return \Illuminate\Http\Response
      */
     public function enter_lounge(Seat $seat)
@@ -108,17 +108,19 @@ class SeatController extends Controller
     /**
      * 休憩室退室
      *
-     * @param  \App\Models\Seat  $seat
+     * @param  \App\Models\Seat  $seat  戻り先の座席
      * @return \Illuminate\Http\Response
      */
     public function leave_lounge(Seat $seat)
     {
-        $chat = Chat::where('section_id', $seat->section->id)->where('user_id', $this->user->id);
+        $user_id = $this->user->id;
+        $section_id = $this->user->seat->section->id;
 
+        // 過去の発言を隠す
+        $chat = Chat::where('section_id', $section_id)->where('user_id', $user_id);
         // 発言が存在する時
         if ($chat) {
-            // 発言を削除
-            $result = $chat->delete();
+            $result = $chat->update(['data' => json_encode(['text' => '削除されたメッセージです．'])]);
 
             if (empty($result)) {
                 return response()->json(
@@ -129,6 +131,12 @@ class SeatController extends Controller
                 );
             }
         }
+
+        // 退出システムメッセージの追加
+        $type = 'system';
+        $data = json_encode(['text' => $this->user->username . 'が退出しました．'], JSON_UNESCAPED_UNICODE);
+        Chat::create(compact('user_id', 'section_id', 'type', 'data'));
+
 
         // 着席していた座席を離席状態に変更
         $this->user->seat()->update(['status' => null]);

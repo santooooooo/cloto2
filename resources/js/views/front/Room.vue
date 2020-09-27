@@ -93,21 +93,32 @@ export default {
     },
   },
   methods: {
+    /**
+     * チャットのオープン
+     */
+    openChat() {
+      this.isChatOpen = true;
+      console.log('チャットオープン');
+    },
+
+    /**
+     * チャットのクローズ
+     */
+    closeChat() {
+      this.isChatOpen = false;
+      this.changeStatus(null, 'leaveLounge');
+      console.log('チャットクローズ');
+    },
+
+    /**
+     * メッセージ送信
+     */
     onMessageWasSent(message) {
       console.log(message);
       var response = this.$http.post(this.$endpoint('POST:chatPost'), message);
 
       this.messageList = [...this.messageList, Object.assign({}, message, { id: Math.random() })];
       console.log('メッセージ送信');
-    },
-    openChat() {
-      this.isChatOpen = true;
-      console.log('チャットオープン');
-    },
-    closeChat() {
-      this.isChatOpen = false;
-      this.changeStatus(null, 'leaveLounge');
-      console.log('チャットクローズ');
     },
 
     /**
@@ -204,13 +215,6 @@ export default {
 
       this.chatParticipants = response.data.chatParticipants;
       this.messageList = response.data.messageList;
-
-      // システムメッセージの例
-      this.messageList.push({
-        type: 'system',
-        id: 13,
-        data: { text: 'You have been transferred to another operator', meta: '04-07-2018 15:57' },
-      });
 
       this.openChat();
     },
