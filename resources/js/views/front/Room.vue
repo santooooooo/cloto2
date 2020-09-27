@@ -136,7 +136,7 @@ export default {
             this.setClickArea(seat.id, section.id, section.role, seat.position, seat.status);
 
             // 誰かが座っている時
-            if (seat.status !== null) {
+            if (seat.status !== null && seat.status != 'break') {
               // 着席している人を表示
 
               var position = JSON.parse(seat.position);
@@ -234,7 +234,7 @@ export default {
      */
     canvasMouseOver: function (event) {
       if (event.target) {
-        event.target.set({ fill: '#ff0000' });
+        event.target.set({ fill: '#0000ff' });
         this.canvas.requestRenderAll();
       }
     },
@@ -244,7 +244,21 @@ export default {
      */
     canvasMouseOut: function (event) {
       if (event.target) {
-        event.target.set({ fill: '#000000' });
+        console.log(event.target);
+
+        this.canvas.getObjects().forEach((object) => {
+          if (object.seatId === event.target.seatId) {
+            // var MouseOutObject = object;
+
+            if (object.seatId.status === 'break') {
+              event.target.set({ fill: 'red' });
+              console.log('赤になっちゃった');
+            } else {
+              event.target.set({ fill: '#000000' });
+            }
+          }
+        });
+
         this.canvas.requestRenderAll();
       }
     },
@@ -271,14 +285,15 @@ export default {
       //   }
       // }
 
-      // console.log(this.authUser.seat.section.role);
-      // if (this.authUser.section === null) {
-      //   //どこにも座っていなかったら
-      //   // console.log(this.authUser.seat.section.role);
-      //   // this.putIcon(event.target.left, event.target.top, this.authUser);
+      if (this.authUser.section === null) {
+        //どこにも座っていなかったら
+        // console.log(this.authUser.seat.section.role);
+        this.changeStatus(event.target, 'sitting');
+      }
 
       if (event.target) {
-        console.log('上の方' + this.authUser.seat.section.role);
+        console.log(event.target);
+        //console.log('上の方' + this.authUser.seat.section.role);
         console.log(event.target.role);
         // 着席処理
         if (this.authUser.seat_id != null) {
@@ -287,10 +302,11 @@ export default {
             case '自習': //ユーザが座ってる場所が自習室なら
               if (event.target.role != '自習') {
                 //押された場所が自習室じゃないとき
-                this.changeStatus(event.target, 'sitting');
+
+                this.changeStatus(event.target, 'enterLounge');
                 /*依然座ってたところは状態をbreakにする
-                putIconで新しく座ったところに画像を配置
-                依然座っていたところのが画像をremoveする*/
+                // 依然座っていたところのが画像をremoveする*/
+                // removeIcon();
                 //enterLounge チャット開く
                 //ユーザのroleの状態を休憩室に変更
               }
@@ -382,6 +398,11 @@ export default {
         case 'enterLounge':
           console.log(status);
           var color = '#000000';
+          this.canvas.getObjects().forEach((object) => {
+            if (object.userId === this.authUser.id) {
+              this.removeIcon(object);
+            }
+          });
           this.putIcon(changeObject.left, changeObject.top, this.authUser);
           break;
 
@@ -395,7 +416,7 @@ export default {
           break;
       }
 
-      changeObject.set({ fill: color });
+      // changeObject.set({ fill: color });
 
       // 変更の適用
       this.canvas.requestRenderAll();
@@ -449,6 +470,7 @@ export default {
      */
     setClickArea: function (seatId, sectionId, role, position, status) {
       var position = JSON.parse(position);
+
       switch (status) {
         case 'sitting':
           var color = '#ff0000';
@@ -458,18 +480,30 @@ export default {
           var color = '#000000';
           break;
 
+        case 'break':
+          var color = '#FF0000';
+          // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+          // this.canvas.getObjects().forEach((object) => {
+          //   if (object.seatId === seatId) {
+          //     object.set({ fill: '#ff0000' });
+          //     this.canvas.requestRenderAll();
+          //   }
+          // });
+
+          break;
+
         default:
-          var color = '#ffffff';
+          var color = '#000000';
           break;
       }
 
+      //ここの属性にstatusを追加するしかないのではないか?
       this.canvas.add(
         new fabric.Circle({
           seatId: seatId,
           sectionId: sectionId,
           role: role,
-          fill: 'black',
-          stroke: 'black',
+          fill: color,
           opacity: 0.3,
           left: position.x,
           top: position.y,

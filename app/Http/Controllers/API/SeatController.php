@@ -98,12 +98,14 @@ class SeatController extends Controller
      */
     public function enter_lounge(Seat $seat)
     {
+        // 現在の座席をbreakに変更
+        $this->user->seat()->update(['status' => 'break']);
         // ユーザーと座席を紐付け
         $this->user->seat()->associate($seat);
         $this->user->save();
 
         // 座席状態の更新
-        $result = $seat->update(['status' => 'break']);
+        $result = $seat->update(['status' => 'sitting']);
 
         return response()->json($result);
     }
