@@ -6,9 +6,20 @@
 
     <v-spacer></v-spacer>
 
-    <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" />
+    <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" v-if="authCheck" />
+    <v-btn depressed color="primary" class="font-weight-bold" v-else>覗いてみる</v-btn>
   </v-app-bar>
 </template>
+
+<script>
+export default {
+  computed: {
+    authCheck() {
+      return this.$store.getters['auth/check'];
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 img {
