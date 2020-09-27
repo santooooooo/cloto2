@@ -27,16 +27,6 @@ class ChatController extends Controller
 
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Post a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -79,8 +69,7 @@ class ChatController extends Controller
                 array_push($chatParticipants, [
                     'id' => $user_data->user->id,
                     'name' => $user_data->user->username,
-                    'imageUrl' => 'http://localhost:8000' . config('consts.storage.icon') . $user_data->user->icon
-                    // 'imageUrl' => config('consts.storage.icon') . $user_data->user->icon
+                    'imageUrl' => config('consts.storage.icon') . $user_data->user->icon
                 ]);
             }
         }
