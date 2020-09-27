@@ -76,12 +76,15 @@ class SeatController extends Controller
      */
     public function break(Seat $seat)
     {
-        // ユーザーと座席を紐付け
+        // 着席していた座席を休憩状態に変更
+        $this->user->seat()->update(['status' => 'break', 'reservation_user_id' => $this->user->id]);
+
+        // ユーザーと休憩室の座席を紐付け
         $this->user->seat()->associate($seat);
         $this->user->save();
 
         // 座席状態の更新
-        $result = $seat->update(['status' => 'break']);
+        $result = $seat->update(['status' => 'sitting']);
 
         return response()->json($result);
     }
