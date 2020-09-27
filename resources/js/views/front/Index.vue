@@ -1,13 +1,9 @@
 <template>
   <v-container fluid pa-0>
-    <v-row class="concept">
+    <v-row class="concept mt-n12">
       <v-spacer></v-spacer>
 
-      <v-col cols="5" sm="7" align-self="center" class="mt-n12">
-        <v-row justify="center" class="my-12">
-          <v-btn x-large color="primary" class="font-weight-bold">さあはじめよう！</v-btn>
-        </v-row>
-
+      <v-col cols="5" sm="7" align-self="center">
         <h1 class="text-center text-h3 font-weight-bold">創る、繋がる、好きになる</h1>
         <p class="text-center text-subtitle-1 font-weight-bold">
           プログラミングに取り組むみなさん、こんにちは。<br />
@@ -16,15 +12,21 @@
           そんな悩みとは今日でさようなら。<br />
           プログラミングを楽しみながら継続できる環境がここに生まれました！
         </p>
+
+        <v-row justify="center" class="mt-12">
+          <v-btn x-large color="primary" class="font-weight-bold">さあはじめよう！</v-btn>
+        </v-row>
       </v-col>
 
-      <v-col cols="5" sm="4" class="mr-12">
-        <v-img :src="$storage('system') + 'top-logo.svg'" contain></v-img>
+      <v-col cols="5" sm="4" class="mr-12" align-self="center">
+        <v-img :src="$storage('system') + 'top-logo.svg'" max-width="500" contain></v-img>
       </v-col>
+
+      <v-spacer></v-spacer>
     </v-row>
 
     <v-row class="scroll">
-      <a href="#"></a>
+      <span></span>
     </v-row>
 
     <v-row class="ma-12">
@@ -366,7 +368,7 @@ export default {
 }
 
 // 下矢印
-.scroll a {
+.scroll span {
   position: absolute;
   top: 800px;
   left: 50%;
