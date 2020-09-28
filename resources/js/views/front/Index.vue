@@ -1,107 +1,145 @@
 <template>
-  <v-container fluid pa-0>
-    <v-row class="concept mt-n12">
-      <v-spacer></v-spacer>
+  <v-container fluid pa-0 class="index">
+    <div class="concept">
+      <v-row class="top mt-n12">
+        <v-spacer></v-spacer>
 
-      <v-col cols="5" sm="7" align-self="center">
-        <h1 class="text-center text-h3 font-weight-bold">創る、繋がる、好きになる</h1>
-        <p class="text-center text-subtitle-1 font-weight-bold">
-          プログラミングに取り組むみなさん、こんにちは。<br />
-          「実際のプログラミングって大変. . . 」<br />
-          「何からしたらいいんだろう」<br />
-          そんな悩みとは今日でさようなら。<br />
-          プログラミングを楽しみながら継続できる環境がここに生まれました！
-        </p>
+        <v-col cols="5" sm="7" align-self="center">
+          <h1 class="text-center text-h3 font-weight-bold">創る、繋がる、好きになる</h1>
+          <p class="text-center text-subtitle-1 font-weight-bold">
+            プログラミングに取り組むみなさん、こんにちは。<br />
+            「実際のプログラミングって大変. . . 」<br />
+            「何からしたらいいんだろう」<br />
+            そんな悩みとは今日でさようなら。<br />
+            プログラミングを楽しみながら継続できる環境がここに生まれました！
+          </p>
 
-        <v-row justify="center" class="mt-12">
-          <v-btn x-large color="primary" class="font-weight-bold">さあはじめよう！</v-btn>
-        </v-row>
-      </v-col>
+          <v-row justify="center" class="mt-12">
+            <v-btn x-large color="primary" class="font-weight-bold">さあはじめよう！</v-btn>
+          </v-row>
+        </v-col>
 
-      <v-col cols="5" sm="4" class="mr-12" align-self="center">
-        <v-img :src="$storage('system') + 'top-logo.svg'" max-width="500" contain></v-img>
-      </v-col>
+        <v-col cols="5" sm="4" class="mr-12" align-self="center">
+          <v-img :src="$storage('system') + 'top-logo.svg'" max-width="500" contain></v-img>
+        </v-col>
 
-      <v-spacer></v-spacer>
-    </v-row>
+        <v-spacer></v-spacer>
+      </v-row>
 
-    <v-row class="scroll">
-      <span></span>
-    </v-row>
+      <v-row class="scroll">
+        <span></span>
+      </v-row>
 
-    <v-row class="ma-12">
-      <v-col>
-        <h6 class="text-center text-h6">
-          自宅にいながら、まるで本物の自習室！<br />
-          そんな体験に拘りました。
-        </h6>
-        <v-hover v-slot:default="{ hover }">
-          <v-card :elevation="hover ? 16 : 2" class="mx-auto" width="350">
+      <v-row class="mx-12 description">
+        <v-col class="mt-n12">
+          <v-card width="400" class="mx-auto">
             <v-img
+              class="mx-auto"
               width="350"
               aspect-ratio="2"
               :src="$storage('system') + 'twitter-card.png'"
             ></v-img>
-          </v-card>
-        </v-hover>
-      </v-col>
 
-      <v-col>
-        <h6 class="text-center text-h6">
-          休憩時間も有意義に<br />
-          日々頑張る仲間たちと交流しましょう。
-        </h6>
-        <v-hover v-slot:default="{ hover }">
-          <v-card :elevation="hover ? 16 : 2" class="mx-auto" width="350">
+            <v-card-title>
+              <span class="title mx-auto text-h4 font-weight-bold">&nbsp;自習&nbsp;</span>
+            </v-card-title>
+
+            <v-card-text class="text-center text-h6 font-weight-bold">
+              自宅にいながら、まるで本物の自習室！<br />
+              そんな体験に拘りました。
+            </v-card-text>
+          </v-card>
+        </v-col>
+
+        <v-col>
+          <v-card width="400" class="mx-auto">
             <v-img
+              class="mx-auto"
               width="350"
               aspect-ratio="2"
               :src="$storage('system') + 'twitter-card.png'"
             ></v-img>
-          </v-card>
-        </v-hover>
-      </v-col>
 
-      <v-col>
-        <h6 class="text-center text-h6">
-          日々の活動や取り組みは<br />
-          記録され、あなたを支えます。
-        </h6>
-        <v-hover v-slot:default="{ hover }">
-          <v-card :elevation="hover ? 16 : 2" class="mx-auto" width="350">
+            <v-card-title>
+              <span class="title mx-auto text-h4 font-weight-bold">&nbsp;休憩&nbsp;</span>
+            </v-card-title>
+
+            <v-card-text class="text-center text-h6 font-weight-bold">
+              休憩時間も有意義に<br />
+              日々頑張る仲間たちと交流しましょう。
+            </v-card-text>
+          </v-card>
+        </v-col>
+
+        <v-col class="mt-12">
+          <v-card width="400" class="mx-auto">
             <v-img
+              class="mx-auto"
               width="350"
               aspect-ratio="2"
               :src="$storage('system') + 'twitter-card.png'"
             ></v-img>
-          </v-card>
-        </v-hover>
-      </v-col>
-    </v-row>
 
-    <div class="content">
-      <h2 class="text-center text-h4 font-weight-bold">いつでもどこからでも</h2>
-      <p class="mt-5 text-center text-body-1">
-        CLOTOはプログラミングで「創る」というあなたの体験を<br />
-        より直感的に、創造的で楽しいものにします。<br />
-        これら全ての体験がPC一台で、一つのアカウントで。
-      </p>
-      <v-img
-        class="mx-auto mt-12"
-        width="350"
-        aspect-ratio="2"
-        :src="$storage('system') + 'twitter-card.png'"
-      ></v-img>
+            <v-card-title>
+              <span class="title mx-auto text-h4 font-weight-bold">&nbsp;記録&nbsp;</span>
+            </v-card-title>
+
+            <v-card-text class="text-center text-h6 font-weight-bold">
+              日々の活動や取り組みは<br />
+              記録され、あなたを支えます。
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
     </div>
 
-    <div class="content">
-      <h2 class="text-center text-h4 font-weight-bold">みんなが創ってる</h2>
-      <p class="mt-5 text-center text-body-1">
-        プログラミングを続ける上で、仲間の存在ほど心強いものはありません。<br />
-        そしてプログラミングの醍醐味はなんといっても「創る」こと。<br />
-        「創る」楽しみを仲間共有し、プログラミングをもっと好きになる。<br />
-        そんな空間を創りたい。それがCLOTOの存在理由。
-      </p>
+    <v-container fluid class="bottom">
+      <v-row class="content">
+        <v-spacer></v-spacer>
+
+        <v-col cols="4">
+          <div class="mx-auto">
+            <v-row justify="center">
+              <v-icon class="icon">mdi-cloud-circle</v-icon>
+            </v-row>
+            <h2 class="mt-5 text-center text-h4 font-weight-bold">いつでもどこからでも</h2>
+            <p class="mt-8 text-center text-body-1">
+              CLOTOはプログラミングで「創る」というあなたの体験を<br />
+              より直感的に、創造的で楽しいものにします。<br />
+              これら全ての体験がPC一台で、一つのアカウントで。
+            </p>
+            <v-img
+              class="mx-auto mt-12"
+              width="350"
+              aspect-ratio="2"
+              :src="$storage('system') + 'twitter-card.png'"
+            ></v-img>
+          </div>
+        </v-col>
+
+        <v-col cols="4">
+          <div class="mx-auto">
+            <v-row justify="center">
+              <v-icon class="icon">mdi-account-multiple</v-icon>
+            </v-row>
+            <h2 class="mt-5 text-center text-h4 font-weight-bold">みんなが創ってる</h2>
+            <p class="mt-5 text-center text-body-1">
+              プログラミングを続ける上で、仲間の存在ほど心強いものはありません。<br />
+              そしてプログラミングの醍醐味はなんといっても「創る」こと。<br />
+              「創る」楽しみを仲間共有し、プログラミングをもっと好きになる。<br />
+              そんな空間を創りたい。それがCLOTOの存在理由。
+            </p>
+            <v-img
+              class="mx-auto mt-12"
+              width="350"
+              aspect-ratio="2"
+              :src="$storage('system') + 'twitter-card.png'"
+            ></v-img>
+          </div>
+        </v-col>
+
+        <v-spacer></v-spacer>
+      </v-row>
 
       <v-container>
         <v-fade-transition mode="out-in">
@@ -141,7 +179,7 @@
               </v-col>
 
               <v-col align-self="center">
-                <h2 class="mb-6 text-center text-h4 font-weight-bold">創ってる 音がする</h2>
+                <h3 class="mb-6 text-center text-h4 font-weight-bold">創ってる 音がする</h3>
                 <p class="mt-6 text-center text-h6">
                   自習を開始すれば、自動的に音声チャットが起動<br />
                   隣の仲間がキーボードを叩く音が聞こえてきます。<br />
@@ -160,7 +198,7 @@
               </v-col>
 
               <v-col align-self="center">
-                <h2 class="mb-6 text-center text-h4 font-weight-bold">プログラミングでつながる</h2>
+                <h3 class="mb-6 text-center text-h4 font-weight-bold">プログラミングでつながる</h3>
                 <p class="mt-6 text-center text-h6">
                   集中のためにはメリハリが重要。<br />
                   「疲れてきたな」「煮詰まってきたな」<br />
@@ -209,7 +247,7 @@
               </v-col>
 
               <v-col align-self="center">
-                <h2 class="mb-6 text-center text-h4 font-weight-bold">頑張りを、記録しよう</h2>
+                <h3 class="mb-6 text-center text-h4 font-weight-bold">頑張りを、記録しよう</h3>
                 <p class="mt-6 text-center text-h6">
                   日々の活動を記録しないのはもったいない。<br />
                   プログラミングをする中で学んだこと、達成したことは<br />
@@ -229,7 +267,7 @@
               </v-col>
 
               <v-col align-self="center">
-                <h2 class="mb-6 text-center text-h4 font-weight-bold">記録はあなたの力になる</h2>
+                <h3 class="mb-6 text-center text-h4 font-weight-bold">記録はあなたの力になる</h3>
                 <p class="mt-6 text-center text-h6">
                   あなたの活動記録はデータとなって力強くあなたをサポートします。<br />
                   今後、CLOTOはひとりひとりのデータを元に<br />
@@ -276,7 +314,7 @@
               </v-col>
 
               <v-col align-self="center">
-                <h2 class="mb-6 text-center text-h4 font-weight-bold">競争より、共創しよう</h2>
+                <h3 class="mb-6 text-center text-h4 font-weight-bold">競争より、共創しよう</h3>
                 <p class="mt-6 text-center text-h6">
                   アイデアや技術を独占する時代はもう終わりです。<br />
                   積極的に学んだこと、創ったものを公開しあうことで<br />
@@ -296,7 +334,7 @@
               </v-col>
 
               <v-col align-self="center">
-                <h2 class="mb-6 text-center text-h4 font-weight-bold">キャリアにもつながる</h2>
+                <h3 class="mb-6 text-center text-h4 font-weight-bold">キャリアにもつながる</h3>
                 <p class="mt-6 text-center text-h6">
                   あなたの活動は公開され、あなた自身の魅力になります。<br />
                   楽しめば楽しんだ分だけ評価される。<br />
@@ -307,7 +345,7 @@
           </div>
         </v-fade-transition>
       </v-container>
-    </div>
+    </v-container>
 
     <v-row justify="center" class="foot-btn">
       <v-btn x-large color="primary" class="font-weight-bold">さあはじめよう！</v-btn>
@@ -332,11 +370,11 @@ export default {
         this.hover1 = false;
         this.hover2 = false;
         this.hover3 = false;
-      } else if (2000 < scrollTop && scrollTop <= 2700) {
+      } else if (2000 < scrollTop && scrollTop <= 2750) {
         this.hover1 = true;
         this.hover2 = false;
         this.hover3 = false;
-      } else if (2700 < scrollTop && scrollTop <= 3500) {
+      } else if (2750 < scrollTop && scrollTop <= 3500) {
         this.hover1 = true;
         this.hover2 = true;
         this.hover3 = false;
@@ -353,18 +391,44 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
-* {
-  background-color: $primary;
-  color: $white;
-}
-
-// fluidが動作しないので上書き
-.container--fluid {
+.index {
   max-width: 100%;
+  background-color: $light-gray;
+
+  .foot-btn {
+    padding: 400px;
+  }
 }
 
 .concept {
-  height: 900px;
+  background-color: $primary;
+  color: $white;
+  position: relative;
+  height: 1350px;
+
+  .top {
+    height: 900px;
+  }
+
+  .description {
+    margin-top: 200px;
+
+    .title {
+      background: linear-gradient(transparent 70%, #cae6ff 70%);
+    }
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0px 100vw 115px 0;
+    border-color: transparent transparent $light-gray transparent;
+  }
 }
 
 // 下矢印
@@ -406,11 +470,23 @@ export default {
   }
 }
 
-.content {
-  margin-top: 200px;
-}
+.bottom {
+  max-width: 100%;
+  background-color: $light-gray;
+  margin-top: 100px;
 
-.foot-btn {
-  padding: 400px;
+  .content {
+    margin-top: 200px;
+
+    .icon {
+      color: $primary;
+      font-size: 5em;
+    }
+
+    h3:first-letter {
+      font-size: 1.3em;
+      color: $primary;
+    }
+  }
 }
 </style>
