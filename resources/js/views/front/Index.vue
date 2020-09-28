@@ -396,7 +396,7 @@ export default {
   background-color: $light-gray;
 
   .foot-btn {
-    padding: 400px;
+    padding: 400px 0;
   }
 }
 

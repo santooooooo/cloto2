@@ -7,7 +7,7 @@
     <v-spacer></v-spacer>
 
     <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" v-if="authCheck" />
-    <v-btn depressed color="primary" class="font-weight-bold" v-else>覗いてみる</v-btn>
+    <v-btn depressed color="primary" class="btn font-weight-bold" v-else>覗いてみる</v-btn>
   </v-app-bar>
 </template>
 
@@ -25,5 +25,9 @@ export default {
 img {
   max-height: 64px;
   padding: 15px 0;
+}
+
+.btn {
+  margin-right: 10px;
 }
 </style>
