@@ -57,6 +57,7 @@ export default {
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
       iconSize: 30, // アイコンサイズ
+      loungeSyncTimer: null, // 休憩室同期制御
       chatParticipants: [], // チャット参加者
       messageList: [], // メッセージデータ
       isChatOpen: false, // チャットモーダル制御
@@ -93,34 +94,6 @@ export default {
     },
   },
   methods: {
-    /**
-     * チャットのオープン
-     */
-    openChat() {
-      this.isChatOpen = true;
-      console.log('チャットオープン');
-    },
-
-    /**
-     * チャットのクローズ
-     */
-    closeChat() {
-      this.isChatOpen = false;
-      this.changeStatus(null, 'leaveLounge');
-      console.log('チャットクローズ');
-    },
-
-    /**
-     * メッセージ送信
-     */
-    onMessageWasSent(message) {
-      console.log(message);
-      var response = this.$http.post(this.$endpoint('POST:chatPost'), message);
-
-      this.messageList = [...this.messageList, Object.assign({}, message, { id: Math.random() })];
-      console.log('メッセージ送信');
-    },
-
     /**
      * 教室の同期
      */
@@ -201,13 +174,6 @@ export default {
 
       this.chatParticipants = response.data.chatParticipants;
       this.messageList = response.data.messageList;
-
-      // システムメッセージの例
-      this.messageList.push({
-        type: 'system',
-        id: 13,
-        data: { text: 'You have been transferred to another operator', meta: '04-07-2018 15:57' },
-      });
     },
 
     /**
@@ -216,22 +182,43 @@ export default {
      * @param Number  sectionId   入室する休憩室ID
      */
     enterLounge: async function (sectionId) {
-      var response = await this.$http.get(this.$endpoint('GET:chatShow', [sectionId]));
+      // 初回取得
+      await this.syncLounge(sectionId);
 
-      this.chatParticipants = response.data.chatParticipants;
-      this.messageList = response.data.messageList;
+      // 同期開始
+      this.loungeSyncTimer = setInterval(() => {
+        this.syncLounge(sectionId);
+      }, 3000);
 
       this.openChat();
     },
 
     /**
-     * コメントの投稿
+     * チャットのオープン
      */
-    postComment: async function () {
-      var data = { message: this.chatMessage };
+    openChat: function () {
+      this.isChatOpen = true;
+    },
 
-      var response = await this.$http.post(this.$endpoint('POST:chatPost'), data);
-      this.chatData.push(response.data);
+    /**
+     * チャットのクローズ
+     */
+    closeChat: function () {
+      this.isChatOpen = false;
+      this.changeStatus(null, 'leaveLounge');
+
+      // 同期停止
+      clearInterval(this.loungeSyncTimer);
+    },
+
+    /**
+     * メッセージ送信
+     */
+    onMessageWasSent: function (message) {
+      this.$http.post(this.$endpoint('POST:chatPost'), message);
+
+      // 一時的に描画するためリストへ追加
+      this.messageList = [...this.messageList, Object.assign({}, message, { id: Math.random() })];
     },
 
     /**
@@ -610,7 +597,9 @@ export default {
     this.syncRoom();
 
     // 同期開始
-    //setInterval(this.syncRoom, 3000);
+    // setInterval(() => {
+    //   this.syncRoom();
+    // }, 3000);
   },
 };
 </script>
