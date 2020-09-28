@@ -99,7 +99,7 @@ class SeatController extends Controller
     public function enter_lounge(Seat $seat)
     {
         // 現在の座席をbreakに変更
-        $this->user->seat()->update(['status' => 'break']);
+        $this->user->seat()->update(['status' => 'break', 'reservation_user_id' => $this->user->id]);
         // ユーザーと座席を紐付け
         $this->user->seat()->associate($seat);
         $this->user->save();
@@ -124,7 +124,7 @@ class SeatController extends Controller
         // 過去の発言を隠す
         $chat = Chat::where('section_id', $section_id)->where('user_id', $user_id);
         // 発言が存在する時
-        if ($chat) {
+        if ($chat->exists()) {
             $result = $chat->update(['data' => json_encode(['text' => '削除されたメッセージです．'])]);
 
             if (empty($result)) {

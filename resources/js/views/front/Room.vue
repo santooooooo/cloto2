@@ -133,7 +133,14 @@ export default {
         section.seats.forEach((seat, seatIndex) => {
           if (this.roomData.length === 0) {
             // 初回取得
-            this.setClickArea(seat.id, section.id, section.role, seat.position, seat.status);
+            this.setClickArea(
+              seat.id,
+              section.id,
+              section.role,
+              seat.reservation_user_id,
+              seat.position,
+              seat.status
+            );
 
             // 誰かが座っている時
             if (seat.status !== null && seat.status != 'break') {
@@ -145,7 +152,6 @@ export default {
               // ログインユーザーが座っており，座席が休憩室にある場合
               if (seat.id === this.authUser.seat_id && section.role === '休憩') {
                 this.enterLounge(section.id);
-                console.log(section);
               }
             }
           } else if (seat.status !== this.roomData.sections[sectionIndex].seats[seatIndex].status) {
@@ -160,7 +166,6 @@ export default {
                 break;
 
               case 'break':
-                console.log(status);
                 var color = '#000000';
                 break;
 
@@ -244,18 +249,18 @@ export default {
      */
     canvasMouseOut: function (event) {
       if (event.target) {
-        console.log(event.target);
+        event.target.set({ fill: '#000000' });
+        //console.log(event.target);
 
         this.canvas.getObjects().forEach((object) => {
           if (object.seatId === event.target.seatId) {
             // var MouseOutObject = object;
-
-            if (object.seatId.status === 'break') {
-              event.target.set({ fill: 'red' });
-              console.log('赤になっちゃった');
-            } else {
-              event.target.set({ fill: '#000000' });
-            }
+            // if (object.seatId.status === 'break') {
+            //   event.target.set({ fill: 'red' });
+            //   console.log('赤になっちゃった');
+            // } else {
+            //   event.target.set({ fill: '#000000' });
+            // }
           }
         });
 
@@ -292,9 +297,9 @@ export default {
       }
 
       if (event.target) {
-        console.log(event.target);
+        //console.log(event.target);
         //console.log('上の方' + this.authUser.seat.section.role);
-        console.log(event.target.role);
+        // console.log(event.target.role);
         // 着席処理
         if (this.authUser.seat_id != null) {
           //どこかに座ってるとき
@@ -319,7 +324,8 @@ export default {
                 //依然座ってたところのアイコンをremoveして
                 //ユーザのroleの状態を自習に変更
               }
-              if (event.target.role === '休憩室') {
+              if (event.target.role === '休憩') {
+                this.changeStatus(event.target, 'leaveLounge');
                 //changeStatus 今座ってる場所と今から座る場所両方status変更
                 //  putIconで新しく座ったところに画像を配置
                 //依然座ってたところのアイコンをremoveして
@@ -380,11 +386,13 @@ export default {
 
       switch (status) {
         case 'sitting':
+          var seatId = changeObject.seatId;
           var color = '#ff0000';
           this.putIcon(changeObject.left, changeObject.top, this.authUser);
           break;
 
         case 'leave':
+          var seatId = changeObject.seatId;
           var color = '#ffffff';
           this.canvas.getObjects().forEach((object) => {
             if (object.userId === this.authUser.id) {
@@ -392,25 +400,41 @@ export default {
               this.removeIcon(object);
             }
           });
+          break;
 
+        case 'moveLounge':
+          // var color = '#ffffff';
+          // this.putIcon(changeObject.left, changeObject.top, this.authUser);
+          // this.canvas.getObjects().forEach((object) => {
+          //   if (object.userId === this.authUser.id) {
+          //     this.removeIcon(object);
+          //   }
+          // });
           break;
 
         case 'enterLounge':
-          console.log(status);
+          var seatId = changeObject.seatId;
           var color = '#000000';
           this.canvas.getObjects().forEach((object) => {
             if (object.userId === this.authUser.id) {
+              object.set({ reservationId: this.authUser.id });
               this.removeIcon(object);
             }
           });
           this.putIcon(changeObject.left, changeObject.top, this.authUser);
+          this.enterLounge(changeObject.sectionId);
           break;
 
         case 'leaveLounge':
+          var seatId = '';
           var color = '#ffffff';
           this.canvas.getObjects().forEach((object) => {
             if (object.userId === this.authUser.id) {
               this.removeIcon(object);
+            }
+            if (object.reservationId === this.authUser.id) {
+              this.putIcon(object.left, object.top, this.authUser);
+              seatId = object.seatId;
             }
           });
           break;
@@ -422,7 +446,7 @@ export default {
       this.canvas.requestRenderAll();
 
       // データベースへ状態を保存
-      await this.seatAction(changeObject.seatId, status);
+      await this.seatAction(seatId, status);
 
       // クリックを有効化
       this.isDisabledClick = false;
@@ -468,7 +492,7 @@ export default {
      * @param JSON    position    描画位置
      * @param String  status      座席状態
      */
-    setClickArea: function (seatId, sectionId, role, position, status) {
+    setClickArea: function (seatId, sectionId, role, reservationId, position, status) {
       var position = JSON.parse(position);
 
       switch (status) {
@@ -504,6 +528,7 @@ export default {
           sectionId: sectionId,
           role: role,
           fill: color,
+          reservationId: reservationId,
           opacity: 0.3,
           left: position.x,
           top: position.y,
