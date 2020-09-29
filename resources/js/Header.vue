@@ -7,7 +7,10 @@
     <v-spacer></v-spacer>
 
     <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" v-if="APP_RELEASE" />
-    <v-btn depressed color="primary" class="btn font-weight-bold" v-else>覗いてみる</v-btn>
+
+    <router-link :to="{ name: 'preRegister' }" v-else>
+      <v-btn depressed color="primary" class="btn font-weight-bold">新規登録</v-btn>
+    </router-link>
   </v-app-bar>
 </template>
 

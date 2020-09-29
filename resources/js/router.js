@@ -10,6 +10,7 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 import index from '@/views/front/Index.vue';
+import preRegister from '@/views/front/PreRegister.vue';
 import register from '@/views/front/Register.vue';
 import login from '@/views/front/Login.vue';
 import systemError from '@/views/errors/System.vue';
@@ -26,6 +27,11 @@ const router = new VueRouter({
       name: 'index',
       component: index,
       children: [
+        {
+          path: 'preregister',
+          name: 'preRegister',
+          component: preRegister,
+        },
         {
           path: 'register',
           name: 'register',
