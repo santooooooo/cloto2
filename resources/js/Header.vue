@@ -6,7 +6,7 @@
 
     <v-spacer></v-spacer>
 
-    <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" v-if="authCheck" />
+    <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" v-if="APP_RELEASE" />
     <v-btn depressed color="primary" class="btn font-weight-bold" v-else>覗いてみる</v-btn>
   </v-app-bar>
 </template>
@@ -14,8 +14,8 @@
 <script>
 export default {
   computed: {
-    authCheck() {
-      return this.$store.getters['auth/check'];
+    APP_RELEASE() {
+      return Number(process.env.MIX_APP_RELEASE);
     },
   },
 };
