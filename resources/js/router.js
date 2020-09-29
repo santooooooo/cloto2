@@ -9,6 +9,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+import store from './store';
+
 import index from '@/views/front/Index.vue';
 import preRegister from '@/views/front/PreRegister.vue';
 import register from '@/views/front/Register.vue';
@@ -26,21 +28,25 @@ const router = new VueRouter({
       path: '/',
       name: 'index',
       component: index,
+      meta: { isPublic: true },
       children: [
         {
           path: 'preregister',
           name: 'preRegister',
           component: preRegister,
+          meta: { isPublic: !Number(process.env.MIX_APP_RELEASE) },
         },
         {
           path: 'register',
           name: 'register',
           component: register,
+          meta: { isPublic: Number(process.env.MIX_APP_RELEASE) },
         },
         {
           path: 'login',
           name: 'login',
           component: login,
+          meta: { isPublic: Number(process.env.MIX_APP_RELEASE) },
         },
       ],
     },
@@ -70,6 +76,19 @@ const router = new VueRouter({
       component: profileEdit,
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  // 未ログイン時のリダイレクト
+  if (!store.getters['auth/check'] && to.matched.some((record) => !record.meta.isPublic)) {
+    if (Number(process.env.MIX_APP_RELEASE)) {
+      next({ name: 'login' });
+    } else {
+      next({ name: 'preRegister' });
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
