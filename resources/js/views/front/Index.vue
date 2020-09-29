@@ -350,6 +350,26 @@
     <v-row justify="center" class="foot-btn">
       <v-btn x-large color="primary" class="font-weight-bold">さあはじめよう！</v-btn>
     </v-row>
+
+    <v-btn
+      fixed
+      dark
+      fab
+      bottom
+      right
+      x-large
+      color="#00acee"
+      class="ma-5 twitter-share-button"
+      target="_blank"
+      href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+      data-text="テキスト"
+      data-url="https://cloto.jp"
+      data-via="@cloto_jp"
+      data-hashtags="#CLOTO"
+      data-show-count="false"
+    >
+      <v-icon>mdi-twitter</v-icon>
+    </v-btn>
   </v-container>
 </template>
 
@@ -397,6 +417,10 @@ export default {
 
   .foot-btn {
     padding: 400px 0;
+  }
+
+  .twitter-share-button {
+    text-decoration: none;
   }
 }
 

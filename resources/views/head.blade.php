@@ -17,7 +17,8 @@
     integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
 
 
-<!-- Twitter Card -->
+<!-- Twitter -->
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@cloto_jp">
 <meta name="twitter:title" content="CLOTO">
