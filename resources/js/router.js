@@ -9,6 +9,10 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+function isRelease() {
+  return process.env.MIX_APP_RELEASE === 'true' ? true : false;
+}
+
 import store from './store';
 
 import index from '@/views/front/Index.vue';
@@ -34,19 +38,19 @@ const router = new VueRouter({
           path: 'preregister',
           name: 'preRegister',
           component: preRegister,
-          meta: { isPublic: !Number(process.env.MIX_APP_RELEASE) },
+          meta: { isPublic: !isRelease() },
         },
         {
           path: 'register',
           name: 'register',
           component: register,
-          meta: { isPublic: Number(process.env.MIX_APP_RELEASE) },
+          meta: { isPublic: isRelease() },
         },
         {
           path: 'login',
           name: 'login',
           component: login,
-          meta: { isPublic: Number(process.env.MIX_APP_RELEASE) },
+          meta: { isPublic: isRelease() },
         },
       ],
     },
@@ -81,7 +85,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   // 未ログイン時のリダイレクト
   if (!store.getters['auth/check'] && to.matched.some((record) => !record.meta.isPublic)) {
-    if (Number(process.env.MIX_APP_RELEASE)) {
+    if (isRelease()) {
       next({ name: 'login' });
     } else {
       next({ name: 'preRegister' });

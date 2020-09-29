@@ -6,7 +6,7 @@
 
     <v-spacer></v-spacer>
 
-    <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" v-if="APP_RELEASE" />
+    <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" v-if="isRelease" />
 
     <router-link :to="{ name: 'preRegister' }" v-else>
       <v-btn depressed color="primary" class="btn font-weight-bold">新規登録</v-btn>
@@ -17,8 +17,8 @@
 <script>
 export default {
   computed: {
-    APP_RELEASE() {
-      return Number(process.env.MIX_APP_RELEASE);
+    isRelease() {
+      return process.env.MIX_APP_RELEASE === 'true' ? true : false;
     },
   },
 };
