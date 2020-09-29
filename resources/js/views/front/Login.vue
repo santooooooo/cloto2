@@ -11,17 +11,16 @@
               </v-alert>
 
               <!-- ロゴ -->
-              <img
+              <v-img
                 :src="$storage('system') + 'logo.png'"
-                class="login-logo"
-                alt="logo"
+                class="mx-auto mb-4"
                 width="35"
                 height="35"
                 v-if="!loginErrors"
-              />
+              ></v-img>
 
               <!-- タイトル -->
-              <h2>ログイン</h2>
+              <h2 class="mb-6 text-h4 font-weight-bold text-center">ログイン</h2>
 
               <!-- フォーム -->
               <v-form>
@@ -81,7 +80,7 @@ export default {
     };
   },
   computed: {
-    _allTexts() {
+    allTexts() {
       return [this.loginField, this.password];
     },
     apiStatus() {
@@ -98,7 +97,7 @@ export default {
         this.$router.push({ name: 'index' });
       }
     },
-    _allTexts(inputField) {
+    allTexts(inputField) {
       if (inputField.indexOf('') === -1) {
         this.isButtonDisabled = false; // ログインボタンの有効化
       } else {
@@ -129,18 +128,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import '~/_variables';
-
-.login-logo {
-  display: block;
-  margin: 0 auto;
-}
-
-h2 {
-  margin: 0.8em 0 0.5em 0;
-  text-align: center;
-  font-weight: bold;
-}
-</style>
