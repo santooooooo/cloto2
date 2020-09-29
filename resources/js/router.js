@@ -25,16 +25,18 @@ const router = new VueRouter({
       path: '/',
       name: 'index',
       component: index,
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: register,
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: login,
+      children: [
+        {
+          path: 'register',
+          name: 'register',
+          component: register,
+        },
+        {
+          path: 'login',
+          name: 'login',
+          component: login,
+        },
+      ],
     },
     {
       path: '/500',

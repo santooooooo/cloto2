@@ -1,5 +1,8 @@
 <template>
   <v-container fluid pa-0 class="index">
+    <!-- 新規登録，ログインフォーム -->
+    <router-view />
+
     <div class="concept">
       <v-row class="top mt-n12">
         <v-spacer></v-spacer>
