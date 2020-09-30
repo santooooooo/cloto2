@@ -21,6 +21,7 @@ Route::get('/regenerate-token', function (Request $request) {
     return response()->json();
 })->name('regenerateToken');
 
+Route::post('/contact', 'API\ContactController@contact')->name('contact');
 Route::post('/preregister', 'API\PreRegisterController@pre_register')->name('preRegister');
 
 Route::post('/register', 'Auth\RegisterController@register')->name('register');

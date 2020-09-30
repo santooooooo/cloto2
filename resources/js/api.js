@@ -12,6 +12,7 @@ const replaceChar = ['#', '*', '$'];
  */
 const home = '/';
 const GET_regenerateToken = '/api/regenerate-token';
+const POST_contact = '/api/contact';
 const POST_preRegister = '/api/preregister';
 const POST_register = '/api/register';
 const POST_login = '/api/login';
@@ -40,6 +41,10 @@ export function getEndpoint(name, params) {
 
     case 'GET:regenerateToken':
       endpoint = GET_regenerateToken;
+      break;
+
+    case 'POST:contact':
+      endpoint = POST_contact;
       break;
 
     case 'POST:preRegister':

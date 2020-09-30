@@ -354,6 +354,47 @@
       <v-btn x-large color="primary" class="font-weight-bold">さあはじめよう！</v-btn>
     </v-row>
 
+    <!-- 問い合わせフォーム -->
+    <v-card>
+      <v-container>
+        <h2>お問い合わせ</h2>
+
+        <v-form ref="form" v-model="contactFormValidation.valid" lazy-validation>
+          <v-text-field
+            v-model="contactForm.name"
+            :rules="contactFormValidation.nameRules"
+            label="お名前"
+            required
+          ></v-text-field>
+
+          <v-text-field
+            v-model="contactForm.email"
+            :rules="contactFormValidation.emailRules"
+            label="メールアドレス"
+            required
+          ></v-text-field>
+
+          <v-textarea
+            v-model="contactForm.body"
+            :rules="contactFormValidation.bodyRules"
+            label="お問い合わせ内容"
+            required
+          ></v-textarea>
+
+          <v-btn
+            :loading="contactForm.loading"
+            :disabled="!contactFormValidation.valid"
+            @click="sendContact()"
+            block
+            large
+            color="info"
+            class="mt-4 font-weight-bold"
+            >送信
+          </v-btn>
+        </v-form>
+      </v-container>
+    </v-card>
+
     <v-btn
       fixed
       dark
@@ -377,13 +418,57 @@
 </template>
 
 <script>
+import { OK } from '@/consts/status';
+
 export default {
   data() {
     return {
       hover1: false,
       hover2: false,
       hover3: false,
+      contactForm: {
+        name: '',
+        email: '',
+        body: '',
+        loading: false,
+      },
+      contactFormValidation: {
+        valid: false,
+        nameRules: [
+          (v) => !!v || '名前は必須項目です。',
+          (v) => v.length <= 16 || '16文字以下で入力してください。',
+        ],
+        emailRules: [
+          (v) => !!v || 'メールアドレスは必須項目です。',
+          (v) => {
+            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return pattern.test(v) || 'メールアドレスが無効です。';
+          },
+        ],
+        bodyRules: [(v) => !!v || 'お問い合わせ内容は必須項目です。'],
+      },
     };
+  },
+  methods: {
+    sendContact: async function () {
+      if (this.$refs.form.validate()) {
+        this.contactForm.loading = true;
+
+        var input = {
+          name: this.contactForm.name,
+          email: this.contactForm.email,
+          body: this.contactForm.body,
+        };
+
+        // 問い合わせ送信処理
+        var response = await this.$http.post(this.$endpoint('POST:contact'), input);
+
+        if (response.status === OK) {
+          this.$refs.form.reset();
+          this.contactForm.loading = false;
+        }
+      }
+    },
   },
   mounted() {
     window.onscroll = () => {
