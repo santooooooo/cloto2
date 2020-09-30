@@ -5,11 +5,12 @@
         <v-container>
           <v-row>
             <v-col>
+              <v-alert v-model="alert" dismissible type="success">メールをご確認ください！</v-alert>
+
               <!-- ロゴ -->
               <v-img
                 :src="$storage('system') + 'logo.png'"
                 class="mx-auto mb-4"
-                alt="logo"
                 width="35"
                 height="35"
               ></v-img>
@@ -48,7 +49,7 @@
 
                 <v-row justify="center">
                   <button
-                    v-on:click="register()"
+                    v-on:click="preRegister()"
                     type="button"
                     class="btn btn-cloto-primary"
                     v-bind:disabled="isButtonDisabled"
@@ -66,6 +67,8 @@
 </template>
 
 <script>
+import { OK } from '@/consts/status';
+
 export default {
   head: {
     title() {
@@ -77,6 +80,7 @@ export default {
   data() {
     return {
       dialog: true,
+      alert: false,
       name: '',
       email: '',
       isButtonDisabled: true,
@@ -103,11 +107,32 @@ export default {
         this.$router.push({ name: 'index' });
       }
     },
+    alert: function () {
+      // アラートが閉じたらリダイレクト
+      if (this.alert === false) {
+        this.$router.push({ name: 'index' });
+      }
+    },
     allTexts(inputField) {
       if (inputField.indexOf('') === -1) {
         this.isButtonDisabled = false; // ログインボタンの有効化
       } else {
         this.isButtonDisabled = true; // ログインボタンの無効化
+      }
+    },
+  },
+  methods: {
+    preRegister: async function () {
+      var input = {
+        name: this.name,
+        email: this.email,
+      };
+
+      var response = await this.$http.post(this.$endpoint('POST:preRegister'), input);
+
+      if (response.status === OK) {
+        this.alert = true;
+        this.$router.push({ name: 'index' });
       }
     },
   },
