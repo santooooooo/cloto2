@@ -33,29 +33,30 @@
               </div>
 
               <!-- フォーム -->
-              <v-form>
+              <v-form ref="form" v-model="preRegisterFormValidation.valid" lazy-validation>
                 <v-text-field
-                  v-model="name"
-                  :rules="[rules.required, rules.nameMin, rules.nameMax]"
+                  v-model="preRegisterForm.name"
+                  :rules="preRegisterFormValidation.nameRules"
                   label="お名前"
-                  counter="16"
+                  required
                 ></v-text-field>
 
                 <v-text-field
-                  v-model="email"
-                  :rules="[rules.required, rules.email]"
+                  v-model="preRegisterForm.email"
+                  :rules="preRegisterFormValidation.emailRules"
                   label="メールアドレス"
+                  required
                 ></v-text-field>
 
-                <v-row justify="center">
-                  <button
-                    v-on:click="preRegister()"
-                    type="button"
-                    class="btn btn-cloto-primary"
-                    v-bind:disabled="isButtonDisabled"
-                  >
-                    仮登録
-                  </button>
+                <v-row justify="center" class="mt-4">
+                  <v-btn
+                    :loading="preRegisterForm.loading"
+                    :disabled="!preRegisterFormValidation.valid"
+                    @click="preRegister()"
+                    color="info"
+                    class="font-weight-bold"
+                    >仮登録
+                  </v-btn>
                 </v-row>
               </v-form>
             </v-col>
@@ -81,24 +82,23 @@ export default {
     return {
       dialog: true,
       alert: false,
-      name: '',
-      email: '',
-      isButtonDisabled: true,
-      rules: {
-        required: (v) => !!v || '必須項目です。',
-        nameMin: (v) => v.length >= 4 || '4文字以上で入力してください。',
-        nameMax: (v) => v.length <= 16 || '16文字以下で入力してください。',
-        email: (v) => {
-          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          return pattern.test(v) || 'メールアドレスが無効です。';
-        },
+      preRegisterForm: {
+        name: '',
+        email: '',
+        loading: false,
+      },
+      preRegisterFormValidation: {
+        valid: false,
+        nameRules: [(v) => !!v || 'お名前は必須項目です。'],
+        emailRules: [
+          (v) => !!v || 'メールアドレスは必須項目です。',
+          (v) => {
+            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return pattern.test(v) || 'メールアドレスが無効です。';
+          },
+        ],
       },
     };
-  },
-  computed: {
-    allTexts() {
-      return [this.name, this.email];
-    },
   },
   watch: {
     dialog: function () {
@@ -113,26 +113,24 @@ export default {
         this.$router.push({ name: 'index' });
       }
     },
-    allTexts(inputField) {
-      if (inputField.indexOf('') === -1) {
-        this.isButtonDisabled = false; // ログインボタンの有効化
-      } else {
-        this.isButtonDisabled = true; // ログインボタンの無効化
-      }
-    },
   },
   methods: {
     preRegister: async function () {
-      var input = {
-        name: this.name,
-        email: this.email,
-      };
+      if (this.$refs.form.validate()) {
+        this.preRegisterForm.loading = true;
 
-      var response = await this.$http.post(this.$endpoint('POST:preRegister'), input);
+        var input = {
+          name: this.preRegisterForm.name,
+          email: this.preRegisterForm.email,
+        };
 
-      if (response.status === OK) {
-        this.alert = true;
-        this.$router.push({ name: 'index' });
+        var response = await this.$http.post(this.$endpoint('POST:preRegister'), input);
+
+        if (response.status === OK) {
+          this.alert = true;
+          this.preRegisterForm.loading = false;
+          this.$router.push({ name: 'index' });
+        }
       }
     },
   },
