@@ -82,17 +82,17 @@ const router = new VueRouter({
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  // 未ログイン時のリダイレクト
-  if (!store.getters['auth/check'] && to.matched.some((record) => !record.meta.isPublic)) {
-    if (isRelease()) {
-      next({ name: 'login' });
-    } else {
-      next({ name: 'preRegister' });
-    }
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   // 未ログイン時のリダイレクト
+//   if (!store.getters['auth/check'] && to.matched.some((record) => !record.meta.isPublic)) {
+//     if (isRelease()) {
+//       next({ name: 'login' });
+//     } else {
+//       next({ name: 'preRegister' });
+//     }
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;
