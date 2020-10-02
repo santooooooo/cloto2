@@ -9,8 +9,8 @@ const state = {
 };
 
 const getters = {
-  check: state => !!state.user,
-  user: state => (state.user ? state.user : ''),
+  check: (state) => !!state.user,
+  user: (state) => (state.user ? state.user : ''),
 };
 
 const mutations = {
@@ -31,7 +31,7 @@ const mutations = {
 const actions = {
   async syncAuthUser(context) {
     // ログインユーザーの取得
-    const response = await axios.get($endpoint('GET:authUser'));
+    const response = await axios.get($endpoint('authUser'));
     const user = response.data || null;
     context.commit('setUser', user);
   },
@@ -40,7 +40,7 @@ const actions = {
     context.commit('setApiStatus', null);
 
     // 登録リクエスト
-    const response = await axios.post($endpoint('POST:register'), data);
+    const response = await axios.post($endpoint('register'), data);
 
     // 成功
     if (response.status === CREATED) {
@@ -64,7 +64,7 @@ const actions = {
     context.commit('setApiStatus', null);
 
     // ログインリクエスト
-    const response = await axios.post($endpoint('POST:login'), data);
+    const response = await axios.post($endpoint('login'), data);
 
     // 成功
     if (response.status === OK) {
@@ -88,7 +88,7 @@ const actions = {
     context.commit('setApiStatus', null);
 
     // ログアウトリクエスト
-    const response = await axios.post($endpoint('POST:logout'));
+    const response = await axios.post($endpoint('logout'));
 
     // 成功
     if (response.status === OK) {

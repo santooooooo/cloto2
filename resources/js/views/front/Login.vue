@@ -11,42 +11,47 @@
               </v-alert>
 
               <!-- ロゴ -->
-              <img
+              <v-img
                 :src="$storage('system') + 'logo.png'"
-                class="login-logo"
-                alt="logo"
+                class="mx-auto mb-4"
                 width="35"
                 height="35"
                 v-if="!loginErrors"
-              />
+              ></v-img>
 
               <!-- タイトル -->
-              <h2>ログイン</h2>
+              <h2 class="mb-6 text-h4 font-weight-bold text-center">ログイン</h2>
 
               <!-- フォーム -->
-              <v-form>
+              <v-form ref="form" v-model="loginFormValidation.valid" lazy-validation>
                 <v-text-field
-                  v-model="loginField"
+                  v-model="loginForm.loginField"
+                  :rules="loginFormValidation.loginFieldRules"
                   label="ユーザー名 または メールアドレス"
+                  counter="16"
+                  required
                 ></v-text-field>
 
                 <v-text-field
-                  :append-icon="showPassword ? 'far fa-eye' : 'far fa-eye-slash'"
-                  :type="showPassword ? 'text' : 'password'"
-                  v-model="password"
+                  v-model="loginForm.password"
+                  :rules="loginFormValidation.passwordRules"
                   label="パスワード"
-                  @click:append="showPassword = !showPassword"
+                  :append-icon="loginForm.showPassword ? 'far fa-eye' : 'far fa-eye-slash'"
+                  :type="loginForm.showPassword ? 'text' : 'password'"
+                  class="input-group--focused"
+                  counter="64"
+                  @click:append="loginForm.showPassword = !loginForm.showPassword"
                 ></v-text-field>
 
-                <v-row justify="center">
-                  <button
-                    v-on:click="login()"
-                    type="button"
-                    class="btn btn-cloto-primary"
-                    v-bind:disabled="isButtonDisabled"
-                  >
-                    ログイン
-                  </button>
+                <v-row justify="center" class="mt-4">
+                  <v-btn
+                    :loading="loginForm.loading"
+                    :disabled="!loginFormValidation.valid"
+                    @click="login()"
+                    color="info"
+                    class="font-weight-bold"
+                    >ログイン
+                  </v-btn>
                 </v-row>
               </v-form>
             </v-col>
@@ -74,16 +79,20 @@ export default {
   data() {
     return {
       dialog: true,
-      loginField: '',
-      password: '',
-      showPassword: false,
-      isButtonDisabled: true,
+      loginForm: {
+        loginField: '',
+        password: '',
+        showPassword: false,
+        loading: false,
+      },
+      loginFormValidation: {
+        valid: false,
+        loginFieldRules: [(v) => !!v || '必須項目です。'],
+        passwordRules: [(v) => !!v || 'パスワードは必須項目です。'],
+      },
     };
   },
   computed: {
-    _allTexts() {
-      return [this.loginField, this.password];
-    },
     apiStatus() {
       return this.$store.state.auth.apiStatus;
     },
@@ -98,28 +107,25 @@ export default {
         this.$router.push({ name: 'index' });
       }
     },
-    _allTexts(inputField) {
-      if (inputField.indexOf('') === -1) {
-        this.isButtonDisabled = false; // ログインボタンの有効化
-      } else {
-        this.isButtonDisabled = true; // ログインボタンの無効化
-      }
-    },
   },
   methods: {
     login: async function () {
-      // データの作成
-      var params = {
-        loginField: this.loginField,
-        password: this.password,
-      };
+      if (this.$refs.form.validate()) {
+        this.loginForm.loading = true;
 
-      // ログイン処理
-      await this.$store.dispatch('auth/login', params);
+        // データの作成
+        var input = {
+          loginField: this.loginForm.loginField,
+          password: this.loginForm.password,
+        };
 
-      if (this.apiStatus) {
-        // ページ遷移
-        this.$router.push({ name: 'home' });
+        // ログイン処理
+        await this.$store.dispatch('auth/login', input);
+
+        if (this.apiStatus) {
+          // ページ遷移
+          this.$router.push({ name: 'home' });
+        }
       }
     },
   },
@@ -129,18 +135,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import '~/_variables';
-
-.login-logo {
-  display: block;
-  margin: 0 auto;
-}
-
-h2 {
-  margin: 0.8em 0 0.5em 0;
-  text-align: center;
-  font-weight: bold;
-}
-</style>

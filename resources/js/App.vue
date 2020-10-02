@@ -4,20 +4,11 @@
     <Header @show-drawer="isShowDrawer = true" />
 
     <!-- ドロワーメニュー -->
-    <Drawer v-model="isShowDrawer" @logout="logout" />
+    <Drawer v-model="isShowDrawer" @logout="logout" v-if="isRelease" />
 
     <!-- メイン -->
-    <!-- Sizes your content based upon application components -->
     <v-main>
-      <!-- Provides the application the proper gutter -->
-      <v-container fluid>
-        <div class="welcome__cloto-icon col-6" v-if="!authCheck">
-          <img :src="$storage('system') + 'top.png'" />
-        </div>
-
-        <!-- If using vue-router -->
-        <router-view></router-view>
-      </v-container>
+      <router-view />
     </v-main>
 
     <!-- フッター -->
@@ -43,11 +34,8 @@ export default {
     };
   },
   computed: {
-    authCheck() {
-      return this.$store.getters['auth/check'];
-    },
-    authUser() {
-      return this.$store.getters['auth/user'];
+    isRelease() {
+      return process.env.MIX_APP_RELEASE === 'true' ? true : false;
     },
     errorCode() {
       return this.$store.state.error.code;
@@ -72,7 +60,7 @@ export default {
           this.$router.push({ name: 'INTERNAL_SERVER_ERROR' });
         } else if (val === UNAUTHORIZED) {
           // トークンの再発行
-          await this.$http.get(this.$endpoint('GET:regenerateToken'));
+          await this.$http.get(this.$endpoint('regenerateToken'));
           // ストアのuserをクリア
           this.$store.commit('auth/setUser', null);
           // ログイン画面へ
@@ -89,10 +77,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.top-logo {
-  max-height: 64px;
-  padding: 15px 0;
-}
-</style>

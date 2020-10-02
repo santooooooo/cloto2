@@ -98,7 +98,7 @@ export default {
      * 教室の同期
      */
     syncRoom: async function () {
-      var response = await this.$http.get(this.$endpoint('GET:roomShow', [this.$route.params.id]));
+      var response = await this.$http.get(this.$endpoint('roomShow', [this.$route.params.id]));
 
       // セクションのループ
       response.data.sections.forEach((section, sectionIndex) => {
@@ -170,7 +170,7 @@ export default {
      * @param Number  sectionId   入室している休憩室ID
      */
     syncLounge: async function (sectionId) {
-      var response = await this.$http.get(this.$endpoint('GET:chatShow', [sectionId]));
+      var response = await this.$http.get(this.$endpoint('chatShow', [sectionId]));
 
       this.chatParticipants = response.data.chatParticipants;
       this.messageList = response.data.messageList;
@@ -215,7 +215,7 @@ export default {
      * メッセージ送信
      */
     onMessageWasSent: function (message) {
-      this.$http.post(this.$endpoint('POST:chatPost'), message);
+      this.$http.post(this.$endpoint('chatPost'), message);
 
       // 一時的に描画するためリストへ追加
       this.messageList = [...this.messageList, Object.assign({}, message, { id: Math.random() })];
@@ -476,19 +476,19 @@ export default {
     seatAction: async function (seatId, status) {
       switch (status) {
         case 'sitting':
-          var endpoint = this.$endpoint('POST:seatSit', [seatId]);
+          var endpoint = this.$endpoint('seatSit', [seatId]);
           break;
 
         case 'leave':
-          var endpoint = this.$endpoint('POST:seatLeave');
+          var endpoint = this.$endpoint('seatLeave');
           break;
 
         case 'enterLounge':
-          var endpoint = this.$endpoint('POST:enterLounge', [seatId]);
+          var endpoint = this.$endpoint('enterLounge', [seatId]);
           break;
 
         case 'leaveLounge':
-          var endpoint = this.$endpoint('POST:leaveLounge', [seatId]);
+          var endpoint = this.$endpoint('leaveLounge', [seatId]);
           break;
       }
 

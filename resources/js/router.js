@@ -9,7 +9,14 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+function isRelease() {
+  return process.env.MIX_APP_RELEASE === 'true' ? true : false;
+}
+
+import store from './store';
+
 import index from '@/views/front/Index.vue';
+import preRegister from '@/views/front/PreRegister.vue';
 import register from '@/views/front/Register.vue';
 import login from '@/views/front/Login.vue';
 import systemError from '@/views/errors/System.vue';
@@ -25,16 +32,27 @@ const router = new VueRouter({
       path: '/',
       name: 'index',
       component: index,
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: register,
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: login,
+      meta: { isPublic: true },
+      children: [
+        {
+          path: 'preregister',
+          name: 'preRegister',
+          component: preRegister,
+          meta: { isPublic: !isRelease() },
+        },
+        {
+          path: 'register',
+          name: 'register',
+          component: register,
+          meta: { isPublic: isRelease() },
+        },
+        {
+          path: 'login',
+          name: 'login',
+          component: login,
+          meta: { isPublic: isRelease() },
+        },
+      ],
     },
     {
       path: '/500',
@@ -62,6 +80,19 @@ const router = new VueRouter({
       component: profileEdit,
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  // 未ログイン時のリダイレクト
+  if (!store.getters['auth/check'] && to.matched.some((record) => !record.meta.isPublic)) {
+    if (isRelease()) {
+      next({ name: 'login' });
+    } else {
+      next({ name: 'preRegister' });
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

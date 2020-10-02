@@ -71,7 +71,7 @@ class UserController extends Controller
         $param = $request->toArray();
 
         // 更新するユーザーを取得
-        $edit_user = $this->user->where('username', $request['username'])->first();
+        $edit_user = $this->user->where('username', $request->username)->first();
 
         // アイコンの処理
         if (!empty($param['upload-image'])) {

@@ -11,20 +11,22 @@ const replaceChar = ['#', '*', '$'];
  * API一覧
  */
 const home = '/';
-const GET_regenerateToken = '/api/regenerate-token';
-const POST_register = '/api/register';
-const POST_login = '/api/login';
-const POST_logout = '/api/logout';
-const GET_authUser = '/api/auth/user';
-const GET_userShow = '/api/user/' + replaceChar[0];
-const POST_profileUpdate = '/api/user/update';
-const GET_roomShow = '/api/room/' + replaceChar[0];
-const POST_seatSit = '/api/seat/sit/' + replaceChar[0];
-const POST_seatLeave = '/api/seat/leave';
-const POST_enterLounge = '/api/seat/enterlounge/' + replaceChar[0];
-const POST_leaveLounge = '/api/seat/leavelounge/' + replaceChar[0];
-const GET_chatShow = '/api/chat/' + replaceChar[0];
-const POST_chatPost = '/api/chat/post';
+const regenerateToken = '/api/regenerate-token';
+const contact = '/api/contact';
+const preRegister = '/api/preregister';
+const register = '/api/register';
+const login = '/api/login';
+const logout = '/api/logout';
+const authUser = '/api/auth/user';
+const userShow = '/api/user/' + replaceChar[0];
+const profileUpdate = '/api/user/update';
+const roomShow = '/api/room/' + replaceChar[0];
+const seatSit = '/api/seat/sit/' + replaceChar[0];
+const seatLeave = '/api/seat/leave';
+const enterLounge = '/api/seat/enterlounge/' + replaceChar[0];
+const leaveLounge = '/api/seat/leavelounge/' + replaceChar[0];
+const chatShow = '/api/chat/' + replaceChar[0];
+const chatPost = '/api/chat/post';
 
 /**
  * エンドポイントの取得
@@ -40,60 +42,68 @@ export function getEndpoint(name, params) {
       endpoint = home;
       break;
 
-    case 'GET:regenerateToken':
-      endpoint = GET_regenerateToken;
+    case 'regenerateToken':
+      endpoint = regenerateToken;
       break;
 
-    case 'POST:register':
-      endpoint = POST_register;
+    case 'contact':
+      endpoint = contact;
       break;
 
-    case 'POST:login':
-      endpoint = POST_login;
+    case 'preRegister':
+      endpoint = preRegister;
       break;
 
-    case 'POST:logout':
-      endpoint = POST_logout;
+    case 'register':
+      endpoint = register;
       break;
 
-    case 'GET:authUser':
-      endpoint = GET_authUser;
+    case 'login':
+      endpoint = login;
       break;
 
-    case 'GET:userShow':
-      endpoint = setParams(GET_userShow, params);
+    case 'logout':
+      endpoint = logout;
       break;
 
-    case 'POST:profileUpdate':
-      endpoint = POST_profileUpdate;
+    case 'authUser':
+      endpoint = authUser;
       break;
 
-    case 'GET:roomShow':
-      endpoint = setParams(GET_roomShow, params);
+    case 'userShow':
+      endpoint = setParams(userShow, params);
       break;
 
-    case 'POST:seatSit':
-      endpoint = setParams(POST_seatSit, params);
+    case 'profileUpdate':
+      endpoint = profileUpdate;
       break;
 
-    case 'POST:seatLeave':
-      endpoint = POST_seatLeave;
+    case 'roomShow':
+      endpoint = setParams(roomShow, params);
       break;
 
-    case 'POST:enterLounge':
-      endpoint = setParams(POST_enterLounge, params);
+    case 'seatSit':
+      endpoint = setParams(seatSit, params);
       break;
 
-    case 'POST:leaveLounge':
-      endpoint = setParams(POST_leaveLounge, params);
+    case 'seatLeave':
+      endpoint = seatLeave;
       break;
 
-    case 'GET:chatShow':
-      endpoint = setParams(GET_chatShow, params);
+    case 'enterLounge':
+      endpoint = setParams(enterLounge, params);
       break;
 
-    case 'POST:chatPost':
-      endpoint = POST_chatPost;
+    case 'leaveLounge':
+      endpoint = setParams(leaveLounge, params);
+      break;
+
+    case 'chatShow':
+      endpoint = setParams(chatShow, params);
+      break;
+
+    case 'chatPost':
+      endpoint = chatPost;
       break;
   }
 
