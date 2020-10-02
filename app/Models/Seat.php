@@ -14,7 +14,7 @@ class Seat extends Model
      * @var array
      */
     protected $fillable = [
-        'section_id', 'position', 'status'
+        'section_id', 'position', 'status', 'reservation_user_id'
     ];
 
     public $timestamps = false;

@@ -151,7 +151,7 @@ class SeatController extends Controller
         $this->user->save();
 
         // 座席状態の更新
-        $result = $seat->update(['status' => 'sitting']);
+        $result = $seat->update(['status' => 'sitting', 'reservation_user_id' => null]);
 
         return response()->json($result);
     }

@@ -268,7 +268,7 @@ export default {
       console.log(event.target);
       if (!event.target.userId) {
         //clickできるのは座席のみ\
-        console.log('kfjdsklfjdksjfkjsdklfjksdjkfjsdkljfs');
+        console.log('event.target.userIdが存在しない場合通る');
 
         // if (!this.isDisabledClick) {
         //   if (event.target) {
@@ -312,7 +312,7 @@ export default {
                   //押された場所が自習室じゃないとき
 
                   this.changeStatus(event.target, 'enterLounge');
-                  console.log('2番');
+                  console.log('ユーザが座っている場所が自習室かつ押された場所が休憩の時だけ入る。');
                   /*依然座ってたところは状態をbreakにする
                 // 依然座っていたところのが画像をremoveする*/
                   // removeIcon();
@@ -345,15 +345,15 @@ export default {
               case '自習':
                 if (event.target.reservationId === null) {
                   this.changeStatus(event.target, 'sitting');
-                  console.log('fkdsjfkl;jdkl;sjfds');
+                  console.log('リザベーションIDがnullだった場合');
                 }
-                console.log('４番');
+                console.log('どこも座っていないときかつ自習室');
                 break;
 
               case '休憩':
                 this.changeStatus(event.target, 'break');
                 this.enterLounge(event.target.sectionId);
-                console.log('５番');
+                console.log('どこも座っていないときかつ休憩');
                 break;
             }
           }
@@ -372,7 +372,7 @@ export default {
         // 状態変更処理
         if (this.authUser.seat_id !== null) {
           this.changeStatus(null, status);
-          console.log('６番');
+          console.log('退出ボタンを押された場合');
         }
       }
     },
@@ -412,7 +412,14 @@ export default {
               //changeObject = object;
               this.removeIcon(object);
             }
+
+            console.log(
+              object +
+                'ここの処理がおかしいです。if文に入っていない. Object.reservationIdがすべてnull'
+            );
+            console.log(object.resercationId + 'leave');
             if (object.reservationId === this.authUser.id) {
+              console.log('if文通ってるお');
               object.set({ reservationId: null });
             }
           });
@@ -448,14 +455,16 @@ export default {
             if (object.userId === this.authUser.id) {
               this.removeIcon(object);
             }
+
+            console.log(object);
             if (object.reservationId === this.authUser.id) {
               this.putIcon(object.left, object.top, this.authUser);
               seatId = object.seatId;
               //console.log(seatId);
 
               object.set({ reservationId: null });
-
-              console.log('nullに書き換えた後の値は' + object.reservationId);
+              // console.log(object.reservationId + 'leaveLounge');
+              // console.log('nullに書き換えた後の値は' + object.reservationId);
             }
           });
           break;
