@@ -18,7 +18,9 @@
           </p>
 
           <v-row justify="center" class="mt-12">
-            <v-btn x-large color="primary" class="font-weight-bold">さあはじめよう！</v-btn>
+            <router-link :to="{ name: 'preRegister' }">
+              <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
+            </router-link>
           </v-row>
         </v-col>
 
@@ -351,7 +353,9 @@
     </v-container>
 
     <v-row justify="center" class="foot-btn">
-      <v-btn x-large color="primary" class="font-weight-bold">さあはじめよう！</v-btn>
+      <router-link :to="{ name: 'preRegister' }">
+        <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
+      </router-link>
     </v-row>
 
     <!-- 問い合わせフォーム -->
@@ -499,16 +503,16 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
+a:hover {
+  text-decoration: none;
+}
+
 .index {
   max-width: 100%;
   background-color: $light-gray;
 
   .foot-btn {
     padding: 400px 0;
-  }
-
-  .twitter-share-button {
-    text-decoration: none;
   }
 }
 
