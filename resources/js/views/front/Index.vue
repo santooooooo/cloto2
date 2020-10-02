@@ -4,10 +4,11 @@
     <router-view />
 
     <div class="concept">
-      <v-row class="top mt-n12">
+      <!-- PCサイズ -->
+      <v-row class="top mt-n12" v-if="!breakpoint.xs">
         <v-spacer></v-spacer>
 
-        <v-col cols="5" sm="7" align-self="center">
+        <v-col cols="5" align-self="center">
           <h1 class="text-center text-h3 font-weight-bold">創る、繋がる、好きになる</h1>
           <p class="text-center text-subtitle-1 font-weight-bold">
             プログラミングに取り組むみなさん、こんにちは。<br />
@@ -24,14 +25,39 @@
           </v-row>
         </v-col>
 
-        <v-col cols="5" sm="4" class="mr-12" align-self="center">
+        <v-col cols="5" class="mr-12" align-self="center">
           <v-img :src="$storage('system') + 'top-logo.svg'" max-width="500" contain></v-img>
         </v-col>
 
         <v-spacer></v-spacer>
       </v-row>
 
-      <v-row class="scroll">
+      <!-- スマホサイズ -->
+      <div class="top pa-3" v-else>
+        <v-img
+          :src="$storage('system') + 'top-logo.svg'"
+          max-width="500"
+          class="ma-12"
+          contain
+        ></v-img>
+
+        <h1 class="mb-5 text-center text-h3 font-weight-bold">創る<br />繋がる<br />好きになる</h1>
+        <p class="text-center text-subtitle-1 font-weight-bold">
+          プログラミングに取り組むみなさん、こんにちは。<br />
+          「実際のプログラミングって大変. . . 」<br />
+          「何からしたらいいんだろう」<br />
+          そんな悩みとは今日でさようなら。<br />
+          プログラミングを楽しみながら継続できる環境がここに生まれました！
+        </p>
+
+        <v-row justify="center" class="mt-12">
+          <router-link :to="{ name: 'preRegister' }">
+            <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
+          </router-link>
+        </v-row>
+      </div>
+
+      <v-row class="scroll" v-if="!breakpoint.xs">
         <span></span>
       </v-row>
 
@@ -452,6 +478,11 @@ export default {
         bodyRules: [(v) => !!v || 'お問い合わせ内容は必須項目です。'],
       },
     };
+  },
+  computed: {
+    breakpoint() {
+      return this.$vuetify.breakpoint;
+    },
   },
   methods: {
     sendContact: async function () {
