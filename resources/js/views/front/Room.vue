@@ -205,7 +205,7 @@ export default {
      */
     closeChat: function () {
       this.isChatOpen = false;
-      this.changeStatus('leaveLounge');
+      this.userAction('leaveLounge');
 
       // 同期停止
       clearInterval(this.loungeSyncTimer);
@@ -276,11 +276,11 @@ export default {
         //     if (this.authUser.seat_id === null) {
         //       switch (event.target.role) {
         //         case '自習':
-        //           this.changeStatus(event.target, 'sitting');
+        //           this.userAction(event.target, 'sitting');
         //           break;
 
         //         case '休憩':
-        //           this.changeStatus(event.target, 'enterLounge');
+        //           this.userAction(event.target, 'enterLounge');
         //           this.enterLounge(event.target.sectionId);
         //           break;
         //       }
@@ -293,7 +293,7 @@ export default {
         //   // console.log(this.authUser.seat.section.role);
         //   if (event.target.role === '自習') {
         //     if (event.target.reservationId === null) {
-        //       this.changeStatus(event.target, 'sitting');
+        //       this.userAction(event.target, 'sitting');
         //       console.log('fkdsjfkl;jdkl;sjfds');
         //     }
         //   }
@@ -311,7 +311,7 @@ export default {
                 if (event.target.role != '自習') {
                   //押された場所が自習室じゃないとき
 
-                  this.changeStatus('enterLounge', event.target);
+                  this.userAction('enterLounge', event.target);
                   console.log('ユーザが座っている場所が自習室かつ押された場所が休憩の時だけ入る。');
                   /*依然座ってたところは状態をbreakにする
                 // 依然座っていたところのが画像をremoveする*/
@@ -323,19 +323,19 @@ export default {
 
               case '休憩':
                 if (event.target.role === '自習') {
-                  //changeStatus 今座ってる場所と今から座る場所両方status変更
+                  //userAction 今座ってる場所と今から座る場所両方status変更
                   //  putIconで新しく座ったところに画像を配置
                   //依然座ってたところのアイコンをremoveして
                   //ユーザのroleの状態を自習に変更
                 }
                 if (event.target.role === '休憩') {
-                  this.changeStatus('leaveLounge', event.target);
+                  this.userAction('leaveLounge', event.target);
                   console.log('３番');
-                  //changeStatus 今座ってる場所と今から座る場所両方status変更
+                  //userAction 今座ってる場所と今から座る場所両方status変更
                   //  putIconで新しく座ったところに画像を配置
                   //依然座ってたところのアイコンをremoveして
                 }
-                // this.changeStatus(event.target, 'break');
+                // this.userAction(event.target, 'break');
                 // this.enterLounge(event.target.sectionId);
                 break;
             }
@@ -344,14 +344,14 @@ export default {
             switch (event.target.role) {
               case '自習':
                 if (event.target.reservationId === null) {
-                  this.changeStatus('sitting', event.target);
+                  this.userAction('sitting', event.target);
                   console.log('リザベーションIDがnullだった場合');
                 }
                 console.log('どこも座っていないときかつ自習室');
                 break;
 
               case '休憩':
-                this.changeStatus('break', event.target);
+                this.userAction('break', event.target);
                 this.enterLounge(event.target.sectionId);
                 console.log('どこも座っていないときかつ休憩');
                 break;
@@ -365,41 +365,43 @@ export default {
     /**
      * ボタンクリックイベント
      *
-     * @param String  status  遷移先の状態
+     * @param String  action  行動
      */
-    buttonClickEvent: function (status) {
+    buttonClickEvent: function (action) {
       if (!this.isDisabledClick) {
         // 状態変更処理
         if (this.authUser.seat_id !== null) {
-          this.changeStatus(status);
+          this.userAction(action);
           console.log('退出ボタンを押された場合');
         }
       }
     },
 
     /**
-     * 状態の変更
+     * ユーザーの行動の反映
      *
-     * @param String  status  遷移先の状態
-     * @param Object  changeObject 状態を変更する座席
+     * @param String  action  行動
+     * @param Object  seatObject 状態を変更する座席
      */
-    changeStatus: async function (status, changeObject = null) {
+    userAction: async function (action, seatObject = null) {
       // クリックを無効化
       this.isDisabledClick = true;
 
-      switch (status) {
+      var color = '';
+      var endpoint = '';
+      switch (action) {
         case 'sitting':
-          var seatId = changeObject.seatId;
-          var color = '#ff0000';
-          this.putIcon(changeObject.left, changeObject.top, this.authUser);
+          color = '#ff0000';
+          endpoint = this.$endpoint('seatSit', [seatObject.seatId]);
+          this.putIcon(seatObject.left, seatObject.top, this.authUser);
           break;
 
         case 'leave':
-          var seatId = '';
-          var color = '#ffffff';
+          color = '#ffffff';
+          endpoint = this.$endpoint('seatLeave');
           this.canvas.getObjects().forEach((object) => {
             if (object.userId === this.authUser.id) {
-              //changeObject = object;
+              //seatObject = object;
               this.removeIcon(object);
             }
 
@@ -412,7 +414,7 @@ export default {
 
         case 'moveLounge':
           // var color = '#ffffff';
-          // this.putIcon(changeObject.left, changeObject.top, this.authUser);
+          // this.putIcon(seatObject.left, seatObject.top, this.authUser);
           // this.canvas.getObjects().forEach((object) => {
           //   if (object.userId === this.authUser.id) {
           //     this.removeIcon(object);
@@ -421,21 +423,20 @@ export default {
           break;
 
         case 'enterLounge':
-          var seatId = changeObject.seatId;
-          var color = '#000000';
+          color = '#000000';
+          endpoint = this.$endpoint('enterLounge', [seatObject.seatId]);
           this.canvas.getObjects().forEach((object) => {
             if (object.userId === this.authUser.id) {
               object.set({ reservationId: this.authUser.id });
               this.removeIcon(object);
             }
           });
-          this.putIcon(changeObject.left, changeObject.top, this.authUser);
-          this.enterLounge(changeObject.sectionId);
+          this.putIcon(seatObject.left, seatObject.top, this.authUser);
+          this.enterLounge(seatObject.sectionId);
           break;
 
         case 'leaveLounge':
-          var seatId = '';
-          var color = '#ffffff';
+          color = '#ffffff';
           this.canvas.getObjects().forEach((object) => {
             if (object.userId === this.authUser.id) {
               this.removeIcon(object);
@@ -444,7 +445,7 @@ export default {
             console.log(object);
             if (object.reservationId === this.authUser.id) {
               this.putIcon(object.left, object.top, this.authUser);
-              seatId = object.seatId;
+              endpoint = this.$endpoint('leaveLounge', [object.seatId]);
               //console.log(seatId);
 
               object.set({ reservationId: null });
@@ -455,47 +456,19 @@ export default {
           break;
       }
 
-      // changeObject.set({ fill: color });
+      // seatObject.set({ fill: color });
 
       // 変更の適用
       this.canvas.requestRenderAll();
 
       // データベースへ状態を保存
-      await this.seatAction(seatId, status);
-
-      // クリックを有効化
-      this.isDisabledClick = false;
-    },
-
-    /**
-     * 座席状態の変更
-     *
-     * @param Number  seatId  変更する座席
-     * @param String  status  状態
-     */
-    seatAction: async function (seatId, status) {
-      switch (status) {
-        case 'sitting':
-          var endpoint = this.$endpoint('seatSit', [seatId]);
-          break;
-
-        case 'leave':
-          var endpoint = this.$endpoint('seatLeave');
-          break;
-
-        case 'enterLounge':
-          var endpoint = this.$endpoint('enterLounge', [seatId]);
-          break;
-
-        case 'leaveLounge':
-          var endpoint = this.$endpoint('leaveLounge', [seatId]);
-          break;
-      }
-
       await this.$http.post(endpoint);
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
+
+      // クリックを有効化
+      this.isDisabledClick = false;
     },
 
     /**
