@@ -205,7 +205,7 @@ export default {
      */
     closeChat: function () {
       this.isChatOpen = false;
-      this.changeStatus(null, 'leaveLounge');
+      this.changeStatus('leaveLounge');
 
       // 同期停止
       clearInterval(this.loungeSyncTimer);
@@ -311,7 +311,7 @@ export default {
                 if (event.target.role != '自習') {
                   //押された場所が自習室じゃないとき
 
-                  this.changeStatus(event.target, 'enterLounge');
+                  this.changeStatus('enterLounge', event.target);
                   console.log('ユーザが座っている場所が自習室かつ押された場所が休憩の時だけ入る。');
                   /*依然座ってたところは状態をbreakにする
                 // 依然座っていたところのが画像をremoveする*/
@@ -329,7 +329,7 @@ export default {
                   //ユーザのroleの状態を自習に変更
                 }
                 if (event.target.role === '休憩') {
-                  this.changeStatus(event.target, 'leaveLounge');
+                  this.changeStatus('leaveLounge', event.target);
                   console.log('３番');
                   //changeStatus 今座ってる場所と今から座る場所両方status変更
                   //  putIconで新しく座ったところに画像を配置
@@ -344,14 +344,14 @@ export default {
             switch (event.target.role) {
               case '自習':
                 if (event.target.reservationId === null) {
-                  this.changeStatus(event.target, 'sitting');
+                  this.changeStatus('sitting', event.target);
                   console.log('リザベーションIDがnullだった場合');
                 }
                 console.log('どこも座っていないときかつ自習室');
                 break;
 
               case '休憩':
-                this.changeStatus(event.target, 'break');
+                this.changeStatus('break', event.target);
                 this.enterLounge(event.target.sectionId);
                 console.log('どこも座っていないときかつ休憩');
                 break;
@@ -371,7 +371,7 @@ export default {
       if (!this.isDisabledClick) {
         // 状態変更処理
         if (this.authUser.seat_id !== null) {
-          this.changeStatus(null, status);
+          this.changeStatus(status);
           console.log('退出ボタンを押された場合');
         }
       }
@@ -380,10 +380,10 @@ export default {
     /**
      * 状態の変更
      *
-     * @param Object  changeObject 状態を変更する座席
      * @param String  status  遷移先の状態
+     * @param Object  changeObject 状態を変更する座席
      */
-    changeStatus: async function (changeObject, status) {
+    changeStatus: async function (status, changeObject = null) {
       // クリックを無効化
       this.isDisabledClick = true;
 
