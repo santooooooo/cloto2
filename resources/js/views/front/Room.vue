@@ -21,7 +21,7 @@ export default {
      * 教室の同期
      */
     syncRoom: function () {
-      this.$http.get(this.$endpoint('GET:roomShow', [this.$route.params.id])).then((response) => {
+      this.$http.get(this.$endpoint('roomShow', [this.$route.params.id])).then((response) => {
         // セクションのループ
         response.data.sections.forEach((section, sectionIndex) => {
           // 座席のループ
@@ -69,15 +69,15 @@ export default {
     seatAction: function (seat_id, status) {
       switch (status) {
         case 'sit':
-          var endpoint = this.$endpoint('POST:seatSit', [seat_id]);
+          var endpoint = this.$endpoint('seatSit', [seat_id]);
           break;
 
         case 'leave':
-          var endpoint = this.$endpoint('POST:seatLeave', [seat_id]);
+          var endpoint = this.$endpoint('seatLeave', [seat_id]);
           break;
 
         case 'break':
-          var endpoint = this.$endpoint('POST:seatBreak', [seat_id]);
+          var endpoint = this.$endpoint('seatBreak', [seat_id]);
           break;
       }
 

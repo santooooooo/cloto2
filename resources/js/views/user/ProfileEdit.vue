@@ -142,7 +142,8 @@
         <router-link
           class="btn btn-secondary btn-sm btn-danger"
           :to="{ name: 'userPage', params: { username: $store.getters['auth/user'].username } }"
-        >戻る</router-link>
+          >戻る</router-link
+        >
       </div>
     </div>
   </div>
@@ -205,7 +206,7 @@ export default {
 
       // データの送信
       this.$http
-        .post(this.$endpoint('POST:profileUpdate'), this.formData, {
+        .post(this.$endpoint('profileUpdate'), this.formData, {
           headers: { 'content-type': 'multipart/form-data' },
         })
         .then((response) => {

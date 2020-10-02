@@ -5,7 +5,12 @@
       <div class="row">
         <!-- アイコンとユーザー名 -->
         <div class="profile__user col-md-5">
-          <img :src="$storage('icon') + user.icon" class="rounded-circle" width="100" height="100" />
+          <img
+            :src="$storage('icon') + user.icon"
+            class="rounded-circle"
+            width="100"
+            height="100"
+          />
           <p class="profile__user--handlename">{{ user.handlename }}</p>
           <p class="profile__user--username">{{ '@' + user.username }}</p>
         </div>
@@ -20,7 +25,8 @@
                 params: { username: $store.getters['auth/user'].username },
               }"
               v-if="user.id == authId"
-            >編集する</router-link>
+              >編集する</router-link
+            >
           </div>
           <!-- ボタン類 -->
           <div class="profile__sns-container" v-if="sns || user.web">
@@ -72,7 +78,7 @@ export default {
     };
   },
   mounted() {
-    var endpoint = this.$endpoint('GET:userShow', [this.$route.params.username]);
+    var endpoint = this.$endpoint('userShow', [this.$route.params.username]);
 
     this.$http.get(endpoint).then((response) => {
       this.user = response.data.user;

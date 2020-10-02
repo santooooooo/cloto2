@@ -124,7 +124,7 @@ export default {
           email: this.preRegisterForm.email,
         };
 
-        var response = await this.$http.post(this.$endpoint('POST:preRegister'), input);
+        var response = await this.$http.post(this.$endpoint('preRegister'), input);
 
         if (response.status === OK) {
           this.alert = true;

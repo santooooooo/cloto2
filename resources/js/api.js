@@ -11,19 +11,19 @@ const replaceChar = ['#', '*', '$'];
  * API一覧
  */
 const home = '/';
-const GET_regenerateToken = '/api/regenerate-token';
-const POST_contact = '/api/contact';
-const POST_preRegister = '/api/preregister';
-const POST_register = '/api/register';
-const POST_login = '/api/login';
-const POST_logout = '/api/logout';
-const GET_authUser = '/api/auth/user';
-const GET_userShow = '/api/user/' + replaceChar[0];
-const POST_profileUpdate = '/api/user/update';
-const GET_roomShow = '/api/room/' + replaceChar[0];
-const POST_seatSit = '/api/seat/sit/' + replaceChar[0];
-const POST_seatLeave = '/api/seat/leave/' + replaceChar[0];
-const POST_seatBreak = '/api/seat/break/' + replaceChar[0];
+const regenerateToken = '/api/regenerate-token';
+const contact = '/api/contact';
+const preRegister = '/api/preregister';
+const register = '/api/register';
+const login = '/api/login';
+const logout = '/api/logout';
+const authUser = '/api/auth/user';
+const userShow = '/api/user/' + replaceChar[0];
+const profileUpdate = '/api/user/update';
+const roomShow = '/api/room/' + replaceChar[0];
+const seatSit = '/api/seat/sit/' + replaceChar[0];
+const seatLeave = '/api/seat/leave/' + replaceChar[0];
+const seatBreak = '/api/seat/break/' + replaceChar[0];
 
 /**
  * エンドポイントの取得
@@ -39,56 +39,56 @@ export function getEndpoint(name, params) {
       endpoint = home;
       break;
 
-    case 'GET:regenerateToken':
-      endpoint = GET_regenerateToken;
+    case 'regenerateToken':
+      endpoint = regenerateToken;
       break;
 
-    case 'POST:contact':
-      endpoint = POST_contact;
+    case 'contact':
+      endpoint = contact;
       break;
 
-    case 'POST:preRegister':
-      endpoint = POST_preRegister;
+    case 'preRegister':
+      endpoint = preRegister;
       break;
 
-    case 'POST:register':
-      endpoint = POST_register;
+    case 'register':
+      endpoint = register;
       break;
 
-    case 'POST:login':
-      endpoint = POST_login;
+    case 'login':
+      endpoint = login;
       break;
 
-    case 'POST:logout':
-      endpoint = POST_logout;
+    case 'logout':
+      endpoint = logout;
       break;
 
-    case 'GET:authUser':
-      endpoint = GET_authUser;
+    case 'authUser':
+      endpoint = authUser;
       break;
 
-    case 'GET:userShow':
-      endpoint = setParams(GET_userShow, params);
+    case 'userShow':
+      endpoint = setParams(userShow, params);
       break;
 
-    case 'POST:profileUpdate':
-      endpoint = POST_profileUpdate;
+    case 'profileUpdate':
+      endpoint = profileUpdate;
       break;
 
-    case 'GET:roomShow':
-      endpoint = setParams(GET_roomShow, params);
+    case 'roomShow':
+      endpoint = setParams(roomShow, params);
       break;
 
-    case 'POST:seatSit':
-      endpoint = setParams(POST_seatSit, params);
+    case 'seatSit':
+      endpoint = setParams(seatSit, params);
       break;
 
-    case 'POST:seatLeave':
-      endpoint = setParams(POST_seatLeave, params);
+    case 'seatLeave':
+      endpoint = setParams(seatLeave, params);
       break;
 
-    case 'POST:seatBreak':
-      endpoint = setParams(POST_seatBreak, params);
+    case 'seatBreak':
+      endpoint = setParams(seatBreak, params);
       break;
   }
 

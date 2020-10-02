@@ -57,7 +57,7 @@ export default {
           this.$router.push({ name: 'INTERNAL_SERVER_ERROR' });
         } else if (val === UNAUTHORIZED) {
           // トークンの再発行
-          await this.$http.get(this.$endpoint('GET:regenerateToken'));
+          await this.$http.get(this.$endpoint('regenerateToken'));
           // ストアのuserをクリア
           this.$store.commit('auth/setUser', null);
           // ログイン画面へ
