@@ -4,7 +4,7 @@
     <Header @show-drawer="isShowDrawer = true" />
 
     <!-- ドロワーメニュー -->
-    <Drawer v-model="isShowDrawer" @logout="logout" />
+    <Drawer v-model="isShowDrawer" @logout="logout" v-if="isRelease" />
 
     <!-- メイン -->
     <v-main>
@@ -34,6 +34,9 @@ export default {
     };
   },
   computed: {
+    isRelease() {
+      return process.env.MIX_APP_RELEASE === 'true' ? true : false;
+    },
     errorCode() {
       return this.$store.state.error.code;
     },
