@@ -387,16 +387,6 @@ export default {
       // クリックを無効化
       this.isDisabledClick = true;
 
-      if (changeObject === null) {
-        // 退席ボタン or 休憩ボタンが押されたら
-        // 自分が着席中の座席を探索
-        this.canvas.getObjects().forEach((object) => {
-          if (object.seatId === this.authUser.seat_id) {
-            changeObject = object;
-          }
-        });
-      }
-
       switch (status) {
         case 'sitting':
           var seatId = changeObject.seatId;
@@ -405,7 +395,7 @@ export default {
           break;
 
         case 'leave':
-          var seatId = changeObject.seatId;
+          var seatId = '';
           var color = '#ffffff';
           this.canvas.getObjects().forEach((object) => {
             if (object.userId === this.authUser.id) {
@@ -417,11 +407,6 @@ export default {
               object +
                 'ここの処理がおかしいです。if文に入っていない. Object.reservationIdがすべてnull'
             );
-            console.log(object.resercationId + 'leave');
-            if (object.reservationId === this.authUser.id) {
-              console.log('if文通ってるお');
-              object.set({ reservationId: null });
-            }
           });
           break;
 
@@ -495,7 +480,7 @@ export default {
           break;
 
         case 'leave':
-          var endpoint = this.$endpoint('POST:seatLeave', [seatId]);
+          var endpoint = this.$endpoint('POST:seatLeave');
           break;
 
         case 'enterLounge':

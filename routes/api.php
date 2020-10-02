@@ -33,7 +33,7 @@ Route::post('/user/update', 'API\UserController@update')->name('profileUpdate');
 
 Route::get('/room/{id}', 'API\RoomController@show')->name('roomShow');
 Route::post('/seat/sit/{seat}', 'API\SeatController@sit')->name('seatSit');
-Route::post('/seat/leave/{seat}', 'API\SeatController@leave')->name('seatLeave');
+Route::post('/seat/leave', 'API\SeatController@leave')->name('seatLeave');
 Route::post('/seat/enterlounge/{seat}', 'API\SeatController@enter_lounge')->name('enterLounge');
 Route::post('/seat/leavelounge/{seat}', 'API\SeatController@leave_lounge')->name('leaveLounge');
 

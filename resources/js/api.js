@@ -20,7 +20,7 @@ const GET_userShow = '/api/user/' + replaceChar[0];
 const POST_profileUpdate = '/api/user/update';
 const GET_roomShow = '/api/room/' + replaceChar[0];
 const POST_seatSit = '/api/seat/sit/' + replaceChar[0];
-const POST_seatLeave = '/api/seat/leave/' + replaceChar[0];
+const POST_seatLeave = '/api/seat/leave';
 const POST_enterLounge = '/api/seat/enterlounge/' + replaceChar[0];
 const POST_leaveLounge = '/api/seat/leavelounge/' + replaceChar[0];
 const GET_chatShow = '/api/chat/' + replaceChar[0];
@@ -77,7 +77,7 @@ export function getEndpoint(name, params) {
       break;
 
     case 'POST:seatLeave':
-      endpoint = setParams(POST_seatLeave, params);
+      endpoint = POST_seatLeave;
       break;
 
     case 'POST:enterLounge':

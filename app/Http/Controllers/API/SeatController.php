@@ -45,26 +45,16 @@ class SeatController extends Controller
     /**
      * 離席
      *
-     * @param  \App\Models\Seat  $seat
      * @return \Illuminate\Http\Response
      */
-    public function leave(Seat $seat)
+    public function leave()
     {
-        if ($seat->id != $this->user->seat_id) {
-            return response()->json(
-                'エラーが発生しました．',
-                500,
-                [],
-                JSON_UNESCAPED_UNICODE
-            );
-        }
+        // 座席状態の初期化
+        $this->user->seat()->update(['status' => null, 'reservation_user_id' => null]);
 
         // ユーザーと座席を紐付け解除
         $this->user->seat()->dissociate();
-        $this->user->save();
-
-        // 座席状態の更新
-        $result = $seat->update(['status' => null]);
+        $result = $this->user->save();
 
         return response()->json($result);
     }
