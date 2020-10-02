@@ -12,17 +12,17 @@ class Contact extends Mailable
     use Queueable, SerializesModels;
 
     protected $content;
-    protected $to;
+    protected $direction;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($content, $to)
+    public function __construct($content, $direction)
     {
         $this->content = $content;
-        $this->to = $to;
+        $this->direction = $direction;
     }
 
     /**
@@ -32,7 +32,7 @@ class Contact extends Mailable
      */
     public function build()
     {
-        return $this->text('mail.contact.' . $this->to)
+        return $this->text('mail.contact.' . $this->direction)
             ->to($this->content['to'], $this->content['to_name'])
             ->from($this->content['from'], $this->content['from_name'])
             ->subject($this->content['subject'])
