@@ -1,7 +1,6 @@
 <template>
   <div>
-    <v-btn @click="buttonClickEvent('leave')">退席</v-btn>
-    <v-btn @click="buttonClickEvent('break')">休憩</v-btn>
+    <v-btn @click="clickLeaveButton()">退席</v-btn>
 
     <canvas :width="roomWidth" :height="roomHight" id="room"></canvas>
     <v-card class="mx-auto" max-width="344" outlined>
@@ -130,22 +129,8 @@ export default {
           } else if (seat.status !== this.roomData.sections[sectionIndex].seats[seatIndex].status) {
             // 現在の状態から変化があれば再描画
             // this.changeColor(seat.status, seat.id);
-            console.log('seatのロール' + section.role);
             switch (seat.status) {
               case 'sitting':
-                // if (section.role === '自習') {
-                //   var position = JSON.parse(seat.position);
-                //   this.putIcon(position.x, position.y, seat.user);
-                // } else {
-                //   //休憩
-                //   this.canvas.getObjects().forEach((object) => {
-                //     if (object.seatId === seat.id) {
-                //     }
-                //     var position = JSON.parse(seat.position);
-                //     this.putIcon(position.x, position.y, seat.user);
-                //   });
-                // }
-                //var color = '#ff0000';
                 var position = JSON.parse(seat.position);
                 this.putIcon(position.x, position.y, seat.user);
 
@@ -168,7 +153,6 @@ export default {
 
               default:
                 //var color = '#ffffff';
-                console.log('大枠');
                 if (section.role === '休憩') {
                   this.canvas.getObjects().forEach((object) => {
                     if (
@@ -180,12 +164,9 @@ export default {
                   });
                 }
                 this.canvas.getObjects().forEach((object) => {
-                  //var position = JSON.parse(seat.position);
-
                   if (
                     object.userId === this.roomData.sections[sectionIndex].seats[seatIndex].user.id
                   ) {
-                    console.log('小枠');
                     this.removeIcon(object);
                   }
                 });
@@ -280,7 +261,6 @@ export default {
             // var MouseOutObject = object;
             // if (object.seatId.status === 'break') {
             //   event.target.set({ fill: 'red' });
-            //   console.log('赤になっちゃった');
             // } else {
             //   event.target.set({ fill: '#000000' });
             // }
@@ -297,48 +277,13 @@ export default {
     canvasMouseDown: function (event) {
       this.canvas.getObjects().forEach((object) => {
         if (object.reservationId != null) {
-          console.log('seatid' + object.seatId);
-          console.log('reservationid' + object.reservationId);
+          // console.log('seatid' + object.seatId);
+          // console.log('reservationid' + object.reservationId);
         }
       });
-      console.log(event.target);
-      if (!event.target.userId) {
-        //clickできるのは座席のみ\
-        console.log('event.target.userIdが存在しない場合通る');
 
-        // if (!this.isDisabledClick) {
-        //   if (event.target) {
-        //     // 着席処理
-        //     if (this.authUser.seat_id === null) {
-        //       switch (event.target.role) {
-        //         case '自習':
-        //           this.userAction(event.target, 'sitting');
-        //           break;
-
-        //         case '休憩':
-        //           this.userAction(event.target, 'enterLounge');
-        //           this.enterLounge(event.target.sectionId);
-        //           break;
-        //       }
-        //     }
-        //   }
-        // }
-
-        // if (this.authUser.section === null) {
-        //   //どこにも座っていなかったら
-        //   // console.log(this.authUser.seat.section.role);
-        //   if (event.target.role === '自習') {
-        //     if (event.target.reservationId === null) {
-        //       this.userAction(event.target, 'sitting');
-        //       console.log('fkdsjfkl;jdkl;sjfds');
-        //     }
-        //   }
-        // }
-
+      if (!this.isDisabledClick) {
         if (event.target) {
-          //console.log(event.target);
-          //console.log('上の方' + this.authUser.seat.section.role);
-          // console.log(event.target.role);
           // 着席処理
           if (this.authUser.seat_id != null) {
             //どこかに座ってるとき
@@ -348,7 +293,7 @@ export default {
                   //押された場所が自習室じゃないとき
 
                   this.userAction('enterLounge', event.target);
-                  console.log('ユーザが座っている場所が自習室かつ押された場所が休憩の時だけ入る。');
+                  this.isDisabledClick = true;
                   /*依然座ってたところは状態をbreakにする
                 // 依然座っていたところのが画像をremoveする*/
                   // removeIcon();
@@ -366,7 +311,8 @@ export default {
                 }
                 if (event.target.role === '休憩') {
                   this.userAction('leaveLounge', event.target);
-                  console.log('３番');
+                  this.isDisabledClick = true;
+
                   //userAction 今座ってる場所と今から座る場所両方status変更
                   //  putIconで新しく座ったところに画像を配置
                   //依然座ってたところのアイコンをremoveして
@@ -381,34 +327,38 @@ export default {
               case '自習':
                 if (event.target.reservationId === null) {
                   this.userAction('sitting', event.target);
-                  console.log('リザベーションIDがnullだった場合');
+                  this.isDisabledClick = true;
                 }
-                console.log('どこも座っていないときかつ自習室');
+
                 break;
 
               case '休憩':
-                this.userAction('break', event.target);
-                this.enterLounge(event.target.sectionId);
-                console.log('どこも座っていないときかつ休憩');
+                // this.userAction('break', event.target);
+                // this.isDisabledClick = true;
+                // this.enterLounge(event.target.sectionId);
+
+                alert('いきなり休憩ですか？まずは自習をしましょう！');
                 break;
             }
           }
         }
+        //this.isDisabledClick = true;
       }
-      //}
     },
 
     /**
-     * ボタンクリックイベント
-     *
-     * @param String  action  行動
+     * 退席処理
      */
-    buttonClickEvent: function (action) {
-      if (!this.isDisabledClick) {
+    clickLeaveButton: function () {
+      if (!this.isDisabledClick && this.authUser.seat_id !== null) {
         // 状態変更処理
-        if (this.authUser.seat_id !== null) {
-          this.userAction(action);
-          console.log('退出ボタンを押された場合');
+        if (this.authUser.seat.section.role === '休憩') {
+          this.userAction('leaveLounge');
+          this.userAction('leave');
+          this.isDisabledClick = true;
+        } else {
+          this.userAction('leave');
+          this.isDisabledClick = true;
         }
       }
     },
@@ -421,7 +371,7 @@ export default {
      */
     userAction: async function (action, seatObject = null) {
       // クリックを無効化
-      this.isDisabledClick = true;
+      //this.isDisabledClick = true;
 
       var color = '';
       var endpoint = '';
@@ -433,24 +383,13 @@ export default {
           break;
 
         case 'leave':
-          color = '#ffffff';
-          endpoint = this.$endpoint('seatLeave');
           this.canvas.getObjects().forEach((object) => {
             if (object.userId === this.authUser.id) {
-              //seatObject = object;
+              seatObject = object;
               this.removeIcon(object);
             }
           });
-          break;
-
-        case 'moveLounge':
-          // var color = '#ffffff';
-          // this.putIcon(seatObject.left, seatObject.top, this.authUser);
-          // this.canvas.getObjects().forEach((object) => {
-          //   if (object.userId === this.authUser.id) {
-          //     this.removeIcon(object);
-          //   }
-          // });
+          endpoint = this.$endpoint('seatLeave');
           break;
 
         case 'enterLounge':
@@ -473,15 +412,10 @@ export default {
               this.removeIcon(object);
             }
 
-            // console.log(object);
             if (object.reservationId === this.authUser.id) {
               this.putIcon(object.left, object.top, this.authUser);
               endpoint = this.$endpoint('leaveLounge', [object.seatId]);
-              //console.log(seatId);
-
               object.set({ reservationId: null });
-              // console.log(object.reservationId + 'leaveLounge');
-              // console.log('nullに書き換えた後の値は' + object.reservationId);
             }
           });
           break;
@@ -500,6 +434,7 @@ export default {
 
       // クリックを有効化
       this.isDisabledClick = false;
+      console.log('クリックを有効化しました');
     },
 
     /**
@@ -525,7 +460,6 @@ export default {
 
         case 'break':
           var color = '#FF0000';
-          // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
           // this.canvas.getObjects().forEach((object) => {
           //   if (object.seatId === seatId) {
           //     object.set({ fill: '#ff0000' });
