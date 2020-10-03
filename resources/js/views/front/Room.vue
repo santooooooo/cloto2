@@ -130,26 +130,62 @@ export default {
           } else if (seat.status !== this.roomData.sections[sectionIndex].seats[seatIndex].status) {
             // 現在の状態から変化があれば再描画
             // this.changeColor(seat.status, seat.id);
+            console.log('seatのロール' + section.role);
             switch (seat.status) {
               case 'sitting':
-                var color = '#ff0000';
-                console.log('sitting された　シート');
+                // if (section.role === '自習') {
+                //   var position = JSON.parse(seat.position);
+                //   this.putIcon(position.x, position.y, seat.user);
+                // } else {
+                //   //休憩
+                //   this.canvas.getObjects().forEach((object) => {
+                //     if (object.seatId === seat.id) {
+                //     }
+                //     var position = JSON.parse(seat.position);
+                //     this.putIcon(position.x, position.y, seat.user);
+                //   });
+                // }
+                //var color = '#ff0000';
                 var position = JSON.parse(seat.position);
                 this.putIcon(position.x, position.y, seat.user);
+
                 break;
 
               case 'break':
-                var color = '#000000';
+                this.canvas.getObjects().forEach((object) => {
+                  if (object.seatId === seat.id) {
+                    object.set({ reservationId: seat.reservation_user_id });
+                    //var position = JSON.parse(seat.position);
+                  }
+                  if (
+                    object.userId === this.roomData.sections[sectionIndex].seats[seatIndex].user.id
+                  ) {
+                    this.removeIcon(object);
+                  }
+                });
+                //var color = '#000000';
                 break;
 
               default:
-                var color = '#ffffff';
+                //var color = '#ffffff';
+                console.log('大枠');
+                if (section.role === '休憩') {
+                  this.canvas.getObjects().forEach((object) => {
+                    if (
+                      this.roomData.sections[sectionIndex].seats[seatIndex].user.id ===
+                      object.reservationId
+                    ) {
+                      object.set({ reservationId: null });
+                    }
+                  });
+                }
                 this.canvas.getObjects().forEach((object) => {
-                  var position = JSON.parse(seat.position);
+                  //var position = JSON.parse(seat.position);
 
                   if (
                     object.userId === this.roomData.sections[sectionIndex].seats[seatIndex].user.id
                   ) {
+                    console.log('小枠');
                     this.removeIcon(object);
                   }
                 });
@@ -404,11 +440,6 @@ export default {
               //seatObject = object;
               this.removeIcon(object);
             }
-
-            console.log(
-              object +
-                'ここの処理がおかしいです。if文に入っていない. Object.reservationIdがすべてnull'
-            );
           });
           break;
 
@@ -442,7 +473,7 @@ export default {
               this.removeIcon(object);
             }
 
-            console.log(object);
+            // console.log(object);
             if (object.reservationId === this.authUser.id) {
               this.putIcon(object.left, object.top, this.authUser);
               endpoint = this.$endpoint('leaveLounge', [object.seatId]);
@@ -598,9 +629,9 @@ export default {
     this.syncRoom();
 
     // 同期開始
-    // setInterval(() => {
-    //   this.syncRoom();
-    // }, 3000);
+    setInterval(() => {
+      this.syncRoom();
+    }, 3000);
   },
 };
 </script>
