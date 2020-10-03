@@ -511,22 +511,42 @@ export default {
     window.onscroll = () => {
       var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
 
-      if (scrollTop <= 2000) {
-        this.hover1 = false;
-        this.hover2 = false;
-        this.hover3 = false;
-      } else if (2000 < scrollTop && scrollTop <= 2750) {
-        this.hover1 = true;
-        this.hover2 = false;
-        this.hover3 = false;
-      } else if (2750 < scrollTop && scrollTop <= 3500) {
-        this.hover1 = true;
-        this.hover2 = true;
-        this.hover3 = false;
-      } else if (3500 < scrollTop) {
-        this.hover1 = true;
-        this.hover2 = true;
-        this.hover3 = true;
+      if (!this.breakpoint.xs) {
+        if (scrollTop <= 2200) {
+          this.hover1 = false;
+          this.hover2 = false;
+          this.hover3 = false;
+        } else if (2200 < scrollTop && scrollTop <= 3000) {
+          this.hover1 = true;
+          this.hover2 = false;
+          this.hover3 = false;
+        } else if (3000 < scrollTop && scrollTop <= 3800) {
+          this.hover1 = true;
+          this.hover2 = true;
+          this.hover3 = false;
+        } else if (3800 < scrollTop) {
+          this.hover1 = true;
+          this.hover2 = true;
+          this.hover3 = true;
+        }
+      } else {
+        if (scrollTop <= 3600) {
+          this.hover1 = false;
+          this.hover2 = false;
+          this.hover3 = false;
+        } else if (3600 < scrollTop && scrollTop <= 5000) {
+          this.hover1 = true;
+          this.hover2 = false;
+          this.hover3 = false;
+        } else if (5000 < scrollTop && scrollTop <= 6400) {
+          this.hover1 = true;
+          this.hover2 = true;
+          this.hover3 = false;
+        } else if (6400 < scrollTop) {
+          this.hover1 = true;
+          this.hover2 = true;
+          this.hover3 = true;
+        }
       }
     };
   },
