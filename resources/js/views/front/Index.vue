@@ -3,9 +3,9 @@
     <!-- 新規登録，ログインフォーム -->
     <router-view />
 
-    <div class="concept">
-      <!-- PCサイズ -->
-      <v-row class="top mt-n12" v-if="!breakpoint.xs">
+    <!-- PCサイズ -->
+    <v-container fluid class="concept" v-if="!breakpoint.xs">
+      <v-row>
         <v-spacer></v-spacer>
 
         <v-col cols="5" align-self="center">
@@ -25,43 +25,50 @@
           </v-row>
         </v-col>
 
-        <v-col cols="5" class="mr-12" align-self="center">
-          <v-img :src="$storage('system') + 'top-logo.svg'" max-width="500" contain></v-img>
+        <v-col cols="5" align-self="center">
+          <v-img
+            :src="$storage('system') + 'top-logo.svg'"
+            max-width="500"
+            contain
+            class="mx-auto"
+          ></v-img>
         </v-col>
 
         <v-spacer></v-spacer>
       </v-row>
+    </v-container>
 
-      <!-- スマホサイズ -->
-      <div class="top pa-3" v-else>
-        <v-img
-          :src="$storage('system') + 'top-logo.svg'"
-          max-width="500"
-          class="ma-12"
-          contain
-        ></v-img>
+    <!-- スマホサイズ -->
+    <v-container fluid class="concept pa-3" v-else>
+      <v-img
+        :src="$storage('system') + 'top-logo.svg'"
+        max-width="500"
+        class="ma-12"
+        contain
+      ></v-img>
 
-        <h1 class="mb-5 text-center text-h3 font-weight-bold">創る<br />繋がる<br />好きになる</h1>
-        <p class="text-center text-subtitle-1 font-weight-bold">
-          プログラミングに取り組むみなさん、こんにちは。<br />
-          「実際のプログラミングって大変. . . 」<br />
-          「何からしたらいいんだろう」<br />
-          そんな悩みとは今日でさようなら。<br />
-          プログラミングを楽しみながら継続できる環境がここに生まれました！
-        </p>
+      <h1 class="mb-5 text-center text-h3 font-weight-bold">創る<br />繋がる<br />好きになる</h1>
+      <p class="text-center text-subtitle-1 font-weight-bold">
+        プログラミングに取り組むみなさん、こんにちは。<br />
+        「実際のプログラミングって大変. . . 」<br />
+        「何からしたらいいんだろう」<br />
+        そんな悩みとは今日でさようなら。<br />
+        プログラミングを楽しみながら継続できる環境がここに生まれました！
+      </p>
 
-        <v-row justify="center" class="mt-12">
-          <router-link :to="{ name: 'preRegister' }">
-            <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
-          </router-link>
-        </v-row>
-      </div>
-
-      <v-row class="scroll" v-if="!breakpoint.xs">
-        <span></span>
+      <v-row justify="center" class="mt-12">
+        <router-link :to="{ name: 'preRegister' }">
+          <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
+        </router-link>
       </v-row>
+    </v-container>
 
-      <v-row class="mx-12 description">
+    <div class="scroll" v-if="!breakpoint.xs">
+      <span></span>
+    </div>
+
+    <v-container fluid class="bottom">
+      <v-row class="mx-12">
         <v-col class="mt-n12">
           <v-card width="400" class="mx-auto">
             <v-img
@@ -76,8 +83,7 @@
             </v-card-title>
 
             <v-card-text class="text-center text-h6 font-weight-bold">
-              自宅にいながら、まるで本物の自習室！<br />
-              そんな体験に拘りました。
+              自宅にいながら、まるで本物の自習室！そんな体験に拘りました。
             </v-card-text>
           </v-card>
         </v-col>
@@ -96,8 +102,7 @@
             </v-card-title>
 
             <v-card-text class="text-center text-h6 font-weight-bold">
-              休憩時間も有意義に<br />
-              日々頑張る仲間たちと交流しましょう。
+              休憩時間も有意義に。日々頑張る仲間たちと交流しましょう。
             </v-card-text>
           </v-card>
         </v-col>
@@ -116,19 +121,16 @@
             </v-card-title>
 
             <v-card-text class="text-center text-h6 font-weight-bold">
-              日々の活動や取り組みは<br />
-              記録され、あなたを支えます。
+              日々の活動や取り組みは記録され、あなたを支えます。
             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
-    </div>
 
-    <v-container fluid class="bottom">
       <v-row class="content">
         <v-spacer></v-spacer>
 
-        <v-col cols="4">
+        <v-col cols="12" md="4">
           <div class="mx-auto">
             <v-row justify="center">
               <v-icon class="icon">mdi-cloud-circle</v-icon>
@@ -148,7 +150,7 @@
           </div>
         </v-col>
 
-        <v-col cols="4">
+        <v-col cols="12" md="4">
           <div class="mx-auto">
             <v-row justify="center">
               <v-icon class="icon">mdi-account-multiple</v-icon>
@@ -376,13 +378,13 @@
           </div>
         </v-fade-transition>
       </v-container>
-    </v-container>
 
-    <v-row justify="center" class="foot-btn">
-      <router-link :to="{ name: 'preRegister' }">
-        <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
-      </router-link>
-    </v-row>
+      <v-row justify="center" class="foot-btn">
+        <router-link :to="{ name: 'preRegister' }">
+          <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
+        </router-link>
+      </v-row>
+    </v-container>
 
     <!-- 問い合わせフォーム -->
     <v-card width="600" class="mx-auto mb-12 pa-6">
@@ -534,105 +536,108 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
-a:hover {
-  text-decoration: none;
-}
-
 .index {
   max-width: 100%;
   background-color: $light-gray;
 
-  .foot-btn {
-    padding: 400px 0;
-  }
-}
-
-.concept {
-  background-color: $primary;
-  color: $white;
-  position: relative;
-  height: 1350px;
-
-  .top {
-    height: 900px;
+  a:hover {
+    text-decoration: none;
   }
 
-  .description {
-    margin-top: 200px;
+  .concept {
+    max-width: 100%;
+    height: 1500px;
+    @include mq(xs) {
+      height: 2000px;
+    }
+
+    padding-top: 150px;
+    background-color: $primary;
+    color: $white;
+    position: relative;
+
+    @include mq(lg) {
+      &:before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0px 100vw 180px 0;
+        border-color: transparent transparent $light-gray transparent;
+      }
+    }
+  }
+
+  // 下矢印
+  .scroll span {
+    position: absolute;
+    top: 800px;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    margin-left: -12px;
+    border-left: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-animation: sdb 2s infinite;
+    animation: sdb 2s infinite;
+    box-sizing: border-box;
+  }
+  @-webkit-keyframes sdb {
+    0% {
+      -webkit-transform: rotate(-45deg) translate(0, 0);
+    }
+    20% {
+      -webkit-transform: rotate(-45deg) translate(-10px, 10px);
+    }
+    40% {
+      -webkit-transform: rotate(-45deg) translate(0, 0);
+    }
+  }
+  @keyframes sdb {
+    0% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+    20% {
+      transform: rotate(-45deg) translate(-10px, 10px);
+    }
+    40% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+  }
+
+  .bottom {
+    max-width: 100%;
+    background-color: $light-gray;
+    margin-top: -300px;
+    @include mq(xs) {
+      margin-top: -900px;
+    }
 
     .title {
       background: linear-gradient(transparent 70%, #cae6ff 70%);
     }
-  }
 
-  &:before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0px 100vw 115px 0;
-    border-color: transparent transparent $light-gray transparent;
-  }
-}
+    .content {
+      margin-top: 200px;
 
-// 下矢印
-.scroll span {
-  position: absolute;
-  top: 800px;
-  left: 50%;
-  width: 24px;
-  height: 24px;
-  margin-left: -12px;
-  border-left: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  -webkit-animation: sdb 2s infinite;
-  animation: sdb 2s infinite;
-  box-sizing: border-box;
-}
-@-webkit-keyframes sdb {
-  0% {
-    -webkit-transform: rotate(-45deg) translate(0, 0);
-  }
-  20% {
-    -webkit-transform: rotate(-45deg) translate(-10px, 10px);
-  }
-  40% {
-    -webkit-transform: rotate(-45deg) translate(0, 0);
-  }
-}
-@keyframes sdb {
-  0% {
-    transform: rotate(-45deg) translate(0, 0);
-  }
-  20% {
-    transform: rotate(-45deg) translate(-10px, 10px);
-  }
-  40% {
-    transform: rotate(-45deg) translate(0, 0);
-  }
-}
+      .icon {
+        color: $primary;
+        font-size: 5em;
+      }
 
-.bottom {
-  max-width: 100%;
-  background-color: $light-gray;
-  margin-top: 100px;
-
-  .content {
-    margin-top: 200px;
-
-    .icon {
-      color: $primary;
-      font-size: 5em;
+      h3:first-letter {
+        font-size: 1.3em;
+        color: $primary;
+      }
     }
 
-    h3:first-letter {
-      font-size: 1.3em;
-      color: $primary;
+    .foot-btn {
+      padding: 400px 0;
     }
   }
 }
