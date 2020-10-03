@@ -39,7 +39,7 @@
     </v-container>
 
     <!-- スマホサイズ -->
-    <v-container fluid class="concept pa-3" v-else>
+    <v-container fluid class="concept" v-else>
       <v-img
         :src="$storage('system') + 'top-logo.svg'"
         max-width="500"
@@ -547,11 +547,12 @@ export default {
   .concept {
     max-width: 100%;
     height: 1500px;
+    padding-top: 150px;
     @include mq(xs) {
       height: 2000px;
+      padding-top: 30px;
     }
 
-    padding-top: 150px;
     background-color: $primary;
     color: $white;
     position: relative;
