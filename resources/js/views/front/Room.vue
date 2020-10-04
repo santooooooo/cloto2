@@ -128,7 +128,6 @@ export default {
             }
           } else if (seat.status !== this.roomData.sections[sectionIndex].seats[seatIndex].status) {
             // 現在の状態から変化があれば再描画
-            // this.changeColor(seat.status, seat.id);
             switch (seat.status) {
               case 'sitting':
                 var position = JSON.parse(seat.position);
@@ -141,6 +140,8 @@ export default {
                   if (object.seatId === seat.id) {
                     object.set({ reservationId: seat.reservation_user_id });
                     //var position = JSON.parse(seat.position);
+                    console.log(object);
+                    object.set({ fill: 'FF0000' });
                   }
                   if (
                     object.userId === this.roomData.sections[sectionIndex].seats[seatIndex].user.id
@@ -153,7 +154,7 @@ export default {
 
               default:
                 // 退席された場合
-                //var color = '#ffffff';
+
                 if (section.role === '休憩') {
                   this.canvas.getObjects().forEach((object) => {
                     if (
@@ -256,7 +257,13 @@ export default {
      */
     canvasMouseOver: function (event) {
       if (event.target) {
-        event.target.set({ fill: '#0000ff' });
+        //event.target.set({ fill: '#0000ff' });
+
+        if (event.target.fill === '#000000') {
+          //灰色の場合
+          event.target.set({ fill: '#0000ff' }); //紫
+        }
+
         this.canvas.requestRenderAll();
       }
     },
@@ -266,19 +273,11 @@ export default {
      */
     canvasMouseOut: function (event) {
       if (event.target) {
-        event.target.set({ fill: '#000000' });
-        //console.log(event.target);
+        if (event.target.fill === '#0000ff') {
+          //紫の場合
 
-        this.canvas.getObjects().forEach((object) => {
-          if (object.seatId === event.target.seatId) {
-            // var MouseOutObject = object;
-            // if (object.seatId.status === 'break') {
-            //   event.target.set({ fill: 'red' });
-            // } else {
-            //   event.target.set({ fill: '#000000' });
-            // }
-          }
-        });
+          event.target.set({ fill: '#000000' }); //灰色に戻る
+        }
 
         this.canvas.requestRenderAll();
       }
@@ -450,8 +449,6 @@ export default {
           break;
       }
 
-      // seatObject.set({ fill: color });
-
       // 変更の適用
       this.canvas.requestRenderAll();
 
@@ -488,18 +485,12 @@ export default {
           break;
 
         case 'break':
-          var color = '#FF0000';
-          // this.canvas.getObjects().forEach((object) => {
-          //   if (object.seatId === seatId) {
-          //     object.set({ fill: '#ff0000' });
-          //     this.canvas.requestRenderAll();
-          //   }
-          // });
+          var color = '#FF0000'; //赤
 
           break;
 
         default:
-          var color = '#000000';
+          var color = '#000000'; //灰色
           break;
       }
 
