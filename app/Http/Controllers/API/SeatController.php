@@ -10,17 +10,22 @@ use Illuminate\Support\Facades\Auth;
 
 class SeatController extends Controller
 {
+    /** @var Seat */
+    protected $seat;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Seat $seat)
     {
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
             return $next($request);
         });
+
+        $this->seat = $seat;
     }
 
 
@@ -49,8 +54,10 @@ class SeatController extends Controller
      */
     public function leave()
     {
-        // 座席状態の初期化
+        // 着席中の座席状態の初期化
         $this->user->seat()->update(['status' => null, 'reservation_user_id' => null]);
+        // 予約状態の座席を開放
+        $this->seat->where('reservation_user_id', $this->user->id)->update(['status' => null, 'reservation_user_id' => null]);
 
         // ユーザーと座席を紐付け解除
         $this->user->seat()->dissociate();

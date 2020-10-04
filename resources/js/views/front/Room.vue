@@ -152,22 +152,35 @@ export default {
                 break;
 
               default:
+                // 退席された場合
                 //var color = '#ffffff';
                 if (section.role === '休憩') {
                   this.canvas.getObjects().forEach((object) => {
                     if (
-                      this.roomData.sections[sectionIndex].seats[seatIndex].user.id ===
-                      object.reservationId
+                      object.reservationId ===
+                      this.roomData.sections[sectionIndex].seats[seatIndex].user.id
                     ) {
                       object.set({ reservationId: null });
                     }
                   });
                 }
                 this.canvas.getObjects().forEach((object) => {
-                  if (
-                    object.userId === this.roomData.sections[sectionIndex].seats[seatIndex].user.id
-                  ) {
-                    this.removeIcon(object);
+                  if (this.roomData.sections[sectionIndex].seats[seatIndex].user !== null) {
+                    // 着席中の座席からの退席処理
+                    if (
+                      object.userId ===
+                      this.roomData.sections[sectionIndex].seats[seatIndex].user.id
+                    ) {
+                      this.removeIcon(object);
+                    } else {
+                      // 予約中の座席（誰も座っていない）の開放処理
+                      if (
+                        object.reservationId ===
+                        this.roomData.sections[sectionIndex].seats[seatIndex].reservation_id
+                      ) {
+                        console.log('予約状態（ピンク色）の開放');
+                      }
+                    }
                   }
                 });
 
@@ -275,10 +288,11 @@ export default {
      * キャンバスクリックイベント
      */
     canvasMouseDown: function (event) {
+      console.log('canvasMouseDown');
       this.canvas.getObjects().forEach((object) => {
         if (object.reservationId != null) {
-          // console.log('seatid' + object.seatId);
-          // console.log('reservationid' + object.reservationId);
+          console.log('seatid' + object.seatId);
+          console.log('reservationid' + object.reservationId);
         }
       });
 
@@ -353,8 +367,10 @@ export default {
       if (!this.isDisabledClick && this.authUser.seat_id !== null) {
         // 状態変更処理
         if (this.authUser.seat.section.role === '休憩') {
-          this.userAction('leaveLounge');
+          this.closeChat();
+          // this.delayAction();
           this.userAction('leave');
+
           this.isDisabledClick = true;
         } else {
           this.userAction('leave');
@@ -378,22 +394,31 @@ export default {
       switch (action) {
         case 'sitting':
           color = '#ff0000';
+          console.log('sitting' + this.authUser.id);
+
           endpoint = this.$endpoint('seatSit', [seatObject.seatId]);
           this.putIcon(seatObject.left, seatObject.top, this.authUser);
           break;
 
         case 'leave':
+          console.log('useraction leave');
+          console.log('leave' + this.authUser.id);
           this.canvas.getObjects().forEach((object) => {
             if (object.userId === this.authUser.id) {
+              console.log('leave roop内' + this.authUser.id);
               seatObject = object;
               this.removeIcon(object);
             }
           });
+
           endpoint = this.$endpoint('seatLeave');
+
           break;
 
         case 'enterLounge':
           color = '#000000';
+          console.log('enterLounge' + this.authUser.id);
+
           endpoint = this.$endpoint('enterLounge', [seatObject.seatId]);
           this.canvas.getObjects().forEach((object) => {
             if (object.userId === this.authUser.id) {
@@ -407,8 +432,11 @@ export default {
 
         case 'leaveLounge':
           color = '#ffffff';
+          console.log('leaveLounge' + this.authUser.id);
+
           this.canvas.getObjects().forEach((object) => {
             if (object.userId === this.authUser.id) {
+              console.log('roop内 id' + this.authUser.id);
               this.removeIcon(object);
             }
 
@@ -418,6 +446,7 @@ export default {
               object.set({ reservationId: null });
             }
           });
+
           break;
       }
 
