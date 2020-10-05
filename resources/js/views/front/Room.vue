@@ -154,11 +154,7 @@ export default {
                 // 退席された場合
 
                 if (section.role === '休憩') {
-                  console.log('rest status');
-                  console.log(this.roomData.sections[sectionIndex].seats[seatIndex].user.id);
-
                   this.canvas.getObjects().forEach((object) => {
-                    console.log(object.reservationId);
                     if (
                       object.reservationId ===
                       this.roomData.sections[sectionIndex].seats[seatIndex].user.id
@@ -291,7 +287,7 @@ export default {
       });
 
       if (!this.isDisabledClick) {
-        if (event.target) {
+        if (event.target && event.target.fill !== '#FF0000') {
           // 着席処理
           if (this.authUser.seat_id != null) {
             //どこかに座ってるとき
