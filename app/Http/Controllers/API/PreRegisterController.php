@@ -20,14 +20,14 @@ class PreRegisterController extends Controller
         Mail::send(new PreRegisterMail([
             'to' => $request->email,
             'to_name' => $request->name,
-            'from' => env('MAIL_PREREGISTER'),
+            'from' => config('mail.service.preregister'),
             'from_name' => 'CLOTO',
             'subject' => '【仮登録受付完了】- CLOTO',
             'body' => '仮登録の受付を完了しました。リリースまでもうしばらくお待ちください。'
         ], 'user'));
 
         Mail::send(new PreRegisterMail([
-            'to' => env('MAIL_PREREGISTER'),
+            'to' => config('mail.service.preregister'),
             'to_name' => 'CLOTO',
             'from' => $request->email,
             'from_name' => $request->name,
