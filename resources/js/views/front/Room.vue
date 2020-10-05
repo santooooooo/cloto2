@@ -138,18 +138,21 @@ export default {
               case 'break':
                 this.canvas.getObjects().forEach((object) => {
                   if (object.seatId === seat.id) {
-                    object.set({ reservationId: seat.reservation_user_id });
-                    //var position = JSON.parse(seat.position);
+                    if (object.fill === 'FF0000') console.log('最初から赤やぞ');
+
+                    console.log(object.seatId);
                     console.log(object);
-                    object.set({ fill: 'FF0000' });
+
+                    object.set({ fill: 'FF0000', reservationId: seat.reservation_user_id });
+                    this.canvas.requestRenderAll();
                   }
+
                   if (
                     object.userId === this.roomData.sections[sectionIndex].seats[seatIndex].user.id
                   ) {
                     this.removeIcon(object);
                   }
                 });
-                //var color = '#000000';
                 break;
 
               default:
@@ -234,9 +237,10 @@ export default {
     /**
      * チャットのクローズ
      */
-    closeChat: function () {
+    closeChat: async function () {
+      await this.userAction('leaveLounge');
+
       this.isChatOpen = false;
-      this.userAction('leaveLounge');
 
       // 同期停止
       clearInterval(this.loungeSyncTimer);
@@ -257,8 +261,6 @@ export default {
      */
     canvasMouseOver: function (event) {
       if (event.target) {
-        //event.target.set({ fill: '#0000ff' });
-
         if (event.target.fill === '#000000') {
           //灰色の場合
           event.target.set({ fill: '#0000ff' }); //紫
@@ -317,21 +319,12 @@ export default {
 
               case '休憩':
                 if (event.target.role === '自習') {
-                  //userAction 今座ってる場所と今から座る場所両方status変更
-                  //  putIconで新しく座ったところに画像を配置
-                  //依然座ってたところのアイコンをremoveして
-                  //ユーザのroleの状態を自習に変更
                 }
                 if (event.target.role === '休憩') {
                   this.userAction('leaveLounge', event.target);
                   this.isDisabledClick = true;
-
-                  //userAction 今座ってる場所と今から座る場所両方status変更
-                  //  putIconで新しく座ったところに画像を配置
-                  //依然座ってたところのアイコンをremoveして
                 }
-                // this.userAction(event.target, 'break');
-                // this.enterLounge(event.target.sectionId);
+
                 break;
             }
           } else {
@@ -388,11 +381,9 @@ export default {
       // クリックを無効化
       //this.isDisabledClick = true;
 
-      var color = '';
       var endpoint = '';
       switch (action) {
         case 'sitting':
-          color = '#ff0000';
           console.log('sitting' + this.authUser.id);
 
           endpoint = this.$endpoint('seatSit', [seatObject.seatId]);
@@ -415,7 +406,6 @@ export default {
           break;
 
         case 'enterLounge':
-          color = '#000000';
           console.log('enterLounge' + this.authUser.id);
 
           endpoint = this.$endpoint('enterLounge', [seatObject.seatId]);
@@ -430,7 +420,6 @@ export default {
           break;
 
         case 'leaveLounge':
-          color = '#ffffff';
           console.log('leaveLounge' + this.authUser.id);
 
           this.canvas.getObjects().forEach((object) => {
@@ -477,7 +466,7 @@ export default {
 
       switch (status) {
         case 'sitting':
-          var color = '#ff0000';
+          var color = '#000000';
           break;
 
         case 'enterLounge':
