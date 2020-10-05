@@ -448,6 +448,15 @@
 import { OK } from '@/consts/status';
 
 export default {
+  head: {
+    title() {
+      return {
+        inner: 'CLOTO',
+        separator: ' ',
+        complement: ' ',
+      };
+    },
+  },
   data() {
     return {
       hover1: false,
