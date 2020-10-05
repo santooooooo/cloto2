@@ -138,10 +138,6 @@ export default {
               case 'break':
                 this.canvas.getObjects().forEach((object) => {
                   if (object.seatId === seat.id) {
-                    console.log('first fill' + object.fill);
-
-                    console.log(object);
-
                     object.set({ fill: '#FF0000', reservationId: seat.reservation_user_id });
                     this.canvas.requestRenderAll();
                   }
@@ -158,12 +154,17 @@ export default {
                 // 退席された場合
 
                 if (section.role === '休憩') {
+                  console.log('rest status');
+                  console.log(this.roomData.sections[sectionIndex].seats[seatIndex].user.id);
+
                   this.canvas.getObjects().forEach((object) => {
+                    console.log(object.reservationId);
                     if (
                       object.reservationId ===
                       this.roomData.sections[sectionIndex].seats[seatIndex].user.id
                     ) {
                       object.set({ reservationId: null, fill: '#000000' });
+                      console.log(object.fill);
                       this.canvas.requestRenderAll();
                     }
                   });
@@ -176,14 +177,6 @@ export default {
                       this.roomData.sections[sectionIndex].seats[seatIndex].user.id
                     ) {
                       this.removeIcon(object);
-                    } else {
-                      // 予約中の座席（誰も座っていない）の開放処理
-                      if (
-                        object.reservationId ===
-                        this.roomData.sections[sectionIndex].seats[seatIndex].reservation_id
-                      ) {
-                        console.log('予約状態（ピンク色）の開放');
-                      }
                     }
                   }
                 });
@@ -359,8 +352,7 @@ export default {
       if (!this.isDisabledClick && this.authUser.seat_id !== null) {
         // 状態変更処理
         if (this.authUser.seat.section.role === '休憩') {
-          this.closeChat();
-          // this.delayAction();
+          this.isChatOpen = false;
           this.userAction('leave');
 
           this.isDisabledClick = true;
