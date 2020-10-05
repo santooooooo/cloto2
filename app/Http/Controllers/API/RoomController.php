@@ -38,7 +38,7 @@ class RoomController extends Controller
     public function show(Int $id)
     {
         return response()->json(
-            Room::with('sections.seats')->find($id),
+            Room::with('sections.seats.user')->find($id),
             200,
             [],
             JSON_UNESCAPED_UNICODE

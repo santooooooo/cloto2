@@ -22,8 +22,11 @@ const userShow = '/api/user/' + replaceChar[0];
 const profileUpdate = '/api/user/update';
 const roomShow = '/api/room/' + replaceChar[0];
 const seatSit = '/api/seat/sit/' + replaceChar[0];
-const seatLeave = '/api/seat/leave/' + replaceChar[0];
-const seatBreak = '/api/seat/break/' + replaceChar[0];
+const seatLeave = '/api/seat/leave';
+const enterLounge = '/api/seat/enterlounge/' + replaceChar[0];
+const leaveLounge = '/api/seat/leavelounge/' + replaceChar[0];
+const chatShow = '/api/chat/' + replaceChar[0];
+const chatPost = '/api/chat/post';
 
 /**
  * エンドポイントの取得
@@ -84,11 +87,23 @@ export function getEndpoint(name, params) {
       break;
 
     case 'seatLeave':
-      endpoint = setParams(seatLeave, params);
+      endpoint = seatLeave;
       break;
 
-    case 'seatBreak':
-      endpoint = setParams(seatBreak, params);
+    case 'enterLounge':
+      endpoint = setParams(enterLounge, params);
+      break;
+
+    case 'leaveLounge':
+      endpoint = setParams(leaveLounge, params);
+      break;
+
+    case 'chatShow':
+      endpoint = setParams(chatShow, params);
+      break;
+
+    case 'chatPost':
+      endpoint = chatPost;
       break;
   }
 

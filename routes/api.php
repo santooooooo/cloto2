@@ -28,11 +28,17 @@ Route::post('/register', 'Auth\RegisterController@register')->name('register');
 Route::post('/login', 'Auth\LoginController@login')->name('login');
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::get('/auth/user', fn () => Auth::user())->name('authUser');
+Route::get('/auth/user', function () {
+    return Auth::user()->load('seat.section');
+})->name('authUser');
 Route::get('/user/{username}', 'API\UserController@show')->name('userShow');
 Route::post('/user/update', 'API\UserController@update')->name('profileUpdate');
 
 Route::get('/room/{id}', 'API\RoomController@show')->name('roomShow');
 Route::post('/seat/sit/{seat}', 'API\SeatController@sit')->name('seatSit');
-Route::post('/seat/leave/{seat}', 'API\SeatController@leave')->name('seatLeave');
-Route::post('/seat/break/{seat}', 'API\SeatController@break')->name('seatBreak');
+Route::post('/seat/leave', 'API\SeatController@leave')->name('seatLeave');
+Route::post('/seat/enterlounge/{seat}', 'API\SeatController@enter_lounge')->name('enterLounge');
+Route::post('/seat/leavelounge/{seat}', 'API\SeatController@leave_lounge')->name('leaveLounge');
+
+Route::get('/chat/{section}', 'API\ChatController@show')->name('showChat');
+Route::post('/chat/post', 'API\ChatController@post')->name('postChat');

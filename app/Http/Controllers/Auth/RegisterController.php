@@ -73,7 +73,6 @@ class RegisterController extends Controller
             'handlename' => $data['handlename'],
             'icon' => 'default.jpg',
             'sns' => json_encode(['twitter' => '', 'github' => '', 'qiita' => '']),
-            'setting_notification' => 'All'
         ]);
     }
 
