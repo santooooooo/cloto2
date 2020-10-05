@@ -138,12 +138,11 @@ export default {
               case 'break':
                 this.canvas.getObjects().forEach((object) => {
                   if (object.seatId === seat.id) {
-                    if (object.fill === 'FF0000') console.log('最初から赤やぞ');
+                    console.log('first fill' + object.fill);
 
-                    console.log(object.seatId);
                     console.log(object);
 
-                    object.set({ fill: 'FF0000', reservationId: seat.reservation_user_id });
+                    object.set({ fill: '#FF0000', reservationId: seat.reservation_user_id });
                     this.canvas.requestRenderAll();
                   }
 
@@ -164,7 +163,8 @@ export default {
                       object.reservationId ===
                       this.roomData.sections[sectionIndex].seats[seatIndex].user.id
                     ) {
-                      object.set({ reservationId: null });
+                      object.set({ reservationId: null, fill: '#000000' });
+                      this.canvas.requestRenderAll();
                     }
                   });
                 }
