@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\PreRegister;
+use App\Mail\PreRegisterMail;
 
 class PreRegisterController extends Controller
 {
@@ -17,7 +17,7 @@ class PreRegisterController extends Controller
      */
     public function pre_register(Request $request)
     {
-        Mail::send(new PreRegister([
+        Mail::send(new PreRegisterMail([
             'to' => $request->email,
             'to_name' => $request->name,
             'from' => env('MAIL_PREREGISTER'),
@@ -26,7 +26,7 @@ class PreRegisterController extends Controller
             'body' => '仮登録の受付を完了しました。リリースまでもうしばらくお待ちください。'
         ], 'user'));
 
-        Mail::send(new PreRegister([
+        Mail::send(new PreRegisterMail([
             'to' => env('MAIL_PREREGISTER'),
             'to_name' => 'CLOTO',
             'from' => $request->email,
