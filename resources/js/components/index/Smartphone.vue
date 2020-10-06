@@ -128,7 +128,7 @@
       </v-row>
 
       <v-container>
-        <hr class="my-12" />
+        <v-divider class="my-12"></v-divider>
         <v-row>
           <v-col align-self="center">
             <v-card class="mx-auto" width="350">
@@ -187,7 +187,7 @@
           </v-col>
         </v-row>
 
-        <hr class="my-12" />
+        <v-divider class="my-12"></v-divider>
         <v-row>
           <v-col align-self="center">
             <v-card class="mx-auto" width="350">
@@ -246,7 +246,7 @@
           </v-col>
         </v-row>
 
-        <hr class="my-12" />
+        <v-divider class="my-12"></v-divider>
         <v-row>
           <v-col align-self="center">
             <v-card class="mx-auto" width="350">

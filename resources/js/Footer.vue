@@ -31,7 +31,7 @@
     </v-row>
 
     <v-card flat tile class="white--text text-center">
-      <v-row>
+      <v-row no-gutters>
         <v-card-title class="mx-auto">プライバシーポリシー</v-card-title>
       </v-row>
 
