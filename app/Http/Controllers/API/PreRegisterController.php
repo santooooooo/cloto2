@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\PreRegister;
+use App\Mail\PreRegisterMail;
 
 class PreRegisterController extends Controller
 {
@@ -17,22 +17,30 @@ class PreRegisterController extends Controller
      */
     public function pre_register(Request $request)
     {
-        Mail::send(new PreRegister([
+        $failures = 0;
+
+        Mail::send(new PreRegisterMail([
             'to' => $request->email,
             'to_name' => $request->name,
-            'from' => env('MAIL_PREREGISTER'),
+            'from' => config('mail.service.preregister'),
             'from_name' => 'CLOTO',
             'subject' => '【仮登録受付完了】- CLOTO',
             'body' => '仮登録の受付を完了しました。リリースまでもうしばらくお待ちください。'
         ], 'user'));
+        $failures += count(Mail::failures());
 
-        Mail::send(new PreRegister([
-            'to' => env('MAIL_PREREGISTER'),
+        Mail::send(new PreRegisterMail([
+            'to' => config('mail.service.preregister'),
             'to_name' => 'CLOTO',
             'from' => $request->email,
             'from_name' => $request->name,
             'subject' => '仮登録申請の通知',
         ], 'system'));
+        $failures += count(Mail::failures());
+
+        if ($failures > 0) {
+            return response()->json([], 500);
+        }
 
         return response()->json();
     }
