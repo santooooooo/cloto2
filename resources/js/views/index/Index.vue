@@ -48,6 +48,18 @@
       </v-container>
     </v-card>
 
+    <div class="text-center ma-2">
+      <v-snackbar v-model="contactForm.snackbar" :timeout="contactForm.timeout">
+        {{ contactForm.message }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn color="pink" text v-bind="attrs" @click="contactForm.snackbar = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </div>
+
     <v-btn
       fixed
       dark
@@ -91,12 +103,15 @@ export default {
         email: '',
         body: '',
         loading: false,
+        snackbar: false,
+        message: '',
+        timeout: 10000,
       },
       contactFormValidation: {
         valid: false,
         nameRules: [
           (v) => !!v || '名前は必須項目です。',
-          (v) => v.length <= 16 || '16文字以下で入力してください。',
+          (v) => (v && v.length <= 16) || '16文字以下で入力してください。',
         ],
         emailRules: [
           (v) => !!v || 'メールアドレスは必須項目です。',
@@ -125,8 +140,11 @@ export default {
 
         if (response.status === OK) {
           this.$refs.form.reset();
-          this.contactForm.loading = false;
         }
+
+        this.contactForm.loading = false;
+        this.contactForm.message = response.data;
+        this.contactForm.snackbar = true;
       }
     },
   },

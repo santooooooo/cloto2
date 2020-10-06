@@ -17,6 +17,8 @@ class ContactController extends Controller
      */
     public function contact(Request $request)
     {
+        $failures = 0;
+
         Mail::send(new ContactMail([
             'to' => $request->email,
             'to_name' => $request->name,
@@ -25,6 +27,7 @@ class ContactController extends Controller
             'subject' => '【お問い合わせ受付完了】- CLOTO',
             'body' => $request->body
         ], 'user'));
+        $failures += count(Mail::failures());
 
         Mail::send(new ContactMail([
             'to' => config('mail.service.contact'),
@@ -34,7 +37,12 @@ class ContactController extends Controller
             'subject' => 'お問い合わせ',
             'body' => $request->body
         ], 'system'));
+        $failures += count(Mail::failures());
 
-        return response()->json();
+        if ($failures > 0) {
+            return response()->json('エラーが発生しました。', 500);
+        }
+
+        return response()->json('お問い合わせを送信しました。');
     }
 }
