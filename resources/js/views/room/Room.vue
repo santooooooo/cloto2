@@ -160,7 +160,6 @@ export default {
                       this.roomData.sections[sectionIndex].seats[seatIndex].user.id
                     ) {
                       object.set({ reservationId: null, fill: '#000000' });
-                      console.log(object.fill);
                       this.canvas.requestRenderAll();
                     }
                   });
@@ -287,7 +286,7 @@ export default {
       });
 
       if (!this.isDisabledClick) {
-        if (event.target && event.target.fill !== '#FF0000') {
+        if (event.target.seatId !== null && event.target.fill !== '#FF0000') {
           // 着席処理
           if (this.authUser.seat_id != null) {
             //どこかに座ってるとき
@@ -328,16 +327,11 @@ export default {
                 break;
 
               case '休憩':
-                // this.userAction('break', event.target);
-                // this.isDisabledClick = true;
-                // this.enterLounge(event.target.sectionId);
-
                 alert('いきなり休憩ですか？まずは自習をしましょう！');
                 break;
             }
           }
         }
-        //this.isDisabledClick = true;
       }
     },
 
