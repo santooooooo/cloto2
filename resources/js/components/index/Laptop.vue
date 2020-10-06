@@ -486,7 +486,7 @@ export default {
     }
 
     .foot-btn {
-      padding: 400px 0;
+      padding: 200px 0;
     }
   }
 }

@@ -8,7 +8,7 @@
     <Laptop v-else />
 
     <!-- 問い合わせフォーム -->
-    <v-card width="600" class="mx-auto mb-12 pa-6">
+    <v-card max-width="600" class="mx-auto mb-12 pa-6">
       <v-container>
         <h5 class="text-center text-h5">お問い合わせ</h5>
 
