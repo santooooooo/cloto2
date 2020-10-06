@@ -18,10 +18,29 @@
 
 
 <!-- Twitter -->
-@if (!App::isLocal())
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@cloto_jp">
 <meta name="twitter:title" content="CLOTO">
 <meta name="twitter:description" content="「チュートリアル学習も終わり、いよいよ腕試し！！」そんな駆け出しエンジニアのみなさん、朗報です！">
 <meta name="twitter:image" content="{{ config('app.url').config('consts.storage.system').'twitter-card.png' }}">
+
+
+<!-- 解析ツール -->
+@if (App::environment('production'))
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-179731225-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-179731225-1');
+</script>
+<!-- End Google Analytics -->
+
+<!-- User Heat -->
+<script type="text/javascript">
+(function(add, cla){window['UserHeatTag']=cla;window[cla]=window[cla]||function(){(window[cla].q=window[cla].q||[]).push(arguments)},window[cla].l=1*new Date();var ul=document.createElement('script');var tag = document.getElementsByTagName('script')[0];ul.async=1;ul.src=add;tag.parentNode.insertBefore(ul,tag);})('//uh.nakanohito.jp/uhj2/uh.js', '_uhtracker');_uhtracker({id:'uhPFqTeO9e'});
+</script>
+<!-- End User Heat -->
 @endif
