@@ -419,7 +419,7 @@ export default {
             if (object.reservationId === this.authUser.id) {
               this.putIcon(object.left, object.top, this.authUser);
               endpoint = this.$endpoint('leaveLounge', [object.seatId]);
-              object.set({ reservationId: null });
+              object.set({ reservationId: null, fill: '#000000' });
             }
           });
 
