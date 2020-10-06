@@ -25,8 +25,9 @@
 <meta name="twitter:image" content="{{ config('app.url').config('consts.storage.system').'twitter-card.png' }}">
 
 
-<!-- 解析ツール -->
 @if (App::environment('production'))
+<!-- 解析ツール -->
+
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179731225-1"></script>
 <script>
