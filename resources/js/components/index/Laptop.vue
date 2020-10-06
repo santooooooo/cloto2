@@ -1,11 +1,7 @@
 <template>
   <v-container fluid pa-0 class="index">
-    <!-- 新規登録，ログインフォーム -->
-    <router-view />
-
-    <div class="concept">
-      <!-- PCサイズ -->
-      <v-row class="top mt-n12" v-if="!breakpoint.xs">
+    <v-container fluid class="concept">
+      <v-row>
         <v-spacer></v-spacer>
 
         <v-col cols="5" align-self="center">
@@ -25,43 +21,25 @@
           </v-row>
         </v-col>
 
-        <v-col cols="5" class="mr-12" align-self="center">
-          <v-img :src="$storage('system') + 'top-logo.svg'" max-width="500" contain></v-img>
+        <v-col cols="5" align-self="center">
+          <v-img
+            :src="$storage('system') + 'top-logo.svg'"
+            max-width="500"
+            contain
+            class="mx-auto"
+          ></v-img>
         </v-col>
 
         <v-spacer></v-spacer>
       </v-row>
+    </v-container>
 
-      <!-- スマホサイズ -->
-      <div class="top pa-3" v-else>
-        <v-img
-          :src="$storage('system') + 'top-logo.svg'"
-          max-width="500"
-          class="ma-12"
-          contain
-        ></v-img>
+    <div class="scroll">
+      <span></span>
+    </div>
 
-        <h1 class="mb-5 text-center text-h3 font-weight-bold">創る<br />繋がる<br />好きになる</h1>
-        <p class="text-center text-subtitle-1 font-weight-bold">
-          プログラミングに取り組むみなさん、こんにちは。<br />
-          「実際のプログラミングって大変. . . 」<br />
-          「何からしたらいいんだろう」<br />
-          そんな悩みとは今日でさようなら。<br />
-          プログラミングを楽しみながら継続できる環境がここに生まれました！
-        </p>
-
-        <v-row justify="center" class="mt-12">
-          <router-link :to="{ name: 'preRegister' }">
-            <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
-          </router-link>
-        </v-row>
-      </div>
-
-      <v-row class="scroll" v-if="!breakpoint.xs">
-        <span></span>
-      </v-row>
-
-      <v-row class="mx-12 description">
+    <v-container fluid class="bottom">
+      <v-row class="mx-12">
         <v-col class="mt-n12">
           <v-card width="400" class="mx-auto">
             <v-img
@@ -76,8 +54,7 @@
             </v-card-title>
 
             <v-card-text class="text-center text-h6 font-weight-bold">
-              自宅にいながら、まるで本物の自習室！<br />
-              そんな体験に拘りました。
+              自宅にいながら、まるで本物の自習室！そんな体験に拘りました。
             </v-card-text>
           </v-card>
         </v-col>
@@ -96,8 +73,7 @@
             </v-card-title>
 
             <v-card-text class="text-center text-h6 font-weight-bold">
-              休憩時間も有意義に<br />
-              日々頑張る仲間たちと交流しましょう。
+              休憩時間も有意義に。日々頑張る仲間たちと交流しましょう。
             </v-card-text>
           </v-card>
         </v-col>
@@ -116,15 +92,12 @@
             </v-card-title>
 
             <v-card-text class="text-center text-h6 font-weight-bold">
-              日々の活動や取り組みは<br />
-              記録され、あなたを支えます。
+              日々の活動や取り組みは記録され、あなたを支えます。
             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
-    </div>
 
-    <v-container fluid class="bottom">
       <v-row class="content">
         <v-spacer></v-spacer>
 
@@ -376,152 +349,42 @@
           </div>
         </v-fade-transition>
       </v-container>
+
+      <v-row justify="center" class="foot-btn">
+        <router-link :to="{ name: 'preRegister' }">
+          <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
+        </router-link>
+      </v-row>
     </v-container>
-
-    <v-row justify="center" class="foot-btn">
-      <router-link :to="{ name: 'preRegister' }">
-        <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
-      </router-link>
-    </v-row>
-
-    <!-- 問い合わせフォーム -->
-    <v-card width="600" class="mx-auto mb-12 pa-6">
-      <v-container>
-        <h5 class="text-center text-h5">お問い合わせ</h5>
-
-        <v-form ref="form" v-model="contactFormValidation.valid" lazy-validation>
-          <v-text-field
-            v-model="contactForm.name"
-            :rules="contactFormValidation.nameRules"
-            label="お名前"
-            required
-          ></v-text-field>
-
-          <v-text-field
-            v-model="contactForm.email"
-            :rules="contactFormValidation.emailRules"
-            label="メールアドレス"
-            required
-          ></v-text-field>
-
-          <v-textarea
-            v-model="contactForm.body"
-            :rules="contactFormValidation.bodyRules"
-            label="お問い合わせ内容"
-            required
-          ></v-textarea>
-
-          <v-btn
-            :loading="contactForm.loading"
-            :disabled="!contactFormValidation.valid"
-            @click="sendContact()"
-            block
-            large
-            color="info"
-            class="mt-4 font-weight-bold"
-            >送信
-          </v-btn>
-        </v-form>
-      </v-container>
-    </v-card>
-
-    <v-btn
-      fixed
-      dark
-      fab
-      bottom
-      right
-      x-large
-      color="#00acee"
-      class="ma-5 twitter-share-button"
-      target="_blank"
-      href="https://twitter.com/share?ref_src=twsrc%5Etfw"
-      data-text="テキスト"
-      data-url="https://cloto.jp"
-      data-via="@cloto_jp"
-      data-hashtags="#CLOTO"
-      data-show-count="false"
-    >
-      <v-icon>mdi-twitter</v-icon>
-    </v-btn>
   </v-container>
 </template>
 
 <script>
-import { OK } from '@/consts/status';
-
 export default {
   data() {
     return {
       hover1: false,
       hover2: false,
       hover3: false,
-      contactForm: {
-        name: '',
-        email: '',
-        body: '',
-        loading: false,
-      },
-      contactFormValidation: {
-        valid: false,
-        nameRules: [
-          (v) => !!v || '名前は必須項目です。',
-          (v) => v.length <= 16 || '16文字以下で入力してください。',
-        ],
-        emailRules: [
-          (v) => !!v || 'メールアドレスは必須項目です。',
-          (v) => {
-            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return pattern.test(v) || 'メールアドレスが無効です。';
-          },
-        ],
-        bodyRules: [(v) => !!v || 'お問い合わせ内容は必須項目です。'],
-      },
     };
-  },
-  computed: {
-    breakpoint() {
-      return this.$vuetify.breakpoint;
-    },
-  },
-  methods: {
-    sendContact: async function () {
-      if (this.$refs.form.validate()) {
-        this.contactForm.loading = true;
-
-        var input = {
-          name: this.contactForm.name,
-          email: this.contactForm.email,
-          body: this.contactForm.body,
-        };
-
-        // 問い合わせ送信処理
-        var response = await this.$http.post(this.$endpoint('contact'), input);
-
-        if (response.status === OK) {
-          this.$refs.form.reset();
-          this.contactForm.loading = false;
-        }
-      }
-    },
   },
   mounted() {
     window.onscroll = () => {
       var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
 
-      if (scrollTop <= 2000) {
+      if (scrollTop <= 2200) {
         this.hover1 = false;
         this.hover2 = false;
         this.hover3 = false;
-      } else if (2000 < scrollTop && scrollTop <= 2750) {
+      } else if (2200 < scrollTop && scrollTop <= 3000) {
         this.hover1 = true;
         this.hover2 = false;
         this.hover3 = false;
-      } else if (2750 < scrollTop && scrollTop <= 3500) {
+      } else if (3000 < scrollTop && scrollTop <= 3800) {
         this.hover1 = true;
         this.hover2 = true;
         this.hover3 = false;
-      } else if (3500 < scrollTop) {
+      } else if (3800 < scrollTop) {
         this.hover1 = true;
         this.hover2 = true;
         this.hover3 = true;
@@ -534,105 +397,96 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
-a:hover {
-  text-decoration: none;
-}
-
 .index {
-  max-width: 100%;
-  background-color: $light-gray;
-
-  .foot-btn {
-    padding: 400px 0;
-  }
-}
-
-.concept {
-  background-color: $primary;
-  color: $white;
-  position: relative;
-  height: 1350px;
-
-  .top {
-    height: 900px;
+  a:hover {
+    text-decoration: none;
   }
 
-  .description {
-    margin-top: 200px;
+  .concept {
+    max-width: 100%;
+    height: 1500px;
+    padding-top: 150px;
+    background-color: $primary;
+    color: $white;
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0px 100vw 180px 0;
+      border-color: transparent transparent $light-gray transparent;
+    }
+  }
+
+  // 下矢印
+  .scroll span {
+    position: absolute;
+    top: 800px;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    margin-left: -12px;
+    border-left: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-animation: sdb 2s infinite;
+    animation: sdb 2s infinite;
+    box-sizing: border-box;
+  }
+  @-webkit-keyframes sdb {
+    0% {
+      -webkit-transform: rotate(-45deg) translate(0, 0);
+    }
+    20% {
+      -webkit-transform: rotate(-45deg) translate(-10px, 10px);
+    }
+    40% {
+      -webkit-transform: rotate(-45deg) translate(0, 0);
+    }
+  }
+  @keyframes sdb {
+    0% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+    20% {
+      transform: rotate(-45deg) translate(-10px, 10px);
+    }
+    40% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+  }
+
+  .bottom {
+    max-width: 100%;
+    background-color: $light-gray;
+    margin-top: -300px;
 
     .title {
       background: linear-gradient(transparent 70%, #cae6ff 70%);
     }
-  }
 
-  &:before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0px 100vw 115px 0;
-    border-color: transparent transparent $light-gray transparent;
-  }
-}
+    .content {
+      margin-top: 200px;
 
-// 下矢印
-.scroll span {
-  position: absolute;
-  top: 800px;
-  left: 50%;
-  width: 24px;
-  height: 24px;
-  margin-left: -12px;
-  border-left: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  -webkit-animation: sdb 2s infinite;
-  animation: sdb 2s infinite;
-  box-sizing: border-box;
-}
-@-webkit-keyframes sdb {
-  0% {
-    -webkit-transform: rotate(-45deg) translate(0, 0);
-  }
-  20% {
-    -webkit-transform: rotate(-45deg) translate(-10px, 10px);
-  }
-  40% {
-    -webkit-transform: rotate(-45deg) translate(0, 0);
-  }
-}
-@keyframes sdb {
-  0% {
-    transform: rotate(-45deg) translate(0, 0);
-  }
-  20% {
-    transform: rotate(-45deg) translate(-10px, 10px);
-  }
-  40% {
-    transform: rotate(-45deg) translate(0, 0);
-  }
-}
+      .icon {
+        color: $primary;
+        font-size: 5em;
+      }
 
-.bottom {
-  max-width: 100%;
-  background-color: $light-gray;
-  margin-top: 100px;
-
-  .content {
-    margin-top: 200px;
-
-    .icon {
-      color: $primary;
-      font-size: 5em;
+      h3:first-letter {
+        font-size: 1.3em;
+        color: $primary;
+      }
     }
 
-    h3:first-letter {
-      font-size: 1.3em;
-      color: $primary;
+    .foot-btn {
+      padding: 200px 0;
     }
   }
 }

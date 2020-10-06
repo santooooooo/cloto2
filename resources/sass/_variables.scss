@@ -1,3 +1,12 @@
+// Breakpoints
+$breakpoints: (
+  'xs': 'screen and (max-width: 599px)',
+  'sm': 'screen and (min-width: 600px) and (max-width: 959px)',
+  'md': 'screen and (min-width: 960px) and (max-width: 1263px)',
+  'lg': 'screen and (min-width: 960px) and (max-width: 1903px)',
+  'xl': 'screen and (min-width: 1904px)',
+) !default;
+
 // Typography
 $font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro', 'Yu Gothic Medium',
   '游ゴシック Medium', YuGothic, '游ゴシック体', 'メイリオ', sans-serif;
@@ -24,3 +33,10 @@ $light-blue: #bbdefb;
 $twitter-color: #00acee;
 $github-color: #000000;
 $qiita-color: #4cb10d;
+
+// Mixin
+@mixin mq($breakpoint: md) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}

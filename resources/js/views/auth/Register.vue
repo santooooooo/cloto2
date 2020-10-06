@@ -127,8 +127,8 @@ export default {
         valid: false,
         usernameRules: [
           (v) => !!v || 'ユーザー名は必須項目です。',
-          (v) => v.length >= 4 || '4文字以上で入力してください。',
-          (v) => v.length <= 16 || '16文字以下で入力してください。',
+          (v) => (v && v.length >= 4) || '4文字以上で入力してください。',
+          (v) => (v && v.length <= 16) || '16文字以下で入力してください。',
         ],
         emailRules: [
           (v) => !!v || 'メールアドレスは必須項目です。',
@@ -139,16 +139,16 @@ export default {
         ],
         passwordRules: [
           (v) => !!v || 'パスワードは必須項目です。',
-          (v) => v.length >= 8 || '8文字以上で入力してください。',
-          (v) => v.length <= 64 || '64文字以下で入力してください。',
+          (v) => (v && v.length >= 8) || '8文字以上で入力してください。',
+          (v) => (v && v.length <= 64) || '64文字以下で入力してください。',
         ],
         passwordConfirmationRules: [
           (v) => !!v || 'パスワードの再入力は必須項目です。',
-          (v) => v === this.registerForm.password || 'パスワードが一致しません。',
+          (v) => (v && v === this.registerForm.password) || 'パスワードが一致しません。',
         ],
         handlenameRules: [
           (v) => !!v || '表示名は必須項目です。',
-          (v) => v.length <= 16 || '16文字以下で入力してください。',
+          (v) => (v && v.length <= 16) || '16文字以下で入力してください。',
         ],
       },
     };

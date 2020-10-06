@@ -5,7 +5,10 @@
         <v-container>
           <v-row>
             <v-col>
-              <v-alert v-model="alert" dismissible type="success">メールをご確認ください！</v-alert>
+              <v-alert v-model="success" dismissible type="success"
+                >仮登録の受付を完了しました。</v-alert
+              >
+              <v-alert v-model="error" type="error">エラーが発生しました。</v-alert>
 
               <!-- ロゴ -->
               <v-img
@@ -81,7 +84,8 @@ export default {
   data() {
     return {
       dialog: true,
-      alert: false,
+      success: false,
+      error: false,
       preRegisterForm: {
         name: '',
         email: '',
@@ -107,9 +111,9 @@ export default {
         this.$router.push({ name: 'index' });
       }
     },
-    alert: function () {
+    success: function () {
       // アラートが閉じたらリダイレクト
-      if (this.alert === false) {
+      if (this.success === false) {
         this.$router.push({ name: 'index' });
       }
     },
@@ -127,9 +131,14 @@ export default {
         var response = await this.$http.post(this.$endpoint('preRegister'), input);
 
         if (response.status === OK) {
-          this.alert = true;
+          this.success = true;
           this.preRegisterForm.loading = false;
-          this.$router.push({ name: 'index' });
+          setTimeout(() => {
+            this.success = false;
+          }, 10000);
+        } else {
+          this.error = true;
+          this.preRegisterForm.loading = false;
         }
       }
     },

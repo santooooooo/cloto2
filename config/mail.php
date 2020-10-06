@@ -107,4 +107,17 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Service Mail Address
+    |--------------------------------------------------------------------------
+    |
+    | 使用アドレスの定義
+    |
+    */
+
+    'service' => [
+        'preregister' => env('MAIL_PREREGISTER', 'preregister@cloto.jp'),
+        'contact' => env('MAIL_CONTACT', 'contact@cloto.jp'),
+    ]
 ];
