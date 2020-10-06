@@ -50,8 +50,17 @@ const app = new Vue({
  */
 (async function () {
   /** 前処理 */
-  await store.dispatch('auth/syncAuthUser');
+  if (isRelease()) {
+    await store.dispatch('auth/syncAuthUser');
+  }
 
   /** マウント */
   app.$mount('#app');
 })();
+
+/**
+ * app.js内で使用する関数
+ */
+function isRelease() {
+  return process.env.MIX_APP_RELEASE === 'true' ? true : false;
+}
