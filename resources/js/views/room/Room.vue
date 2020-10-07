@@ -278,10 +278,12 @@ export default {
      */
     canvasMouseDown: function (event) {
       console.log('canvasMouseDown');
+      console.log('authUserの座席は' + this.authUser.seat_id + 'objectは');
+      console.log(this.authUser);
       this.canvas.getObjects().forEach((object) => {
         if (object.reservationId != null) {
-          console.log('seatid' + object.seatId);
-          console.log('reservationid' + object.reservationId);
+          // console.log('seatid' + object.seatId);
+          console.log('seatid' + object.seatId + 'reservationid' + object.reservationId);
         }
       });
 
@@ -327,7 +329,15 @@ export default {
                 break;
 
               case '休憩':
+                // var currentSeat = '';
+                // this.canvas.getObjects().forEach((object) => {
+                //   if (object.userId === this.authUser.id) {
+                //     currentSeat = object;
+                //   }
+                // });
+                // if (!currentSeat) {
                 alert('いきなり休憩ですか？まずは自習をしましょう！');
+                //}
                 break;
             }
           }
