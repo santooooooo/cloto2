@@ -132,19 +132,18 @@ export default {
               case 'sitting':
                 var position = JSON.parse(seat.position);
                 this.putIcon(position.x, position.y, seat.user);
-
                 break;
 
               case 'break':
                 this.canvas.getObjects().forEach((object) => {
+                  // 座席を赤色に変更
                   if (object.seatId === seat.id) {
                     object.set({ fill: '#FF0000', reservationId: seat.reservation_user_id });
                     this.canvas.requestRenderAll();
                   }
 
-                  if (
-                    object.userId === this.roomData.sections[sectionIndex].seats[seatIndex].user.id
-                  ) {
+                  // アイコンを削除
+                  if (object.userId === seat.user.id) {
                     this.removeIcon(object);
                   }
                 });
@@ -152,18 +151,6 @@ export default {
 
               default:
                 // 退席された場合
-
-                if (section.role === '休憩') {
-                  this.canvas.getObjects().forEach((object) => {
-                    if (
-                      object.reservationId ===
-                      this.roomData.sections[sectionIndex].seats[seatIndex].user.id
-                    ) {
-                      object.set({ reservationId: null, fill: '#000000' });
-                      this.canvas.requestRenderAll();
-                    }
-                  });
-                }
                 this.canvas.getObjects().forEach((object) => {
                   if (this.roomData.sections[sectionIndex].seats[seatIndex].user !== null) {
                     // 着席中の座席からの退席処理
@@ -171,11 +158,21 @@ export default {
                       object.userId ===
                       this.roomData.sections[sectionIndex].seats[seatIndex].user.id
                     ) {
+                      // アイコンの削除
                       this.removeIcon(object);
+                    }
+
+                    // 休憩室から退席した場合は予約を解除
+                    if (
+                      section.role === '休憩' &&
+                      object.reservationId ===
+                        this.roomData.sections[sectionIndex].seats[seatIndex].user.id
+                    ) {
+                      object.set({ reservationId: null, fill: '#000000' });
+                      this.canvas.requestRenderAll();
                     }
                   }
                 });
-
                 break;
             }
           }
@@ -290,54 +287,39 @@ export default {
       if (!this.isDisabledClick) {
         if (event.target.seatId !== null && event.target.fill !== '#FF0000') {
           // 着席処理
-          if (this.authUser.seat_id != null) {
-            //どこかに座ってるとき
+          if (this.authUser.seat_id !== null) {
+            // 現在どこかに着席中の場合
             switch (this.authUser.seat.section.role) {
-              case '自習': //ユーザが座ってる場所が自習室なら
-                if (event.target.role != '自習') {
-                  //押された場所が自習室じゃないとき
-
+              case '自習': // 自習室に着席中
+                if (event.target.role === '休憩') {
+                  // 休憩室入室処理
                   this.userAction('enterLounge', event.target);
                   this.isDisabledClick = true;
-                  /*依然座ってたところは状態をbreakにする
-                // 依然座っていたところのが画像をremoveする*/
-                  // removeIcon();
-                  //enterLounge チャット開く
-                  //ユーザのroleの状態を休憩室に変更
                 }
                 break;
 
-              case '休憩':
-                if (event.target.role === '自習') {
-                }
+              case '休憩': // 休憩室に着席中
                 if (event.target.role === '休憩') {
                   this.userAction('leaveLounge', event.target);
                   this.isDisabledClick = true;
                 }
-
                 break;
             }
           } else {
-            //どこも座ってないとき
+            // 現在どこにも着席していない場合
             switch (event.target.role) {
               case '自習':
                 if (event.target.reservationId === null) {
+                  // 目的の座席が予約されていない場合
                   this.userAction('sitting', event.target);
                   this.isDisabledClick = true;
+                } else {
+                  // 目的の座席が予約されている場合
                 }
-
                 break;
 
               case '休憩':
-                // var currentSeat = '';
-                // this.canvas.getObjects().forEach((object) => {
-                //   if (object.userId === this.authUser.id) {
-                //     currentSeat = object;
-                //   }
-                // });
-                // if (!currentSeat) {
                 alert('いきなり休憩ですか？まずは自習をしましょう！');
-                //}
                 break;
             }
           }
