@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn @click="clickLeaveButton()">退席</v-btn>
+    <v-btn @click="leaveRoom()">退席</v-btn>
 
     <canvas :width="roomWidth" :height="roomHight" id="room"></canvas>
     <v-card class="mx-auto" max-width="344" outlined>
@@ -9,7 +9,7 @@
 
     <beautiful-chat
       :open="openChat"
-      :close="closeChat"
+      :close="leaveLounge"
       :onMessageWasSent="onMessageWasSent"
       :colors="chatColors"
       :isOpen="isChatOpen"
@@ -184,168 +184,6 @@ export default {
     },
 
     /**
-     * 休憩室の同期
-     *
-     * @param Number  sectionId   入室している休憩室ID
-     */
-    syncLounge: async function (sectionId) {
-      var response = await this.$http.get(this.$endpoint('chatShow', [sectionId]));
-
-      this.chatParticipants = response.data.chatParticipants;
-      this.messageList = response.data.messageList;
-    },
-
-    /**
-     * 休憩室への入室
-     *
-     * @param Number  sectionId   入室する休憩室ID
-     */
-    enterLounge: async function (sectionId) {
-      // 初回取得
-      await this.syncLounge(sectionId);
-
-      // 同期開始
-      this.loungeSyncTimer = setInterval(() => {
-        this.syncLounge(sectionId);
-      }, 3000);
-
-      this.openChat();
-    },
-
-    /**
-     * チャットのオープン
-     */
-    openChat: function () {
-      this.isChatOpen = true;
-    },
-
-    /**
-     * チャットのクローズ
-     */
-    closeChat: async function () {
-      await this.userAction('leaveLounge');
-
-      this.isChatOpen = false;
-
-      // 同期停止
-      clearInterval(this.loungeSyncTimer);
-    },
-
-    /**
-     * メッセージ送信
-     */
-    onMessageWasSent: function (message) {
-      this.$http.post(this.$endpoint('chatPost'), message);
-
-      // 一時的に描画するためリストへ追加
-      this.messageList = [...this.messageList, Object.assign({}, message, { id: Math.random() })];
-    },
-
-    /**
-     * キャンバスマウスオーバーイベント
-     */
-    canvasMouseOver: function (event) {
-      if (event.target) {
-        if (event.target.fill === '#000000') {
-          //灰色の場合
-          event.target.set({ fill: '#0000ff' }); //紫
-        }
-
-        this.canvas.requestRenderAll();
-      }
-    },
-
-    /**
-     * キャンバスマウスオーバー解除イベント
-     */
-    canvasMouseOut: function (event) {
-      if (event.target) {
-        if (event.target.fill === '#0000ff') {
-          //紫の場合
-
-          event.target.set({ fill: '#000000' }); //灰色に戻る
-        }
-
-        this.canvas.requestRenderAll();
-      }
-    },
-
-    /**
-     * キャンバスクリックイベント
-     */
-    canvasMouseDown: function (event) {
-      console.log('canvasMouseDown');
-      console.log('authUserの座席は' + this.authUser.seat_id + 'objectは');
-      console.log(this.authUser);
-      this.canvas.getObjects().forEach((object) => {
-        if (object.reservationId != null) {
-          // console.log('seatid' + object.seatId);
-          console.log('seatid' + object.seatId + 'reservationid' + object.reservationId);
-        }
-      });
-
-      if (!this.isDisabledClick) {
-        if (event.target.seatId !== null && event.target.fill !== '#FF0000') {
-          // 着席処理
-          if (this.authUser.seat_id !== null) {
-            // 現在どこかに着席中の場合
-            switch (this.authUser.seat.section.role) {
-              case '自習': // 自習室に着席中
-                if (event.target.role === '休憩') {
-                  // 休憩室入室処理
-                  this.userAction('enterLounge', event.target);
-                  this.isDisabledClick = true;
-                }
-                break;
-
-              case '休憩': // 休憩室に着席中
-                if (event.target.role === '休憩') {
-                  this.userAction('leaveLounge', event.target);
-                  this.isDisabledClick = true;
-                }
-                break;
-            }
-          } else {
-            // 現在どこにも着席していない場合
-            switch (event.target.role) {
-              case '自習':
-                if (event.target.reservationId === null) {
-                  // 目的の座席が予約されていない場合
-                  this.userAction('sitting', event.target);
-                  this.isDisabledClick = true;
-                } else {
-                  // 目的の座席が予約されている場合
-                }
-                break;
-
-              case '休憩':
-                alert('いきなり休憩ですか？まずは自習をしましょう！');
-                break;
-            }
-          }
-        }
-      }
-    },
-
-    /**
-     * 退席処理
-     */
-    clickLeaveButton: function () {
-      if (!this.isDisabledClick && this.authUser.seat_id !== null) {
-        // 状態変更処理
-        if (this.authUser.seat.section.role === '休憩') {
-          this.isChatOpen = false;
-          this.userAction('leave');
-
-          this.isDisabledClick = true;
-        } else {
-          this.userAction('leave');
-          this.isDisabledClick = true;
-        }
-      }
-    },
-
-    /**
      * ユーザーの行動の反映
      *
      * @param String  action  行動
@@ -424,6 +262,126 @@ export default {
       // クリックを有効化
       this.isDisabledClick = false;
       console.log('クリックを有効化しました');
+    },
+
+    /**
+     * キャンバスクリックイベント
+     */
+    canvasMouseDown: async function (event) {
+      // 座席に誰も座っていないかつ，予約済みでない場合
+      if (
+        !this.isDisabledClick &&
+        event.target.seatId !== null &&
+        event.target.reservationId === null
+      ) {
+        // クリックを無効化
+        this.isDisabledClick = true;
+
+        // 着席処理
+        switch (event.target.role) {
+          case '自習': // 自習室がクリックされた場合
+            // 現在どこにも着席していない場合
+            if (this.authUser.seat === null) {
+              // 状態変更処理
+              await this.userAction('sitting', event.target);
+            }
+            break;
+
+          case '休憩': // 休憩室がクリックされた場合
+            if (this.authUser.seat === null) {
+              // どこにも着席していない状態で休憩室をクリックした場合
+              alert('いきなり休憩ですか？まずは自習をしましょう！');
+            } else {
+              // 現在自習室に着席中の場合
+              if (this.authUser.seat.section.role === '自習') {
+                // 状態変更処理
+                await this.userAction('enterLounge', event.target);
+              }
+            }
+            break;
+        }
+
+        // クリックを有効化
+        this.isDisabledClick = false;
+      }
+    },
+
+    /**
+     * 自習室からの退席処理
+     */
+    leaveRoom: async function () {
+      if (
+        !this.isDisabledClick &&
+        this.authUser.seat !== null &&
+        this.authUser.seat.section.role === '自習'
+      ) {
+        // クリックを無効化
+        this.isDisabledClick = true;
+
+        // 状態変更処理
+        await this.userAction('leave');
+
+        // クリックを有効化
+        this.isDisabledClick = false;
+      }
+    },
+
+    /**
+     * 休憩室の同期
+     *
+     * @param Number  sectionId   入室している休憩室ID
+     */
+    syncLounge: async function (sectionId) {
+      var response = await this.$http.get(this.$endpoint('chatShow', [sectionId]));
+
+      this.chatParticipants = response.data.chatParticipants;
+      this.messageList = response.data.messageList;
+    },
+
+    /**
+     * 休憩室への入室
+     *
+     * @param Number  sectionId   入室する休憩室ID
+     */
+    enterLounge: async function (sectionId) {
+      // 初回取得
+      await this.syncLounge(sectionId);
+
+      // 同期開始
+      this.loungeSyncTimer = setInterval(() => {
+        this.syncLounge(sectionId);
+      }, 3000);
+
+      this.openChat();
+    },
+
+    /**
+     * 休憩室からの退室
+     */
+    leaveLounge: async function () {
+      await this.userAction('leaveLounge');
+
+      this.isChatOpen = false;
+
+      // 同期停止
+      clearInterval(this.loungeSyncTimer);
+    },
+
+    /**
+     * チャットのオープン
+     */
+    openChat: function () {
+      this.isChatOpen = true;
+    },
+
+    /**
+     * メッセージの送信
+     */
+    onMessageWasSent: function (message) {
+      this.$http.post(this.$endpoint('chatPost'), message);
+
+      // 一時的に描画するためリストへ追加
+      this.messageList = [...this.messageList, Object.assign({}, message, { id: Math.random() })];
     },
 
     /**
@@ -538,8 +496,6 @@ export default {
       this.canvas.renderAll.bind(this.canvas)
     );
 
-    this.canvas.on('mouse:over', this.canvasMouseOver);
-    this.canvas.on('mouse:out', this.canvasMouseOut);
     this.canvas.on('mouse:down', this.canvasMouseDown);
 
     // 初回取得
