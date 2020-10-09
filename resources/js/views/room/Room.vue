@@ -8,7 +8,7 @@
     </v-card>
 
     <beautiful-chat
-      :open="openChat"
+      :open="enterLounge"
       :close="leaveLounge"
       :onMessageWasSent="onMessageWasSent"
       :colors="chatColors"
@@ -92,95 +92,87 @@ export default {
       return this.$store.getters['auth/user'];
     },
   },
+  watch: {
+    /**
+     * 座席データの更新時
+     */
+    'roomData.sections': {
+      handler: function (val, oldVal) {
+        // 初回取得時は除く
+        if (typeof oldVal !== 'undefined') {
+          val.forEach((section, sectionIndex) => {
+            // 座席のループ
+            section.seats.forEach((seat, seatIndex) => {
+              if (seat.status !== oldVal[sectionIndex].seats[seatIndex].status) {
+                // 状態の変化があった座席は再描画
+                switch (seat.status) {
+                  case 'sitting':
+                    var position = JSON.parse(seat.position);
+                    this.putIcon(position.x, position.y, seat.user);
+                    break;
+
+                  case 'break':
+                    this.canvas.getObjects().forEach((object) => {
+                      // 座席を赤色に変更
+                      if (object.seatId === seat.id) {
+                        object.set({ fill: '#FF0000', reservationId: seat.reservation_user_id });
+                        this.canvas.requestRenderAll();
+                      }
+
+                      // アイコンを削除
+                      if (object.userId === seat.reservation_user_id) {
+                        this.removeIcon(object);
+                      }
+                    });
+                    break;
+
+                  default:
+                    // 退席された場合
+                    this.canvas.getObjects().forEach((object) => {
+                      if (oldVal[sectionIndex].seats[seatIndex].user !== null) {
+                        // 着席中の座席からの退席処理
+                        if (object.userId === oldVal[sectionIndex].seats[seatIndex].user.id) {
+                          // アイコンの削除
+                          this.removeIcon(object);
+                        }
+
+                        // 休憩室から退席した場合は予約を解除
+                        if (
+                          section.role === '休憩' &&
+                          object.reservationId === oldVal[sectionIndex].seats[seatIndex].user.id
+                        ) {
+                          object.set({ reservationId: null, fill: '#000000' });
+                          this.canvas.requestRenderAll();
+                        }
+                      }
+                    });
+                    break;
+                }
+              }
+            });
+          });
+        }
+      },
+    },
+  },
   methods: {
     /**
-     * 教室の同期
+     * 教室データの取得
      */
-    syncRoom: async function () {
+    getRoom: async function () {
       var response = await this.$http.get(this.$endpoint('roomShow', [this.$route.params.id]));
-
-      // セクションのループ
-      response.data.sections.forEach((section, sectionIndex) => {
-        // 座席のループ
-        section.seats.forEach((seat, seatIndex) => {
-          if (this.roomData.length === 0) {
-            // 初回取得
-            this.setClickArea(
-              seat.id,
-              section.id,
-              section.role,
-              seat.reservation_user_id,
-              seat.position,
-              seat.status
-            );
-
-            // 誰かが座っている時
-            if (seat.status !== null && seat.status != 'break') {
-              // 着席している人を表示
-
-              var position = JSON.parse(seat.position);
-              this.putIcon(position.x, position.y, seat.user);
-
-              // ログインユーザーが座っており，座席が休憩室にある場合
-              if (seat.id === this.authUser.seat_id && section.role === '休憩') {
-                this.enterLounge(section.id);
-              }
-            }
-          } else if (seat.status !== this.roomData.sections[sectionIndex].seats[seatIndex].status) {
-            // 現在の状態から変化があれば再描画
-            switch (seat.status) {
-              case 'sitting':
-                var position = JSON.parse(seat.position);
-                this.putIcon(position.x, position.y, seat.user);
-                break;
-
-              case 'break':
-                this.canvas.getObjects().forEach((object) => {
-                  // 座席を赤色に変更
-                  if (object.seatId === seat.id) {
-                    object.set({ fill: '#FF0000', reservationId: seat.reservation_user_id });
-                    this.canvas.requestRenderAll();
-                  }
-
-                  // アイコンを削除
-                  if (object.userId === seat.user.id) {
-                    this.removeIcon(object);
-                  }
-                });
-                break;
-
-              default:
-                // 退席された場合
-                this.canvas.getObjects().forEach((object) => {
-                  if (this.roomData.sections[sectionIndex].seats[seatIndex].user !== null) {
-                    // 着席中の座席からの退席処理
-                    if (
-                      object.userId ===
-                      this.roomData.sections[sectionIndex].seats[seatIndex].user.id
-                    ) {
-                      // アイコンの削除
-                      this.removeIcon(object);
-                    }
-
-                    // 休憩室から退席した場合は予約を解除
-                    if (
-                      section.role === '休憩' &&
-                      object.reservationId ===
-                        this.roomData.sections[sectionIndex].seats[seatIndex].user.id
-                    ) {
-                      object.set({ reservationId: null, fill: '#000000' });
-                      this.canvas.requestRenderAll();
-                    }
-                  }
-                });
-                break;
-            }
-          }
-        });
-      });
-
-      // データの更新
       this.roomData = response.data;
+    },
+
+    /**
+     * 休憩室データの取得
+     *
+     * @param Number  sectionId   入室している休憩室ID
+     */
+    getLounge: async function (sectionId) {
+      var response = await this.$http.get(this.$endpoint('chatShow', [sectionId]));
+      this.chatParticipants = response.data.chatParticipants;
+      this.messageList = response.data.messageList;
     },
 
     /**
@@ -190,60 +182,55 @@ export default {
      * @param Object  seatObject 状態を変更する座席
      */
     userAction: async function (action, seatObject = null) {
-      // クリックを無効化
-      //this.isDisabledClick = true;
-
       var endpoint = '';
       switch (action) {
         case 'sitting':
-          console.log('sitting' + this.authUser.id);
-
+          // 着席処理
           endpoint = this.$endpoint('seatSit', [seatObject.seatId]);
           this.putIcon(seatObject.left, seatObject.top, this.authUser);
           break;
 
         case 'leave':
-          console.log('useraction leave');
-          console.log('leave' + this.authUser.id);
+          // 退席処理
           this.canvas.getObjects().forEach((object) => {
             if (object.userId === this.authUser.id) {
-              console.log('leave roop内' + this.authUser.id);
               seatObject = object;
               this.removeIcon(object);
             }
           });
-
           endpoint = this.$endpoint('seatLeave');
-
           break;
 
         case 'enterLounge':
-          console.log('enterLounge' + this.authUser.id);
-
+          // 休憩室入室処理
           endpoint = this.$endpoint('enterLounge', [seatObject.seatId]);
           this.canvas.getObjects().forEach((object) => {
             if (object.userId === this.authUser.id) {
+              // 予約IDのセット
               object.set({ reservationId: this.authUser.id });
+              // アイコンの削除（移動元）
               this.removeIcon(object);
             }
           });
+          // アイコンの配置（移動先）
           this.putIcon(seatObject.left, seatObject.top, this.authUser);
           this.enterLounge(seatObject.sectionId);
           break;
 
         case 'leaveLounge':
-          console.log('leaveLounge' + this.authUser.id);
-
+          // 休憩室退室処理
           this.canvas.getObjects().forEach((object) => {
             if (object.userId === this.authUser.id) {
-              console.log('roop内 id' + this.authUser.id);
+              // アイコンの削除（移動元）
               this.removeIcon(object);
             }
 
             if (object.reservationId === this.authUser.id) {
+              // アイコンの配置（移動先）
               this.putIcon(object.left, object.top, this.authUser);
-              endpoint = this.$endpoint('leaveLounge', [object.seatId]);
+              // 予約IDの削除
               object.set({ reservationId: null, fill: '#000000' });
+              endpoint = this.$endpoint('leaveLounge', [object.seatId]);
             }
           });
 
@@ -258,10 +245,6 @@ export default {
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
-
-      // クリックを有効化
-      this.isDisabledClick = false;
-      console.log('クリックを有効化しました');
     },
 
     /**
@@ -327,32 +310,23 @@ export default {
     },
 
     /**
-     * 休憩室の同期
-     *
-     * @param Number  sectionId   入室している休憩室ID
-     */
-    syncLounge: async function (sectionId) {
-      var response = await this.$http.get(this.$endpoint('chatShow', [sectionId]));
-
-      this.chatParticipants = response.data.chatParticipants;
-      this.messageList = response.data.messageList;
-    },
-
-    /**
      * 休憩室への入室
      *
      * @param Number  sectionId   入室する休憩室ID
      */
     enterLounge: async function (sectionId) {
+      // クリックを無効化
+      this.isDisabledClick = true;
+
       // 初回取得
-      await this.syncLounge(sectionId);
+      await this.getLounge(sectionId);
 
       // 同期開始
       this.loungeSyncTimer = setInterval(() => {
-        this.syncLounge(sectionId);
+        this.getLounge(sectionId);
       }, 3000);
 
-      this.openChat();
+      this.isChatOpen = true;
     },
 
     /**
@@ -365,13 +339,9 @@ export default {
 
       // 同期停止
       clearInterval(this.loungeSyncTimer);
-    },
 
-    /**
-     * チャットのオープン
-     */
-    openChat: function () {
-      this.isChatOpen = true;
+      // クリックを有効化
+      this.isDisabledClick = false;
     },
 
     /**
@@ -382,61 +352,6 @@ export default {
 
       // 一時的に描画するためリストへ追加
       this.messageList = [...this.messageList, Object.assign({}, message, { id: Math.random() })];
-    },
-
-    /**
-     * クリックエリアの設定
-     *
-     * @param Number  seatId      描画する座席
-     * @param Number  sectionId   座席の区画
-     * @param String  role        座席の役割
-     * @param JSON    position    描画位置
-     * @param String  status      座席状態
-     */
-    setClickArea: function (seatId, sectionId, role, reservationId, position, status) {
-      var position = JSON.parse(position);
-
-      switch (status) {
-        case 'sitting':
-          var color = '#000000';
-          break;
-
-        case 'enterLounge':
-          var color = '#000000';
-          break;
-
-        case 'break':
-          var color = '#FF0000'; //赤
-
-          break;
-
-        default:
-          var color = '#000000'; //灰色
-          break;
-      }
-
-      //ここの属性にstatusを追加するしかないのではないか?
-      this.canvas.add(
-        new fabric.Circle({
-          seatId: seatId,
-          sectionId: sectionId,
-          role: role,
-          fill: color,
-          reservationId: reservationId,
-          opacity: 0.3,
-          left: position.x,
-          top: position.y,
-          originX: 'center',
-          originY: 'center',
-          radius: this.iconSize / 2,
-          strokeWidth: 1,
-          hasControls: false, // 図形周囲のコントロールボタンの無効化
-          hasBorders: false, // 図形周囲のボーダーの無効化
-          lockMovementX: true, // 横移動の禁止
-          lockMovementY: true, // 縦移動の禁止
-          hoverCursor: 'default', // カーソルの変更を禁止
-        })
-      );
     },
 
     /**
@@ -483,7 +398,7 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
     /**
      * キャンバスの設定
      */
@@ -498,12 +413,55 @@ export default {
 
     this.canvas.on('mouse:down', this.canvasMouseDown);
 
-    // 初回取得
-    this.syncRoom();
+    // クリックエリアの設定
+    await this.getRoom();
+    this.roomData.sections.forEach((section, sectionIndex) => {
+      section.seats.forEach((seat, seatIndex) => {
+        var position = JSON.parse(seat.position);
+        var color = '#000000';
+        if (seat.status == 'break') {
+          color = '#FF0000';
+        }
 
-    // 同期開始
+        this.canvas.add(
+          new fabric.Circle({
+            seatId: seat.id,
+            sectionId: section.id,
+            role: section.role,
+            fill: color,
+            reservationId: seat.reservation_user_id,
+            opacity: 0.3,
+            left: position.x,
+            top: position.y,
+            originX: 'center',
+            originY: 'center',
+            radius: this.iconSize / 2,
+            strokeWidth: 1,
+            hasControls: false, // 図形周囲のコントロールボタンの無効化
+            hasBorders: false, // 図形周囲のボーダーの無効化
+            lockMovementX: true, // 横移動の禁止
+            lockMovementY: true, // 縦移動の禁止
+            hoverCursor: 'default', // カーソルの変更を禁止
+          })
+        );
+
+        // 誰かが座っている時
+        if (seat.status !== null && seat.status != 'break') {
+          this.putIcon(position.x, position.y, seat.user);
+
+          // ログインユーザーが座っており，座席が休憩室にある場合
+          if (seat.id === this.authUser.seat_id && section.role === '休憩') {
+            this.enterLounge(section.id);
+          }
+        }
+      });
+    });
+
+    /**
+     * 部屋の同期開始
+     */
     setInterval(() => {
-      this.syncRoom();
+      this.getRoom();
     }, 3000);
   },
 };
