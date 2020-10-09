@@ -4,7 +4,7 @@
     <Header @show-drawer="isShowDrawer = true" />
 
     <!-- ドロワーメニュー -->
-    <Drawer v-model="isShowDrawer" @logout="logout" v-if="isRelease" />
+    <Drawer v-if="isRelease" />
 
     <!-- メイン -->
     <v-main>
