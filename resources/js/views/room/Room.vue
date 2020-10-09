@@ -1,8 +1,12 @@
 <template>
-  <div>
-    <v-btn @click="leaveRoom()">退席</v-btn>
+  <div ref="room">
+    <v-btn
+      @click="leaveRoom()"
+      :disabled="authUser.seat === null || authUser.seat.section.role !== '自習'"
+      >退席</v-btn
+    >
 
-    <canvas :width="roomWidth" :height="roomHight" id="room"></canvas>
+    <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
     <v-card class="mx-auto" max-width="344" outlined>
       <h1>{{ this.roomData.name }}教室</h1>
     </v-card>
@@ -50,9 +54,10 @@
 export default {
   data() {
     return {
-      canvas: {},
-      isDisabledClick: false, // クリック制御
-      roomData: [], // 教室データ
+      canvas: '', // キャンバスエリア
+      isLoading: false, // ロードの制御
+      loaderOption: '', // loading-overlayの設定
+      roomData: '', // 教室データ
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
       iconSize: 30, // アイコンサイズ
@@ -222,14 +227,10 @@ export default {
      * キャンバスクリックイベント
      */
     canvasMouseDown: async function (event) {
-      // 座席に誰も座っていないかつ，予約済みでない場合
-      if (
-        !this.isDisabledClick &&
-        event.target.seatId !== null &&
-        event.target.reservationId === null
-      ) {
-        // クリックを無効化
-        this.isDisabledClick = true;
+      // クリックした座席に誰も座っていないかつ，予約済みでない場合
+      if (event.target.seatId !== null && event.target.reservationId === null) {
+        // ロード開始
+        var loader = this.$loading.show(this.loaderOption);
 
         // 着席処理
         switch (event.target.role) {
@@ -255,8 +256,8 @@ export default {
             break;
         }
 
-        // クリックを有効化
-        this.isDisabledClick = false;
+        // ロード終了
+        loader.hide();
       }
     },
 
@@ -264,20 +265,14 @@ export default {
      * 自習室からの退席処理
      */
     leaveRoom: async function () {
-      if (
-        !this.isDisabledClick &&
-        this.authUser.seat !== null &&
-        this.authUser.seat.section.role === '自習'
-      ) {
-        // クリックを無効化
-        this.isDisabledClick = true;
+      // ロード開始
+      var loader = this.$loading.show(this.loaderOption);
 
-        // 状態変更処理
-        await this.userAction('leave');
+      // 状態変更処理
+      await this.userAction('leave');
 
-        // クリックを有効化
-        this.isDisabledClick = false;
-      }
+      // ロード終了
+      loader.hide();
     },
 
     /**
@@ -286,33 +281,34 @@ export default {
      * @param Number  sectionId   入室する休憩室ID
      */
     enterLounge: async function (sectionId) {
-      // クリックを無効化
-      this.isDisabledClick = true;
-
       // 初回取得
       await this.getLounge(sectionId);
+
+      this.isChatOpen = true;
 
       // 同期開始
       this.loungeSyncTimer = setInterval(() => {
         this.getLounge(sectionId);
       }, 3000);
-
-      this.isChatOpen = true;
     },
 
     /**
      * 休憩室からの退室
      */
     leaveLounge: async function () {
+      // ロード開始
+      var loader = this.$loading.show(this.loaderOption);
+
+      // 状態変更処理
       await this.userAction('leaveLounge');
 
       this.isChatOpen = false;
 
+      // ロード終了
+      loader.hide();
+
       // 同期停止
       clearInterval(this.loungeSyncTimer);
-
-      // クリックを有効化
-      this.isDisabledClick = false;
     },
 
     /**
@@ -371,9 +367,18 @@ export default {
 
   async mounted() {
     /**
+     * ロードの設定
+     */
+    this.loaderOption = {
+      container: this.$refs.room,
+    };
+    // ロード開始
+    var loader = this.$loading.show(this.loaderOption);
+
+    /**
      * キャンバスの設定
      */
-    this.canvas = new fabric.Canvas('room', {
+    this.canvas = new fabric.Canvas('canvas', {
       preserveObjectStacking: true, // オブジェクトの重なり順の固定
     });
     this.canvas.selection = false; // エリア選択の無効化
@@ -381,8 +386,6 @@ export default {
       this.$storage('system') + 'room.png',
       this.canvas.renderAll.bind(this.canvas)
     );
-
-    this.canvas.on('mouse:down', this.canvasMouseDown);
 
     // クリックエリアの設定
     await this.getRoom();
@@ -427,6 +430,17 @@ export default {
         }
       });
     });
+
+    // クリックイベントの設定
+    this.canvas.on('mouse:down', (event) => {
+      // 入室前または自習室に着席している場合はクリックを受け付ける
+      if (this.authUser.seat === null || this.authUser.seat.section.role === '自習') {
+        this.canvasMouseDown(event);
+      }
+    });
+
+    // ロード終了
+    loader.hide();
 
     /**
      * 部屋の同期開始

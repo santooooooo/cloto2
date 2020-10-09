@@ -31,6 +31,7 @@
     "vue-beautiful-chat": "^2.5.0",
     "vue-cropper": "^0.5.5",
     "vue-head": "^2.2.0",
+    "vue-loading-overlay": "^3.4.2",
     "vue-router": "^3.4.3",
     "vuetify": "^2.3.10",
     "vuex": "^3.5.1"
