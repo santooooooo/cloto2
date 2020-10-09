@@ -141,7 +141,7 @@ export default {
                           section.role === '休憩' &&
                           object.reservationId === oldVal[sectionIndex].seats[seatIndex].user.id
                         ) {
-                          object.set({ reservationId: null, fill: '#000000' });
+                          object.set({ reservationId: null, fill: '' });
                           this.canvas.requestRenderAll();
                         }
                       }
@@ -187,61 +187,32 @@ export default {
         case 'sitting':
           // 着席処理
           endpoint = this.$endpoint('seatSit', [seatObject.seatId]);
-          this.putIcon(seatObject.left, seatObject.top, this.authUser);
           break;
 
         case 'leave':
           // 退席処理
-          this.canvas.getObjects().forEach((object) => {
-            if (object.userId === this.authUser.id) {
-              seatObject = object;
-              this.removeIcon(object);
-            }
-          });
           endpoint = this.$endpoint('seatLeave');
           break;
 
         case 'enterLounge':
           // 休憩室入室処理
           endpoint = this.$endpoint('enterLounge', [seatObject.seatId]);
-          this.canvas.getObjects().forEach((object) => {
-            if (object.userId === this.authUser.id) {
-              // 予約IDのセット
-              object.set({ reservationId: this.authUser.id });
-              // アイコンの削除（移動元）
-              this.removeIcon(object);
-            }
-          });
-          // アイコンの配置（移動先）
-          this.putIcon(seatObject.left, seatObject.top, this.authUser);
           this.enterLounge(seatObject.sectionId);
           break;
 
         case 'leaveLounge':
           // 休憩室退室処理
           this.canvas.getObjects().forEach((object) => {
-            if (object.userId === this.authUser.id) {
-              // アイコンの削除（移動元）
-              this.removeIcon(object);
-            }
-
             if (object.reservationId === this.authUser.id) {
-              // アイコンの配置（移動先）
-              this.putIcon(object.left, object.top, this.authUser);
-              // 予約IDの削除
-              object.set({ reservationId: null, fill: '#000000' });
               endpoint = this.$endpoint('leaveLounge', [object.seatId]);
             }
           });
-
           break;
       }
 
-      // 変更の適用
-      this.canvas.requestRenderAll();
-
       // データベースへ状態を保存
-      await this.$http.post(endpoint);
+      var response = await this.$http.post(endpoint);
+      this.roomData = response.data;
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
@@ -418,7 +389,7 @@ export default {
     this.roomData.sections.forEach((section, sectionIndex) => {
       section.seats.forEach((seat, seatIndex) => {
         var position = JSON.parse(seat.position);
-        var color = '#000000';
+        var color = '';
         if (seat.status == 'break') {
           color = '#FF0000';
         }
