@@ -2,7 +2,7 @@
   <div ref="room">
     <v-btn
       @click="leaveRoom()"
-      :disabled="authUser.seat === null || authUser.seat.section.role !== '自習'"
+      :disabled="authUser.seat === null || authUser.seat.section.role !== 'study'"
       >退席</v-btn
     >
 
@@ -157,7 +157,7 @@ export default {
 
                         // 休憩室から退席した場合は予約を解除
                         if (
-                          section.role === '休憩' &&
+                          section.role === 'lounge' &&
                           object.reservationId === oldVal[sectionIndex].seats[seatIndex].user.id
                         ) {
                           object.set({ reservationId: null, fill: '' });
@@ -254,7 +254,7 @@ export default {
 
         // 着席処理
         switch (event.target.role) {
-          case '自習': // 自習室がクリックされた場合
+          case 'study': // 自習室がクリックされた場合
             // 現在どこにも着席していない場合
             if (this.authUser.seat === null) {
               // 状態変更処理
@@ -262,13 +262,13 @@ export default {
             }
             break;
 
-          case '休憩': // 休憩室がクリックされた場合
+          case 'lounge': // 休憩室がクリックされた場合
             if (this.authUser.seat === null) {
               // どこにも着席していない状態で休憩室をクリックした場合
               alert('いきなり休憩ですか？まずは自習をしましょう！');
             } else {
               // 現在自習室に着席中の場合
-              if (this.authUser.seat.section.role === '自習') {
+              if (this.authUser.seat.section.role === 'study') {
                 // 状態変更処理
                 await this.userAction('enterLounge', event.target);
               }
@@ -444,7 +444,7 @@ export default {
           this.putIcon(position.x, position.y, seat.user);
 
           // ログインユーザーが座っており，座席が休憩室にある場合
-          if (seat.id === this.authUser.seat_id && section.role === '休憩') {
+          if (seat.id === this.authUser.seat_id && section.role === 'lounge') {
             this.enterLounge(section.id);
           }
         }
@@ -456,7 +456,7 @@ export default {
       // オブジェクトのクリック時にのみ実行
       if (event.target !== null) {
         // 入室前または自習室に着席している場合はクリックを受け付ける
-        if (this.authUser.seat === null || this.authUser.seat.section.role === '自習') {
+        if (this.authUser.seat === null || this.authUser.seat.section.role === 'study') {
           this.canvasMouseDown(event);
         }
       }
