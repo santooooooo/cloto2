@@ -17,7 +17,7 @@
           <v-list-item @click="$router.push({ name: 'userPage', params: { username: authUser.username }});">
             <v-list-item-title>プロフィール</v-list-item-title>
           </v-list-item>
-          <v-list-item  @click="$emit('logout')">
+          <v-list-item @click="$emit('logout')">
             <v-list-item-title>ログアウト</v-list-item-title>
           </v-list-item>
         </v-list>

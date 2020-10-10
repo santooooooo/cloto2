@@ -4,6 +4,7 @@
       <!-- <router-link :to="{ name: 'index' }">
         <img :src="$storage('system') + 'header-logo.svg'" />
       </router-link> -->
+      <h1>???教室</h1>
     </v-list-item>
 
     <v-divider></v-divider>
@@ -28,9 +29,9 @@
     <template v-slot:append>
       <div class="pa-2">
         <!-- <v-btn block @click="$emit('logout')">ログアウト</v-btn> -->
-        <room ref="room">
+        <!-- <room ref="room">
           <v-btn block @click="this.$refs.room.$emit('clickLeaveButton')">退席</v-btn>
-        </room>
+        </room> -->
         <!-- <room ref='room'> -->
       </div>
     </template>
@@ -38,7 +39,7 @@
 </template>
 
 <script>
-this.$refs.room.$emit('clickLeaveButton');
+// this.$refs.room.$emit('clickLeaveButton');
 export default {
   computed: {
     authCheck() {

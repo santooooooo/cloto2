@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <!-- ヘッダー -->
-    <Header @show-drawer="isShowDrawer = true" />
+    <Header @show-drawer="isShowDrawer = true" @logout="logout"  />
 
     <!-- ドロワーメニュー -->
-    <Drawer v-if="isRelease" />
+    <Drawer v-if="isRelease"/>
 
     <!-- メイン -->
     <v-main>
