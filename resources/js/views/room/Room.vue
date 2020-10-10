@@ -227,37 +227,40 @@ export default {
      * キャンバスクリックイベント
      */
     canvasMouseDown: async function (event) {
-      // クリックした座席に誰も座っていないかつ，予約済みでない場合
-      if (event.target.seatId !== null && event.target.reservationId === null) {
-        // ロード開始
-        var loader = this.$loading.show(this.loaderOption);
+      if (event.target !== null) {
+        //
+        // クリックした座席に誰も座っていないかつ，予約済みでない場合
+        if (event.target.seatId !== null && event.target.reservationId === null) {
+          // ロード開始
+          var loader = this.$loading.show(this.loaderOption);
 
-        // 着席処理
-        switch (event.target.role) {
-          case '自習': // 自習室がクリックされた場合
-            // 現在どこにも着席していない場合
-            if (this.authUser.seat === null) {
-              // 状態変更処理
-              await this.userAction('sitting', event.target);
-            }
-            break;
-
-          case '休憩': // 休憩室がクリックされた場合
-            if (this.authUser.seat === null) {
-              // どこにも着席していない状態で休憩室をクリックした場合
-              alert('いきなり休憩ですか？まずは自習をしましょう！');
-            } else {
-              // 現在自習室に着席中の場合
-              if (this.authUser.seat.section.role === '自習') {
+          // 着席処理
+          switch (event.target.role) {
+            case '自習': // 自習室がクリックされた場合
+              // 現在どこにも着席していない場合
+              if (this.authUser.seat === null) {
                 // 状態変更処理
-                await this.userAction('enterLounge', event.target);
+                await this.userAction('sitting', event.target);
               }
-            }
-            break;
-        }
+              break;
 
-        // ロード終了
-        loader.hide();
+            case '休憩': // 休憩室がクリックされた場合
+              if (this.authUser.seat === null) {
+                // どこにも着席していない状態で休憩室をクリックした場合
+                alert('いきなり休憩ですか？まずは自習をしましょう！');
+              } else {
+                // 現在自習室に着席中の場合
+                if (this.authUser.seat.section.role === '自習') {
+                  // 状態変更処理
+                  await this.userAction('enterLounge', event.target);
+                }
+              }
+              break;
+          }
+
+          // ロード終了
+          loader.hide();
+        }
       }
     },
 
