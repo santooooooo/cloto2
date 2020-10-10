@@ -39,9 +39,7 @@ class RoomController extends Controller
     {
         return response()->json(
             Room::with('sections.seats.user')->find($id),
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
+            config('consts.status.OK')
         );
     }
 

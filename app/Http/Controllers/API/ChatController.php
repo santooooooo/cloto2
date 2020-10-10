@@ -43,12 +43,7 @@ class ChatController extends Controller
         $result = $this->user->chats()->create(compact('user_id', 'section_id', 'type', 'data'));
 
         if (empty($result)) {
-            return response()->json(
-                'エラーが発生しました．',
-                500,
-                [],
-                JSON_UNESCAPED_UNICODE
-            );
+            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
         return response()->json($result);

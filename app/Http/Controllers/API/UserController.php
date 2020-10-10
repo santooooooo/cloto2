@@ -110,7 +110,7 @@ class UserController extends Controller
         // データの更新
         $edit_user->update($param);
 
-        return response()->json('OK');
+        return response();
     }
 
     /**

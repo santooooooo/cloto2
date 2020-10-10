@@ -39,9 +39,9 @@ class PreRegisterController extends Controller
         $failures += count(Mail::failures());
 
         if ($failures > 0) {
-            return response()->json([], 500);
+            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response()->json();
+        return response();
     }
 }
