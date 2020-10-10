@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-btn @click="clickLeaveButton()">退席</v-btn>
-
     <canvas :width="roomWidth" :height="roomHight" id="room"></canvas>
+     <v-btn @click="clickLeaveButton()">退席</v-btn>
+
     <v-card class="mx-auto" max-width="344" outlined>
       <h1>{{ this.roomData.name }}教室</h1>
     </v-card>
@@ -98,6 +98,7 @@ export default {
      */
     syncRoom: async function () {
       var response = await this.$http.get(this.$endpoint('roomShow', [this.$route.params.id]));
+      // console.log(response.data.name);
 
       // セクションのループ
       response.data.sections.forEach((section, sectionIndex) => {
