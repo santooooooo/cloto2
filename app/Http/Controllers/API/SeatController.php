@@ -39,12 +39,19 @@ class SeatController extends RoomController
     {
         $room_id = $seat->section->room->id;
 
+        // 処理中止
+        if ($seat->status != null) {
+            $message = '他のユーザーが着席しています。';
+            return self::show($room_id, config('consts.status.INTERNAL_SERVER_ERROR'), $message);
+        }
+
+
         // ユーザーと座席を紐付け
         $this->user->seat()->associate($seat);
         $this->user->save();
 
         // 座席状態の更新
-        $result = $seat->update(['status' => 'sitting']);
+        $seat->update(['status' => 'sitting']);
 
         // 更新後の部屋データ
         return self::show($room_id);
@@ -66,7 +73,7 @@ class SeatController extends RoomController
 
         // ユーザーと座席を紐付け解除
         $this->user->seat()->dissociate();
-        $result = $this->user->save();
+        $this->user->save();
 
         // 更新後の部屋データ
         return self::show($room_id);
@@ -82,6 +89,13 @@ class SeatController extends RoomController
     {
         $room_id = $seat->section->room->id;
 
+        // 処理中止
+        if ($seat->status != null) {
+            $message = '他のユーザーが着席しています。';
+            return self::show($room_id, config('consts.status.INTERNAL_SERVER_ERROR'), $message);
+        }
+
+
         // 現在の座席をbreakに変更
         $this->user->seat()->update(['status' => 'break', 'reservation_user_id' => $this->user->id]);
         // ユーザーと座席を紐付け
@@ -89,7 +103,7 @@ class SeatController extends RoomController
         $this->user->save();
 
         // 座席状態の更新
-        $result = $seat->update(['status' => 'sitting']);
+        $seat->update(['status' => 'sitting']);
 
         // 更新後の部屋データ
         return self::show($room_id);
@@ -115,7 +129,8 @@ class SeatController extends RoomController
             $result = $chat->update(['data' => json_encode(['text' => '削除されたメッセージです．'])]);
 
             if (empty($result)) {
-                return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+                $message = 'エラーが発生しました。';
+                return self::show($room_id, config('consts.status.INTERNAL_SERVER_ERROR'), $message);
             }
         }
 
@@ -133,7 +148,7 @@ class SeatController extends RoomController
         $this->user->save();
 
         // 座席状態の更新
-        $result = $seat->update(['status' => 'sitting', 'reservation_user_id' => null]);
+        $seat->update(['status' => 'sitting', 'reservation_user_id' => null]);
 
         // 更新後の部屋データ
         return self::show($room_id);

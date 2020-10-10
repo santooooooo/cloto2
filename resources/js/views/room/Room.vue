@@ -47,13 +47,27 @@
       </template>
       <template v-slot:system-message-body="{ message }"> [System]: {{ message.text }} </template>
     </beautiful-chat>
+
+    <div class="text-center ma-2">
+      <v-snackbar v-model="errorSnackbar">
+        {{ errorMessage }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn color="pink" text v-bind="attrs" @click="errorSnackbar = false"> Close </v-btn>
+        </template>
+      </v-snackbar>
+    </div>
   </div>
 </template>
 
 <script>
+import { OK } from '@/consts/status';
+
 export default {
   data() {
     return {
+      errorSnackbar: false, // エラーメッセージ表示制御
+      errorMessage: '', // エラーメッセージ
       canvas: '', // キャンバスエリア
       isLoading: false, // ロードの制御
       loaderOption: '', // loading-overlayの設定
@@ -166,7 +180,7 @@ export default {
      */
     getRoom: async function () {
       var response = await this.$http.get(this.$endpoint('roomShow', [this.$route.params.id]));
-      this.roomData = response.data;
+      this.roomData = response.data.roomData;
     },
 
     /**
@@ -217,7 +231,13 @@ export default {
 
       // データベースへ状態を保存
       var response = await this.$http.post(endpoint);
-      this.roomData = response.data;
+      this.roomData = response.data.roomData;
+
+      // エラー発生時
+      if (response.status !== OK) {
+        this.errorMessage = response.data.message;
+        this.errorSnackbar = true;
+      }
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');

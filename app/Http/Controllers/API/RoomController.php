@@ -11,14 +11,19 @@ class RoomController extends Controller
     /**
      * 部屋の区画と座席の一覧を取得
      *
-     * @param  Int  $id 部屋ID
+     * @param  Int  $id  部屋ID
+     * @param  Int  $status  ステータスコード
+     * @param  String  $message  メッセージ
      * @return \Illuminate\Http\Response
      */
-    static function show(Int $id)
+    static function show(Int $id, Int $status = 200, String $message = '')
     {
         return response()->json(
-            Room::with('sections.seats.user')->find($id),
-            config('consts.status.OK')
+            [
+                'roomData' => Room::with('sections.seats.user')->find($id),
+                'message' => $message
+            ],
+            $status
         );
     }
 }
