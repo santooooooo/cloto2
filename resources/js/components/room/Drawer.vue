@@ -4,7 +4,7 @@
       <!-- <router-link :to="{ name: 'index' }">
         <img :src="$storage('system') + 'header-logo.svg'" />
       </router-link> -->
-      <h1>???教室</h1>
+      <h1>{{roomName }}教室</h1>
     </v-list-item>
 
     <v-divider></v-divider>
@@ -39,8 +39,11 @@
 </template>
 
 <script>
-// this.$refs.room.$emit('clickLeaveButton');
 export default {
+  props: {
+    roomName: String,
+  },
+
   computed: {
     authCheck() {
       return this.$store.getters['auth/check'];
@@ -49,10 +52,10 @@ export default {
       return this.$store.getters['auth/user'];
     },
   },
-  // method: {
-  //   clickLeaveButton: function () {
-  //     this.$refs.room.clickLeaveButton();
-  //   },
-  // },
+
+
+ methods: {
+ },
+
 };
 </script>

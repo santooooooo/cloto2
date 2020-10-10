@@ -1,11 +1,8 @@
 <template>
   <div>
+   <Drawer :roomName ="roomData.name"/>
     <canvas :width="roomWidth" :height="roomHight" id="room"></canvas>
     <v-btn @click="clickLeaveButton()">退席</v-btn>
-
-    <v-card class="mx-auto" max-width="344" outlined>
-      <h1>{{ this.roomData.name }}教室</h1>
-    </v-card>
 
     <beautiful-chat
       :open="openChat"
@@ -47,7 +44,13 @@
 </template>
 
 <script>
+import Drawer from '@/components/room/Drawer';
 export default {
+
+   components: {
+
+    Drawer,
+  },
   data() {
     return {
       canvas: {},
