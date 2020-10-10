@@ -115,12 +115,7 @@ class SeatController extends RoomController
             $result = $chat->update(['data' => json_encode(['text' => '削除されたメッセージです．'])]);
 
             if (empty($result)) {
-                return response()->json(
-                    'エラーが発生しました．',
-                    500,
-                    [],
-                    JSON_UNESCAPED_UNICODE
-                );
+                return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
             }
         }
 

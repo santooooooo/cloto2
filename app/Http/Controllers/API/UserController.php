@@ -29,6 +29,22 @@ class UserController extends Controller
 
 
     /**
+     * ログインユーザーの取得
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function auth()
+    {
+        $this->auth_user = Auth::user();
+
+        if (!empty($this->auth_user)) {
+            return response()->json($this->auth_user->load('seat.section'));
+        }
+
+        return response(null);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -94,7 +110,7 @@ class UserController extends Controller
         // データの更新
         $edit_user->update($param);
 
-        return response()->json('OK');
+        return response();
     }
 
     /**

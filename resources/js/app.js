@@ -54,7 +54,6 @@ const app = new Vue({
   /** 前処理 */
   if (isRelease()) {
     await store.dispatch('auth/syncAuthUser');
-    console.log('isRelease');
   }
 
   /** マウント */

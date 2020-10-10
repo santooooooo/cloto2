@@ -40,7 +40,7 @@ class ContactController extends Controller
         $failures += count(Mail::failures());
 
         if ($failures > 0) {
-            return response()->json('エラーが発生しました。', 500);
+            return response()->json('エラーが発生しました。', config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
         return response()->json('お問い合わせを送信しました。');
