@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- ヘッダー -->
-    <Header @show-drawer="isShowDrawer = true" @logout="logout"  />
+    <Header @show-drawer="isShowDrawer = true" @logout="logout" />
 
     <!-- ドロワーメニュー -->
     <!-- <Drawer v-if="isRelease"/> -->

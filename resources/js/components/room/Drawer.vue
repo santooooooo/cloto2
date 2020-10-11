@@ -4,7 +4,7 @@
       <!-- <router-link :to="{ name: 'index' }">
         <img :src="$storage('system') + 'header-logo.svg'" />
       </router-link> -->
-      <h1>{{roomName }}教室</h1>
+      <h1>{{ roomName }}教室</h1>
     </v-list-item>
 
     <v-divider></v-divider>
@@ -28,11 +28,7 @@
 
     <template v-slot:append>
       <div class="pa-2">
-        <!-- <v-btn block @click="$emit('logout')">ログアウト</v-btn> -->
-        <!-- <room ref="room">
-          <v-btn block @click="this.$refs.room.$emit('clickLeaveButton')">退席</v-btn>
-        </room> -->
-        <!-- <room ref='room'> -->
+        <v-btn block @click="$emit('clickLeaveButton')">退席</v-btn>
       </div>
     </template>
   </v-navigation-drawer>
@@ -53,9 +49,6 @@ export default {
     },
   },
 
-
- methods: {
- },
-
+  methods: {},
 };
 </script>

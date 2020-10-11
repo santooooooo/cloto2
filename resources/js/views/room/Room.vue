@@ -1,8 +1,8 @@
 <template>
   <div>
-   <Drawer :roomName ="roomData.name"/>
+    <Drawer :roomName="roomData.name" @clickLeaveButton="clickLeaveButton" />
     <canvas :width="roomWidth" :height="roomHight" id="room"></canvas>
-    <v-btn @click="clickLeaveButton()">退席</v-btn>
+    <!-- <v-btn @click="clickLeaveButton()">退席</v-btn> -->
 
     <beautiful-chat
       :open="openChat"
@@ -46,9 +46,7 @@
 <script>
 import Drawer from '@/components/room/Drawer';
 export default {
-
-   components: {
-
+  components: {
     Drawer,
   },
   data() {

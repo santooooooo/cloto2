@@ -1,6 +1,5 @@
 <template>
   <v-app-bar app dark>
-    <!-- <v-btn color="white" text rounded class="my-2" @click="$emit('logout')"> ログアウト </v-btn> -->
     <div class="iconPosition">
       <v-menu bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -14,7 +13,9 @@
         </template>
 
         <v-list>
-          <v-list-item @click="$router.push({ name: 'userPage', params: { username: authUser.username }});">
+          <v-list-item
+            @click="$router.push({ name: 'userPage', params: { username: authUser.username } })"
+          >
             <v-list-item-title>プロフィール</v-list-item-title>
           </v-list-item>
           <v-list-item @click="$emit('logout')">
