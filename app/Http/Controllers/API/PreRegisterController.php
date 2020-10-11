@@ -25,7 +25,6 @@ class PreRegisterController extends Controller
             'from' => config('mail.service.preregister'),
             'from_name' => 'CLOTO',
             'subject' => '【仮登録受付完了】- CLOTO',
-            'body' => '仮登録の受付を完了しました。リリースまでもうしばらくお待ちください。',
             'newsletter' => $request->newsletter
         ], 'user'));
         $failures += count(Mail::failures());
