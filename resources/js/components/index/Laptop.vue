@@ -5,7 +5,7 @@
         <v-spacer></v-spacer>
 
         <v-col cols="5" align-self="center">
-          <h1 class="text-center text-h3 font-weight-bold">創る、繋がる、好きになる</h1>
+          <h1 class="text-center text-h4 font-weight-bold">創る、繋がる、好きになる</h1>
           <p class="text-center text-subtitle-1 font-weight-bold">
             プログラミングに取り組むみなさん、こんにちは。<br />
             「実際のプログラミングって大変. . . 」<br />
@@ -46,9 +46,8 @@
             <v-img
               eager
               class="mx-auto"
-              width="350"
-              aspect-ratio="2"
-              :src="$storage('system') + 'twitter-card.png'"
+              width="400"
+              :src="$storage('system') + 'study.svg'"
             ></v-img>
 
             <v-card-title>
@@ -66,9 +65,8 @@
             <v-img
               eager
               class="mx-auto"
-              width="350"
-              aspect-ratio="2"
-              :src="$storage('system') + 'twitter-card.png'"
+              width="400"
+              :src="$storage('system') + 'break.svg'"
             ></v-img>
 
             <v-card-title>
@@ -86,9 +84,8 @@
             <v-img
               eager
               class="mx-auto"
-              width="350"
-              aspect-ratio="2"
-              :src="$storage('system') + 'twitter-card.png'"
+              width="400"
+              :src="$storage('system') + 'record.svg'"
             ></v-img>
 
             <v-card-title>
@@ -110,18 +107,17 @@
             <v-row justify="center">
               <v-icon class="icon">mdi-cloud-circle</v-icon>
             </v-row>
-            <h2 class="mt-5 text-center text-h4 font-weight-bold">いつでもどこからでも</h2>
-            <p class="mt-8 text-center text-body-1">
-              CLOTOはプログラミングで「創る」というあなたの体験を<br />
+            <h2 class="mt-5 text-center text-h4 font-weight-bold">いつでもどこでも</h2>
+            <p class="mt-5 text-center text-body-1">
+              CLOTOはプログラミングで「創る」を<br />
               より直感的に、創造的で楽しいものにします。<br />
               これら全ての体験がPC一台で、一つのアカウントで。
             </p>
             <v-img
               eager
               class="mx-auto mt-12"
-              width="350"
-              aspect-ratio="2"
-              :src="$storage('system') + 'twitter-card.png'"
+              width="500"
+              :src="$storage('system') + 'everywhere.svg'"
             ></v-img>
           </div>
         </v-col>
@@ -133,17 +129,15 @@
             </v-row>
             <h2 class="mt-5 text-center text-h4 font-weight-bold">みんなが創ってる</h2>
             <p class="mt-5 text-center text-body-1">
-              プログラミングを続ける上で、仲間の存在ほど心強いものはありません。<br />
-              そしてプログラミングの醍醐味はなんといっても「創る」こと。<br />
-              「創る」楽しみを仲間共有し、プログラミングをもっと好きになる。<br />
+              仲間の存在ほど心強いものはありません。<br />
+              「創る」楽しみを仲間と共有し、もっと好きになる。<br />
               そんな空間を創りたい。それがCLOTOの存在理由。
             </p>
             <v-img
               eager
               class="mx-auto mt-12"
-              width="350"
-              aspect-ratio="2"
-              :src="$storage('system') + 'twitter-card.png'"
+              width="500"
+              :src="$storage('system') + 'everyone.svg'"
             ></v-img>
           </div>
         </v-col>
