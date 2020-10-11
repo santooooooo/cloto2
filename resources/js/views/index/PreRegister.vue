@@ -51,7 +51,18 @@
                   required
                 ></v-text-field>
 
-                <v-row justify="center" class="mt-4">
+                <v-checkbox
+                  v-model="preRegisterForm.newsletter"
+                  label="アンケートの送付を許可する"
+                  color="primary"
+                  hide-details
+                ></v-checkbox>
+                <small
+                  >より良いサービスをお届けするために、多くの方からのフィードバックを必要としています。
+                  メールでの簡単なアンケートにご協力いただけますと幸いです。</small
+                >
+
+                <v-row justify="center" class="mt-6">
                   <v-btn
                     :loading="preRegisterForm.loading"
                     :disabled="!preRegisterFormValidation.valid"
@@ -89,6 +100,7 @@ export default {
       preRegisterForm: {
         name: '',
         email: '',
+        newsletter: true,
         loading: false,
       },
       preRegisterFormValidation: {
@@ -126,6 +138,7 @@ export default {
         var input = {
           name: this.preRegisterForm.name,
           email: this.preRegisterForm.email,
+          newsletter: this.preRegisterForm.newsletter,
         };
 
         var response = await this.$http.post(this.$endpoint('preRegister'), input);
@@ -145,3 +158,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+label {
+  margin: 0 !important;
+}
+</style>
