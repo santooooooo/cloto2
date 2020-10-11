@@ -17,12 +17,14 @@
     integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
 
 
-<!-- Twitter -->
+<!-- OGP -->
+<meta property="og:url" content="{{ config('app.url') }}" />
+<meta property="og:title" content="{{ config('app.name') }}" />
+<meta property="og:description" content="プログラミングを楽しみながら継続できる環境がここに生まれました！" />
+<meta property="og:image" content="{{ config('app.url').config('consts.storage.system').'card.png' }}" />
+<!-- Twitter card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@cloto_jp">
-<meta name="twitter:title" content="CLOTO">
-<meta name="twitter:description" content="「チュートリアル学習も終わり、いよいよ腕試し！！」そんな駆け出しエンジニアのみなさん、朗報です！">
-<meta name="twitter:image" content="{{ config('app.url').config('consts.storage.system').'card.png' }}">
 
 
 @if (App::environment('production'))
