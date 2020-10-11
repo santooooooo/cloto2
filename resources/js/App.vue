@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <!-- ヘッダー -->
-    <Header @show-drawer="isShowDrawer = true" />
+    <Header @show-drawer="isShowDrawer = true" @logout="logout" @leave="leave" />
 
     <!-- ドロワーメニュー -->
-    <Drawer v-model="isShowDrawer" @logout="logout" v-if="isRelease" />
+    <!-- <Drawer v-if="isRelease"/> -->
 
     <!-- メイン -->
     <v-main>
@@ -12,20 +12,18 @@
     </v-main>
 
     <!-- フッター -->
-    <Footer @logout="logout" />
+    <Footer @logout="logout" @leave="leave" />
   </v-app>
 </template>
 
 <script>
 import Header from './Header';
-import Drawer from './Drawer';
 import Footer from './Footer';
 import { UNAUTHORIZED, INTERNAL_SERVER_ERROR } from '@/consts/status';
 
 export default {
   components: {
     Header,
-    Drawer,
     Footer,
   },
   data() {
@@ -40,6 +38,9 @@ export default {
     errorCode() {
       return this.$store.state.error.code;
     },
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
   },
   methods: {
     logout: async function () {
@@ -49,6 +50,13 @@ export default {
       // トップページへリダイレクト
       if (this.$route.path != this.$router.resolve({ name: 'index' }).href) {
         this.$router.push({ name: 'index' });
+      }
+    },
+    leave: async function () {
+      if (this.authUser.seat_id != null) {
+        var endpoint = '';
+        endpoint = this.$endpoint('seatLeave');
+        await this.$http.post(endpoint);
       }
     },
   },

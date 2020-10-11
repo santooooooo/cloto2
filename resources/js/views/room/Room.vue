@@ -1,15 +1,13 @@
 <template>
   <div ref="room">
-    <v-btn
-      @click="leaveRoom()"
-      :disabled="authUser.seat === null || authUser.seat.section.role !== 'study'"
-      >退席</v-btn
-    >
-
-    <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
-    <v-card class="mx-auto" max-width="344" outlined>
-      <h1>{{ this.roomData.name }}教室</h1>
-    </v-card>
+    <v-row>
+      <v-col cols="3">
+        <Drawer :roomName="roomData.name" @clickLeaveButton="clickLeaveButton" />
+      </v-col>
+      <v-col cols="9">
+        <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
+      </v-col>
+    </v-row>
 
     <beautiful-chat
       :open="enterLounge"
@@ -61,9 +59,13 @@
 </template>
 
 <script>
+import Drawer from '@/components/room/Drawer';
 import { OK } from '@/consts/status';
 
 export default {
+  components: {
+    Drawer,
+  },
   data() {
     return {
       errorSnackbar: false, // エラーメッセージ表示制御
