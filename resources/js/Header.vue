@@ -20,7 +20,7 @@
           </v-list-item>
           <v-list-item
             @click="
-              Leave();
+              leave();
               $emit('logout');
             "
           >
@@ -49,11 +49,8 @@ export default {
   },
 
   methods: {
-    Leave: async function () {
-      console.log('fack');
-      console.log(this.authUser.seat_id);
+    leave: async function () {
       if (this.authUser.seat_id != null) {
-        //sitting 状態でログアウトしたら退席処理
         var endpoint = '';
         endpoint = this.$endpoint('seatLeave');
         await this.$http.post(endpoint);

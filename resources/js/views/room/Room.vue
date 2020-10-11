@@ -388,13 +388,13 @@ export default {
         case 'leave':
           console.log('useraction leave');
           console.log('leave' + this.authUser.id);
-          this.canvas.getObjects().forEach((object) => {
-            if (object.userId === this.authUser.id) {
-              console.log('leave roop内' + this.authUser.id);
-              seatObject = object;
-              this.removeIcon(object);
-            }
-          });
+          // this.canvas.getObjects().forEach((object) => {
+          //   if (object.userId === this.authUser.id) {
+          //     console.log('leave roop内' + this.authUser.id);
+          //     seatObject = object;
+          //     this.removeIcon(object);
+          //   }
+          // });
 
           endpoint = this.$endpoint('seatLeave');
 
