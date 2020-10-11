@@ -71,6 +71,7 @@ export default {
       canvas: '', // キャンバスエリア
       isLoading: false, // ロードの制御
       loaderOption: '', // loading-overlayの設定
+      roomSyncTimer: null, // 教室同期制御
       roomData: '', // 教室データ
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
@@ -106,11 +107,13 @@ export default {
       },
     };
   },
+
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
     },
   },
+
   watch: {
     /**
      * 座席データの更新時
@@ -174,6 +177,7 @@ export default {
       },
     },
   },
+
   methods: {
     /**
      * 教室データの取得
@@ -335,6 +339,7 @@ export default {
 
       // 同期停止
       clearInterval(this.loungeSyncTimer);
+      this.loungeSyncTimer = null;
     },
 
     /**
@@ -474,9 +479,19 @@ export default {
     /**
      * 部屋の同期開始
      */
-    setInterval(() => {
+    this.roomSyncTimer = setInterval(() => {
       this.getRoom();
     }, 3000);
+  },
+
+  destroyed() {
+    // ページ遷移時にはタイマーを解除
+    if (this.roomSyncTimer !== null) {
+      clearInterval(this.roomSyncTimer);
+    }
+    if (this.loungeSyncTimer !== null) {
+      clearInterval(this.loungeSyncTimer);
+    }
   },
 };
 </script>
