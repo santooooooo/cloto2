@@ -202,21 +202,27 @@ export default {
      */
     userAction: async function (action, seatObject = null) {
       var endpoint = '';
+      var response = '';
       switch (action) {
         case 'sitting':
           // 着席処理
           endpoint = this.$endpoint('seatSit', [seatObject.seatId]);
+          response = await this.$http.post(endpoint);
           break;
 
         case 'leave':
           // 退席処理
           endpoint = this.$endpoint('seatLeave');
+          response = await this.$http.post(endpoint);
           break;
 
         case 'enterLounge':
           // 休憩室入室処理
           endpoint = this.$endpoint('enterLounge', [seatObject.seatId]);
-          this.enterLounge(seatObject.sectionId);
+          response = await this.$http.post(endpoint);
+          if (response.status === OK) {
+            this.enterLounge(seatObject.sectionId);
+          }
           break;
 
         case 'leaveLounge':
@@ -226,11 +232,11 @@ export default {
               endpoint = this.$endpoint('leaveLounge', [object.seatId]);
             }
           });
+          response = await this.$http.post(endpoint);
           break;
       }
 
-      // データベースへ状態を保存
-      var response = await this.$http.post(endpoint);
+      // データの更新
       this.roomData = response.data.roomData;
 
       // エラー発生時
