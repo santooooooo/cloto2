@@ -125,6 +125,8 @@ export default {
         if (this.apiStatus) {
           // ページ遷移
           this.$router.push({ name: 'home' });
+        } else {
+          this.loginForm.loading = false;
         }
       }
     },
