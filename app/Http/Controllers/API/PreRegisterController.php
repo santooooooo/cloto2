@@ -43,6 +43,6 @@ class PreRegisterController extends Controller
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response();
+        return response()->json();
     }
 }

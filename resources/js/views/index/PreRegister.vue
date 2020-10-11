@@ -30,7 +30,7 @@
                 <h6
                   class="text-h6 font-weight-black text-decoration-underline red--text text--lighten-1"
                 >
-                  今なら早期登録特典あり
+                  β版完成時にご連絡いたします。
                 </h6>
                 <p class="text-body-1 font-weight-black">以下よりご登録ください！</p>
               </div>
