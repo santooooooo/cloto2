@@ -18,7 +18,12 @@
           >
             <v-list-item-title>プロフィール</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="$emit('logout')">
+          <v-list-item
+            @click="
+              Leave();
+              $emit('logout');
+            "
+          >
             <v-list-item-title>ログアウト</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -40,6 +45,19 @@ export default {
     },
     authUser() {
       return this.$store.getters['auth/user'];
+    },
+  },
+
+  methods: {
+    Leave: async function () {
+      console.log('fack');
+      console.log(this.authUser.seat_id);
+      if (this.authUser.seat_id != null) {
+        //sitting 状態でログアウトしたら退席処理
+        var endpoint = '';
+        endpoint = this.$endpoint('seatLeave');
+        await this.$http.post(endpoint);
+      }
     },
   },
 };

@@ -381,6 +381,7 @@ export default {
           console.log('sitting' + this.authUser.id);
 
           endpoint = this.$endpoint('seatSit', [seatObject.seatId]);
+          console.log('endpoint' + endpoint);
           this.putIcon(seatObject.left, seatObject.top, this.authUser);
           break;
 
