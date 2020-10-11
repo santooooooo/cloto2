@@ -19,7 +19,18 @@
     <v-row justify="center" no-gutters class="black white--text" v-else>
       <v-btn color="white" text rounded class="my-2" :to="{ name: 'home' }"> ホーム </v-btn>
 
-      <v-btn color="white" text rounded class="my-2" @click="$emit('logout')"> ログアウト </v-btn>
+      <v-btn
+        color="white"
+        text
+        rounded
+        class="my-2"
+        @click="
+          $emit('leave');
+          $emit('logout');
+        "
+      >
+        ログアウト
+      </v-btn>
 
       <v-btn color="white" text rounded class="my-2" :to="'hoge'"> 利用規約 </v-btn>
 

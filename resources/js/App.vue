@@ -12,7 +12,7 @@
     </v-main>
 
     <!-- フッター -->
-    <Footer @logout="logout" />
+    <Footer @logout="logout" @leave="leave" />
   </v-app>
 </template>
 
