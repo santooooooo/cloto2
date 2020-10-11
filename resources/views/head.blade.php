@@ -22,7 +22,7 @@
 <meta name="twitter:site" content="@cloto_jp">
 <meta name="twitter:title" content="CLOTO">
 <meta name="twitter:description" content="「チュートリアル学習も終わり、いよいよ腕試し！！」そんな駆け出しエンジニアのみなさん、朗報です！">
-<meta name="twitter:image" content="{{ config('app.url').config('consts.storage.system').'twitter-card.png' }}">
+<meta name="twitter:image" content="{{ config('app.url').config('consts.storage.system').'card.png' }}">
 
 
 @if (App::environment('production'))

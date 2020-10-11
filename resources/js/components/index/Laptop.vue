@@ -23,7 +23,7 @@
 
         <v-col cols="5" align-self="center">
           <v-img
-            :src="$storage('system') + 'top-logo.svg'"
+            :src="$storage('system') + 'top.svg'"
             max-width="500"
             contain
             class="mx-auto"

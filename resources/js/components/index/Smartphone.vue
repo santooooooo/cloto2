@@ -1,12 +1,7 @@
 <template>
   <v-container fluid pa-0 class="index">
     <v-container fluid class="concept">
-      <v-img
-        :src="$storage('system') + 'top-logo.svg'"
-        max-width="500"
-        class="ma-12"
-        contain
-      ></v-img>
+      <v-img :src="$storage('system') + 'top.svg'" max-width="500" class="ma-12" contain></v-img>
 
       <h1 class="mb-5 text-center text-h3 font-weight-bold">創る<br />繋がる<br />好きになる</h1>
       <p class="text-center text-subtitle-1 font-weight-bold">

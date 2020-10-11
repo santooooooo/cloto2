@@ -17,7 +17,7 @@
 
               <!-- ロゴ -->
               <v-img
-                :src="$storage('system') + 'logo.png'"
+                :src="$storage('system') + 'logo.svg'"
                 class="mx-auto mb-4"
                 width="35"
                 height="35"
