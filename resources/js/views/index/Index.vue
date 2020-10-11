@@ -70,7 +70,7 @@
       color="#00acee"
       class="ma-5"
       target="_blank"
-      href="http://twitter.com/share?url=https://cloto.jp&text=デフォルトツイート&via=cloto_jp&hashtags=#CLOTO"
+      href="http://twitter.com/share?url=https://cloto.jp&text=駆け出しエンジニアからプロフェッショナルまで、プログラミングをもっと楽しく！&via=cloto_jp&hashtags=CLOTO,プログラミング"
     >
       <v-icon>mdi-twitter</v-icon>
     </v-btn>

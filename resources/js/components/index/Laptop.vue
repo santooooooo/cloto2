@@ -147,7 +147,7 @@
 
       <v-container>
         <v-divider class="divider"></v-divider>
-        <v-row>
+        <v-row class="grey lighten-2">
           <v-col align-self="center">
             <v-card class="mx-auto" width="500">
               <v-img eager width="500" :src="$storage('system') + 'P1.svg'"></v-img>
@@ -205,7 +205,7 @@
         </v-row>
 
         <v-divider class="divider"></v-divider>
-        <v-row>
+        <v-row class="grey lighten-2">
           <v-col align-self="center">
             <v-card class="mx-auto" width="500">
               <v-img eager width="500" :src="$storage('system') + 'P2.svg'"></v-img>
@@ -263,7 +263,7 @@
         </v-row>
 
         <v-divider class="divider"></v-divider>
-        <v-row>
+        <v-row class="grey lighten-2">
           <v-col align-self="center">
             <v-card class="mx-auto" width="500">
               <v-img eager width="500" :src="$storage('system') + 'P3.svg'"></v-img>
