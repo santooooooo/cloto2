@@ -10,12 +10,13 @@
 
     <v-btn
       depressed
+      small
       color="#00acee"
       class="font-weight-bold"
       target="_blank"
       href="https://twitter.com/cloto_jp"
       v-else
-      ><v-icon>mdi-twitter</v-icon>&nbsp;@cloto_jp</v-btn
+      ><v-icon>mdi-twitter</v-icon>cloto_jp</v-btn
     >
   </v-app-bar>
 </template>
