@@ -23,6 +23,7 @@
 
         <v-col cols="5" align-self="center">
           <v-img
+            eager
             :src="$storage('system') + 'top.svg'"
             max-width="500"
             contain
@@ -43,6 +44,7 @@
         <v-col class="mt-n12">
           <v-card width="400" class="mx-auto">
             <v-img
+              eager
               class="mx-auto"
               width="350"
               aspect-ratio="2"
@@ -62,6 +64,7 @@
         <v-col>
           <v-card width="400" class="mx-auto">
             <v-img
+              eager
               class="mx-auto"
               width="350"
               aspect-ratio="2"
@@ -81,6 +84,7 @@
         <v-col class="mt-12">
           <v-card width="400" class="mx-auto">
             <v-img
+              eager
               class="mx-auto"
               width="350"
               aspect-ratio="2"
@@ -113,6 +117,7 @@
               これら全ての体験がPC一台で、一つのアカウントで。
             </p>
             <v-img
+              eager
               class="mx-auto mt-12"
               width="350"
               aspect-ratio="2"
@@ -134,6 +139,7 @@
               そんな空間を創りたい。それがCLOTOの存在理由。
             </p>
             <v-img
+              eager
               class="mx-auto mt-12"
               width="350"
               aspect-ratio="2"
@@ -149,9 +155,8 @@
         <v-divider class="divider"></v-divider>
         <v-row>
           <v-col align-self="center">
-            <v-card class="mx-auto" width="350">
-              <v-img width="350" aspect-ratio="2" :src="$storage('system') + 'twitter-card.png'">
-              </v-img>
+            <v-card class="mx-auto" width="500">
+              <v-img eager width="500" :src="$storage('system') + 'P1.svg'"></v-img>
             </v-card>
           </v-col>
 
@@ -171,8 +176,8 @@
 
         <v-row class="mb-12">
           <v-col align-self="center">
-            <v-card class="mx-auto" width="350">
-              <v-img width="350" aspect-ratio="2" :src="$storage('system') + 'sample.png'"> </v-img>
+            <v-card class="mx-auto" width="500">
+              <v-img eager width="500" :src="$storage('system') + 'S1-1.svg'"></v-img>
             </v-card>
           </v-col>
 
@@ -189,8 +194,8 @@
 
         <v-row class="mt-12">
           <v-col align-self="center">
-            <v-card class="mx-auto" width="350">
-              <v-img width="350" aspect-ratio="2" :src="$storage('system') + 'sample.png'"> </v-img>
+            <v-card class="mx-auto" width="500">
+              <v-img eager width="500" :src="$storage('system') + 'S1-2.svg'"></v-img>
             </v-card>
           </v-col>
 
@@ -208,9 +213,8 @@
         <v-divider class="divider"></v-divider>
         <v-row>
           <v-col align-self="center">
-            <v-card class="mx-auto" width="350">
-              <v-img width="350" aspect-ratio="2" :src="$storage('system') + 'twitter-card.png'">
-              </v-img>
+            <v-card class="mx-auto" width="500">
+              <v-img eager width="500" :src="$storage('system') + 'P2.svg'"></v-img>
             </v-card>
           </v-col>
 
@@ -230,8 +234,8 @@
 
         <v-row class="mb-12">
           <v-col align-self="center">
-            <v-card class="mx-auto" width="350">
-              <v-img width="350" aspect-ratio="2" :src="$storage('system') + 'sample.png'"> </v-img>
+            <v-card class="mx-auto" width="500">
+              <v-img eager width="500" :src="$storage('system') + 'S2-1.svg'"></v-img>
             </v-card>
           </v-col>
 
@@ -249,8 +253,8 @@
 
         <v-row class="mt-12">
           <v-col align-self="center">
-            <v-card class="mx-auto" width="350">
-              <v-img width="350" aspect-ratio="2" :src="$storage('system') + 'sample.png'"> </v-img>
+            <v-card class="mx-auto" width="500">
+              <v-img eager width="500" :src="$storage('system') + 'S2-2.svg'"></v-img>
             </v-card>
           </v-col>
 
@@ -267,9 +271,8 @@
         <v-divider class="divider"></v-divider>
         <v-row>
           <v-col align-self="center">
-            <v-card class="mx-auto" width="350">
-              <v-img width="350" aspect-ratio="2" :src="$storage('system') + 'twitter-card.png'">
-              </v-img>
+            <v-card class="mx-auto" width="500">
+              <v-img eager width="500" :src="$storage('system') + 'P3.svg'"></v-img>
             </v-card>
           </v-col>
 
@@ -288,8 +291,8 @@
 
         <v-row class="mb-12">
           <v-col align-self="center">
-            <v-card class="mx-auto" width="350">
-              <v-img width="350" aspect-ratio="2" :src="$storage('system') + 'sample.png'"> </v-img>
+            <v-card class="mx-auto" width="500">
+              <v-img eager width="500" :src="$storage('system') + 'S3-1.svg'"></v-img>
             </v-card>
           </v-col>
 
@@ -307,8 +310,8 @@
 
         <v-row class="my-12">
           <v-col align-self="center">
-            <v-card class="mx-auto" width="350">
-              <v-img width="350" aspect-ratio="2" :src="$storage('system') + 'sample.png'"> </v-img>
+            <v-card class="mx-auto" width="500">
+              <v-img eager width="500" :src="$storage('system') + 'S3-2.svg'"></v-img>
             </v-card>
           </v-col>
 
@@ -378,7 +381,7 @@ export default {
   .concept {
     max-width: 100%;
     height: 1500px;
-    padding-top: 150px;
+    padding-top: 10vh;
     background-color: $primary;
     color: $white;
     position: relative;
