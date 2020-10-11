@@ -148,7 +148,7 @@
         </v-row>
 
         <v-row>
-          <div class="arrow-bottom mx-auto"></div>
+          <div class="arrow-bottom"></div>
         </v-row>
 
         <v-row class="my-12">
@@ -207,7 +207,7 @@
         </v-row>
 
         <v-row>
-          <div class="arrow-bottom mx-auto"></div>
+          <div class="arrow-bottom"></div>
         </v-row>
 
         <v-row class="my-12">
@@ -265,7 +265,7 @@
         </v-row>
 
         <v-row>
-          <div class="arrow-bottom mx-auto"></div>
+          <div class="arrow-bottom"></div>
         </v-row>
 
         <v-row class="my-12">
@@ -349,7 +349,7 @@
       display: inline-block;
       width: 18px;
       height: 18px;
-      margin: 0 10px;
+      margin: 0 auto;
       border-bottom: 4px solid $black;
       border-right: 4px solid $black;
       transform: rotate(45deg);
