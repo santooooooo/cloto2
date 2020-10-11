@@ -8,9 +8,15 @@
 
     <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" v-if="isRelease" />
 
-    <router-link :to="{ name: 'preRegister' }" v-else>
-      <v-btn depressed color="primary" class="btn font-weight-bold">新規登録</v-btn>
-    </router-link>
+    <v-btn
+      depressed
+      color="#00acee"
+      class="font-weight-bold"
+      target="_blank"
+      href="https://twitter.com/cloto_jp"
+      v-else
+      ><v-icon>mdi-twitter</v-icon>&nbsp;@cloto_jp</v-btn
+    >
   </v-app-bar>
 </template>
 
@@ -30,7 +36,7 @@ img {
   padding: 15px 0;
 }
 
-.btn {
-  margin-right: 10px;
+a:hover {
+  text-decoration: none;
 }
 </style>

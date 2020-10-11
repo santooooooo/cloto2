@@ -1,6 +1,27 @@
 <template>
   <v-footer app dark absolute padless>
-    <v-row justify="center" no-gutters class="black white--text" v-if="!authCheck">
+    <v-row justify="center" no-gutters class="black white--text" v-if="!isRelease">
+      <v-btn color="white" text rounded class="my-2" :to="{ name: 'index' }"> トップページ </v-btn>
+
+      <v-btn color="white" text rounded class="my-2" :to="{ name: 'preRegister' }">
+        新規登録
+      </v-btn>
+
+      <v-btn
+        color="white"
+        text
+        rounded
+        class="my-2"
+        href="https://twitter.com/cloto_jp"
+        target="_blank"
+      >
+        Twitter
+      </v-btn>
+
+      <v-btn color="white" text rounded class="my-2" href="mailto:contact@cloto.jp"> E-Mail </v-btn>
+    </v-row>
+
+    <v-row justify="center" no-gutters class="black white--text" v-if="isRelease && !authCheck">
       <v-btn color="white" text rounded class="my-2" :to="{ name: 'index' }"> トップページ </v-btn>
 
       <v-btn color="white" text rounded class="my-2" :to="{ name: 'register' }"> 新規登録 </v-btn>
@@ -9,25 +30,39 @@
 
       <v-btn color="white" text rounded class="my-2" :to="'hoge'"> 利用規約 </v-btn>
 
-      <v-btn color="white" text rounded class="my-2" :to="'https://twitter.com/cloto_jp'">
+      <v-btn
+        color="white"
+        text
+        rounded
+        class="my-2"
+        href="https://twitter.com/cloto_jp"
+        target="_blank"
+      >
         Twitter
       </v-btn>
 
-      <v-btn color="white" text rounded class="my-2" :to="'mailto:info@cloto.jp'"> E-Mail </v-btn>
+      <v-btn color="white" text rounded class="my-2" href="mailto:contact@cloto.jp"> E-Mail </v-btn>
     </v-row>
 
-    <v-row justify="center" no-gutters class="black white--text" v-else>
+    <v-row justify="center" no-gutters class="black white--text" v-if="isRelease && authCheck">
       <v-btn color="white" text rounded class="my-2" :to="{ name: 'home' }"> ホーム </v-btn>
 
       <v-btn color="white" text rounded class="my-2" @click="$emit('logout')"> ログアウト </v-btn>
 
       <v-btn color="white" text rounded class="my-2" :to="'hoge'"> 利用規約 </v-btn>
 
-      <v-btn color="white" text rounded class="my-2" :to="'https://twitter.com/cloto_jp'">
+      <v-btn
+        color="white"
+        text
+        rounded
+        class="my-2"
+        href="https://twitter.com/cloto_jp"
+        target="_blank"
+      >
         Twitter
       </v-btn>
 
-      <v-btn color="white" text rounded class="my-2" :to="'mailto:info@cloto.jp'"> E-Mail </v-btn>
+      <v-btn color="white" text rounded class="my-2" href="mailto:contact@cloto.jp"> E-Mail </v-btn>
     </v-row>
 
     <v-card flat tile class="white--text text-center">
@@ -73,6 +108,9 @@
 <script>
 export default {
   computed: {
+    isRelease() {
+      return process.env.MIX_APP_RELEASE === 'true' ? true : false;
+    },
     authCheck() {
       return this.$store.getters['auth/check'];
     },
