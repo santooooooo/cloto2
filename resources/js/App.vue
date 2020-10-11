@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- ヘッダー -->
-    <Header @show-drawer="isShowDrawer = true" @logout="logout" />
+    <Header @show-drawer="isShowDrawer = true" @logout="logout" @leave="leave" />
 
     <!-- ドロワーメニュー -->
     <!-- <Drawer v-if="isRelease"/> -->
@@ -38,6 +38,9 @@ export default {
     errorCode() {
       return this.$store.state.error.code;
     },
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
   },
   methods: {
     logout: async function () {
@@ -47,6 +50,13 @@ export default {
       // トップページへリダイレクト
       if (this.$route.path != this.$router.resolve({ name: 'index' }).href) {
         this.$router.push({ name: 'index' });
+      }
+    },
+    leave: async function () {
+      if (this.authUser.seat_id != null) {
+        var endpoint = '';
+        endpoint = this.$endpoint('seatLeave');
+        await this.$http.post(endpoint);
       }
     },
   },
