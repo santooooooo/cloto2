@@ -1,7 +1,15 @@
 <template>
   <div>
-    <Drawer :roomName="roomData.name" @clickLeaveButton="clickLeaveButton" />
-    <canvas :width="roomWidth" :height="roomHight" id="room"></canvas>
+    <v-row>
+      <v-col cols="3">
+        <Drawer :roomName="roomData.name" @clickLeaveButton="clickLeaveButton" />
+      </v-col>
+      <v-col cols="9">
+        <canvas :width="roomWidth" :height="roomHight" id="room"></canvas>
+      </v-col>
+    </v-row>
+    <!-- <Drawer :roomName="roomData.name" @clickLeaveButton="clickLeaveButton" /> -->
+    <!-- <canvas :width="roomWidth" :height="roomHight" id="room"></canvas> -->
     <!-- <v-btn @click="clickLeaveButton()">退席</v-btn> -->
 
     <beautiful-chat
