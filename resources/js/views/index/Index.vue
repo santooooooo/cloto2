@@ -36,7 +36,7 @@
 
           <v-btn
             :loading="contactForm.loading"
-            :disabled="!contactFormValidation.valid"
+            :disabled="!contactFormValidation.valid || contactForm.snackbar"
             @click="sendContact()"
             block
             large
@@ -48,13 +48,13 @@
       </v-container>
     </v-card>
 
-    <div class="text-center ma-2">
-      <v-snackbar v-model="contactForm.snackbar" :timeout="contactForm.timeout">
+    <div class="text-center">
+      <v-snackbar v-model="contactForm.snackbar" :timeout="10000">
         {{ contactForm.message }}
 
         <template v-slot:action="{ attrs }">
           <v-btn color="pink" text v-bind="attrs" @click="contactForm.snackbar = false">
-            Close
+            閉じる
           </v-btn>
         </template>
       </v-snackbar>
@@ -105,7 +105,6 @@ export default {
         loading: false,
         snackbar: false,
         message: '',
-        timeout: 10000,
       },
       contactFormValidation: {
         valid: false,
@@ -142,6 +141,7 @@ export default {
           this.$refs.form.reset();
         }
 
+        // 結果表示
         this.contactForm.loading = false;
         this.contactForm.message = response.data;
         this.contactForm.snackbar = true;

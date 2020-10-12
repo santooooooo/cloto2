@@ -5,11 +5,6 @@
         <v-container>
           <v-row>
             <v-col>
-              <v-alert v-model="success" dismissible type="success"
-                >仮登録の受付を完了しました。</v-alert
-              >
-              <v-alert v-model="error" type="error">エラーが発生しました。</v-alert>
-
               <!-- ロゴ -->
               <v-img
                 :src="$storage('system') + 'logo.svg'"
@@ -65,7 +60,7 @@
                 <v-row justify="center" class="mt-6">
                   <v-btn
                     :loading="preRegisterForm.loading"
-                    :disabled="!preRegisterFormValidation.valid"
+                    :disabled="!preRegisterFormValidation.valid || preRegisterForm.snackbar"
                     @click="preRegister()"
                     color="info"
                     class="font-weight-bold"
@@ -78,6 +73,18 @@
         </v-container>
       </v-card-text>
     </v-card>
+
+    <div class="text-center">
+      <v-snackbar v-model="preRegisterForm.snackbar" :timeout="10000">
+        {{ preRegisterForm.message }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn color="pink" text v-bind="attrs" @click="preRegisterForm.snackbar = false">
+            閉じる
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </div>
   </v-dialog>
 </template>
 
@@ -95,13 +102,14 @@ export default {
   data() {
     return {
       dialog: true,
-      success: false,
-      error: false,
       preRegisterForm: {
         name: '',
         email: '',
         newsletter: true,
         loading: false,
+        status: false,
+        snackbar: false,
+        message: '',
       },
       preRegisterFormValidation: {
         valid: false,
@@ -123,9 +131,9 @@ export default {
         this.$router.push({ name: 'index' });
       }
     },
-    success: function () {
-      // アラートが閉じたらリダイレクト
-      if (this.success === false) {
+    'preRegisterForm.snackbar': function () {
+      // メッセージが閉じたらリダイレクト
+      if (this.preRegisterForm.snackbar === false && this.preRegisterForm.status === true) {
         this.$router.push({ name: 'index' });
       }
     },
@@ -141,18 +149,18 @@ export default {
           newsletter: this.preRegisterForm.newsletter,
         };
 
+        // 仮登録処理
         var response = await this.$http.post(this.$endpoint('preRegister'), input);
 
         if (response.status === OK) {
-          this.success = true;
-          this.preRegisterForm.loading = false;
-          setTimeout(() => {
-            this.success = false;
-          }, 10000);
-        } else {
-          this.error = true;
-          this.preRegisterForm.loading = false;
+          this.$refs.form.reset();
+          this.preRegisterForm.status = true;
         }
+
+        // 結果表示
+        this.preRegisterForm.loading = false;
+        this.preRegisterForm.message = response.data;
+        this.preRegisterForm.snackbar = true;
       }
     },
   },
