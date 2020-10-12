@@ -2,7 +2,7 @@
   <div ref="room">
     <v-row>
       <v-col cols="3">
-        <Drawer :roomName="roomData.name" @clickLeaveButton="clickLeaveButton" />
+        <Drawer :roomName="roomData.name" @leaveRoom="leaveRoom" />
       </v-col>
       <v-col cols="9">
         <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
@@ -219,6 +219,7 @@ export default {
         case 'leave':
           // 退席処理
           endpoint = this.$endpoint('seatLeave');
+          this.isChatOpen = false;
           response = await this.$http.post(endpoint);
           break;
 
@@ -260,9 +261,11 @@ export default {
      */
     canvasMouseDown: async function (event) {
       // クリックした座席に誰も座っていないかつ，予約済みでない場合
+      
       if (event.target.seatId !== null && event.target.reservationId === null) {
         // ロード開始
         var loader = this.$loading.show(this.loaderOption);
+        console.log(event.target.role);
 
         // 着席処理
         switch (event.target.role) {

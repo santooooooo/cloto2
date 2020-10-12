@@ -25,14 +25,14 @@
 
       <v-list-item :to="{ name: 'home' }">
         <v-list-item-content>
-          <v-list-item-titlec lass="roomWork">カルテ記入</v-list-item-titlec>
+          <v-list-item-title lass="roomWork">カルテ記入</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
 
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block @click="$emit('clickLeaveButton')">退席</v-btn>
+        <v-btn block @click="$emit('leaveRoom')">退席</v-btn>
       </div>
     </template>
   </v-navigation-drawer>
