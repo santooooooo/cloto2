@@ -14,6 +14,10 @@
               </v-avatar>
             </v-row>
           </v-btn>
+                <v-app-bar-nav-icon @click.stop="drawer = !drawer">
+      
+      </v-app-bar-nav-icon>
+
         </template>
 
         <v-list>

@@ -1,13 +1,18 @@
 <template>
 
   <v-navigation-drawer class="drawer " permanent color="grey lighten-3">
-    <v-list-item two-line class="px-3">
+  
       <!-- <router-link :to="{ name: 'index' }">
         <img :src="$storage('system') + 'header-logo.svg'" />
       </router-link> -->
-    </v-list-item>
+   
 
     <v-list nav>
+      <v-list-item>
+        <v-list-item-content>
+       
+        </v-list-item-content>
+      </v-list-item>
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title
@@ -61,6 +66,17 @@
 
 <script>
 export default {
+  data(){
+    return{
+    drawer: false,
+    group: null,
+    }
+  },
+  watch: {
+      group () {
+        this.drawer = false
+      },
+    },
   props: {
     roomName: String,
   },
