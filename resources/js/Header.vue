@@ -75,7 +75,7 @@ export default {
 <style lang="scss" scoped>
 img {
   max-height: 64px;
-  padding: 15px 0;
+  padding:  0;
 }
 
 a:hover {
