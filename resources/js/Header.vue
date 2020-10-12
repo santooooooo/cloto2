@@ -4,12 +4,12 @@
       <img :src="$storage('system') + 'header-logo.svg'" />
     </router-link>
 
-    <div v-else>
+    <div v-else class="menu-icon">
       <v-menu bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
             <v-row justify="space-around">
-              <v-avatar>
+              <v-avatar >
                 <img :src="$storage('icon') + authUser.icon" alt="アイコン" />
               </v-avatar>
             </v-row>
@@ -81,7 +81,7 @@ img {
 a:hover {
   text-decoration: none;
 }
-.iconPosition {
-  margin-left: 95%;
+.menu-icon {
+  margin-left: 92%;
 }
 </style>

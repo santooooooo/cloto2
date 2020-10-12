@@ -1,5 +1,6 @@
 <template>
-  <v-navigation-drawer permanent white>
+
+  <v-navigation-drawer class="drawer " permanent color="grey lighten-3">
     <v-list-item two-line class="px-3">
       <!-- <router-link :to="{ name: 'index' }">
         <img :src="$storage('system') + 'header-logo.svg'" />
@@ -18,14 +19,32 @@
         <!-- <v-list-item-icon>
           <v-icon>mdi-home-city</v-icon>
         </v-list-item-icon> -->
-        <v-list-item-content>
-          <v-list-item-title class="roomWork">目標入力</v-list-item-title>
+        <v-list-item-content >
+          <v-list-item-title  class="roomWork">目標入力</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
       <v-list-item :to="{ name: 'home' }">
         <v-list-item-content>
-          <v-list-item-title lass="roomWork">カルテ記入</v-list-item-title>
+          <v-list-item-title class="roomWork">カルテ記入</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item >
+        <v-list-item-content>
+          <v-list-item-title class="roomWork">カルテ記入</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item >
+        <v-list-item-content>
+          <v-list-item-title class="roomWork">カルテ記入</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item >
+        <v-list-item-content>
+          <v-list-item-title class="roomWork">カルテ記入</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -35,6 +54,8 @@
         <v-btn block @click="$emit('leaveRoom')">退席</v-btn>
       </div>
     </template>
+
+    
   </v-navigation-drawer>
 </template>
 
@@ -59,6 +80,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/_variables';
+.drawer {
+  // box-shadow: 0 10px 25px 0 rgba(0, 0, 0, .5);
+
+}
 
 .roomName {
   font-size: 28px;
@@ -66,8 +91,16 @@ export default {
   padding-bottom: 0%;
   font-weight: bold;
 }
-.roomWork {
-  font-weight: bold;
+
+.roomWork{
+  width: 100%;
+
+}
+
+.roomWork:hover{/*ホバーしたとき*/
+font-weight: bolder;
+
+
 }
 </style>
-/
+

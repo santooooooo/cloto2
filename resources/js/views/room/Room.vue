@@ -1,7 +1,7 @@
 <template>
   <div ref="room">
-    <v-row>
-      <v-col cols="3">
+    <v-row no-gutters>
+      <v-col cols="3" class="drawer">
         <Drawer :roomName="roomData.name" @leaveRoom="leaveRoom" />
       </v-col>
       <v-col cols="9">
@@ -515,5 +515,9 @@ canvas {
 .sc-launcher {
   // モーダルオープンアイコンの無効化
   display: none;
+}
+
+.drawer{
+  
 }
 </style>
