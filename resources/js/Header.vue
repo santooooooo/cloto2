@@ -1,10 +1,14 @@
 <template>
   <v-app-bar app dark>
-    <router-link :to="{ name: 'index' }" v-if="!isRelease">
+    <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" class="mr-2" v-if="isRelease" />
+
+    <router-link :to="{ name: 'index' }">
       <img :src="$storage('system') + 'header-logo.svg'" />
     </router-link>
 
-    <div v-else>
+    <v-spacer></v-spacer>
+
+    <div v-if="isRelease">
       <v-menu bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
@@ -33,8 +37,6 @@
         </v-list>
       </v-menu>
     </div>
-
-    <v-spacer></v-spacer>
 
     <v-btn
       depressed

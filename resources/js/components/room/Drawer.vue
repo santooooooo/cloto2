@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer permanent white>
+  <v-navigation-drawer absolute permanent white>
     <v-list-item two-line class="px-3">
       <!-- <router-link :to="{ name: 'index' }">
         <img :src="$storage('system') + 'header-logo.svg'" />
@@ -30,11 +30,9 @@
       </v-list-item>
     </v-list>
 
-    <template v-slot:append>
-      <div class="pa-2">
-        <v-btn block @click="$emit('clickLeaveButton')">退席</v-btn>
-      </div>
-    </template>
+    <div class="pa-2">
+      <v-btn block color="error" @click="$emit('clickLeaveButton')">退席</v-btn>
+    </div>
   </v-navigation-drawer>
 </template>
 
@@ -70,4 +68,3 @@ export default {
   font-weight: bold;
 }
 </style>
-/

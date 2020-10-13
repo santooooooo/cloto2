@@ -1,13 +1,7 @@
 <template>
-  <div ref="room">
-    <v-row>
-      <v-col cols="3">
-        <Drawer :roomName="roomData.name" @clickLeaveButton="clickLeaveButton" />
-      </v-col>
-      <v-col cols="9">
-        <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
-      </v-col>
-    </v-row>
+  <div id="room" ref="room">
+    <Drawer :roomName="roomData.name" @clickLeaveButton="clickLeaveButton" />
+    <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
 
     <beautiful-chat
       :open="enterLounge"
@@ -501,9 +495,15 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
+#room {
+  height: 100vh;
+}
+
 canvas {
   border: 7px solid $gray;
-  margin: 0 auto;
+  // margin: 0 auto;
+  margin-top: 5vw;
+  margin-left: 25vw;
 }
 </style>
 
