@@ -1,13 +1,7 @@
 <template>
   <div ref="room">
-    <v-row no-gutters>
-      <v-col cols="3" class="drawer">
-        <Drawer :roomName="roomData.name" @leaveRoom="leaveRoom" />
-      </v-col>
-      <v-col cols="9">
-        <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
-      </v-col>
-    </v-row>
+    <Drawer :roomName="roomData.name" @leaveRoom="leaveRoom" />
+    <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
 
     <beautiful-chat
       :open="enterLounge"
@@ -261,7 +255,7 @@ export default {
      */
     canvasMouseDown: async function (event) {
       // クリックした座席に誰も座っていないかつ，予約済みでない場合
-      
+
       if (event.target.seatId !== null && event.target.reservationId === null) {
         // ロード開始
         var loader = this.$loading.show(this.loaderOption);
@@ -504,7 +498,11 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
-canvas {
+#room {
+  height: 100vh;
+}
+
+#canvas {
   border: 7px solid $gray;
   margin: 0 auto;
 }
@@ -515,9 +513,5 @@ canvas {
 .sc-launcher {
   // モーダルオープンアイコンの無効化
   display: none;
-}
-
-.drawer{
-  
 }
 </style>

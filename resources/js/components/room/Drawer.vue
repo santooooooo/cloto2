@@ -1,17 +1,12 @@
 <template>
-
-  <v-navigation-drawer class="drawer " permanent color="grey lighten-3">
-  
-      <!-- <router-link :to="{ name: 'index' }">
+  <v-navigation-drawer class="drawer" absolute permanent color="grey lighten-3">
+    <!-- <router-link :to="{ name: 'index' }">
         <img :src="$storage('system') + 'header-logo.svg'" />
       </router-link> -->
-   
 
     <v-list nav>
       <v-list-item>
-        <v-list-item-content>
-       
-        </v-list-item-content>
+        <v-list-item-content> </v-list-item-content>
       </v-list-item>
       <v-list-item>
         <v-list-item-content>
@@ -24,8 +19,8 @@
         <!-- <v-list-item-icon>
           <v-icon>mdi-home-city</v-icon>
         </v-list-item-icon> -->
-        <v-list-item-content >
-          <v-list-item-title  class="roomWork">目標入力</v-list-item-title>
+        <v-list-item-content>
+          <v-list-item-title class="roomWork">目標入力</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -35,19 +30,19 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item >
+      <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="roomWork">カルテ記入</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item >
+      <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="roomWork">カルテ記入</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item >
+      <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="roomWork">カルテ記入</v-list-item-title>
         </v-list-item-content>
@@ -59,24 +54,22 @@
         <v-btn block @click="$emit('leaveRoom')">退席</v-btn>
       </div>
     </template>
-
-    
   </v-navigation-drawer>
 </template>
 
 <script>
 export default {
-  data(){
-    return{
-    drawer: false,
-    group: null,
-    }
+  data() {
+    return {
+      drawer: false,
+      group: null,
+    };
   },
   watch: {
-      group () {
-        this.drawer = false
-      },
+    group() {
+      this.drawer = false;
     },
+  },
   props: {
     roomName: String,
   },
@@ -98,7 +91,6 @@ export default {
 @import '~/_variables';
 .drawer {
   // box-shadow: 0 10px 25px 0 rgba(0, 0, 0, .5);
-
 }
 
 .roomName {
@@ -108,15 +100,12 @@ export default {
   font-weight: bold;
 }
 
-.roomWork{
+.roomWork {
   width: 100%;
-
 }
 
-.roomWork:hover{/*ホバーしたとき*/
-font-weight: bolder;
-
-
+.roomWork:hover {
+  /*ホバーしたとき*/
+  font-weight: bolder;
 }
 </style>
-
