@@ -46,23 +46,21 @@
     </beautiful-chat>
 
     <v-dialog persistent v-model="goalDialog" width="500">
-      <v-card>
-        <v-card-title class="headline grey lighten-2"> 目標入力 </v-card-title>
+      <v-card class="headline grey darken-2 text-center">
+        <v-card-text class="pa-4 white--text title whitefont-weight-bold"> 目標入力 </v-card-text>
 
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
-        </v-card-text>
+        <v-textarea
+          solo
+          class="pa-1"
+          name="input-7-4"
+          v-model="goalText"
+          label="目標を入力しよう!"
+        ></v-textarea>
 
-        <v-divider></v-divider>
-
-        <v-card-actions>
+        <v-card-actions class="align-center">
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="goalDialog = false"> I accept </v-btn>
+          <v-btn color="white" text> IMG </v-btn>
+          <v-btn color="white" text @click="goalDialog = false"> Let's Study </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -127,6 +125,8 @@ export default {
       isChatOpen: false, // チャットモーダル制御
       goalDialog: false, // 目標入力モーダルの制御
       studyRecordDialog: false, // カルテ記入モーダルの制御
+      goalText: '', //目標のテキストメッセージ
+
       chatColors: {
         // beautiful-chatの色設定
         header: {
