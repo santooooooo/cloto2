@@ -3,11 +3,13 @@
     <!-- ヘッダー -->
     <Header @show-drawer="isShowDrawer = true" @logout="logout" @leave="leave" />
 
+    
+
     <!-- ドロワーメニュー -->
     <Drawer v-model="isShowDrawer" @logout="logout" v-if="isRelease" />
 
     <!-- メイン -->
-    <v-main>
+    <v-main class='router-main'> 
       <router-view />
     </v-main>
 
@@ -87,3 +89,12 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@import '~/_variables';
+.router-main{
+  background-color:$light-yellow;
+}
+
+</style>
+

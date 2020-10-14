@@ -12,6 +12,7 @@
 
 #app {
   background-color: $light-gray;
+  font-family: $font-family !important;
   word-break: break-all;
 
   [class*='text'] {

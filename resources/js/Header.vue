@@ -12,11 +12,9 @@
       <v-menu bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
-            <v-row justify="space-around">
-              <v-avatar>
-                <img :src="$storage('icon') + authUser.icon" alt="アイコン" />
-              </v-avatar>
-            </v-row>
+            <v-avatar>
+              <img :src="$storage('icon') + authUser.icon" />
+            </v-avatar>
           </v-btn>
         </template>
 
@@ -77,13 +75,10 @@ export default {
 <style lang="scss" scoped>
 img {
   max-height: 64px;
-  padding: 15px 0;
+  padding: 0;
 }
 
 a:hover {
   text-decoration: none;
-}
-.iconPosition {
-  margin-left: 95%;
 }
 </style>
