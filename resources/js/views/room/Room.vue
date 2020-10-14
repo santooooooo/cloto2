@@ -1,6 +1,11 @@
 <template>
   <div ref="room">
-    <Drawer :roomName="roomData.name" @leaveRoom="leaveRoom" />
+    <Drawer
+      :roomName="roomData.name"
+      @leaveRoom="leaveRoom"
+      @goalInput="goalInput"
+      @studyRecord="studyRecord"
+    />
     <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
 
     <beautiful-chat
@@ -40,6 +45,50 @@
       <template v-slot:system-message-body="{ message }"> [System]: {{ message.text }} </template>
     </beautiful-chat>
 
+    <v-dialog persistent v-model="goalDialog" width="500">
+      <v-card>
+        <v-card-title class="headline grey lighten-2"> 目標入力 </v-card-title>
+
+        <v-card-text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+          ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+          est laborum.
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="goalDialog = false"> I accept </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog persistent v-model="studyRecordDialog" width="500">
+      <v-card>
+        <v-card-title class="headline grey lighten-2"> カルテ記入 </v-card-title>
+
+        <v-card-text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+          ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+          est laborum.
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="studyRecordDialog = false"> I accept </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <div class="text-center ma-2">
       <v-snackbar v-model="errorSnackbar">
         {{ errorMessage }}
@@ -76,6 +125,8 @@ export default {
       chatParticipants: [], // チャット参加者
       messageList: [], // メッセージデータ
       isChatOpen: false, // チャットモーダル制御
+      goalDialog: false, // 目標入力モーダルの制御
+      studyRecordDialog: false, // カルテ記入モーダルの制御
       chatColors: {
         // beautiful-chatの色設定
         header: {
@@ -392,6 +443,13 @@ export default {
     removeIcon: function (removeObject) {
       this.canvas.remove(removeObject);
       this.canvas.requestRenderAll();
+    },
+
+    goalInput: function () {
+      this.goalDialog = 'true';
+    },
+    studyRecord: function () {
+      this.studyRecordDialog = 'true';
     },
   },
 
