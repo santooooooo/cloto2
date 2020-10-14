@@ -31,7 +31,7 @@
     </v-list>
 
     <div class="pa-2">
-      <v-btn block color="error" @click="$emit('clickLeaveButton')">退席</v-btn>
+      <v-btn block color="error" @click="$emit('leaveRoom')">退席</v-btn>
     </div>
   </v-navigation-drawer>
 </template>

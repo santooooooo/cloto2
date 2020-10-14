@@ -1,6 +1,6 @@
 <template>
   <div id="room" ref="room">
-    <Drawer :roomName="roomData.name" @clickLeaveButton="clickLeaveButton" />
+    <Drawer :roomName="roomData.name" @leaveRoom="leaveRoom" />
     <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
 
     <beautiful-chat
