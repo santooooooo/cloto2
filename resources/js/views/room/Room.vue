@@ -45,9 +45,9 @@
       <template v-slot:system-message-body="{ message }"> [System]: {{ message.text }} </template>
     </beautiful-chat>
 
-    <v-dialog persistent v-model="goalDialog" width="500">
-      <v-card class="headline grey darken-2 text-center">
-        <v-card-text class="pa-4 white--text title whitefont-weight-bold"> 目標入力 </v-card-text>
+    <v-dialog persistent v-model="goalDialog" width="600">
+      <v-card class="headline  grey darken-2 text-center">
+        <v-card-text class="pa-2 white--text title whitefont-weight-bold"> 目標入力 </v-card-text>
 
         <v-textarea
           solo
@@ -59,30 +59,74 @@
 
         <v-card-actions class="align-center">
           <v-spacer></v-spacer>
-          <v-btn color="white" text> IMG </v-btn>
+          <!-- <v-btn color="white" text> IMG </v-btn> -->
           <v-btn color="white" text @click="goalDialog = false"> Let's Study </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <v-dialog persistent v-model="studyRecordDialog" width="500">
-      <v-card>
-        <v-card-title class="headline grey lighten-2"> カルテ記入 </v-card-title>
-
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
+    <v-dialog persistent v-model="studyRecordDialog" width="600">
+      <v-card class="headline pa-3 grey darken-2 text-center">
+        <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+          {{ goalText }}
         </v-card-text>
 
-        <v-divider></v-divider>
+        <v-card　row-height="160" class="pa-3 m-2 rounded-pill">  <v-btn color="red"> 画像を選択　 </v-btn>  </v-card>
 
-        <v-card-actions>
+         <v-row class="text-center" justify="center" >
+          <v-col
+            cols="12"
+            sm="6"
+          >
+            <v-textarea
+              auto-grow
+              filled
+              rounded
+              rows="1"
+              row-height="15"
+              color="black"
+            background-color="white"
+            ></v-textarea>
+          </v-col>
+          <v-col
+            cols="12"
+            sm="6"
+          >
+            <v-textarea
+              auto-grow
+              rounded
+              filled
+              rows="1"
+              row-height="15"
+              color="black"
+            background-color="white"
+            ></v-textarea>
+          </v-col>
+          
+        </v-row>
+
+        <v-textarea
+              auto-grow
+              rounded
+              filled
+              rows="1"
+              row-height="15"
+              color="black"
+            background-color="white"
+            ></v-textarea>
+
+            <v-textarea
+              rounded
+              filled
+              rows="5"
+              color="black"
+            background-color="white"
+            ></v-textarea>
+
+        <v-card-actions class="align-center">
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="studyRecordDialog = false"> I accept </v-btn>
+          <!-- <v-btn color="white" text> IMG </v-btn> -->
+          <v-btn color="white" text @click="studyRecordDialog = false"> Let's Study </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
