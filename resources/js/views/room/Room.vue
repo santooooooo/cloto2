@@ -66,12 +66,17 @@
     </v-dialog>
 
     <v-dialog persistent 　scrollable v-model="studyRecordDialog" width="600">
-      <v-card class="headline pa-3 grey darken-2 text-center">
+      <v-card class="headline pa-3 grey darken-1 text-center">
         <v-card-text class="pa-2 white--text title whitefont-weight-bold">
           {{ goalText }}
         </v-card-text>
 
-        <v-card height=200 class="pa-3 m-2 rounded-pill">  <v-btn color="red" > 画像を選択　 </v-btn>  </v-card>
+        <v-card  height=200 class=" m-2 rounded-xl  "> 
+           <v-btn  active-class="mt-auto" color="red" > 
+             画像を選択　 
+           </v-btn> 
+
+         </v-card>
 
          <v-row class="text-center m-1" justify="center" >
           <v-col
@@ -109,14 +114,24 @@
     <!-- <div class="m-3 p-1"> -->
     <div class="bottom">
          <h6 class="tag">関連タグ</h6>
-        <v-textarea
+
+         <v-textarea
+          solo
+          rounded
+          name="input-7-4"
+          rows="1"
+          label="#html #css"
+          auto-grow
+        ></v-textarea>
+        <!-- <v-textarea
               auto-grow
               rounded
               filled
               rows="1"
               color="black"
             background-color="white"
-            ></v-textarea>
+            label="#html #css"
+            ></v-textarea> -->
          <h6 class="tag">活動詳細</h6>
             <v-textarea
               rounded
@@ -617,7 +632,6 @@ export default {
   margin: 0;
   text-align: left;
   padding-left: 15px;
-
   color: white;
 }
 .bottom{
