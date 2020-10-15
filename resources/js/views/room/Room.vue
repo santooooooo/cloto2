@@ -65,19 +65,21 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog persistent v-model="studyRecordDialog" width="600">
+    <v-dialog persistent 　scrollable v-model="studyRecordDialog" width="600">
       <v-card class="headline pa-3 grey darken-2 text-center">
         <v-card-text class="pa-2 white--text title whitefont-weight-bold">
           {{ goalText }}
         </v-card-text>
 
-        <v-card　row-height="160" class="pa-3 m-2 rounded-pill">  <v-btn color="red"> 画像を選択　 </v-btn>  </v-card>
+        <v-card height=200 class="pa-3 m-2 rounded-pill">  <v-btn color="red" > 画像を選択　 </v-btn>  </v-card>
 
-         <v-row class="text-center" justify="center" >
+         <v-row class="text-center m-1" justify="center" >
           <v-col
             cols="12"
             sm="6"
           >
+
+         <h6 class="tag">活動内容</h6>
             <v-textarea
               auto-grow
               filled
@@ -91,30 +93,31 @@
           <v-col
             cols="12"
             sm="6"
+            margin-bottom="30px"
           >
+         <h6 class="tag">活動時間</h6>
             <v-textarea
               auto-grow
               rounded
               filled
               rows="1"
-              row-height="15"
               color="black"
             background-color="white"
             ></v-textarea>
           </v-col>
-          
         </v-row>
-
+    <!-- <div class="m-3 p-1"> -->
+    <div class="bottom">
+         <h6 class="tag">関連タグ</h6>
         <v-textarea
               auto-grow
               rounded
               filled
               rows="1"
-              row-height="15"
               color="black"
             background-color="white"
             ></v-textarea>
-
+         <h6 class="tag">活動詳細</h6>
             <v-textarea
               rounded
               filled
@@ -122,11 +125,11 @@
               color="black"
             background-color="white"
             ></v-textarea>
-
+    </div>
         <v-card-actions class="align-center">
           <v-spacer></v-spacer>
           <!-- <v-btn color="white" text> IMG </v-btn> -->
-          <v-btn color="white" text @click="studyRecordDialog = false"> Let's Study </v-btn>
+          <v-btn color="white" text @click="studyRecordDialog = false"> 記録 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -608,6 +611,17 @@ export default {
   border: 7px solid $gray;
   margin-top: 5vw;
   margin-left: 25vw;
+}
+
+.tag{
+  margin: 0;
+  text-align: left;
+  padding-left: 15px;
+
+  color: white;
+}
+.bottom{
+  margin: 0 20px;
 }
 </style>
 
