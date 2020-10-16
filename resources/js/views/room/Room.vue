@@ -50,6 +50,37 @@
       <template v-slot:system-message-body="{ message }"> [System]: {{ message.text }} </template>
     </beautiful-chat>
 
+    <profile :userId="profileId" v-if="profileDialog"></profile>
+    <!-- <v-dialog persistent v-model="userDialog" width="600">
+      <v-card class="headline grey darken-2 text-center">
+        <v-card-text class="pa-2 white--text title whitefont-weight-bold"> 目標入力 </v-card-text>
+        <img
+          :src="$storage('icon') + $store.getters['auth/user'].icon"
+          class="rounded-circle"
+          width="100"
+          height="100"
+        />
+        <v-textarea
+          solo
+          rounded
+          name="input-7-4"
+          rows="10"
+          v-model="goalText"
+          label="目標を入力しよう!"
+          auto-grow
+          class="pa-2"
+        ></v-textarea>
+
+        <v-card-actions class="align-center">
+          <v-spacer></v-spacer>
+          <v-btn color="white" text> IMG </v-btn>
+          <v-btn color="yellow darken-1" @click="userDialog = false">
+            <span class="white--text">Close</span>
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog> -->
+
     <v-dialog persistent v-model="goalDialog" width="600">
       <v-card class="headline grey darken-2 text-center">
         <v-card-text class="pa-2 white--text title whitefont-weight-bold"> 目標入力 </v-card-text>
@@ -191,10 +222,12 @@ export default {
       isChatOpen: false, // チャットモーダル制御
       goalDialog: false, // 目標入力モーダルの制御
       studyRecordDialog: false, // カルテ記入モーダルの制御
+      profileDialog: false, //userのモーダル制御
       goalText: '', //目標のテキストメッセージ
       recordTitle: '', //カルテのタイトル
       recordTags: '', //カルテのタグ
       recordDetail: '', //カルテの詳細
+      profileId: '', // プロフィールを表示するユーザーID
 
       chatColors: {
         // beautiful-chatの色設定
@@ -374,12 +407,15 @@ export default {
      * キャンバスクリックイベント
      */
     canvasMouseDown: async function (event) {
+      if (typeof event.target.userId === 'number') {
+        //userid が整数ならば user iconを表示
+        this.profileDialog = true;
+        this.profileId = event.target.userId;
+      }
       // クリックした座席に誰も座っていないかつ，予約済みでない場合
-
       if (event.target.seatId !== null && event.target.reservationId === null) {
         // ロード開始
         var loader = this.$loading.show(this.loaderOption);
-        console.log(event.target.role);
 
         // 着席処理
         switch (event.target.role) {

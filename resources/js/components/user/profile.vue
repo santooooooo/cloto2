@@ -24,7 +24,7 @@
                 name: 'profileEdit',
                 params: { username: $store.getters['auth/user'].username },
               }"
-              v-if="user.id == authId"
+              v-if="user.id == $store.getters['auth/user'].id"
               >編集する</router-link
             >
           </div>
@@ -70,19 +70,20 @@
 
 <script>
 export default {
+  props: {
+    userId: Number,
+  },
   data() {
     return {
       user: {},
-      authId: '',
       sns: {},
     };
   },
   mounted() {
-    var endpoint = this.$endpoint('userShow', [this.$route.params.username]);
+    var endpoint = this.$endpoint('userShow', [this.userId]);
 
     this.$http.get(endpoint).then((response) => {
       this.user = response.data.user;
-      this.authId = response.data.authId;
 
       if (this.user.sns) {
         this.sns = JSON.parse(this.user.sns);

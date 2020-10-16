@@ -68,12 +68,12 @@ class UserController extends Controller
     /**
      * ユーザーデータの表示
      *
-     * @param  String $username ユーザー名
+     * @param  String $user_param ユーザーIDまたはユーザー名
      * @return \Illuminate\Http\Response
      */
-    public function show(String $username)
+    public function show(String $user_param)
     {
-        return response()->json(['user' => get_user($username), 'authId' => Auth::id()]);
+        return response()->json(['user' => get_user($user_param)]);
     }
 
     /**
