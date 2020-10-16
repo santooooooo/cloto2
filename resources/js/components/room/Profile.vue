@@ -1,0 +1,275 @@
+<template>
+  <v-dialog v-model="dialog">
+    <v-card width="800">
+      <v-row class="text-center m-1" justify="center">
+        <v-col cols="12" sm="6">
+          <img
+            :src="$storage('icon') + user.icon"
+            class="rounded-circle"
+            width="100"
+            height="100"
+          />
+          <p class="profile__user--handlename">{{ user.handlename }}</p>
+          <p class="profile__user--username">{{ '@' + user.username }}</p>
+        </v-col>
+        <v-col cols="12" sm="6" margin-bottom="30px">
+          <div class="profile__sns-container" v-if="sns || user.web">
+            <a
+              class="profile__sns--twitter"
+              :href="'https://twitter.com/' + sns.twitter"
+              target="_blank"
+              v-if="sns.twitter"
+            >
+              <i class="fab fa-twitter fa-2x"></i>
+            </a>
+            <a
+              class="profile__sns--github"
+              :href="'https://github.com/' + sns.github"
+              target="_blank"
+              v-if="sns.github"
+            >
+              <i class="fab fa-github fa-2x"></i>
+            </a>
+            <a
+              class="profile__sns--qiita"
+              :href="'https://qiita.com/' + sns.qiita"
+              target="_blank"
+              v-if="sns.qiita"
+            >
+              <i class="fa fa-search fa-2x"></i>
+            </a>
+            <a class="profile__sns--web" :href="user.web" target="_blank" v-if="user.web">
+              <i class="fas fa-link fa-2x"></i>
+            </a>
+          </div>
+          <div class="profile__introduction" v-if="user.introduction">
+            <p>{{ user.introduction }}</p>
+          </div>
+        </v-col>
+      </v-row>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="green darken-1" text @click="$emit('close', false)"> Disagree </v-btn>
+        <v-btn color="green darken-1" text @click="$emit('close', false)"> Agree </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+  <!-- <div class="profile"> -->
+  <!-- プロフィール欄 -->
+  <!-- <div class="profile__content card">
+        <div class="row"> -->
+  <!-- アイコンとユーザー名 -->
+  <!-- <div class="profile__user col-md-5">
+            <img
+              :src="$storage('icon') + user.icon"
+              class="rounded-circle"
+              width="100"
+              height="100"
+            />
+            <p class="profile__user--handlename">{{ user.handlename }}</p>
+            <p class="profile__user--username">{{ '@' + user.username }}</p>
+          </div>
+
+          <div class="col-md-7">
+            <div class="profile__button"> -->
+  <!-- マイページの場合 -->
+  <!-- <router-link
+                class="btn btn-cloto-primary"
+                :to="{
+                  name: 'profileEdit',
+                  params: { username: $store.getters['auth/user'].username },
+                }"
+                v-if="user.id == $store.getters['auth/user'].id"
+                >編集する</router-link
+              >
+
+                    <v-btn color="yellow darken-1" @click="profileDialog = false">
+        <span class="white--text">CLOSE</span>
+      </v-btn>
+            </div> -->
+  <!-- ボタン類 -->
+  <!-- <div class="profile__sns-container" v-if="sns || user.web">
+              <a
+                class="profile__sns--twitter"
+                :href="'https://twitter.com/' + sns.twitter"
+                target="_blank"
+                v-if="sns.twitter"
+              >
+                <i class="fab fa-twitter fa-2x"></i>
+              </a>
+              <a
+                class="profile__sns--github"
+                :href="'https://github.com/' + sns.github"
+                target="_blank"
+                v-if="sns.github"
+              >
+                <i class="fab fa-github fa-2x"></i>
+              </a>
+              <a
+                class="profile__sns--qiita"
+                :href="'https://qiita.com/' + sns.qiita"
+                target="_blank"
+                v-if="sns.qiita"
+              >
+                <i class="fa fa-search fa-2x"></i>
+              </a>
+              <a class="profile__sns--web" :href="user.web" target="_blank" v-if="user.web">
+                <i class="fas fa-link fa-2x"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile__introduction" v-if="user.introduction">
+          <p>{{ user.introduction }}</p>
+        </div>
+      </div>
+    </div> -->
+</template>
+
+<script>
+export default {
+  props: {
+    dialog: Boolean,
+    userId: Number,
+  },
+  data() {
+    return {
+      user: {},
+      sns: {},
+    };
+  },
+  methods: {
+    getUser: async function () {
+      var response = await this.$http.get(this.$endpoint('userShow', [this.userId]));
+      this.user = response.data;
+
+      if (this.user.sns) {
+        this.sns = JSON.parse(this.user.sns);
+      }
+    },
+  },
+  mounted() {
+    this.getUser();
+  },
+  watch: {
+    userId: function () {
+      this.getUser();
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+@import '~/_variables';
+
+.profile {
+  padding: 1em 0;
+  background-color: $white;
+  font-size: 14px;
+  font-weight: 900;
+
+  &__content {
+    margin: 0 auto;
+    background-color: $light-gray;
+    width: 500px;
+    border: none;
+    border-radius: 30px;
+  }
+
+  &__user {
+    height: 170px;
+    margin-top: 1em;
+    text-align: center;
+    font-weight: bold;
+
+    &--handlename {
+      text-align: center;
+      margin-top: 1em;
+      margin-bottom: 0;
+    }
+
+    &--username {
+      text-align: center;
+    }
+  }
+
+  &__button {
+    height: 60px;
+    margin-top: 2em;
+    text-align: center;
+  }
+
+  &__sns-container {
+    height: 30px;
+    margin-bottom: 2em;
+    text-align: center;
+
+    div {
+      margin: 0 auto;
+    }
+  }
+
+  %__sns {
+    margin: 0 1em;
+  }
+
+  &__sns {
+    @extend %__sns;
+
+    &--twitter {
+      @extend %__sns;
+
+      color: $twitter-color;
+
+      &:hover {
+        color: $twitter-color;
+      }
+    }
+
+    &--github {
+      @extend %__sns;
+
+      color: $github-color;
+
+      &:hover {
+        color: $github-color;
+      }
+    }
+
+    &--qiita {
+      @extend %__sns;
+
+      color: $qiita-color;
+
+      &:hover {
+        color: $qiita-color;
+      }
+    }
+
+    &--web {
+      @extend %__sns;
+
+      color: $black;
+
+      &:hover {
+        color: $black;
+      }
+    }
+  }
+
+  &__introduction {
+    margin: 1em;
+    padding: 0.5em;
+    text-align: center;
+    background-color: $white;
+    border-radius: 30px;
+
+    p {
+      margin: 0;
+    }
+  }
+}
+</style>
