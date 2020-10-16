@@ -56,16 +56,21 @@
 
         <v-textarea
           solo
-          class="pa-1"
+          rounded
           name="input-7-4"
+          rows="10"
           v-model="goalText"
           label="目標を入力しよう!"
+          auto-grow
+          class="pa-2"
         ></v-textarea>
 
         <v-card-actions class="align-center">
           <v-spacer></v-spacer>
           <!-- <v-btn color="white" text> IMG </v-btn> -->
-          <v-btn color="white" text @click="goalDialog = false"> Let's Study </v-btn>
+          <v-btn color="yellow darken-1" @click="goalDialog = false">
+            <span class="white--text">Let's study</span>
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -382,6 +387,7 @@ export default {
             // 現在どこにも着席していない場合
             if (this.authUser.seat === null) {
               // 状態変更処理
+              this.goalDialog = true; //auth userが自習室に初めてsittingしたときモーダル表示
               await this.userAction('sitting', event.target);
             }
             break;
