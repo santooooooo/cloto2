@@ -50,9 +50,11 @@
       <template v-slot:system-message-body="{ message }"> [System]: {{ message.text }} </template>
     </beautiful-chat>
 
-    <v-dialog v-model="profileDialog" width="600">
-      <profile :userId="profileId"></profile>
-    </v-dialog>
+    <profile
+      :dialog="profileDialog"
+      :userId="profileUserId"
+      @close="profileDialog = $event"
+    ></profile>
 
     <v-dialog persistent v-model="goalDialog" width="600">
       <v-card class="headline grey darken-2 text-center">
@@ -195,12 +197,12 @@ export default {
       isChatOpen: false, // チャットモーダル制御
       goalDialog: false, // 目標入力モーダルの制御
       studyRecordDialog: false, // カルテ記入モーダルの制御
-      profileDialog: false, //プロフィールのモーダル制御
-      goalText: '', //目標のテキストメッセージ
-      recordTitle: '', //カルテのタイトル
-      recordTags: '', //カルテのタグ
-      recordDetail: '', //カルテの詳細
-      profileId: null, // プロフィールを表示するユーザーID
+      profileDialog: false, // プロフィールのモーダル制御
+      profileUserId: null, // プロフィールを表示するユーザーID
+      goalText: '', // 目標のテキストメッセージ
+      recordTitle: '', // カルテのタイトル
+      recordTags: '', // カルテのタグ
+      recordDetail: '', // カルテの詳細
 
       chatColors: {
         // beautiful-chatの色設定
@@ -298,6 +300,15 @@ export default {
         }
       },
     },
+
+    /**
+     * プロフィールモーダルを閉じた時
+     */
+    profileDialog: function () {
+      if (this.profileDialog === false) {
+        this.profileUserId = null;
+      }
+    },
   },
 
   methods: {
@@ -383,7 +394,7 @@ export default {
       if (typeof event.target.userId === 'number') {
         //userid が整数ならば user iconを表示
         this.profileDialog = true;
-        this.profileId = event.target.userId;
+        this.profileUserId = event.target.userId;
       }
       // クリックした座席に誰も座っていないかつ，予約済みでない場合
       if (event.target.seatId !== null && event.target.reservationId === null) {

@@ -73,7 +73,7 @@ class UserController extends Controller
      */
     public function show(String $user_param)
     {
-        return response()->json(['user' => get_user($user_param)]);
+        return response()->json(get_user($user_param));
     }
 
     /**

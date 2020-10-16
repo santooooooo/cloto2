@@ -1,72 +1,67 @@
 <template>
-  <v-card　 width="800">
-    <v-row class="text-center m-1" justify="center">
-          <v-col cols="12" sm="6">
+  <v-dialog v-model="dialog">
+    <v-card width="800">
+      <v-row class="text-center m-1" justify="center">
+        <v-col cols="12" sm="6">
+          <img
+            :src="$storage('icon') + user.icon"
+            class="rounded-circle"
+            width="100"
+            height="100"
+          />
+          <p class="profile__user--handlename">{{ user.handlename }}</p>
+          <p class="profile__user--username">{{ '@' + user.username }}</p>
+        </v-col>
+        <v-col cols="12" sm="6" margin-bottom="30px">
+          <div class="profile__sns-container" v-if="sns || user.web">
+            <a
+              class="profile__sns--twitter"
+              :href="'https://twitter.com/' + sns.twitter"
+              target="_blank"
+              v-if="sns.twitter"
+            >
+              <i class="fab fa-twitter fa-2x"></i>
+            </a>
+            <a
+              class="profile__sns--github"
+              :href="'https://github.com/' + sns.github"
+              target="_blank"
+              v-if="sns.github"
+            >
+              <i class="fab fa-github fa-2x"></i>
+            </a>
+            <a
+              class="profile__sns--qiita"
+              :href="'https://qiita.com/' + sns.qiita"
+              target="_blank"
+              v-if="sns.qiita"
+            >
+              <i class="fa fa-search fa-2x"></i>
+            </a>
+            <a class="profile__sns--web" :href="user.web" target="_blank" v-if="user.web">
+              <i class="fas fa-link fa-2x"></i>
+            </a>
+          </div>
+          <div class="profile__introduction" v-if="user.introduction">
+            <p>{{ user.introduction }}</p>
+          </div>
+        </v-col>
+      </v-row>
 
-            
-            <img
-              :src="$storage('icon') + user.icon"
-              class="rounded-circle"
-              width="100"
-              height="100"
-            />
-            <p class="profile__user--handlename">{{ user.handlename }}</p>
-            <p class="profile__user--username">{{ '@' + user.username }}</p>
-          
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="green darken-1" text @click="$emit('close', false)"> Disagree </v-btn>
+        <v-btn color="green darken-1" text @click="$emit('close', false)"> Agree </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 
-
-  
-         
-          </v-col>
-          <v-col cols="12" sm="6" margin-bottom="30px">
-
-          
-
-              <div class="profile__sns-container" v-if="sns || user.web">
-              <a
-                class="profile__sns--twitter"
-                :href="'https://twitter.com/' + sns.twitter"
-                target="_blank"
-                v-if="sns.twitter"
-              >
-                <i class="fab fa-twitter fa-2x"></i>
-              </a>
-              <a
-                class="profile__sns--github"
-                :href="'https://github.com/' + sns.github"
-                target="_blank"
-                v-if="sns.github"
-              >
-                <i class="fab fa-github fa-2x"></i>
-              </a>
-              <a
-                class="profile__sns--qiita"
-                :href="'https://qiita.com/' + sns.qiita"
-                target="_blank"
-                v-if="sns.qiita"
-              >
-                <i class="fa fa-search fa-2x"></i>
-              </a>
-              <a class="profile__sns--web" :href="user.web" target="_blank" v-if="user.web">
-                <i class="fas fa-link fa-2x"></i>
-              </a>
-            </div>
-        <div class="profile__introduction" v-if="user.introduction">
-          <p>{{ user.introduction }}</p>
-        </div>
-      
-
-
-
-            
-          </v-col>
-        </v-row>
-    <!-- <div class="profile"> -->
-    <!-- プロフィール欄 -->
-    <!-- <div class="profile__content card">
+  <!-- <div class="profile"> -->
+  <!-- プロフィール欄 -->
+  <!-- <div class="profile__content card">
         <div class="row"> -->
-    <!-- アイコンとユーザー名 -->
-    <!-- <div class="profile__user col-md-5">
+  <!-- アイコンとユーザー名 -->
+  <!-- <div class="profile__user col-md-5">
             <img
               :src="$storage('icon') + user.icon"
               class="rounded-circle"
@@ -79,8 +74,8 @@
 
           <div class="col-md-7">
             <div class="profile__button"> -->
-    <!-- マイページの場合 -->
-    <!-- <router-link
+  <!-- マイページの場合 -->
+  <!-- <router-link
                 class="btn btn-cloto-primary"
                 :to="{
                   name: 'profileEdit',
@@ -94,8 +89,8 @@
         <span class="white--text">CLOSE</span>
       </v-btn>
             </div> -->
-    <!-- ボタン類 -->
-    <!-- <div class="profile__sns-container" v-if="sns || user.web">
+  <!-- ボタン類 -->
+  <!-- <div class="profile__sns-container" v-if="sns || user.web">
               <a
                 class="profile__sns--twitter"
                 :href="'https://twitter.com/' + sns.twitter"
@@ -132,12 +127,12 @@
         </div>
       </div>
     </div> -->
-  </v-card>
 </template>
 
 <script>
 export default {
   props: {
+    dialog: Boolean,
     userId: Number,
   },
   data() {
@@ -146,17 +141,22 @@ export default {
       sns: {},
     };
   },
+  methods: {
+    getUser: async function () {
+      var response = await this.$http.get(this.$endpoint('userShow', [this.userId]));
+      this.user = response.data;
+
+      if (this.user.sns) {
+        this.sns = JSON.parse(this.user.sns);
+      }
+    },
+  },
+  mounted() {
+    this.getUser();
+  },
   watch: {
     userId: function () {
-      var endpoint = this.$endpoint('userShow', [this.userId]);
-
-      this.$http.get(endpoint).then((response) => {
-        this.user = response.data.user;
-
-        if (this.user.sns) {
-          this.sns = JSON.parse(this.user.sns);
-        }
-      });
+      this.getUser();
     },
   },
 };
