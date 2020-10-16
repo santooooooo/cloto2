@@ -1,5 +1,10 @@
 <template>
   <div id="room" ref="room">
+    <v-card class="headline text-center"
+      >目標:[{{ goalText }}] カルテタイトル:[{{ recordTitle }}] タグ:[{{ recordTags }}]　詳細:[{{
+        recordDetail
+      }}]
+    </v-card>
     <Drawer
       :roomName="roomData.name"
       @leaveRoom="leaveRoom"
@@ -46,7 +51,7 @@
     </beautiful-chat>
 
     <v-dialog persistent v-model="goalDialog" width="600">
-      <v-card class="headline  grey darken-2 text-center">
+      <v-card class="headline grey darken-2 text-center">
         <v-card-text class="pa-2 white--text title whitefont-weight-bold"> 目標入力 </v-card-text>
 
         <v-textarea
@@ -71,59 +76,50 @@
           {{ goalText }}
         </v-card-text>
 
-        <v-card  height=200 class=" m-2 rounded-xl  "> 
-           <v-btn  active-class="mt-auto" color="red" > 
-             画像を選択　 
-           </v-btn> 
+        <v-card height="200" class="m-2 rounded-xl">
+          <v-btn class="mt-15" color="yellow darken-1">
+            <span class="white--text">画像を選択</span>　
+          </v-btn>
+        </v-card>
 
-         </v-card>
-
-         <v-row class="text-center m-1" justify="center" >
-          <v-col
-            cols="12"
-            sm="6"
-          >
-
-         <h6 class="tag">活動内容</h6>
+        <v-row class="text-center m-1" justify="center">
+          <v-col cols="12" sm="6">
+            <h6 class="tag">活動内容</h6>
             <v-textarea
-              auto-grow
-              filled
+              v-model="recordTitle"
+              solo
               rounded
+              name="input-7-4"
               rows="1"
-              row-height="15"
-              color="black"
-            background-color="white"
+              auto-grow
             ></v-textarea>
           </v-col>
-          <v-col
-            cols="12"
-            sm="6"
-            margin-bottom="30px"
-          >
-         <h6 class="tag">活動時間</h6>
+          <v-col cols="12" sm="6" margin-bottom="30px">
+            <h6 class="tag">活動時間</h6>
             <v-textarea
-              auto-grow
+              solo
               rounded
-              filled
+              name="input-7-4"
               rows="1"
-              color="black"
-            background-color="white"
+              label="13:30～14:45"
+              auto-grow
             ></v-textarea>
           </v-col>
         </v-row>
-    <!-- <div class="m-3 p-1"> -->
-    <div class="bottom">
-         <h6 class="tag">関連タグ</h6>
+        <!-- <div class="m-3 p-1"> -->
+        <div class="bottom">
+          <h6 class="tag">関連タグ</h6>
 
-         <v-textarea
-          solo
-          rounded
-          name="input-7-4"
-          rows="1"
-          label="#html #css"
-          auto-grow
-        ></v-textarea>
-        <!-- <v-textarea
+          <v-textarea
+            v-model="recordTags"
+            solo
+            rounded
+            name="input-7-4"
+            rows="1"
+            label="#html #css"
+            auto-grow
+          ></v-textarea>
+          <!-- <v-textarea
               auto-grow
               rounded
               filled
@@ -132,19 +128,22 @@
             background-color="white"
             label="#html #css"
             ></v-textarea> -->
-         <h6 class="tag">活動詳細</h6>
-            <v-textarea
-              rounded
-              filled
-              rows="5"
-              color="black"
+          <h6 class="tag">活動詳細</h6>
+          <v-textarea
+            v-model="recordDetail"
+            rounded
+            filled
+            rows="5"
+            color="black"
             background-color="white"
-            ></v-textarea>
-    </div>
+          ></v-textarea>
+        </div>
         <v-card-actions class="align-center">
           <v-spacer></v-spacer>
           <!-- <v-btn color="white" text> IMG </v-btn> -->
-          <v-btn color="white" text @click="studyRecordDialog = false"> 記録 </v-btn>
+          <v-btn color="yellow darken-1" @click="studyRecordDialog = false">
+            <span class="white--text">記録</span>
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -188,6 +187,9 @@ export default {
       goalDialog: false, // 目標入力モーダルの制御
       studyRecordDialog: false, // カルテ記入モーダルの制御
       goalText: '', //目標のテキストメッセージ
+      recordTitle: '', //カルテのタイトル
+      recordTags: '', //カルテのタグ
+      recordDetail: '', //カルテの詳細
 
       chatColors: {
         // beautiful-chatの色設定
@@ -628,13 +630,13 @@ export default {
   margin-left: 25vw;
 }
 
-.tag{
+.tag {
   margin: 0;
   text-align: left;
   padding-left: 15px;
   color: white;
 }
-.bottom{
+.bottom {
   margin: 0 20px;
 }
 </style>
