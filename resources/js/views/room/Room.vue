@@ -50,11 +50,7 @@
       <template v-slot:system-message-body="{ message }"> [System]: {{ message.text }} </template>
     </beautiful-chat>
 
-    <Profile
-      :dialog="profileDialog"
-      :userId="profileUserId"
-      @close="profileDialog = $event"
-    ></Profile>
+    <Profile :userId="profileUserId" @close="profileDialog = $event" v-if="profileDialog"></Profile>
 
     <v-dialog persistent v-model="goalDialog" width="600">
       <v-card class="headline grey darken-2 text-center">
@@ -173,13 +169,13 @@
 
 <script>
 import Drawer from '@/components/room/Drawer';
-import Profile from '@/components/room/Profile'
+import Profile from '@/components/room/Profile';
 import { OK } from '@/consts/status';
 
 export default {
   components: {
     Drawer,
-    Profile
+    Profile,
   },
   data() {
     return {
@@ -301,15 +297,6 @@ export default {
           });
         }
       },
-    },
-
-    /**
-     * プロフィールモーダルを閉じた時
-     */
-    profileDialog: function () {
-      if (this.profileDialog === false) {
-        this.profileUserId = null;
-      }
     },
   },
 

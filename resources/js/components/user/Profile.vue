@@ -1,7 +1,10 @@
 <template>
   <div class="profile">
+    <!-- ローディングバー -->
+    <v-progress-linear indeterminate color="blue" class="mb-0" v-if="!user"></v-progress-linear>
+
     <!-- プロフィール欄 -->
-    <div class="profile__content card">
+    <div class="profile__content card" v-else>
       <div class="row">
         <!-- アイコンとユーザー名 -->
         <div class="profile__user col-md-5">
@@ -75,22 +78,20 @@ export default {
   },
   data() {
     return {
-      user: {},
-      sns: {},
+      user: null,
+      sns: null,
     };
   },
-  methods: {
-    getUser: async function () {
-      var response = await this.$http.get(this.$endpoint('userShow', [this.userName]));
-      this.user = response.data;
+  async mounted() {
+    /**
+     * ユーザーデータの取得
+     */
+    var response = await this.$http.get(this.$endpoint('userShow', [this.userName]));
+    this.user = response.data;
 
-      if (this.user.sns) {
-        this.sns = JSON.parse(this.user.sns);
-      }
-    },
-  },
-  mounted() {
-    this.getUser();
+    if (this.user.sns) {
+      this.sns = JSON.parse(this.user.sns);
+    }
   },
 };
 </script>
