@@ -3,12 +3,13 @@
     <v-card class="headline text-center"
       >目標:[{{ goalText }}] カルテタイトル:[{{ recordTitle }}] タグ:[{{ recordTags }}]　詳細:[{{
         recordDetail
-      }}] プロフィールダイアログ:[{{ profileDialog }}]
+      }}] プロフィールダイアログ:[{{ profileDialog }}] プロジェクトインデックス:[{{ projectIndex }}]
+      detail:{{ projectDetailDialog }}
     </v-card>
     <Drawer
       :roomName="roomData.name"
       @leaveRoom="leaveRoom"
-      @goalInput="goalInput"
+      @projectsSelect="projectsSelect"
       @studyRecord="studyRecord"
     />
     <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
@@ -52,9 +53,54 @@
 
     <Profile :userId="profileUserId" @close="profileDialog = $event" v-if="profileDialog"></Profile>
 
-    <v-dialog persistent v-model="goalDialog" width="600">
+    <!-- project ダイアログ -->
+    <v-dialog v-model="projectsDialog" width="600">
+      <v-card class="headline grey darken-2">
+        <div class="text-right black--text">
+          <v-btn @click="projectAddDialog = true" x-small fab right color="white">
+            <v-icon> mdi-plus </v-icon>
+          </v-btn>
+        </div>
+        <v-list class="m-2 rounded-lg">
+          <v-list-item-group color="success" v-model="projectIndex">
+            <v-list-item v-for="(project, i) in projects" :key="i">
+              <v-list-item-content>
+                <v-list-item-title
+                  v-text="project.title"
+                  @click="projectDetailDialog = true"
+                ></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+
+        <v-card-actions class="align-center">
+          <v-spacer></v-spacer>
+          <v-btn color="yellow darken-1" @click="projectsDialog = false">
+            <span class="white--text">close</span>
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- プロジェクト詳細ダイアログ -->
+    <v-dialog v-model="projectDetailDialog" width="600">
+      <v-card class="headline grey darken-2">
+        <v-card-actions class="align-center">
+          <v-spacer></v-spacer>
+          <v-btn color="yellow darken-1" @click="projectDetailDialog = false">
+            <span class="white--text">Let's study</span>
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- プロジェクト追加ダイアログ -->
+    <v-dialog persistent v-model="projectAddDialog" width="600">
       <v-card class="headline grey darken-2 text-center">
-        <v-card-text class="pa-2 white--text title whitefont-weight-bold"> 目標入力 </v-card-text>
+        <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+          プロジェクト　
+        </v-card-text>
 
         <v-textarea
           solo
@@ -69,14 +115,14 @@
 
         <v-card-actions class="align-center">
           <v-spacer></v-spacer>
-          <!-- <v-btn color="white" text> IMG </v-btn> -->
-          <v-btn color="yellow darken-1" @click="goalDialog = false">
-            <span class="white--text">Let's study</span>
+          <v-btn color="yellow darken-1" @click="projectAddDialog = false">
+            <span class="white--text"> 追加 </span>
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
+    <!-- カルテ記入ダイアログ -->
     <v-dialog persistent 　scrollable v-model="studyRecordDialog" width="600">
       <v-card class="headline pa-3 grey darken-1 text-center">
         <v-card-text class="pa-2 white--text title whitefont-weight-bold">
@@ -193,14 +239,32 @@ export default {
       chatParticipants: [], // チャット参加者
       messageList: [], // メッセージデータ
       isChatOpen: false, // チャットモーダル制御
-      goalDialog: false, // 目標入力モーダルの制御
+      projectAddDialog: false, // プロジェクト追加モーダルの制御
       studyRecordDialog: false, // カルテ記入モーダルの制御
       profileDialog: false, // プロフィールのモーダル制御
+      projectsDialog: false, //プロジェクトモーダルの制御
+      projectDetailDialog: false, //プロジェクト詳細モーダルの制御
       profileUserId: null, // プロフィールを表示するユーザーID
       goalText: '', // 目標のテキストメッセージ
       recordTitle: '', // カルテのタイトル
       recordTags: '', // カルテのタグ
       recordDetail: '', // カルテの詳細
+
+      projects: [
+        {
+          title: 'shuto',
+        },
+        {
+          title: 'shingai',
+        },
+        {
+          title: 'bana',
+        },
+        {
+          title: 'mamesu',
+        },
+      ],
+      projectIndex: 1,
 
       chatColors: {
         // beautiful-chatの色設定
@@ -396,7 +460,7 @@ export default {
             // 現在どこにも着席していない場合
             if (this.authUser.seat === null) {
               // 状態変更処理
-              this.goalDialog = true; //auth userが自習室に初めてsittingしたときモーダル表示
+              this.projectsDialog = true; //auth userが自習室に初めてsittingしたときモーダル表示
               await this.userAction('sitting', event.target);
             }
             break;
@@ -524,9 +588,13 @@ export default {
       this.canvas.requestRenderAll();
     },
 
-    goalInput: function () {
-      this.goalDialog = 'true';
+    /**
+     * プロジェクトダイアログを表示
+     */
+    projectsSelect: function () {
+      this.projectsDialog = 'true';
     },
+
     studyRecord: function () {
       this.studyRecordDialog = 'true';
     },

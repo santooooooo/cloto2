@@ -36,6 +36,10 @@
           <v-spacer></v-spacer>
           <v-btn color="green darken-1" text @click="close()"> Disagree </v-btn>
           <v-btn color="green darken-1" text @click="close()"> Agree </v-btn>
+          <v-btn color="green darken-1" text @click="close()"> Agree </v-btn>
+          <v-btn color="green darken-1" text @click="close()"> Agree </v-btn>
+          <v-btn color="green darken-1" text @click="close()"> Agree </v-btn>
+          <v-btn color="green darken-1" text @click="close()"> Agree </v-btn>
         </v-card-actions>
       </v-container>
     </v-card>

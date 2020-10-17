@@ -9,9 +9,9 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item @click="$emit('goalInput')">
+      <v-list-item @click="$emit('projectsSelect')">
         <v-list-item-content>
-          <v-list-item-title>目標入力</v-list-item-title>
+          <v-list-item-title>プロジェクト</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
