@@ -64,11 +64,8 @@
         <v-list class="m-2 rounded-lg">
           <v-list-item-group color="success" v-model="projectIndex">
             <v-list-item v-for="(project, i) in projects" :key="i">
-              <v-list-item-content>
-                <v-list-item-title
-                  v-text="project.title"
-                  @click="projectDetailDialog = true"
-                ></v-list-item-title>
+              <v-list-item-content @click="projectDetailDialog = true">
+                <v-list-item-title v-text="project.title"></v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -86,6 +83,7 @@
     <!-- プロジェクト詳細ダイアログ -->
     <v-dialog v-model="projectDetailDialog" width="600">
       <v-card class="headline grey darken-2">
+        <h6 class="text-center">{{ projects[projectIndex].title }}</h6>
         <v-card-actions class="align-center">
           <v-spacer></v-spacer>
           <v-btn color="yellow darken-1" @click="projectDetailDialog = false">
@@ -264,7 +262,7 @@ export default {
           title: 'mamesu',
         },
       ],
-      projectIndex: 1,
+      projectIndex: null,
 
       chatColors: {
         // beautiful-chatの色設定
