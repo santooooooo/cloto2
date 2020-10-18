@@ -14,6 +14,20 @@ v
       @studyRecord="studyRecord"
     />
     <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
+    <!-- いきなり自習室のアラート -->
+    <v-dialog v-model="alertLounge" width="620">
+      <v-card rounded class="headline white">
+        <v-card-actions class="align-center">
+          <span class="red--text font-weight-bold"
+            >いきなり休憩ですか？まずは自習をしましょう！</span
+          >
+          <!-- <v-spacer></v-spacer> -->
+          <!-- <v-btn color="yellow darken-1" @click="alertLounge = false">
+            <span class="white--text">close</span>
+          </v-btn> -->
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <beautiful-chat
       :open="enterLounge"
@@ -55,7 +69,7 @@ v
     <Profile :userId="profileUserId" @close="profileDialog = $event" v-if="profileDialog"></Profile>
 
     <!-- project ダイアログ -->
-    <v-dialog v-model="projectsDialog" width="600">
+    <v-dialog persistent v-model="projectsDialog" width="600">
       <v-card class="headline grey darken-2">
         <div class="text-right black--text">
           <v-btn @click="projectAddDialog = true" x-small fab right color="white">
@@ -82,7 +96,12 @@ v
     </v-dialog>
 
     <!-- プロジェクト詳細ダイアログ -->
-    <v-dialog v-model="projectDetailDialog" v-if="typeof projectIndex !== 'undefined'" width="600">
+    <v-dialog
+      persistent
+      v-model="projectDetailDialog"
+      v-if="typeof projectIndex !== 'undefined'"
+      width="600"
+    >
       <v-card class="headline grey darken-2">
         <v-card-title v-if="typeof projectIndex === 'number'" class="text-center">{{
           projects[projectIndex].title
@@ -253,6 +272,7 @@ export default {
       recordTitle: '', // カルテのタイトル
       recordTags: '', // カルテのタグ
       recordDetail: '', // カルテの詳細
+      alertLounge: false, //いきなり休憩室のアラート制御
 
       projects: [
         {
@@ -482,7 +502,8 @@ export default {
           case 'lounge': // 休憩室がクリックされた場合
             if (this.authUser.seat === null) {
               // どこにも着席していない状態で休憩室をクリックした場合
-              alert('いきなり休憩ですか？まずは自習をしましょう！');
+              // alert('いきなり休憩ですか？まずは自習をしましょう！');
+              this.alertLounge = true;
             } else {
               // 現在自習室に着席中の場合
               if (this.authUser.seat.section.role === 'study') {
