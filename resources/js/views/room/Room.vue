@@ -1,3 +1,4 @@
+v
 <template>
   <div id="room" ref="room">
     <v-card class="headline text-center"
@@ -61,7 +62,7 @@
             <v-icon> mdi-plus </v-icon>
           </v-btn>
         </div>
-        <v-list class="m-2 rounded-lg">
+        <v-list class="ma-2 rounded-lg">
           <v-list-item-group color="success" v-model="projectIndex">
             <v-list-item v-for="(project, i) in projects" :key="i">
               <v-list-item-content @click="projectDetailDialog = true">
@@ -81,12 +82,17 @@
     </v-dialog>
 
     <!-- プロジェクト詳細ダイアログ -->
-    <v-dialog v-model="projectDetailDialog" width="600">
+    <v-dialog v-model="projectDetailDialog" v-if="typeof projectIndex !== 'undefined'" width="600">
       <v-card class="headline grey darken-2">
-        <h6 class="text-center">{{ projects[projectIndex].title }}</h6>
+        <v-card-title v-if="typeof projectIndex === 'number'" class="text-center">{{
+          projects[projectIndex].title
+        }}</v-card-title>
         <v-card-actions class="align-center">
           <v-spacer></v-spacer>
-          <v-btn color="yellow darken-1" @click="projectDetailDialog = false">
+          <v-btn
+            color="yellow darken-1"
+            @click="(projectDetailDialog = false), (projectIndex = '')"
+          >
             <span class="white--text">Let's study</span>
           </v-btn>
         </v-card-actions>
@@ -262,7 +268,7 @@ export default {
           title: 'mamesu',
         },
       ],
-      projectIndex: null,
+      projectIndex: '',
 
       chatColors: {
         // beautiful-chatの色設定
@@ -360,6 +366,14 @@ export default {
         }
       },
     },
+
+    // 'projects[projectIndex].title': {
+    //   handler: function () {
+    //     console.log('projectIndex' + this.projectIndex);
+    //     if (typeof this.projects[projectIndex].title === 'undefined') {
+    //     }
+    //   },
+    // },
   },
 
   methods: {
