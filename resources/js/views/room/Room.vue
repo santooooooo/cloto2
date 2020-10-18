@@ -472,8 +472,10 @@ export default {
             // 現在どこにも着席していない場合
             if (this.authUser.seat === null) {
               // 状態変更処理
-              this.projectsDialog = true; //auth userが自習室に初めてsittingしたときモーダル表示
               await this.userAction('sitting', event.target);
+              if (typeof this.authUser.seat_id === 'number') {
+                this.projectsDialog = true; //auth userが自習室に初めてsittingしたときモーダル表示
+              }
             }
             break;
 
