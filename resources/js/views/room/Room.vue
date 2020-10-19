@@ -2,15 +2,13 @@ v
 <template>
   <div id="room" ref="room">
     <v-card class="headline text-center"
-      >目標:[{{ goalText }}] カルテタイトル:[{{ recordTitle }}] タグ:[{{ recordTags }}]　詳細:[{{
-        recordDetail
-      }}] プロフィールダイアログ:[{{ profileDialog }}] プロジェクトインデックス:[{{ projectIndex }}]
-      detail:{{ projectDetailDialog }}
+      >カルテタイトル:[{{ recordTitle }}] タグ:[{{ recordTags }}]　詳細:[{{ recordDetail }}]
+      プロフィールダイアログ:[{{ projectDialog }}]
     </v-card>
     <Drawer
-      :roomName="roomData.name"
+      :room-name="roomData.name"
       @leaveRoom="leaveRoom"
-      @projectsSelect="projectsSelect"
+      @open-project-dialog="projectDialog = $event"
       @studyRecord="studyRecord"
     />
     <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
@@ -68,87 +66,7 @@ v
 
     <Profile :userId="profileUserId" @close="profileDialog = $event" v-if="profileDialog"></Profile>
 
-    <!-- project ダイアログ -->
-    <v-dialog persistent v-model="projectsDialog" width="600">
-      <v-card class="  headline grey darken-2" >
-        <v-list class="rounded-lg">
-          <v-list-item-group color="success" v-model="projectIndex">
-            <v-list-item v-for="(project, i) in projects" :key="i">
-              <v-list-item-content @click="projectDetailDialog = true">
-                <v-list-item-title v-text="project.title"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-
-       <v-card-actions >
-  
-         <v-spacer></v-spacer>
-          <v-btn  @click="projectAddDialog = true" x-small fab color="white">
-            <v-icon> mdi-plus </v-icon>
-          </v-btn>
-          <v-spacer></v-spacer> 
-          <v-btn color="yellow darken-1" @click="projectsDialog = false" right absolute>
-            <span class="white--text">close</span>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <!-- プロジェクト詳細ダイアログ -->
-    <v-dialog
-      persistent
-      v-model="projectDetailDialog"
-      v-if="typeof projectIndex !== 'undefined'"
-      width="600"
-    >
-      <v-card class="headline grey darken-2">
-        <v-card-title v-if="typeof projectIndex === 'number'" class="text-center">{{
-          projects[projectIndex].title
-        }} </v-card-title>
-        <v-card-actions >
-          <v-card width="600">
-          {{ goalText }}
-          </v-card>
-          <v-spacer></v-spacer>
-          <div class="ma-6">
-          <v-btn
-            color="yellow darken-1"
-            @click="(projectDetailDialog = false), (projectIndex = '')"
-          >
-            <span class="white--text">Let's study</span>
-          </v-btn>
-          </div>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <!-- プロジェクト追加ダイアログ -->
-    <v-dialog persistent v-model="projectAddDialog" width="600">
-      <v-card class="headline grey darken-2 text-center">
-        <v-card-text class="pa-2 white--text title whitefont-weight-bold">
-          プロジェクト　
-        </v-card-text>
-
-        <v-textarea
-          solo
-          rounded
-          name="input-7-4"
-          rows="10"
-          v-model="goalText"
-          label="目標を入力しよう!"
-          auto-grow
-          class="pa-2"
-        ></v-textarea>
-
-        <v-card-actions class="align-center">
-          <v-spacer></v-spacer>
-          <v-btn color="yellow darken-1" @click="projectAddDialog = false">
-            <span class="white--text"> 追加 </span>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <Project @close="projectDialog = $event" v-if="projectDialog"></Project>
 
     <!-- カルテ記入ダイアログ -->
     <v-dialog persistent 　scrollable v-model="studyRecordDialog" width="600">
@@ -243,12 +161,14 @@ v
 
 <script>
 import Drawer from '@/components/room/Drawer';
+import Project from '@/components/room/Project';
 import Profile from '@/components/room/Profile';
 import { OK } from '@/consts/status';
 
 export default {
   components: {
     Drawer,
+    Project,
     Profile,
   },
   data() {
@@ -267,33 +187,15 @@ export default {
       chatParticipants: [], // チャット参加者
       messageList: [], // メッセージデータ
       isChatOpen: false, // チャットモーダル制御
-      projectAddDialog: false, // プロジェクト追加モーダルの制御
       studyRecordDialog: false, // カルテ記入モーダルの制御
       profileDialog: false, // プロフィールのモーダル制御
-      projectsDialog: false, //プロジェクトモーダルの制御
-      projectDetailDialog: false, //プロジェクト詳細モーダルの制御
       profileUserId: null, // プロフィールを表示するユーザーID
+      projectDialog: false, //プロジェクトモーダルの制御
       goalText: '', // 目標のテキストメッセージ
       recordTitle: '', // カルテのタイトル
       recordTags: '', // カルテのタグ
       recordDetail: '', // カルテの詳細
       alertLounge: false, //いきなり休憩室のアラート制御
-
-      projects: [
-        {
-          title: 'shuto',
-        },
-        {
-          title: 'shingai',
-        },
-        {
-          title: 'bana',
-        },
-        {
-          title: 'mamesu',
-        },
-      ],
-      projectIndex: '',
 
       chatColors: {
         // beautiful-chatの色設定
@@ -391,14 +293,6 @@ export default {
         }
       },
     },
-
-    // 'projects[projectIndex].title': {
-    //   handler: function () {
-    //     console.log('projectIndex' + this.projectIndex);
-    //     if (typeof this.projects[projectIndex].title === 'undefined') {
-    //     }
-    //   },
-    // },
   },
 
   methods: {
@@ -628,20 +522,8 @@ export default {
       this.canvas.requestRenderAll();
     },
 
-    /**
-     * プロジェクトダイアログを表示
-     */
-    projectsSelect: function () {
-      this.projectsDialog = 'true';
-    },
-
     studyRecord: function () {
       this.studyRecordDialog = 'true';
-    },
-
-    closeProfileDialog: function () {
-      this.profileDialog = 'false';
-      console.log('closeProfileDialog が呼び出されました');
     },
   },
 
@@ -767,7 +649,7 @@ export default {
 .bottom {
   margin: 0 20px;
 }
-#position{
+#position {
   margin-top: 100px;
 }
 </style>

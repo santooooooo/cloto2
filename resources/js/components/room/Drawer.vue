@@ -9,7 +9,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item @click="$emit('projectsSelect')">
+      <v-list-item @click="$emit('open-project-dialog', true)">
         <v-list-item-content>
           <v-list-item-title>プロジェクト</v-list-item-title>
         </v-list-item-content>
