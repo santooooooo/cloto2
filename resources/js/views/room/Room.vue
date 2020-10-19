@@ -293,6 +293,30 @@ export default {
     },
 
     /**
+     * キャンバスマウスオーバーイベント
+     */
+    canvasMouseOver: function (event) {
+      if (event.target) {
+        if (event.target.fill === '') {
+          event.target.set({ fill: '#0000ff' });
+        }
+        this.canvas.requestRenderAll();
+      }
+    },
+
+    /**
+     * キャンバスマウスオーバー解除イベント
+     */
+    canvasMouseOut: function (event) {
+      if (event.target) {
+        if (event.target.fill === '#0000ff') {
+          event.target.set({ fill: '' });
+        }
+        this.canvas.requestRenderAll();
+      }
+    },
+
+    /**
      * キャンバスクリックイベント
      */
     canvasMouseDown: async function (event) {
@@ -509,6 +533,10 @@ export default {
         }
       });
     });
+
+    // マウスオーバーイベントの設定
+    this.canvas.on('mouse:over', this.canvasMouseOver);
+    this.canvas.on('mouse:out', this.canvasMouseOut);
 
     // クリックイベントの設定
     this.canvas.on('mouse:down', (event) => {
