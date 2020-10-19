@@ -1,17 +1,20 @@
 <template>
-  <v-dialog persistent v-model="dialog">
+  <v-dialog persistent v-model="dialog" width="600">
     <!-- ローディングバー -->
     <v-progress-linear indeterminate color="white" class="mb-0" v-if="!user"></v-progress-linear>
 
-    <v-card v-else>
+    <v-card   align-center v-else>
       <v-container>
         <v-row class="text-center" justify="center">
-          <v-col cols="12" sm="6">
-            <v-avatar size="62"><img :src="$storage('icon') + user.icon" /></v-avatar>
+          <v-col>
+            <v-avatar size="52"><img :src="$storage('icon') + user.icon" /></v-avatar>
             <p>{{ user.handlename }}</p>
-            <p>{{ '@' + user.username }}</p>
+                <div class="introduction">
+                  <p>{{ user.introduction }}</p>
+                </div>
+       
           </v-col>
-          <v-col cols="12" sm="6">
+          <v-col cols="3" sm="3">
             <div v-if="sns || user.web">
               <a :href="'https://twitter.com/' + sns.twitter" target="_blank" v-if="sns.twitter">
                 <i class="fab fa-twitter fa-2x"></i>
@@ -26,16 +29,13 @@
                 <i class="fas fa-link fa-2x"></i>
               </a>
             </div>
-            <div v-if="user.introduction">
-              <p>{{ user.introduction }}</p>
-            </div>
+
           </v-col>
         </v-row>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="close()"> Disagree </v-btn>
-          <v-btn color="green darken-1" text @click="close()"> Agree </v-btn>
+          <v-btn color="green darken-1" text @click="close()"> close </v-btn>
         </v-card-actions>
       </v-container>
     </v-card>
@@ -145,3 +145,18 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@import '~/_variables';
+
+.introduction{
+    background-color: $light-gray;
+    margin: 0 auto;
+    background-color: $light-gray;
+    width: 500px;
+    border: none;
+    border-radius: 30px;
+}
+</style>
+
+
