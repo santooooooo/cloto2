@@ -1,15 +1,11 @@
 v
 <template>
   <div id="room" ref="room">
-    <v-card class="headline text-center"
-      >カルテタイトル:[{{ recordTitle }}] タグ:[{{ recordTags }}]　詳細:[{{ recordDetail }}]
-      プロフィールダイアログ:[{{ projectDialog }}]
-    </v-card>
     <Drawer
       :room-name="roomData.name"
       @leaveRoom="leaveRoom"
       @open-project-dialog="projectDialog = $event"
-      @studyRecord="studyRecord"
+      @open-karte-dialog="karteDialog = $event"
     />
     <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
     <!-- いきなり自習室のアラート -->
@@ -64,88 +60,14 @@ v
       <template v-slot:system-message-body="{ message }"> [System]: {{ message.text }} </template>
     </beautiful-chat>
 
+    <!-- プロフィールダイアログ -->
     <Profile :userId="profileUserId" @close="profileDialog = $event" v-if="profileDialog"></Profile>
 
+    <!-- プロジェクトダイアログ -->
     <Project @close="projectDialog = $event" v-if="projectDialog"></Project>
 
-    <!-- カルテ記入ダイアログ -->
-    <v-dialog persistent 　scrollable v-model="studyRecordDialog" width="600">
-      <v-card class="headline pa-3 grey darken-1 text-center">
-        <v-card-text class="pa-2 white--text title whitefont-weight-bold">
-          {{ goalText }}
-        </v-card-text>
-
-        <v-card height="200" class="m-2 rounded-xl">
-          <v-btn class="mt-15" color="yellow darken-1">
-            <span class="white--text">画像を選択</span>　
-          </v-btn>
-        </v-card>
-
-        <v-row class="text-center m-1" justify="center">
-          <v-col cols="12" sm="6">
-            <h6 class="tag">活動内容</h6>
-            <v-textarea
-              v-model="recordTitle"
-              solo
-              rounded
-              name="input-7-4"
-              rows="1"
-              auto-grow
-            ></v-textarea>
-          </v-col>
-          <v-col cols="12" sm="6" margin-bottom="30px">
-            <h6 class="tag">活動時間</h6>
-            <v-textarea
-              solo
-              rounded
-              name="input-7-4"
-              rows="1"
-              label="13:30～14:45"
-              auto-grow
-            ></v-textarea>
-          </v-col>
-        </v-row>
-        <!-- <div class="m-3 p-1"> -->
-        <div class="bottom">
-          <h6 class="tag">関連タグ</h6>
-
-          <v-textarea
-            v-model="recordTags"
-            solo
-            rounded
-            name="input-7-4"
-            rows="1"
-            label="#html #css"
-            auto-grow
-          ></v-textarea>
-          <!-- <v-textarea
-              auto-grow
-              rounded
-              filled
-              rows="1"
-              color="black"
-            background-color="white"
-            label="#html #css"
-            ></v-textarea> -->
-          <h6 class="tag">活動詳細</h6>
-          <v-textarea
-            v-model="recordDetail"
-            rounded
-            filled
-            rows="5"
-            color="black"
-            background-color="white"
-          ></v-textarea>
-        </div>
-        <v-card-actions class="align-center">
-          <v-spacer></v-spacer>
-          <!-- <v-btn color="white" text> IMG </v-btn> -->
-          <v-btn color="yellow darken-1" @click="studyRecordDialog = false">
-            <span class="white--text">記録</span>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <!-- カルテダイアログ -->
+    <Karte :task="task" @close="karteDialog = $event" v-if="karteDialog"></Karte>
 
     <div class="text-center ma-2">
       <v-snackbar v-model="errorSnackbar">
@@ -162,6 +84,7 @@ v
 <script>
 import Drawer from '@/components/room/Drawer';
 import Project from '@/components/room/Project';
+import Karte from '@/components/room/Karte';
 import Profile from '@/components/room/Profile';
 import { OK } from '@/consts/status';
 
@@ -169,6 +92,7 @@ export default {
   components: {
     Drawer,
     Project,
+    Karte,
     Profile,
   },
   data() {
@@ -187,15 +111,12 @@ export default {
       chatParticipants: [], // チャット参加者
       messageList: [], // メッセージデータ
       isChatOpen: false, // チャットモーダル制御
-      studyRecordDialog: false, // カルテ記入モーダルの制御
       profileDialog: false, // プロフィールのモーダル制御
       profileUserId: null, // プロフィールを表示するユーザーID
-      projectDialog: false, //プロジェクトモーダルの制御
-      goalText: '', // 目標のテキストメッセージ
-      recordTitle: '', // カルテのタイトル
-      recordTags: '', // カルテのタグ
-      recordDetail: '', // カルテの詳細
-      alertLounge: false, //いきなり休憩室のアラート制御
+      projectDialog: false, // プロジェクトモーダルの制御
+      karteDialog: false, // カルテ記入モーダルの制御
+      task: 'example', // やること
+      alertLounge: false, // いきなり休憩室のアラート制御
 
       chatColors: {
         // beautiful-chatの色設定
@@ -520,10 +441,6 @@ export default {
     removeIcon: function (removeObject) {
       this.canvas.remove(removeObject);
       this.canvas.requestRenderAll();
-    },
-
-    studyRecord: function () {
-      this.studyRecordDialog = 'true';
     },
   },
 

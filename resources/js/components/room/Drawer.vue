@@ -15,7 +15,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item @click="$emit('studyRecord')">
+      <v-list-item @click="$emit('open-karte-dialog', true)">
         <v-list-item-content>
           <v-list-item-title>カルテ記入</v-list-item-title>
         </v-list-item-content>
