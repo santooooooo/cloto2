@@ -70,13 +70,8 @@ v
 
     <!-- project ダイアログ -->
     <v-dialog persistent v-model="projectsDialog" width="600">
-      <v-card class="headline grey darken-2">
-        <div class="text-right black--text">
-          <v-btn @click="projectAddDialog = true" x-small fab right color="white">
-            <v-icon> mdi-plus </v-icon>
-          </v-btn>
-        </div>
-        <v-list class="ma-2 rounded-lg">
+      <v-card class="  headline grey darken-2" >
+        <v-list class="rounded-lg">
           <v-list-item-group color="success" v-model="projectIndex">
             <v-list-item v-for="(project, i) in projects" :key="i">
               <v-list-item-content @click="projectDetailDialog = true">
@@ -86,9 +81,14 @@ v
           </v-list-item-group>
         </v-list>
 
-        <v-card-actions class="align-center">
-          <v-spacer></v-spacer>
-          <v-btn color="yellow darken-1" @click="projectsDialog = false">
+       <v-card-actions >
+  
+         <v-spacer></v-spacer>
+          <v-btn  @click="projectAddDialog = true" x-small fab color="white">
+            <v-icon> mdi-plus </v-icon>
+          </v-btn>
+          <v-spacer></v-spacer> 
+          <v-btn color="yellow darken-1" @click="projectsDialog = false" right absolute>
             <span class="white--text">close</span>
           </v-btn>
         </v-card-actions>
@@ -105,15 +105,20 @@ v
       <v-card class="headline grey darken-2">
         <v-card-title v-if="typeof projectIndex === 'number'" class="text-center">{{
           projects[projectIndex].title
-        }}</v-card-title>
-        <v-card-actions class="align-center">
+        }} </v-card-title>
+        <v-card-actions >
+          <v-card width="600">
+          {{ goalText }}
+          </v-card>
           <v-spacer></v-spacer>
+          <div class="ma-6">
           <v-btn
             color="yellow darken-1"
             @click="(projectDetailDialog = false), (projectIndex = '')"
           >
             <span class="white--text">Let's study</span>
           </v-btn>
+          </div>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -761,6 +766,9 @@ export default {
 }
 .bottom {
   margin: 0 20px;
+}
+#position{
+  margin-top: 100px;
 }
 </style>
 
