@@ -3,7 +3,7 @@ v
   <div id="room" ref="room">
     <Drawer
       :room-name="roomData.name"
-      @leaveRoom="leaveRoom"
+      @leave-room="leaveRoom"
       @open-project-dialog="projectDialog = $event"
       @open-karte-dialog="karteDialog = $event"
     />
@@ -26,7 +26,11 @@ v
     <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
 
     <!-- プロフィールダイアログ -->
-    <Profile :userId="profileUserId" @close="profileDialog = $event" v-if="profileDialog"></Profile>
+    <Profile
+      :user-id="profileUserId"
+      @close="profileDialog = $event"
+      v-if="profileDialog"
+    ></Profile>
 
     <!-- プロジェクトダイアログ -->
     <Project @close="projectDialog = $event" v-if="projectDialog"></Project>

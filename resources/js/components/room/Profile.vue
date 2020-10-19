@@ -3,16 +3,15 @@
     <!-- ローディングバー -->
     <v-progress-linear indeterminate color="white" class="mb-0" v-if="!user"></v-progress-linear>
 
-    <v-card   align-center v-else>
+    <v-card v-else>
       <v-container>
         <v-row class="text-center" justify="center">
           <v-col>
             <v-avatar size="52"><img :src="$storage('icon') + user.icon" /></v-avatar>
             <p>{{ user.handlename }}</p>
-                <div class="introduction">
-                  <p>{{ user.introduction }}</p>
-                </div>
-       
+            <div class="introduction">
+              <p>{{ user.introduction }}</p>
+            </div>
           </v-col>
           <v-col cols="3" sm="3">
             <div v-if="sns || user.web">
@@ -29,7 +28,6 @@
                 <i class="fas fa-link fa-2x"></i>
               </a>
             </div>
-
           </v-col>
         </v-row>
 
@@ -149,14 +147,12 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
-.introduction{
-    background-color: $light-gray;
-    margin: 0 auto;
-    background-color: $light-gray;
-    width: 500px;
-    border: none;
-    border-radius: 30px;
+.introduction {
+  background-color: $light-gray;
+  margin: 0 auto;
+  background-color: $light-gray;
+  width: 500px;
+  border: none;
+  border-radius: 30px;
 }
 </style>
-
-
