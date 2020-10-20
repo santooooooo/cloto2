@@ -306,7 +306,7 @@ export default {
      *
      * @param Number  loungeId   入室する休憩室ID
      */
-    enterLounge: async function (loungeId) {
+    enterLounge: function (loungeId) {
       this.loungeId = loungeId;
       this.isLoungeEnter = true;
     },
@@ -317,6 +317,10 @@ export default {
     leaveLounge: async function () {
       // ロード開始
       var loader = this.$loading.show(this.loaderOption);
+
+      // 休憩室の初期化
+      this.isLoungeEnter = false;
+      this.loungeId = '';
 
       // 状態変更処理
       await this.userAction('leaveLounge');
