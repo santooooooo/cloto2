@@ -128,8 +128,13 @@ export default {
 
 <style lang="scss">
 /* beautiful-chatのスタイル */
-.sc-launcher {
+.sc-launcher {  
   // モーダルオープンアイコンの無効化
   display: none;
+}
+.sc-chat-window[data-v-08d4c038]{
+position: absolute;
+margin-right:40vw;
+right: 0;
 }
 </style>

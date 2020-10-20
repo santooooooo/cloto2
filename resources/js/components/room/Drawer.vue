@@ -1,5 +1,5 @@
 <template>
-  <v-card flat tile class="ma-0" width="250">
+  <v-navigation-drawer absolute permanent color="grey lighten-3">
     <v-list nav>
       <v-list-item>
         <v-list-item-content>
@@ -25,7 +25,7 @@
     <div class="pa-2">
       <v-btn block color="error" @click="$emit('leave-room')">退席</v-btn>
     </div>
-  </v-card>
+  </v-navigation-drawer>
 </template>
 
 <script>
