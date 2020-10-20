@@ -1,20 +1,16 @@
 <template>
   <v-overlay z-index="4">
     <v-layout>
+      <!-- 参加者一覧：左 -->
       <v-flex class="flex-column mr-12">
-        <v-col>
+        <v-col v-for="(participant, index) in leftSide" :key="index">
           <v-avatar size="100">
-            <img :src="chatParticipants[0].imageUrl" />
-          </v-avatar>
-        </v-col>
-
-        <v-col>
-          <v-avatar size="100">
-            <img :src="chatParticipants[0].imageUrl" />
+            <img :src="participant.imageUrl" />
           </v-avatar>
         </v-col>
       </v-flex>
 
+      <!-- チャット -->
       <v-flex>
         <beautiful-chat
           :open="enterLounge"
@@ -46,16 +42,11 @@
         </v-row>
       </v-flex>
 
+      <!-- 参加者一覧：右 -->
       <v-flex class="flex-column ml-12">
-        <v-col>
+        <v-col v-for="(participant, index) in rightSide" :key="index">
           <v-avatar size="100">
-            <img :src="chatParticipants[0].imageUrl" />
-          </v-avatar>
-        </v-col>
-
-        <v-col>
-          <v-avatar size="100">
-            <img :src="chatParticipants[0].imageUrl" />
+            <img :src="participant.imageUrl" />
           </v-avatar>
         </v-col>
       </v-flex>
@@ -101,6 +92,18 @@ export default {
         },
       },
     };
+  },
+  computed: {
+    leftSide() {
+      return this.chatParticipants.filter((participant, index) => {
+        return index % 2 === 0;
+      });
+    },
+    rightSide() {
+      return this.chatParticipants.filter((participant, index) => {
+        return index % 2 === 1;
+      });
+    },
   },
   methods: {
     /**
