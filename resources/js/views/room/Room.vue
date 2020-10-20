@@ -1,5 +1,10 @@
 <template>
-  <v-layout ref="room">
+  <v-layout>
+    <!-- ローディング画面 -->
+    <v-overlay :value="isLoading">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+
     <Drawer
       :room-name="roomData.name"
       @leave-room="leaveRoom"
@@ -65,7 +70,6 @@ export default {
       errorMessage: '', // エラーメッセージ
       canvas: '', // キャンバスエリア
       isLoading: false, // ロードの制御
-      loaderOption: '', // loading-overlayの設定
       syncTimer: null, // 同期制御
       roomData: '', // 教室データ
       roomWidth: 1080, // 教室サイズ
@@ -251,7 +255,7 @@ export default {
     canvasMouseDown: async function (event, targetType) {
       if (targetType === 'seat') {
         // ロード開始
-        var loader = this.$loading.show(this.loaderOption);
+        this.isLoading = true;
 
         // 着席処理
         switch (event.target.role) {
@@ -282,7 +286,7 @@ export default {
         }
 
         // ロード終了
-        loader.hide();
+        this.isLoading = false;
       } else if (targetType === 'icon') {
         this.profileDialog = true;
         this.profileUserId = event.target.userId;
@@ -294,13 +298,13 @@ export default {
      */
     leaveRoom: async function () {
       // ロード開始
-      var loader = this.$loading.show(this.loaderOption);
+      this.isLoading = true;
 
       // 状態変更処理
       await this.userAction('leave');
 
       // ロード終了
-      loader.hide();
+      this.isLoading = false;
     },
 
     /**
@@ -318,7 +322,7 @@ export default {
      */
     leaveLounge: async function () {
       // ロード開始
-      var loader = this.$loading.show(this.loaderOption);
+      this.isLoading = true;
 
       // 休憩室の初期化
       this.isLoungeEnter = false;
@@ -328,7 +332,7 @@ export default {
       await this.userAction('leaveLounge');
 
       // ロード終了
-      loader.hide();
+      this.isLoading = false;
     },
 
     /**
@@ -376,14 +380,8 @@ export default {
   },
 
   async mounted() {
-    /**
-     * ロードの設定
-     */
-    this.loaderOption = {
-      container: this.$refs.room,
-    };
     // ロード開始
-    var loader = this.$loading.show(this.loaderOption);
+    this.isLoading = true;
 
     /**
      * キャンバスの設定
@@ -464,7 +462,7 @@ export default {
     });
 
     // ロード終了
-    loader.hide();
+    this.isLoading = false;
 
     /**
      * 部屋の同期開始
