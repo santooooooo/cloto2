@@ -1,41 +1,31 @@
 <template>
-  <v-navigation-drawer permanent white>
-    <v-list-item two-line class="px-3">
-      <!-- <router-link :to="{ name: 'index' }">
-        <img :src="$storage('system') + 'header-logo.svg'" />
-      </router-link> -->
-    </v-list-item>
-
+  <v-card flat tile class="ma-0" width="250">
     <v-list nav>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title
-            ><p class="roomName">{{ roomName }} 教室</p></v-list-item-title
+          <v-list-item-title class="text-h4 font-weight-bold"
+            >Room {{ roomName }}</v-list-item-title
           >
         </v-list-item-content>
       </v-list-item>
-      <v-list-item :to="{ name: 'home' }">
-        <!-- <v-list-item-icon>
-          <v-icon>mdi-home-city</v-icon>
-        </v-list-item-icon> -->
+
+      <v-list-item @click="$emit('open-project-dialog', true)">
         <v-list-item-content>
-          <v-list-item-title class="roomWork">目標入力</v-list-item-title>
+          <v-list-item-title>プロジェクト</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item :to="{ name: 'home' }">
+      <v-list-item @click="$emit('open-karte-dialog', true)">
         <v-list-item-content>
-          <v-list-item-titlec lass="roomWork">カルテ記入</v-list-item-titlec>
+          <v-list-item-title>カルテ記入</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
 
-    <template v-slot:append>
-      <div class="pa-2">
-        <v-btn block @click="$emit('clickLeaveButton')">退席</v-btn>
-      </div>
-    </template>
-  </v-navigation-drawer>
+    <div class="pa-2">
+      <v-btn block color="error" @click="$emit('leave-room')">退席</v-btn>
+    </div>
+  </v-card>
 </template>
 
 <script>
@@ -43,31 +33,11 @@ export default {
   props: {
     roomName: String,
   },
-
-  computed: {
-    authCheck() {
-      return this.$store.getters['auth/check'];
-    },
-    authUser() {
-      return this.$store.getters['auth/user'];
-    },
-  },
-
-  methods: {},
 };
 </script>
 
 <style lang="scss" scoped>
-@import '~/_variables';
-
-.roomName {
-  font-size: 28px;
-  color: rgb(255, 201, 20);
-  padding-bottom: 0%;
-  font-weight: bold;
-}
-.roomWork {
+* {
   font-weight: bold;
 }
 </style>
-/

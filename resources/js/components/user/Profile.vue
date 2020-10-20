@@ -1,7 +1,10 @@
 <template>
   <div class="profile">
+    <!-- ローディングバー -->
+    <v-progress-linear indeterminate color="blue" class="mb-0" v-if="!user"></v-progress-linear>
+
     <!-- プロフィール欄 -->
-    <div class="profile__content card">
+    <div class="profile__content card" v-else>
       <div class="row">
         <!-- アイコンとユーザー名 -->
         <div class="profile__user col-md-5">
@@ -24,7 +27,7 @@
                 name: 'profileEdit',
                 params: { username: $store.getters['auth/user'].username },
               }"
-              v-if="user.id == authId"
+              v-if="user.id == $store.getters['auth/user'].id"
               >編集する</router-link
             >
           </div>
@@ -70,24 +73,25 @@
 
 <script>
 export default {
+  props: {
+    userName: String,
+  },
   data() {
     return {
-      user: {},
-      authId: '',
-      sns: {},
+      user: null,
+      sns: null,
     };
   },
-  mounted() {
-    var endpoint = this.$endpoint('userShow', [this.$route.params.username]);
+  async mounted() {
+    /**
+     * ユーザーデータの取得
+     */
+    var response = await this.$http.get(this.$endpoint('userShow', [this.userName]));
+    this.user = response.data;
 
-    this.$http.get(endpoint).then((response) => {
-      this.user = response.data.user;
-      this.authId = response.data.authId;
-
-      if (this.user.sns) {
-        this.sns = JSON.parse(this.user.sns);
-      }
-    });
+    if (this.user.sns) {
+      this.sns = JSON.parse(this.user.sns);
+    }
   },
 };
 </script>

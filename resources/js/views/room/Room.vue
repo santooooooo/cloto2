@@ -1,70 +1,63 @@
 <template>
-  <div ref="room">
-    <v-row>
-      <v-col cols="3">
-        <Drawer :roomName="roomData.name" @clickLeaveButton="clickLeaveButton" />
-      </v-col>
-      <v-col cols="9">
+  <v-layout ref="room">
+    <Drawer
+      :room-name="roomData.name"
+      @leave-room="leaveRoom"
+      @open-project-dialog="projectDialog = $event"
+      @open-karte-dialog="karteDialog = $event"
+    />
+
+    <v-flex id="main">
+      <!-- 教室 -->
+      <v-row no-gutters align="center" justify="center" id="room">
         <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
-      </v-col>
-    </v-row>
+      </v-row>
 
-    <beautiful-chat
-      :open="enterLounge"
-      :close="leaveLounge"
-      :onMessageWasSent="onMessageWasSent"
-      :colors="chatColors"
-      :isOpen="isChatOpen"
-      :messageList="messageList"
-      :participants="chatParticipants"
-      :showCloseButton="true"
-      :showEmoji="true"
-      :showHeader="true"
-      :alwaysScrollToBottom="true"
-    >
-      <template v-slot:user-avatar="{ message, user }">
-        <div
-          style="
-            border-radius: 50%;
-            color: pink;
-            font-size: 15px;
-            line-height: 25px;
-            text-align: center;
-            background: tomato;
-            width: 25px !important;
-            height: 25px !important;
-            min-width: 30px;
-            min-height: 30px;
-            margin: 5px;
-            font-weight: bold;
-          "
-          v-if="message.data.type === 'text' && user && user.name"
-        >
-          {{ user.name.toUpperCase()[0] }}
-        </div>
-      </template>
-      <template v-slot:system-message-body="{ message }"> [System]: {{ message.text }} </template>
-    </beautiful-chat>
+      <!-- 休憩室 -->
+      <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
 
-    <div class="text-center ma-2">
-      <v-snackbar v-model="errorSnackbar">
-        {{ errorMessage }}
+      <!-- プロフィールダイアログ -->
+      <Profile
+        :user-id="profileUserId"
+        @close="profileDialog = $event"
+        v-if="profileDialog"
+      ></Profile>
 
-        <template v-slot:action="{ attrs }">
-          <v-btn color="pink" text v-bind="attrs" @click="errorSnackbar = false"> Close </v-btn>
-        </template>
-      </v-snackbar>
-    </div>
-  </div>
+      <!-- プロジェクトダイアログ -->
+      <Project @close="projectDialog = $event" v-if="projectDialog"></Project>
+
+      <!-- カルテダイアログ -->
+      <Karte :task="task" @close="karteDialog = $event" v-if="karteDialog"></Karte>
+
+      <!-- エラーメッセージ -->
+      <div class="text-center ma-2">
+        <v-snackbar v-model="errorSnackbar">
+          {{ errorMessage }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn color="pink" text v-bind="attrs" @click="errorSnackbar = false"> Close </v-btn>
+          </template>
+        </v-snackbar>
+      </div>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
 import Drawer from '@/components/room/Drawer';
+import Lounge from '@/components/room/Lounge';
+import Project from '@/components/room/Project';
+import Karte from '@/components/room/Karte';
+import Profile from '@/components/room/Profile';
 import { OK } from '@/consts/status';
 
 export default {
   components: {
     Drawer,
+    Lounge,
+    Project,
+    Karte,
+    Profile,
   },
   data() {
     return {
@@ -73,40 +66,18 @@ export default {
       canvas: '', // キャンバスエリア
       isLoading: false, // ロードの制御
       loaderOption: '', // loading-overlayの設定
-      roomSyncTimer: null, // 教室同期制御
+      syncTimer: null, // 同期制御
       roomData: '', // 教室データ
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
       iconSize: 30, // アイコンサイズ
-      loungeSyncTimer: null, // 休憩室同期制御
-      chatParticipants: [], // チャット参加者
-      messageList: [], // メッセージデータ
-      isChatOpen: false, // チャットモーダル制御
-      chatColors: {
-        // beautiful-chatの色設定
-        header: {
-          bg: '#D32F2F',
-          text: '#fff',
-        },
-        launcher: {
-          bg: '#D32F2F',
-        },
-        messageList: {
-          bg: '#fff',
-        },
-        sentMessage: {
-          bg: '#F44336',
-          text: '#fff',
-        },
-        receivedMessage: {
-          bg: '#eaeaea',
-          text: '#222222',
-        },
-        userInput: {
-          bg: '#fff',
-          text: '#212121',
-        },
-      },
+      isLoungeEnter: false, // 休憩室入室制御
+      loungeId: '', // 入室する休憩室のセクションID
+      profileDialog: false, // プロフィールのモーダル制御
+      profileUserId: null, // プロフィールを表示するユーザーID
+      projectDialog: false, // プロジェクトモーダルの制御
+      karteDialog: false, // カルテ記入モーダルの制御
+      task: 'example', // やること
     };
   },
 
@@ -190,17 +161,6 @@ export default {
     },
 
     /**
-     * 休憩室データの取得
-     *
-     * @param Number  sectionId   入室している休憩室ID
-     */
-    getLounge: async function (sectionId) {
-      var response = await this.$http.get(this.$endpoint('chatShow', [sectionId]));
-      this.chatParticipants = response.data.chatParticipants;
-      this.messageList = response.data.messageList;
-    },
-
-    /**
      * ユーザーの行動の反映
      *
      * @param String  action  行動
@@ -219,6 +179,7 @@ export default {
         case 'leave':
           // 退席処理
           endpoint = this.$endpoint('seatLeave');
+          this.isChatOpen = false;
           response = await this.$http.post(endpoint);
           break;
 
@@ -256,9 +217,38 @@ export default {
     },
 
     /**
+     * キャンバスマウスオーバーイベント
+     */
+    canvasMouseOver: function (event) {
+      if (event.target) {
+        if (event.target.fill === '') {
+          event.target.set({ fill: '#0000ff' });
+        }
+        this.canvas.requestRenderAll();
+      }
+    },
+
+    /**
+     * キャンバスマウスオーバー解除イベント
+     */
+    canvasMouseOut: function (event) {
+      if (event.target) {
+        if (event.target.fill === '#0000ff') {
+          event.target.set({ fill: '' });
+        }
+        this.canvas.requestRenderAll();
+      }
+    },
+
+    /**
      * キャンバスクリックイベント
      */
     canvasMouseDown: async function (event) {
+      if (typeof event.target.userId === 'number') {
+        //userid が整数ならば user iconを表示
+        this.profileDialog = true;
+        this.profileUserId = event.target.userId;
+      }
       // クリックした座席に誰も座っていないかつ，予約済みでない場合
       if (event.target.seatId !== null && event.target.reservationId === null) {
         // ロード開始
@@ -271,13 +261,17 @@ export default {
             if (this.authUser.seat === null) {
               // 状態変更処理
               await this.userAction('sitting', event.target);
+              if (typeof this.authUser.seat_id === 'number') {
+                this.projectsDialog = true; //auth userが自習室に初めてsittingしたときモーダル表示
+              }
             }
             break;
 
           case 'lounge': // 休憩室がクリックされた場合
             if (this.authUser.seat === null) {
               // どこにも着席していない状態で休憩室をクリックした場合
-              alert('いきなり休憩ですか？まずは自習をしましょう！');
+              this.errorMessage = 'いきなり休憩ですか？まずは自習をしましょう！';
+              this.errorSnackbar = true;
             } else {
               // 現在自習室に着席中の場合
               if (this.authUser.seat.section.role === 'study') {
@@ -310,18 +304,11 @@ export default {
     /**
      * 休憩室への入室
      *
-     * @param Number  sectionId   入室する休憩室ID
+     * @param Number  loungeId   入室する休憩室ID
      */
-    enterLounge: async function (sectionId) {
-      // 初回取得
-      await this.getLounge(sectionId);
-
-      this.isChatOpen = true;
-
-      // 同期開始
-      this.loungeSyncTimer = setInterval(() => {
-        this.getLounge(sectionId);
-      }, 3000);
+    enterLounge: async function (loungeId) {
+      this.loungeId = loungeId;
+      this.isLoungeEnter = true;
     },
 
     /**
@@ -334,24 +321,8 @@ export default {
       // 状態変更処理
       await this.userAction('leaveLounge');
 
-      this.isChatOpen = false;
-
       // ロード終了
       loader.hide();
-
-      // 同期停止
-      clearInterval(this.loungeSyncTimer);
-      this.loungeSyncTimer = null;
-    },
-
-    /**
-     * メッセージの送信
-     */
-    onMessageWasSent: function (message) {
-      this.$http.post(this.$endpoint('chatPost'), message);
-
-      // 一時的に描画するためリストへ追加
-      this.messageList = [...this.messageList, Object.assign({}, message, { id: Math.random() })];
     },
 
     /**
@@ -464,6 +435,10 @@ export default {
       });
     });
 
+    // マウスオーバーイベントの設定
+    this.canvas.on('mouse:over', this.canvasMouseOver);
+    this.canvas.on('mouse:out', this.canvasMouseOut);
+
     // クリックイベントの設定
     this.canvas.on('mouse:down', (event) => {
       // オブジェクトのクリック時にのみ実行
@@ -481,18 +456,15 @@ export default {
     /**
      * 部屋の同期開始
      */
-    this.roomSyncTimer = setInterval(() => {
+    this.syncTimer = setInterval(() => {
       this.getRoom();
     }, 3000);
   },
 
   destroyed() {
     // ページ遷移時にはタイマーを解除
-    if (this.roomSyncTimer !== null) {
-      clearInterval(this.roomSyncTimer);
-    }
-    if (this.loungeSyncTimer !== null) {
-      clearInterval(this.loungeSyncTimer);
+    if (this.syncTimer !== null) {
+      clearInterval(this.syncTimer);
     }
   },
 };
@@ -501,16 +473,11 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
-canvas {
-  border: 7px solid $gray;
-  margin: 0 auto;
-}
-</style>
+#main {
+  background-color: $light-yellow;
 
-<style lang="scss">
-/* beautiful-chatのスタイル */
-.sc-launcher {
-  // モーダルオープンアイコンの無効化
-  display: none;
+  #room {
+    height: 80vh;
+  }
 }
 </style>

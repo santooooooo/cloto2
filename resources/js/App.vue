@@ -4,7 +4,7 @@
     <Header @show-drawer="isShowDrawer = true" @logout="logout" @leave="leave" />
 
     <!-- ドロワーメニュー -->
-    <!-- <Drawer v-if="isRelease"/> -->
+    <Drawer v-model="isShowDrawer" @logout="logout" v-if="isRelease" />
 
     <!-- メイン -->
     <v-main>
@@ -18,12 +18,14 @@
 
 <script>
 import Header from './Header';
+import Drawer from './Drawer';
 import Footer from './Footer';
 import { UNAUTHORIZED, INTERNAL_SERVER_ERROR } from '@/consts/status';
 
 export default {
   components: {
     Header,
+    Drawer,
     Footer,
   },
   data() {
