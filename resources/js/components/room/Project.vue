@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container ma-0 pa-0>
     <!-- プロジェクト選択ダイアログ -->
     <v-dialog persistent v-model="dialog" width="600">
       <v-card class="headline grey darken-2">

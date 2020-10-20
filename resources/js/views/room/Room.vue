@@ -1,53 +1,46 @@
-v
 <template>
-  <div id="room" ref="room">
+  <v-layout ref="room">
     <Drawer
       :room-name="roomData.name"
       @leave-room="leaveRoom"
       @open-project-dialog="projectDialog = $event"
       @open-karte-dialog="karteDialog = $event"
     />
-    <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
-    <!-- いきなり自習室のアラート -->
-    <v-dialog v-model="alertLounge" width="620">
-      <v-card rounded class="headline white">
-        <v-card-actions class="align-center">
-          <span class="red--text font-weight-bold"
-            >いきなり休憩ですか？まずは自習をしましょう！</span
-          >
-          <!-- <v-spacer></v-spacer> -->
-          <!-- <v-btn color="yellow darken-1" @click="alertLounge = false">
-            <span class="white--text">close</span>
-          </v-btn> -->
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
 
-    <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
+    <v-flex id="main">
+      <!-- 教室 -->
+      <v-row no-gutters align="center" justify="center" id="room">
+        <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
+      </v-row>
 
-    <!-- プロフィールダイアログ -->
-    <Profile
-      :user-id="profileUserId"
-      @close="profileDialog = $event"
-      v-if="profileDialog"
-    ></Profile>
+      <!-- 休憩室 -->
+      <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
 
-    <!-- プロジェクトダイアログ -->
-    <Project @close="projectDialog = $event" v-if="projectDialog"></Project>
+      <!-- プロフィールダイアログ -->
+      <Profile
+        :user-id="profileUserId"
+        @close="profileDialog = $event"
+        v-if="profileDialog"
+      ></Profile>
 
-    <!-- カルテダイアログ -->
-    <Karte :task="task" @close="karteDialog = $event" v-if="karteDialog"></Karte>
+      <!-- プロジェクトダイアログ -->
+      <Project @close="projectDialog = $event" v-if="projectDialog"></Project>
 
-    <div class="text-center ma-2">
-      <v-snackbar v-model="errorSnackbar">
-        {{ errorMessage }}
+      <!-- カルテダイアログ -->
+      <Karte :task="task" @close="karteDialog = $event" v-if="karteDialog"></Karte>
 
-        <template v-slot:action="{ attrs }">
-          <v-btn color="pink" text v-bind="attrs" @click="errorSnackbar = false"> Close </v-btn>
-        </template>
-      </v-snackbar>
-    </div>
-  </div>
+      <!-- エラーメッセージ -->
+      <div class="text-center ma-2">
+        <v-snackbar v-model="errorSnackbar">
+          {{ errorMessage }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn color="pink" text v-bind="attrs" @click="errorSnackbar = false"> Close </v-btn>
+          </template>
+        </v-snackbar>
+      </div>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -85,7 +78,6 @@ export default {
       projectDialog: false, // プロジェクトモーダルの制御
       karteDialog: false, // カルテ記入モーダルの制御
       task: 'example', // やること
-      alertLounge: false, // いきなり休憩室のアラート制御
     };
   },
 
@@ -278,8 +270,8 @@ export default {
           case 'lounge': // 休憩室がクリックされた場合
             if (this.authUser.seat === null) {
               // どこにも着席していない状態で休憩室をクリックした場合
-              // alert('いきなり休憩ですか？まずは自習をしましょう！');
-              this.alertLounge = true;
+              this.errorMessage = 'いきなり休憩ですか？まずは自習をしましょう！';
+              this.errorSnackbar = true;
             } else {
               // 現在自習室に着席中の場合
               if (this.authUser.seat.section.role === 'study') {
@@ -481,34 +473,11 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
-#room {
-  height: 100vh;
-}
+#main {
+  background-color: $light-yellow;
 
-#canvas {
-  border: 7px solid $gray;
-  margin-top: 5vw;
-  margin-left: 25vw;
-}
-
-.tag {
-  margin: 0;
-  text-align: left;
-  padding-left: 15px;
-  color: white;
-}
-.bottom {
-  margin: 0 20px;
-}
-#position {
-  margin-top: 100px;
-}
-</style>
-
-<style lang="scss">
-/* beautiful-chatのスタイル */
-.sc-launcher {
-  // モーダルオープンアイコンの無効化
-  display: none;
+  #room {
+    height: 80vh;
+  }
 }
 </style>

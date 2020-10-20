@@ -122,4 +122,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+@import '~/_variables';
+</style>
+
+<style lang="scss">
+/* beautiful-chatのスタイル */
+.sc-launcher {
+  // モーダルオープンアイコンの無効化
+  display: none;
+}
+</style>
