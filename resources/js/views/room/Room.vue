@@ -220,11 +220,16 @@ export default {
      * キャンバスマウスオーバーイベント
      */
     canvasMouseOver: function (event) {
-      if (event.target) {
-        if (event.target.fill === '') {
+      if (event.target && event.target.fill === '') {
+        // 着席前：自習室のみ点灯
+        // 着席中：休憩室のみ点灯
+        if (
+          (this.authUser.seat === null && event.target.role === 'study') ||
+          (this.authUser.seat !== null && event.target.role === 'lounge')
+        ) {
           event.target.set({ fill: '#0000ff' });
+          this.canvas.requestRenderAll();
         }
-        this.canvas.requestRenderAll();
       }
     },
 
@@ -232,25 +237,19 @@ export default {
      * キャンバスマウスオーバー解除イベント
      */
     canvasMouseOut: function (event) {
-      if (event.target) {
-        if (event.target.fill === '#0000ff') {
-          event.target.set({ fill: '' });
-        }
+      if (event.target && event.target.fill === '#0000ff') {
+        event.target.set({ fill: '' });
         this.canvas.requestRenderAll();
       }
     },
 
     /**
      * キャンバスクリックイベント
+     *
+     * @param String  targetType  ターゲットの種類
      */
-    canvasMouseDown: async function (event) {
-      if (typeof event.target.userId === 'number') {
-        //userid が整数ならば user iconを表示
-        this.profileDialog = true;
-        this.profileUserId = event.target.userId;
-      }
-      // クリックした座席に誰も座っていないかつ，予約済みでない場合
-      if (event.target.seatId !== null && event.target.reservationId === null) {
+    canvasMouseDown: async function (event, targetType) {
+      if (targetType === 'seat') {
         // ロード開始
         var loader = this.$loading.show(this.loaderOption);
 
@@ -284,6 +283,9 @@ export default {
 
         // ロード終了
         loader.hide();
+      } else if (targetType === 'icon') {
+        this.profileDialog = true;
+        this.profileUserId = event.target.userId;
       }
     },
 
@@ -449,7 +451,14 @@ export default {
       if (event.target !== null) {
         // 入室前または自習室に着席している場合はクリックを受け付ける
         if (this.authUser.seat === null || this.authUser.seat.section.role === 'study') {
-          this.canvasMouseDown(event);
+          if (event.target.seatId !== null && event.target.reservationId === null) {
+            // クリックした座席に誰も座っていないかつ，予約済みでない場合
+            //** 座席のクリックイベントを発火 */
+            this.canvasMouseDown(event, 'seat');
+          } else if (typeof event.target.userId === 'number') {
+            //** アイコンのクリックイベントを発火 */
+            this.canvasMouseDown(event, 'icon');
+          }
         }
       }
     });
