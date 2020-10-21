@@ -1,11 +1,28 @@
 <template>
-  <v-overlay z-index="4">
+  <v-overlay opacity="0.7" z-index="4">
+    <!-- 新着メッセージ通知 -->
+    <v-row
+      justify="center"
+      class="mb-3"
+      :style="{ visibility: notification ? 'visible' : 'hidden' }"
+    >
+      <a @click="scrollToBottom()">
+        <v-badge inline :value="true" color="red" content="↓ 新着メッセージ"></v-badge>
+      </a>
+    </v-row>
+
     <v-layout>
       <!-- 参加者一覧：左 -->
       <v-flex class="flex-column mr-12">
         <v-col v-for="(participant, index) in leftSide" :key="index">
           <v-avatar size="100">
             <img :src="participant.imageUrl" />
+          </v-avatar>
+        </v-col>
+
+        <v-col>
+          <v-avatar size="100" class="v-avatar__spacer">
+            <!-- スペーサー -->
           </v-avatar>
         </v-col>
       </v-flex>
@@ -20,10 +37,8 @@
           :isOpen="isLoungeEnter"
           :messageList="messageList"
           :participants="chatParticipants"
-          :showCloseButton="true"
           :showEmoji="true"
           :showHeader="false"
-          :alwaysScrollToBottom="true"
         >
           <template v-slot:user-avatar="{ message, user }">
             <div v-if="message.data.type === 'text' && user && user.name">
@@ -35,11 +50,9 @@
           </template>
         </beautiful-chat>
 
-        <v-row justify="center">
-          <v-btn color="error" class="mt-12" @click="leaveLounge()" v-if="isLoungeEnter"
-            >自習室に戻る</v-btn
-          >
-        </v-row>
+        <v-btn fixed dark bottom right x-large color="error" class="ma-10" @click="leaveLounge()">
+          自習室に戻る
+        </v-btn>
       </v-flex>
 
       <!-- 参加者一覧：右 -->
@@ -47,6 +60,12 @@
         <v-col v-for="(participant, index) in rightSide" :key="index">
           <v-avatar size="100">
             <img :src="participant.imageUrl" />
+          </v-avatar>
+        </v-col>
+
+        <v-col>
+          <v-avatar size="100" class="v-avatar__spacer">
+            <!-- スペーサー -->
           </v-avatar>
         </v-col>
       </v-flex>
@@ -61,10 +80,14 @@ export default {
   },
   data() {
     return {
+      chatArea: '', // チャットエリア
       syncTimer: null, // 同期制御
       chatParticipants: [], // チャット参加者
       messageList: [], // メッセージデータ
-      isLoungeEnter: false, // チャットモーダル制御
+      notification: false, // 新着通知
+      isLoungeEnter: false, // チャットのダイアログ制御
+      profileDialog: false, // プロフィールのダイアログ制御
+      profileUserId: null, // プロフィールを表示するユーザーID
 
       chatColors: {
         // beautiful-chatの色設定
@@ -105,7 +128,43 @@ export default {
       });
     },
   },
+  watch: {
+    /**
+     * メッセージ追加時
+     */
+    'messageList.length': function () {
+      if (!this.isBottom()) {
+        this.notification = true;
+      }
+    },
+  },
   methods: {
+    /**
+     * 末尾までスクロールされているか
+     */
+    isBottom() {
+      return this.chatArea.scrollTop === this.chatArea.scrollHeight - this.chatArea.clientHeight
+        ? true
+        : false;
+    },
+
+    /**
+     * スクロールイベント
+     */
+    scrollEvent: function () {
+      // 末尾に達したら通知を削除
+      if (this.isBottom()) {
+        this.notification = false;
+      }
+    },
+
+    /**
+     * チャットを末尾までスクロール
+     */
+    scrollToBottom: function () {
+      this.chatArea.scrollTop = this.chatArea.scrollHeight;
+    },
+
     /**
      * 休憩室データの取得
      *
@@ -122,6 +181,10 @@ export default {
      */
     enterLounge: function () {
       this.isLoungeEnter = true;
+
+      // スクロールイベントの設定
+      this.chatArea = document.getElementsByClassName('sc-message-list')[0];
+      this.chatArea.addEventListener('scroll', this.scrollEvent);
     },
 
     /**
@@ -169,6 +232,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/_variables';
+
+.v-avatar {
+  cursor: pointer;
+
+  &__spacer {
+    cursor: default;
+  }
+}
 </style>
 
 <style lang="scss">
