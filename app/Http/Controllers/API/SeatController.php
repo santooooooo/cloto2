@@ -135,9 +135,11 @@ class SeatController extends RoomController
         }
 
         // 退出システムメッセージの追加
-        $type = 'system';
-        $data = json_encode(['text' => $this->user->username . 'が退出しました．'], JSON_UNESCAPED_UNICODE);
-        Chat::create(compact('user_id', 'section_id', 'type', 'data'));
+        Chat::create([
+            'section_id' => $section_id,
+            'type' => 'system',
+            'data' => json_encode(['text' => $this->user->username . 'が退出しました．'])
+        ]);
 
 
         // 着席していた座席を離席状態に変更
