@@ -126,7 +126,7 @@ class SeatController extends RoomController
         $chat = Chat::where('section_id', $section_id)->where('user_id', $user_id);
         // 発言が存在する時
         if ($chat->exists()) {
-            $result = $chat->update(['data' => json_encode(['text' => '削除されたメッセージです．'])]);
+            $result = $chat->update(['data' => json_encode(['text' => '削除されたメッセージです'])]);
 
             if (empty($result)) {
                 $message = 'エラーが発生しました。';
@@ -138,7 +138,7 @@ class SeatController extends RoomController
         Chat::create([
             'section_id' => $section_id,
             'type' => 'system',
-            'data' => json_encode(['text' => $this->user->username . 'が退出しました．'])
+            'data' => json_encode(['text' => $this->user->username . 'が退出しました'])
         ]);
 
 

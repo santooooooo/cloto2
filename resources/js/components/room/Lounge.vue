@@ -45,9 +45,6 @@
               {{ user.name.toUpperCase()[0] }}
             </div>
           </template>
-          <template v-slot:system-message-body="{ message }">
-            [System]: {{ message.text }}
-          </template>
         </beautiful-chat>
 
         <v-btn fixed dark bottom right x-large color="error" class="ma-10" @click="leaveLounge()">
@@ -91,27 +88,29 @@ export default {
 
       chatColors: {
         // beautiful-chatの色設定
-        header: {
-          bg: '#D32F2F',
-          text: '#fff',
-        },
-        launcher: {
-          bg: '#D32F2F',
-        },
         messageList: {
-          bg: '#fff',
+          bg: '#ffffff',
         },
         sentMessage: {
-          bg: '#F44336',
-          text: '#fff',
+          bg: '#f6bf00',
+          text: '#000000',
         },
         receivedMessage: {
-          bg: '#eaeaea',
-          text: '#222222',
+          bg: '#696969',
+          text: '#ffffff',
         },
         userInput: {
-          bg: '#fff',
+          bg: '#ffffff',
           text: '#212121',
+        },
+
+        // 以下は使用しないが定義上必要
+        header: {
+          bg: '',
+          text: '',
+        },
+        launcher: {
+          bg: '',
         },
       },
     };
@@ -260,8 +259,20 @@ export default {
     border-bottom-right-radius: 0;
   }
 
-  .sc-message {
-    width: 90%;
+  .sc-message-list {
+    padding-left: 10px;
+
+    // hover時のみスクロールバーを表示
+    overflow-y: hidden;
+    padding-right: 10px;
+    &:hover {
+      overflow-y: scroll;
+      padding-right: 0;
+    }
+
+    .sc-message {
+      width: 90%;
+    }
   }
 }
 </style>
