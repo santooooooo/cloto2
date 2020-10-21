@@ -3,8 +3,8 @@
     <v-layout>
       <!-- 参加者一覧：左 -->
       <v-flex class="flex-column mr-12">
-        <v-col v-for="(participant, index) in leftSide" :key="index">
-          <v-avatar size="100">
+        <v-col v-for="participant in leftSide" :key="participant.id">
+          <v-avatar size="100" @click="showProfile(participant.id)">
             <img :src="participant.imageUrl" />
           </v-avatar>
         </v-col>
@@ -44,18 +44,30 @@
 
       <!-- 参加者一覧：右 -->
       <v-flex class="flex-column ml-12">
-        <v-col v-for="(participant, index) in rightSide" :key="index">
-          <v-avatar size="100">
+        <v-col v-for="participant in rightSide" :key="participant.id">
+          <v-avatar size="100" @click="showProfile(participant.id)">
             <img :src="participant.imageUrl" />
           </v-avatar>
         </v-col>
       </v-flex>
     </v-layout>
+
+    <!-- プロフィールダイアログ -->
+    <Profile
+      :user-id="profileUserId"
+      @close="profileDialog = $event"
+      v-if="profileDialog"
+    ></Profile>
   </v-overlay>
 </template>
 
 <script>
+import Profile from '@/components/room/Profile';
+
 export default {
+  components: {
+    Profile,
+  },
   props: {
     loungeId: Number,
   },
@@ -64,7 +76,9 @@ export default {
       syncTimer: null, // 同期制御
       chatParticipants: [], // チャット参加者
       messageList: [], // メッセージデータ
-      isLoungeEnter: false, // チャットモーダル制御
+      isLoungeEnter: false, // チャットのダイアログ制御
+      profileDialog: false, // プロフィールのダイアログ制御
+      profileUserId: null, // プロフィールを表示するユーザーID
 
       chatColors: {
         // beautiful-chatの色設定
@@ -146,6 +160,16 @@ export default {
       // 一時的に描画するためリストへ追加
       this.messageList = [...this.messageList, Object.assign({}, message, { id: Math.random() })];
     },
+
+    /**
+     * プロフィールの表示
+     *
+     * @param Number  userId   プロフィールを表示するユーザーID
+     */
+    showProfile: function (userId) {
+      this.profileUserId = userId;
+      this.profileDialog = true;
+    },
   },
   async mounted() {
     // 初回取得
@@ -169,6 +193,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/_variables';
+
+.v-avatar {
+  cursor: pointer;
+}
 </style>
 
 <style lang="scss">
