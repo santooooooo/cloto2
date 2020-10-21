@@ -3,51 +3,57 @@
     <!-- ローディングバー -->
     <v-progress-linear indeterminate color="white" class="mb-0" v-if="!user"></v-progress-linear>
 
-    <v-card color="grey darken-1" dark>
+    <v-card color="grey darken-1" dark v-else>
       <v-container>
-        <v-btn class="ma-auto" color="grey lighten-1" dark>
-          <v-icon dark @click="close()"> mdi-arrow-left </v-icon>
-        </v-btn>
-        <v-row class="text-center" justify="center">
-          <v-col cols="12" sm="6">
-            <v-avatar size="102"><img :src="$storage('icon') + user.icon" /></v-avatar>
-            <p class="profile__user--handlename">{{ user.handlename }}</p>
-            <p class="profile__user--username">{{ '@' + user.username }}</p>
+        <v-row justify="end">
+          <v-btn fab x-small depressed color="error" class="mr-4" @click="close()">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-row>
 
-            <div class="profile__sns-container" v-if="sns || user.web">
-              <a
-                class="profile__sns--twitter"
+        <v-row class="text-center" justify="center">
+          <v-col class="pr-0" align-self="center">
+            <v-avatar size="100"><img :src="$storage('icon') + user.icon" /></v-avatar>
+            <v-row class="text-h5 mt-2" justify="center">{{ user.handlename }}</v-row>
+            <v-row class="text-body-2" justify="center">{{ '@' + user.username }}</v-row>
+
+            <v-row class="mt-3" justify="center" v-if="sns || user.web">
+              <v-btn
+                icon
+                color="#00acee"
                 :href="'https://twitter.com/' + sns.twitter"
                 target="_blank"
                 v-if="sns.twitter"
               >
-                <i class="fab fa-twitter fa-2x"></i>
-              </a>
-              <a
-                class="profile__sns--github"
+                <v-icon>mdi-twitter</v-icon>
+              </v-btn>
+
+              <v-btn
+                icon
+                color="#000000"
                 :href="'https://github.com/' + sns.github"
                 target="_blank"
                 v-if="sns.github"
               >
-                <i class="fab fa-github fa-2x"></i>
-              </a>
-              <a
-                class="profile__sns--qiita"
-                :href="'https://qiita.com/' + sns.qiita"
-                target="_blank"
-                v-if="sns.qiita"
-              >
-                <i class="fa fa-search fa-2x"></i>
-              </a>
-              <a class="profile__sns--web" :href="user.web" target="_blank" v-if="user.web">
-                <i class="fas fa-link fa-2x"></i>
-              </a>
-            </div>
+                <v-icon>mdi-github</v-icon>
+              </v-btn>
+
+              <v-btn icon :href="'https://qiita.com/' + sns.qiita" target="_blank" v-if="sns.qiita">
+                <v-avatar size="20" color="white"
+                  ><v-img :src="$storage('system') + 'qiita.png'"></v-img
+                ></v-avatar>
+              </v-btn>
+
+              <v-btn icon color="#ffffff" :href="user.web" target="_blank" v-if="user.web">
+                <v-icon>mdi-home</v-icon>
+              </v-btn>
+            </v-row>
           </v-col>
-          <v-col cols="12" sm="6">
-            <v-card-text class="pa-2" min-height="240" color="grey darken-1" dark>
-              {{ user.introduction }}
-            </v-card-text>
+
+          <v-col class="pl-0">
+            <v-card light flat class="mr-2 pa-2" height="240">
+              {{ user.introduction ? user.introduction : '自己紹介が未記入です' }}
+            </v-card>
           </v-col>
         </v-row>
 
@@ -94,33 +100,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~/_variables';
-
-.introduction {
-  background-color: $light-gray;
-  margin: 0 auto;
-  background-color: $light-gray;
-  width: 500px;
-  border: none;
-  border-radius: 30px;
-}
-
-.profile__sns--twitter {
-  color: $twitter-color;
-}
-
-.profile__sns--github {
-  color: $github-color;
-}
-
-.profile__sns--qiita {
-  color: $qiita-color;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
-}
-.profile__user--handlename {
-  font-size: 2em;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
+a:hover {
+  text-decoration: none;
 }
 </style>
