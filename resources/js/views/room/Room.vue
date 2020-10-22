@@ -7,6 +7,7 @@
 
     <Drawer
       :room-name="roomData.name"
+      :is-sitting="authUser.seat !== null ? true : false"
       @leave-room="leaveRoom"
       @open-project-dialog="projectDialog = $event"
       @open-karte-dialog="karteDialog = $event"
@@ -82,6 +83,7 @@ export default {
       projectDialog: false, // プロジェクトモーダルの制御
       karteDialog: false, // カルテ記入モーダルの制御
       task: 'example', // やること
+      now: '00:00:00', // 現在時刻
     };
   },
 
@@ -108,6 +110,7 @@ export default {
                   case 'sitting':
                     var position = JSON.parse(seat.position);
                     this.putIcon(position.x, position.y, seat.user);
+                    this.time();
                     break;
 
                   case 'break':
@@ -376,6 +379,13 @@ export default {
     removeIcon: function (removeObject) {
       this.canvas.remove(removeObject);
       this.canvas.requestRenderAll();
+    },
+    time: function (e) {
+      //function(e) この引数eは、eventの「e」
+      let date = new Date(); //new演算子でオブジェクトのインスタンスを生成
+      //現在時刻の取得 **ここからはjavascript**
+      this.now = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      console.log(this.now);
     },
   },
 
