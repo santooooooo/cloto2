@@ -59,12 +59,12 @@ class ChatController extends Controller
     {
         // チャットに参加しているユーザーのデータ
         $chatParticipants = [];
-        foreach ($section->chats->unique('user_id')->load('user') as $user_data) {
-            if ($user_data->user->id != Auth::id()) {
+        foreach ($section->seats->load('user') as $seat) {
+            if ($seat->user != null) {
                 array_push($chatParticipants, [
-                    'id' => $user_data->user->id,
-                    'name' => $user_data->user->username,
-                    'imageUrl' => config('consts.storage.icon') . $user_data->user->icon
+                    'id' => $seat->user->id,
+                    'name' => $seat->user->username,
+                    'imageUrl' => config('consts.storage.icon') . $seat->user->icon
                 ]);
             }
         }

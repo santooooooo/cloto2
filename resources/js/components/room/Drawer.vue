@@ -23,7 +23,7 @@
     </v-list>
 
     <div class="pa-2">
-      <v-btn block color="error" @click="$emit('leave-room')">退席</v-btn>
+      <v-btn block color="error" :disabled="!isSitting" @click="$emit('leave-room')">退席</v-btn>
     </div>
   </v-card>
 </template>
@@ -32,6 +32,7 @@
 export default {
   props: {
     roomName: String,
+    isSitting: Boolean,
   },
 };
 </script>

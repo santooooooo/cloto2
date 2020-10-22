@@ -17,15 +17,12 @@ Vue.prototype.$storage = window.Storage.getStoragePath;
 /**
  * Vueコンポーネントの読み込み
  */
-Vue.component('timetable', require('./components/front/Timetable.vue').default);
 Vue.component('image-drop-upload', require('./components/form/ImageDropUpload.vue').default);
 
 /**
  * Vueの定義
  */
 import VueHead from 'vue-head';
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
 import Chat from 'vue-beautiful-chat';
 import router from './router';
 import store from './store';
@@ -36,7 +33,6 @@ Vue.use(VueHead, {
   separator: '|',
   complement: 'CLOTO',
 });
-Vue.use(Loading);
 Vue.use(Chat);
 
 const app = new Vue({

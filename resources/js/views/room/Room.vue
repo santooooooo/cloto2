@@ -1,7 +1,13 @@
 <template>
-  <v-layout ref="room">
+  <v-layout>
+    <!-- ローディング画面 -->
+    <v-overlay :value="isLoading">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+
     <Drawer
       :room-name="roomData.name"
+      :is-sitting="authUser.seat !== null ? true : false"
       @leave-room="leaveRoom"
       @open-project-dialog="projectDialog = $event"
       @open-karte-dialog="karteDialog = $event"
@@ -65,7 +71,6 @@ export default {
       errorMessage: '', // エラーメッセージ
       canvas: '', // キャンバスエリア
       isLoading: false, // ロードの制御
-      loaderOption: '', // loading-overlayの設定
       syncTimer: null, // 同期制御
       roomData: '', // 教室データ
       roomWidth: 1080, // 教室サイズ
@@ -78,6 +83,7 @@ export default {
       projectDialog: false, // プロジェクトモーダルの制御
       karteDialog: false, // カルテ記入モーダルの制御
       task: 'example', // やること
+      now: '00:00:00', // 現在時刻
     };
   },
 
@@ -104,6 +110,7 @@ export default {
                   case 'sitting':
                     var position = JSON.parse(seat.position);
                     this.putIcon(position.x, position.y, seat.user);
+                    this.time();
                     break;
 
                   case 'break':
@@ -220,11 +227,16 @@ export default {
      * キャンバスマウスオーバーイベント
      */
     canvasMouseOver: function (event) {
-      if (event.target) {
-        if (event.target.fill === '') {
+      if (event.target && event.target.fill === '') {
+        // 着席前：自習室のみ点灯
+        // 着席中：休憩室のみ点灯
+        if (
+          (this.authUser.seat === null && event.target.role === 'study') ||
+          (this.authUser.seat !== null && event.target.role === 'lounge')
+        ) {
           event.target.set({ fill: '#0000ff' });
+          this.canvas.requestRenderAll();
         }
-        this.canvas.requestRenderAll();
       }
     },
 
@@ -232,27 +244,21 @@ export default {
      * キャンバスマウスオーバー解除イベント
      */
     canvasMouseOut: function (event) {
-      if (event.target) {
-        if (event.target.fill === '#0000ff') {
-          event.target.set({ fill: '' });
-        }
+      if (event.target && event.target.fill === '#0000ff') {
+        event.target.set({ fill: '' });
         this.canvas.requestRenderAll();
       }
     },
 
     /**
      * キャンバスクリックイベント
+     *
+     * @param String  targetType  ターゲットの種類
      */
-    canvasMouseDown: async function (event) {
-      if (typeof event.target.userId === 'number') {
-        //userid が整数ならば user iconを表示
-        this.profileDialog = true;
-        this.profileUserId = event.target.userId;
-      }
-      // クリックした座席に誰も座っていないかつ，予約済みでない場合
-      if (event.target.seatId !== null && event.target.reservationId === null) {
+    canvasMouseDown: async function (event, targetType) {
+      if (targetType === 'seat') {
         // ロード開始
-        var loader = this.$loading.show(this.loaderOption);
+        this.isLoading = true;
 
         // 着席処理
         switch (event.target.role) {
@@ -283,7 +289,10 @@ export default {
         }
 
         // ロード終了
-        loader.hide();
+        this.isLoading = false;
+      } else if (targetType === 'icon') {
+        this.profileDialog = true;
+        this.profileUserId = event.target.userId;
       }
     },
 
@@ -292,13 +301,13 @@ export default {
      */
     leaveRoom: async function () {
       // ロード開始
-      var loader = this.$loading.show(this.loaderOption);
+      this.isLoading = true;
 
       // 状態変更処理
       await this.userAction('leave');
 
       // ロード終了
-      loader.hide();
+      this.isLoading = false;
     },
 
     /**
@@ -306,7 +315,7 @@ export default {
      *
      * @param Number  loungeId   入室する休憩室ID
      */
-    enterLounge: async function (loungeId) {
+    enterLounge: function (loungeId) {
       this.loungeId = loungeId;
       this.isLoungeEnter = true;
     },
@@ -316,13 +325,17 @@ export default {
      */
     leaveLounge: async function () {
       // ロード開始
-      var loader = this.$loading.show(this.loaderOption);
+      this.isLoading = true;
+
+      // 休憩室の初期化
+      this.isLoungeEnter = false;
+      this.loungeId = '';
 
       // 状態変更処理
       await this.userAction('leaveLounge');
 
       // ロード終了
-      loader.hide();
+      this.isLoading = false;
     },
 
     /**
@@ -367,17 +380,18 @@ export default {
       this.canvas.remove(removeObject);
       this.canvas.requestRenderAll();
     },
+    time: function (e) {
+      //function(e) この引数eは、eventの「e」
+      let date = new Date(); //new演算子でオブジェクトのインスタンスを生成
+      //現在時刻の取得 **ここからはjavascript**
+      this.now = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      console.log(this.now);
+    },
   },
 
   async mounted() {
-    /**
-     * ロードの設定
-     */
-    this.loaderOption = {
-      container: this.$refs.room,
-    };
     // ロード開始
-    var loader = this.$loading.show(this.loaderOption);
+    this.isLoading = true;
 
     /**
      * キャンバスの設定
@@ -445,13 +459,20 @@ export default {
       if (event.target !== null) {
         // 入室前または自習室に着席している場合はクリックを受け付ける
         if (this.authUser.seat === null || this.authUser.seat.section.role === 'study') {
-          this.canvasMouseDown(event);
+          if (event.target.seatId !== null && event.target.reservationId === null) {
+            // クリックした座席に誰も座っていないかつ，予約済みでない場合
+            //** 座席のクリックイベントを発火 */
+            this.canvasMouseDown(event, 'seat');
+          } else if (typeof event.target.userId === 'number') {
+            //** アイコンのクリックイベントを発火 */
+            this.canvasMouseDown(event, 'icon');
+          }
         }
       }
     });
 
     // ロード終了
-    loader.hide();
+    this.isLoading = false;
 
     /**
      * 部屋の同期開始

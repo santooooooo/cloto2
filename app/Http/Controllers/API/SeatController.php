@@ -126,7 +126,7 @@ class SeatController extends RoomController
         $chat = Chat::where('section_id', $section_id)->where('user_id', $user_id);
         // 発言が存在する時
         if ($chat->exists()) {
-            $result = $chat->update(['data' => json_encode(['text' => '削除されたメッセージです．'])]);
+            $result = $chat->update(['data' => json_encode(['text' => '削除されたメッセージです'])]);
 
             if (empty($result)) {
                 $message = 'エラーが発生しました。';
@@ -135,9 +135,11 @@ class SeatController extends RoomController
         }
 
         // 退出システムメッセージの追加
-        $type = 'system';
-        $data = json_encode(['text' => $this->user->username . 'が退出しました．'], JSON_UNESCAPED_UNICODE);
-        Chat::create(compact('user_id', 'section_id', 'type', 'data'));
+        Chat::create([
+            'section_id' => $section_id,
+            'type' => 'system',
+            'data' => json_encode(['text' => $this->user->username . 'が退出しました'])
+        ]);
 
 
         // 着席していた座席を離席状態に変更
