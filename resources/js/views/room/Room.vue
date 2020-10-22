@@ -7,6 +7,7 @@
 
     <Drawer
       :room-name="roomData.name"
+      :is-sitting="authUser.seat !== null ? true : false"
       @leave-room="leaveRoom"
       @open-project-dialog="projectDialog = $event"
       @open-karte-dialog="karteDialog = $event"
