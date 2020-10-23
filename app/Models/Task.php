@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Task extends Model
 {
     protected $primaryKey = 'id';
     protected $dates = ['created_at', 'updated_at'];
@@ -15,7 +15,7 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'title', 'detail'
+        'user_id', 'project_id', 'body'
     ];
 
     /**
@@ -29,12 +29,12 @@ class Project extends Model
     }
 
     /**
-     * Task モデルのリレーション
+     * Project モデルのリレーション
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function tasks()
+    public function project()
     {
-        return $this->hasMany('App\Models\Task');
+        return $this->belongsTo('App\Models\Project');
     }
 }

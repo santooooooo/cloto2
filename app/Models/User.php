@@ -69,4 +69,14 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Project');
     }
+
+    /**
+     * Task モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tasks()
+    {
+        return $this->hasMany('App\Models\Task');
+    }
 }
