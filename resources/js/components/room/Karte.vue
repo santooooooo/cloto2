@@ -61,10 +61,34 @@
           background-color="white"
         ></v-textarea>
       </div>
+      <v-row justify="center">
+    <v-dialog
+      v-model="continueDialog"
+      max-width="140"
+    >
+      <v-card center >
+          <v-btn
+            color="green darken-1"
+            text
+            @click="continueDialog = false,$emit('open-project-dialog', true)"
+          >
+            続行
+          </v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="continueDialog = false"
+            :to="{ name: 'home' }"
+          >
+            終了
+          </v-btn>
+      </v-card>
+    </v-dialog>
+  </v-row>
       <v-card-actions class="align-center">
         <v-spacer></v-spacer>
         <!-- <v-btn color="white" text> IMG </v-btn> -->
-        <v-btn color="yellow darken-1" @click="dialog = false">
+        <v-btn color="yellow darken-1"  @click="dialog = false, continueDialog=true">
           <span class="white--text">記録</span>
         </v-btn>
       </v-card-actions>
@@ -80,6 +104,7 @@ export default {
   data() {
     return {
       dialog: true,
+      continueDialog: false,
       title: '', // カルテのタイトル
       tag: '', // カルテのタグ
       detail: '', // カルテの詳細
