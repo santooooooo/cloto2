@@ -14,7 +14,7 @@ class CreateChatsTable extends Migration
     public function up()
     {
         Schema::create('chats', function (Blueprint $table) {
-            $table->increments('id');                       // チャットID
+            $table->id();
             $table->unsignedInteger('section_id');          // 所属する区画ID(どの部屋でのチャットか)
             $table->unsignedInteger('user_id')->nullable(); // ユーザーID
             $table->string('type');                         // メッセージタイプ
