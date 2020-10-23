@@ -79,4 +79,14 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Task');
     }
+
+    /**
+     * Karte モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function kartes()
+    {
+        return $this->hasMany('App\Models\Karte');
+    }
 }
