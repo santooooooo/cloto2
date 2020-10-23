@@ -15,8 +15,8 @@ class CreateSectionsTable extends Migration
     {
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('room_id'); // 所属する部屋ID
-            $table->string('role');             // 役割
+            $table->foreignId('room_id')->constrained();    // 所属する部屋ID
+            $table->string('role');                         // 役割
         });
     }
 
