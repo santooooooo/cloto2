@@ -1,25 +1,47 @@
 <template>
-  <div class="profile">
-    <!-- ローディングバー -->
-    <v-progress-linear indeterminate color="blue" class="mb-0" v-if="!user"></v-progress-linear>
+  
+    <v-card color="grey darken-1" dark >
+      <v-container>
+        <v-row class="text-center" justify="center">
+          <v-col class="pr-0" align-self="center">
+            <v-avatar size="100"><img :src="$storage('icon') + user.icon" /></v-avatar>
+            <v-row class="text-h5 mt-2" justify="center">{{ user.handlename }}</v-row>
+            <v-row class="text-body-2" justify="center">{{ '@' + user.username }}</v-row>
 
-    <!-- プロフィール欄 -->
-    <div class="profile__content card" v-else>
-      <div class="row">
-        <!-- アイコンとユーザー名 -->
-        <div class="profile__user col-md-5">
-          <img
-            :src="$storage('icon') + user.icon"
-            class="rounded-circle"
-            width="100"
-            height="100"
-          />
-          <p class="profile__user--handlename">{{ user.handlename }}</p>
-          <p class="profile__user--username">{{ '@' + user.username }}</p>
-        </div>
 
-        <div class="col-md-7">
-          <div class="profile__button">
+            <v-row class="mt-3" justify="center" v-if="sns || user.web">
+              <v-btn
+                icon
+                color="#00acee"
+                :href="'https://twitter.com/' + sns.twitter"
+                target="_blank"
+                v-if="sns.twitter"
+              >
+                <v-icon>mdi-twitter</v-icon>
+              </v-btn>
+
+              <v-btn
+                icon
+                color="#000000"
+                :href="'https://github.com/' + sns.github"
+                target="_blank"
+                v-if="sns.github"
+              >
+                <v-icon>mdi-github</v-icon>
+              </v-btn>
+
+              <v-btn icon :href="'https://qiita.com/' + sns.qiita" target="_blank" v-if="sns.qiita">
+                <v-avatar size="20" color="white"
+                  ><v-img :src="$storage('system') + 'qiita.png'"></v-img
+                ></v-avatar>
+              </v-btn>
+
+              <v-btn icon color="#ffffff" :href="user.web" target="_blank" v-if="user.web">
+                <v-icon>mdi-home</v-icon>
+              </v-btn>
+            </v-row>
+            <v-row class="mt-3" justify="center">        
+            <div class="profile__button">
             <!-- マイページの場合 -->
             <router-link
               class="btn btn-cloto-primary"
@@ -30,45 +52,23 @@
               v-if="user.id == $store.getters['auth/user'].id"
               >編集する</router-link
             >
-          </div>
-          <!-- ボタン類 -->
-          <div class="profile__sns-container" v-if="sns || user.web">
-            <a
-              class="profile__sns--twitter"
-              :href="'https://twitter.com/' + sns.twitter"
-              target="_blank"
-              v-if="sns.twitter"
-            >
-              <i class="fab fa-twitter fa-2x"></i>
-            </a>
-            <a
-              class="profile__sns--github"
-              :href="'https://github.com/' + sns.github"
-              target="_blank"
-              v-if="sns.github"
-            >
-              <i class="fab fa-github fa-2x"></i>
-            </a>
-            <a
-              class="profile__sns--qiita"
-              :href="'https://qiita.com/' + sns.qiita"
-              target="_blank"
-              v-if="sns.qiita"
-            >
-              <i class="fa fa-search fa-2x"></i>
-            </a>
-            <a class="profile__sns--web" :href="user.web" target="_blank" v-if="user.web">
-              <i class="fas fa-link fa-2x"></i>
-            </a>
-          </div>
-        </div>
-      </div>
+          </div></v-row>
+          </v-col>
 
-      <div class="profile__introduction" v-if="user.introduction">
-        <p>{{ user.introduction }}</p>
-      </div>
-    </div>
-  </div>
+          <v-col class="pl-0">
+            <v-card light flat class="mr-2 pa-2" height="240">
+              {{ user.introduction ? user.introduction : '自己紹介が未記入です' }}
+            </v-card>
+          </v-col>
+        </v-row>
+
+        <v-tabs class="pa-0" fixed-tabs background-color="grey lighten-1" dark>
+          <v-tab> Projects </v-tab>
+          <v-tab> TO Do </v-tab>
+          <v-tab> Record </v-tab>
+        </v-tabs>
+      </v-container>
+    </v-card>
 </template>
 
 <script>
@@ -99,111 +99,4 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
-.profile {
-  padding: 1em 0;
-  background-color: $white;
-  font-size: 14px;
-  font-weight: 900;
-
-  &__content {
-    margin: 0 auto;
-    background-color: $light-gray;
-    width: 500px;
-    border: none;
-    border-radius: 30px;
-  }
-
-  &__user {
-    height: 170px;
-    margin-top: 1em;
-    text-align: center;
-    font-weight: bold;
-
-    &--handlename {
-      text-align: center;
-      margin-top: 1em;
-      margin-bottom: 0;
-    }
-
-    &--username {
-      text-align: center;
-    }
-  }
-
-  &__button {
-    height: 60px;
-    margin-top: 2em;
-    text-align: center;
-  }
-
-  &__sns-container {
-    height: 30px;
-    margin-bottom: 2em;
-    text-align: center;
-
-    div {
-      margin: 0 auto;
-    }
-  }
-
-  %__sns {
-    margin: 0 1em;
-  }
-
-  &__sns {
-    @extend %__sns;
-
-    &--twitter {
-      @extend %__sns;
-
-      color: $twitter-color;
-
-      &:hover {
-        color: $twitter-color;
-      }
-    }
-
-    &--github {
-      @extend %__sns;
-
-      color: $github-color;
-
-      &:hover {
-        color: $github-color;
-      }
-    }
-
-    &--qiita {
-      @extend %__sns;
-
-      color: $qiita-color;
-
-      &:hover {
-        color: $qiita-color;
-      }
-    }
-
-    &--web {
-      @extend %__sns;
-
-      color: $black;
-
-      &:hover {
-        color: $black;
-      }
-    }
-  }
-
-  &__introduction {
-    margin: 1em;
-    padding: 0.5em;
-    text-align: center;
-    background-color: $white;
-    border-radius: 30px;
-
-    p {
-      margin: 0;
-    }
-  }
-}
 </style>
