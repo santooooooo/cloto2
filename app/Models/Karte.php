@@ -37,4 +37,14 @@ class Karte extends Model
     {
         return $this->belongsTo('App\Models\Task');
     }
+
+    /**
+     * Technology モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function technologies()
+    {
+        return $this->belongsToMany('App\Models\Technology');
+    }
 }
