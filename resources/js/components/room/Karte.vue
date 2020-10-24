@@ -6,41 +6,25 @@
         {{ task }}
       </v-card-text>
 
-      <v-card height="200" class="m-2 rounded-xl">
+      <!-- <v-card height="200" class="m-2 rounded-xl">
         <v-btn class="mt-15" color="yellow darken-1">
           <span class="white--text">画像を選択</span>　
         </v-btn>
-      </v-card>
+      </v-card> -->
 
-      <v-row class="text-center m-1" justify="center">
-        <v-col cols="12" sm="6">
-          <h6 class="tag">活動内容</h6>
-          <v-textarea v-model="title" solo rounded name="input-7-4" rows="1" auto-grow></v-textarea>
-        </v-col>
-        <v-col cols="12" sm="6" margin-bottom="30px">
-          <h6 class="tag">活動時間</h6>
-          <v-textarea
-            solo
-            rounded
-            name="input-7-4"
-            rows="1"
-            label="13:30～14:45"
-            auto-grow
-          ></v-textarea>
-        </v-col>
-      </v-row>
+     
       <!-- <div class="m-3 p-1"> -->
-      <div class="bottom">
-        <h6 class="tag">関連タグ</h6>
+   
 
+         <h6 >達成した/つまずいたこと</h6>
         <v-textarea
-          v-model="tag"
-          solo
+          v-model="detail"
           rounded
-          name="input-7-4"
-          rows="1"
-          label="#html #css"
-          auto-grow
+          filled
+          rows="3"
+          color="black"
+          background-color="white"
+          :rules="[required]"
         ></v-textarea>
         <!-- <v-textarea
               auto-grow
@@ -51,20 +35,40 @@
             background-color="white"
             label="#html #css"
             ></v-textarea> -->
-        <h6 class="tag">活動詳細</h6>
+
+       <v-row class="text-center m-1" justify="center">
+        
+        <v-col cols="12" sm="6" margin-bottom="30px">
+          <h6 >活動時間</h6>
+          <v-textarea
+            solo
+            rounded
+            name="input-7-4"
+            rows="1"
+            label="13:30～14:45"
+            auto-grow
+          ></v-textarea>
+          
+        </v-col>
+          <v-col cols="12" sm="6" margin-bottom="30px">
+        <h6 >参考文献</h6>
+
         <v-textarea
-          v-model="detail"
+          v-model="tag"
+          solo
           rounded
-          filled
-          rows="5"
-          color="black"
-          background-color="white"
+          name="input-7-4"
+          rows="1"
+          label="#html #css"
+          auto-grow
         ></v-textarea>
-      </div>
+           </v-col>
+      </v-row>
       <v-row justify="center">
     <v-dialog
       v-model="continueDialog"
       max-width="140"
+     persistent
     >
       <v-card center >
           <v-btn
@@ -108,6 +112,7 @@ export default {
       title: '', // カルテのタイトル
       tag: '', // カルテのタグ
       detail: '', // カルテの詳細
+      required: value => !!value || "必ず入力してください",
     };
   },
 };
