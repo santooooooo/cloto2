@@ -39,3 +39,6 @@ Route::post('/seat/leavelounge/{seat}', 'API\SeatController@leave_lounge')->name
 
 Route::get('/chat/{section}', 'API\ChatController@show')->name('showChat');
 Route::post('/chat/post', 'API\ChatController@post')->name('postChat');
+
+Route::get('/project/{user_id}', 'API\ProjectController@index')->name('projectIndex');
+Route::post('/project/post', 'API\ProjectController@post')->name('projectPost');

@@ -1,0 +1,90 @@
+<?php
+
+namespace App\Http\Controllers\API;
+
+use App\Http\Controllers\Controller;
+use App\Models\Project;
+use Illuminate\Http\Request;
+
+class ProjectController extends Controller
+{
+    /** @var Project */
+    protected $project;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(Project $project)
+    {
+        $this->project = $project;
+    }
+
+
+    /**
+     * ユーザーが持つプロジェクトの一覧を取得
+     *
+     * @param  Int $user_id プロジェクトを持つユーザーID
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Int $user_id)
+    {
+        return response()->json($this->project->where('user_id', $user_id)->get());
+    }
+
+    /**
+     * プロジェクトの詳細を取得
+     *
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Project $project)
+    {
+        return response()->json($project);
+    }
+
+    /**
+     * プロジェクトの作成
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function post(Request $request)
+    {
+        $user_id = $request['user_id'];
+        $title = $request['title'];
+        $detail = $request['detail'];
+
+        $result = $this->project->create(compact($user_id, $title, $detail));
+
+        if (empty($result)) {
+            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        return response()->json($result);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Project $project)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Project $project)
+    {
+        //
+    }
+}

@@ -27,6 +27,8 @@ const enterLounge = '/api/seat/enterlounge/' + replaceChar[0];
 const leaveLounge = '/api/seat/leavelounge/' + replaceChar[0];
 const chatShow = '/api/chat/' + replaceChar[0];
 const chatPost = '/api/chat/post';
+const projectIndex = '/api/project/' + replaceChar[0];
+const projectPost = '/api/project/post';
 
 /**
  * エンドポイントの取得
@@ -104,6 +106,14 @@ export function getEndpoint(name, params) {
 
     case 'chatPost':
       endpoint = chatPost;
+      break;
+
+    case 'projectIndex':
+      endpoint = setParams(projectIndex, params);
+      break;
+
+    case 'projectPost':
+      endpoint = projectPost;
       break;
   }
 
