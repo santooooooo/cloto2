@@ -29,6 +29,8 @@ const chatShow = '/api/chat/' + replaceChar[0];
 const chatPost = '/api/chat/post';
 const projectIndex = '/api/project/' + replaceChar[0];
 const projectPost = '/api/project/post';
+const taskIndex = '/api/task/index/' + replaceChar[0];
+const taskPost = '/api/task/post';
 
 /**
  * エンドポイントの取得
@@ -114,6 +116,14 @@ export function getEndpoint(name, params) {
 
     case 'projectPost':
       endpoint = projectPost;
+      break;
+
+    case 'taskIndex':
+      endpoint = setParams(taskIndex, params);
+      break;
+
+    case 'taskPost':
+      endpoint = taskPost;
       break;
   }
 

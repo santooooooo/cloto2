@@ -42,3 +42,6 @@ Route::post('/chat/post', 'API\ChatController@post')->name('chatPost');
 
 Route::get('/project/{user_id}', 'API\ProjectController@index')->name('projectIndex');
 Route::post('/project/post', 'API\ProjectController@post')->name('projectPost');
+
+Route::get('/task/index/{project_id}', 'API\TaskController@index')->name('taskIndex');
+Route::post('/task/post', 'API\TaskController@post')->name('taskPost');
