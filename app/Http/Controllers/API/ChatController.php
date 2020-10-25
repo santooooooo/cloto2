@@ -11,46 +11,28 @@ use Carbon\Carbon;
 
 class ChatController extends Controller
 {
+    /** @var Chat */
+    protected $chat;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Chat $chat)
     {
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
             $this->user->load('seat.section');
             return $next($request);
         });
+
+        $this->chat = $chat;
     }
 
 
     /**
-     * Post a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function post(Request $request)
-    {
-        $user_id = $this->user->id;
-        $section_id = $this->user->seat->section->id;
-        $type = $request['type'];
-        $data = json_encode($request['data'], JSON_UNESCAPED_UNICODE);
-
-        // チャットの保存
-        $result = $this->user->chats()->create(compact('user_id', 'section_id', 'type', 'data'));
-
-        if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
-        }
-
-        return response()->json($result);
-    }
-
-    /**
-     * Display the specified resource.
+     * セクションごとのチャットを取得
      *
      * @param  \App\Models\Section  $section
      * @return \Illuminate\Http\Response
@@ -93,6 +75,28 @@ class ChatController extends Controller
         }
 
         return response()->json(compact('chatParticipants', 'messageList'));
+    }
+
+    /**
+     * チャットの投稿
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function post(Request $request)
+    {
+        $user_id = $this->user->id;
+        $section_id = $this->user->seat->section->id;
+        $type = $request['type'];
+        $data = json_encode($request['data'], JSON_UNESCAPED_UNICODE);
+
+        $result = $this->chat->create(compact('user_id', 'section_id', 'type', 'data'));
+
+        if (empty($result)) {
+            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        return response()->json($result);
     }
 
     /**

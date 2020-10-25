@@ -31,14 +31,14 @@ Route::get('/auth/user', 'API\UserController@auth')->name('authUser');
 Route::get('/user/{user_param}', 'API\UserController@show')->name('userShow');
 Route::post('/user/update', 'API\UserController@update')->name('profileUpdate');
 
-Route::get('/room/{id}', 'API\RoomController@show')->name('roomShow');
+Route::get('/room/{room_id}', 'API\RoomController@show')->name('roomShow');
 Route::post('/seat/sit/{seat}', 'API\SeatController@sit')->name('seatSit');
 Route::post('/seat/leave', 'API\SeatController@leave')->name('seatLeave');
 Route::post('/seat/enterlounge/{seat}', 'API\SeatController@enter_lounge')->name('enterLounge');
 Route::post('/seat/leavelounge/{seat}', 'API\SeatController@leave_lounge')->name('leaveLounge');
 
-Route::get('/chat/{section}', 'API\ChatController@show')->name('showChat');
-Route::post('/chat/post', 'API\ChatController@post')->name('postChat');
+Route::get('/chat/{section}', 'API\ChatController@show')->name('chatShow');
+Route::post('/chat/post', 'API\ChatController@post')->name('chatPost');
 
 Route::get('/project/{user_id}', 'API\ProjectController@index')->name('projectIndex');
 Route::post('/project/post', 'API\ProjectController@post')->name('projectPost');

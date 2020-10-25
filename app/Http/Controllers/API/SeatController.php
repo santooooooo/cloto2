@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\API\RoomController;
 use App\Models\Seat;
 use App\Models\Chat;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SeatController extends RoomController
