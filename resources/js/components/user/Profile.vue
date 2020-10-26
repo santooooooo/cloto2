@@ -18,9 +18,11 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
+      {{selectedItem}}
    </v-card>
   </v-col>
-  <v-col cols="5">
+
+   <v-col cols="5" v-if="selectedItem===0">
       <!-- ローディングバー -->
     <v-progress-linear indeterminate color="blue" class="mb-0" v-if="!user"></v-progress-linear>
     <!-- プロフィール欄 -->
@@ -89,6 +91,11 @@
       </div>
     </div>
   </v-col>
+
+  <v-col cols="5" v-if="selectedItem===1">
+ 
+
+ </v-col>
 </v-row>
 </template>
 
@@ -105,8 +112,6 @@ export default {
       items:[
         {text:'プロフィール'},
         {text:'カルテ'},
-        {text:'投稿'},
-        {text:'データ'},
       ]
     };
   },

@@ -15,21 +15,9 @@
       <image-drop-upload :no-change-crop-ratio="true" ratio-x="1" ratio-y="1"></image-drop-upload>
     </div>
 
-    <!-- ユーザー名 -->
+   <!-- アカウント名 -->
     <div class="form-group">
-      <label for="username">ユーザー名</label>
-      <input type="text" class="form-control" name="username" id="username" v-model="username" />
-    </div>
-
-    <!-- メールアドレス -->
-    <div class="form-group">
-      <label for="email">メールアドレス</label>
-      <input type="text" class="form-control" name="email" id="email" v-model="email" />
-    </div>
-
-    <!-- ハンドルネーム -->
-    <div class="form-group">
-      <label for="handlename">表示名</label>
+      <label for="handlename">アカウント名</label>
       <input
         type="text"
         class="form-control"
@@ -37,6 +25,17 @@
         id="handlename"
         v-model="handlename"
       />
+    </div>
+    <!-- ユーザー名 -->
+    <div class="form-group">
+      <label for="username">ユーザー名</label>
+      <input type="text" class="form-control" name="username" id="username" v-model="username" />
+    </div>
+ 
+     <!-- メールアドレス -->
+    <div class="form-group">
+      <label for="email">メールアドレス</label>
+      <input type="text" class="form-control" name="email" id="email" v-model="email" />
     </div>
 
     <!-- Twitter -->
