@@ -1,7 +1,7 @@
 <template>
   <v-container ma-0 pa-0>
     <!-- プロジェクト選択ダイアログ -->
-    <v-dialog persistent v-model="dialog" width="600">
+    <v-dialog class="ma-0 pa-0" persistent v-model="dialog" width="600">
       <!-- ローディングバー -->
       <v-progress-linear
         indeterminate
@@ -10,40 +10,72 @@
         v-if="!projects"
       ></v-progress-linear>
 
-      <v-card class="headline grey darken-2" v-else>
+      <v-card class="headline grey darken-2 text-center" v-else>
+        <v-container>
+          <v-row>
+            <v-btn small depressed @click="close()" color="error" class="ml-3">
+              <v-icon dark>mdi-arrow-left</v-icon> 自習室に戻る
+            </v-btn>
+          </v-row>
+
+          <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+            Project Selection
+          </v-card-text>
+
+          <v-list class="rounded-lg">
+            <v-list-item-group color="success" v-model="projectIndex">
+              <v-list-item v-for="project in projects" :key="project.id">
+                <v-list-item-content @click="todoDialog = true">
+                  <v-list-item-title v-text="project.name"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click="newProjectForm.dialog = true" x-small fab color="white">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-container>
+      </v-card>
+    </v-dialog>
+
+    <!-- todoList選択ダイアログ -->
+    <v-dialog persistent v-model="todoDialog" v-if="projectIndex !== ''" width="600">
+      <v-card class="headline grey darken-2 text-center">
+        <v-card-title class="text-center">{{ projects[projectIndex].title }} </v-card-title>
+
         <v-list class="rounded-lg">
-          <v-list-item-group color="success" v-model="projectIndex">
-            <v-list-item v-for="project in projects" :key="project.id">
-              <v-list-item-content @click="detailDialog = true">
-                <v-list-item-title v-text="project.name"></v-list-item-title>
+          <v-list-item-group color="success" v-model="todoIndex">
+            <v-list-item v-for="todoList in todoLists" :key="todoList.id">
+              <v-list-item-content @click="todoDialog = true">
+                <v-list-item-title v-text="todoList.body"></v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
         </v-list>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn @click="newProjectForm.dialog = true" x-small fab color="white">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="yellow darken-1" @click="close()" right absolute>
-            <span class="white--text">close</span>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+        <v-textarea
+          solo
+          rounded
+          name="input-7-4"
+          rows="1"
+          v-model="newToDo"
+          label="ToDoリストをつけよう"
+          auto-grow
+          class="pa-2"
+        ></v-textarea>
 
-    <!-- プロジェクト詳細ダイアログ -->
-    <v-dialog persistent v-model="detailDialog" v-if="projectIndex !== ''" width="600">
-      <v-card class="headline grey darken-2">
-        <v-card-title class="text-center">{{ projects[projectIndex].title }} </v-card-title>
         <v-card-actions>
-          <div class="ma-6">
-            <v-btn color="yellow darken-1" @click="detailDialog = false">
-              <span class="white--text">Let's study</span>
-            </v-btn>
-          </div>
+          <v-btn color="yellow darken-1" @click="addToDo()">
+            <span class="white--text">追加</span>
+          </v-btn>
+          <v-btn color="yellow darken-1" @click="startStudy()">
+            <span class="white--text">自習開始</span>
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -118,12 +150,37 @@ export default {
           detailRules: [(v) => (v || '').length <= 200 || '200文字以下で入力してください。'],
         },
       },
+      todoLists: [
+        {
+          id: 1,
+          body: 'login',
+        },
+        {
+          id: 2,
+          body: 'register',
+        },
+      ],
+      todoIndex: '',
+      todoDialog: false, // todoモーダルの制御
+      newToDo: '', //追加するTODOリスト
     };
   },
   methods: {
     close: function () {
-      this.dialog = false;
+      //this.dialog = false;
       this.$emit('close', false);
+      //退席処理追加
+    },
+    addProject: function () {
+      this.addDialog = false;
+      //project追加制御
+    },
+    addToDo: function () {
+      //todo追加制御
+    },
+    startStudy: function () {
+      //ドロワーに選択したproject と todoをカードとして表示
+      this.close();
     },
     submitNewProject: async function () {
       if (this.$refs.form.validate()) {

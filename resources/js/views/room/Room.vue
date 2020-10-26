@@ -33,8 +33,12 @@
       <Project @close="projectDialog = $event" v-if="projectDialog"></Project>
 
       <!-- カルテダイアログ -->
-      <Karte :task="task" @close="karteDialog = $event" v-if="karteDialog"
-       @open-project-dialog="projectDialog = $event"></Karte>
+      <Karte
+        :task="task"
+        @close="karteDialog = $event"
+        v-if="karteDialog"
+        @open-project-dialog="projectDialog = $event"
+      ></Karte>
 
       <!-- エラーメッセージ -->
       <div class="text-center ma-2">
@@ -182,6 +186,7 @@ export default {
           // 着席処理
           endpoint = this.$endpoint('seatSit', [seatObject.seatId]);
           response = await this.$http.post(endpoint);
+          this.projectDialog = true;
           break;
 
         case 'leave':
