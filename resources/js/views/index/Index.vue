@@ -12,31 +12,33 @@
       <v-container>
         <h5 class="text-center text-h5">お問い合わせ</h5>
 
-        <v-form ref="form" v-model="contactFormValidation.valid" lazy-validation>
+        <v-form ref="form" v-model="contactForm.validation.valid" lazy-validation>
           <v-text-field
             v-model="contactForm.name"
-            :rules="contactFormValidation.nameRules"
+            :rules="contactForm.validation.nameRules"
             label="お名前"
+            maxlength="16"
+            counter
             required
           ></v-text-field>
 
           <v-text-field
             v-model="contactForm.email"
-            :rules="contactFormValidation.emailRules"
+            :rules="contactForm.validation.emailRules"
             label="メールアドレス"
             required
           ></v-text-field>
 
           <v-textarea
             v-model="contactForm.body"
-            :rules="contactFormValidation.bodyRules"
+            :rules="contactForm.validation.bodyRules"
             label="お問い合わせ内容"
             required
           ></v-textarea>
 
           <v-btn
             :loading="contactForm.loading"
-            :disabled="!contactFormValidation.valid || contactForm.snackbar"
+            :disabled="!contactForm.validation.valid || contactForm.snackbar"
             @click="sendContact()"
             block
             large
@@ -105,21 +107,18 @@ export default {
         loading: false,
         snackbar: false,
         message: '',
-      },
-      contactFormValidation: {
-        valid: false,
-        nameRules: [
-          (v) => !!v || '名前は必須項目です。',
-          (v) => (v && v.length <= 16) || '16文字以下で入力してください。',
-        ],
-        emailRules: [
-          (v) => !!v || 'メールアドレスは必須項目です。',
-          (v) => {
-            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return pattern.test(v) || 'メールアドレスが無効です。';
-          },
-        ],
-        bodyRules: [(v) => !!v || 'お問い合わせ内容は必須項目です。'],
+        validation: {
+          valid: false,
+          nameRules: [(v) => !!v || '名前は必須項目です。'],
+          emailRules: [
+            (v) => !!v || 'メールアドレスは必須項目です。',
+            (v) => {
+              const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+              return pattern.test(v) || 'メールアドレスが無効です。';
+            },
+          ],
+          bodyRules: [(v) => !!v || 'お問い合わせ内容は必須項目です。'],
+        },
       },
     };
   },

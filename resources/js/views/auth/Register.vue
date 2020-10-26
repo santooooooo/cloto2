@@ -28,42 +28,45 @@
               <h2 class="mb-6 text-h4 font-weight-bold text-center">新規登録</h2>
 
               <!-- フォーム -->
-              <v-form ref="form" v-model="registerFormValidation.valid" lazy-validation>
+              <v-form ref="form" v-model="registerForm.validation.valid" lazy-validation>
                 <v-text-field
                   v-model="registerForm.username"
-                  :rules="registerFormValidation.usernameRules"
+                  :rules="registerForm.validation.usernameRules"
                   label="ユーザー名"
-                  counter="16"
+                  maxlength="16"
+                  counter
                   required
                 ></v-text-field>
 
                 <v-text-field
                   v-model="registerForm.email"
-                  :rules="registerFormValidation.emailRules"
+                  :rules="registerForm.validation.emailRules"
                   label="メールアドレス"
                   required
                 ></v-text-field>
 
                 <v-text-field
                   v-model="registerForm.password"
-                  :rules="registerFormValidation.passwordRules"
+                  :rules="registerForm.validation.passwordRules"
                   label="パスワード"
                   :append-icon="registerForm.showPassword ? 'far fa-eye' : 'far fa-eye-slash'"
                   :type="registerForm.showPassword ? 'text' : 'password'"
                   class="input-group--focused"
-                  counter="64"
+                  maxlength="64"
+                  counter
                   @click:append="registerForm.showPassword = !registerForm.showPassword"
                 ></v-text-field>
 
                 <v-text-field
                   v-model="registerForm.passwordConfirmation"
-                  :rules="registerFormValidation.passwordConfirmationRules"
+                  :rules="registerForm.validation.passwordConfirmationRules"
                   label="パスワード再入力"
                   :append-icon="
                     registerForm.showPasswordConfirmation ? 'far fa-eye' : 'far fa-eye-slash'
                   "
                   :type="registerForm.showPasswordConfirmation ? 'text' : 'password'"
-                  counter="64"
+                  maxlength="64"
+                  counter
                   @click:append="
                     registerForm.showPasswordConfirmation = !registerForm.showPasswordConfirmation
                   "
@@ -71,15 +74,16 @@
 
                 <v-text-field
                   v-model="registerForm.handlename"
-                  :rules="registerFormValidation.handlenameRules"
+                  :rules="registerForm.validation.handlenameRules"
                   label="表示名"
-                  counter="16"
+                  maxlength="16"
+                  counter
                 ></v-text-field>
 
                 <v-row justify="center" class="mt-4">
                   <v-btn
                     :loading="registerForm.loading"
-                    :disabled="!registerFormValidation.valid"
+                    :disabled="!registerForm.validation.valid"
                     @click="register()"
                     color="info"
                     class="font-weight-bold"
@@ -122,34 +126,29 @@ export default {
         showPassword: false,
         showPasswordConfirmation: false,
         loading: false,
-      },
-      registerFormValidation: {
-        valid: false,
-        usernameRules: [
-          (v) => !!v || 'ユーザー名は必須項目です。',
-          (v) => (v && v.length >= 4) || '4文字以上で入力してください。',
-          (v) => (v && v.length <= 16) || '16文字以下で入力してください。',
-        ],
-        emailRules: [
-          (v) => !!v || 'メールアドレスは必須項目です。',
-          (v) => {
-            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return pattern.test(v) || 'メールアドレスが無効です。';
-          },
-        ],
-        passwordRules: [
-          (v) => !!v || 'パスワードは必須項目です。',
-          (v) => (v && v.length >= 8) || '8文字以上で入力してください。',
-          (v) => (v && v.length <= 64) || '64文字以下で入力してください。',
-        ],
-        passwordConfirmationRules: [
-          (v) => !!v || 'パスワードの再入力は必須項目です。',
-          (v) => (v && v === this.registerForm.password) || 'パスワードが一致しません。',
-        ],
-        handlenameRules: [
-          (v) => !!v || '表示名は必須項目です。',
-          (v) => (v && v.length <= 16) || '16文字以下で入力してください。',
-        ],
+        validation: {
+          valid: false,
+          usernameRules: [
+            (v) => !!v || 'ユーザー名は必須項目です。',
+            (v) => (v && v.length >= 4) || '4文字以上で入力してください。',
+          ],
+          emailRules: [
+            (v) => !!v || 'メールアドレスは必須項目です。',
+            (v) => {
+              const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+              return pattern.test(v) || 'メールアドレスが無効です。';
+            },
+          ],
+          passwordRules: [
+            (v) => !!v || 'パスワードは必須項目です。',
+            (v) => (v && v.length >= 8) || '8文字以上で入力してください。',
+          ],
+          passwordConfirmationRules: [
+            (v) => !!v || 'パスワードの再入力は必須項目です。',
+            (v) => (v && v === this.registerForm.password) || 'パスワードが一致しません。',
+          ],
+          handlenameRules: [(v) => !!v || '表示名は必須項目です。'],
+        },
       },
     };
   },

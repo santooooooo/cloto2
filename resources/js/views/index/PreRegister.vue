@@ -31,17 +31,17 @@
               </div>
 
               <!-- フォーム -->
-              <v-form ref="form" v-model="preRegisterFormValidation.valid" lazy-validation>
+              <v-form ref="form" v-model="preRegisterForm.validation.valid" lazy-validation>
                 <v-text-field
                   v-model="preRegisterForm.name"
-                  :rules="preRegisterFormValidation.nameRules"
+                  :rules="preRegisterForm.validation.nameRules"
                   label="お名前"
                   required
                 ></v-text-field>
 
                 <v-text-field
                   v-model="preRegisterForm.email"
-                  :rules="preRegisterFormValidation.emailRules"
+                  :rules="preRegisterForm.validation.emailRules"
                   label="メールアドレス"
                   required
                 ></v-text-field>
@@ -60,7 +60,7 @@
                 <v-row justify="center" class="mt-6">
                   <v-btn
                     :loading="preRegisterForm.loading"
-                    :disabled="!preRegisterFormValidation.valid || preRegisterForm.snackbar"
+                    :disabled="!preRegisterForm.validation.valid || preRegisterForm.snackbar"
                     @click="preRegister()"
                     color="info"
                     class="font-weight-bold"
@@ -110,17 +110,17 @@ export default {
         status: false,
         snackbar: false,
         message: '',
-      },
-      preRegisterFormValidation: {
-        valid: false,
-        nameRules: [(v) => !!v || 'お名前は必須項目です。'],
-        emailRules: [
-          (v) => !!v || 'メールアドレスは必須項目です。',
-          (v) => {
-            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return pattern.test(v) || 'メールアドレスが無効です。';
-          },
-        ],
+        validation: {
+          valid: false,
+          nameRules: [(v) => !!v || 'お名前は必須項目です。'],
+          emailRules: [
+            (v) => !!v || 'メールアドレスは必須項目です。',
+            (v) => {
+              const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+              return pattern.test(v) || 'メールアドレスが無効です。';
+            },
+          ],
+        },
       },
     };
   },
