@@ -1,8 +1,28 @@
 <template>
-  <div class="profile">
-    <!-- ローディングバー -->
+<v-row>
+  <v-col cols="3">
+    <v-card flat tile class="ma-0" width="250" min-height="600">
+    <v-list nav　permanent>
+        <v-subheader>マイページ</v-subheader>
+    <v-list-item-group
+        v-model="selectedItem"
+        color="primary"
+      >
+        <v-list-item
+          v-for="(item, i) in items"
+          :key="i"
+        >
+          <v-list-item-content>
+            <v-list-item-title v-text="item.text"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+   </v-card>
+  </v-col>
+  <v-col cols="5">
+      <!-- ローディングバー -->
     <v-progress-linear indeterminate color="blue" class="mb-0" v-if="!user"></v-progress-linear>
-
     <!-- プロフィール欄 -->
     <div class="profile__content card" v-else>
       <div class="row">
@@ -68,7 +88,8 @@
         <p>{{ user.introduction }}</p>
       </div>
     </div>
-  </div>
+  </v-col>
+</v-row>
 </template>
 
 <script>
@@ -80,8 +101,17 @@ export default {
     return {
       user: null,
       sns: null,
+      selectedItem:0,
+      items:[
+        {text:'プロフィール'},
+        {text:'カルテ'},
+        {text:'投稿'},
+        {text:'データ'},
+      ]
     };
   },
+
+ 
   async mounted() {
     /**
      * ユーザーデータの取得
@@ -93,11 +123,26 @@ export default {
       this.sns = JSON.parse(this.user.sns);
     }
   },
+
+
+ methods: {
+
+
+   profileDetail:function(){
+
+   },
+   KarteDetail:function(){
+
+   },
+
+ }
 };
 </script>
 
 <style lang="scss" scoped>
 @import '~/_variables';
+
+
 
 .profile {
   padding: 1em 0;
