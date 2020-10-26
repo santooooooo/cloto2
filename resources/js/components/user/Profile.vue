@@ -1,28 +1,10 @@
 <template>
-<v-row >
-  <v-col cols="2" class="pt-0 pb-0 pr-0 "> 
-    <v-card flat tile class="ma-0"  min-height="600">
-    <v-list nav　permanent class="pr-0">
-        <v-subheader>マイページ</v-subheader>
-    <v-list-item-group
-       class="pl-0"
-        v-model="selectedMyPage"
-        color="primary"
-      >
-        <v-list-item
-          v-for="(item, i) in myPageItems"
-          :key="i"
-          color="grey"
-        >
-          <v-list-item-content>
-            <v-list-item-title v-text="item.text"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
-      {{selectedMyPage}}
-   </v-card>
-  </v-col>
+
+
+<v-layout>
+    <Drawer  />
+    <v-flex id="main">
+<v-row   no-gutters>
 
    <v-col cols="8" v-if="selectedMyPage===0">
       <!-- ローディングバー -->
@@ -118,8 +100,8 @@
    </v-card>
   </v-col>
 
-   <v-col cols="2" class="pa-0 " v-if="selectedMyPage===1　& selectedProject===0 "> 
-    <v-card flat tile class="ma-0"  min-height="600" color="grey lighten-1" >
+   <v-col cols="2" class="pa-0 " v-if="selectedMyPage===1　& selectedProject===0 " > 
+    <v-card flat tile class="ma-0"  min-height="600" color="grey lighten-1">
     <v-list nav　permanent color="grey lighten-1">
         <v-subheader>タスク</v-subheader>
        <v-list-item-group
@@ -163,10 +145,19 @@
    </v-card>
   </v-col>
 </v-row>
+</v-flex>
+</v-layout>
+
 </template>
 
 <script>
+
+import Drawer from '@/components/user/Drawer';
 export default {
+
+  components: {
+    Drawer,
+  },
   props: {
     userName: String,
   },
@@ -177,11 +168,6 @@ export default {
       selectedMyPage:0,
       selectedProject:null,
       selectedTask:null,
-
-      myPageItems:[
-        {text:'プロフィール'},
-        {text:'カルテ'},
-      ],
 
       myProjectItems:[
         {text:'英語'},
@@ -195,16 +181,9 @@ export default {
         {text:'シャドーイング'}
       ],
 
-
-
       myKartes:[
         {text:'aaaaaaaaaaa'}
       ],
-
-      
-
-
-
     };
   },
 

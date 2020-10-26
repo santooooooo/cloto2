@@ -6,7 +6,6 @@
 
 <script>
 import Profile from '@/components/user/Profile';
-
 export default {
   head: {
     title() {
