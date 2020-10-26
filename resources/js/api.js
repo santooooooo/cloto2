@@ -31,6 +31,9 @@ const projectIndex = '/api/project/' + replaceChar[0];
 const projectPost = '/api/project/post';
 const taskIndex = '/api/task/index/' + replaceChar[0];
 const taskPost = '/api/task/post';
+const karteIndexFromUser = '/api/karte/index_from_user/' + replaceChar[0];
+const karteIndexFromTask = '/api/karte/index_from_task/' + replaceChar[0];
+const kartePost = '/api/karte/post';
 
 /**
  * エンドポイントの取得
@@ -124,6 +127,18 @@ export function getEndpoint(name, params) {
 
     case 'taskPost':
       endpoint = taskPost;
+      break;
+
+    case 'karteIndexFromUser':
+      endpoint = setParams(karteIndexFromUser, params);
+      break;
+
+    case 'karteIndexFromTask':
+      endpoint = setParams(karteIndexFromTask, params);
+      break;
+
+    case 'KartePost':
+      endpoint = kartePost;
       break;
   }
 
