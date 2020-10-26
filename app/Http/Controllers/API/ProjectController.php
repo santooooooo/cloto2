@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -18,6 +19,11 @@ class ProjectController extends Controller
      */
     public function __construct(Project $project)
     {
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            return $next($request);
+        });
+
         $this->project = $project;
     }
 
@@ -25,12 +31,11 @@ class ProjectController extends Controller
     /**
      * ユーザーが持つプロジェクトの一覧を取得
      *
-     * @param  Int $user_id プロジェクトを持つユーザーID
      * @return \Illuminate\Http\Response
      */
-    public function index(Int $user_id)
+    public function index()
     {
-        return response()->json($this->project->where('user_id', $user_id)->get());
+        return response()->json($this->project->where('user_id', $this->user->id)->get());
     }
 
     /**
@@ -52,11 +57,11 @@ class ProjectController extends Controller
      */
     public function post(Request $request)
     {
-        $user_id = $request->user_id;
-        $title = $request->title;
+        $user_id = $this->user->id;
+        $name = $request->name;
         $detail = $request->detail;
 
-        $result = $this->project->create(compact($user_id, $title, $detail));
+        $result = $this->project->create(compact('user_id', 'name', 'detail'));
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));

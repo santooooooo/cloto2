@@ -40,7 +40,7 @@ Route::post('/seat/leavelounge/{seat}', 'API\SeatController@leave_lounge')->name
 Route::get('/chat/{section}', 'API\ChatController@show')->name('chatShow');
 Route::post('/chat/post', 'API\ChatController@post')->name('chatPost');
 
-Route::get('/project/{user_id}', 'API\ProjectController@index')->name('projectIndex');
+Route::get('/project', 'API\ProjectController@index')->name('projectIndex');
 Route::post('/project/post', 'API\ProjectController@post')->name('projectPost');
 
 Route::get('/task/index/{project_id}', 'API\TaskController@index')->name('taskIndex');

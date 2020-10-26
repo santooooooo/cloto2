@@ -27,7 +27,7 @@ const enterLounge = '/api/seat/enterlounge/' + replaceChar[0];
 const leaveLounge = '/api/seat/leavelounge/' + replaceChar[0];
 const chatShow = '/api/chat/' + replaceChar[0];
 const chatPost = '/api/chat/post';
-const projectIndex = '/api/project/' + replaceChar[0];
+const projectIndex = '/api/project';
 const projectPost = '/api/project/post';
 const taskIndex = '/api/task/index/' + replaceChar[0];
 const taskPost = '/api/task/post';
@@ -114,7 +114,7 @@ export function getEndpoint(name, params) {
       break;
 
     case 'projectIndex':
-      endpoint = setParams(projectIndex, params);
+      endpoint = projectIndex;
       break;
 
     case 'projectPost':
