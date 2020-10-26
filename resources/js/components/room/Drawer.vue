@@ -22,13 +22,9 @@
       </v-list-item> -->
     </v-list>
 
-    <v-card class="headline pa-3 grey darken-1 text-center">
-      <v-card-text class="pa-2 white--text title whitefont-weight-bold">
-        選択されたproject
-      </v-card-text>
-      <v-card-text class="pa-2 white--text title whitefont-weight-bold">
-        選択されたtodo
-      </v-card-text>
+    <v-card v-if="isSitting" class="headline ma-2 pa-3 grey darken-1 text-center">
+      <v-card-text class="pa-2 white--text title whitefont-weight-bold"> ex_project </v-card-text>
+      <v-card-text class="pa-2 white--text title whitefont-weight-bold"> ex_todo </v-card-text>
       <v-btn color="yellow darken-1" @click="$emit('open-karte-dialog', true)">
         <span class="white--text">カルテ記入</span>
       </v-btn>
