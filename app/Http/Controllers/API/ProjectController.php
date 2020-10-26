@@ -52,9 +52,9 @@ class ProjectController extends Controller
      */
     public function post(Request $request)
     {
-        $user_id = $request['user_id'];
-        $title = $request['title'];
-        $detail = $request['detail'];
+        $user_id = $request->user_id;
+        $title = $request->title;
+        $detail = $request->detail;
 
         $result = $this->project->create(compact($user_id, $title, $detail));
 
