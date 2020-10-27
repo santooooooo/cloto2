@@ -23,22 +23,22 @@
       <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
 
       <!-- プロフィールダイアログ -->
-      <Profile
+      <ProfileDialog
         :user-id="profileUserId"
         @close="profileDialog = $event"
         v-if="profileDialog"
-      ></Profile>
+      ></ProfileDialog>
 
       <!-- プロジェクトダイアログ -->
-      <Project @close="projectDialog = $event" v-if="projectDialog"></Project>
+      <ProjectDialog @close="projectDialog = $event" v-if="projectDialog"></ProjectDialog>
 
       <!-- カルテダイアログ -->
-      <Karte
+      <KarteDialog
         :task="task"
         @close="karteDialog = $event"
         v-if="karteDialog"
         @open-project-dialog="projectDialog = $event"
-      ></Karte>
+      ></KarteDialog>
 
       <!-- エラーメッセージ -->
       <div class="text-center ma-2">
@@ -57,18 +57,18 @@
 <script>
 import Drawer from '@/components/room/Drawer';
 import Lounge from '@/components/room/Lounge';
-import Project from '@/components/room/Project';
-import Karte from '@/components/room/Karte';
-import Profile from '@/components/room/Profile';
+import ProjectDialog from '@/components/room/ProjectDialog';
+import KarteDialog from '@/components/room/KarteDialog';
+import ProfileDialog from '@/components/room/ProfileDialog';
 import { OK } from '@/consts/status';
 
 export default {
   components: {
     Drawer,
     Lounge,
-    Project,
-    Karte,
-    Profile,
+    ProjectDialog,
+    KarteDialog,
+    ProfileDialog,
   },
   data() {
     return {

@@ -102,17 +102,17 @@
       </v-card>
     </v-dialog>
 
-    <Task :project-id="projectId" @close="taskDialog = $event" v-if="taskDialog"></Task>
+    <TaskDialog :project-id="projectId" @close="taskDialog = $event" v-if="taskDialog"></TaskDialog>
   </v-container>
 </template>
 
 <script>
-import Task from '@/components/room/Task';
+import TaskDialog from '@/components/room/TaskDialog';
 import { OK } from '@/consts/status';
 
 export default {
   components: {
-    Task,
+    TaskDialog,
   },
   data() {
     return {

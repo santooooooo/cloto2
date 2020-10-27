@@ -69,20 +69,20 @@
     </v-layout>
 
     <!-- プロフィールダイアログ -->
-    <Profile
+    <ProfileDialog
       :user-id="profileUserId"
       @close="profileDialog = $event"
       v-if="profileDialog"
-    ></Profile>
+    ></ProfileDialog>
   </v-overlay>
 </template>
 
 <script>
-import Profile from '@/components/room/Profile';
+import ProfileDialog from '@/components/room/ProfileDialog';
 
 export default {
   components: {
-    Profile,
+    ProfileDialog,
   },
   props: {
     loungeId: Number,
