@@ -62,7 +62,7 @@ class TaskController extends Controller
         $project_id = $request->project_id;
         $body = $request->body;
 
-        $result = $this->task->create(compact($user_id, $project_id, $body));
+        $result = $this->task->create(compact('user_id', 'project_id', 'body'));
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));

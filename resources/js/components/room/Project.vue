@@ -19,13 +19,13 @@
           </v-row>
 
           <v-card-text class="pa-2 white--text title whitefont-weight-bold">
-            Project Selection
+            プロジェクトを決めよう！
           </v-card-text>
 
           <v-list class="rounded-lg">
-            <v-list-item-group color="success" v-model="projectIndex">
+            <v-list-item-group color="success">
               <v-list-item v-for="project in projects" :key="project.id">
-                <v-list-item-content @click="todoDialog = true">
+                <v-list-item-content @click="openTaskDialog(project.id)">
                   <v-list-item-title v-text="project.name"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
@@ -34,7 +34,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn @click="newProjectForm.dialog = true" x-small fab color="white">
+            <v-btn @click="newProjectForm.dialog = true" x-small fab depressed color="white">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
@@ -43,98 +43,81 @@
       </v-card>
     </v-dialog>
 
-    <!-- todoList選択ダイアログ -->
-    <v-dialog persistent v-model="todoDialog" v-if="projectIndex !== ''" width="600">
-      <v-card class="headline grey darken-2 text-center">
-        <v-card-title class="text-center">{{ projects[projectIndex].title }} </v-card-title>
-
-        <v-list class="rounded-lg">
-          <v-list-item-group color="success" v-model="todoIndex">
-            <v-list-item v-for="todoList in todoLists" :key="todoList.id">
-              <v-list-item-content @click="todoDialog = true">
-                <v-list-item-title v-text="todoList.body"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-
-        <v-textarea
-          solo
-          rounded
-          name="input-7-4"
-          rows="1"
-          v-model="newToDo"
-          label="ToDoリストをつけよう"
-          auto-grow
-          class="pa-2"
-        ></v-textarea>
-
-        <v-card-actions>
-          <v-btn color="yellow darken-1" @click="addToDo()">
-            <span class="white--text">追加</span>
-          </v-btn>
-          <v-btn color="yellow darken-1" @click="startStudy()">
-            <span class="white--text">自習開始</span>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
     <!-- プロジェクト追加ダイアログ -->
     <v-dialog persistent v-model="newProjectForm.dialog" width="600">
       <v-card class="headline grey darken-2 text-center">
-        <v-card-text class="pa-2 white--text font-weight-bold">プロジェクトの追加</v-card-text>
-
-        <v-form ref="form" v-model="newProjectForm.validation.valid">
-          <v-text-field
-            v-model="newProjectForm.name"
-            :rules="newProjectForm.validation.nameRules"
-            required
-            maxlength="20"
-            counter
-            label="プロジェクト名"
-            hint="例：チャットアプリを作る"
-            solo
-            rounded
-            class="pa-2"
-          ></v-text-field>
-
-          <v-textarea
-            rows="10"
-            v-model="newProjectForm.detail"
-            :rules="newProjectForm.validation.detailRules"
-            label="プロジェクトの詳細"
-            solo
-            rounded
-            class="pa-2"
-          ></v-textarea>
-
-          <v-card-actions class="align-center">
-            <v-spacer></v-spacer>
+        <v-container>
+          <v-row justify="end">
             <v-btn
-              color="yellow darken-1"
-              :loading="newProjectForm.loading"
-              @click="submitNewProject()"
+              fab
+              x-small
+              depressed
+              color="error"
+              class="mr-3"
+              @click="newProjectForm.dialog = false"
             >
-              <span class="white--text">追加</span>
+              <v-icon>mdi-close</v-icon>
             </v-btn>
-          </v-card-actions>
-        </v-form>
+          </v-row>
+
+          <v-card-text class="pa-2 white--text font-weight-bold">プロジェクトの追加</v-card-text>
+
+          <v-form ref="form" v-model="newProjectForm.validation.valid">
+            <v-text-field
+              v-model="newProjectForm.name"
+              :rules="newProjectForm.validation.nameRules"
+              required
+              maxlength="20"
+              counter
+              label="プロジェクト名"
+              hint="例：チャットアプリを作る"
+              solo
+              rounded
+              class="pa-2"
+            ></v-text-field>
+
+            <v-textarea
+              rows="10"
+              v-model="newProjectForm.detail"
+              :rules="newProjectForm.validation.detailRules"
+              label="プロジェクトの詳細"
+              solo
+              rounded
+              class="pa-2"
+            ></v-textarea>
+
+            <v-card-actions class="align-center">
+              <v-spacer></v-spacer>
+              <v-btn
+                depressed
+                color="#f6bf00"
+                :loading="newProjectForm.loading"
+                @click="submitNewProject()"
+              >
+                <span class="white--text">追加</span>
+              </v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-container>
       </v-card>
     </v-dialog>
+
+    <Task :project-id="projectId" @close="taskDialog = $event" v-if="taskDialog"></Task>
   </v-container>
 </template>
 
 <script>
+import Task from '@/components/room/Task';
 import { OK } from '@/consts/status';
 
 export default {
+  components: {
+    Task,
+  },
   data() {
     return {
-      dialog: true,
-      projects: null,
-      projectIndex: '',
-      detailDialog: false, // プロジェクト詳細モーダルの制御
+      dialog: true, // ダイアログの制御
+      projects: null, // プロジェクト一覧
       newProjectForm: {
         // プロジェクトの追加
         dialog: false,
@@ -150,38 +133,23 @@ export default {
           detailRules: [(v) => (v || '').length <= 200 || '200文字以下で入力してください。'],
         },
       },
-      todoLists: [
-        {
-          id: 1,
-          body: 'login',
-        },
-        {
-          id: 2,
-          body: 'register',
-        },
-      ],
-      todoIndex: '',
-      todoDialog: false, // todoモーダルの制御
-      newToDo: '', //追加するTODOリスト
+      taskDialog: false, // タスクダイアログの制御
+      projectId: '', // タスクを表示するプロジェクトのID
     };
   },
   methods: {
+    /**
+     * ダイアログのクローズ
+     */
     close: function () {
       //this.dialog = false;
       this.$emit('close', false);
       //退席処理追加
     },
-    addProject: function () {
-      this.addDialog = false;
-      //project追加制御
-    },
-    addToDo: function () {
-      //todo追加制御
-    },
-    startStudy: function () {
-      //ドロワーに選択したproject と todoをカードとして表示
-      this.close();
-    },
+
+    /**
+     * プロジェクトの追加
+     */
     submitNewProject: async function () {
       if (this.$refs.form.validate()) {
         this.newProjectForm.loading = true;
@@ -209,6 +177,16 @@ export default {
         // this.newProjectForm.message = response.data;
         // this.newProjectForm.snackbar = true;
       }
+    },
+
+    /**
+     * タスクダイアログのオープン
+     *
+     * @param Number projectId プロジェクトID
+     */
+    openTaskDialog: function (projectId) {
+      this.projectId = projectId;
+      this.taskDialog = true;
     },
   },
   async mounted() {
