@@ -28,21 +28,19 @@
               <h2 class="mb-6 text-h4 font-weight-bold text-center">新規登録</h2>
 
               <!-- フォーム -->
-              <v-form ref="form" v-model="registerForm.validation.valid" lazy-validation>
+              <v-form ref="registerForm" v-model="registerForm.validation.valid" lazy-validation>
                 <v-text-field
                   v-model="registerForm.username"
                   :rules="registerForm.validation.usernameRules"
                   label="ユーザー名"
                   maxlength="16"
                   counter
-                  required
                 ></v-text-field>
 
                 <v-text-field
                   v-model="registerForm.email"
                   :rules="registerForm.validation.emailRules"
                   label="メールアドレス"
-                  required
                 ></v-text-field>
 
                 <v-text-field
@@ -170,7 +168,7 @@ export default {
   },
   methods: {
     register: async function () {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.registerForm.validate()) {
         this.registerForm.loading = true;
 
         // データの作成

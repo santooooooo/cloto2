@@ -62,11 +62,10 @@
 
           <v-card-text class="pa-2 white--text font-weight-bold">プロジェクトの追加</v-card-text>
 
-          <v-form ref="form" v-model="newProjectForm.validation.valid">
+          <v-form ref="newProjectForm" v-model="newProjectForm.validation.valid" lazy-validation>
             <v-text-field
               v-model="newProjectForm.name"
               :rules="newProjectForm.validation.nameRules"
-              required
               maxlength="20"
               counter
               label="プロジェクト名"
@@ -86,15 +85,17 @@
               class="pa-2"
             ></v-textarea>
 
-            <v-card-actions class="align-center">
+            <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
                 depressed
                 color="#f6bf00"
                 :loading="newProjectForm.loading"
+                :disabled="!newProjectForm.validation.valid"
                 @click="submitNewProject()"
+                class="white--text"
               >
-                <span class="white--text">追加</span>
+                追加
               </v-btn>
             </v-card-actions>
           </v-form>
@@ -151,7 +152,7 @@ export default {
      * プロジェクトの追加
      */
     submitNewProject: async function () {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.newProjectForm.validate()) {
         this.newProjectForm.loading = true;
 
         var input = {
@@ -168,7 +169,7 @@ export default {
           this.newProjectForm.dialog = false;
 
           // フォームの初期化
-          this.$refs.form.reset();
+          this.$refs.newProjectForm.reset();
           this.newProjectForm.loading = false;
         }
 

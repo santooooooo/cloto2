@@ -1,7 +1,7 @@
 <template>
   <!-- カルテ記入ダイアログ -->
   <v-dialog persistent scrollable v-model="dialog" width="600">
-    <v-form ref="form">
+    <v-form ref="karteForm" v-model="karteForm.validation.valid" lazy-validation>
       <v-card class="headline pa-1 grey darken-1 text-center">
         <v-card-text class="pa-1 white--text title whitefont-weight-bold">
           {{ taskBody }}
@@ -105,11 +105,17 @@
             </v-card>
           </v-dialog>
         </v-row>
-        <v-card-actions class="align-center">
+        <v-card-actions>
           <v-spacer></v-spacer>
-          <!-- <v-btn color="white" text> IMG </v-btn> -->
-          <v-btn color="yellow darken-1" @click="submit()">
-            <span class="white--text">記録</span>
+          <v-btn
+            depressed
+            color="#f6bf00"
+            :loading="karteForm.loading"
+            :disabled="!karteForm.validation.valid"
+            @click="submit()"
+            class="white--text"
+          >
+            追加
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -140,6 +146,7 @@ export default {
         technologies: '保存処理未接続', // タグ
         loading: false,
         validation: {
+          valid: false,
           bodyRules: [(v) => !!v || '活動内容は必須項目です。'],
         },
       },
@@ -147,7 +154,7 @@ export default {
   },
   methods: {
     submit: async function () {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.karteForm.validate()) {
         this.karteForm.loading = true;
 
         var input = new FormData();
@@ -165,7 +172,7 @@ export default {
 
         if (response.status === OK) {
           // フォームの初期化
-          this.$refs.form.reset();
+          this.$refs.karteForm.reset();
           this.karteForm.loading = false;
 
           this.dialog = false;

@@ -23,12 +23,11 @@
               <h2 class="mb-6 text-h4 font-weight-bold text-center">ログイン</h2>
 
               <!-- フォーム -->
-              <v-form ref="form" v-model="loginForm.validation.valid" lazy-validation>
+              <v-form ref="loginForm" v-model="loginForm.validation.valid" lazy-validation>
                 <v-text-field
                   v-model="loginForm.loginField"
                   :rules="loginForm.validation.loginFieldRules"
                   label="ユーザー名 または メールアドレス"
-                  required
                 ></v-text-field>
 
                 <v-text-field
@@ -108,7 +107,7 @@ export default {
   },
   methods: {
     login: async function () {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.loginForm.validate()) {
         this.loginForm.loading = true;
 
         // データの作成

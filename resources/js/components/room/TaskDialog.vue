@@ -57,11 +57,10 @@
 
           <v-card-text class="pa-2 white--text font-weight-bold">タスクの追加</v-card-text>
 
-          <v-form ref="form" v-model="newTaskForm.validation.valid">
+          <v-form ref="newTaskForm" v-model="newTaskForm.validation.valid" lazy-validation>
             <v-text-field
               v-model="newTaskForm.body"
               :rules="newTaskForm.validation.bodyRules"
-              required
               maxlength="20"
               counter
               label="タスク名"
@@ -71,15 +70,17 @@
               class="pa-2"
             ></v-text-field>
 
-            <v-card-actions class="align-center">
+            <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
                 depressed
                 color="#f6bf00"
                 :loading="newTaskForm.loading"
+                :disabled="!newTaskForm.validation.valid"
                 @click="submitNewTask()"
+                class="white--text"
               >
-                <span class="white--text">追加</span>
+                追加
               </v-btn>
             </v-card-actions>
           </v-form>
@@ -124,7 +125,7 @@ export default {
       this.close();
     },
     submitNewTask: async function () {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.newTaskForm.validate()) {
         this.newTaskForm.loading = true;
 
         var input = {
@@ -141,7 +142,7 @@ export default {
           this.newTaskForm.dialog = false;
 
           // フォームの初期化
-          this.$refs.form.reset();
+          this.$refs.newTaskForm.reset();
           this.newTaskForm.loading = false;
         }
 

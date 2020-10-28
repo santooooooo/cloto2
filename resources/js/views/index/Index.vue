@@ -12,28 +12,25 @@
       <v-container>
         <h5 class="text-center text-h5">お問い合わせ</h5>
 
-        <v-form ref="form" v-model="contactForm.validation.valid" lazy-validation>
+        <v-form ref="contactForm" v-model="contactForm.validation.valid" lazy-validation>
           <v-text-field
             v-model="contactForm.name"
             :rules="contactForm.validation.nameRules"
             label="お名前"
             maxlength="16"
             counter
-            required
           ></v-text-field>
 
           <v-text-field
             v-model="contactForm.email"
             :rules="contactForm.validation.emailRules"
             label="メールアドレス"
-            required
           ></v-text-field>
 
           <v-textarea
             v-model="contactForm.body"
             :rules="contactForm.validation.bodyRules"
             label="お問い合わせ内容"
-            required
           ></v-textarea>
 
           <v-btn
@@ -124,7 +121,7 @@ export default {
   },
   methods: {
     sendContact: async function () {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.contactForm.validate()) {
         this.contactForm.loading = true;
 
         var input = {
@@ -137,7 +134,7 @@ export default {
         var response = await this.$http.post(this.$endpoint('contact'), input);
 
         if (response.status === OK) {
-          this.$refs.form.reset();
+          this.$refs.contactForm.reset();
         }
 
         // 結果表示

@@ -31,19 +31,21 @@
               </div>
 
               <!-- フォーム -->
-              <v-form ref="form" v-model="preRegisterForm.validation.valid" lazy-validation>
+              <v-form
+                ref="preRegisterForm"
+                v-model="preRegisterForm.validation.valid"
+                lazy-validation
+              >
                 <v-text-field
                   v-model="preRegisterForm.name"
                   :rules="preRegisterForm.validation.nameRules"
                   label="お名前"
-                  required
                 ></v-text-field>
 
                 <v-text-field
                   v-model="preRegisterForm.email"
                   :rules="preRegisterForm.validation.emailRules"
                   label="メールアドレス"
-                  required
                 ></v-text-field>
 
                 <v-checkbox
@@ -140,7 +142,7 @@ export default {
   },
   methods: {
     preRegister: async function () {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.preRegisterForm.validate()) {
         this.preRegisterForm.loading = true;
 
         var input = {
@@ -153,7 +155,7 @@ export default {
         var response = await this.$http.post(this.$endpoint('preRegister'), input);
 
         if (response.status === OK) {
-          this.$refs.form.reset();
+          this.$refs.preRegisterForm.reset();
           this.preRegisterForm.status = true;
         }
 
