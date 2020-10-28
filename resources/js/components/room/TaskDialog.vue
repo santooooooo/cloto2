@@ -86,12 +86,10 @@
         </v-container>
       </v-card>
     </v-dialog>
-    <!-- タスク追加ダイアログ -->
+    <!-- タスク確定ダイアログ -->
     <v-dialog persistent v-model="continueDialog" width="600">
       <v-card center>
-        <v-btn color="green darken-1" text @click="continueDialog = false">
-          このタスクで自習を始める
-        </v-btn>
+        <v-btn color="green darken-1" text @click="startStudy()"> このタスクで自習を始める </v-btn>
         <v-btn color="green darken-1" text @click="continueDialog = false">
           タスクの選択に戻る
         </v-btn>
@@ -133,7 +131,7 @@ export default {
     },
     startStudy: function () {
       //ドロワーに選択したtask と todoをカードとして表示
-      this.close();
+      this.$emit('startStudy');
     },
     submitNewTask: async function () {
       if (this.$refs.form.validate()) {
