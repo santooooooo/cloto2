@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Http\Requests\UserRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,9 +24,31 @@ class UserController extends Controller
      */
     public function __construct(User $user)
     {
+        $this->middleware(function ($request, $next) {
+            $this->auth_user = Auth::user();
+            return $next($request);
+        });
+
         $this->user = $user;
     }
 
+
+    /**
+     * ユーザーの取得
+     *
+     * @param   String  $user_param ユーザーIDまたはユーザー名
+     * @return  User    $user       ユーザーデータ
+     */
+    public function get_user(String $user_param)
+    {
+        if (preg_match('/^[0-9]+$/', $user_param)) {
+            $user = $this->user->where('id', $user_param)->first();
+        } else {
+            $user = $this->user->where('username', $user_param)->first();
+        }
+
+        return $user;
+    }
 
     /**
      * ログインユーザーの取得
@@ -35,8 +57,6 @@ class UserController extends Controller
      */
     public function auth()
     {
-        $this->auth_user = Auth::user();
-
         if (!empty($this->auth_user)) {
             return response()->json($this->auth_user->load('seat.section'));
         }
@@ -57,10 +77,10 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  UserRequest  $request
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -73,44 +93,61 @@ class UserController extends Controller
      */
     public function show(String $user_param)
     {
-        return response()->json(get_user($user_param));
+        return response()->json($this->get_user($user_param));
     }
 
     /**
      * ユーザーデータの更新
      *
-     * @param  UserRequest $request 更新内容
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request)
+    public function update(Request $request)
     {
-        $param = $request->toArray();
-
-        // 更新するユーザーを取得
-        $edit_user = $this->user->where('username', $request->username)->first();
+        $username = $request->username;
+        $email = $request->email;
+        $handlename = $request->handlename;
+        $sns = [
+            'twitter' => $request->twitter ?? '',
+            'github' => $request->github ?? '',
+            'qiita' => $request->qiita ?? ''
+        ];
+        $web = $request->web ?? '';
+        $introduction = $request->introduction ?? '';
 
         // アイコンの処理
-        if (!empty($param['upload-image'])) {
+        if (!empty($request->icon)) {
             // 削除処理
-            if ($edit_user->icon != 'default.jpg') {
-                // 初期値以外の場合には削除
-                Storage::delete(self::ICON_STORE_DIR . $edit_user->icon);
+            if ($this->auth_user->icon != 'default.jpg') {
+                // 初期アイコン以外の場合には登録中のアイコンを削除
+                Storage::delete(self::ICON_STORE_DIR . $this->auth_user->icon);
             }
 
             // 保存処理
-            $savename = $request->file('upload-image')->hashName();
-            $request->file('upload-image')->storeAs(self::ICON_STORE_DIR, $savename);
+            $savename = $request->file('icon')->hashName();
+            $request->file('icon')->storeAs(self::ICON_STORE_DIR, $savename);
 
-            $param['icon'] = $savename;
+            $icon = $savename;
+        } else {
+            $icon = 'default.jpg';
         }
 
-        // SNSの処理
-        $param['sns'] = array('twitter' => $param['twitter'], 'github' => $param['github'], 'qiita' => $param['qiita']);
 
-        // データの更新
-        $edit_user->update($param);
+        $result = $this->auth_user->update(compact(
+            'username',
+            'email',
+            'handlename',
+            'icon',
+            'sns',
+            'web',
+            'introduction'
+        ));
 
-        return response();
+        if (empty($result)) {
+            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        return response(null);
     }
 
     /**

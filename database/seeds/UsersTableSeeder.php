@@ -15,13 +15,13 @@ class UsersTableSeeder extends Seeder
     {
         $usernames = ['test', 'test2', 'test3', 'test4', 'test5'];
         foreach ($usernames as $username) {
-            User::insert([
+            User::create([
                 'username' => $username,
                 'email' => $username . '@cloto.jp',
                 'password' => Hash::make('password'),
                 'handlename' => $username,
                 'icon' => 'default.jpg',
-                'sns' => json_encode(['twitter' => '', 'github' => '', 'qiita' => '']),
+                'sns' => ['twitter' => '', 'github' => '', 'qiita' => ''],
             ]);
         }
     }

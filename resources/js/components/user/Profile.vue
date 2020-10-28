@@ -32,28 +32,28 @@
             >
           </div>
           <!-- ボタン類 -->
-          <div class="profile__sns-container" v-if="sns || user.web">
+          <div class="profile__sns-container" v-if="user.sns || user.web">
             <a
               class="profile__sns--twitter"
-              :href="'https://twitter.com/' + sns.twitter"
+              :href="'https://twitter.com/' + user.sns.twitter"
               target="_blank"
-              v-if="sns.twitter"
+              v-if="user.sns.twitter"
             >
               <i class="fab fa-twitter fa-2x"></i>
             </a>
             <a
               class="profile__sns--github"
-              :href="'https://github.com/' + sns.github"
+              :href="'https://github.com/' + user.sns.github"
               target="_blank"
-              v-if="sns.github"
+              v-if="user.sns.github"
             >
               <i class="fab fa-github fa-2x"></i>
             </a>
             <a
               class="profile__sns--qiita"
-              :href="'https://qiita.com/' + sns.qiita"
+              :href="'https://qiita.com/' + user.sns.qiita"
               target="_blank"
-              v-if="sns.qiita"
+              v-if="user.sns.qiita"
             >
               <i class="fa fa-search fa-2x"></i>
             </a>
@@ -79,7 +79,6 @@ export default {
   data() {
     return {
       user: null,
-      sns: null,
     };
   },
   async mounted() {
@@ -88,10 +87,6 @@ export default {
      */
     var response = await this.$http.get(this.$endpoint('userShow', [this.userName]));
     this.user = response.data;
-
-    if (this.user.sns) {
-      this.sns = JSON.parse(this.user.sns);
-    }
   },
 };
 </script>

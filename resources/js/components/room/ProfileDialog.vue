@@ -17,13 +17,13 @@
             <v-row class="text-h5 mt-2" justify="center">{{ user.handlename }}</v-row>
             <v-row class="text-body-2" justify="center">{{ '@' + user.username }}</v-row>
 
-            <v-row class="mt-3" justify="center" v-if="sns || user.web">
+            <v-row class="mt-3" justify="center" v-if="user.sns || user.web">
               <v-btn
                 icon
                 color="#00acee"
-                :href="'https://twitter.com/' + sns.twitter"
+                :href="'https://twitter.com/' + user.sns.twitter"
                 target="_blank"
-                v-if="sns.twitter"
+                v-if="user.sns.twitter"
               >
                 <v-icon>mdi-twitter</v-icon>
               </v-btn>
@@ -31,14 +31,19 @@
               <v-btn
                 icon
                 color="#000000"
-                :href="'https://github.com/' + sns.github"
+                :href="'https://github.com/' + user.sns.github"
                 target="_blank"
-                v-if="sns.github"
+                v-if="user.sns.github"
               >
                 <v-icon>mdi-github</v-icon>
               </v-btn>
 
-              <v-btn icon :href="'https://qiita.com/' + sns.qiita" target="_blank" v-if="sns.qiita">
+              <v-btn
+                icon
+                :href="'https://qiita.com/' + user.sns.qiita"
+                target="_blank"
+                v-if="user.sns.qiita"
+              >
                 <v-avatar size="20" color="white"
                   ><v-img :src="$storage('system') + 'qiita.png'"></v-img
                 ></v-avatar>
@@ -76,7 +81,6 @@ export default {
     return {
       dialog: true,
       user: null,
-      sns: null,
     };
   },
   methods: {
@@ -91,10 +95,6 @@ export default {
      */
     var response = await this.$http.get(this.$endpoint('userShow', [this.userId]));
     this.user = response.data;
-
-    if (this.user.sns) {
-      this.sns = JSON.parse(this.user.sns);
-    }
   },
 };
 </script>

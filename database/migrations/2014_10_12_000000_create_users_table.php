@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');                             // パスワード
             $table->string('handlename')->nullable();               // 表示名
             $table->string('icon')->nullable();                     // アイコン
-            $table->string('sns')->nullable();                      // SNS
+            $table->json('sns')->nullable();                        // SNS
             $table->string('web')->nullable();                      // Webページ
             $table->text('introduction')->nullable();               // 自己紹介
             $table->unsignedInteger('seat_id')->nullable();         // 着席している座席ID

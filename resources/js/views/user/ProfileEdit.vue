@@ -12,19 +12,36 @@
 
     <!-- アイコン -->
     <div class="form-group">
-      <image-drop-upload :no-change-crop-ratio="true" ratio-x="1" ratio-y="1"></image-drop-upload>
+      <image-drop-upload
+        :no-change-crop-ratio="true"
+        ratio-x="1"
+        ratio-y="1"
+        @input="profileUpdateForm.icon = $event"
+      ></image-drop-upload>
     </div>
 
     <!-- ユーザー名 -->
     <div class="form-group">
       <label for="username">ユーザー名</label>
-      <input type="text" class="form-control" name="username" id="username" v-model="username" />
+      <input
+        type="text"
+        class="form-control"
+        name="username"
+        id="username"
+        v-model="profileUpdateForm.username"
+      />
     </div>
 
     <!-- メールアドレス -->
     <div class="form-group">
       <label for="email">メールアドレス</label>
-      <input type="text" class="form-control" name="email" id="email" v-model="email" />
+      <input
+        type="text"
+        class="form-control"
+        name="email"
+        id="email"
+        v-model="profileUpdateForm.email"
+      />
     </div>
 
     <!-- ハンドルネーム -->
@@ -35,7 +52,7 @@
         class="form-control"
         name="handlename"
         id="handlename"
-        v-model="handlename"
+        v-model="profileUpdateForm.handlename"
       />
     </div>
 
@@ -53,7 +70,7 @@
         name="twitter"
         id="twitter"
         placeholder="Twitter 例：CLOTO_JP"
-        v-model="twitter"
+        v-model="profileUpdateForm.twitter"
       />
     </div>
 
@@ -71,7 +88,7 @@
         name="github"
         id="github"
         placeholder="GitHub 例：CLOTO_JP"
-        v-model="github"
+        v-model="profileUpdateForm.github"
       />
     </div>
 
@@ -89,7 +106,7 @@
         name="qiita"
         id="qiita"
         placeholder="Qiita 例：CLOTO_JP"
-        v-model="qiita"
+        v-model="profileUpdateForm.qiita"
       />
     </div>
 
@@ -107,7 +124,7 @@
         name="web"
         id="web"
         placeholder="Webサイト 例：https://cloto.jp"
-        v-model="web"
+        v-model="profileUpdateForm.web"
       />
     </div>
 
@@ -120,25 +137,14 @@
         id="introduction"
         rows="4"
         cols="40"
-        v-model="introduction"
+        v-model="profileUpdateForm.introduction"
       ></textarea>
     </div>
-
-    <!-- 通知設定 -->
-    <!-- <div class="form-group">
-      メール通知設定
-      <div class="input-group-prepend">
-        <div class="input-group-text">
-          <input type="radio" name="setting_notification" value="All" />受け取る&nbsp;
-          <input type="radio" name="setting_notification" value="Database" />受け取らない
-        </div>
-      </div>
-    </div>-->
 
     <!-- ボタン -->
     <div class="profile-edit__button row">
       <div class="buttonSet mx-auto">
-        <button type="button" class="btn btn-primary btn-sm" @click="submit">更新</button>
+        <button type="button" class="btn btn-primary btn-sm" @click="submit()">更新</button>
         <router-link
           class="btn btn-secondary btn-sm btn-danger"
           :to="{ name: 'userPage', params: { username: $store.getters['auth/user'].username } }"
@@ -149,8 +155,9 @@
   </div>
 </template>
 
-
 <script>
+import { OK } from '@/consts/status';
+
 export default {
   head: {
     title() {
@@ -161,68 +168,69 @@ export default {
   },
   data() {
     return {
-      formData: new FormData(),
-      username: this.$store.getters['auth/user'].username,
-      email: this.$store.getters['auth/user'].email,
-      handlename: this.$store.getters['auth/user'].handlename,
-      twitter: this.$store.getters['auth/user'].sns.twitter,
-      github: this.$store.getters['auth/user'].sns.github,
-      qiita: this.$store.getters['auth/user'].sns.qiita,
-      web: this.$store.getters['auth/user'].web,
-      introduction: this.$store.getters['auth/user'].introduction,
+      profileUpdateForm: {
+        username: this.$store.getters['auth/user'].username,
+        email: this.$store.getters['auth/user'].email,
+        handlename: this.$store.getters['auth/user'].handlename,
+        icon: '',
+        twitter: this.$store.getters['auth/user'].sns.twitter,
+        github: this.$store.getters['auth/user'].sns.github,
+        qiita: this.$store.getters['auth/user'].sns.qiita,
+        web: this.$store.getters['auth/user'].web,
+        introduction: this.$store.getters['auth/user'].introduction,
+        loading: false,
+        validation: {
+          valid: false,
+          bodyRules: [(v) => !!v || '活動内容は必須項目です。'],
+        },
+      },
     };
   },
   methods: {
-    submit: function () {
-      // データの作成
-      this.formData.append('username', this.username);
-      this.formData.append('email', this.email);
-      this.formData.append('handlename', this.handlename);
-      if (this.twitter === null) {
-        this.formData.append('twitter', '');
-      } else {
-        this.formData.append('twitter', this.twitter);
-      }
-      if (this.github === null) {
-        this.formData.append('github', '');
-      } else {
-        this.formData.append('github', this.github);
-      }
-      if (this.qiita === null) {
-        this.formData.append('qiita', '');
-      } else {
-        this.formData.append('qiita', this.qiita);
-      }
-      if (this.web === null) {
-        this.formData.append('web', '');
-      } else {
-        this.formData.append('web', this.web);
-      }
-      if (this.introduction === null) {
-        this.formData.append('introduction', '');
-      } else {
-        this.formData.append('introduction', this.introduction);
+    submit: async function () {
+      // if (this.$refs.karteForm.validate()) {
+      //   this.karteForm.loading = true;
+
+      var input = new FormData();
+      input.append('username', this.profileUpdateForm.username);
+      input.append('email', this.profileUpdateForm.email);
+      input.append('handlename', this.profileUpdateForm.handlename);
+      input.append('icon', this.profileUpdateForm.icon);
+      input.append('twitter', this.profileUpdateForm.twitter);
+      input.append('github', this.profileUpdateForm.github);
+      input.append('qiita', this.profileUpdateForm.qiita);
+      input.append('web', this.profileUpdateForm.web);
+      input.append('introduction', this.profileUpdateForm.introduction);
+
+      // カルテ保存処理
+      var response = await this.$http.post(this.$endpoint('profileUpdate'), input);
+
+      if (response.status === OK) {
+        // ユーザーデータの同期
+        await this.$store.dispatch('auth/syncAuthUser');
+
+        this.$router.push({
+          name: 'userPage',
+          params: { username: this.$store.getters['auth/user'].username },
+        });
+
+        // フォームの初期化
+        // this.$refs.karteForm.reset();
+        // this.karteForm.loading = false;
+
+        // this.dialog = false;
+        // this.continueDialog = true;
       }
 
-      // データの送信
-      this.$http
-        .post(this.$endpoint('profileUpdate'), this.formData, {
-          headers: { 'content-type': 'multipart/form-data' },
-        })
-        .then((response) => {
-          this.$router.push({
-            name: 'userPage',
-            params: { username: this.$store.getters['auth/user'].username },
-          });
-        })
-        .catch((error) => {
-          new Error(error);
-        });
+      // // 結果表示
+      // // this.karteForm.loading = false;
+      // // this.karteForm.message = response.data;
+      // // this.karteForm.snackbar = true;
+      // }
     },
   },
 };
 </script>
-
 
 <style lang="scss" scoped>
 .profile-edit {
