@@ -1,92 +1,173 @@
 <template>
-  <div class="profile">
-    <!-- ローディングバー -->
-    <v-progress-linear indeterminate color="blue" class="mb-0" v-if="!user"></v-progress-linear>
+  <v-layout>
+    <Drawer />
+    <v-flex id="main">
+      <v-row no-gutters>
+        <v-col cols="8" v-if="selectedMyPage === 0">
+          <!-- ローディングバー -->
+          <v-progress-linear
+            indeterminate
+            color="blue"
+            class="mb-0"
+            v-if="!user"
+          ></v-progress-linear>
+          <!-- プロフィール欄 -->
+          <div class="profile__content card" v-else>
+            <div class="row">
+              <!-- アイコンとユーザー名 -->
+              <div class="profile__user col-md-5">
+                <img
+                  :src="$storage('icon') + user.icon"
+                  class="rounded-circle"
+                  width="100"
+                  height="100"
+                />
+                <p class="profile__user--handlename">{{ user.handlename }}</p>
+                <p class="profile__user--username">{{ '@' + user.username }}</p>
+              </div>
 
-    <!-- プロフィール欄 -->
-    <div class="profile__content card" v-else>
-      <div class="row">
-        <!-- アイコンとユーザー名 -->
-        <div class="profile__user col-md-5">
-          <img
-            :src="$storage('icon') + user.icon"
-            class="rounded-circle"
-            width="100"
-            height="100"
-          />
-          <p class="profile__user--handlename">{{ user.handlename }}</p>
-          <p class="profile__user--username">{{ '@' + user.username }}</p>
-        </div>
+              <div class="col-md-7">
+                <div class="profile__button">
+                  <!-- マイページの場合 -->
+                  <router-link
+                    class="btn btn-cloto-primary"
+                    :to="{
+                      name: 'profileEdit',
+                      params: { username: $store.getters['auth/user'].username },
+                    }"
+                    v-if="user.id == $store.getters['auth/user'].id"
+                    >編集する</router-link
+                  >
+                </div>
+                <!-- ボタン類 -->
+                <div class="profile__sns-container" v-if="user.sns || user.web">
+                  <a
+                    class="profile__sns--twitter"
+                    :href="'https://twitter.com/' + user.sns.twitter"
+                    target="_blank"
+                    v-if="user.sns.twitter"
+                  >
+                    <i class="fab fa-twitter fa-2x"></i>
+                  </a>
+                  <a
+                    class="profile__sns--github"
+                    :href="'https://github.com/' + user.sns.github"
+                    target="_blank"
+                    v-if="user.sns.github"
+                  >
+                    <i class="fab fa-github fa-2x"></i>
+                  </a>
+                  <a
+                    class="profile__sns--qiita"
+                    :href="'https://qiita.com/' + user.sns.qiita"
+                    target="_blank"
+                    v-if="user.sns.qiita"
+                  >
+                    <i class="fa fa-search fa-2x"></i>
+                  </a>
+                  <a class="profile__sns--web" :href="user.web" target="_blank" v-if="user.web">
+                    <i class="fas fa-link fa-2x"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
 
-        <div class="col-md-7">
-          <div class="profile__button">
-            <!-- マイページの場合 -->
-            <router-link
-              class="btn btn-cloto-primary"
-              :to="{
-                name: 'profileEdit',
-                params: { username: $store.getters['auth/user'].username },
-              }"
-              v-if="user.id == $store.getters['auth/user'].id"
-              >編集する</router-link
-            >
+            <div class="profile__introduction" v-if="user.introduction">
+              <p>{{ user.introduction }}</p>
+            </div>
           </div>
-          <!-- ボタン類 -->
-          <div class="profile__sns-container" v-if="user.sns || user.web">
-            <a
-              class="profile__sns--twitter"
-              :href="'https://twitter.com/' + user.sns.twitter"
-              target="_blank"
-              v-if="user.sns.twitter"
-            >
-              <i class="fab fa-twitter fa-2x"></i>
-            </a>
-            <a
-              class="profile__sns--github"
-              :href="'https://github.com/' + user.sns.github"
-              target="_blank"
-              v-if="user.sns.github"
-            >
-              <i class="fab fa-github fa-2x"></i>
-            </a>
-            <a
-              class="profile__sns--qiita"
-              :href="'https://qiita.com/' + user.sns.qiita"
-              target="_blank"
-              v-if="user.sns.qiita"
-            >
-              <i class="fa fa-search fa-2x"></i>
-            </a>
-            <a class="profile__sns--web" :href="user.web" target="_blank" v-if="user.web">
-              <i class="fas fa-link fa-2x"></i>
-            </a>
-          </div>
-        </div>
-      </div>
+        </v-col>
 
-      <div class="profile__introduction" v-if="user.introduction">
-        <p>{{ user.introduction }}</p>
-      </div>
-    </div>
-  </div>
+        <v-col cols="2" class="pa-0" v-if="selectedMyPage === 1">
+          <v-card flat tile class="ma-0" min-height="600" color="grey darken-1">
+            <v-list nav　permanent color="grey darken-1">
+              <v-subheader>プロジェクト</v-subheader>
+              <v-list-item-group color="primary" v-model="selectedProject">
+                <v-list-item v-for="(item, i) in myProjectItems" :key="i" color="grey">
+                  <v-list-item-content>
+                    <v-list-item-title v-text="item.text"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+            {{ selectedProject }}
+          </v-card>
+        </v-col>
+
+        <v-col cols="2" class="pa-0" v-if="(selectedMyPage === 1) & (selectedProject === 0)">
+          <v-card flat tile class="ma-0" min-height="600" color="grey lighten-1">
+            <v-list nav　permanent color="grey lighten-1">
+              <v-subheader>タスク</v-subheader>
+              <v-list-item-group color="primary" v-model="selectedTask">
+                <v-list-item v-for="(item, i) in myTaskItems" :key="i" color="grey">
+                  <v-list-item-content>
+                    <v-list-item-title v-text="item.text"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+            {{ selectedProject }}
+          </v-card>
+        </v-col>
+
+        <v-col
+          cols="6"
+          class="pa-0"
+          v-if="(selectedMyPage === 1) & (selectedProject === 0) & (selectedTask === 0)"
+        >
+          <v-card flat tile class="ma-0" min-height="600" color="grey lighten-2">
+            <v-list nav　permanent color="grey lighten-2">
+              <v-subheader>カルテ</v-subheader>
+              <v-list-item-group color="primary">
+                <v-list-item v-for="(item, i) in myKartes" :key="i" color="grey">
+                  <v-list-item-content>
+                    <v-list-item-title v-text="item.text"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
+import Drawer from '@/components/user/Drawer';
 export default {
+  components: {
+    Drawer,
+  },
   props: {
     userName: String,
   },
   data() {
     return {
       user: null,
+      selectedMyPage: 0,
+      selectedProject: null,
+      selectedTask: null,
+
+      myProjectItems: [{ text: '英語' }, { text: '数学' }, { text: '国語' }],
+
+      myTaskItems: [{ text: '英単語10分' }, { text: '長文問題１つ' }, { text: 'シャドーイング' }],
+
+      myKartes: [{ text: 'aaaaaaaaaaa' }],
     };
   },
+
   async mounted() {
     /**
      * ユーザーデータの取得
      */
     var response = await this.$http.get(this.$endpoint('userShow', [this.userName]));
     this.user = response.data;
+  },
+
+  methods: {
+    profileDetail: function () {},
+    KarteDetail: function () {},
   },
 };
 </script>
