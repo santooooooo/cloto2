@@ -14,7 +14,7 @@ class RoomsTableSeeder extends Seeder
     {
         $names = ['101', '102', '103', '104', '105'];
         foreach ($names as $name) {
-            Room::insert(['name' => $name]);
+            Room::create(['name' => $name]);
         }
     }
 }

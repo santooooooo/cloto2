@@ -13,10 +13,10 @@ class SectionsTableSeeder extends Seeder
     public function run()
     {
         for ($i = 0; $i < 12; $i++) {
-            Section::insert(['room_id' => '1', 'role' => 'study']);
+            Section::create(['room_id' => '1', 'role' => 'study']);
         }
         for ($i = 0; $i < 10; $i++) {
-            Section::insert(['room_id' => '1', 'role' => 'lounge']);
+            Section::create(['room_id' => '1', 'role' => 'lounge']);
         }
     }
 }

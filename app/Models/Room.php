@@ -15,6 +15,8 @@ class Room extends Model
      */
     protected $fillable = ['name'];
 
+    public $timestamps = false;
+
     /**
      * Section モデルのリレーション
      *

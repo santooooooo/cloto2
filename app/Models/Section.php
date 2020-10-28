@@ -17,6 +17,8 @@ class Section extends Model
         'room_id', 'role'
     ];
 
+    public $timestamps = false;
+
     /**
      * Room モデルのリレーション
      *

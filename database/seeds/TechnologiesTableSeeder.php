@@ -14,7 +14,7 @@ class TechnologiesTableSeeder extends Seeder
     {
         $names = ['C', 'C++', 'C#', 'Java', 'PHP', 'Ruby', 'JavaScript', 'TypeScript', 'Python', 'Kotlin'];
         foreach ($names as $name) {
-            Technology::insert(['name' => $name]);
+            Technology::create(['name' => $name]);
         }
     }
 }
