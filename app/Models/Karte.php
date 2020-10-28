@@ -18,6 +18,11 @@ class Karte extends Model
         'user_id', 'task_id', 'body', 'achieve', 'trouble', 'reference', 'image', 'activity_time'
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = ['image' => 'json'];
 
     /**
