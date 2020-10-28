@@ -36,8 +36,8 @@ class SeatsTableSeeder extends Seeder
                 $y = $section['y'];
 
                 for ($i = 0; $i < 6; $i++) {
-                    $position = json_encode(['x' => ($x + (50 * ($i % 3))), 'y' => $y]);
-                    Seat::insert(['section_id' => $section['id'], 'position' => $position]);
+                    $position = ['x' => ($x + (50 * ($i % 3))), 'y' => $y];
+                    Seat::create(['section_id' => $section['id'], 'position' => $position]);
 
                     if ($i == 2) {
                         $x = $section['x'];
@@ -53,16 +53,16 @@ class SeatsTableSeeder extends Seeder
                     $x = $val['x'];
                     $y = $val['y'];
 
-                    $position = json_encode(['x' => $x, 'y' => $y]);
-                    Seat::insert(['section_id' => $section['id'], 'position' => $position]);
+                    $position = ['x' => $x, 'y' => $y];
+                    Seat::create(['section_id' => $section['id'], 'position' => $position]);
                 }
             } else if (14 < $section['id'] && $section['id'] <= 18) {
                 $x = $section['x'];
                 $y = $section['y'];
 
                 for ($i = 0; $i < 2; $i++) {
-                    $position = json_encode(['x' => $x, 'y' => $y]);
-                    Seat::insert(['section_id' => $section['id'], 'position' => $position]);
+                    $position = ['x' => $x, 'y' => $y];
+                    Seat::create(['section_id' => $section['id'], 'position' => $position]);
 
                     $x += 90;
                 }
@@ -71,8 +71,8 @@ class SeatsTableSeeder extends Seeder
                 $y = $section['y'];
 
                 for ($i = 0; $i < 4; $i++) {
-                    $position = json_encode(['x' => $x, 'y' => $y]);
-                    Seat::insert(['section_id' => $section['id'], 'position' => $position]);
+                    $position = ['x' => $x, 'y' => $y];
+                    Seat::create(['section_id' => $section['id'], 'position' => $position]);
 
                     if ($i == 0) {
                         $x -= 55;
@@ -89,8 +89,8 @@ class SeatsTableSeeder extends Seeder
                 $y = $section['y'];
 
                 for ($i = 0; $i < 8; $i++) {
-                    $position = json_encode(['x' => $x, 'y' => $y]);
-                    Seat::insert(['section_id' => $section['id'], 'position' => $position]);
+                    $position = ['x' => $x, 'y' => $y];
+                    Seat::create(['section_id' => $section['id'], 'position' => $position]);
 
                     if ($i == 0) {
                         $x -= 50;

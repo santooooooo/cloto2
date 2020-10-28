@@ -17,8 +17,14 @@ class Seat extends Model
         'section_id', 'position', 'status', 'reservation_user_id'
     ];
 
-    public $timestamps = false;
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = ['position' => 'json'];
 
+    public $timestamps = false;
 
     /**
      * Section モデルのリレーション

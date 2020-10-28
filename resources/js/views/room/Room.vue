@@ -115,8 +115,7 @@ export default {
                 // 状態の変化があった座席は再描画
                 switch (seat.status) {
                   case 'sitting':
-                    var position = JSON.parse(seat.position);
-                    this.putIcon(position.x, position.y, seat.user);
+                    this.putIcon(seat.position.x, seat.position.y, seat.user);
                     this.time();
                     break;
 
@@ -417,7 +416,6 @@ export default {
     await this.getRoom();
     this.roomData.sections.forEach((section, sectionIndex) => {
       section.seats.forEach((seat, seatIndex) => {
-        var position = JSON.parse(seat.position);
         var color = '';
         if (seat.status == 'break') {
           color = '#FF0000';
@@ -431,8 +429,8 @@ export default {
             fill: color,
             reservationId: seat.reservation_user_id,
             opacity: 0.3,
-            left: position.x,
-            top: position.y,
+            left: seat.position.x,
+            top: seat.position.y,
             originX: 'center',
             originY: 'center',
             radius: this.iconSize / 2,
