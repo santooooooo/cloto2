@@ -1,78 +1,144 @@
 <template>
-  
-    <v-card color="grey darken-1" dark >
-      <v-container>
-        <v-row class="text-center" justify="center">
-          <v-col class="pr-0" align-self="center">
-            <v-avatar size="100"><img :src="$storage('icon') + user.icon" /></v-avatar>
-            <v-row class="text-h5 mt-2" justify="center">{{ user.handlename }}</v-row>
-            <v-row class="text-body-2" justify="center">{{ '@' + user.username }}</v-row>
+  <v-layout>
+    <Drawer />
+    <v-flex id="main">
+      <v-row no-gutters>
+        <v-col cols="8" v-if="selectedMyPage === 0">
+          <!-- ローディングバー -->
+          <v-progress-linear
+            indeterminate
+            color="blue"
+            class="mb-0"
+            v-if="!user"
+          ></v-progress-linear>
+          <!-- プロフィール欄 -->
+          <div class="profile__content card" v-else>
+            <div class="row">
+              <!-- アイコンとユーザー名 -->
+              <div class="profile__user col-md-5">
+                <img
+                  :src="$storage('icon') + user.icon"
+                  class="rounded-circle"
+                  width="100"
+                  height="100"
+                />
+                <p class="profile__user--handlename">{{ user.handlename }}</p>
+                <p class="profile__user--username">{{ '@' + user.username }}</p>
+              </div>
 
+              <div class="col-md-7">
+                <div class="profile__button">
+                  <!-- マイページの場合 -->
+                  <router-link
+                    class="btn btn-cloto-primary"
+                    :to="{
+                      name: 'profileEdit',
+                      params: { username: $store.getters['auth/user'].username },
+                    }"
+                    v-if="user.id == $store.getters['auth/user'].id"
+                    >編集する</router-link
+                  >
+                </div>
+                <!-- ボタン類 -->
+                <div class="profile__sns-container" v-if="sns || user.web">
+                  <a
+                    class="profile__sns--twitter"
+                    :href="'https://twitter.com/' + sns.twitter"
+                    target="_blank"
+                    v-if="sns.twitter"
+                  >
+                    <i class="fab fa-twitter fa-2x"></i>
+                  </a>
+                  <a
+                    class="profile__sns--github"
+                    :href="'https://github.com/' + sns.github"
+                    target="_blank"
+                    v-if="sns.github"
+                  >
+                    <i class="fab fa-github fa-2x"></i>
+                  </a>
+                  <a
+                    class="profile__sns--qiita"
+                    :href="'https://qiita.com/' + sns.qiita"
+                    target="_blank"
+                    v-if="sns.qiita"
+                  >
+                    <i class="fa fa-search fa-2x"></i>
+                  </a>
+                  <a class="profile__sns--web" :href="user.web" target="_blank" v-if="user.web">
+                    <i class="fas fa-link fa-2x"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
 
-            <v-row class="mt-3" justify="center" v-if="sns || user.web">
-              <v-btn
-                icon
-                color="#00acee"
-                :href="'https://twitter.com/' + sns.twitter"
-                target="_blank"
-                v-if="sns.twitter"
-              >
-                <v-icon>mdi-twitter</v-icon>
-              </v-btn>
+            <div class="profile__introduction" v-if="user.introduction">
+              <p>{{ user.introduction }}</p>
+            </div>
+          </div>
+        </v-col>
 
-              <v-btn
-                icon
-                color="#000000"
-                :href="'https://github.com/' + sns.github"
-                target="_blank"
-                v-if="sns.github"
-              >
-                <v-icon>mdi-github</v-icon>
-              </v-btn>
+        <v-col cols="2" class="pa-0" v-if="selectedMyPage === 1">
+          <v-card flat tile class="ma-0" min-height="600" color="grey darken-1">
+            <v-list nav　permanent color="grey darken-1">
+              <v-subheader>プロジェクト</v-subheader>
+              <v-list-item-group color="primary" v-model="selectedProject">
+                <v-list-item v-for="(item, i) in myProjectItems" :key="i" color="grey">
+                  <v-list-item-content>
+                    <v-list-item-title v-text="item.text"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+            {{ selectedProject }}
+          </v-card>
+        </v-col>
 
-              <v-btn icon :href="'https://qiita.com/' + sns.qiita" target="_blank" v-if="sns.qiita">
-                <v-avatar size="20" color="white"
-                  ><v-img :src="$storage('system') + 'qiita.png'"></v-img
-                ></v-avatar>
-              </v-btn>
+        <v-col cols="2" class="pa-0" v-if="(selectedMyPage === 1) & (selectedProject === 0)">
+          <v-card flat tile class="ma-0" min-height="600" color="grey lighten-1">
+            <v-list nav　permanent color="grey lighten-1">
+              <v-subheader>タスク</v-subheader>
+              <v-list-item-group color="primary" v-model="selectedTask">
+                <v-list-item v-for="(item, i) in myTaskItems" :key="i" color="grey">
+                  <v-list-item-content>
+                    <v-list-item-title v-text="item.text"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+            {{ selectedProject }}
+          </v-card>
+        </v-col>
 
-              <v-btn icon color="#ffffff" :href="user.web" target="_blank" v-if="user.web">
-                <v-icon>mdi-home</v-icon>
-              </v-btn>
-            </v-row>
-            <v-row class="mt-3" justify="center">        
-            <div class="profile__button">
-            <!-- マイページの場合 -->
-            <router-link
-              class="btn btn-cloto-primary"
-              :to="{
-                name: 'profileEdit',
-                params: { username: $store.getters['auth/user'].username },
-              }"
-              v-if="user.id == $store.getters['auth/user'].id"
-              >編集する</router-link
-            >
-          </div></v-row>
-          </v-col>
-
-          <v-col class="pl-0">
-            <v-card light flat class="mr-2 pa-2" height="240">
-              {{ user.introduction ? user.introduction : '自己紹介が未記入です' }}
-            </v-card>
-          </v-col>
-        </v-row>
-
-        <v-tabs class="pa-0" fixed-tabs background-color="grey lighten-1" dark>
-          <v-tab> Projects </v-tab>
-          <v-tab> TO Do </v-tab>
-          <v-tab> Record </v-tab>
-        </v-tabs>
-      </v-container>
-    </v-card>
+        <v-col
+          cols="6"
+          class="pa-0"
+          v-if="(selectedMyPage === 1) & (selectedProject === 0) & (selectedTask === 0)"
+        >
+          <v-card flat tile class="ma-0" min-height="600" color="grey lighten-2">
+            <v-list nav　permanent color="grey lighten-2">
+              <v-subheader>カルテ</v-subheader>
+              <v-list-item-group color="primary">
+                <v-list-item v-for="(item, i) in myKartes" :key="i" color="grey">
+                  <v-list-item-content>
+                    <v-list-item-title v-text="item.text"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
+import Drawer from '@/components/user/Drawer';
 export default {
+  components: {
+    Drawer,
+  },
   props: {
     userName: String,
   },
@@ -80,8 +146,18 @@ export default {
     return {
       user: null,
       sns: null,
+      selectedMyPage: 0,
+      selectedProject: null,
+      selectedTask: null,
+
+      myProjectItems: [{ text: '英語' }, { text: '数学' }, { text: '国語' }],
+
+      myTaskItems: [{ text: '英単語10分' }, { text: '長文問題１つ' }, { text: 'シャドーイング' }],
+
+      myKartes: [{ text: 'aaaaaaaaaaa' }],
     };
   },
+
   async mounted() {
     /**
      * ユーザーデータの取得
@@ -93,10 +169,122 @@ export default {
       this.sns = JSON.parse(this.user.sns);
     }
   },
+
+  methods: {
+    profileDetail: function () {},
+    KarteDetail: function () {},
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '~/_variables';
 
+.profile {
+  padding: 1em 0;
+  background-color: $white;
+  font-size: 14px;
+  font-weight: 900;
+
+  &__content {
+    margin: 0 auto;
+    background-color: $light-gray;
+    width: 500px;
+    border: none;
+    border-radius: 30px;
+  }
+
+  &__user {
+    height: 170px;
+    margin-top: 1em;
+    text-align: center;
+    font-weight: bold;
+
+    &--handlename {
+      text-align: center;
+      margin-top: 1em;
+      margin-bottom: 0;
+    }
+
+    &--username {
+      text-align: center;
+    }
+  }
+
+  &__button {
+    height: 60px;
+    margin-top: 2em;
+    text-align: center;
+  }
+
+  &__sns-container {
+    height: 30px;
+    margin-bottom: 2em;
+    text-align: center;
+
+    div {
+      margin: 0 auto;
+    }
+  }
+
+  %__sns {
+    margin: 0 1em;
+  }
+
+  &__sns {
+    @extend %__sns;
+
+    &--twitter {
+      @extend %__sns;
+
+      color: $twitter-color;
+
+      &:hover {
+        color: $twitter-color;
+      }
+    }
+
+    &--github {
+      @extend %__sns;
+
+      color: $github-color;
+
+      &:hover {
+        color: $github-color;
+      }
+    }
+
+    &--qiita {
+      @extend %__sns;
+
+      color: $qiita-color;
+
+      &:hover {
+        color: $qiita-color;
+      }
+    }
+
+    &--web {
+      @extend %__sns;
+
+      color: $black;
+
+      &:hover {
+        color: $black;
+      }
+    }
+  }
+
+  &__introduction {
+    margin: 1em;
+    padding: 0.5em;
+    text-align: center;
+    background-color: $white;
+    border-radius: 30px;
+
+    p {
+      margin: 0;
+    }
+  }
+}
 </style>
