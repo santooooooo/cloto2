@@ -59,7 +59,7 @@ class TaskController extends Controller
     public function post(Request $request)
     {
         $user_id = $this->user->id;
-        $project_id = $request->project_id;
+        $project_id = $request->projectId;
         $body = $request->body;
 
         $result = $this->task->create(compact('user_id', 'project_id', 'body'));
