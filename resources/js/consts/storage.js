@@ -7,8 +7,7 @@
  */
 const system = '/storage/system/';
 const icon = '/storage/user/icon/';
-
-
+const karte = '/storage/user/karte/';
 
 /**
  * パスの取得
@@ -17,15 +16,20 @@ const icon = '/storage/user/icon/';
  * @return {String} ディレクトリのパス
  */
 export function getStoragePath(name) {
-    var path = '';
-    switch (name) {
-        case 'system':
-            path = system;
-            break;
-        case 'icon':
-            path = icon;
-            break;
-    }
+  var path = '';
+  switch (name) {
+    case 'system':
+      path = system;
+      break;
 
-    return path;
+    case 'icon':
+      path = icon;
+      break;
+
+    case 'karte':
+      path = karte;
+      break;
+  }
+
+  return path;
 }

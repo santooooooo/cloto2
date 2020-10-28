@@ -15,8 +15,10 @@ class Karte extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'task_id', 'body', 'achieve', 'trouble', 'reference', 'activity_time'
+        'user_id', 'task_id', 'body', 'achieve', 'trouble', 'reference', 'image', 'activity_time'
     ];
+
+    protected $casts = ['image' => 'json'];
 
     /**
      * User モデルのリレーション

@@ -34,7 +34,8 @@
 
       <!-- カルテダイアログ -->
       <KarteDialog
-        :task="task"
+        :taskId="taskId"
+        :taskBody="taskBody"
         @close="karteDialog = $event"
         v-if="karteDialog"
         @open-project-dialog="projectDialog = $event"
@@ -87,7 +88,8 @@ export default {
       profileUserId: null, // プロフィールを表示するユーザーID
       projectDialog: false, // プロジェクトモーダルの制御
       karteDialog: false, // カルテ記入モーダルの制御
-      task: 'example', // やること
+      taskId: 1, // 学習中のタスクID
+      taskBody: 'example', // 内容
       now: '00:00:00', // 現在時刻
     };
   },

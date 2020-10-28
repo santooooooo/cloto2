@@ -3,7 +3,7 @@
     <!-- 画像アップロードエリア -->
     <div
       class="area"
-      v-bind:class="{dragLeave: dragLeave, dragOver: dragOver}"
+      v-bind:class="{ dragLeave: dragLeave, dragOver: dragOver }"
       @dragover.prevent="changeStyle('over')"
       @dragleave.prevent="changeStyle('leave')"
       @drop.prevent="uploadFile()"
@@ -16,7 +16,7 @@
           type="file"
           name="upload_image"
           @change="uploadFile()"
-          style="display:none;"
+          style="display: none"
           accept="image/*"
         />
       </label>
@@ -31,7 +31,7 @@
     <div class="modal" v-if="cropperModal">
       <div class="modal-content">
         <div class="modal-header-area">
-          <a @click="cropperModal=false">
+          <a @click="cropperModal = false">
             <i class="fas fa-times-circle fa-2x"></i>
           </a>
         </div>
@@ -59,13 +59,14 @@
             class="btn btn-lg btn-primary"
             @click="cropImage"
             v-if="option.img != ''"
-          >決定</button>
+          >
+            決定
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 <script>
 import { VueCropper } from 'vue-cropper';
@@ -139,8 +140,7 @@ export default {
       });
 
       this.$refs.cropper.getCropBlob((data) => {
-        // 親コンポーネントのformDataに画像を追加
-        this.$parent.formData.append('upload-image', data, 'image.png');
+        this.$emit('input', data);
       });
     },
     changeStyle: function (status) {
@@ -155,7 +155,6 @@ export default {
   },
 };
 </script>
-
 
 <style lang="scss" scoped>
 @import '~/_variables';

@@ -137,7 +137,7 @@ export function getEndpoint(name, params) {
       endpoint = setParams(karteIndexFromTask, params);
       break;
 
-    case 'KartePost':
+    case 'kartePost':
       endpoint = kartePost;
       break;
   }
