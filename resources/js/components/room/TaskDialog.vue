@@ -137,7 +137,7 @@ export default {
 
         if (response.status === OK) {
           // 新規タスクをリストに追加
-          this.tasks.push({ body: response.data.body });
+          this.tasks.push(response.data);
           this.newTaskForm.dialog = false;
 
           // フォームの初期化

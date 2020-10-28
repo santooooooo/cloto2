@@ -164,7 +164,7 @@ export default {
 
         if (response.status === OK) {
           // 新規プロジェクトをリストに追加
-          this.projects.push({ name: response.data.name, detail: response.data.detail });
+          this.projects.push(response.data);
           this.newProjectForm.dialog = false;
 
           // フォームの初期化
