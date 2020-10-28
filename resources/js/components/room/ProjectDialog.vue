@@ -143,7 +143,8 @@ export default {
      */
     close: function () {
       //this.dialog = false;
-      this.$emit('close', false);
+      // this.$emit('close', false);
+      this.$emit('close');
       //退席処理追加
     },
 

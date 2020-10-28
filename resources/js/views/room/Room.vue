@@ -30,7 +30,8 @@
       ></ProfileDialog>
 
       <!-- プロジェクトダイアログ -->
-      <ProjectDialog @close="projectDialog = $event" v-if="projectDialog"></ProjectDialog>
+      <!-- <ProjectDialog @close="projectDialog = $event" v-if="projectDialog"></ProjectDialog> -->
+      <ProjectDialog @close="closeProjectDialog()" v-if="projectDialog"></ProjectDialog>
 
       <!-- カルテダイアログ -->
       <KarteDialog
@@ -392,6 +393,10 @@ export default {
       //現在時刻の取得 **ここからはjavascript**
       this.now = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
       console.log(this.now);
+    },
+    closeProjectDialog: function () {
+      this.projectDialog = false;
+      this.leaveRoom();
     },
   },
 

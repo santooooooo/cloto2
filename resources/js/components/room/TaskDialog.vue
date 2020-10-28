@@ -20,7 +20,7 @@
           <v-list class="rounded-lg">
             <v-list-item-group color="success">
               <v-list-item v-for="task in tasks" :key="task.id">
-                <v-list-item-content @click="">
+                <v-list-item-content @click="openContinueDialog(task.id)">
                   <v-list-item-title v-text="task.body"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
@@ -86,6 +86,17 @@
         </v-container>
       </v-card>
     </v-dialog>
+    <!-- タスク追加ダイアログ -->
+    <v-dialog persistent v-model="continueDialog" width="600">
+      <v-card center>
+        <v-btn color="green darken-1" text @click="continueDialog = false">
+          このタスクで自習を始める
+        </v-btn>
+        <v-btn color="green darken-1" text @click="continueDialog = false">
+          タスクの選択に戻る
+        </v-btn>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -100,6 +111,7 @@ export default {
     return {
       dialog: true,
       tasks: null,
+      continueDialog: false, //Todo選択時の確認モーダルの制御
       newTaskForm: {
         // タスクの追加
         dialog: false,
@@ -150,6 +162,9 @@ export default {
         // this.newTaskForm.message = response.data;
         // this.newTaskForm.snackbar = true;
       }
+    },
+    openContinueDialog: function (taskId) {
+      this.continueDialog = true;
     },
   },
   async mounted() {
