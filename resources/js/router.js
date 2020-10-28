@@ -15,15 +15,15 @@ function isRelease() {
 
 import store from './store';
 
-import index from '@/views/index/Index.vue';
-import preRegister from '@/views/index/PreRegister.vue';
-import register from '@/views/auth/Register.vue';
-import login from '@/views/auth/Login.vue';
-import systemError from '@/views/errors/System.vue';
-import home from '@/views/home/Home.vue';
-import userPage from '@/views/user/UserPage.vue';
-import profileEdit from '@/views/user/ProfileEdit.vue';
-import room from '@/views/room/Room.vue';
+import index from '@/views/Index';
+import preRegister from '@/views/auth/PreRegister';
+import register from '@/views/auth/Register';
+import login from '@/views/auth/Login';
+import systemError from '@/views/errors/System';
+import home from '@/views/Home';
+import userPage from '@/views/user/UserPage';
+import profileEdit from '@/views/user/ProfileEdit';
+import room from '@/views/room/Room';
 
 const router = new VueRouter({
   mode: 'history',
