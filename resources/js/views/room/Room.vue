@@ -30,7 +30,12 @@
       ></ProfileDialog>
 
       <!-- プロジェクトダイアログ -->
-      <ProjectDialog @close="projectDialog = $event" v-if="projectDialog"></ProjectDialog>
+      <!-- <ProjectDialog @close="projectDialog = $event" v-if="projectDialog"></ProjectDialog> -->
+      <ProjectDialog
+        @startStudy="startStudy()"
+        @close="backProjectDialog()"
+        v-if="projectDialog"
+      ></ProjectDialog>
 
       <!-- カルテダイアログ -->
       <KarteDialog
@@ -393,6 +398,23 @@ export default {
       //現在時刻の取得 **ここからはjavascript**
       this.now = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
       console.log(this.now);
+    },
+    /**
+     * プロジェクト選択時にバックボタンが押されたときの制御
+     * ダイアログのクローズと退席処理
+     */
+    backProjectDialog: function () {
+      this.projectDialog = false;
+      this.leaveRoom();
+    },
+
+    /**
+     * 自習開始時の制御
+     * すべてのモーダルをクローズ
+     */
+    startStudy: function () {
+      this.projectDialog = false;
+      console.log('呼ばれてるよ');
     },
   },
 

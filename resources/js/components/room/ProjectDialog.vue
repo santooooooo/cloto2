@@ -103,7 +103,12 @@
       </v-card>
     </v-dialog>
 
-    <TaskDialog :project-id="projectId" @close="taskDialog = $event" v-if="taskDialog"></TaskDialog>
+    <TaskDialog
+      :project-id="projectId"
+      @startStudy="startStudy()"
+      @close="taskDialog = $event"
+      v-if="taskDialog"
+    ></TaskDialog>
   </v-container>
 </template>
 
@@ -144,10 +149,13 @@ export default {
      */
     close: function () {
       //this.dialog = false;
-      this.$emit('close', false);
+      // this.$emit('close', false);
+      this.$emit('close');
       //退席処理追加
     },
-
+    startStudy: function () {
+      this.$emit('startStudy');
+    },
     /**
      * プロジェクトの追加
      */
