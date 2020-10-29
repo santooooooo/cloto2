@@ -1,6 +1,6 @@
 <template>
   <!-- カルテ記入ダイアログ -->
-  <v-dialog persistent scrollable v-model="dialog" width="600">
+  <v-dialog persistent scrollable v-model="dialog" width="1000">
     <v-form ref="karteForm" v-model="karteForm.validation.valid" lazy-validation>
       <v-card class="headline pa-1 grey darken-1 text-center">
         <v-card-text class="pa-1 white--text title whitefont-weight-bold">
@@ -8,12 +8,12 @@
         </v-card-text>
 
         <v-row class="text-center m-1" justify="center">
-          <v-col cols="12" sm="6" margin-bottom="30px">
-            <h6>活動時間</h6>
+          <v-col cols="12" sm="6">
+            <v-card-text class="white--text title whitefont-weight-bold"> 活動時間 </v-card-text>
             <input class="form-control" type="time" v-model="karteForm.activityTime" />
           </v-col>
-          <v-col cols="12" sm="6" margin-bottom="30px">
-            <h6>使用言語</h6>
+          <v-col cols="12" sm="6">
+            <v-card-text class="white--text title whitefont-weight-bold"> 使用言語 </v-card-text>
 
             <v-textarea
               v-model="karteForm.technologies"
@@ -46,7 +46,7 @@
 
         <v-row class="text-center m-1" justify="center">
           <v-col cols="12" sm="6" margin-bottom="30px">
-            <h6>活動内容</h6>
+            <v-card-text class="white--text title whitefont-weight-bold"> 活動内容 </v-card-text>
             <v-textarea
               v-model="karteForm.body"
               :rules="karteForm.validation.bodyRules"
@@ -57,7 +57,7 @@
               background-color="white"
             ></v-textarea>
 
-            <h6>参考文献</h6>
+            <v-card-text class="white--text title whitefont-weight-bold"> 参考文献 </v-card-text>
 
             <v-textarea
               v-model="karteForm.reference"
@@ -68,20 +68,18 @@
               auto-grow
             ></v-textarea>
           </v-col>
-          <v-col cols="12" sm="6" margin-bottom="30px">
-            <v-card height="200" class="m-2 rounded-xl">
+          <v-col cols="12" sm="6">
+            <v-card-text class="white--text title whitefont-weight-bold"> 画像 </v-card-text>
+            <v-card height="230" class="m-1 rounded-xl">
               <image-drop-upload @input="karteForm.image = $event"></image-drop-upload>
-              <!-- <v-btn class="mt-15" color="yellow darken-1">
-              <span class="white--text">画像を選択</span>　
-            </v-btn> -->
             </v-card>
           </v-col>
         </v-row>
 
-        <h6>達成したこと</h6>
+        <v-card-text class="white--text title whitefont-weight-bold"> 達成したこと </v-card-text>
         <v-textarea v-model="karteForm.achieve" solo rounded rows="1" auto-grow></v-textarea>
 
-        <h6>つまづいたこと</h6>
+        <v-card-text class="white--text title whitefont-weight-bold"> 達成したこと </v-card-text>
         <v-textarea v-model="karteForm.trouble" solo rounded rows="1" auto-grow></v-textarea>
 
         <v-row justify="center">

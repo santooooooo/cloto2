@@ -22,12 +22,28 @@
       </v-list-item> -->
     </v-list>
 
-    <v-card v-if="isSitting" class="headline ma-2 pa-3 grey darken-1 text-center">
+    <!-- <v-card v-if="isSitting" class="headline ma-2 pa-3 grey darken-1 text-center">
       <v-card-text class="pa-2 white--text title whitefont-weight-bold"> ex_project </v-card-text>
       <v-card-text class="pa-2 white--text title whitefont-weight-bold"> ex_todo </v-card-text>
       <v-btn color="yellow darken-1" @click="$emit('open-karte-dialog', true)">
         <span class="white--text">カルテ記入</span>
       </v-btn>
+    </v-card> -->
+
+    <v-card v-if="isSitting" class="ma-2 pa-3 grey darken-1 text-center">
+      <v-container>
+        <v-card-text class="pa-1 white--text whitefont-weight-bold"> プロジェクト </v-card-text>
+
+        <v-card class="pa-1"> CLOTO </v-card>
+
+        <v-card-text class="pa-1 white--text whitefont-weight-bold"> タスク </v-card-text>
+
+        <v-card class="pa-1"> ログイン機能の実装 </v-card>
+
+        <v-btn color="mt-5 yellow darken-1" @click="$emit('open-karte-dialog', true)">
+          <span class="white--text">カルテ記入</span>
+        </v-btn>
+      </v-container>
     </v-card>
 
     <div class="pa-2">
