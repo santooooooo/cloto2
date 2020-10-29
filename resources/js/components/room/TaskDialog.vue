@@ -20,7 +20,7 @@
           <v-list class="rounded-lg">
             <v-list-item-group color="success">
               <v-list-item v-for="task in tasks" :key="task.id">
-                <v-list-item-content @click="openContinueDialog(task.id)">
+                <v-list-item-content @click="openContinueDialog(task.id, task.body)">
                   <v-list-item-title v-text="task.body"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
@@ -88,12 +88,29 @@
       </v-card>
     </v-dialog>
     <!-- タスク確定ダイアログ -->
-    <v-dialog persistent v-model="continueDialog" width="600">
-      <v-card center>
-        <v-btn color="green darken-1" text @click="startStudy()"> このタスクで自習を始める </v-btn>
-        <v-btn color="green darken-1" text @click="continueDialog = false">
-          タスクの選択に戻る
-        </v-btn>
+    <v-dialog persistent v-model="continueDialog" width="600" height="600">
+      <v-card class="headline grey lighten-1 text-center">
+        <v-container>
+          <v-row>
+            <v-btn small depressed @click="continueDialog = false" color="error" class="ml-3">
+              <v-icon dark>mdi-arrow-left</v-icon> タスク選択に戻る
+            </v-btn>
+          </v-row>
+
+          <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+            選択されたタスク
+          </v-card-text>
+
+          <v-card class="rounded-lg"> {{ task }} </v-card>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn depressed @click="startStudy()" color="error" class="ml-3 mt-3">
+              自習スタート
+            </v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-container>
       </v-card>
     </v-dialog>
   </v-container>
@@ -110,6 +127,7 @@ export default {
     return {
       dialog: true,
       tasks: null,
+      task: null, //選択されているタスク　これがいるかどうか不明
       continueDialog: false, //Todo選択時の確認モーダルの制御
       newTaskForm: {
         // タスクの追加
@@ -133,6 +151,7 @@ export default {
     startStudy: function () {
       //ドロワーに選択したtask と todoをカードとして表示
       this.$emit('startStudy');
+      this.task = null;
     },
     submitNewTask: async function () {
       if (this.$refs.newTaskForm.validate()) {
@@ -162,8 +181,9 @@ export default {
         // this.newTaskForm.snackbar = true;
       }
     },
-    openContinueDialog: function (taskId) {
+    openContinueDialog: function (taskId, taskBody) {
       this.continueDialog = true;
+      this.task = taskBody;
     },
   },
   async mounted() {
