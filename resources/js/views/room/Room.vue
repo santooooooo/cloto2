@@ -511,7 +511,7 @@ export default {
 
         // 誰かが座っている時
         if (seat.status !== null && seat.status != 'break') {
-          this.putIcon(position.x, position.y, seat.user);
+          this.putIcon(seat.position.x, seat.position.y, seat.user);
 
           // ログインユーザーが座っており，座席が休憩室にある場合
           if (seat.id === this.authUser.seat_id && section.role === 'lounge') {
