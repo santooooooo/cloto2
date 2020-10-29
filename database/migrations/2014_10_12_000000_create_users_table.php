@@ -15,17 +15,15 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();                       // ユーザー名
-            $table->string('email')->unique();                          // メール
-            $table->dateTime('email_verified_at')->nullable();          // メール認証日時
-            $table->string('password');                                 // パスワード
-            $table->string('handlename')->nullable();                   // 表示名
-            $table->string('icon')->nullable();                         // アイコン
-            $table->json('sns')->nullable();                            // SNS
-            $table->string('web')->nullable();                          // Webページ
-            $table->text('introduction')->nullable();                   // 自己紹介
-            $table->foreignId('seat_id')->nullable()->constrained();    // 着席している座席ID
-            $table->foreignId('task_id')->nullable()->constrained();    // 進行中のタスクID
+            $table->string('username')->unique();               // ユーザー名
+            $table->string('email')->unique();                  // メール
+            $table->dateTime('email_verified_at')->nullable();  // メール認証日時
+            $table->string('password');                         // パスワード
+            $table->string('handlename')->nullable();           // 表示名
+            $table->string('icon')->nullable();                 // アイコン
+            $table->json('sns')->nullable();                    // SNS
+            $table->string('web')->nullable();                  // Webページ
+            $table->text('introduction')->nullable();           // 自己紹介
             $table->rememberToken();
             $table->dateTimes();
         });
