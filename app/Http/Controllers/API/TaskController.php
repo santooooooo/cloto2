@@ -72,6 +72,23 @@ class TaskController extends Controller
     }
 
     /**
+     * 進行中タスクの保存
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function start(Request $request)
+    {
+        $result = $this->user->fill($request->all())->save();
+
+        if (empty($result)) {
+            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        return response()->json($result);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

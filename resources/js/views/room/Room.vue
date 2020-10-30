@@ -68,8 +68,8 @@
       <!-- プロジェクトダイアログ -->
       <!-- <ProjectDialog @close="projectDialog = $event" v-if="projectDialog"></ProjectDialog> -->
       <ProjectDialog
-        @startStudy="startStudy()"
-        @close="backProjectDialog()"
+        @start-study="startStudy()"
+        @close="cancelStartStudy()"
         v-if="projectDialog"
       ></ProjectDialog>
 
@@ -443,22 +443,21 @@ export default {
       this.now = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
       console.log(this.now);
     },
-    /**
-     * プロジェクト選択時にバックボタンが押されたときの制御
-     * ダイアログのクローズと退席処理
-     */
-    backProjectDialog: function () {
-      this.projectDialog = false;
-      this.leaveRoom();
-    },
 
     /**
-     * 自習開始時の制御
-     * すべてのモーダルをクローズ
+     * 自習開始
      */
     startStudy: function () {
       this.projectDialog = false;
       console.log('呼ばれてるよ');
+    },
+
+    /**
+     * プロジェクト選択の中断
+     */
+    cancelStartStudy: function () {
+      this.projectDialog = false;
+      this.leaveRoom();
     },
   },
 

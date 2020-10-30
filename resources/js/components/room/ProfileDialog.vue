@@ -6,7 +6,7 @@
     <v-card color="grey darken-1" dark v-else>
       <v-container>
         <v-row justify="end">
-          <v-btn fab x-small depressed color="error" class="mr-4" @click="close()">
+          <v-btn fab x-small depressed color="error" class="mr-4" @click="$emit('close', false)">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
@@ -82,12 +82,6 @@ export default {
       dialog: true,
       user: null,
     };
-  },
-  methods: {
-    close: function () {
-      this.dialog = false;
-      this.$emit('close', false);
-    },
   },
   async mounted() {
     /**
