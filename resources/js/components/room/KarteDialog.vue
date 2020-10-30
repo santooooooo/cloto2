@@ -83,8 +83,8 @@
         <v-textarea v-model="karteForm.trouble" solo rounded rows="1" auto-grow></v-textarea>
 
         <v-row justify="center">
-          <v-dialog v-model="continueDialog" max-width="140" persistent>
-            <v-card center>
+          <v-dialog v-model="continueDialog" width="600" persistent>
+            <!-- <v-card center>
               <v-btn
                 color="green darken-1"
                 text
@@ -99,6 +99,27 @@
                 :to="{ name: 'home' }"
               >
                 終了
+              </v-btn>
+            </v-card> -->
+            <v-card class="headline grey lighten-1 text-center">
+              <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+                続けて自習されますか？
+              </v-card-text>
+              <v-btn
+                color="grey lighten-5"
+                text
+                @click="(continueDialog = false), $emit('open-project-dialog', true)"
+              >
+                はい
+              </v-btn>
+              <!-- <v-btn
+                color="grey lighten-5"
+                text
+                @click="(continueDialog = false), $emit('leave')"
+                :to="{ name: 'home' }"
+              > -->
+              <v-btn color="grey lighten-5" text @click="(continueDialog = false), $emit('leave')">
+                いいえ
               </v-btn>
             </v-card>
           </v-dialog>

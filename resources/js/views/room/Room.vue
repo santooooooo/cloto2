@@ -5,29 +5,7 @@
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
 
-    <v-dialog persistent v-model="leaveRoomDialog" width="600" height="600">
-      <!-- <v-card class="headline grey lighten-1 text-center">
-        <v-container>
-          <v-row>
-            <v-btn small depressed @click="" color="error" class="ml-3">
-              <v-icon dark>mdi-arrow-left</v-icon> タスク選択に戻る
-            </v-btn>
-          </v-row>
-
-          <v-card-text class="pa-2 white--text title whitefont-weight-bold">
-            選択されたタスク
-          </v-card-text>
-
-          <v-card class="rounded-lg"> fkdjkfjdsjfd</v-card>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn depressed @click="" color="error" class="ml-3 mt-3"> 自習スタート </v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-container>
-      </v-card> -->
-
+    <!-- <v-dialog persistent v-model="leaveRoomDialog" width="600">
       <v-card class="headline grey lighten-1 text-center">
         <v-card-text class="pa-2 white--text title whitefont-weight-bold">
           カルテの記入はお済ですか？
@@ -39,12 +17,12 @@
           いいえ
         </v-btn>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
 
     <Drawer
       :room-name="roomData.name"
       :is-sitting="authUser.seat !== null ? true : false"
-      @leave-room="leaveConfirm"
+      @leave-room="leaveRoom"
       @open-project-dialog="projectDialog = $event"
       @open-karte-dialog="karteDialog = $event"
     />
@@ -78,6 +56,7 @@
         :taskId="taskId"
         :taskBody="taskBody"
         @close="karteDialog = $event"
+        @leave="leaveRoom()"
         v-if="karteDialog"
         @open-project-dialog="projectDialog = $event"
       ></KarteDialog>
@@ -357,14 +336,17 @@ export default {
 
       // ロード終了
       this.isLoading = false;
+
+      this.karteDialog = true;
+      console.log(this.karteDialog);
     },
 
     /**
      * 退席ボタンが押されたときの分岐処理
      */
-    leaveConfirm: function () {
-      this.leaveRoomDialog = true; //退席モーダルを表示
-    },
+    // leaveConfirm: function () {
+    //   this.leaveRoomDialog = true; //退席モーダルを表示
+    // },
 
     /**
      * 休憩室への入室
