@@ -21,7 +21,9 @@ import register from '@/views/auth/Register.vue';
 import login from '@/views/auth/Login.vue';
 import systemError from '@/views/errors/System.vue';
 import home from '@/views/home/Home.vue';
-import userPage from '@/views/user/UserPage.vue';
+import mypage from '@/views/user/Mypage';
+import profile from '@/views/user/Profile';
+import karte from '@/views/user/Karte';
 import profileEdit from '@/views/user/ProfileEdit.vue';
 import room from '@/views/room/Room.vue';
 
@@ -69,15 +71,27 @@ const router = new VueRouter({
       name: 'room',
       component: room,
     },
-    {
-      path: '/user/:username',
-      name: 'userPage',
-      component: userPage,
-    },
-    {
-      path: '/user/:username/edit',
-      name: 'profileEdit',
-      component: profileEdit,
+        {
+      path: '/mypage',
+      name: 'mypage',
+      component: mypage,
+      children: [
+        {
+          path: '',
+          name: 'profile',
+          component: profile,
+        },
+        {
+          path: 'edit',
+          name: 'profileEdit',
+          component: profileEdit,
+        },
+        {
+          path: 'karte',
+          name: 'karte',
+          component: karte,
+        },
+      ],
     },
   ],
 });

@@ -1,11 +1,5 @@
 <template>
-
-
-<v-layout>
-    <Drawer  />
-    <v-flex id="main">
-<v-row   no-gutters>
-
+<v-row no-gutters>
    <v-col cols="8" v-if="selectedMyPage===0">
       <!-- ローディングバー -->
     <v-progress-linear indeterminate color="blue" class="mb-0" v-if="!user"></v-progress-linear>
@@ -145,22 +139,10 @@
    </v-card>
   </v-col>
 </v-row>
-</v-flex>
-</v-layout>
-
 </template>
 
 <script>
-
-import Drawer from '@/components/user/Drawer';
 export default {
-
-  components: {
-    Drawer,
-  },
-  props: {
-    userName: String,
-  },
   data() {
     return {
       user: null,
@@ -192,7 +174,7 @@ export default {
     /**
      * ユーザーデータの取得
      */
-    var response = await this.$http.get(this.$endpoint('userShow', [this.userName]));
+    var response = await this.$http.get(this.$endpoint('authUser'));
     this.user = response.data;
 
     if (this.user.sns) {

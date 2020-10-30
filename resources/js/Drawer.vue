@@ -61,7 +61,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item :to="{ name: 'userPage', params: { username: authUser.username } }">
+      <v-list-item :to="{ name: 'mypage' }">
         <v-list-item-icon>
           <v-icon>mdi-account</v-icon>
         </v-list-item-icon>
