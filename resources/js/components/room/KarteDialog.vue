@@ -26,24 +26,6 @@
           </v-col>
         </v-row>
 
-        <!-- <v-card height="200" class="m-2 rounded-xl">
-        <v-btn class="mt-15" color="yellow darken-1">
-          <span class="white--text">画像を選択</span>　
-        </v-btn>
-      </v-card> -->
-
-        <!-- <div class="m-3 p-1"> -->
-
-        <!-- <v-textarea
-              auto-grow
-              rounded
-              filled
-              rows="1"
-              color="black"
-            background-color="white"
-            label="#html #css"
-            ></v-textarea> -->
-
         <v-row class="text-center m-1" justify="center">
           <v-col cols="12" sm="6" margin-bottom="30px">
             <v-card-text class="white--text title whitefont-weight-bold"> 活動内容 </v-card-text>
@@ -83,7 +65,7 @@
         <v-textarea v-model="karteForm.trouble" solo rounded rows="1" auto-grow></v-textarea>
 
         <v-row justify="center">
-          <v-dialog v-model="continueDialog" width="600" persistent>
+          <v-dialog v-model="continueDialog" v-if="this.authUser.seat" width="600" persistent>
             <!-- <v-card center>
               <v-btn
                 color="green darken-1"
@@ -112,12 +94,6 @@
               >
                 はい
               </v-btn>
-              <!-- <v-btn
-                color="grey lighten-5"
-                text
-                @click="(continueDialog = false), $emit('leave')"
-                :to="{ name: 'home' }"
-              > -->
               <v-btn color="grey lighten-5" text @click="(continueDialog = false), $emit('leave')">
                 いいえ
               </v-btn>
@@ -171,6 +147,11 @@ export default {
       },
     };
   },
+  computed: {
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
+  },
   methods: {
     submit: async function () {
       if (this.$refs.karteForm.validate()) {
@@ -195,7 +176,10 @@ export default {
           this.karteForm.loading = false;
 
           this.dialog = false;
-          this.continueDialog = true;
+          if (this.authUser.seat !== null) {
+            //退席ボタン経由のカルテsubmitは確認モーダルは出さない sitting状態のカルテ記入のみ確認
+            this.continueDialog = true;
+          }
         }
 
         // // 結果表示

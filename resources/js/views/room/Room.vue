@@ -5,20 +5,6 @@
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
 
-    <!-- <v-dialog persistent v-model="leaveRoomDialog" width="600">
-      <v-card class="headline grey lighten-1 text-center">
-        <v-card-text class="pa-2 white--text title whitefont-weight-bold">
-          カルテの記入はお済ですか？
-        </v-card-text>
-        <v-btn color="grey lighten-5" text @click="leaveRoom(), (leaveRoomDialog = false)">
-          はい
-        </v-btn>
-        <v-btn color="grey lighten-5" text @click="(karteDialog = true), (leaveRoomDialog = false)">
-          いいえ
-        </v-btn>
-      </v-card>
-    </v-dialog> -->
-
     <Drawer
       :room-name="roomData.name"
       :is-sitting="authUser.seat !== null ? true : false"
@@ -108,7 +94,6 @@ export default {
       profileUserId: null, // プロフィールを表示するユーザーID
       projectDialog: false, // プロジェクトモーダルの制御
       karteDialog: false, // カルテ記入モーダルの制御
-      leaveRoomDialog: false, //退席ボタンが押されたときのモーダル制御
       taskId: 1, // 学習中のタスクID
       taskBody: 'example', // 内容
       now: '00:00:00', // 現在時刻
@@ -340,13 +325,6 @@ export default {
       this.karteDialog = true;
       console.log(this.karteDialog);
     },
-
-    /**
-     * 退席ボタンが押されたときの分岐処理
-     */
-    // leaveConfirm: function () {
-    //   this.leaveRoomDialog = true; //退席モーダルを表示
-    // },
 
     /**
      * 休憩室への入室
