@@ -1,6 +1,7 @@
 <template>
   <!-- カルテ記入ダイアログ -->
-  <v-dialog persistent scrollable v-model="dialog" width="1000">
+  <!-- <v-dialog persistent scrollable v-model="dialog" width="1000"> -->
+  <v-dialog persistent v-model="dialog" width="1000">
     <v-form ref="karteForm" v-model="karteForm.validation.valid" lazy-validation>
       <v-card class="headline pa-1 grey darken-1 text-center">
         <v-card-text class="pa-1 white--text title whitefont-weight-bold">
@@ -28,26 +29,23 @@
 
         <v-row class="text-center m-1" justify="center">
           <v-col cols="12" sm="6" margin-bottom="30px">
-            <v-card-text class="white--text title whitefont-weight-bold"> 活動内容 </v-card-text>
+            <!-- <v-card-text class="white--text title whitefont-weight-bold"> 活動内容 </v-card-text> -->
+            <!-- <v-card-text class="red--text title whitefont-weight-bold">
+              活動内容(必須)
+            </v-card-text> -->
+
+            <v-card-text class="danger--text headline font-weight-bold">
+              活動内容(必須)
+            </v-card-text>
+
             <v-textarea
               v-model="karteForm.body"
               :rules="karteForm.validation.bodyRules"
               rounded
               filled
-              rows="3"
+              rows="8"
               color="black"
               background-color="white"
-            ></v-textarea>
-
-            <v-card-text class="white--text title whitefont-weight-bold"> 参考文献 </v-card-text>
-
-            <v-textarea
-              v-model="karteForm.reference"
-              solo
-              rounded
-              rows="1"
-              label="https://develop.cloto.jp/"
-              auto-grow
             ></v-textarea>
           </v-col>
           <v-col cols="12" sm="6">
@@ -61,8 +59,21 @@
         <v-card-text class="white--text title whitefont-weight-bold"> 達成したこと </v-card-text>
         <v-textarea v-model="karteForm.achieve" solo rounded rows="1" auto-grow></v-textarea>
 
-        <v-card-text class="white--text title whitefont-weight-bold"> 達成したこと </v-card-text>
+        <v-card-text class="white--text title whitefont-weight-bold">
+          できなかったこと
+        </v-card-text>
         <v-textarea v-model="karteForm.trouble" solo rounded rows="1" auto-grow></v-textarea>
+
+        <v-card-text class="white--text title whitefont-weight-bold"> 参考文献 </v-card-text>
+
+        <v-textarea
+          v-model="karteForm.reference"
+          solo
+          rounded
+          rows="1"
+          label="https://develop.cloto.jp/"
+          auto-grow
+        ></v-textarea>
 
         <v-row justify="center">
           <v-dialog v-model="continueDialog" v-if="this.authUser.seat" width="600" persistent>
