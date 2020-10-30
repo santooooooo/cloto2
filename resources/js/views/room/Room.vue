@@ -43,7 +43,6 @@
 
     <Drawer
       :room-name="roomData.name"
-      :is-sitting="authUser.seat !== null ? true : false"
       @leave-room="leaveConfirm"
       @open-project-dialog="projectDialog = $event"
       @open-karte-dialog="karteDialog = $event"
@@ -66,7 +65,6 @@
       ></ProfileDialog>
 
       <!-- プロジェクトダイアログ -->
-      <!-- <ProjectDialog @close="projectDialog = $event" v-if="projectDialog"></ProjectDialog> -->
       <ProjectDialog
         @start-study="startStudy()"
         @close="cancelStartStudy()"
@@ -75,8 +73,6 @@
 
       <!-- カルテダイアログ -->
       <KarteDialog
-        :taskId="taskId"
-        :taskBody="taskBody"
         @close="karteDialog = $event"
         v-if="karteDialog"
         @open-project-dialog="projectDialog = $event"
@@ -130,8 +126,6 @@ export default {
       projectDialog: false, // プロジェクトモーダルの制御
       karteDialog: false, // カルテ記入モーダルの制御
       leaveRoomDialog: false, //退席ボタンが押されたときのモーダル制御
-      taskId: 1, // 学習中のタスクID
-      taskBody: 'example', // 内容
       now: '00:00:00', // 現在時刻
     };
   },
@@ -447,9 +441,12 @@ export default {
     /**
      * 自習開始
      */
-    startStudy: function () {
+    startStudy: async function () {
       this.projectDialog = false;
       console.log('呼ばれてるよ');
+
+      // ユーザーデータの同期
+      await this.$store.dispatch('auth/syncAuthUser');
     },
 
     /**

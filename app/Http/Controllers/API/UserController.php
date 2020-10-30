@@ -57,11 +57,15 @@ class UserController extends Controller
      */
     public function auth()
     {
-        if (!empty($this->auth_user)) {
-            return response()->json($this->auth_user->load('seat.section'));
+        if (empty($this->auth_user)) {
+            return response(null);
         }
 
-        return response(null);
+        return response()->json($this->auth_user->load(['seat.section', 'tasks' => function ($query) {
+            // 進行中のタスク，プロジェクトのみを取得
+            $query->where('id', $this->auth_user->task_id);
+            $query->with('project');
+        }]));
     }
 
     /**
