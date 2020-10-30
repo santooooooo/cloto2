@@ -31,6 +31,7 @@ const projectIndex = '/api/project';
 const projectPost = '/api/project/post';
 const taskIndex = '/api/task/index/' + replaceChar[0];
 const taskPost = '/api/task/post';
+const taskStart = '/api/task/start';
 const karteIndexFromUser = '/api/karte/index_from_user/' + replaceChar[0];
 const karteIndexFromTask = '/api/karte/index_from_task/' + replaceChar[0];
 const kartePost = '/api/karte/post';
@@ -127,6 +128,10 @@ export function getEndpoint(name, params) {
 
     case 'taskPost':
       endpoint = taskPost;
+      break;
+
+    case 'taskStart':
+      endpoint = taskStart;
       break;
 
     case 'karteIndexFromUser':

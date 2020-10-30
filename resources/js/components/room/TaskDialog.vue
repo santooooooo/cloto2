@@ -8,7 +8,7 @@
       <v-card class="headline grey darken-2 text-center" v-else>
         <v-container>
           <v-row>
-            <v-btn small depressed @click="close()" color="error" class="ml-3">
+            <v-btn small depressed @click="$emit('close', false)" color="error" class="ml-3">
               <v-icon dark>mdi-arrow-left</v-icon> プロジェクト選択に戻る
             </v-btn>
           </v-row>
@@ -20,7 +20,7 @@
           <v-list class="rounded-lg">
             <v-list-item-group color="success">
               <v-list-item v-for="task in tasks" :key="task.id">
-                <v-list-item-content @click="openContinueDialog(task.id, task.body)">
+                <v-list-item-content @click="openConfirmDialog(task)">
                   <v-list-item-title v-text="task.body"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
@@ -87,12 +87,13 @@
         </v-container>
       </v-card>
     </v-dialog>
+
     <!-- タスク確定ダイアログ -->
-    <v-dialog persistent v-model="continueDialog" width="600" height="600">
+    <v-dialog persistent v-model="confirm.dialog" width="600" height="600">
       <v-card class="headline grey lighten-1 text-center">
         <v-container>
           <v-row>
-            <v-btn small depressed @click="continueDialog = false" color="error" class="ml-3">
+            <v-btn small depressed @click="confirm.dialog = false" color="error" class="ml-3">
               <v-icon dark>mdi-arrow-left</v-icon> タスク選択に戻る
             </v-btn>
           </v-row>
@@ -101,11 +102,17 @@
             選択されたタスク
           </v-card-text>
 
-          <v-card class="rounded-lg"> {{ task }} </v-card>
+          <v-card class="rounded-lg"> {{ chosenTask.body }} </v-card>
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn depressed @click="startStudy()" color="error" class="ml-3 mt-3">
+            <v-btn
+              depressed
+              @click="startStudy()"
+              :loading="confirm.loading"
+              color="error"
+              class="ml-3 mt-3"
+            >
               自習スタート
             </v-btn>
             <v-spacer></v-spacer>
@@ -127,8 +134,11 @@ export default {
     return {
       dialog: true,
       tasks: null,
-      task: null, //選択されているタスク　これがいるかどうか不明
-      continueDialog: false, //Todo選択時の確認モーダルの制御
+      chosenTask: {}, // 選択されたタスク
+      confirm: {
+        dialog: false, // 自習開始確認ダイアログ
+        loading: false,
+      },
       newTaskForm: {
         // タスクの追加
         dialog: false,
@@ -145,14 +155,40 @@ export default {
     };
   },
   methods: {
-    close: function () {
-      this.$emit('close', false);
+    /**
+     * 自習開始確認ダイアログのオープン
+     *
+     * @param Object task 選択されたタスク
+     */
+    openConfirmDialog: function (task) {
+      this.chosenTask = task;
+      this.confirm.dialog = true;
     },
-    startStudy: function () {
-      //ドロワーに選択したtask と todoをカードとして表示
-      this.$emit('startStudy');
-      this.task = null;
+
+    /**
+     * 自習開始
+     */
+    startStudy: async function () {
+      this.confirm.loading = true;
+
+      var input = {
+        task_id: this.chosenTask.id,
+      };
+
+      var response = await this.$http.post(this.$endpoint('taskStart'), input);
+
+      if (response.status === OK) {
+        this.$emit('start-study');
+      }
+      // 結果表示
+      // this.newTaskForm.loading = false;
+      // this.newTaskForm.message = response.data;
+      // this.newTaskForm.snackbar = true;
     },
+
+    /**
+     * タスクの追加
+     */
     submitNewTask: async function () {
       if (this.$refs.newTaskForm.validate()) {
         this.newTaskForm.loading = true;
@@ -181,11 +217,8 @@ export default {
         // this.newTaskForm.snackbar = true;
       }
     },
-    openContinueDialog: function (taskId, taskBody) {
-      this.continueDialog = true;
-      this.task = taskBody;
-    },
   },
+
   async mounted() {
     var response = await this.$http.get(this.$endpoint('taskIndex', [this.projectId]));
     this.tasks = response.data;

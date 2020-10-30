@@ -72,7 +72,8 @@ class SeatController extends RoomController
 
         // ユーザーと座席を紐付け解除
         $this->user->seat()->dissociate();
-        $this->user->save();
+        // 進行中のタスクを初期化
+        $this->user->fill(['task_id' => null])->save();
 
         // 更新後の部屋データ
         return self::show($room_id);

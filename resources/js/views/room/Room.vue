@@ -7,8 +7,7 @@
 
     <Drawer
       :room-name="roomData.name"
-      :is-sitting="authUser.seat !== null ? true : false"
-      @leave-room="leaveRoom"
+      @leave-room="leaveRoom()"
       @open-project-dialog="projectDialog = $event"
       @open-karte-dialog="karteDialog = $event"
     />
@@ -30,17 +29,14 @@
       ></ProfileDialog>
 
       <!-- プロジェクトダイアログ -->
-      <!-- <ProjectDialog @close="projectDialog = $event" v-if="projectDialog"></ProjectDialog> -->
       <ProjectDialog
-        @startStudy="startStudy()"
-        @close="backProjectDialog()"
+        @start-study="startStudy()"
+        @close="cancelStartStudy()"
         v-if="projectDialog"
       ></ProjectDialog>
 
       <!-- カルテダイアログ -->
       <KarteDialog
-        :taskId="taskId"
-        :taskBody="taskBody"
         @close="karteDialog = $event"
         @leave="leaveRoom()"
         v-if="karteDialog"
@@ -94,8 +90,6 @@ export default {
       profileUserId: null, // プロフィールを表示するユーザーID
       projectDialog: false, // プロジェクトモーダルの制御
       karteDialog: false, // カルテ記入モーダルの制御
-      taskId: 1, // 学習中のタスクID
-      taskBody: 'example', // 内容
       now: '00:00:00', // 現在時刻
     };
   },
@@ -403,22 +397,24 @@ export default {
       this.now = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
       console.log(this.now);
     },
+
     /**
-     * プロジェクト選択時にバックボタンが押されたときの制御
-     * ダイアログのクローズと退席処理
+     * 自習開始
      */
-    backProjectDialog: function () {
+    startStudy: async function () {
       this.projectDialog = false;
-      this.leaveRoom();
+      console.log('呼ばれてるよ');
+
+      // ユーザーデータの同期
+      await this.$store.dispatch('auth/syncAuthUser');
     },
 
     /**
-     * 自習開始時の制御
-     * すべてのモーダルをクローズ
+     * プロジェクト選択の中断
      */
-    startStudy: function () {
+    cancelStartStudy: function () {
       this.projectDialog = false;
-      console.log('呼ばれてるよ');
+      this.leaveRoom();
     },
   },
 
@@ -471,7 +467,7 @@ export default {
 
         // 誰かが座っている時
         if (seat.status !== null && seat.status != 'break') {
-          this.putIcon(position.x, position.y, seat.user);
+          this.putIcon(seat.position.x, seat.position.y, seat.user);
 
           // ログインユーザーが座っており，座席が休憩室にある場合
           if (seat.id === this.authUser.seat_id && section.role === 'lounge') {

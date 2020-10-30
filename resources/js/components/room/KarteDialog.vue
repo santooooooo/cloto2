@@ -5,7 +5,7 @@
     <v-form ref="karteForm" v-model="karteForm.validation.valid" lazy-validation>
       <v-card class="headline pa-1 grey darken-1 text-center">
         <v-card-text class="pa-1 white--text title whitefont-weight-bold">
-          {{ taskBody }}
+          {{ authUser.tasks[0].body }}
         </v-card-text>
 
         <v-row class="text-center m-1" justify="center">
@@ -133,10 +133,6 @@
 import { OK } from '@/consts/status';
 
 export default {
-  props: {
-    taskId: Number,
-    taskBody: String,
-  },
   data() {
     return {
       dialog: true,
@@ -169,7 +165,7 @@ export default {
         this.karteForm.loading = true;
 
         var input = new FormData();
-        input.append('taskId', this.taskId);
+        input.append('taskId', this.authUser.tasks[0].id);
         input.append('body', this.karteForm.body);
         input.append('achieve', this.karteForm.achieve);
         input.append('trouble', this.karteForm.trouble);

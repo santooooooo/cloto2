@@ -13,7 +13,7 @@
       <v-card class="headline grey darken-2 text-center" v-else>
         <v-container>
           <v-row>
-            <v-btn small depressed @click="close()" color="error" class="ml-3">
+            <v-btn small depressed @click="$emit('close')" color="error" class="ml-3">
               <v-icon dark>mdi-arrow-left</v-icon> 自習室に戻る
             </v-btn>
           </v-row>
@@ -105,7 +105,7 @@
 
     <TaskDialog
       :project-id="projectId"
-      @startStudy="startStudy()"
+      @start-study="$emit('start-study')"
       @close="taskDialog = $event"
       v-if="taskDialog"
     ></TaskDialog>
@@ -144,18 +144,6 @@ export default {
     };
   },
   methods: {
-    /**
-     * ダイアログのクローズ
-     */
-    close: function () {
-      //this.dialog = false;
-      // this.$emit('close', false);
-      this.$emit('close');
-      //退席処理追加
-    },
-    startStudy: function () {
-      this.$emit('startStudy');
-    },
     /**
      * プロジェクトの追加
      */
@@ -198,6 +186,7 @@ export default {
       this.taskDialog = true;
     },
   },
+
   async mounted() {
     var response = await this.$http.get(this.$endpoint('projectIndex'));
     this.projects = response.data;
