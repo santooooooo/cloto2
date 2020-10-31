@@ -18,13 +18,6 @@
         <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
       </v-row>
 
-      <v-card class="headline pa-1 grey darken-1 text-center">
-        <v-card-text class="pa-1 white--text headline font-weight-bold">
-          karteDialog:{{ karteDialog }} projectDialog: {{ projectDialog }} confirmDialog:
-          {{ confirmDialog }}
-        </v-card-text>
-      </v-card>
-
       <!-- 休憩室 -->
       <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
 

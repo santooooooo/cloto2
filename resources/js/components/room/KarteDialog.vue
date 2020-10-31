@@ -182,9 +182,6 @@ export default {
           this.continueDialog = true;
         }
 
-        console.log(this.confirm);
-        console.log(this.continueDialog);
-
         // // 結果表示
         // // this.karteForm.loading = false;
         // // this.karteForm.message = response.data;
