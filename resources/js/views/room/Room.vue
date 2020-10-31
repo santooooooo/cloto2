@@ -18,12 +18,6 @@
         <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
       </v-row>
 
-      <v-card class="headline pa-1 grey darken-1 text-center">
-        <v-card-text class="pa-1 white--text headline font-weight-bold">
-          karteDialog:{{ karteDialog }} projectDialog: {{ projectDialog }}
-        </v-card-text>
-      </v-card>
-
       <!-- 休憩室 -->
       <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
 
@@ -43,11 +37,13 @@
 
       <!-- カルテダイアログ -->
       <KarteDialog
+        :confirm="confirmDialog"
         @close="karteDialog = $event"
         @leave="leaveRoom()"
         v-if="karteDialog"
         @open-project-dialog="projectDialog = $event"
         @open-karte-dialog="karteDialog = $event"
+        @continue-dialog="confirmDialog = $event"
       ></KarteDialog>
 
       <!-- エラーメッセージ -->
@@ -97,6 +93,7 @@ export default {
       profileUserId: null, // プロフィールを表示するユーザーID
       projectDialog: false, // プロジェクトモーダルの制御
       karteDialog: false, // カルテ記入モーダルの制御
+      confirmDialog: true, //falseのときカルテ記入後退席 trueの時自習継続するかのモーダル表示
       now: '00:00:00', // 現在時刻
     };
   },
@@ -329,6 +326,7 @@ export default {
      */
     leaveKarte: function () {
       this.karteDialog = true;
+      this.confirmDialog = false; //退席の意思があるから自習継続の確認不要
     },
 
     /**
