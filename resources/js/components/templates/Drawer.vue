@@ -4,24 +4,22 @@
       <v-list>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title class="text-h5">マイページ</v-list-item-title>
+            <v-list-item-title class="text-h5">ページタイトル</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
 
       <v-list nav dense>
         <v-list-item-group color="#f6bf00">
-          <v-list-item class="mb-4" :to="{ name: 'mypage' }">
+          <v-list-item class="mb-4" :to="{ name: 'index' }">
             <v-list-item-content>
-              <v-list-item-title class="text-body-1 font-weight-bold"
-                >プロフィール</v-list-item-title
-              >
+              <v-list-item-title class="text-body-1 font-weight-bold">サンプル</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item class="mb-4" :to="{ name: 'karte' }">
+          <v-list-item class="mb-4" :to="{ name: 'index' }">
             <v-list-item-content>
-              <v-list-item-title class="text-body-1 font-weight-bold">カルテ</v-list-item-title>
+              <v-list-item-title class="text-body-1 font-weight-bold">サンプル</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
