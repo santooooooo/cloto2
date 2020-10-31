@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Drawer from '@/components/user/Drawer';
+import Drawer from '@/components/mypage/Drawer';
 
 export default {
   head: {

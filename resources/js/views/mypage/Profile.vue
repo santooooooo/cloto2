@@ -1,9 +1,9 @@
 <template>
-  <div class="profile-edit__container card">
+  <div class="card">
     <!-- アイコン表示 -->
-    <div class="profile-edit__icon">
+    <div>
       <img
-        :src="$storage('icon') + $store.getters['auth/user'].icon"
+        :src="$storage('icon') + authUser.icon"
         class="rounded-circle"
         width="100"
         height="100"
@@ -54,17 +54,6 @@
         id="handlename"
         v-model="profileUpdateForm.handlename"
       />
-    </div>
-    <!-- ユーザー名 -->
-    <div class="form-group">
-      <label for="username">ユーザー名</label>
-      <input type="text" class="form-control" name="username" id="username" v-model="username" />
-    </div>
-
-    <!-- メールアドレス -->
-    <div class="form-group">
-      <label for="email">メールアドレス</label>
-      <input type="text" class="form-control" name="email" id="email" v-model="email" />
     </div>
 
     <!-- Twitter -->
@@ -156,9 +145,7 @@
     <div class="profile-edit__button row">
       <div class="buttonSet mx-auto">
         <button type="button" class="btn btn-primary btn-sm" @click="submit()">更新</button>
-        <router-link
-          class="btn btn-secondary btn-sm btn-danger"
-          :to="{ name: 'mypage' }"
+        <router-link class="btn btn-secondary btn-sm btn-danger" :to="{ name: 'mypage' }"
           >戻る</router-link
         >
       </div>
@@ -180,15 +167,15 @@ export default {
   data() {
     return {
       profileUpdateForm: {
-        username: this.$store.getters['auth/user'].username,
-        email: this.$store.getters['auth/user'].email,
-        handlename: this.$store.getters['auth/user'].handlename,
+        username: '',
+        email: '',
+        handlename: '',
         icon: '',
-        twitter: this.$store.getters['auth/user'].sns.twitter,
-        github: this.$store.getters['auth/user'].sns.github,
-        qiita: this.$store.getters['auth/user'].sns.qiita,
-        web: this.$store.getters['auth/user'].web,
-        introduction: this.$store.getters['auth/user'].introduction,
+        twitter: '',
+        github: '',
+        qiita: '',
+        web: '',
+        introduction: '',
         loading: false,
         validation: {
           valid: false,
@@ -197,6 +184,13 @@ export default {
       },
     };
   },
+
+  computed: {
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
+  },
+
   methods: {
     submit: async function () {
       // if (this.$refs.karteForm.validate()) {
@@ -222,7 +216,7 @@ export default {
 
         this.$router.push({
           name: 'userPage',
-          params: { username: this.$store.getters['auth/user'].username },
+          params: { username: this.authUser.username },
         });
 
         // フォームの初期化
@@ -240,36 +234,9 @@ export default {
       // }
     },
   },
+
+  mounted() {
+    this.profileUpdateForm = this.authUser;
+  },
 };
 </script>
-
-<style lang="scss" scoped>
-.profile-edit {
-  &__container {
-    width: 60%;
-    margin: 2em auto;
-    padding: 1em 10em;
-    border: none;
-  }
-
-  &__icon {
-    margin: 1em auto;
-  }
-
-  &__button {
-    margin: 2em 0;
-
-    div {
-      margin: 0 auto;
-
-      input {
-        margin-right: 1em;
-      }
-
-      a {
-        margin-left: 1em;
-      }
-    }
-  }
-}
-</style>
