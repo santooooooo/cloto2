@@ -1,10 +1,10 @@
 <template>
   <!-- カルテ記入ダイアログ -->
   <!-- <v-dialog persistent scrollable v-model="dialog" width="1000"> -->
-  <v-dialog persistent v-model="dialog" width="1000">
+  <v-dialog persistent v-model="dialog" v-if="authUser.tasks[0]" width="1000">
     <v-form ref="karteForm" v-model="karteForm.validation.valid" lazy-validation>
       <v-card class="headline pa-1 grey darken-1 text-center">
-        <v-card-text class="pa-1 white--text title whitefont-weight-bold">
+        <v-card-text class="pa-1 white--text headline font-weight-bold">
           {{ authUser.tasks[0].body }}
         </v-card-text>
 
@@ -34,8 +34,8 @@
               活動内容(必須)
             </v-card-text> -->
 
-            <v-card-text class="danger--text headline font-weight-bold">
-              活動内容(必須)
+            <v-card-text class="white--text headline font-weight-bold">
+              活動内容<span class="red--text">※</span>
             </v-card-text>
 
             <v-textarea
@@ -101,11 +101,19 @@
               <v-btn
                 color="grey lighten-5"
                 text
-                @click="(continueDialog = false), $emit('open-project-dialog', true)"
+                @click="
+                  (continueDialog = false),
+                    $emit('open-project-dialog', true),
+                    $emit('close', false)
+                "
               >
                 はい
               </v-btn>
-              <v-btn color="grey lighten-5" text @click="(continueDialog = false), $emit('leave')">
+              <v-btn
+                color="grey lighten-5"
+                text
+                @click="(continueDialog = false), $emit('leave'), $emit('close', false)"
+              >
                 いいえ
               </v-btn>
             </v-card>
