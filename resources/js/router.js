@@ -72,11 +72,11 @@ const router = new VueRouter({
       component: room,
     },
     {
-      path: '/mypage',
+      path: '/user',
       component: user,
       children: [
         {
-          path: '',
+          path: 'mypage',
           name: 'mypage',
           component: mypage,
         },

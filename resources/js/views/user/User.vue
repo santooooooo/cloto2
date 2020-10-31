@@ -1,11 +1,10 @@
 <template>
   <v-layout>
-      <Drawer />
+    <Drawer />
 
-      <v-flex>
-        <router-view />
-        <!-- <Profile :userName="$route.params.username"></Profile> -->
-      </v-flex>
+    <v-flex>
+      <router-view />
+    </v-flex>
   </v-layout>
 </template>
 
@@ -25,5 +24,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

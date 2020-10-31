@@ -1,164 +1,159 @@
 <template>
-      <!-- ローディングバー -->
-    <v-progress-linear indeterminate color="blue" class="mb-0" v-if="!user"></v-progress-linear>
-    <!-- プロフィール欄 -->
-    <div class="profile__content card" v-else>
-  
-        <!-- アイコンとユーザー名 -->
-        <div class="profile__user">
-          <img
-            :src="$storage('icon') + user.icon"
-            class="rounded-circle"
-            width="100"
-            height="100"
-          />
-          <!-- <p class="profile__user--handlename">{{ user.handlename }}</p>
+  <!-- ローディングバー -->
+  <v-progress-linear indeterminate color="blue" class="mb-0" v-if="!user"></v-progress-linear>
+  <!-- プロフィール欄 -->
+  <div class="profile__content card" v-else>
+    <!-- アイコンとユーザー名 -->
+    <div class="profile__user">
+      <img :src="$storage('icon') + user.icon" class="rounded-circle" width="100" height="100" />
+      <!-- <p class="profile__user--handlename">{{ user.handlename }}</p>
           <p class="profile__user--username">{{ '@' + user.username }}</p> -->
+    </div>
+
+    <!-- アカウント名 -->
+    <div class="form-group">
+      <label for="handlename">アカウント名</label>
+      <input
+        type="text"
+        class="form-control"
+        name="handlename"
+        id="handlename"
+        placeholder="user.handlename"
+        readonly
+      />{{ user.handlename }}
+    </div>
+
+    <!-- ユーザー名 -->
+    <div class="form-group">
+      <label for="username">ユーザー名</label>
+      <input
+        type="text"
+        class="form-control"
+        name="username"
+        id="username"
+        placeholder="aaa"
+        readonly
+      />
+    </div>
+
+    <!-- メールアドレス -->
+    <div class="form-group">
+      <label for="email">メールアドレス</label>
+      <input
+        type="text"
+        class="form-control"
+        name="email"
+        id="email"
+        placeholder="aaa@gmail.com"
+        readonly
+      />
+    </div>
+
+    <!-- Twitter -->
+    <label class="sr-only" for="twitter">Twitter</label>
+    <div class="input-group mb-2 mr-sm-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <i class="fab fa-twitter"></i>
         </div>
+      </div>
+      <input
+        type="text"
+        class="form-control"
+        name="twitter"
+        id="twitter"
+        placeholder="CLOTO_JP"
+        readonly
+      />
+    </div>
 
-      <!-- アカウント名 -->
-        <div class="form-group">
-          <label for="handlename">アカウント名</label>
-          <input
-            type="text"
-            class="form-control"
-            name="handlename"
-            id="handlename"
-            placeholder=  user.handlename
-            readonly
-          />{{ user.handlename }}
+    <!-- GitHub -->
+    <label class="sr-only" for="github">GitHub</label>
+    <div class="input-group mb-2 mr-sm-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <i class="fab fa-github"></i>
         </div>
+      </div>
+      <input
+        type="text"
+        class="form-control"
+        name="github"
+        id="github"
+        placeholder="CLOTO_JP"
+        readonly
+      />
+    </div>
 
-        <!-- ユーザー名 -->
-        <div class="form-group">
-          <label for="username">ユーザー名</label>
-          <input type="text" class="form-control" name="username" id="username"  placeholder="aaa" readonly/>
+    <!-- Qiita -->
+    <label class="sr-only" for="qiita">Qiita</label>
+    <div class="input-group mb-2 mr-sm-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <i class="fa fa-search"></i>
         </div>
+      </div>
+      <input
+        type="text"
+        class="form-control"
+        name="qiita"
+        id="qiita"
+        placeholder="CLOTO_JP"
+        readonly
+      />
+    </div>
 
-
- 
-        <!-- メールアドレス -->
-        <div class="form-group">
-          <label for="email">メールアドレス</label>
-          <input type="text" class="form-control" name="email" id="email" placeholder="aaa@gmail.com" readonly />
+    <!-- ホームページ -->
+    <label class="sr-only" for="web">Webサイト</label>
+    <div class="input-group mb-2 mr-sm-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <i class="fas fa-blog"></i>
         </div>
+      </div>
+      <input
+        type="text"
+        class="form-control"
+        name="web"
+        id="web"
+        placeholder="https://cloto.jp"
+        readonly
+      />
+    </div>
 
+    <!-- 自己紹介 -->
+    <div class="form-group">
+      <label for="introduction">自己紹介</label>
+      <textarea
+        class="form-control"
+        name="introduction"
+        id="introduction"
+        rows="4"
+        cols="40"
+        readonly
+        >{{ user.introduction }}</textarea
+      >
+    </div>
 
+    <div class="profile__introduction" v-if="user.introduction">
+      <!-- <p>{{ user.introduction }}</p> -->
 
-        <!-- Twitter -->
-        <label class="sr-only" for="twitter">Twitter</label>
-        <div class="input-group mb-2 mr-sm-2">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <i class="fab fa-twitter"></i>
-            </div>
-          </div>
-          <input
-            type="text"
-            class="form-control"
-            name="twitter"
-            id="twitter"
-            placeholder="CLOTO_JP"
-            readonly
-          />
-        </div>
+      <div class="profile__button">
+        <!-- マイページの場合 -->
+        <router-link
+          class="btn btn-cloto-primary"
+          :to="{
+            name: 'profileEdit',
+            params: { username: $store.getters['auth/user'].username },
+          }"
+          v-if="user.id == $store.getters['auth/user'].id"
+          >編集する</router-link
+        >
+      </div>
+    </div>
 
-
-        <!-- GitHub -->
-        <label class="sr-only" for="github">GitHub</label>
-        <div class="input-group mb-2 mr-sm-2">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <i class="fab fa-github"></i>
-            </div>
-          </div>
-          <input
-            type="text"
-            class="form-control"
-            name="github"
-            id="github"
-            placeholder="CLOTO_JP"
-            readonly
-          />
-        </div>
-
-
-
-        <!-- Qiita -->
-        <label class="sr-only" for="qiita">Qiita</label>
-        <div class="input-group mb-2 mr-sm-2">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <i class="fa fa-search"></i>
-            </div>
-          </div>
-          <input
-            type="text"
-            class="form-control"
-            name="qiita"
-            id="qiita"
-            placeholder="CLOTO_JP"
-            readonly
-          />
-        </div>
-
-
-
-
-            <!-- ホームページ -->
-        <label class="sr-only" for="web">Webサイト</label>
-        <div class="input-group mb-2 mr-sm-2">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <i class="fas fa-blog"></i>
-            </div>
-          </div>
-          <input
-            type="text"
-            class="form-control"
-            name="web"
-            id="web"
-            placeholder="https://cloto.jp"
-            readonly
-          />
-        </div>
-
-
-        <!-- 自己紹介 -->
-        <div class="form-group">
-          <label for="introduction">自己紹介</label>
-          <textarea
-            class="form-control"
-            name="introduction"
-            id="introduction"
-            rows="4"
-            cols="40"
-            readonly
-          >{{ user.introduction }}</textarea>
-        </div>
-
-
-
-        
-          <div class="profile__introduction" v-if="user.introduction">
-          <!-- <p>{{ user.introduction }}</p> -->
-
-              <div class="profile__button">
-                <!-- マイページの場合 -->
-                <router-link
-                  class="btn btn-cloto-primary"
-                  :to="{
-                    name: 'profileEdit',
-                    params: { username: $store.getters['auth/user'].username },
-                  }"
-                  v-if="user.id == $store.getters['auth/user'].id"
-                  >編集する</router-link
-                >
-              </div>
-          </div>
-    
-          <!-- ボタン類 -->
-          <!-- <div class="profile__sns-container" v-if="sns || user.web">
+    <!-- ボタン類 -->
+    <!-- <div class="profile__sns-container" v-if="sns || user.web">
             <a
               class="profile__sns--twitter"
               :href="'https://twitter.com/' + sns.twitter"
@@ -187,7 +182,7 @@
               <i class="fas fa-link fa-2x"></i>
             </a>
           </div> -->
-   </div>
+  </div>
 </template>
 
 <script>
@@ -195,45 +190,28 @@ export default {
   data() {
     return {
       user: null,
-      sns: null,
     };
   },
 
- 
   async mounted() {
     /**
      * ユーザーデータの取得
      */
     var response = await this.$http.get(this.$endpoint('authUser'));
     this.user = response.data;
-
-    if (this.user.sns) {
-      this.sns = JSON.parse(this.user.sns);
-    }
   },
 
-
- methods: {
-
-
-   profileDetail:function(){
-
-   },
-   KarteDetail:function(){
-
-   },
-
- }
+  methods: {
+    profileDetail: function () {},
+    KarteDetail: function () {},
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '~/_variables';
 
-
-
 .profile {
-
   &__content {
     width: 60%;
     margin: 2em auto;
@@ -242,7 +220,7 @@ export default {
   }
 
   &__user {
-   margin: 1em auto;
+    margin: 1em auto;
     &--handlename {
       text-align: center;
       margin-top: 1em;
@@ -317,6 +295,5 @@ export default {
   //     }
   //   }
   // }
-
 }
 </style>
