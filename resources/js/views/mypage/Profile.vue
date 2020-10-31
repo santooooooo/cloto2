@@ -214,10 +214,7 @@ export default {
         // ユーザーデータの同期
         await this.$store.dispatch('auth/syncAuthUser');
 
-        this.$router.push({
-          name: 'userPage',
-          params: { username: this.authUser.username },
-        });
+        this.profileUpdateForm = { ...this.authUser };
 
         // フォームの初期化
         // this.$refs.karteForm.reset();
@@ -236,7 +233,7 @@ export default {
   },
 
   mounted() {
-    this.profileUpdateForm = this.authUser;
+    this.profileUpdateForm = { ...this.authUser };
   },
 };
 </script>

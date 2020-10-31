@@ -120,7 +120,7 @@ class UserController extends Controller
         $introduction = $request->introduction ?? '';
 
         // アイコンの処理
-        if (!empty($request->icon)) {
+        if ($request->icon != $this->auth_user->icon) {
             // 削除処理
             if ($this->auth_user->icon != 'default.jpg') {
                 // 初期アイコン以外の場合には登録中のアイコンを削除
@@ -133,7 +133,7 @@ class UserController extends Controller
 
             $icon = $savename;
         } else {
-            $icon = 'default.jpg';
+            $icon = $this->auth_user->icon;
         }
 
 
