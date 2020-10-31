@@ -76,24 +76,8 @@
         ></v-textarea>
 
         <v-row justify="center">
-          <v-dialog v-model="continueDialog" v-if="this.authUser.seat" width="600" persistent>
-            <!-- <v-card center>
-              <v-btn
-                color="green darken-1"
-                text
-                @click="(continueDialog = false), $emit('open-project-dialog', true)"
-              >
-                続行
-              </v-btn>
-              <v-btn
-                color="green darken-1"
-                text
-                @click="continueDialog = false"
-                :to="{ name: 'home' }"
-              >
-                終了
-              </v-btn>
-            </v-card> -->
+          <v-dialog v-model="continueDialog" v-if="confirm" width="600" persistent>
+            <!-- <v-dialog v-model="continueDialog" width="600" persistent> -->
             <v-card class="headline grey lighten-1 text-center">
               <v-card-text class="pa-2 white--text title whitefont-weight-bold">
                 続けて自習されますか？
@@ -101,19 +85,11 @@
               <v-btn
                 color="grey lighten-5"
                 text
-                @click="
-                  (continueDialog = false),
-                    $emit('open-project-dialog', true),
-                    $emit('close', false)
-                "
+                @click="$emit('open-project-dialog', true), $emit('close', false)"
               >
                 はい
               </v-btn>
-              <v-btn
-                color="grey lighten-5"
-                text
-                @click="(continueDialog = false), $emit('leave'), $emit('close', false)"
-              >
+              <v-btn color="grey lighten-5" text @click="$emit('leave'), $emit('close', false)">
                 いいえ
               </v-btn>
             </v-card>
@@ -141,10 +117,13 @@
 import { OK } from '@/consts/status';
 
 export default {
+  props: {
+    confirm: Boolean, //退席するか自習を続けるかの確認モーダルの制御
+  },
   data() {
     return {
       dialog: true,
-      continueDialog: false,
+      continueDialog: false, //continueDialog confirm両方trueの場合のみ継続確認モーダルを表示
       karteForm: {
         dialog: false,
         body: '', // やったこと
@@ -191,11 +170,20 @@ export default {
           this.karteForm.loading = false;
 
           this.dialog = false;
-          if (this.authUser.seat !== null) {
-            //退席ボタン経由のカルテsubmitは確認モーダルは出さない sitting状態のカルテ記入のみ確認
-            this.continueDialog = true;
-          }
         }
+
+        if (!this.confirm) {
+          //確認モーダルが不要の場合
+          this.$emit('leave');
+          this.$emit('close');
+          this.$emit('continue-dialog', true); //初期化
+        } else {
+          //確認モーダルが必要なとき
+          this.continueDialog = true;
+        }
+
+        console.log(this.confirm);
+        console.log(this.continueDialog);
 
         // // 結果表示
         // // this.karteForm.loading = false;
