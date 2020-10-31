@@ -21,7 +21,9 @@ import register from '@/views/auth/Register';
 import login from '@/views/auth/Login';
 import systemError from '@/views/errors/System';
 import home from '@/views/Home';
-import userPage from '@/views/user/UserPage';
+import user from '@/views/user/User';
+import mypage from '@/views/user/Mypage';
+import karte from '@/views/user/Karte';
 import profileEdit from '@/views/user/ProfileEdit';
 import room from '@/views/room/Room';
 
@@ -70,14 +72,25 @@ const router = new VueRouter({
       component: room,
     },
     {
-      path: '/user/:username',
-      name: 'userPage',
-      component: userPage,
-    },
-    {
-      path: '/user/:username/edit',
-      name: 'profileEdit',
-      component: profileEdit,
+      path: '/mypage',
+      component: user,
+      children: [
+        {
+          path: '',
+          name: 'mypage',
+          component: mypage,
+        },
+        {
+          path: 'edit',
+          name: 'profileEdit',
+          component: profileEdit,
+        },
+        {
+          path: 'karte',
+          name: 'karte',
+          component: karte,
+        },
+      ],
     },
   ],
 });
