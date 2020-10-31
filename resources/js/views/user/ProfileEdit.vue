@@ -158,7 +158,7 @@
         <button type="button" class="btn btn-primary btn-sm" @click="submit()">更新</button>
         <router-link
           class="btn btn-secondary btn-sm btn-danger"
-          :to="{ name: 'userPage', params: { username: $store.getters['auth/user'].username } }"
+          :to="{ name: 'mypage' }"
           >戻る</router-link
         >
       </div>
