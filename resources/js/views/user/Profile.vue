@@ -1,38 +1,164 @@
 <template>
-<v-row no-gutters>
-   <v-col cols="8" v-if="selectedMyPage===0">
       <!-- ローディングバー -->
     <v-progress-linear indeterminate color="blue" class="mb-0" v-if="!user"></v-progress-linear>
     <!-- プロフィール欄 -->
     <div class="profile__content card" v-else>
-      <div class="row">
+  
         <!-- アイコンとユーザー名 -->
-        <div class="profile__user col-md-5">
+        <div class="profile__user">
           <img
             :src="$storage('icon') + user.icon"
             class="rounded-circle"
             width="100"
             height="100"
           />
-          <p class="profile__user--handlename">{{ user.handlename }}</p>
-          <p class="profile__user--username">{{ '@' + user.username }}</p>
+          <!-- <p class="profile__user--handlename">{{ user.handlename }}</p>
+          <p class="profile__user--username">{{ '@' + user.username }}</p> -->
         </div>
 
-        <div class="col-md-7">
-          <div class="profile__button">
-            <!-- マイページの場合 -->
-            <router-link
-              class="btn btn-cloto-primary"
-              :to="{
-                name: 'profileEdit',
-                params: { username: $store.getters['auth/user'].username },
-              }"
-              v-if="user.id == $store.getters['auth/user'].id"
-              >編集する</router-link
-            >
+      <!-- アカウント名 -->
+        <div class="form-group">
+          <label for="handlename">アカウント名</label>
+          <input
+            type="text"
+            class="form-control"
+            name="handlename"
+            id="handlename"
+            placeholder=  user.handlename
+            readonly
+          />{{ user.handlename }}
+        </div>
+
+        <!-- ユーザー名 -->
+        <div class="form-group">
+          <label for="username">ユーザー名</label>
+          <input type="text" class="form-control" name="username" id="username"  placeholder="aaa" readonly/>
+        </div>
+
+
+ 
+        <!-- メールアドレス -->
+        <div class="form-group">
+          <label for="email">メールアドレス</label>
+          <input type="text" class="form-control" name="email" id="email" placeholder="aaa@gmail.com" readonly />
+        </div>
+
+
+
+        <!-- Twitter -->
+        <label class="sr-only" for="twitter">Twitter</label>
+        <div class="input-group mb-2 mr-sm-2">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i class="fab fa-twitter"></i>
+            </div>
           </div>
+          <input
+            type="text"
+            class="form-control"
+            name="twitter"
+            id="twitter"
+            placeholder="CLOTO_JP"
+            readonly
+          />
+        </div>
+
+
+        <!-- GitHub -->
+        <label class="sr-only" for="github">GitHub</label>
+        <div class="input-group mb-2 mr-sm-2">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i class="fab fa-github"></i>
+            </div>
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            name="github"
+            id="github"
+            placeholder="CLOTO_JP"
+            readonly
+          />
+        </div>
+
+
+
+        <!-- Qiita -->
+        <label class="sr-only" for="qiita">Qiita</label>
+        <div class="input-group mb-2 mr-sm-2">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i class="fa fa-search"></i>
+            </div>
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            name="qiita"
+            id="qiita"
+            placeholder="CLOTO_JP"
+            readonly
+          />
+        </div>
+
+
+
+
+            <!-- ホームページ -->
+        <label class="sr-only" for="web">Webサイト</label>
+        <div class="input-group mb-2 mr-sm-2">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i class="fas fa-blog"></i>
+            </div>
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            name="web"
+            id="web"
+            placeholder="https://cloto.jp"
+            readonly
+          />
+        </div>
+
+
+        <!-- 自己紹介 -->
+        <div class="form-group">
+          <label for="introduction">自己紹介</label>
+          <textarea
+            class="form-control"
+            name="introduction"
+            id="introduction"
+            rows="4"
+            cols="40"
+            readonly
+          >{{ user.introduction }}</textarea>
+        </div>
+
+
+
+        
+          <div class="profile__introduction" v-if="user.introduction">
+          <!-- <p>{{ user.introduction }}</p> -->
+
+              <div class="profile__button">
+                <!-- マイページの場合 -->
+                <router-link
+                  class="btn btn-cloto-primary"
+                  :to="{
+                    name: 'profileEdit',
+                    params: { username: $store.getters['auth/user'].username },
+                  }"
+                  v-if="user.id == $store.getters['auth/user'].id"
+                  >編集する</router-link
+                >
+              </div>
+          </div>
+    
           <!-- ボタン類 -->
-          <div class="profile__sns-container" v-if="sns || user.web">
+          <!-- <div class="profile__sns-container" v-if="sns || user.web">
             <a
               class="profile__sns--twitter"
               :href="'https://twitter.com/' + sns.twitter"
@@ -60,85 +186,8 @@
             <a class="profile__sns--web" :href="user.web" target="_blank" v-if="user.web">
               <i class="fas fa-link fa-2x"></i>
             </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="profile__introduction" v-if="user.introduction">
-        <p>{{ user.introduction }}</p>
-      </div>
-    </div>
-  </v-col>
-
-
- <v-col cols="2" class="pa-0 " v-if="selectedMyPage===1"> 
-    <v-card flat tile class="ma-0"  min-height="600" color="grey darken-1" >
-    <v-list nav　permanent color="grey darken-1">
-        <v-subheader>プロジェクト</v-subheader>
-       <v-list-item-group
-        color="primary"
-        v-model="selectedProject"
-      >
-        <v-list-item
-          v-for="(item, i) in myProjectItems"
-          :key="i"
-            color="grey"
-        >
-          <v-list-item-content>
-            <v-list-item-title v-text="item.text"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
-    {{selectedProject}}
-   </v-card>
-  </v-col>
-
-   <v-col cols="2" class="pa-0 " v-if="selectedMyPage===1　& selectedProject===0 " > 
-    <v-card flat tile class="ma-0"  min-height="600" color="grey lighten-1">
-    <v-list nav　permanent color="grey lighten-1">
-        <v-subheader>タスク</v-subheader>
-       <v-list-item-group
-        color="primary"
-        v-model="selectedTask"
-      >
-        <v-list-item
-          v-for="(item, i) in myTaskItems"
-          :key="i"
-            color="grey"
-        >
-          <v-list-item-content>
-            <v-list-item-title v-text="item.text"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
-    {{selectedProject}}
-   </v-card>
-  </v-col>
-
-     <v-col cols="6" class="pa-0" v-if=" selectedMyPage===1 &selectedProject===0 &selectedTask===0 "> 
-    <v-card flat tile class="ma-0" min-height="600" color="grey lighten-2" >
-    <v-list nav　permanent color="grey lighten-2">
-        <v-subheader>カルテ</v-subheader>
-       <v-list-item-group
-        color="primary"
-
-      >
-        <v-list-item
-          v-for="(item, i) in myKartes"
-          :key="i"
-            color="grey"
-        >
-          <v-list-item-content>
-            <v-list-item-title v-text="item.text"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
-   </v-card>
-  </v-col>
-</v-row>
+          </div> -->
+   </div>
 </template>
 
 <script>
@@ -147,25 +196,6 @@ export default {
     return {
       user: null,
       sns: null,
-      selectedMyPage:0,
-      selectedProject:null,
-      selectedTask:null,
-
-      myProjectItems:[
-        {text:'英語'},
-        {text:'数学'},
-        {text:'国語'},
-      ],
-
-      myTaskItems:[
-        {text:'英単語10分'},
-        {text:'長文問題１つ'},
-        {text:'シャドーイング'}
-      ],
-
-      myKartes:[
-        {text:'aaaaaaaaaaa'}
-      ],
     };
   },
 
@@ -203,25 +233,16 @@ export default {
 
 
 .profile {
-  padding: 1em 0;
-  background-color: $white;
-  font-size: 14px;
-  font-weight: 900;
 
   &__content {
-    margin: 0 auto;
-    background-color: $light-gray;
-    width: 500px;
+    width: 60%;
+    margin: 2em auto;
+    padding: 1em 10em;
     border: none;
-    border-radius: 30px;
   }
 
   &__user {
-    height: 170px;
-    margin-top: 1em;
-    text-align: center;
-    font-weight: bold;
-
+   margin: 1em auto;
     &--handlename {
       text-align: center;
       margin-top: 1em;
@@ -239,74 +260,63 @@ export default {
     text-align: center;
   }
 
-  &__sns-container {
-    height: 30px;
-    margin-bottom: 2em;
-    text-align: center;
+  // &__sns-container {
+  //   height: 30px;
+  //   margin-bottom: 2em;
+  //   text-align: center;
 
-    div {
-      margin: 0 auto;
-    }
-  }
+  //   div {
+  //     margin: 0 auto;
+  //   }
+  // }
 
-  %__sns {
-    margin: 0 1em;
-  }
+  // %__sns {
+  //   margin: 0 1em;
+  // }
 
-  &__sns {
-    @extend %__sns;
+  // &__sns {
+  //   @extend %__sns;
 
-    &--twitter {
-      @extend %__sns;
+  //   &--twitter {
+  //     @extend %__sns;
 
-      color: $twitter-color;
+  //     color: $twitter-color;
 
-      &:hover {
-        color: $twitter-color;
-      }
-    }
+  //     &:hover {
+  //       color: $twitter-color;
+  //     }
+  //   }
 
-    &--github {
-      @extend %__sns;
+  //   &--github {
+  //     @extend %__sns;
 
-      color: $github-color;
+  //     color: $github-color;
 
-      &:hover {
-        color: $github-color;
-      }
-    }
+  //     &:hover {
+  //       color: $github-color;
+  //     }
+  //   }
 
-    &--qiita {
-      @extend %__sns;
+  //   &--qiita {
+  //     @extend %__sns;
 
-      color: $qiita-color;
+  //     color: $qiita-color;
 
-      &:hover {
-        color: $qiita-color;
-      }
-    }
+  //     &:hover {
+  //       color: $qiita-color;
+  //     }
+  //   }
 
-    &--web {
-      @extend %__sns;
+  //   &--web {
+  //     @extend %__sns;
 
-      color: $black;
+  //     color: $black;
 
-      &:hover {
-        color: $black;
-      }
-    }
-  }
+  //     &:hover {
+  //       color: $black;
+  //     }
+  //   }
+  // }
 
-  &__introduction {
-    margin: 1em;
-    padding: 0.5em;
-    text-align: center;
-    background-color: $white;
-    border-radius: 30px;
-
-    p {
-      margin: 0;
-    }
-  }
 }
 </style>
