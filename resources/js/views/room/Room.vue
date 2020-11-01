@@ -4,6 +4,10 @@
     <v-overlay :value="isLoading">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
+    <!-- 自習スタートローディング-->
+    <v-overlay :value="isLoading">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
 
     <Drawer
       :room-name="roomData.name"

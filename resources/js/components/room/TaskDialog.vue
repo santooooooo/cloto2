@@ -106,14 +106,16 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
+
             <v-btn
-              depressed
               @click="startStudy()"
               :loading="confirm.loading"
-              color="error"
               class="ml-3 mt-3"
+              color="error"
+              dark
             >
-              自習スタート
+              START
+              <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
             </v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
