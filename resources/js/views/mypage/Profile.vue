@@ -45,7 +45,6 @@
                 </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          {{profileEditDialog}}
         </v-col>
  
           <v-row justify="center">   

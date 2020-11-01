@@ -146,8 +146,8 @@
     <!-- ボタン -->
     <div class="profile-edit__button row">
       <div class="buttonSet mx-auto">
-        <button type="button" class="btn btn-primary btn-sm" @click="submit() ">更新</button>
-        <button class="btn btn-secondary btn-sm btn-danger" @click="dialog =false">閉じる</button>
+        <button type="button" class="btn btn-primary btn-sm" @click="submit(),$emit('close', false) ">更新</button>
+        <button class="btn btn-secondary btn-sm btn-danger" @click="dialog =false,$emit('close', false)">閉じる</button>
       </div>
     </div>
   </div>
@@ -159,7 +159,7 @@
 </template>
 
 <script>
-
+import { OK } from '@/consts/status';
 
 export default {
 
