@@ -50,7 +50,7 @@ class SeatController extends RoomController
         $this->user->save();
 
         // 座席状態の更新
-        $seat->update(['status' => 'sitting']);
+        $seat->fill(['status' => 'sitting'])->save();
 
         // 更新後の部屋データ
         return self::show($room_id);
@@ -66,9 +66,7 @@ class SeatController extends RoomController
         $room_id = $this->user->seat->section->room->id;
 
         // 着席中の座席状態の初期化
-        $this->user->seat()->update(['status' => null, 'reservation_user_id' => null]);
-        // 予約状態の座席を開放
-        $this->seat->where('reservation_user_id', $this->user->id)->update(['status' => null, 'reservation_user_id' => null]);
+        $this->user->seat->fill(['status' => null, 'reservation_user_id' => null])->save();
 
         // ユーザーと座席を紐付け解除
         $this->user->seat()->dissociate();
@@ -97,13 +95,14 @@ class SeatController extends RoomController
 
 
         // 現在の座席をbreakに変更
-        $this->user->seat()->update(['status' => 'break', 'reservation_user_id' => $this->user->id]);
+        $this->user->seat->fill(['status' => 'break', 'reservation_user_id' => $this->user->id])->save();
+
         // ユーザーと座席を紐付け
         $this->user->seat()->associate($seat);
         $this->user->save();
 
         // 座席状態の更新
-        $seat->update(['status' => 'sitting']);
+        $seat->fill(['status' => 'sitting'])->save();
 
         // 更新後の部屋データ
         return self::show($room_id);
@@ -143,14 +142,14 @@ class SeatController extends RoomController
 
 
         // 着席していた座席を離席状態に変更
-        $this->user->seat()->update(['status' => null]);
+        $this->user->seat->fill(['status' => null])->save();
 
         // ユーザーと座席を紐付け
         $this->user->seat()->associate($seat);
         $this->user->save();
 
         // 座席状態の更新
-        $seat->update(['status' => 'sitting', 'reservation_user_id' => null]);
+        $seat->fill(['status' => 'sitting', 'reservation_user_id' => null])->save();
 
         // 更新後の部屋データ
         return self::show($room_id);
