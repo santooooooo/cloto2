@@ -58,11 +58,10 @@ class TaskController extends Controller
      */
     public function post(Request $request)
     {
-        $user_id = $this->user->id;
-        $project_id = $request->projectId;
-        $body = $request->body;
+        $data = $request->all();
+        $data['user_id'] = $this->user->id;
 
-        $result = $this->task->create(compact('user_id', 'project_id', 'body'));
+        $result = $this->task->create($data);
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));

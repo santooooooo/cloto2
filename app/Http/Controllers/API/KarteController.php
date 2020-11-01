@@ -77,35 +77,20 @@ class KarteController extends Controller
      */
     public function post(Request $request)
     {
-        $user_id = $this->user->id;
-        $task_id = $request->taskId;
-        $body = $request->body;
-        $achieve = $request->achieve;
-        $trouble = $request->trouble;
-        $reference = $request->reference;
-        $image = $request->image;
-        $activity_time = $request->activityTime;
+        $data = $request->all();
+        $data['user_id'] = $this->user->id;
 
         // 画像の保存
-        if (!empty($image)) {
+        if (!empty($request->file('image'))) {
             $savename = $request->file('image')->hashName();
             $request->file('image')->storeAs(self::IMAGE_STORE_DIR, $savename);
 
             // 現状では画像を1枚に制限
-            $image = [$savename];
+            $data['image'] = [$savename];
         }
 
 
-        $result = $this->karte->create(compact(
-            'user_id',
-            'task_id',
-            'body',
-            'achieve',
-            'trouble',
-            'reference',
-            'image',
-            'activity_time'
-        ));
+        $result = $this->karte->create($data);
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));

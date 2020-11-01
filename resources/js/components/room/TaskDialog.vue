@@ -194,7 +194,7 @@ export default {
         this.newTaskForm.loading = true;
 
         var input = {
-          projectId: this.projectId,
+          project_id: this.projectId,
           body: this.newTaskForm.body,
         };
 

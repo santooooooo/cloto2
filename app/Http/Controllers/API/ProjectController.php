@@ -57,11 +57,10 @@ class ProjectController extends Controller
      */
     public function post(Request $request)
     {
-        $user_id = $this->user->id;
-        $name = $request->name;
-        $detail = $request->detail;
+        $data = $request->all();
+        $data['user_id'] = $this->user->id;
 
-        $result = $this->project->create(compact('user_id', 'name', 'detail'));
+        $result = $this->project->create($data);
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));

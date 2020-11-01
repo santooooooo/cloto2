@@ -152,14 +152,14 @@ export default {
         this.karteForm.loading = true;
 
         var input = new FormData();
-        input.append('taskId', this.authUser.tasks[0].id);
+        input.append('task_id', this.authUser.tasks[0].id);
         input.append('body', this.karteForm.body);
         input.append('achieve', this.karteForm.achieve);
         input.append('trouble', this.karteForm.trouble);
         input.append('reference', this.karteForm.reference);
         input.append('image', this.karteForm.image);
-        input.append('activityTime', this.karteForm.activityTime);
-        input.append('technologies', this.karteForm.technologies);
+        input.append('activity_time', this.karteForm.activityTime);
+        // input.append('technologies', this.karteForm.technologies);
 
         // カルテ保存処理
         var response = await this.$http.post(this.$endpoint('kartePost'), input);
