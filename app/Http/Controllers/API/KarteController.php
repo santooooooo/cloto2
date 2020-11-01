@@ -82,11 +82,11 @@ class KarteController extends Controller
 
         // 画像の保存
         if (!empty($request->file('image'))) {
-            $savename = $request->file('image')->hashName();
-            $request->file('image')->storeAs(self::IMAGE_STORE_DIR, $savename);
+            $save_name = $request->file('image')->hashName();
+            $request->file('image')->storeAs(self::IMAGE_STORE_DIR, $save_name);
 
             // 現状では画像を1枚に制限
-            $data['image'] = [$savename];
+            $data['image'] = [$save_name];
         }
 
 

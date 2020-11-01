@@ -126,10 +126,10 @@ class UserController extends Controller
             }
 
             // 保存処理
-            $savename = $request->file('icon')->hashName();
-            $request->file('icon')->storeAs(self::ICON_STORE_DIR, $savename);
+            $save_name = $request->file('icon')->hashName();
+            $request->file('icon')->storeAs(self::ICON_STORE_DIR, $save_name);
 
-            $data['icon'] = $savename;
+            $data['icon'] = $save_name;
         }
 
 
