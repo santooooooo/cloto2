@@ -12,6 +12,8 @@ class UserController extends Controller
 {
     // アイコン保存ディレクトリ
     const ICON_STORE_DIR = 'public/user/icon/';
+    // デフォルトアイコン名
+    const DEFAULT_ICON_NAME = 'default.jpg';
 
 
     /** @var User */
@@ -108,21 +110,17 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
-        $username = $request->username;
-        $email = $request->email;
-        $handlename = $request->handlename;
-        $sns = [
-            'twitter' => $request->twitter ?? '',
-            'github' => $request->github ?? '',
-            'qiita' => $request->qiita ?? ''
+        $data = $request->all();
+        $data['sns'] = [
+            'twitter' => $data['twitter'],
+            'github' => $data['github'],
+            'qiita' => $data['qiita']
         ];
-        $web = $request->web ?? '';
-        $introduction = $request->introduction ?? '';
 
-        // アイコンの処理
-        if ($request->icon != $this->auth_user->icon) {
+        // アイコンの保存
+        if (!empty($request->file('icon'))) {
             // 削除処理
-            if ($this->auth_user->icon != 'default.jpg') {
+            if ($this->auth_user->icon != self::DEFAULT_ICON_NAME) {
                 // 初期アイコン以外の場合には登録中のアイコンを削除
                 Storage::delete(self::ICON_STORE_DIR . $this->auth_user->icon);
             }
@@ -131,21 +129,11 @@ class UserController extends Controller
             $savename = $request->file('icon')->hashName();
             $request->file('icon')->storeAs(self::ICON_STORE_DIR, $savename);
 
-            $icon = $savename;
-        } else {
-            $icon = $this->auth_user->icon;
+            $data['icon'] = $savename;
         }
 
 
-        $result = $this->auth_user->update(compact(
-            'username',
-            'email',
-            'handlename',
-            'icon',
-            'sns',
-            'web',
-            'introduction'
-        ));
+        $result = $this->auth_user->fill($data)->save();
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
