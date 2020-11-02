@@ -163,27 +163,21 @@
             </v-btn>
           </v-row>
 
-          <v-card-text class="pa-2 white--text title whitefont-weight-bold">
-            技術タグの選択
+          <v-card-text>
+            <h2 class="pa-2 white--text title whitefont-weight-bold mb-2 text-center">
+              使用技術タグ{{ tagsIndex }}
+            </h2>
+            <v-chip-group v-model="tagsIndex" column multiple>
+              <v-chip filter v-for="tag in tags" :key="tag">
+                {{ tag }}
+              </v-chip>
+            </v-chip-group>
           </v-card-text>
-
-          <v-chip class="mr-2" @click="lights">
-            <v-icon left> mdi-brightness-5 </v-icon>
-            Turn on Lights
-          </v-chip>
-          <v-chip class="mr-2" @click="alarm">
-            <v-icon left> mdi-alarm-check </v-icon>
-            Set alarm
-          </v-chip>
-          <v-chip @click="blinds">
-            <v-icon left> mdi-blinds </v-icon>
-            Close blinds
-          </v-chip>
 
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn @click="technologiesDialog = false" class="ml-3 mt-3" color="error" dark>
+            <v-btn @click="" class="ml-3 mt-3" color="error" dark>
               OK
               <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
             </v-btn>
@@ -207,6 +201,8 @@ export default {
       dialog: true,
       continueDialog: false, //continueDialog confirm両方trueの場合のみ継続確認モーダルを表示
       technologiesDialog: false, //技術タグモーダルの制御
+      tagsIndex: [], // アクティブタグの配列番号
+      tags: null,
       karteForm: {
         dialog: false,
         body: '', // やったこと
@@ -272,9 +268,10 @@ export default {
       }
     },
   },
+  mounted() {
+    var technologies = ['c++', 'html', 'css', 'scss', 'javascript', 'vue.js', 'php', 'laravel'];
+
+    this.tags = technologies;
+  },
 };
 </script>
-
-<style lang="scss" scoped>
-@import '~/_variables';
-</style>
