@@ -7,7 +7,7 @@
           <div class="pt-2 white--text headline font-weight-bold">
             <h3>{{ authUser.tasks[0].body }}</h3>
             <input class="grey darken-1" type="time" v-model="karteForm.activityTime" />
-            <v-btn class="ma-2" depressed color="grey darken-1" @click="technologiesDialog = true">
+            <v-btn class="ma-2" depressed color="grey darken-1" @click="getTechnology()">
               <v-icon left>fas fa-edit</v-icon>
               tag
             </v-btn>
@@ -154,22 +154,28 @@
         </v-card>
       </v-form>
     </v-dialog>
-    <v-dialog persistent v-model="technologiesDialog" width="600" height="600">
+
+    <!-- 技術タグ入力ダイアログ -->
+    <v-dialog persistent v-model="technologies.dialog" width="600" height="600">
       <v-card class="headline grey lighten-1 text-center">
         <v-container>
           <v-row>
-            <v-btn small depressed @click="technologiesDialog = false" color="error" class="ml-3">
+            <v-btn small depressed @click="technologies.dialog = false" color="error" class="ml-3">
               <v-icon dark>mdi-arrow-left</v-icon> 戻る
             </v-btn>
           </v-row>
 
           <v-card-text>
             <h2 class="pa-2 white--text title whitefont-weight-bold mb-2 text-center">
-              使用技術タグ{{ tagsIndex }}
+              使用技術タグ
             </h2>
-            <v-chip-group v-model="tagsIndex" column multiple>
-              <v-chip filter v-for="tag in tags" :key="tag">
-                {{ tag }}
+
+            <!-- ローディング -->
+            <v-skeleton-loader type="table-row@6" v-if="technologies.loading"></v-skeleton-loader>
+
+            <v-chip-group v-model="technologies.inputs" column multiple v-else>
+              <v-chip filter v-for="technology in technologies.data" :key="technology.id">
+                {{ technology.name }}
               </v-chip>
             </v-chip-group>
           </v-card-text>
@@ -177,7 +183,12 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn @click="" class="ml-3 mt-3" color="error" dark>
+            <v-btn
+              @click="inputTechnology(technologies.inputs)"
+              class="ml-3 mt-3"
+              color="error"
+              dark
+            >
               OK
               <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
             </v-btn>
@@ -199,10 +210,7 @@ export default {
   data() {
     return {
       dialog: true,
-      continueDialog: false, //continueDialog confirm両方trueの場合のみ継続確認モーダルを表示
-      technologiesDialog: false, //技術タグモーダルの制御
-      tagsIndex: [], // アクティブタグの配列番号
-      tags: null,
+      continueDialog: false,
       karteForm: {
         dialog: false,
         body: '', // やったこと
@@ -211,12 +219,18 @@ export default {
         reference: '', // 参考文献
         image: '', // 画像
         activityTime: '00:00', // 活動時間
-        technologies: '保存処理未接続', // タグ
+        technologies: [], // タグ
         loading: false,
         validation: {
           valid: false,
           bodyRules: [(v) => !!v || '活動内容は必須項目です。'],
         },
+      },
+      technologies: {
+        dialog: false, // 技術タグ入力ダイアログの制御
+        data: '', // 技術タグデータ
+        inputs: [], // 選択済データ
+        loading: false,
       },
     };
   },
@@ -226,6 +240,29 @@ export default {
     },
   },
   methods: {
+    /**
+     * 技術タグの取得
+     */
+    getTechnology: async function () {
+      this.technologies.loading = true;
+      this.technologies.dialog = true;
+
+      var response = await this.$http.get(this.$endpoint('technologyIndex'));
+      this.technologies.data = response.data;
+
+      this.technologies.loading = false;
+    },
+
+    /**
+     * 技術タグの入力決定
+     *
+     * @param Array technologyIds 入力された技術タグのID
+     */
+    inputTechnology: function (technologyIds) {
+      this.karteForm.technologies = technologyIds;
+      this.technologies.dialog = false;
+    },
+
     submit: async function () {
       if (this.$refs.karteForm.validate()) {
         this.karteForm.loading = true;
@@ -266,12 +303,8 @@ export default {
         // // this.karteForm.message = response.data;
         // // this.karteForm.snackbar = true;
       }
+      console.log(this.karteForm.technologies);
     },
-  },
-  mounted() {
-    var technologies = ['c++', 'html', 'css', 'scss', 'javascript', 'vue.js', 'php', 'laravel'];
-
-    this.tags = technologies;
   },
 };
 </script>
