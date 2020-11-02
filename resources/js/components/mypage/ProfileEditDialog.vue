@@ -1,9 +1,8 @@
 <template>
   <v-dialog v-model="dialog" width="650" persistent>
     <v-form ref="profileUpdateForm" v-model="profileUpdateForm.validation.valid" lazy-validation>
-      <v-card>
+      <v-card  color="grey darken-2">
         <v-card-text>
-          <div class="card">
             <!-- アイコン -->
             <div class="form-group">
               <image-drop-upload
@@ -12,45 +11,65 @@
                 ratio-y="1"
                 @input="profileUpdateForm.icon = $event"
               ></image-drop-upload>
-            </div>
-
-            <v-text-field
-              v-model="profileUpdateForm.username"
-              :rules="profileUpdateForm.validation.usernameRules"
-              maxlength="20"
-              counter
-              label="ユーザー名"
-              hint="cloto_jp"
+        
+      <v-row>
+        <v-col cols="6" class="pb-0" >
+                  <!-- ユーザー名 -->
+                   <v-card-text class="pa-1 ml-2 white--text subtitle-2 ">
+         ユーザー名
+          </v-card-text>
+                  <v-text-field
+                    v-model="profileUpdateForm.username"
+                    :rules="profileUpdateForm.validation.usernameRules"
+                    label="ユーザー名"
+                    solo
+                    rounded
+                    class="pa-2"
+                  ></v-text-field>
+        </v-col>
+        <v-col  cols="6"  class="pb-0">
+                <!-- アカウント名 -->
+            <v-card-text class="pa-1 ml-2 white--text subtitle-2 ">
+         アカウント名
+          </v-card-text>
+                    <v-text-field
+                    v-model="profileUpdateForm.handlename"
+                    :rules="profileUpdateForm.validation.accountRules"
+                    label="アカウント名"
+                    solo
+                    rounded
+                    class="pa-2"
+                  ></v-text-field>
+        </v-col>
+      </v-row>
+            <!-- メールアドレス -->
+         <v-card-text class="pa-0 ml-2 white--text subtitle-2 ">
+         メールアドレス
+          </v-card-text>
+              <v-text-field
+              v-model="profileUpdateForm.email"
+              label="メールアドレス"
               solo
               rounded
               class="pa-2"
             ></v-text-field>
 
-            <!-- メールアドレス -->
-            <div class="form-group">
-              <label for="email">メールアドレス</label>
-              <input
-                type="text"
-                class="form-control"
-                name="email"
-                id="email"
-                v-model="profileUpdateForm.email"
-              />
-            </div>
-
-            <!-- ハンドルネーム -->
-            <div class="form-group">
-              <label for="handlename">アカウント名</label>
-              <input
-                type="text"
-                class="form-control"
-                name="handlename"
-                id="handlename"
-                v-model="profileUpdateForm.handlename"
-              />
-            </div>
 
             <!-- Twitter -->
+        <v-row>
+              <v-col cols="6" class="pt-0 pb-0" >
+         <v-card-text class="pa-0 ml-2 white--text subtitle-2 ">
+         Twitter
+          </v-card-text>
+                      <v-text-field
+                      v-model="profileUpdateForm.twitter"
+                      placeholder="Twitter 例：CLOTO_JP"
+                      solo
+                      rounded
+                      class="pa-2"
+                    > </v-text-field>
+              </v-col>
+        <!-- 
             <label class="sr-only" for="twitter">Twitter</label>
             <div class="input-group mb-2 mr-sm-2">
               <div class="input-group-prepend">
@@ -66,10 +85,23 @@
                 placeholder="Twitter 例：CLOTO_JP"
                 v-model="profileUpdateForm.twitter"
               />
-            </div>
+            </div> -->
 
             <!-- GitHub -->
-            <label class="sr-only" for="github">GitHub</label>
+
+            <v-col cols="6" class="pt-0 pb-0" >
+         <v-card-text class="pa-0 ml-2 white--text subtitle-2 ">
+         GitHub
+          </v-card-text>
+                      <v-text-field
+                      v-model="profileUpdateForm.github"
+                      placeholder="GitHub 例：CLOTO_JP"
+                      solo
+                      rounded
+                      class="pa-2"
+                    > </v-text-field>
+            </v-col>
+            <!-- <label class="sr-only" for="github">GitHub</label>
             <div class="input-group mb-2 mr-sm-2">
               <div class="input-group-prepend">
                 <div class="input-group-text">
@@ -84,10 +116,30 @@
                 placeholder="GitHub 例：CLOTO_JP"
                 v-model="profileUpdateForm.github"
               />
-            </div>
+            </div> -->
+      </v-row>
 
+      
+
+      <v-row>
+          
             <!-- Qiita -->
-            <label class="sr-only" for="qiita">Qiita</label>
+
+
+            <v-col cols="6" class="pt-0 pb-0" >
+         <v-card-text class="pa-1 ml-1 white--text subtitle-2 ">
+         Qiita
+          </v-card-text>
+                      <v-text-field
+                      v-model="profileUpdateForm.qiita"
+                      placeholder="Qiita 例：CLOTO_JP"
+                      solo
+                      rounded
+                      class="pa-2"
+                    > </v-text-field>
+            </v-col>
+            
+            <!-- <label class="sr-only" for="qiita">Qiita</label>
             <div class="input-group mb-2 mr-sm-2">
               <div class="input-group-prepend">
                 <div class="input-group-text">
@@ -102,9 +154,27 @@
                 placeholder="Qiita 例：CLOTO_JP"
                 v-model="profileUpdateForm.qiita"
               />
-            </div>
+            </div> -->
+
 
             <!-- ホームページ -->
+
+
+
+
+            <v-col cols="6" class="pt-0 pb-0" >
+         <v-card-text class="pa-2 ml-2 white--text subtitle-2 ">
+         Webサイト
+          </v-card-text>
+                      <v-text-field
+                      v-model="profileUpdateForm.web"
+                      placeholder="Webサイト 例：https://cloto.jp"
+                      solo
+                      rounded
+                      class="pa-2"
+                    > </v-text-field>
+            </v-col>
+<!-- 
             <label class="sr-only" for="web">Webサイト</label>
             <div class="input-group mb-2 mr-sm-2">
               <div class="input-group-prepend">
@@ -120,9 +190,22 @@
                 placeholder="Webサイト 例：https://cloto.jp"
                 v-model="profileUpdateForm.web"
               />
-            </div>
+            </div> -->
+
+      </v-row>
 
             <!-- 自己紹介 -->
+        <v-textarea
+          solo
+          name="introduction"
+          label="自己紹介"
+          rounded
+          rows="3"
+          class="pa-1"
+          v-model="profileUpdateForm.introduction"
+        ></v-textarea>
+
+<!--             
             <div class="form-group">
               <label for="introduction">自己紹介</label>
               <textarea
@@ -133,7 +216,7 @@
                 cols="40"
                 v-model="profileUpdateForm.introduction"
               ></textarea>
-            </div>
+            </div> -->
 
             <!-- ボタン -->
             <div class="profile-edit__button row">
@@ -189,7 +272,8 @@ export default {
         loading: false,
         validation: {
           valid: false,
-          usernameRules: [(v) => !!v || '活動内容は必須項目です。'],
+          usernameRules: [(v) => !!v || 'ユーザネームは必須項目です。'],
+          accountRules: [(v) => !!v || 'アカウント名は必須項目です。'],
         },
       },
     };
@@ -250,4 +334,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+</style>
