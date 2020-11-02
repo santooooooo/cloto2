@@ -2,14 +2,15 @@
   <v-container py-0>
     <v-row>
       <v-col class="pa-0">
-        <v-card tile min-height="700">
-          <v-skeleton-loader
-            type="card-heading, list-item@10"
+        <v-card tile min-height="700" width="300" color="blue-grey lighten-2">
+          <!-- <v-skeleton-loader
+            type="card-heading, list-item@3"
             class="pt-1 px-4"
             v-if="projects.loading"
-          ></v-skeleton-loader>
+              v-elseをv-listの中に入れる
+          ></v-skeleton-loader> -->
 
-          <v-list nav permanent v-else>
+          <v-list nav permanent color="blue-grey lighten-2">
             <v-subheader>プロジェクト</v-subheader>
             <v-list-item-group color="primary">
               <v-list-item v-for="project in projects.data" :key="project.id" color="primary">
@@ -23,14 +24,15 @@
       </v-col>
 
       <v-col class="pa-0">
-        <v-card tile min-height="700">
-          <v-skeleton-loader
-            type="card-heading, list-item@10"
+        <v-card tile min-height="700" color="blue-grey lighten-3">
+          <!-- <v-skeleton-loader
+            type="card-heading, list-item@3"
             class="pt-1 px-4"
             v-if="tasks.loading"
-          ></v-skeleton-loader>
+              v-elseをv-listの中に入れる
+          ></v-skeleton-loader> -->
 
-          <v-list nav permanent v-else>
+          <v-list nav permanent  color="blue-grey lighten-3"> 
             <v-subheader>タスク</v-subheader>
             <v-list-item-group color="primary">
               <v-list-item v-for="task in tasks.data" :key="task.id" color="primary">
@@ -44,14 +46,15 @@
       </v-col>
 
       <v-col class="pa-0">
-        <v-card tile min-height="700">
-          <v-skeleton-loader
-            type="card-heading, list-item@10"
+        <v-card tile min-height="700" width="550" color="blue-grey lighten-4">
+          <!-- <v-skeleton-loader
+            type="card-heading, list-item@3"
             class="pt-1 px-4"
             v-if="kartes.loading"
-          ></v-skeleton-loader>
+            v-elseをv-listの中に入れる
+          ></v-skeleton-loader> -->
 
-          <v-list nav permanent v-else>
+          <v-list nav permanent  color="blue-grey lighten-4">
             <v-subheader>カルテ</v-subheader>
             <v-list-item-group color="primary">
               <v-list-item v-for="karte in kartes.data" :key="karte.id" color="primary">
