@@ -54,8 +54,8 @@
           <v-list nav permanent v-else>
             <v-subheader>カルテ</v-subheader>
             <v-list-item-group color="primary">
-              <v-list-item v-for="karte in kartes.data" :key="karte.id" color="grey">
-                <v-list-item-content>
+              <v-list-item v-for="karte in kartes.data" :key="karte.id" color="primary">
+                <v-list-item-content @click="showKarte(karte)">
                   <v-list-item-title v-text="karte.body"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
@@ -64,6 +64,27 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <v-dialog persistent v-model="karteDialog.dialog" width="600">
+      <v-card color="grey darken-1" dark>
+        <v-container>
+          <v-row justify="end">
+            <v-btn
+              fab
+              x-small
+              depressed
+              color="error"
+              class="mr-4"
+              @click="karteDialog.dialog = false"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-row>
+
+          {{ karteDialog.data }}
+        </v-container>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -82,6 +103,10 @@ export default {
       kartes: {
         data: '',
         loading: false,
+      },
+      karteDialog: {
+        dialog: false,
+        data: '',
       },
     };
   },
@@ -125,6 +150,16 @@ export default {
       this.kartes.data = response.data;
 
       this.kartes.loading = false;
+    },
+
+    /**
+     * カルテの表示
+     *
+     * @param Object  karte 表示するカルテ
+     */
+    showKarte: function (karte) {
+      this.karteDialog.data = karte;
+      this.karteDialog.dialog = true;
     },
   },
   mounted() {
