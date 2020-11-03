@@ -54,9 +54,8 @@
                 <v-card-text class="pa-0 white--text title whitefont-weight-bold">
                   画像
                 </v-card-text>
-                <v-card height="290" class="m-1 rounded-xl">
-                  <image-drop-upload @input="karteForm.image = $event"></image-drop-upload>
-                </v-card>
+
+                <InputImage @input="karteForm.image = $event" />
               </v-col>
 
               <v-col cols="12" sm="6"

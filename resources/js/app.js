@@ -17,7 +17,7 @@ Vue.prototype.$storage = window.Storage.getStoragePath;
 /**
  * Vueコンポーネントの読み込み
  */
-Vue.component('image-drop-upload', require('./components/form/ImageDropUpload.vue').default);
+Vue.component('InputImage', require('./components/form/InputImage').default);
 
 /**
  * Vueの定義
