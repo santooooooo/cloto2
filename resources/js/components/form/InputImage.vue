@@ -19,14 +19,14 @@
       height="290"
       rounded="xl"
       :color="areaColor"
-      @dragover.prevent="areaColor = '#fff6ba'"
+      @dragover.prevent="areaColor = '#d9ffda'"
       @dragleave.prevent="areaColor = '#ffffff'"
       @drop.prevent="inputImage()"
     >
       <v-layout style="height: 290px" align-center class="pa-1">
         <!-- 画像プレビュー -->
         <v-img contain :src="preview" max-height="280px" class="align-center white--text">
-          <v-btn depressed class="mb-1 white--text" color="#f6bf00" @click="$refs.input.click()">
+          <v-btn depressed class="mb-1 white--text" color="success" @click="$refs.input.click()">
             画像を選択
           </v-btn>
 
@@ -45,7 +45,7 @@
 
     <!-- トリミングモーダル -->
     <v-dialog persistent width="600" v-model="cropperDialog">
-      <v-card class="headline grey darken-1 text-center">
+      <v-card class="headline grey darken-2 text-center">
         <v-container>
           <v-row justify="end">
             <v-btn fab x-small depressed color="error" class="mr-3" @click="cropperDialog = false">

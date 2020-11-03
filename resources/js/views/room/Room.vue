@@ -11,7 +11,7 @@
 
     <Drawer
       :room-name="roomData.name"
-      @leave-room="leaveKarte()"
+      @leave-room="inputKarte()"
       @open-project-dialog="projectDialog = $event"
       @open-karte-dialog="karteDialog = $event"
     />
@@ -328,7 +328,7 @@ export default {
     /**
      * 退席ボタン押されたときのカルテ記入処理
      */
-    leaveKarte: function () {
+    inputKarte: function () {
       this.karteDialog = true;
       this.confirmDialog = false; //退席の意思があるから自習継続の確認不要
     },

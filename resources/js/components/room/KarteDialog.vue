@@ -3,63 +3,65 @@
   <v-container ma-0 pa-0>
     <v-dialog persistent v-model="dialog" v-if="authUser.tasks[0]" width="1000">
       <v-form ref="karteForm" v-model="karteForm.validation.valid" lazy-validation>
-        <v-card class="headline title grey darken-1 text-center">
+        <v-card class="headline grey darken-2 text-center px-2">
           <v-container>
-            <!-- <h3>{{ authUser.tasks[0].body }}</h3> -->
-            <v-card-title class="pa-2 text-center white--text text-h4 font-weight-bold">
+            <v-card-text class="pa-2 white--text text-h4 font-weight-bold">
               {{ authUser.tasks[0].body }}
-            </v-card-title>
-            <input class="grey darken-1" type="time" v-model="karteForm.activityTime" />
+            </v-card-text>
 
-            <v-btn class="ma-2" bense small depressed color="success" @click="getTechnology()">
-              <!-- <v-icon left>fas fa-edit</v-icon> -->
-              技術タグ入力
-            </v-btn>
+            <v-row justify="center" align="center" class="mt-2">
+              <input type="time" v-model="karteForm.activityTime" class="grey darken-2 mr-4" />
 
-            <v-chip class="ma-1" v-for="techId in karteForm.technologies" :key="techId">
-              {{ technologies.data[techId].name }}
-            </v-chip>
+              <v-btn bense small depressed color="success" class="ml-4" @click="getTechnology()">
+                技術タグ入力
+              </v-btn>
+            </v-row>
 
-            <v-row class="text-center m-0" justify="center">
-              <v-col class="ma-0" cols="12" sm="7">
-                <v-card-text class="pa-0 white--text headline font-weight-bold">
+            <v-row justify="center">
+              <v-chip class="ma-3" v-for="techId in karteForm.technologies" :key="techId">
+                {{ technologies.data[techId].name }}
+              </v-chip>
+            </v-row>
+
+            <v-row justify="center">
+              <v-col>
+                <v-card-text class="pa-2 white--text title whitefont-weight-bold">
                   活動内容<span class="red--text">*</span>
                 </v-card-text>
-
                 <v-textarea
-                  class="ma-0"
                   v-model="karteForm.body"
                   :rules="karteForm.validation.bodyRules"
+                  solo
                   rounded
-                  filled
                   rows="6"
-                  color="black"
-                  background-color="white"
+                  auto-grow
                 ></v-textarea>
 
-                <v-card-text class="pa-0 white--text title whitefont-weight-bold">
+                <v-card-text class="pa-2 white--text title whitefont-weight-bold">
                   参考文献
                 </v-card-text>
-
                 <v-textarea
                   v-model="karteForm.reference"
                   solo
                   rounded
                   rows="1"
-                  label="https://develop.cloto.jp/"
+                  label="https://develop.cloto.jp"
                   auto-grow
                 ></v-textarea>
               </v-col>
-              <v-col cols="12" sm="5">
+
+              <v-col>
                 <v-card-text class="pa-0 white--text title whitefont-weight-bold">
                   画像
                 </v-card-text>
 
                 <InputImage @input="karteForm.image = $event" />
               </v-col>
+            </v-row>
 
-              <v-col cols="12" sm="6"
-                ><v-card-text class="pa-0 white--text title whitefont-weight-bold">
+            <v-row>
+              <v-col>
+                <v-card-text class="pa-2 white--text title whitefont-weight-bold">
                   達成したこと
                 </v-card-text>
                 <v-textarea
@@ -70,8 +72,9 @@
                   auto-grow
                 ></v-textarea>
               </v-col>
-              <v-col cols="12" sm="6"
-                ><v-card-text class="pa-0 white--text title whitefont-weight-bold">
+
+              <v-col>
+                <v-card-text class="pa-2 white--text title whitefont-weight-bold">
                   できなかったこと
                 </v-card-text>
                 <v-textarea
@@ -84,25 +87,6 @@
               </v-col>
             </v-row>
 
-            <v-row justify="center">
-              <v-dialog v-model="continueDialog" v-if="confirm" width="600" persistent>
-                <v-card class="headline grey lighten-1 text-center">
-                  <v-card-text class="pa-2 white--text title whitefont-weight-bold">
-                    続けて自習されますか？
-                  </v-card-text>
-                  <v-btn
-                    color="grey lighten-5"
-                    text
-                    @click="$emit('open-project-dialog', true), $emit('close', false)"
-                  >
-                    はい
-                  </v-btn>
-                  <v-btn color="grey lighten-5" text @click="$emit('leave'), $emit('close', false)">
-                    いいえ
-                  </v-btn>
-                </v-card>
-              </v-dialog>
-            </v-row>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
@@ -170,6 +154,32 @@
               dark
             >
               追加
+            </v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-container>
+      </v-card>
+    </v-dialog>
+
+    <!-- 継続確認ダイアログ -->
+    <v-dialog v-model="continueDialog" v-if="confirm" width="600" persistent>
+      <v-card class="headline grey darken-2 text-center px-2">
+        <v-container>
+          <v-card-text class="pa-2 white--text title font-weight-bold">
+            続けて自習されますか？
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              text
+              color="grey lighten-5"
+              @click="$emit('open-project-dialog', true), $emit('close', false)"
+            >
+              はい
+            </v-btn>
+            <v-btn text color="grey lighten-5" @click="$emit('leave'), $emit('close', false)">
+              いいえ
             </v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
