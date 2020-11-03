@@ -24,7 +24,6 @@
           </v-card-text>
 
           <v-list class="rounded-lg">
-            <!-- <v-list-item-group color="success"> -->
             <v-list-item-group color="grey">
               <v-list-item v-for="project in projects" :key="project.id">
                 <v-list-item-content @click="openTaskDialog(project.id)">

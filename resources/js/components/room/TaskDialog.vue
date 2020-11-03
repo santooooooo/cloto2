@@ -111,15 +111,15 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-
             <v-btn
-              @click="startStudy()"
-              :loading="confirm.loading"
-              class="ml-3 mt-3"
+              depressed
               color="#f6bf00"
+              :loading="confirm.loading"
+              @click="startStudy()"
               dark
+              class="mt-3 white--text"
             >
-              START
+              自習開始
             </v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>

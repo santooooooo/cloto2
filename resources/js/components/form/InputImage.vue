@@ -47,9 +47,16 @@
     <v-dialog persistent width="600" v-model="cropperDialog">
       <v-card class="headline grey darken-2 text-center">
         <v-container>
-          <v-row justify="end">
-            <v-btn fab x-small depressed color="error" class="mr-3" @click="cropperDialog = false">
-              <v-icon>mdi-close</v-icon>
+          <v-row>
+            <v-btn
+              depressed
+              small
+              @click="cropperDialog = false"
+              class="ml-3 mb-3"
+              dark
+              color="grey lighten-1"
+            >
+              <v-icon dark>mdi-arrow-left</v-icon> 戻る
             </v-btn>
           </v-row>
 
