@@ -19,7 +19,7 @@
             </v-btn>
           </v-row>
 
-          <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+          <v-card-text class="pa-2 white--text title font-weight-bold">
             プロジェクトを決めよう！
           </v-card-text>
 
