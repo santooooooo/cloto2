@@ -435,6 +435,11 @@ export default {
     // ロード開始
     this.isLoading = true;
 
+    if (this.authUser.task_id === null && this.authUser.seat_id != null) {
+      //タスク選択中に更新されたときの処理
+      this.leaveRoom();
+    }
+
     /**
      * キャンバスの設定
      */
