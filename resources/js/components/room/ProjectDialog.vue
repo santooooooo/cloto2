@@ -13,8 +13,9 @@
       <v-card class="headline grey darken-2 text-center" v-else>
         <v-container>
           <v-row>
-            <v-btn small depressed @click="$emit('close')" color="error" class="ml-3">
-              <v-icon dark>mdi-arrow-left</v-icon> 自習室に戻る
+            <v-btn small depressed @click="$emit('close')" dark class="grey darken-1 ml-3">
+              <v-icon class="white--text">mdi-arrow-left</v-icon>
+              退席
             </v-btn>
           </v-row>
 
@@ -23,7 +24,8 @@
           </v-card-text>
 
           <v-list class="rounded-lg">
-            <v-list-item-group color="success">
+            <!-- <v-list-item-group color="success"> -->
+            <v-list-item-group color="grey">
               <v-list-item v-for="project in projects" :key="project.id">
                 <v-list-item-content @click="openTaskDialog(project.id)">
                   <v-list-item-title v-text="project.name"></v-list-item-title>
@@ -60,7 +62,9 @@
             </v-btn>
           </v-row>
 
-          <v-card-text class="pa-2 white--text font-weight-bold">プロジェクトの追加</v-card-text>
+          <v-card-text class="pa-2 white--text title whitefont-weight-bold"
+            >プロジェクトの追加</v-card-text
+          >
 
           <v-form ref="newProjectForm" v-model="newProjectForm.validation.valid" lazy-validation>
             <v-text-field
@@ -93,10 +97,11 @@
                 :loading="newProjectForm.loading"
                 :disabled="!newProjectForm.validation.valid"
                 @click="submitNewProject()"
-                class="white--text"
+                dark
               >
                 追加
               </v-btn>
+              <v-spacer></v-spacer>
             </v-card-actions>
           </v-form>
         </v-container>

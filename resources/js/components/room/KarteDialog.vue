@@ -13,53 +13,12 @@
             </v-btn>
           </div>
 
-          <!-- <v-card-text class="white--text headline font-weight-bold">
-          {{ authUser.tasks[0].body }}
-        </v-card-text>
-        <div class="text-center">
-          <input
-            class="form-control"
-            style="width: 7em; text-align: center"
-            type="time"
-            v-model="karteForm.activityTime"
-          />
-        </div> -->
-
-          <!-- <input
-          class="form-control"
-          style="width: 7em; text-align: center; float: right"
-          type="time"
-          v-model="karteForm.activityTime"
-        /> -->
-
-          <!-- </v-system-bar> -->
-
-          <!-- <v-row class="text-center m-1" justify="center">
-          <v-col class="ma-0" cols="12" sm="6">
-            <v-card-text class="white--text title whitefont-weight-bold"> 活動時間 </v-card-text>
-            <input class="form-control" type="time" v-model="karteForm.activityTime" />
-          </v-col>
-          <v-col cols="12" sm="6">
-            <v-card-text class="white--text title whitefont-weight-bold"> 使用言語 </v-card-text>
-
-            <v-textarea
-              v-model="karteForm.technologies"
-              solo
-              rounded
-              rows="1"
-              label="#html #css"
-              auto-grow
-            ></v-textarea>
-          </v-col>
-        </v-row> -->
+          <v-chip class="ma-1" v-for="techId in karteForm.technologies" :key="techId">
+            {{ technologies.data[techId].name }}
+          </v-chip>
 
           <v-row class="text-center m-0" justify="center">
             <v-col class="ma-0" cols="12" sm="7">
-              <!-- <v-card-text class="white--text title whitefont-weight-bold"> 活動内容 </v-card-text> -->
-              <!-- <v-card-text class="red--text title whitefont-weight-bold">
-              活動内容(必須)
-            </v-card-text> -->
-
               <v-card-text class="pa-0 white--text headline font-weight-bold">
                 活動内容<span class="red--text">*</span>
               </v-card-text>
@@ -109,17 +68,8 @@
             </v-col>
           </v-row>
 
-          <!-- <v-card-text class="white--text title whitefont-weight-bold"> 達成したこと </v-card-text>
-        <v-textarea v-model="karteForm.achieve" solo rounded rows="1" auto-grow></v-textarea>
-
-        <v-card-text class="white--text title whitefont-weight-bold">
-          できなかったこと
-        </v-card-text>
-        <v-textarea v-model="karteForm.trouble" solo rounded rows="1" auto-grow></v-textarea> -->
-
           <v-row justify="center">
             <v-dialog v-model="continueDialog" v-if="confirm" width="600" persistent>
-              <!-- <v-dialog v-model="continueDialog" width="600" persistent> -->
               <v-card class="headline grey lighten-1 text-center">
                 <v-card-text class="pa-2 white--text title whitefont-weight-bold">
                   続けて自習されますか？
@@ -160,7 +110,13 @@
       <v-card class="headline grey lighten-1 text-center">
         <v-container>
           <v-row>
-            <v-btn small depressed @click="technologies.dialog = false" color="error" class="ml-3">
+            <v-btn
+              small
+              @click="technologies.dialog = false"
+              class="ml-3"
+              dark
+              color="grey lighten-1"
+            >
               <v-icon dark>mdi-arrow-left</v-icon> 戻る
             </v-btn>
           </v-row>
@@ -182,15 +138,13 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-
             <v-btn
               @click="inputTechnology(technologies.inputs)"
               class="ml-3 mt-3"
-              color="error"
+              color="#f6bf00"
               dark
             >
-              OK
-              <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
+              追加
             </v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
@@ -220,6 +174,7 @@ export default {
         image: '', // 画像
         activityTime: '00:00', // 活動時間
         technologies: [], // タグ
+        // selectTechnologies: [], //選択されたタグ　表示用
         loading: false,
         validation: {
           valid: false,
@@ -249,6 +204,8 @@ export default {
 
       var response = await this.$http.get(this.$endpoint('technologyIndex'));
       this.technologies.data = response.data;
+
+      console.log(this.technologies.data);
 
       this.technologies.loading = false;
     },
