@@ -19,7 +19,7 @@
 
           <v-card class="pa-1">{{ authUser.tasks[0].body }}</v-card>
 
-          <v-btn color="mt-5 yellow darken-1" @click="$emit('open-karte-dialog', true)">
+          <v-btn color="mt-5 yellow darken-1" @click="$emit('input-karte')">
             <span class="white--text">カルテ記入</span>
           </v-btn>
         </v-container>

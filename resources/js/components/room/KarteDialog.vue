@@ -162,7 +162,7 @@
     </v-dialog>
 
     <!-- 継続確認ダイアログ -->
-    <v-dialog v-model="continueDialog" v-if="confirm" width="600" persistent>
+    <v-dialog v-model="confirmDialog" width="600" persistent>
       <v-card class="headline grey darken-2 text-center px-2">
         <v-container>
           <v-card-text class="pa-2 white--text title font-weight-bold">
@@ -171,16 +171,8 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              text
-              color="grey lighten-5"
-              @click="$emit('open-project-dialog', true), $emit('close', false)"
-            >
-              はい
-            </v-btn>
-            <v-btn text color="grey lighten-5" @click="$emit('leave'), $emit('close', false)">
-              いいえ
-            </v-btn>
+            <v-btn text color="grey lighten-5" @click="$emit('continue-study')">はい</v-btn>
+            <v-btn text color="grey lighten-5" @click="$emit('leave-room')">いいえ</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </v-container>
@@ -194,14 +186,12 @@ import { OK } from '@/consts/status';
 
 export default {
   props: {
-    confirm: Boolean, //退席するか自習を続けるかの確認モーダルの制御
+    confirm: Boolean, // 自習継続の確認
   },
   data() {
     return {
       dialog: true,
-      continueDialog: false,
       karteForm: {
-        dialog: false,
         body: '', // やったこと
         achieve: '', // 達成できたこと
         trouble: '', // つまづいたこと
@@ -222,6 +212,7 @@ export default {
         inputs: [], // 選択済データ
         loading: false,
       },
+      confirmDialog: false, // 自習継続の確認
     };
   },
   computed: {
@@ -280,22 +271,18 @@ export default {
           this.dialog = false;
         }
 
-        if (!this.confirm) {
-          //確認モーダルが不要の場合
-          this.$emit('leave');
-          this.$emit('close');
-          this.$emit('continue-dialog', true); //初期化
-        } else {
-          //確認モーダルが必要なとき
-          this.continueDialog = true;
-        }
-
         // // 結果表示
         // // this.karteForm.loading = false;
         // // this.karteForm.message = response.data;
         // // this.karteForm.snackbar = true;
+
+        // 自習継続の確認
+        if (this.confirm) {
+          this.confirmDialog = true;
+        } else {
+          this.$emit('leave-room');
+        }
       }
-      console.log(this.karteForm.technologies);
     },
   },
 };
