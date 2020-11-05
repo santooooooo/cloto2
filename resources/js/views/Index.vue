@@ -35,7 +35,7 @@
 
           <v-btn
             :loading="contactForm.loading"
-            :disabled="!contactForm.validation.valid || contactForm.snackbar"
+            :disabled="!contactForm.validation.valid"
             @click="sendContact()"
             block
             large
@@ -46,18 +46,6 @@
         </v-form>
       </v-container>
     </v-card>
-
-    <div class="text-center">
-      <v-snackbar v-model="contactForm.snackbar" :timeout="10000">
-        {{ contactForm.message }}
-
-        <template v-slot:action="{ attrs }">
-          <v-btn color="pink" text v-bind="attrs" @click="contactForm.snackbar = false">
-            閉じる
-          </v-btn>
-        </template>
-      </v-snackbar>
-    </div>
 
     <v-btn
       fixed
@@ -102,8 +90,6 @@ export default {
         email: '',
         body: '',
         loading: false,
-        snackbar: false,
-        message: '',
         validation: {
           valid: false,
           nameRules: [(v) => !!v || '名前は必須項目です。'],
@@ -135,12 +121,17 @@ export default {
 
         if (response.status === OK) {
           this.$refs.contactForm.reset();
+          var type = 'success';
+        } else {
+          var type = 'error';
         }
 
-        // 結果表示
+        this.$store.dispatch('alert/show', {
+          type: type,
+          message: response.data,
+        });
+
         this.contactForm.loading = false;
-        this.contactForm.message = response.data;
-        this.contactForm.snackbar = true;
       }
     },
   },

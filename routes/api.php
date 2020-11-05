@@ -50,3 +50,5 @@ Route::post('/task/start', 'API\TaskController@start')->name('taskStart');
 Route::get('/karte/index_from_user/{user_id}', 'API\KarteController@index_from_user')->name('karteIndexFromUser');
 Route::get('/karte/index_from_task/{task_id}', 'API\KarteController@index_from_task')->name('karteIndexFromTask');
 Route::post('/karte/post', 'API\KarteController@post')->name('kartePost');
+
+Route::get('/technology', 'API\TechnologyController@index')->name('technologyIndex');

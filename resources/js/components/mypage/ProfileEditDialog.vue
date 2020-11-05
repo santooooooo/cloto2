@@ -6,12 +6,12 @@
           <div class="card">
             <!-- アイコン -->
             <div class="form-group">
-              <image-drop-upload
+              <InputImage
                 :no-change-crop-ratio="true"
                 ratio-x="1"
                 ratio-y="1"
                 @input="profileUpdateForm.icon = $event"
-              ></image-drop-upload>
+              />
             </div>
 
             <v-text-field
@@ -227,19 +227,23 @@ export default {
         var response = await this.$http.post(this.$endpoint('profileUpdate'), input);
 
         if (response.status === OK) {
-          // this.$store.commit('showAlert', 'success', 'ユーザーデータが更新されました。');
+          this.$store.dispatch('alert/show', {
+            type: 'success',
+            message: 'ユーザーデータが更新されました。',
+          });
 
           // ユーザーデータの同期
           await this.$store.dispatch('auth/syncAuthUser');
 
           this.dialog = false;
-        }
-        this.profileUpdateForm.loading = false;
+        } else {
+          this.$store.dispatch('alert/show', {
+            type: 'error',
+            message: 'エラーが発生しました。',
+          });
 
-        // 結果表示
-        // this.profileUpdateForm.loading = false;
-        // this.profileUpdateForm.message = response.data;
-        // this.profileUpdateForm.snackbar = true;
+          this.profileUpdateForm.loading = false;
+        }
       }
     },
   },

@@ -19,14 +19,19 @@
 
           <v-card class="pa-1">{{ authUser.tasks[0].body }}</v-card>
 
-          <v-btn color="mt-5 yellow darken-1" @click="$emit('open-karte-dialog', true)">
+          <v-btn depressed color="mt-5 yellow darken-1" @click="$emit('input-karte')">
             <span class="white--text">カルテ記入</span>
           </v-btn>
         </v-container>
       </v-card>
 
       <div class="pa-2">
-        <v-btn block color="error" :disabled="!authUser.tasks.length" @click="$emit('leave-room')"
+        <v-btn
+          block
+          depressed
+          color="error"
+          :disabled="!authUser.tasks.length"
+          @click="$emit('leave-room')"
           >退席</v-btn
         >
       </div>

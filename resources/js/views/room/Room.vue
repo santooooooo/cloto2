@@ -11,9 +11,8 @@
 
     <Drawer
       :room-name="roomData.name"
-      @leave-room="leaveKarte()"
-      @open-project-dialog="projectDialog = $event"
-      @open-karte-dialog="karteDialog = $event"
+      @input-karte="inputKarte(true)"
+      @leave-room="inputKarte(false)"
     />
 
     <v-flex id="main">
@@ -27,9 +26,9 @@
 
       <!-- プロフィールダイアログ -->
       <ProfileDialog
-        :user-id="profileUserId"
-        @close="profileDialog = $event"
-        v-if="profileDialog"
+        :user-id="profile.userId"
+        @close="profile.dialog = $event"
+        v-if="profile.dialog"
       ></ProfileDialog>
 
       <!-- プロジェクトダイアログ -->
@@ -41,25 +40,12 @@
 
       <!-- カルテダイアログ -->
       <KarteDialog
-        :confirm="confirmDialog"
-        @close="karteDialog = $event"
-        @leave="leaveRoom()"
-        v-if="karteDialog"
-        @open-project-dialog="projectDialog = $event"
-        @open-karte-dialog="karteDialog = $event"
-        @continue-dialog="confirmDialog = $event"
+        :confirm="karte.confirm"
+        @close="karte.dialog = $event"
+        @leave-room="leaveRoom()"
+        @continue-study="continueStudy()"
+        v-if="karte.dialog"
       ></KarteDialog>
-
-      <!-- エラーメッセージ -->
-      <div class="text-center ma-2">
-        <v-snackbar v-model="errorSnackbar">
-          {{ errorMessage }}
-
-          <template v-slot:action="{ attrs }">
-            <v-btn color="pink" text v-bind="attrs" @click="errorSnackbar = false"> Close </v-btn>
-          </template>
-        </v-snackbar>
-      </div>
     </v-flex>
   </v-layout>
 </template>
@@ -82,8 +68,6 @@ export default {
   },
   data() {
     return {
-      errorSnackbar: false, // エラーメッセージ表示制御
-      errorMessage: '', // エラーメッセージ
       canvas: '', // キャンバスエリア
       isLoading: false, // ロードの制御
       syncTimer: null, // 同期制御
@@ -93,11 +77,15 @@ export default {
       iconSize: 30, // アイコンサイズ
       isLoungeEnter: false, // 休憩室入室制御
       loungeId: '', // 入室する休憩室のセクションID
-      profileDialog: false, // プロフィールのモーダル制御
-      profileUserId: null, // プロフィールを表示するユーザーID
+      profile: {
+        dialog: false, // プロフィールのモーダル制御
+        userId: null, // プロフィールを表示するユーザーID
+      },
       projectDialog: false, // プロジェクトモーダルの制御
-      karteDialog: false, // カルテ記入モーダルの制御
-      confirmDialog: true, //falseのときカルテ記入後退席 trueの時自習継続するかのモーダル表示
+      karte: {
+        dialog: false, // カルテ記入ダイアログの制御
+        confirm: true, // 自習継続の確認
+      },
       now: '00:00:00', // 現在時刻
     };
   },
@@ -188,8 +176,7 @@ export default {
      * @param Object  seatObject 状態を変更する座席
      */
     userAction: async function (action, seatObject = null) {
-      var endpoint = '';
-      var response = '';
+      var endpoint, response;
       switch (action) {
         case 'sitting':
           // 着席処理
@@ -230,8 +217,7 @@ export default {
 
       // エラー発生時
       if (response.status !== OK) {
-        this.errorMessage = response.data.message;
-        this.errorSnackbar = true;
+        this.$store.dispatch('alert/show', { type: 'error', message: response.data.message });
       }
 
       // ユーザーデータの同期
@@ -291,8 +277,10 @@ export default {
           case 'lounge': // 休憩室がクリックされた場合
             if (this.authUser.seat === null) {
               // どこにも着席していない状態で休憩室をクリックした場合
-              this.errorMessage = 'いきなり休憩ですか？まずは自習をしましょう！';
-              this.errorSnackbar = true;
+              this.$store.dispatch('alert/show', {
+                type: 'error',
+                message: 'いきなり休憩ですか？まずは自習をしましょう！',
+              });
             } else {
               // 現在自習室に着席中の場合
               if (this.authUser.seat.section.role === 'study') {
@@ -306,15 +294,27 @@ export default {
         // ロード終了
         this.isLoading = false;
       } else if (targetType === 'icon') {
-        this.profileDialog = true;
-        this.profileUserId = event.target.userId;
+        this.profile.dialog = true;
+        this.profile.userId = event.target.userId;
       }
+    },
+
+    /**
+     * カルテの記入
+     *
+     * @param Boolean confirm 自習継続の確認をするか
+     */
+    inputKarte: function (confirm) {
+      this.karte.confirm = confirm;
+      this.karte.dialog = true;
     },
 
     /**
      * 自習室からの退席処理
      */
     leaveRoom: async function () {
+      this.karte.dialog = false;
+
       // ロード開始
       this.isLoading = true;
 
@@ -323,14 +323,6 @@ export default {
 
       // ロード終了
       this.isLoading = false;
-    },
-
-    /**
-     * 退席ボタン押されたときのカルテ記入処理
-     */
-    leaveKarte: function () {
-      this.karteDialog = true;
-      this.confirmDialog = false; //退席の意思があるから自習継続の確認不要
     },
 
     /**
@@ -364,8 +356,8 @@ export default {
     /**
      * アイコンの配置
      *
-     * @param Int x 配置される座席のx座標
-     * @param Int y 配置される座席のy座標
+     * @param Number x 配置される座席のx座標
+     * @param Number y 配置される座席のy座標
      * @param Object  user  描画するユーザー
      */
     putIcon: function (x, y, user) {
@@ -416,7 +408,6 @@ export default {
      */
     startStudy: async function () {
       this.projectDialog = false;
-      console.log('呼ばれてるよ');
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
@@ -429,6 +420,24 @@ export default {
       this.projectDialog = false;
       this.leaveRoom();
     },
+
+    /**
+     * 自習継続
+     */
+    continueStudy: function () {
+      this.karte.dialog = false;
+      this.projectDialog = true;
+    },
+  },
+
+  created() {
+    /**
+     * 例外処理
+     */
+    if (this.authUser.seat_id !== null && this.authUser.task_id === null) {
+      // タスク選択中にページ更新された場合の処理
+      this.leaveRoom();
+    }
   },
 
   async mounted() {
