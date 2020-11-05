@@ -96,22 +96,10 @@ class KarteController extends Controller
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        // // 技術タグの紐付け
-        // if (isset($request->technologies)) {
-        //     // 入力された技術タグの取得
-        //     mb_regex_encoding("UTF-8");
-        //     preg_match_all('/[#＃]([a-zａ-ｚA-ZＡ-Ｚ0-9０-９ぁ-んァ-ヶ一-龠!?！？@＠~～ー_-]+)/u', $request->technologies, $technologies);
-
-        //     $technology_ids = [];
-        //     // $technologies[1]には#を除いた文字列が入っている
-        //     foreach ($technologies[1] as $name) {
-        //         // 技術タグが存在しない場合は新規作成
-        //         $technology = $this->technology->firstOrCreate(['name' => $name]);
-        //         array_push($technology_ids, $technology->id);
-        //     }
-
-        //     $result->technologies()->sync($technology_ids);
-        // }
+        // 技術タグの紐付け
+        if (!empty($data['technologies'])) {
+            $result->technologies()->sync(explode(',', $data['technologies']));
+        }
 
         return response()->json($result);
     }

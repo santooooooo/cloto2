@@ -6,12 +6,12 @@
           <div class="card">
             <!-- アイコン -->
             <div class="form-group">
-              <image-drop-upload
+              <InputImage
                 :no-change-crop-ratio="true"
                 ratio-x="1"
                 ratio-y="1"
                 @input="profileUpdateForm.icon = $event"
-              ></image-drop-upload>
+              />
             </div>
 
             <v-text-field

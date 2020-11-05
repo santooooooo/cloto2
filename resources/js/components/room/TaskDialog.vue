@@ -8,17 +8,18 @@
       <v-card class="headline grey darken-2 text-center" v-else>
         <v-container>
           <v-row>
-            <v-btn small depressed @click="$emit('close', false)" color="error" class="ml-3">
-              <v-icon dark>mdi-arrow-left</v-icon> プロジェクト選択に戻る
+            <v-btn small depressed @click="$emit('close', false)" dark class="grey darken-1 ml-3">
+              <v-icon class="white--text">mdi-arrow-left</v-icon>
+              プロジェクト選択に戻る
             </v-btn>
           </v-row>
 
-          <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+          <v-card-text class="pa-2 white--text title font-weight-bold">
             今日のタスクは？
           </v-card-text>
 
           <v-list class="rounded-lg">
-            <v-list-item-group color="success">
+            <v-list-item-group color="grey">
               <v-list-item v-for="task in tasks" :key="task.id">
                 <v-list-item-content @click="openConfirmDialog(task)">
                   <v-list-item-title v-text="task.body"></v-list-item-title>
@@ -55,7 +56,9 @@
             </v-btn>
           </v-row>
 
-          <v-card-text class="pa-2 white--text font-weight-bold">タスクの追加</v-card-text>
+          <v-card-text class="pa-2 white--text title whitefont-weight-bold"
+            >タスクの追加</v-card-text
+          >
 
           <v-form ref="newTaskForm" v-model="newTaskForm.validation.valid" lazy-validation>
             <v-text-field
@@ -78,10 +81,11 @@
                 :loading="newTaskForm.loading"
                 :disabled="!newTaskForm.validation.valid"
                 @click="submitNewTask()"
-                class="white--text"
+                dark
               >
                 追加
               </v-btn>
+              <v-spacer></v-spacer>
             </v-card-actions>
           </v-form>
         </v-container>
@@ -90,11 +94,12 @@
 
     <!-- タスク確定ダイアログ -->
     <v-dialog persistent v-model="confirm.dialog" width="600" height="600">
-      <v-card class="headline grey lighten-1 text-center">
+      <v-card class="headline grey darken-2 text-center">
         <v-container>
           <v-row>
-            <v-btn small depressed @click="confirm.dialog = false" color="error" class="ml-3">
-              <v-icon dark>mdi-arrow-left</v-icon> タスク選択に戻る
+            <v-btn small depressed @click="confirm.dialog = false" class="grey darken-1 ml-3">
+              <v-icon class="white--text">mdi-arrow-left</v-icon>
+              <span class="white--text">タスク選択に戻る</span>
             </v-btn>
           </v-row>
 
@@ -102,20 +107,19 @@
             選択されたタスク
           </v-card-text>
 
-          <v-card class="rounded-lg"> {{ chosenTask.body }} </v-card>
+          <v-card class="rounded-lg pa-2"> {{ chosenTask.body }} </v-card>
 
           <v-card-actions>
             <v-spacer></v-spacer>
-
             <v-btn
-              @click="startStudy()"
+              depressed
+              color="#f6bf00"
               :loading="confirm.loading"
-              class="ml-3 mt-3"
-              color="error"
+              @click="startStudy()"
               dark
+              class="mt-3 white--text"
             >
-              START
-              <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
+              自習開始
             </v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
