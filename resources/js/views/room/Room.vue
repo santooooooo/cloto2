@@ -415,7 +415,7 @@ export default {
       var loungeTimes = [
         { hour: 17, minute: 45 },
         { hour: 18, minute: 0 },
-        { hour: 18, minute: 30 },
+        { hour: 18, minute: 39 },
       ];
       let currentHour = date.getHours(); //現在のhour
       let currentMinutes = date.getMinutes(); //現在のminutesを取得
@@ -426,7 +426,7 @@ export default {
             currentHour === loungeTimes[loungeTime].hour &&
             currentMinutes === loungeTimes[loungeTime].minute
           ) {
-            console.log('休憩の時間です');
+            //this.startDisplay();
           }
         }
       }
