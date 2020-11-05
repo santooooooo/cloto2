@@ -1,15 +1,25 @@
 <template>
   <v-container py-0>
     <v-row>
-      <v-col class="pa-0">
-        <v-card tile min-height="700"  color="blue-grey lighten-2">
-          <v-skeleton-loader
+      <v-col cols="3" class="pa-0">
+        <v-card tile min-height="700"  color="blue-grey lighten-2" >
+          
+          
+          <!-- <v-skeleton-loader
             type="card-heading, list-item@10"
             class="pt-1 px-4"
-            v-if="projects.loading"
-          ></v-skeleton-loader>
+           
+          ></v-skeleton-loader> -->
+      <v-overlay  v-if="projects.loading">
+     <v-progress-circular
+      indeterminate
+    ></v-progress-circular>
+      </v-overlay>
 
-          <v-list  v-else nav permanent color="blue-grey lighten-2" >
+
+    
+
+          <v-list  v-else nav permanent color="blue-grey lighten-2"  >
             <v-subheader>プロジェクト</v-subheader>
             <v-list-item-group color="primary">
               <v-list-item v-for="project in projects.data" :key="project.id" color="primary">
@@ -22,17 +32,25 @@
         </v-card>
       </v-col>
 
-      <v-col class="pa-0">
+      <v-col cols="3" class="pa-0">
         <v-card tile min-height="700" color="blue-grey lighten-3">
-          <v-skeleton-loader
-            type="card-heading, list-item@10"
+          <!-- <v-skeleton-loader
+            type="card-heading, list-item@1"
             class="pt-1 px-4"
             v-if="tasks.loading"
-          ></v-skeleton-loader>
+           
+          ></v-skeleton-loader> -->
+  <v-overlay
+    v-if="tasks.loading">
+       <v-progress-circular
+      indeterminate
+    ></v-progress-circular>
+  </v-overlay>
 
-          <v-list  v-else nav permanent  color="blue-grey lighten-3"> 
+
+          <v-list  v-else nav permanent  color="blue-grey lighten-3" width="300"> 
             <v-subheader>タスク</v-subheader>
-            <v-list-item-group color="primary">
+            <v-list-item-group color="primary" class="mr-3">
               <v-list-item v-for="task in tasks.data" :key="task.id" color="primary">
                 <v-list-item-content @click="getKartes(task.id)">
                   <v-list-item-title v-text="task.body"></v-list-item-title>
@@ -43,13 +61,20 @@
         </v-card>
       </v-col>
 
-      <v-col class="pa-0">
-        <v-card tile min-height="700"  color="blue-grey lighten-4">
-          <v-skeleton-loader
+      <v-col cols="5" class="pa-0">
+        <v-card tile min-height="700"  color="blue-grey lighten-4" width="700">
+          <!-- <v-skeleton-loader
             type="card-heading, list-item@10"
             class="pt-1 px-4"
             v-if="kartes.loading"
-          ></v-skeleton-loader>
+          ></v-skeleton-loader> -->
+    <v-overlay  v-if="kartes.loading">
+         <v-progress-circular
+      indeterminate
+    ></v-progress-circular>
+
+    </v-overlay>
+
 
           <v-list   v-else nav permanent  color="blue-grey lighten-4">
             <v-subheader>カルテ</v-subheader>
@@ -91,7 +116,7 @@
                 </v-card-text>
                 <v-card
                   rounded
-                >どこからとってくるかやり方を考えよ</v-card>
+                > {{karteDialog.data.body}}</v-card>
 
                 <v-card-text class="pa-2 white--text title whitefont-weight-bold">
                   参考文献
@@ -100,7 +125,14 @@
                   solo
                   rounded
                   height="30"
-                >nullの時の処理を追加する</v-card>
+                  v-if="karteDialog.data.reference!=null"
+                >{{karteDialog.data.reference}}</v-card>
+                    <v-card
+                  solo
+                  rounded
+                  height="30"
+                 v-else
+                >なし</v-card>
               </v-col>
 
               <v-col>
@@ -144,7 +176,14 @@
                 <v-card
                   rounded
                   height="200"
+                  v-if="karteDialog.data.archive!=null"
                 > {{karteDialog.data.achieve}}</v-card>
+
+                <v-card
+                  rounded
+                  height="200"
+                  v-else
+                > 特になし</v-card>
                  
               </v-col>
 
@@ -155,7 +194,16 @@
                 <v-card
                   rounded
                   height="200"
-                >nullの時の処理を追加する</v-card>
+                  v-if="karteDialog.data.troble !=null"
+                >{{karteDialog.data.troble}}</v-card>
+
+                <v-card
+                  rounded
+                  height="200"
+                  v-else
+                >特になし</v-card>
+
+                
               </v-col>
             </v-row>
         </v-container>
