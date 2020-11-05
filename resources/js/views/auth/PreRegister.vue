@@ -62,7 +62,7 @@
                 <v-row justify="center" class="mt-6">
                   <v-btn
                     :loading="preRegisterForm.loading"
-                    :disabled="!preRegisterForm.validation.valid || preRegisterForm.snackbar"
+                    :disabled="!preRegisterForm.validation.valid"
                     @click="preRegister()"
                     color="info"
                     class="font-weight-bold"
@@ -75,18 +75,6 @@
         </v-container>
       </v-card-text>
     </v-card>
-
-    <div class="text-center">
-      <v-snackbar v-model="preRegisterForm.snackbar" :timeout="10000">
-        {{ preRegisterForm.message }}
-
-        <template v-slot:action="{ attrs }">
-          <v-btn color="pink" text v-bind="attrs" @click="preRegisterForm.snackbar = false">
-            閉じる
-          </v-btn>
-        </template>
-      </v-snackbar>
-    </div>
   </v-dialog>
 </template>
 
@@ -109,9 +97,6 @@ export default {
         email: '',
         newsletter: true,
         loading: false,
-        status: false,
-        snackbar: false,
-        message: '',
         validation: {
           valid: false,
           nameRules: [(v) => !!v || 'お名前は必須項目です。'],
@@ -133,12 +118,6 @@ export default {
         this.$router.push({ name: 'index' });
       }
     },
-    'preRegisterForm.snackbar': function () {
-      // メッセージが閉じたらリダイレクト
-      if (this.preRegisterForm.snackbar === false && this.preRegisterForm.status === true) {
-        this.$router.push({ name: 'index' });
-      }
-    },
   },
   methods: {
     preRegister: async function () {
@@ -155,14 +134,20 @@ export default {
         var response = await this.$http.post(this.$endpoint('preRegister'), input);
 
         if (response.status === OK) {
-          this.$refs.preRegisterForm.reset();
-          this.preRegisterForm.status = true;
-        }
+          this.$store.commit('alert/show', {
+            type: 'success',
+            message: response.data,
+          });
 
-        // 結果表示
-        this.preRegisterForm.loading = false;
-        this.preRegisterForm.message = response.data;
-        this.preRegisterForm.snackbar = true;
+          this.$router.push({ name: 'index' });
+        } else {
+          this.$store.commit('alert/show', {
+            type: 'error',
+            message: response.data,
+          });
+
+          this.preRegisterForm.loading = false;
+        }
       }
     },
   },

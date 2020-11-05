@@ -260,17 +260,20 @@ export default {
         var response = await this.$http.post(this.$endpoint('kartePost'), input);
 
         if (response.status === OK) {
-          // フォームの初期化
-          this.$refs.karteForm.reset();
-          this.karteForm.loading = false;
+          this.$store.commit('alert/show', {
+            type: 'success',
+            message: 'カルテが保存されました。',
+          });
 
           this.dialog = false;
-        }
+        } else {
+          this.$store.commit('alert/show', {
+            type: 'error',
+            message: 'エラーが発生しました。',
+          });
 
-        // // 結果表示
-        // // this.karteForm.loading = false;
-        // // this.karteForm.message = response.data;
-        // // this.karteForm.snackbar = true;
+          this.karteForm.loading = false;
+        }
 
         // 自習継続の確認
         if (this.confirm) {

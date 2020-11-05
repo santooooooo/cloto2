@@ -185,11 +185,12 @@ export default {
 
       if (response.status === OK) {
         this.$emit('start-study');
+      } else {
+        this.$store.commit('alert/show', {
+          type: 'error',
+          message: 'エラーが発生しました。',
+        });
       }
-      // 結果表示
-      // this.newTaskForm.loading = false;
-      // this.newTaskForm.message = response.data;
-      // this.newTaskForm.snackbar = true;
     },
 
     /**
@@ -204,10 +205,15 @@ export default {
           body: this.newTaskForm.body,
         };
 
-        // 仮登録処理
+        // タスク追加処理
         var response = await this.$http.post(this.$endpoint('taskPost'), input);
 
         if (response.status === OK) {
+          this.$store.commit('alert/show', {
+            type: 'success',
+            message: 'タスクが追加されました。',
+          });
+
           // 新規タスクをリストに追加
           this.tasks.push(response.data);
           this.newTaskForm.dialog = false;
@@ -215,12 +221,14 @@ export default {
           // フォームの初期化
           this.$refs.newTaskForm.reset();
           this.newTaskForm.loading = false;
-        }
+        } else {
+          this.$store.commit('alert/show', {
+            type: 'error',
+            message: 'エラーが発生しました。',
+          });
 
-        // 結果表示
-        // this.newTaskForm.loading = false;
-        // this.newTaskForm.message = response.data;
-        // this.newTaskForm.snackbar = true;
+          this.newTaskForm.loading = false;
+        }
       }
     },
   },

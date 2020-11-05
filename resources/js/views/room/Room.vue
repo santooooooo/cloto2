@@ -46,17 +46,6 @@
         @continue-study="continueStudy()"
         v-if="karte.dialog"
       ></KarteDialog>
-
-      <!-- エラーメッセージ -->
-      <div class="text-center ma-2">
-        <v-snackbar v-model="errorSnackbar">
-          {{ errorMessage }}
-
-          <template v-slot:action="{ attrs }">
-            <v-btn color="pink" text v-bind="attrs" @click="errorSnackbar = false"> Close </v-btn>
-          </template>
-        </v-snackbar>
-      </div>
     </v-flex>
   </v-layout>
 </template>
@@ -79,8 +68,6 @@ export default {
   },
   data() {
     return {
-      errorSnackbar: false, // エラーメッセージ表示制御
-      errorMessage: '', // エラーメッセージ
       canvas: '', // キャンバスエリア
       isLoading: false, // ロードの制御
       syncTimer: null, // 同期制御
@@ -189,8 +176,7 @@ export default {
      * @param Object  seatObject 状態を変更する座席
      */
     userAction: async function (action, seatObject = null) {
-      var endpoint = '';
-      var response = '';
+      var endpoint, response;
       switch (action) {
         case 'sitting':
           // 着席処理
@@ -231,8 +217,7 @@ export default {
 
       // エラー発生時
       if (response.status !== OK) {
-        this.errorMessage = response.data.message;
-        this.errorSnackbar = true;
+        this.$store.commit('alert/show', { type: 'error', message: response.data.message });
       }
 
       // ユーザーデータの同期
@@ -292,8 +277,10 @@ export default {
           case 'lounge': // 休憩室がクリックされた場合
             if (this.authUser.seat === null) {
               // どこにも着席していない状態で休憩室をクリックした場合
-              this.errorMessage = 'いきなり休憩ですか？まずは自習をしましょう！';
-              this.errorSnackbar = true;
+              this.$store.commit('alert/show', {
+                type: 'error',
+                message: 'いきなり休憩ですか？まずは自習をしましょう！',
+              });
             } else {
               // 現在自習室に着席中の場合
               if (this.authUser.seat.section.role === 'study') {
@@ -369,8 +356,8 @@ export default {
     /**
      * アイコンの配置
      *
-     * @param Int x 配置される座席のx座標
-     * @param Int y 配置される座席のy座標
+     * @param Number x 配置される座席のx座標
+     * @param Number y 配置される座席のy座標
      * @param Object  user  描画するユーザー
      */
     putIcon: function (x, y, user) {
