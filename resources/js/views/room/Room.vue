@@ -5,8 +5,8 @@
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
     <!-- 自習スタートローディング-->
-    <v-overlay :value="isLoading">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    <v-overlay :opacity="0.8" :value="roomStatusDisplay" color="#f6bf00" dark>
+      <div class="statusDisplay">自習スタート</div>
     </v-overlay>
 
     <Drawer
@@ -86,6 +86,7 @@ export default {
       errorMessage: '', // エラーメッセージ
       canvas: '', // キャンバスエリア
       isLoading: false, // ロードの制御
+      roomStatusDisplay: false, //自習スタートローディング
       syncTimer: null, // 同期制御
       roomData: '', // 教室データ
       roomWidth: 1080, // 教室サイズ
@@ -98,7 +99,8 @@ export default {
       projectDialog: false, // プロジェクトモーダルの制御
       karteDialog: false, // カルテ記入モーダルの制御
       confirmDialog: true, //falseのときカルテ記入後退席 trueの時自習継続するかのモーダル表示
-      now: '00:00:00', // 現在時刻
+      now: '00:00', // 現在時刻
+      zIndex: 0,
     };
   },
 
@@ -407,7 +409,9 @@ export default {
       //function(e) この引数eは、eventの「e」
       let date = new Date(); //new演算子でオブジェクトのインスタンスを生成
       //現在時刻の取得 **ここからはjavascript**
-      this.now = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      // this.now = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      this.now = date.getHours() + ':' + date.getMinutes();
+
       console.log(this.now);
     },
 
@@ -416,7 +420,7 @@ export default {
      */
     startStudy: async function () {
       this.projectDialog = false;
-      console.log('呼ばれてるよ');
+      this.startDisplay(); //自習開始の表示
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
@@ -428,6 +432,19 @@ export default {
     cancelStartStudy: function () {
       this.projectDialog = false;
       this.leaveRoom();
+    },
+    /**
+     * ルームの状態表示開始(休憩時間開始、自習開始など)
+     */
+    startDisplay: function () {
+      this.roomStatusDisplay = true;
+      setTimeout(this.closeDisplay, 2000);
+    },
+    /**
+     * 自習開始
+     */
+    closeDisplay: async function () {
+      this.roomStatusDisplay = false;
     },
   },
 
@@ -520,6 +537,7 @@ export default {
      */
     this.syncTimer = setInterval(() => {
       this.getRoom();
+      // this.time();
     }, 3000);
   },
 
@@ -534,6 +552,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/_variables';
+
+.statusDisplay {
+  font-size: 1000%;
+}
 
 #main {
   background-color: $light-yellow;
