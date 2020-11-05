@@ -108,7 +108,7 @@ export default {
 
 <style lang="scss" scoped>
 .v-alert {
-  position: absolute;
+  position: fixed;
   z-index: 9999;
   top: 15px;
   left: 50%;
