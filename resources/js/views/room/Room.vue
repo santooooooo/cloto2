@@ -5,8 +5,8 @@
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
     <!-- 自習スタートローディング-->
-    <v-overlay :value="isLoading">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    <v-overlay :opacity="0.8" :value="roomStatusDisplay" color="#f6bf00" dark>
+      <div class="statusDisplay">自習スタート</div>
     </v-overlay>
 
     <Drawer
@@ -70,6 +70,7 @@ export default {
     return {
       canvas: '', // キャンバスエリア
       isLoading: false, // ロードの制御
+      roomStatusDisplay: false, //自習スタートローディング
       syncTimer: null, // 同期制御
       roomData: '', // 教室データ
       roomWidth: 1080, // 教室サイズ
@@ -86,7 +87,8 @@ export default {
         dialog: false, // カルテ記入ダイアログの制御
         confirm: true, // 自習継続の確認
       },
-      now: '00:00:00', // 現在時刻
+      now: '00:00', // 現在時刻 1240 １２時40分
+      zIndex: 0,
     };
   },
 
@@ -399,8 +401,27 @@ export default {
       //function(e) この引数eは、eventの「e」
       let date = new Date(); //new演算子でオブジェクトのインスタンスを生成
       //現在時刻の取得 **ここからはjavascript**
-      this.now = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-      console.log(this.now);
+      // this.now = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+
+      //休憩時間開始時刻仮置き
+      var loungeTimes = [
+        { hour: 17, minute: 45 },
+        { hour: 18, minute: 0 },
+        { hour: 18, minute: 39 },
+      ];
+      let currentHour = date.getHours(); //現在のhour
+      let currentMinutes = date.getMinutes(); //現在のminutesを取得
+
+      for (var loungeTime in loungeTimes) {
+        if (loungeTimes.hasOwnProperty(loungeTime)) {
+          if (
+            currentHour === loungeTimes[loungeTime].hour &&
+            currentMinutes === loungeTimes[loungeTime].minute
+          ) {
+            //this.startDisplay();
+          }
+        }
+      }
     },
 
     /**
@@ -408,6 +429,8 @@ export default {
      */
     startStudy: async function () {
       this.projectDialog = false;
+
+      this.startDisplay(); //自習開始の表示
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
@@ -427,6 +450,21 @@ export default {
     continueStudy: function () {
       this.karte.dialog = false;
       this.projectDialog = true;
+    },
+
+    /**
+     * ルームの状態表示開始(休憩時間開始、自習開始など)
+     */
+    startDisplay: function () {
+      this.roomStatusDisplay = true;
+      setTimeout(this.closeDisplay, 2000);
+    },
+
+    /**
+     * 自習開始
+     */
+    closeDisplay: async function () {
+      this.roomStatusDisplay = false;
     },
   },
 
@@ -529,6 +567,7 @@ export default {
      */
     this.syncTimer = setInterval(() => {
       this.getRoom();
+      this.time();
     }, 3000);
   },
 
@@ -543,6 +582,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/_variables';
+
+.statusDisplay {
+  font-size: 1000%;
+}
 
 #main {
   background-color: $light-yellow;
