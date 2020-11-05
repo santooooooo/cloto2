@@ -186,7 +186,7 @@ export default {
       if (response.status === OK) {
         this.$emit('start-study');
       } else {
-        this.$store.commit('alert/show', {
+        this.$store.dispatch('alert/show', {
           type: 'error',
           message: 'エラーが発生しました。',
         });
@@ -209,7 +209,7 @@ export default {
         var response = await this.$http.post(this.$endpoint('taskPost'), input);
 
         if (response.status === OK) {
-          this.$store.commit('alert/show', {
+          this.$store.dispatch('alert/show', {
             type: 'success',
             message: 'タスクが追加されました。',
           });
@@ -222,7 +222,7 @@ export default {
           this.$refs.newTaskForm.reset();
           this.newTaskForm.loading = false;
         } else {
-          this.$store.commit('alert/show', {
+          this.$store.dispatch('alert/show', {
             type: 'error',
             message: 'エラーが発生しました。',
           });

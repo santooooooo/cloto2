@@ -126,7 +126,7 @@ export default {
           var type = 'error';
         }
 
-        this.$store.commit('alert/show', {
+        this.$store.dispatch('alert/show', {
           type: type,
           message: response.data,
         });

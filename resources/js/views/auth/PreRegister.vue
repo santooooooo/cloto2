@@ -134,14 +134,14 @@ export default {
         var response = await this.$http.post(this.$endpoint('preRegister'), input);
 
         if (response.status === OK) {
-          this.$store.commit('alert/show', {
+          this.$store.dispatch('alert/show', {
             type: 'success',
             message: response.data,
           });
 
           this.$router.push({ name: 'index' });
         } else {
-          this.$store.commit('alert/show', {
+          this.$store.dispatch('alert/show', {
             type: 'error',
             message: response.data,
           });

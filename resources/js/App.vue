@@ -11,7 +11,7 @@
     >
       {{ alert.message }}
       <template v-slot:close>
-        <v-icon class="ml-2" @click="$store.commit('alert/hide')">mdi-close-circle</v-icon>
+        <v-icon class="ml-2" @click="$store.dispatch('alert/hide')">mdi-close-circle</v-icon>
       </template>
     </v-alert>
 

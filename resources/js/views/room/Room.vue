@@ -217,7 +217,7 @@ export default {
 
       // エラー発生時
       if (response.status !== OK) {
-        this.$store.commit('alert/show', { type: 'error', message: response.data.message });
+        this.$store.dispatch('alert/show', { type: 'error', message: response.data.message });
       }
 
       // ユーザーデータの同期
@@ -277,7 +277,7 @@ export default {
           case 'lounge': // 休憩室がクリックされた場合
             if (this.authUser.seat === null) {
               // どこにも着席していない状態で休憩室をクリックした場合
-              this.$store.commit('alert/show', {
+              this.$store.dispatch('alert/show', {
                 type: 'error',
                 message: 'いきなり休憩ですか？まずは自習をしましょう！',
               });

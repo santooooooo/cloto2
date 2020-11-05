@@ -260,14 +260,14 @@ export default {
         var response = await this.$http.post(this.$endpoint('kartePost'), input);
 
         if (response.status === OK) {
-          this.$store.commit('alert/show', {
+          this.$store.dispatch('alert/show', {
             type: 'success',
             message: 'カルテが保存されました。',
           });
 
           this.dialog = false;
         } else {
-          this.$store.commit('alert/show', {
+          this.$store.dispatch('alert/show', {
             type: 'error',
             message: 'エラーが発生しました。',
           });

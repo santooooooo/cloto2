@@ -227,7 +227,7 @@ export default {
         var response = await this.$http.post(this.$endpoint('profileUpdate'), input);
 
         if (response.status === OK) {
-          this.$store.commit('alert/show', {
+          this.$store.dispatch('alert/show', {
             type: 'success',
             message: 'ユーザーデータが更新されました。',
           });
@@ -237,7 +237,7 @@ export default {
 
           this.dialog = false;
         } else {
-          this.$store.commit('alert/show', {
+          this.$store.dispatch('alert/show', {
             type: 'error',
             message: 'エラーが発生しました。',
           });
