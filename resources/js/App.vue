@@ -1,5 +1,10 @@
 <template>
   <v-app>
+    <!-- アラート -->
+    <v-alert v-if="alert.show" :type="alert.type" dark dense dismissible>
+      {{ alert.message }}
+    </v-alert>
+
     <!-- ヘッダー -->
     <Header @show-drawer="isShowDrawer = true" @logout="logout" @leave="leave" />
 
@@ -30,12 +35,15 @@ export default {
   },
   data() {
     return {
-      isShowDrawer: false, // ドロワーメニューの表示
+      isShowDrawer: false, // ドロワーメニューの表示制御
     };
   },
   computed: {
     isRelease() {
       return process.env.MIX_APP_RELEASE === 'true' ? true : false;
+    },
+    alert() {
+      return this.$store.state.alert;
     },
     errorCode() {
       return this.$store.state.error.code;
@@ -87,3 +95,15 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.v-alert {
+  position: absolute;
+  z-index: 9999;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+}
+</style>
