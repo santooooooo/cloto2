@@ -430,14 +430,19 @@ export default {
     },
   },
 
+  created() {
+    /**
+     * 例外処理
+     */
+    if (this.authUser.seat_id !== null && this.authUser.task_id === null) {
+      // タスク選択中にページ更新された場合の処理
+      this.leaveRoom();
+    }
+  },
+
   async mounted() {
     // ロード開始
     this.isLoading = true;
-
-    if (this.authUser.task_id === null && this.authUser.seat_id != null) {
-      //タスク選択中に更新されたときの処理
-      this.leaveRoom();
-    }
 
     /**
      * キャンバスの設定
