@@ -1,15 +1,25 @@
 <template>
   <v-container py-0>
     <v-row>
-      <v-col class="pa-0">
-        <v-card tile min-height="700">
-          <v-skeleton-loader
+      <v-col cols="3" class="pa-0">
+        <v-card tile min-height="700"  color="blue-grey lighten-2" >
+          
+          
+          <!-- <v-skeleton-loader
             type="card-heading, list-item@10"
             class="pt-1 px-4"
-            v-if="projects.loading"
-          ></v-skeleton-loader>
+           
+          ></v-skeleton-loader> -->
+      <v-overlay  v-if="projects.loading">
+     <v-progress-circular
+      indeterminate
+    ></v-progress-circular>
+      </v-overlay>
 
-          <v-list nav permanent v-else>
+
+    
+
+          <v-list  v-else nav permanent color="blue-grey lighten-2"  >
             <v-subheader>プロジェクト</v-subheader>
             <v-list-item-group color="primary">
               <v-list-item v-for="project in projects.data" :key="project.id" color="primary">
@@ -22,17 +32,25 @@
         </v-card>
       </v-col>
 
-      <v-col class="pa-0">
-        <v-card tile min-height="700">
-          <v-skeleton-loader
-            type="card-heading, list-item@10"
+      <v-col cols="3" class="pa-0">
+        <v-card tile min-height="700" color="blue-grey lighten-3">
+          <!-- <v-skeleton-loader
+            type="card-heading, list-item@1"
             class="pt-1 px-4"
             v-if="tasks.loading"
-          ></v-skeleton-loader>
+           
+          ></v-skeleton-loader> -->
+  <v-overlay
+    v-if="tasks.loading">
+       <v-progress-circular
+      indeterminate
+    ></v-progress-circular>
+  </v-overlay>
 
-          <v-list nav permanent v-else>
+
+          <v-list  v-else nav permanent  color="blue-grey lighten-3" width="300"> 
             <v-subheader>タスク</v-subheader>
-            <v-list-item-group color="primary">
+            <v-list-item-group color="primary" class="mr-3">
               <v-list-item v-for="task in tasks.data" :key="task.id" color="primary">
                 <v-list-item-content @click="getKartes(task.id)">
                   <v-list-item-title v-text="task.body"></v-list-item-title>
@@ -43,15 +61,22 @@
         </v-card>
       </v-col>
 
-      <v-col class="pa-0">
-        <v-card tile min-height="700">
-          <v-skeleton-loader
+      <v-col cols="5" class="pa-0">
+        <v-card tile min-height="700"  color="blue-grey lighten-4" width="700">
+          <!-- <v-skeleton-loader
             type="card-heading, list-item@10"
             class="pt-1 px-4"
             v-if="kartes.loading"
-          ></v-skeleton-loader>
+          ></v-skeleton-loader> -->
+    <v-overlay  v-if="kartes.loading">
+         <v-progress-circular
+      indeterminate
+    ></v-progress-circular>
 
-          <v-list nav permanent v-else>
+    </v-overlay>
+
+
+          <v-list   v-else nav permanent  color="blue-grey lighten-4">
             <v-subheader>カルテ</v-subheader>
             <v-list-item-group color="primary">
               <v-list-item v-for="karte in kartes.data" :key="karte.id" color="primary">
@@ -65,23 +90,122 @@
       </v-col>
     </v-row>
 
-    <v-dialog persistent v-model="karteDialog.dialog" width="600">
-      <v-card color="grey darken-1" dark>
+    <v-dialog persistent v-model="karteDialog.dialog" width="984">
+      <v-card color="grey darken-1" >
         <v-container>
-          <v-row justify="end">
+
+              <!-- {{karteDialog.data}} -->
+      　  <v-row >
             <v-btn
-              fab
               x-small
-              depressed
               color="error"
-              class="mr-4"
+              depressed
+              class="ml-3"
               @click="karteDialog.dialog = false"
             >
-              <v-icon>mdi-close</v-icon>
+        <v-icon dark>mdi-arrow-left</v-icon> 戻る
             </v-btn>
           </v-row>
 
-          {{ karteDialog.data }}
+
+
+           <v-row justify="center">
+              <v-col>
+                <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+                  活動内容
+                </v-card-text>
+                <v-card
+                  rounded
+                > {{karteDialog.data.body}}</v-card>
+
+                <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+                  参考文献
+                </v-card-text>
+                <v-card
+                  solo
+                  rounded
+                  height="30"
+                  v-if="karteDialog.data.reference!=null"
+                >{{karteDialog.data.reference}}</v-card>
+                    <v-card
+                  solo
+                  rounded
+                  height="30"
+                 v-else
+                >なし</v-card>
+              </v-col>
+
+              <v-col>
+                <v-card-text class="pa-0 white--text title whitefont-weight-bold">
+                  画像
+                </v-card-text>
+                ここに画像を持ってくる処理を描く
+                <!-- ここに画像持ってくる  -->
+              </v-col>
+            </v-row>
+      <v-row>
+         <v-col>
+               <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+                  技術タグ
+                </v-card-text>
+                <v-card
+                  solo
+                  rounded
+                  height="30"
+                >nullの時の処理を追加する</v-card>
+         </v-col>
+
+         <v-col>
+          <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+                  活動時間
+         </v-card-text>
+                  <v-card
+                  solo
+                  rounded
+                  height="30"
+                >a</v-card>
+        </v-col>
+      </v-row>
+
+
+         <v-row>
+              <v-col>
+                <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+                  達成したこと
+                </v-card-text>
+                <v-card
+                  rounded
+                  height="200"
+                  v-if="karteDialog.data.archive!=null"
+                > {{karteDialog.data.achieve}}</v-card>
+
+                <v-card
+                  rounded
+                  height="200"
+                  v-else
+                > 特になし</v-card>
+                 
+              </v-col>
+
+              <v-col>
+                <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+                  できなかったこと
+                </v-card-text>
+                <v-card
+                  rounded
+                  height="200"
+                  v-if="karteDialog.data.troble !=null"
+                >{{karteDialog.data.troble}}</v-card>
+
+                <v-card
+                  rounded
+                  height="200"
+                  v-else
+                >特になし</v-card>
+
+                
+              </v-col>
+            </v-row>
         </v-container>
       </v-card>
     </v-dialog>
