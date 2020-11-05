@@ -5,14 +5,18 @@ const state = {
 };
 
 const mutations = {
-  showAlert(state, option) {
-    state.show = true;
+  show(state, option) {
     state.type = option.type;
     state.message = option.message;
+    state.show = true;
+  },
+  hide(state) {
+    state.show = false;
   },
 };
 
 export default {
+  namespaced: true,
   state,
   mutations,
 };

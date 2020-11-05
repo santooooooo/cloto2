@@ -1,8 +1,18 @@
 <template>
   <v-app>
     <!-- アラート -->
-    <v-alert v-if="alert.show" :type="alert.type" dark dense dismissible>
+    <v-alert
+      :value="alert.show"
+      :type="alert.type"
+      dark
+      dense
+      dismissible
+      transition="scale-transition"
+    >
       {{ alert.message }}
+      <template v-slot:close>
+        <v-icon class="ml-2" @click="$store.commit('alert/hide')">mdi-close-circle</v-icon>
+      </template>
     </v-alert>
 
     <!-- ヘッダー -->
