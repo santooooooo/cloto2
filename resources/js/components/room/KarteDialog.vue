@@ -254,7 +254,7 @@ export default {
         input.append('reference', this.karteForm.reference);
         input.append('image', this.karteForm.image);
         input.append('activity_time', this.karteForm.activityTime);
-        // input.append('technologies', this.technology.inputIds);
+        input.append('technologies', this.technology.inputIds);
 
         // カルテ保存処理
         var response = await this.$http.post(this.$endpoint('kartePost'), input);
