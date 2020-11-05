@@ -11,11 +11,11 @@
 
       <v-card v-if="authUser.tasks.length" class="ma-2 pa-3 grey darken-1 text-center">
         <v-container>
-          <v-card-text class="pa-1 white--text whitefont-weight-bold">プロジェクト</v-card-text>
+          <v-card-text class="pa-1 white--text font-weight-bold">プロジェクト</v-card-text>
 
           <v-card class="pa-1">{{ authUser.tasks[0].project.name }}</v-card>
 
-          <v-card-text class="pa-1 white--text whitefont-weight-bold">タスク</v-card-text>
+          <v-card-text class="pa-1 white--text font-weight-bold">タスク</v-card-text>
 
           <v-card class="pa-1">{{ authUser.tasks[0].body }}</v-card>
 

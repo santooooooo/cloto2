@@ -56,9 +56,7 @@
             </v-btn>
           </v-row>
 
-          <v-card-text class="pa-2 white--text title whitefont-weight-bold"
-            >タスクの追加</v-card-text
-          >
+          <v-card-text class="pa-2 white--text title font-weight-bold">タスクの追加</v-card-text>
 
           <v-form ref="newTaskForm" v-model="newTaskForm.validation.valid" lazy-validation>
             <v-text-field
@@ -103,7 +101,7 @@
             </v-btn>
           </v-row>
 
-          <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+          <v-card-text class="pa-2 white--text title font-weight-bold">
             選択されたタスク
           </v-card-text>
 

@@ -14,7 +14,7 @@
           <v-row>
             <v-col>
               <!-- ユーザー名 -->
-              <v-card-text class="pa-1 ml-2 white--text">ユーザー名</v-card-text>
+              <v-card-text class="pa-1 white--text">ユーザー名</v-card-text>
               <v-text-field
                 v-model="profileUpdateForm.username"
                 :rules="profileUpdateForm.validation.usernameRules"
@@ -27,7 +27,7 @@
 
             <v-col>
               <!-- アカウント名 -->
-              <v-card-text class="pa-1 ml-2 white--text">アカウント名</v-card-text>
+              <v-card-text class="pa-1 white--text">アカウント名</v-card-text>
               <v-text-field
                 v-model="profileUpdateForm.handlename"
                 :rules="profileUpdateForm.validation.accountRules"
@@ -40,7 +40,7 @@
           </v-row>
 
           <!-- メールアドレス -->
-          <v-card-text class="pa-1 ml-2 white--text">メールアドレス</v-card-text>
+          <v-card-text class="pa-1 white--text">メールアドレス</v-card-text>
           <v-text-field
             v-model="profileUpdateForm.email"
             label="メールアドレス"
@@ -52,7 +52,7 @@
           <!-- Twitter -->
           <v-row>
             <v-col>
-              <v-card-text class="pa-1 ml-2 white--text">Twitter</v-card-text>
+              <v-card-text class="pa-1 white--text">Twitter</v-card-text>
               <v-text-field
                 v-model="profileUpdateForm.twitter"
                 placeholder="Twitter 例：CLOTO_JP"
@@ -65,7 +65,7 @@
 
             <!-- GitHub -->
             <v-col>
-              <v-card-text class="pa-1 ml-2 white--text">GitHub</v-card-text>
+              <v-card-text class="pa-1 white--text">GitHub</v-card-text>
               <v-text-field
                 v-model="profileUpdateForm.github"
                 placeholder="GitHub 例：CLOTO_JP"
@@ -80,7 +80,7 @@
           <v-row>
             <!-- Qiita -->
             <v-col>
-              <v-card-text class="pa-1 ml-2 white--text">Qiita</v-card-text>
+              <v-card-text class="pa-1 white--text">Qiita</v-card-text>
               <v-text-field
                 v-model="profileUpdateForm.qiita"
                 placeholder="Qiita 例：CLOTO_JP"
@@ -93,7 +93,7 @@
 
             <!-- ホームページ -->
             <v-col>
-              <v-card-text class="pa-1 ml-2 white--text">Webサイト</v-card-text>
+              <v-card-text class="pa-1 white--text">Webサイト</v-card-text>
               <v-text-field
                 v-model="profileUpdateForm.web"
                 placeholder="Webサイト 例：https://cloto.jp"
@@ -106,7 +106,7 @@
           </v-row>
 
           <!-- 自己紹介 -->
-          <v-card-text class="pa-1 ml-2 white--text">自己紹介</v-card-text>
+          <v-card-text class="pa-1 white--text">自己紹介</v-card-text>
           <v-textarea
             solo
             name="introduction"

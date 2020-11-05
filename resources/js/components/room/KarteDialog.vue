@@ -25,7 +25,7 @@
 
             <v-row justify="center">
               <v-col>
-                <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+                <v-card-text class="pa-2 white--text title font-weight-bold">
                   活動内容<span class="red--text">*</span>
                 </v-card-text>
                 <v-textarea
@@ -37,7 +37,7 @@
                   auto-grow
                 ></v-textarea>
 
-                <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+                <v-card-text class="pa-2 white--text title font-weight-bold">
                   参考文献
                 </v-card-text>
                 <v-textarea
@@ -51,9 +51,7 @@
               </v-col>
 
               <v-col>
-                <v-card-text class="pa-0 white--text title whitefont-weight-bold">
-                  画像
-                </v-card-text>
+                <v-card-text class="pa-0 white--text title font-weight-bold"> 画像 </v-card-text>
 
                 <InputImage @input="karteForm.image = $event" />
               </v-col>
@@ -61,7 +59,7 @@
 
             <v-row>
               <v-col>
-                <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+                <v-card-text class="pa-2 white--text title font-weight-bold">
                   達成したこと
                 </v-card-text>
                 <v-textarea
@@ -74,7 +72,7 @@
               </v-col>
 
               <v-col>
-                <v-card-text class="pa-2 white--text title whitefont-weight-bold">
+                <v-card-text class="pa-2 white--text title font-weight-bold">
                   できなかったこと
                 </v-card-text>
                 <v-textarea
@@ -124,9 +122,7 @@
           </v-row>
 
           <v-card-text>
-            <h2 class="pa-2 white--text title whitefont-weight-bold mb-2 text-center">
-              使用技術タグ
-            </h2>
+            <h2 class="pa-2 white--text title font-weight-bold mb-2 text-center">使用技術タグ</h2>
 
             <!-- ローディング -->
             <v-skeleton-loader type="table-row@6" v-if="technology.loading"></v-skeleton-loader>
