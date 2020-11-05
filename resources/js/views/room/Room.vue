@@ -421,7 +421,6 @@ export default {
      */
     startStudy: async function () {
       this.projectDialog = false;
-      console.log('呼ばれてるよ');
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');

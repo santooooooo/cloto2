@@ -18,8 +18,8 @@
             </v-row>
 
             <v-row justify="center">
-              <v-chip class="ma-3" v-for="techId in karteForm.technologies" :key="techId">
-                {{ technologies.data[techId].name }}
+              <v-chip class="ma-3" v-for="technologyId in technology.inputIds" :key="technologyId">
+                {{ technology.data[technologyId].name }}
               </v-chip>
             </v-row>
 
@@ -107,14 +107,14 @@
     </v-dialog>
 
     <!-- 技術タグ入力ダイアログ -->
-    <v-dialog persistent v-model="technologies.dialog" width="600" height="600">
+    <v-dialog persistent v-model="technology.dialog" width="600" height="600">
       <v-card class="headline grey darken-2 text-center">
         <v-container>
           <v-row>
             <v-btn
               depressed
               small
-              @click="technologies.dialog = false"
+              @click="technology.dialog = false"
               class="ml-3"
               dark
               color="grey lighten-1"
@@ -129,16 +129,16 @@
             </h2>
 
             <!-- ローディング -->
-            <v-skeleton-loader type="table-row@6" v-if="technologies.loading"></v-skeleton-loader>
+            <v-skeleton-loader type="table-row@6" v-if="technology.loading"></v-skeleton-loader>
 
             <v-chip-group
               active-class="white--text"
-              v-model="technologies.inputs"
+              v-model="technology.inputIds"
               column
               multiple
               v-else
             >
-              <v-chip filter v-for="technology in technologies.data" :key="technology.id">
+              <v-chip filter v-for="technology in technology.data" :key="technology.id">
                 {{ technology.name }}
               </v-chip>
             </v-chip-group>
@@ -148,7 +148,7 @@
             <v-spacer></v-spacer>
             <v-btn
               depressed
-              @click="inputTechnology(technologies.inputs)"
+              @click="inputTechnology(technology.inputIds)"
               class="mt-3"
               color="#f6bf00"
               dark
@@ -198,18 +198,16 @@ export default {
         reference: '', // 参考文献
         image: '', // 画像
         activityTime: '00:00', // 活動時間
-        technologies: [], // タグ
-        // selectTechnologies: [], //選択されたタグ　表示用
         loading: false,
         validation: {
           valid: false,
           bodyRules: [(v) => !!v || '活動内容は必須項目です。'],
         },
       },
-      technologies: {
+      technology: {
         dialog: false, // 技術タグ入力ダイアログの制御
         data: '', // 技術タグデータ
-        inputs: [], // 選択済データ
+        inputIds: [], // 選択済データ
         loading: false,
       },
       confirmDialog: false, // 自習継続の確認
@@ -225,15 +223,13 @@ export default {
      * 技術タグの取得
      */
     getTechnology: async function () {
-      this.technologies.loading = true;
-      this.technologies.dialog = true;
+      this.technology.loading = true;
+      this.technology.dialog = true;
 
       var response = await this.$http.get(this.$endpoint('technologyIndex'));
-      this.technologies.data = response.data;
+      this.technology.data = response.data;
 
-      console.log(this.technologies.data);
-
-      this.technologies.loading = false;
+      this.technology.loading = false;
     },
 
     /**
@@ -242,8 +238,8 @@ export default {
      * @param Array technologyIds 入力された技術タグのID
      */
     inputTechnology: function (technologyIds) {
-      this.karteForm.technologies = technologyIds;
-      this.technologies.dialog = false;
+      this.karteForm.technology = technologyIds;
+      this.technology.dialog = false;
     },
 
     submit: async function () {
@@ -258,7 +254,7 @@ export default {
         input.append('reference', this.karteForm.reference);
         input.append('image', this.karteForm.image);
         input.append('activity_time', this.karteForm.activityTime);
-        // input.append('technologies', this.karteForm.technologies);
+        // input.append('technologies', this.technology.inputIds);
 
         // カルテ保存処理
         var response = await this.$http.post(this.$endpoint('kartePost'), input);
