@@ -99,7 +99,7 @@ export default {
       projectDialog: false, // プロジェクトモーダルの制御
       karteDialog: false, // カルテ記入モーダルの制御
       confirmDialog: true, //falseのときカルテ記入後退席 trueの時自習継続するかのモーダル表示
-      now: '00:00', // 現在時刻
+      now: '00:00', // 現在時刻 1240 １２時40分
       zIndex: 0,
     };
   },
@@ -410,9 +410,26 @@ export default {
       let date = new Date(); //new演算子でオブジェクトのインスタンスを生成
       //現在時刻の取得 **ここからはjavascript**
       // this.now = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-      this.now = date.getHours() + ':' + date.getMinutes();
 
-      console.log(this.now);
+      //休憩時間開始時刻仮置き
+      var loungeTimes = [
+        { hour: 17, minute: 45 },
+        { hour: 18, minute: 0 },
+        { hour: 18, minute: 30 },
+      ];
+      let currentHour = date.getHours(); //現在のhour
+      let currentMinutes = date.getMinutes(); //現在のminutesを取得
+
+      for (var loungeTime in loungeTimes) {
+        if (loungeTimes.hasOwnProperty(loungeTime)) {
+          if (
+            currentHour === loungeTimes[loungeTime].hour &&
+            currentMinutes === loungeTimes[loungeTime].minute
+          ) {
+            console.log('休憩の時間です');
+          }
+        }
+      }
     },
 
     /**
@@ -537,7 +554,7 @@ export default {
      */
     this.syncTimer = setInterval(() => {
       this.getRoom();
-      // this.time();
+      this.time();
     }, 3000);
   },
 
