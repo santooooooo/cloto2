@@ -25,4 +25,14 @@ class RoomController extends Controller
             $status
         );
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return response()->json(Room::with('sections.seats')->get());
+    }
 }

@@ -24,6 +24,9 @@ import home from '@/views/Home';
 import mypage from '@/views/mypage/Mypage';
 import profile from '@/views/mypage/Profile';
 import karte from '@/views/mypage/Karte';
+import entrance from '@/views/entrance/Entrance';
+import information from '@/views/entrance/Information';
+import floor from '@/views/entrance/Floor';
 import room from '@/views/room/Room';
 
 const router = new VueRouter({
@@ -66,7 +69,23 @@ const router = new VueRouter({
       component: home,
     },
     {
-      path: '/room/:id',
+      path: '/entrance',
+      component: entrance,
+      children: [
+        {
+          path: 'information',
+          name: 'entrance',
+          component: information,
+        },
+        {
+          path: 'floor/:roomId',
+          name: 'floor',
+          component: floor,
+        },
+      ],
+    },
+    {
+      path: '/room/:roomId',
       name: 'room',
       component: room,
     },
