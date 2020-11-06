@@ -167,7 +167,7 @@ export default {
      * 教室データの取得
      */
     getRoom: async function () {
-      var response = await this.$http.get(this.$endpoint('roomShow', [this.$route.params.id]));
+      var response = await this.$http.get(this.$endpoint('roomShow', [this.$route.params.roomId]));
       this.roomData = response.data.roomData;
     },
 
