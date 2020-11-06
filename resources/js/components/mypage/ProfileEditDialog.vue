@@ -200,10 +200,10 @@ export default {
         input.append('icon', this.profileUpdateForm.icon);
         input.append(
           'twitter',
-          this.profileUpdateForm.twitter ? this.profileUpdateForm.twitter : ''
+          this.profileUpdateForm.sns.twitter ? this.profileUpdateForm.sns.twitter : ''
         );
-        input.append('github', this.profileUpdateForm.github ? this.profileUpdateForm.github : '');
-        input.append('qiita', this.profileUpdateForm.qiita ? this.profileUpdateForm.qiita : '');
+        input.append('github', this.profileUpdateForm.sns.github ? this.profileUpdateForm.sns.github : '');
+        input.append('qiita', this.profileUpdateForm.sns.qiita ? this.profileUpdateForm.sns.qiita : '');
         input.append('web', this.profileUpdateForm.web ? this.profileUpdateForm.web : '');
         input.append(
           'introduction',
