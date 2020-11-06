@@ -15,7 +15,7 @@ class RoomsTableSeeder extends Seeder
     public function run()
     {
         // 部屋名
-        $names = ['101', '102', '103', '104', '105'];
+        $names = ['チュートリアル部屋', '資格勉強部屋', 'Web制作部屋', 'アプリ開発部屋', 'イベントホール'];
 
         // 座席一覧
         // 自習室

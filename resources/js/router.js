@@ -74,7 +74,7 @@ const router = new VueRouter({
       children: [
         {
           path: 'information',
-          name: 'information',
+          name: 'entrance',
           component: information,
         },
         {

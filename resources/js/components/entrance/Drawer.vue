@@ -11,15 +11,22 @@
 
       <v-list nav dense>
         <v-list-item-group color="#f6bf00">
-          <v-list-item class="mb-4" :to="{ name: 'information' }">
+          <v-list-item class="mb-4" :to="{ name: 'entrance' }">
             <v-list-item-content>
               <v-list-item-title class="text-body-1 font-weight-bold">施設案内</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item class="mb-4" :to="{ name: 'floor', params: { roomId: 1 } }">
+          <v-list-item
+            v-for="(floor, index) in floors"
+            :key="floor.id"
+            class="mb-4"
+            :to="{ name: 'floor', params: { roomId: floor.id } }"
+          >
             <v-list-item-content>
-              <v-list-item-title class="text-body-1 font-weight-bold">フロア</v-list-item-title>
+              <v-list-item-title class="text-body-1 font-weight-bold">
+                {{ index + 1 }}F {{ floor.name }}
+              </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
