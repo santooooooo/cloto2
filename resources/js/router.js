@@ -24,6 +24,7 @@ import home from '@/views/Home';
 import mypage from '@/views/mypage/Mypage';
 import profile from '@/views/mypage/Profile';
 import karte from '@/views/mypage/Karte';
+import entrance from '@/views/room/Entrance';
 import room from '@/views/room/Room';
 
 const router = new VueRouter({
@@ -64,6 +65,11 @@ const router = new VueRouter({
       path: '/home',
       name: 'home',
       component: home,
+    },
+    {
+      path: '/entrance',
+      name: 'entrance',
+      component: entrance,
     },
     {
       path: '/room/:id',

@@ -20,6 +20,7 @@ const logout = '/api/logout';
 const authUser = '/api/auth/user';
 const userShow = '/api/user/' + replaceChar[0];
 const profileUpdate = '/api/user/update';
+const roomIndex = '/api/room';
 const roomShow = '/api/room/' + replaceChar[0];
 const seatSit = '/api/seat/sit/' + replaceChar[0];
 const seatLeave = '/api/seat/leave';
@@ -85,6 +86,10 @@ export function getEndpoint(name, params) {
 
     case 'profileUpdate':
       endpoint = profileUpdate;
+      break;
+
+    case 'roomIndex':
+      endpoint = roomIndex;
       break;
 
     case 'roomShow':

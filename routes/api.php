@@ -31,6 +31,7 @@ Route::get('/auth/user', 'API\UserController@auth')->name('authUser');
 Route::get('/user/{user_param}', 'API\UserController@show')->name('userShow');
 Route::post('/user/update', 'API\UserController@update')->name('profileUpdate');
 
+Route::get('/room', 'API\RoomController@index')->name('roomIndex');
 Route::get('/room/{room_id}', 'API\RoomController@show')->name('roomShow');
 Route::post('/seat/sit/{seat}', 'API\SeatController@sit')->name('seatSit');
 Route::post('/seat/leave', 'API\SeatController@leave')->name('seatLeave');
