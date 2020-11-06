@@ -53,23 +53,22 @@ class ChatController extends Controller
 
         // チャットデータ
         $messageList = [];
-        foreach ($section->chats as $message_data) {
-            $data = json_decode($message_data->data, true);
-            $data += ['meta' => (new Carbon($message_data->created_at))->format('H時i分')];
+        foreach ($section->chats as $message) {
+            $message->data += ['meta' => (new Carbon($message->created_at))->format('H時i分')];
 
-            if ($message_data->user_id != Auth::id()) {
+            if ($message->user_id != Auth::id()) {
                 array_push($messageList, [
-                    'id' => $message_data->id,
-                    'author' => $message_data->user_id,
-                    'type' => $message_data->type,
-                    'data' => $data
+                    'id' => $message->id,
+                    'author' => $message->user_id,
+                    'type' => $message->type,
+                    'data' => $message->data
                 ]);
             } else {
                 array_push($messageList, [
-                    'id' => $message_data->id,
+                    'id' => $message->id,
                     'author' => 'me',
-                    'type' => $message_data->type,
-                    'data' => $data
+                    'type' => $message->type,
+                    'data' => $message->data
                 ]);
             }
         }
@@ -88,7 +87,7 @@ class ChatController extends Controller
         $user_id = $this->user->id;
         $section_id = $this->user->seat->section->id;
         $type = $request['type'];
-        $data = json_encode($request['data'], JSON_UNESCAPED_UNICODE);
+        $data = $request['data'];
 
         $result = $this->chat->create(compact('user_id', 'section_id', 'type', 'data'));
 

@@ -18,7 +18,7 @@ class CreateChatsTable extends Migration
             $table->foreignId('section_id')->constrained();             // 所属する区画ID(どのグループでのチャットか)
             $table->foreignId('user_id')->nullable()->constrained();    // ユーザーID
             $table->string('type');                                     // メッセージタイプ
-            $table->text('data');                                       // メッセージ内容
+            $table->json('data');                                       // メッセージ内容
             $table->dateTimes();
         });
     }

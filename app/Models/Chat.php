@@ -18,6 +18,13 @@ class Chat extends Model
         'user_id', 'section_id', 'type', 'data'
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = ['data' => 'json'];
+
 
     /**
      * User モデルのリレーション
