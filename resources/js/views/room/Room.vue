@@ -99,6 +99,14 @@ export default {
       roomColor: '#f4f4f4', //部屋の色
       studyRoomColor: '#f4f4f4', //自習時間の背景色
       loungeRoomColor: '#ffe89a', //休憩時間の背景色
+      timeTables: [
+        { time: '18:00', role: 'study' },
+        { time: '18:00', role: 'lounge' },
+        { time: '18:00', role: 'study' },
+        { time: '18:00', role: 'lounge' },
+        { time: '17:25', role: 'study' },
+        { time: '17:24', role: 'lounge' },
+      ], //時間割
     };
   },
 
@@ -414,26 +422,16 @@ export default {
       let date = new Date(); //new演算子でオブジェクトのインスタンスを生成
       this.now = date.getHours() + ':' + date.getMinutes();
 
-      //時間割
-      var loungeTimes = [
-        { time: '18:00', role: 'study' },
-        { time: '18:00', role: 'lounge' },
-        { time: '18:00', role: 'study' },
-        { time: '18:00', role: 'lounge' },
-        { time: '17:20', role: 'study' },
-        { time: '17:25', role: 'lounge' },
-      ];
-
       let currentHour = date.getHours(); //現在のhour
       let currentMinutes = date.getMinutes(); //現在のminutesを取得
 
       //現在時刻と休憩開始時刻を比較
-      for (var index in loungeTimes) {
-        if (loungeTimes.hasOwnProperty(index)) {
-          if (this.now === loungeTimes[index].time) {
+      for (var index in this.timeTables) {
+        if (this.timeTables.hasOwnProperty(index)) {
+          if (this.now === this.timeTables[index].time) {
             // this.displayText = '休憩スタート';
-            this.startDisplay(loungeTimes[index].role);
-            this.changeRoomColor(loungeTimes[index].role);
+            this.startDisplay(this.timeTables[index].role);
+            this.changeRoomColor(this.timeTables[index].role);
           }
         }
       }
@@ -504,6 +502,7 @@ export default {
   async mounted() {
     // ロード開始
     this.isLoading = true;
+    this.changeRoomColor();
 
     /**
      * キャンバスの設定
