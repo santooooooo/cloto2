@@ -6,7 +6,7 @@
     </v-overlay>
     <!-- 自習スタートローディング-->
     <v-overlay :opacity="0.8" :value="roomStatusDisplay" color="#f6bf00" dark>
-      <div class="statusDisplay">自習スタート</div>
+      <div class="statusDisplay">{{ displayText }}</div>
     </v-overlay>
 
     <Drawer
@@ -17,7 +17,13 @@
 
     <v-flex id="main">
       <!-- 教室 -->
-      <v-row no-gutters align="center" justify="center" id="room">
+      <v-row
+        no-gutters
+        align="center"
+        justify="center"
+        v-bind:style="{ background: roomColor }"
+        id="room"
+      >
         <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
       </v-row>
 
@@ -72,6 +78,7 @@ export default {
       isLoading: false, // ロードの制御
       roomStatusDisplay: false, //自習スタートローディング
       syncTimer: null, // 同期制御
+      displayText: '自習スタート', //部屋の状態表示のテキスト文字
       roomData: '', // 教室データ
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
@@ -89,6 +96,9 @@ export default {
       },
       now: '00:00', // 現在時刻 1240 １２時40分
       zIndex: 0,
+      roomColor: '#f4f4f4', //部屋の色
+      studyRoomColor: '#f4f4f4', //自習時間の背景色
+      loungeRoomColor: '#ffe89a', //休憩時間の背景色
     };
   },
 
@@ -397,31 +407,49 @@ export default {
       this.canvas.remove(removeObject);
       this.canvas.requestRenderAll();
     },
+    /**
+     * 時間による制御
+     */
     time: function (e) {
-      //function(e) この引数eは、eventの「e」
       let date = new Date(); //new演算子でオブジェクトのインスタンスを生成
-      //現在時刻の取得 **ここからはjavascript**
-      // this.now = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      this.now = date.getHours() + ':' + date.getMinutes();
 
-      //休憩時間開始時刻仮置き
+      //時間割
       var loungeTimes = [
-        { hour: 17, minute: 45 },
-        { hour: 18, minute: 0 },
-        { hour: 18, minute: 39 },
+        { time: '18:00', role: 'study' },
+        { time: '18:00', role: 'lounge' },
+        { time: '18:00', role: 'study' },
+        { time: '18:00', role: 'lounge' },
+        { time: '17:20', role: 'study' },
+        { time: '17:25', role: 'lounge' },
       ];
+
       let currentHour = date.getHours(); //現在のhour
       let currentMinutes = date.getMinutes(); //現在のminutesを取得
 
-      for (var loungeTime in loungeTimes) {
-        if (loungeTimes.hasOwnProperty(loungeTime)) {
-          if (
-            currentHour === loungeTimes[loungeTime].hour &&
-            currentMinutes === loungeTimes[loungeTime].minute
-          ) {
-            //this.startDisplay();
+      //現在時刻と休憩開始時刻を比較
+      for (var index in loungeTimes) {
+        if (loungeTimes.hasOwnProperty(index)) {
+          if (this.now === loungeTimes[index].time) {
+            // this.displayText = '休憩スタート';
+            this.startDisplay(loungeTimes[index].role);
+            this.changeRoomColor(loungeTimes[index].role);
           }
         }
       }
+    },
+
+    /**
+     * 時間による背景色の変更
+     * @param status String 'study' or 'lounge'
+     */
+    changeRoomColor: function (role) {
+      if (role === 'study') {
+        this.roomColor = this.studyRoomColor;
+      } else {
+        this.roomColor = this.loungeRoomColor;
+      }
+      console.log('changeRoomColor');
     },
 
     /**
@@ -429,8 +457,7 @@ export default {
      */
     startStudy: async function () {
       this.projectDialog = false;
-
-      this.startDisplay(); //自習開始の表示
+      this.startDisplay('study'); //自習開始の表示
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
@@ -443,23 +470,19 @@ export default {
       this.projectDialog = false;
       this.leaveRoom();
     },
-
-    /**
-     * 自習継続
-     */
-    continueStudy: function () {
-      this.karte.dialog = false;
-      this.projectDialog = true;
-    },
-
     /**
      * ルームの状態表示開始(休憩時間開始、自習開始など)
      */
-    startDisplay: function () {
+    startDisplay: function (role) {
+      console.log(role);
+      if (role === 'study') {
+        this.displayText = '自習スタート';
+      } else {
+        this.displayText = '休憩スタート';
+      }
       this.roomStatusDisplay = true;
       setTimeout(this.closeDisplay, 2000);
     },
-
     /**
      * 自習開始
      */
@@ -588,7 +611,7 @@ export default {
 }
 
 #main {
-  background-color: $light-yellow;
+  //background-color: $light-yellow;
 
   #room {
     height: 80vh;
