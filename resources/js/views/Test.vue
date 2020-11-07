@@ -5,23 +5,31 @@
     <p>
       Your Peer ID: <span id="my-id">{{ peerId }}</span>
     </p>
-    <input v-model="calltoid" placeholder="call id" />
+    <input v-model="roomName" placeholder="room name" />
     <button @click="makeCall" class="button--green">Call</button>
     <br />
 
     マイク:
     <select v-model="selectedAudio" @change="onChange">
       <option disabled value="">Please select one</option>
-      <option v-for="(audio, key, index) in audios" v-bind:key="index" :value="audio.value">
-        {{ audio.text }}
+      <option
+        v-for="(audioDevice, index) in audioDevices"
+        v-bind:key="index"
+        :value="audioDevice.value"
+      >
+        {{ audioDevice.text }}
       </option>
     </select>
 
     カメラ:
     <select v-model="selectedVideo" @change="onChange">
       <option disabled value="">Please select one</option>
-      <option v-for="(video, key, index) in videos" v-bind:key="index" :value="video.value">
-        {{ video.text }}
+      <option
+        v-for="(videoDevice, index) in videoDevices"
+        v-bind:key="index"
+        :value="videoDevice.value"
+      >
+        {{ videoDevice.text }}
       </option>
     </select>
   </div>
@@ -33,12 +41,12 @@ const API_KEY = '2e332f2b-d951-499d-bc1a-451f4aeaf7b1';
 export default {
   data: function () {
     return {
-      audios: [],
-      videos: [],
+      audioDevices: [],
+      videoDevices: [],
       selectedAudio: '',
       selectedVideo: '',
       peerId: '',
-      calltoid: '',
+      roomName: '',
       localStream: {},
     };
   },
@@ -61,7 +69,8 @@ export default {
     },
 
     makeCall: function () {
-      const call = this.peer.call(this.calltoid, this.localStream);
+      //   const call = this.peer.call(this.calltoid, this.localStream);
+      const call = this.peer.joinRoom(this.roomName, { mode: 'sfu', stream: this.localStream });
       this.connect(call);
     },
 
@@ -91,8 +100,8 @@ export default {
     devices
       .filter((device) => device.kind === 'audioinput')
       .map((audio) =>
-        this.audios.push({
-          text: audio.label || `Microphone ${this.audios.length + 1}`,
+        this.audioDevices.push({
+          text: audio.label || `Microphone ${this.audioDevices.length + 1}`,
           value: audio.deviceId,
         })
       );
@@ -101,13 +110,13 @@ export default {
     devices
       .filter((device) => device.kind === 'videoinput')
       .map((video) =>
-        this.videos.push({
-          text: video.label || `Camera  ${this.videos.length - 1}`,
+        this.videoDevices.push({
+          text: video.label || `Camera  ${this.videoDevices.length - 1}`,
           value: video.deviceId,
         })
       );
 
-    console.log(this.audios, this.videos);
+    console.log(this.audioDevices, this.videoDevices);
     // console.log(deviceInfos);
   },
 };
