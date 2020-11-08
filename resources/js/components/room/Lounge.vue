@@ -1,7 +1,7 @@
 <template>
-  <v-overlay opacity="0.7" z-index="4">
-    <!-- 新着メッセージ通知 -->
-    <!-- <v-row
+  <!-- <v-overlay opacity="0.7" z-index="4"> -->
+  <!-- 新着メッセージ通知 -->
+  <!-- <v-row
       justify="center"
       class="mb-3"
       :style="{ visibility: notification ? 'visible' : 'hidden' }"
@@ -11,12 +11,12 @@
       </a>
     </v-row> -->
 
-    <!-- <v-container ma-0 pa-0 fluid> -->
-    <!-- <div class="videosContainer">
+  <!-- <v-container ma-0 pa-0 fluid> -->
+  <!-- <div class="videosContainer">
         <video id="myStream" autoplay muted="true"></video>
       </div> -->
-    <!-- <video id="their-video" width="200" autoplay playsinline></video> -->
-
+  <!-- <video id="their-video" width="200" autoplay playsinline></video> -->
+  <v-container fluid id="lounge">
     マイク:
     <select v-model="selectedAudio" @change="onChange">
       <option disabled value="">Please select one</option>
@@ -41,35 +41,34 @@
     </select>
 
     <v-btn @click="shareDisplay()">画面共有</v-btn>
-    <video id="my-display" width="500" height="500" muted="true" autoplay playsinline></video>
+    <video id="my-display" width="300" height="300" muted="true" autoplay playsinline></video>
 
     <!-- <v-row justify="start"> aaaaaa </v-row> -->
-    <v-container fluid id="lounge">
-      <!-- <v-flex md9 class="videosContainer"> -->
-      <v-row>
-        <!-- <v-avatar size="200" @click="showProfile()"> -->
-        <video id="my-video" width="500" height="500" muted="true" autoplay playsinline></video>
-        <!-- </v-avatar> -->
-        <!-- <v-avatar
+    <!-- <v-flex md9 class="videosContainer"> -->
+    <v-row>
+      <!-- <v-avatar size="200" @click="showProfile()"> -->
+      <video id="my-video" width="300" height="300" muted="true" autoplay playsinline></video>
+      <!-- </v-avatar> -->
+      <!-- <v-avatar
           size="200"
           v-for="participant in participants"
           :key="participant.peerId"
           @click="showProfile()"
         > -->
-        <video
-          width="500"
-          height="500"
-          v-for="participant in participants"
-          :key="participant.peerId"
-          autoplay
-          :srcObject.prop="participant"
-        ></video>
-        <!-- </v-avatar> -->
-        <!-- </v-flex> -->
-      </v-row>
-      <!-- <v-flex md3> -->
-      <!-- チャット -->
-      <!-- <beautiful-chat
+      <video
+        width="800"
+        height="800"
+        v-for="participant in participants"
+        :key="participant.peerId"
+        autoplay
+        :srcObject.prop="participant"
+      ></video>
+      <!-- </v-avatar> -->
+      <!-- </v-flex> -->
+    </v-row>
+    <!-- <v-flex md3> -->
+    <!-- チャット -->
+    <!-- <beautiful-chat
           :open="enterLounge"
           :close="leaveLounge"
           :onMessageWasSent="onMessageWasSent"
@@ -87,20 +86,20 @@
           </template>
         </beautiful-chat> -->
 
-      <v-btn fixed dark bottom right x-large color="error" class="ma-10" @click="leaveLounge()">
-        自習室に戻る
-      </v-btn>
+    <v-btn fixed dark bottom right x-large color="error" class="ma-10" @click="leaveLounge()">
+      自習室に戻る
+    </v-btn>
 
-      <!-- プロフィールダイアログ -->
-      <ProfileDialog
-        :user-id="profileUserId"
-        @close="profileDialog = $event"
-        v-if="profileDialog"
-      ></ProfileDialog>
-      <!-- </v-container> -->
-      <!-- </v-flex> -->
-    </v-container>
-  </v-overlay>
+    <!-- プロフィールダイアログ -->
+    <ProfileDialog
+      :user-id="profileUserId"
+      @close="profileDialog = $event"
+      v-if="profileDialog"
+    ></ProfileDialog>
+    <!-- </v-container> -->
+    <!-- </v-flex> -->
+  </v-container>
+  <!-- </v-overlay> -->
 </template>
 
 <script>
@@ -160,6 +159,8 @@ export default {
       selectedAudio: '',
       selectedVideo: '',
       peerId: '',
+      displayStream: '',
+      userStream: '',
     };
   },
   computed: {
@@ -278,26 +279,29 @@ export default {
         video: this.selectedVideo ? { deviceId: { exact: this.selectedVideo } } : false,
       };
 
-      const userStream = await navigator.mediaDevices.getUserMedia(constraints);
-      document.getElementById('my-video').srcObject = userStream;
+      this.userStream = await navigator.mediaDevices.getUserMedia(constraints);
+      document.getElementById('my-video').srcObject = this.userStream;
 
       // 通話開始
-      this.makeCall(userStream);
+      this.makeCall(this.userStream);
     },
 
     shareDisplay: async function () {
-      const displayStream = await navigator.mediaDevices.getDisplayMedia({
+      const displayPeer = new Peer({ key: API_KEY });
+
+      this.displayStream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
       });
 
-      document.getElementById('my-display').srcObject = displayStream;
+      document.getElementById('my-display').srcObject = this.displayStream;
 
-      // 通話開始
-      this.makeCall(displayStream);
+      displayPeer.joinRoom(this.loungeId, {
+        mode: 'sfu',
+        stream: this.displayStream,
+      });
     },
 
     makeCall: function (stream) {
-      //   const call = this.peer.call(this.calltoid, this.localStream);
       const call = this.peer.joinRoom(this.loungeId, {
         mode: 'sfu',
         stream: stream,
@@ -315,7 +319,11 @@ export default {
       // $('#room-id').text(call.name);
 
       call.on('stream', (stream) => {
-        this.addVideo(stream);
+        // 別ピアーで接続するため，画面共有も他人扱いされる
+        // そのため，自分の画面共有のストリームは除外
+        if (stream.id !== this.displayStream.id) {
+          this.addVideo(stream);
+        }
       });
 
       call.on('removeStream', (stream) => {
