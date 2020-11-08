@@ -100,10 +100,10 @@ export default {
       studyRoomColor: '#f4f4f4', //自習時間の背景色
       loungeRoomColor: '#ffe89a', //休憩時間の背景色
       timeTables: [
-        { time: '18:00', role: 'study' },
-        { time: '18:00', role: 'lounge' },
-        { time: '18:00', role: 'study' },
-        { time: '18:00', role: 'lounge' },
+        { time: '14:00', role: 'study' },
+        { time: '14:45', role: 'lounge' },
+        { time: '15:00', role: 'study' },
+        { time: '15:45', role: 'lounge' },
         { time: '17:25', role: 'study' },
         { time: '17:24', role: 'lounge' },
       ], //時間割
@@ -418,7 +418,7 @@ export default {
     /**
      * 時間による制御
      */
-    time: function (e) {
+    time: function () {
       let date = new Date(); //new演算子でオブジェクトのインスタンスを生成
       this.now = date.getHours() + ':' + date.getMinutes();
 
@@ -431,7 +431,7 @@ export default {
           if (this.now === this.timeTables[index].time) {
             // this.displayText = '休憩スタート';
             this.startDisplay(this.timeTables[index].role);
-            this.changeRoomColor(this.timeTables[index].role);
+            //this.changeRoomColor(this.timeTables[index].role);
           }
         }
       }
@@ -441,12 +441,26 @@ export default {
      * 時間による背景色の変更
      * @param status String 'study' or 'lounge'
      */
-    changeRoomColor: function (role) {
-      if (role === 'study') {
-        this.roomColor = this.studyRoomColor;
-      } else {
-        this.roomColor = this.loungeRoomColor;
+    changeRoomColor: function () {
+      var date = new Date();
+      this.now = date.getHours() + ':' + date.getMinutes();
+      let nowRoomRole = ''; //現在の部屋の状態 自習 or 休憩
+
+      //  { time: '14:00', role: 'study' },
+      //   { time: '14:45', role: 'lounge' },
+      //   { time: '15:00', role: 'study' },
+      //   { time: '15:45', role: 'lounge' },
+      //   { time: '17:25', role: 'study' },
+      //   { time: '17:24', role: 'lounge' },
+
+      for (var index in this.timeTables) {
+        if (this.timeTables.hasOwnProperty(index)) {
+          if (this.timeTables[index].time < this.now) {
+            // console.log('現在時刻のroleは' + this.timeTables[index].role);
+          }
+        }
       }
+
       console.log('changeRoomColor');
     },
 
