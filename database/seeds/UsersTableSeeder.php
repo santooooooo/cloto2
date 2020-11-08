@@ -24,5 +24,17 @@ class UsersTableSeeder extends Seeder
                 'sns' => ['twitter' => '', 'github' => '', 'qiita' => ''],
             ]);
         }
+
+        $usernames = ['atsuhiro', 'yoshihito', 'shuto', 'sayuki'];
+        foreach ($usernames as $username) {
+            User::create([
+                'username' => $username,
+                'email' => $username . '@cloto.jp',
+                'password' => Hash::make($username),
+                'handlename' => $username,
+                'icon' => 'default.jpg',
+                'sns' => ['twitter' => '', 'github' => '', 'qiita' => ''],
+            ]);
+        }
     }
 }
