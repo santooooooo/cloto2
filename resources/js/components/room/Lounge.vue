@@ -19,7 +19,6 @@
   <v-container fluid id="lounge">
     マイク:
     <select v-model="selectedAudio" @change="onChange">
-      <option disabled value="">Please select one</option>
       <option
         v-for="(audioDevice, index) in audioDevices"
         v-bind:key="index"
@@ -39,6 +38,9 @@
         {{ videoDevice.text }}
       </option>
     </select>
+
+    <v-btn @click="mute()">ミュート</v-btn>
+    <v-btn @click="videoOff()">ビデオオフ</v-btn>
 
     <v-btn @click="shareDisplay()">画面共有</v-btn>
     <video id="my-display" width="300" height="300" muted="true" autoplay playsinline></video>
@@ -161,6 +163,9 @@ export default {
       peerId: '',
       displayStream: '',
       userStream: '',
+      call: null,
+      isMute: false,
+      isVideoOff: false,
     };
   },
   computed: {
@@ -273,6 +278,16 @@ export default {
       }
     },
 
+    mute: function () {
+      const audioTrack = this.userStream.getAudioTracks()[0];
+      this.isMute = !this.isMute;
+      audioTrack.enabled = !this.isMute;
+    },
+    videoOff: function () {
+      const videoTrack = this.userStream.getVideoTracks()[0];
+      this.isVideoOff = !this.isVideoOff;
+      videoTrack.enabled = !this.isVideoOff;
+    },
     connectLocalCamera: async function () {
       const constraints = {
         audio: this.selectedAudio ? { deviceId: { exact: this.selectedAudio } } : false,
@@ -280,10 +295,16 @@ export default {
       };
 
       this.userStream = await navigator.mediaDevices.getUserMedia(constraints);
-      document.getElementById('my-video').srcObject = this.userStream;
 
-      // 通話開始
-      this.makeCall(this.userStream);
+      if (this.call === null) {
+        // 通話開始
+        this.makeCall(this.userStream);
+      } else {
+        // ストリームの置き換え
+        this.call.replaceStream(this.userStream);
+      }
+
+      document.getElementById('my-video').srcObject = this.userStream;
     },
 
     shareDisplay: async function () {
@@ -302,19 +323,14 @@ export default {
     },
 
     makeCall: function (stream) {
-      const call = this.peer.joinRoom(this.loungeId, {
+      this.call = this.peer.joinRoom(this.loungeId, {
         mode: 'sfu',
         stream: stream,
       });
-      this.setupCallEventHandlers(call);
+      this.setupCallEventHandlers(this.call);
     },
 
     setupCallEventHandlers: function (call) {
-      // if (existingCall) {
-      //   existingCall.close();
-      // }
-
-      // existingCall = call;
       // setupEndCallUI();
       // $('#room-id').text(call.name);
 
