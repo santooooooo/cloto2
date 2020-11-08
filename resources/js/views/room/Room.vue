@@ -14,6 +14,7 @@
       @input-karte="inputKarte(true)"
       @leave-room="inputKarte(false)"
     />
+    <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
 
     <v-flex id="main">
       <!-- 教室 -->
@@ -22,7 +23,7 @@
       </v-row>
 
       <!-- 休憩室 -->
-      <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
+      <!-- <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge> -->
 
       <!-- プロフィールダイアログ -->
       <ProfileDialog
@@ -506,7 +507,7 @@ export default {
         this.canvas.add(
           new fabric.Circle({
             seatId: seat.id,
-            sectionId: section.id,
+            sectionId: section.uuid,
             role: section.role,
             fill: color,
             reservationId: seat.reservation_user_id,
@@ -531,7 +532,7 @@ export default {
 
           // ログインユーザーが座っており，座席が休憩室にある場合
           if (seat.id === this.authUser.seat_id && section.role === 'lounge') {
-            this.enterLounge(section.id);
+            this.enterLounge(section.uuid);
           }
         }
       });

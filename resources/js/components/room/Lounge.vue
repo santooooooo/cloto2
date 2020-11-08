@@ -1,7 +1,7 @@
 <template>
   <v-overlay opacity="0.7" z-index="4">
     <!-- 新着メッセージ通知 -->
-    <v-row
+    <!-- <v-row
       justify="center"
       class="mb-3"
       :style="{ visibility: notification ? 'visible' : 'hidden' }"
@@ -9,26 +9,62 @@
       <a @click="scrollToBottom()">
         <v-badge inline :value="true" color="red" content="↓ 新着メッセージ"></v-badge>
       </a>
-    </v-row>
+    </v-row> -->
 
-    <v-layout>
-      <!-- 参加者一覧：左 -->
-      <v-flex class="flex-column mr-12">
-        <v-col v-for="participant in leftSide" :key="participant.id">
-          <v-avatar size="100" @click="showProfile(participant.id)">
-            <img :src="participant.imageUrl" />
-          </v-avatar>
-        </v-col>
+    <!-- <v-container ma-0 pa-0 fluid> -->
+    <!-- <div class="videosContainer">
+        <video id="myStream" autoplay muted="true"></video>
+      </div> -->
+    <!-- <video id="their-video" width="200" autoplay playsinline></video> -->
 
-        <v-col>
-          <v-avatar size="100" class="v-avatar__spacer">
-            <!-- スペーサー -->
-          </v-avatar>
-        </v-col>
+    マイク:
+    <select v-model="selectedAudio" @change="onChange">
+      <option disabled value="">Please select one</option>
+      <option
+        v-for="(audioDevice, index) in audioDevices"
+        v-bind:key="index"
+        :value="audioDevice.value"
+      >
+        {{ audioDevice.text }}
+      </option>
+    </select>
+
+    カメラ:
+    <select v-model="selectedVideo" @change="onChange">
+      <option
+        v-for="(videoDevice, index) in videoDevices"
+        v-bind:key="index"
+        :value="videoDevice.value"
+      >
+        {{ videoDevice.text }}
+      </option>
+    </select>
+
+    <!-- <v-row justify="start"> aaaaaa </v-row> -->
+    <v-container fluid id="lounge">
+      <v-flex md9 class="videosContainer">
+        <!-- <v-avatar size="200" @click="showProfile()"> -->
+        <video id="my-video" width="300" height="200" muted="true" autoplay playsinline></video>
+        <!-- </v-avatar> -->
+        <!-- <v-avatar
+          size="200"
+          v-for="participant in participants"
+          :key="participant.peerId"
+          @click="showProfile()"
+        > -->
+        <video
+          width="300"
+          height="200"
+          v-for="participant in participants"
+          :key="participant.peerId"
+          autoplay
+          :srcObject.prop="participant"
+        ></video>
+        <!-- </v-avatar> -->
       </v-flex>
 
-      <!-- チャット -->
-      <v-flex>
+      <v-flex md3>
+        <!-- チャット -->
         <beautiful-chat
           :open="enterLounge"
           :close="leaveLounge"
@@ -50,42 +86,30 @@
         <v-btn fixed dark bottom right x-large color="error" class="ma-10" @click="leaveLounge()">
           自習室に戻る
         </v-btn>
+
+        <!-- プロフィールダイアログ -->
+        <ProfileDialog
+          :user-id="profileUserId"
+          @close="profileDialog = $event"
+          v-if="profileDialog"
+        ></ProfileDialog>
+        <!-- </v-container> -->
       </v-flex>
-
-      <!-- 参加者一覧：右 -->
-      <v-flex class="flex-column ml-12">
-        <v-col v-for="participant in rightSide" :key="participant.id">
-          <v-avatar size="100" @click="showProfile(participant.id)">
-            <img :src="participant.imageUrl" />
-          </v-avatar>
-        </v-col>
-
-        <v-col>
-          <v-avatar size="100" class="v-avatar__spacer">
-            <!-- スペーサー -->
-          </v-avatar>
-        </v-col>
-      </v-flex>
-    </v-layout>
-
-    <!-- プロフィールダイアログ -->
-    <ProfileDialog
-      :user-id="profileUserId"
-      @close="profileDialog = $event"
-      v-if="profileDialog"
-    ></ProfileDialog>
+    </v-container>
   </v-overlay>
 </template>
 
 <script>
 import ProfileDialog from '@/components/room/ProfileDialog';
 
+const API_KEY = '2e332f2b-d951-499d-bc1a-451f4aeaf7b1';
+
 export default {
   components: {
     ProfileDialog,
   },
   props: {
-    loungeId: Number,
+    loungeId: String,
   },
   data() {
     return {
@@ -125,6 +149,14 @@ export default {
           bg: '',
         },
       },
+
+      participants: [],
+      audioDevices: [],
+      videoDevices: [],
+      selectedAudio: '',
+      selectedVideo: '',
+      peerId: '',
+      localStream: {},
     };
   },
   computed: {
@@ -230,17 +262,141 @@ export default {
       this.profileUserId = userId;
       this.profileDialog = true;
     },
+
+    onChange: function () {
+      if (this.selectedAudio != '' && this.selectedVideo != '') {
+        this.connectLocalCamera();
+      }
+    },
+
+    connectLocalCamera: async function () {
+      const constraints = {
+        audio: this.selectedAudio ? { deviceId: { exact: this.selectedAudio } } : false,
+        video: this.selectedVideo ? { deviceId: { exact: this.selectedVideo } } : false,
+      };
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      document.getElementById('my-video').srcObject = stream;
+      this.localStream = stream;
+
+      // 通話開始
+      this.makeCall();
+    },
+
+    makeCall: function () {
+      //   const call = this.peer.call(this.calltoid, this.localStream);
+      const call = this.peer.joinRoom(this.loungeId, {
+        mode: 'sfu',
+        stream: this.localStream,
+      });
+      this.setupCallEventHandlers(call);
+    },
+
+    setupCallEventHandlers: function (call) {
+      // if (existingCall) {
+      //   existingCall.close();
+      // }
+
+      // existingCall = call;
+      // setupEndCallUI();
+      // $('#room-id').text(call.name);
+
+      call.on('stream', (stream) => {
+        this.addVideo(stream);
+      });
+
+      call.on('removeStream', function (stream) {
+        this.removeVideo(stream.peerId);
+      });
+
+      call.on('peerLeave', function (peerId) {
+        this.removeVideo(peerId);
+      });
+
+      call.on('close', function () {
+        removeAllRemoteVideos();
+        setupMakeCallUI();
+      });
+    },
+    addVideo: function (stream) {
+      this.participants.push(stream);
+    },
+    removeAllRemoteVideos: function () {
+      $('.videosContainer').empty();
+    },
+    removeVideo: function (peerId) {
+      $('#' + peerId).remove();
+    },
+    setupMakeCallUI: function () {
+      $('#make-call').show();
+      $('#end-call').hide();
+    },
+
+    setupEndCallUI: function () {
+      $('#make-call').hide();
+      $('#end-call').show();
+    },
   },
+
+  async created() {
+    console.log(API_KEY);
+    this.peer = new Peer({ key: API_KEY, debug: 3 }); //新規にPeerオブジェクトの作成
+    // this.peer.on('open', () => (this.peerId = this.peer.id)); //PeerIDを反映
+    // this.peer.on("call", (call) => {
+    //   // call.answer(this.localStream);
+    //   // this.connect(call);
+    //   call.on("stream", function (stream) {
+    //     console.log("here");
+    //     addVideo(stream);
+    //   });
+    //   call.on("peerLeave", function (peerId) {
+    //     removeVideo(peerId);
+    //   });
+    //   call.on("close", function () {
+    //     removeAllRemoteVideos();
+    //     setupMakeCallUI();
+    //   });
+    // });
+    //デバイスへのアクセス
+    await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+    const devices = await navigator.mediaDevices.enumerateDevices();
+
+    //オーディオデバイスの情報を取得
+    devices
+      .filter((device) => device.kind === 'audioinput')
+      .map((audio) =>
+        this.audioDevices.push({
+          text: audio.label || `Microphone ${this.audioDevices.length + 1}`,
+          value: audio.deviceId,
+        })
+      );
+
+    //カメラの情報を取得
+    devices
+      .filter((device) => device.kind === 'videoinput')
+      .map((video) =>
+        this.videoDevices.push({
+          text: video.label || `Camera  ${this.videoDevices.length - 1}`,
+          value: video.deviceId,
+        })
+      );
+
+    this.selectedAudio = this.audioDevices[0].value;
+    this.selectedVideo = this.videoDevices[0].value;
+    console.log(this.audioDevices, this.videoDevices);
+    this.connectLocalCamera();
+    // console.log(deviceInfos);
+    // this.makeCall();
+  },
+
   async mounted() {
     // 初回取得
     await this.getLounge(this.loungeId);
-
     this.enterLounge();
-
-    // 同期開始
-    this.syncTimer = setInterval(() => {
-      this.getLounge(this.loungeId);
-    }, 3000);
+    // // 同期開始
+    // this.syncTimer = setInterval(() => {
+    //   this.getLounge(this.loungeId);
+    // }, 3000);
   },
   destroyed() {
     // 休憩室退出時にはタイマーを解除
@@ -261,6 +417,11 @@ export default {
     cursor: default;
   }
 }
+
+#lounge {
+  width: 100vw;
+  max-width: 100%;
+}
 </style>
 
 <style lang="scss">
@@ -270,31 +431,31 @@ export default {
   display: none;
 }
 
-.sc-chat-window {
-  // チャットの中央寄せ
-  position: static !important;
+// .sc-chat-window {
+//   // チャットの中央寄せ
+//   position: static !important;
 
-  width: 60vw !important;
+//   width: 60vw !important;
 
-  .sc-user-input {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
+//   .sc-user-input {
+//     border-bottom-left-radius: 0;
+//     border-bottom-right-radius: 0;
+//   }
 
-  .sc-message-list {
-    padding-left: 10px;
+//   .sc-message-list {
+//     padding-left: 10px;
 
-    // hover時のみスクロールバーを表示
-    overflow-y: hidden;
-    padding-right: 10px;
-    &:hover {
-      overflow-y: scroll;
-      padding-right: 0;
-    }
+//     // hover時のみスクロールバーを表示
+//     overflow-y: hidden;
+//     padding-right: 10px;
+//     &:hover {
+//       overflow-y: scroll;
+//       padding-right: 0;
+//     }
 
-    .sc-message {
-      width: 90%;
-    }
-  }
-}
+//     .sc-message {
+//       width: 90%;
+//     }
+//   }
+// }
 </style>
