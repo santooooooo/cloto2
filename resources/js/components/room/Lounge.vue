@@ -40,11 +40,14 @@
       </option>
     </select>
 
+    <v-btn @click="shareDisplay()">画面共有</v-btn>
+    <video id="my-display" width="500" height="500" muted="true" autoplay playsinline></video>
+
     <!-- <v-row justify="start"> aaaaaa </v-row> -->
     <v-container fluid id="lounge">
       <v-flex md9 class="videosContainer">
         <!-- <v-avatar size="200" @click="showProfile()"> -->
-        <video id="my-video" width="300" height="200" muted="true" autoplay playsinline></video>
+        <video id="my-video" width="500" height="500" muted="true" autoplay playsinline></video>
         <!-- </v-avatar> -->
         <!-- <v-avatar
           size="200"
@@ -53,8 +56,8 @@
           @click="showProfile()"
         > -->
         <video
-          width="300"
-          height="200"
+          width="500"
+          height="500"
           v-for="participant in participants"
           :key="participant.peerId"
           autoplay
@@ -156,7 +159,6 @@ export default {
       selectedAudio: '',
       selectedVideo: '',
       peerId: '',
-      localStream: {},
     };
   },
   computed: {
@@ -275,19 +277,29 @@ export default {
         video: this.selectedVideo ? { deviceId: { exact: this.selectedVideo } } : false,
       };
 
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      document.getElementById('my-video').srcObject = stream;
-      this.localStream = stream;
+      const userStream = await navigator.mediaDevices.getUserMedia(constraints);
+      document.getElementById('my-video').srcObject = userStream;
 
       // 通話開始
-      this.makeCall();
+      this.makeCall(userStream);
     },
 
-    makeCall: function () {
+    shareDisplay: async function () {
+      const displayStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+      });
+
+      document.getElementById('my-display').srcObject = displayStream;
+
+      // 通話開始
+      this.makeCall(displayStream);
+    },
+
+    makeCall: function (stream) {
       //   const call = this.peer.call(this.calltoid, this.localStream);
       const call = this.peer.joinRoom(this.loungeId, {
         mode: 'sfu',
-        stream: this.localStream,
+        stream: stream,
       });
       this.setupCallEventHandlers(call);
     },
