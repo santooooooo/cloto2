@@ -45,7 +45,8 @@
 
     <!-- <v-row justify="start"> aaaaaa </v-row> -->
     <v-container fluid id="lounge">
-      <v-flex md9 class="videosContainer">
+      <!-- <v-flex md9 class="videosContainer"> -->
+      <v-row>
         <!-- <v-avatar size="200" @click="showProfile()"> -->
         <video id="my-video" width="500" height="500" muted="true" autoplay playsinline></video>
         <!-- </v-avatar> -->
@@ -64,11 +65,11 @@
           :srcObject.prop="participant"
         ></video>
         <!-- </v-avatar> -->
-      </v-flex>
-
-      <v-flex md3>
-        <!-- チャット -->
-        <beautiful-chat
+        <!-- </v-flex> -->
+      </v-row>
+      <!-- <v-flex md3> -->
+      <!-- チャット -->
+      <!-- <beautiful-chat
           :open="enterLounge"
           :close="leaveLounge"
           :onMessageWasSent="onMessageWasSent"
@@ -84,20 +85,20 @@
               {{ user.name.toUpperCase()[0] }}
             </div>
           </template>
-        </beautiful-chat>
+        </beautiful-chat> -->
 
-        <v-btn fixed dark bottom right x-large color="error" class="ma-10" @click="leaveLounge()">
-          自習室に戻る
-        </v-btn>
+      <v-btn fixed dark bottom right x-large color="error" class="ma-10" @click="leaveLounge()">
+        自習室に戻る
+      </v-btn>
 
-        <!-- プロフィールダイアログ -->
-        <ProfileDialog
-          :user-id="profileUserId"
-          @close="profileDialog = $event"
-          v-if="profileDialog"
-        ></ProfileDialog>
-        <!-- </v-container> -->
-      </v-flex>
+      <!-- プロフィールダイアログ -->
+      <ProfileDialog
+        :user-id="profileUserId"
+        @close="profileDialog = $event"
+        v-if="profileDialog"
+      ></ProfileDialog>
+      <!-- </v-container> -->
+      <!-- </v-flex> -->
     </v-container>
   </v-overlay>
 </template>
@@ -317,42 +318,34 @@ export default {
         this.addVideo(stream);
       });
 
-      call.on('removeStream', function (stream) {
+      call.on('removeStream', (stream) => {
         this.removeVideo(stream.peerId);
       });
 
-      call.on('peerLeave', function (peerId) {
+      call.on('peerLeave', (peerId) => {
         this.removeVideo(peerId);
       });
 
-      call.on('close', function () {
-        removeAllRemoteVideos();
-        setupMakeCallUI();
+      call.on('close', () => {
+        // this.removeAllRemoteVideos();
+        // setupMakeCallUI();
       });
     },
     addVideo: function (stream) {
       this.participants.push(stream);
     },
-    removeAllRemoteVideos: function () {
-      $('.videosContainer').empty();
-    },
     removeVideo: function (peerId) {
-      $('#' + peerId).remove();
-    },
-    setupMakeCallUI: function () {
-      $('#make-call').show();
-      $('#end-call').hide();
-    },
-
-    setupEndCallUI: function () {
-      $('#make-call').hide();
-      $('#end-call').show();
+      this.participants = this.participants.filter((participant) => {
+        // 退出したユーザーのpeerId以外を残す
+        return participant.peerId !== peerId;
+      });
     },
   },
 
   async created() {
     console.log(API_KEY);
-    this.peer = new Peer({ key: API_KEY, debug: 3 }); //新規にPeerオブジェクトの作成
+    this.peer = new Peer({ key: API_KEY }); //新規にPeerオブジェクトの作成
+    // this.peer = new Peer({ key: API_KEY, debug: 3 }); //新規にPeerオブジェクトの作成
     // this.peer.on('open', () => (this.peerId = this.peer.id)); //PeerIDを反映
     // this.peer.on("call", (call) => {
     //   // call.answer(this.localStream);
