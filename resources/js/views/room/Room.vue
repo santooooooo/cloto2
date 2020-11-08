@@ -96,16 +96,16 @@ export default {
       },
       now: '00:00', // 現在時刻 1240 １２時40分
       zIndex: 0,
-      roomColor: '#f4f4f4', //部屋の色
+      roomColor: '#ffffff', //部屋の色
       studyRoomColor: '#f4f4f4', //自習時間の背景色
       loungeRoomColor: '#ffe89a', //休憩時間の背景色
       timeTables: [
-        { time: '16:00', role: 'study' },
-        { time: '16:20', role: 'lounge' },
-        { time: '16:23', role: 'study' },
-        { time: '17:45', role: 'lounge' },
         { time: '18:00', role: 'study' },
-        { time: '18:45', role: 'lounge' },
+        { time: '18:10', role: 'lounge' },
+        { time: '18:15', role: 'study' },
+        { time: '18:18', role: 'lounge' },
+        { time: '18:55', role: 'study' },
+        { time: '19:00', role: 'lounge' },
       ], //時間割
     };
   },
@@ -429,7 +429,7 @@ export default {
           if (this.now === this.timeTables[index].time) {
             // this.displayText = '休憩スタート';
             this.startDisplay(this.timeTables[index].role);
-            this.changeRoomColor(this.timeTables[index].role);
+            nowRoomRole = this.timeTables[index].role;
           } else if (this.timeTables[index].time < this.now) {
             nowRoomRole = this.timeTables[index].role;
           } else {
@@ -452,8 +452,6 @@ export default {
         //休憩室開放時間
         this.roomColor = this.loungeRoomColor;
       }
-
-      console.log('changeRoomColor現在の時間割は' + status);
     },
 
     /**
@@ -507,8 +505,8 @@ export default {
 
   async mounted() {
     // ロード開始
-    this.isLoading = true;
     this.time();
+    this.isLoading = true;
 
     /**
      * キャンバスの設定
@@ -598,7 +596,7 @@ export default {
     }, 3000);
     this.syncTimer = setInterval(() => {
       this.time();
-    }, 60000);
+    }, 6000);
   },
 
   destroyed() {
