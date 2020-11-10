@@ -18,24 +18,24 @@
   <!-- <video id="their-video" width="200" autoplay playsinline></video> -->
   <v-container fluid id="lounge">
     マイク:
-    <select v-model="selectedAudio" @change="onChange">
+    <select v-model="selectedAudio" @change="changeDevice()">
       <option
-        v-for="(audioDevice, index) in audioDevices"
-        v-bind:key="index"
-        :value="audioDevice.value"
+        v-for="audioDevice in audioDevices"
+        :key="audioDevice.deviceId"
+        :value="audioDevice.deviceId"
       >
-        {{ audioDevice.text }}
+        {{ audioDevice.label }}
       </option>
     </select>
 
     カメラ:
-    <select v-model="selectedVideo" @change="onChange">
+    <select v-model="selectedVideo" @change="changeDevice()">
       <option
-        v-for="(videoDevice, index) in videoDevices"
-        v-bind:key="index"
-        :value="videoDevice.value"
+        v-for="videoDevice in videoDevices"
+        :key="videoDevice.deviceId"
+        :value="videoDevice.deviceId"
       >
-        {{ videoDevice.text }}
+        {{ videoDevice.label }}
       </option>
     </select>
 
@@ -162,7 +162,7 @@ export default {
       selectedVideo: '',
       peerId: '',
       displayStream: '',
-      userStream: '',
+      localStream: '',
       call: null,
       isMute: false,
       isVideoOff: false,
@@ -272,41 +272,136 @@ export default {
       this.profileDialog = true;
     },
 
-    onChange: function () {
-      if (this.selectedAudio != '' && this.selectedVideo != '') {
-        this.connectLocalCamera();
-      }
+    /**
+     * 通話デバイスへのアクセス
+     */
+    accessDevice: async function () {
+      // デバイスへのアクセス可能にするためにgetUserMediaを実行
+      await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+      const devices = await navigator.mediaDevices.enumerateDevices();
+
+      // オーディオデバイスの情報を取得
+      this.audioDevices = devices.filter((device) => {
+        return device.kind === 'audioinput';
+      });
+
+      // カメラの情報を取得
+      this.videoDevices = devices.filter((device) => {
+        return device.kind === 'videoinput';
+      });
+
+      this.selectedAudio = this.audioDevices[0].deviceId;
+      this.selectedVideo = this.videoDevices[0].deviceId;
     },
 
-    mute: function () {
-      const audioTrack = this.userStream.getAudioTracks()[0];
-      this.isMute = !this.isMute;
-      audioTrack.enabled = !this.isMute;
-    },
-    videoOff: function () {
-      const videoTrack = this.userStream.getVideoTracks()[0];
-      this.isVideoOff = !this.isVideoOff;
-      videoTrack.enabled = !this.isVideoOff;
-    },
-    connectLocalCamera: async function () {
-      const constraints = {
+    /**
+     * 通話デバイスへの接続
+     */
+    connectDevice: async function () {
+      const useDevice = {
         audio: this.selectedAudio ? { deviceId: { exact: this.selectedAudio } } : false,
         video: this.selectedVideo ? { deviceId: { exact: this.selectedVideo } } : false,
       };
 
-      this.userStream = await navigator.mediaDevices.getUserMedia(constraints);
-
-      if (this.call === null) {
-        // 通話開始
-        this.makeCall(this.userStream);
-      } else {
-        // ストリームの置き換え
-        this.call.replaceStream(this.userStream);
-      }
-
-      document.getElementById('my-video').srcObject = this.userStream;
+      this.localStream = await navigator.mediaDevices.getUserMedia(useDevice);
     },
 
+    /**
+     * 通話デバイスの切り替え
+     */
+    changeDevice: async function () {
+      await this.connectDevice();
+      // ストリームの置き換え
+      this.call.replaceStream(this.localStream);
+    },
+
+    /**
+     * ミュートの切り替え
+     */
+    mute: function () {
+      const audioTrack = this.localStream.getAudioTracks()[0];
+      this.isMute = !this.isMute;
+      audioTrack.enabled = !this.isMute;
+
+      // ストリームの置き換え
+      this.call.replaceStream(this.localStream);
+    },
+
+    /**
+     * ビデオのオン/オフ切り替え
+     */
+    videoOff: function () {
+      const videoTrack = this.localStream.getVideoTracks()[0];
+      this.isVideoOff = !this.isVideoOff;
+      videoTrack.enabled = !this.isVideoOff;
+
+      // ストリームの置き換え
+      this.call.replaceStream(this.localStream);
+    },
+
+    /**
+     * 通話の開始
+     */
+    makeCall: function () {
+      // 自分のビデオを表示
+      document.getElementById('my-video').srcObject = this.localStream;
+
+      this.call = this.peer.joinRoom(this.loungeId, {
+        mode: 'sfu',
+        stream: this.localStream,
+      });
+
+      this.setupCallEvents();
+    },
+
+    /**
+     * 通話の開始
+     */
+    setupCallEvents: function () {
+      this.call.on('stream', (stream) => {
+        // ビデオなどreplaceStreamでは，ここが発火する．
+        // streamの中身で分岐できるかを確認する必要あり．
+        // 別ピアーで接続するため，画面共有も他人扱いされる
+        // そのため，自分の画面共有のストリームは除外
+        if (stream.id !== this.displayStream.id) {
+          this.joinUser(stream);
+        }
+      });
+
+      this.call.on('removeStream', (stream) => {
+        this.leaveUser(stream.peerId);
+      });
+
+      this.call.on('peerLeave', (peerId) => {
+        this.leaveUser(peerId);
+      });
+
+      this.call.on('close', () => {
+        // this.removeAllRemoteVideos();
+        // setupMakeCallUI();
+      });
+    },
+
+    /**
+     * 通話の開始
+     */
+    joinUser: function (stream) {
+      this.participants.push(stream);
+    },
+
+    /**
+     * 通話の開始
+     */
+    leaveUser: function (peerId) {
+      this.participants = this.participants.filter((participant) => {
+        // 退出したユーザーのpeerId以外を残す
+        return participant.peerId !== peerId;
+      });
+    },
+
+    /**
+     * 画面共有
+     */
     shareDisplay: async function () {
       const displayPeer = new Peer({ key: API_KEY });
 
@@ -314,6 +409,7 @@ export default {
         video: true,
       });
 
+      // 画面共有を表示
       document.getElementById('my-display').srcObject = this.displayStream;
 
       displayPeer.joinRoom(this.loungeId, {
@@ -321,101 +417,15 @@ export default {
         stream: this.displayStream,
       });
     },
-
-    makeCall: function (stream) {
-      this.call = this.peer.joinRoom(this.loungeId, {
-        mode: 'sfu',
-        stream: stream,
-      });
-      this.setupCallEventHandlers(this.call);
-    },
-
-    setupCallEventHandlers: function (call) {
-      // setupEndCallUI();
-      // $('#room-id').text(call.name);
-
-      call.on('stream', (stream) => {
-        // 別ピアーで接続するため，画面共有も他人扱いされる
-        // そのため，自分の画面共有のストリームは除外
-        if (stream.id !== this.displayStream.id) {
-          this.addVideo(stream);
-        }
-      });
-
-      call.on('removeStream', (stream) => {
-        this.removeVideo(stream.peerId);
-      });
-
-      call.on('peerLeave', (peerId) => {
-        this.removeVideo(peerId);
-      });
-
-      call.on('close', () => {
-        // this.removeAllRemoteVideos();
-        // setupMakeCallUI();
-      });
-    },
-    addVideo: function (stream) {
-      this.participants.push(stream);
-    },
-    removeVideo: function (peerId) {
-      this.participants = this.participants.filter((participant) => {
-        // 退出したユーザーのpeerId以外を残す
-        return participant.peerId !== peerId;
-      });
-    },
   },
 
   async created() {
-    console.log(API_KEY);
-    this.peer = new Peer({ key: API_KEY }); //新規にPeerオブジェクトの作成
-    // this.peer = new Peer({ key: API_KEY, debug: 3 }); //新規にPeerオブジェクトの作成
-    // this.peer.on('open', () => (this.peerId = this.peer.id)); //PeerIDを反映
-    // this.peer.on("call", (call) => {
-    //   // call.answer(this.localStream);
-    //   // this.connect(call);
-    //   call.on("stream", function (stream) {
-    //     console.log("here");
-    //     addVideo(stream);
-    //   });
-    //   call.on("peerLeave", function (peerId) {
-    //     removeVideo(peerId);
-    //   });
-    //   call.on("close", function () {
-    //     removeAllRemoteVideos();
-    //     setupMakeCallUI();
-    //   });
-    // });
-    //デバイスへのアクセス
-    await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-    const devices = await navigator.mediaDevices.enumerateDevices();
+    this.peer = new Peer({ key: API_KEY });
+    // this.peer = new Peer({ key: API_KEY, debug: 3 });
 
-    //オーディオデバイスの情報を取得
-    devices
-      .filter((device) => device.kind === 'audioinput')
-      .map((audio) =>
-        this.audioDevices.push({
-          text: audio.label || `Microphone ${this.audioDevices.length + 1}`,
-          value: audio.deviceId,
-        })
-      );
-
-    //カメラの情報を取得
-    devices
-      .filter((device) => device.kind === 'videoinput')
-      .map((video) =>
-        this.videoDevices.push({
-          text: video.label || `Camera  ${this.videoDevices.length - 1}`,
-          value: video.deviceId,
-        })
-      );
-
-    this.selectedAudio = this.audioDevices[0].value;
-    this.selectedVideo = this.videoDevices[0].value;
-    console.log(this.audioDevices, this.videoDevices);
-    this.connectLocalCamera();
-    // console.log(deviceInfos);
-    // this.makeCall();
+    this.accessDevice();
+    this.connectDevice();
+    this.makeCall();
   },
 
   async mounted() {
