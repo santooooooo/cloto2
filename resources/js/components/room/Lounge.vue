@@ -42,14 +42,22 @@
     <v-btn @click="mute()">ミュート</v-btn>
     <v-btn @click="videoOff()">ビデオオフ</v-btn>
 
-    <v-btn @click="shareDisplay()">画面共有</v-btn>
-    <video id="my-display" width="300" height="300" muted="true" autoplay playsinline></video>
+    <v-btn @click="startShareDisplay()">画面共有</v-btn>
+    <v-btn @click="stopShareDisplay()">画面共有停止</v-btn>
+    <video id="my-shareDisplay" width="300" height="300" muted="true" autoplay playsinline></video>
 
     <!-- <v-row justify="start"> aaaaaa </v-row> -->
     <!-- <v-flex md9 class="videosContainer"> -->
     <v-row>
       <!-- <v-avatar size="200" @click="showProfile()"> -->
-      <video id="my-video" width="300" height="300" muted="true" autoplay playsinline></video>
+      <video
+        width="800"
+        height="800"
+        v-for="participant in participants"
+        :key="participant.peerId"
+        autoplay
+        :srcObject.prop="participant"
+      ></video>
       <!-- </v-avatar> -->
       <!-- <v-avatar
           size="200"
@@ -60,10 +68,18 @@
       <video
         width="800"
         height="800"
-        v-for="participant in participants"
-        :key="participant.peerId"
         autoplay
-        :srcObject.prop="participant"
+        :srcObject.prop="localStream"
+        v-if="localStream && !isVideoOff"
+      ></video>
+      <v-img height="800" width="800" src="https://picsum.photos/id/11/500/300" v-else></v-img>
+
+      <video
+        width="800"
+        height="800"
+        autoplay
+        :srcObject.prop="shareDisplay.localStream"
+        v-if="shareDisplay.localStream"
       ></video>
       <!-- </v-avatar> -->
       <!-- </v-flex> -->
@@ -158,14 +174,17 @@ export default {
       participants: [],
       audioDevices: [],
       videoDevices: [],
-      selectedAudio: '',
-      selectedVideo: '',
-      peerId: '',
-      displayStream: '',
-      localStream: '',
+      peer: null,
+      localStream: null,
       call: null,
+      selectedAudio: null,
+      selectedVideo: null,
       isMute: false,
       isVideoOff: false,
+      shareDisplay: {
+        peer: null,
+        localStream: null,
+      },
     };
   },
   computed: {
@@ -236,13 +255,15 @@ export default {
 
       // スクロールイベントの設定
       this.chatArea = document.getElementsByClassName('sc-message-list')[0];
-      this.chatArea.addEventListener('scroll', this.scrollEvent);
+      // this.chatArea.addEventListener('scroll', this.scrollEvent);
     },
 
     /**
      * 休憩室から退室
      */
     leaveLounge: function () {
+      this.exitCall();
+
       this.isLoungeEnter = false;
 
       this.$emit('leave-lounge');
@@ -298,12 +319,12 @@ export default {
      * 通話デバイスへの接続
      */
     connectDevice: async function () {
-      const useDevice = {
+      const constraints = {
         audio: this.selectedAudio ? { deviceId: { exact: this.selectedAudio } } : false,
         video: this.selectedVideo ? { deviceId: { exact: this.selectedVideo } } : false,
       };
 
-      this.localStream = await navigator.mediaDevices.getUserMedia(useDevice);
+      this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
     },
 
     /**
@@ -342,10 +363,7 @@ export default {
     /**
      * 通話の開始
      */
-    makeCall: function () {
-      // 自分のビデオを表示
-      document.getElementById('my-video').srcObject = this.localStream;
-
+    makeCall: async function () {
       this.call = this.peer.joinRoom(this.loungeId, {
         mode: 'sfu',
         stream: this.localStream,
@@ -355,7 +373,7 @@ export default {
     },
 
     /**
-     * 通話の開始
+     * 通話のイベント
      */
     setupCallEvents: function () {
       this.call.on('stream', (stream) => {
@@ -363,7 +381,7 @@ export default {
         // streamの中身で分岐できるかを確認する必要あり．
         // 別ピアーで接続するため，画面共有も他人扱いされる
         // そのため，自分の画面共有のストリームは除外
-        if (stream.id !== this.displayStream.id) {
+        if (stream.id !== this.shareDisplay.localStream.id) {
           this.joinUser(stream);
         }
       });
@@ -383,14 +401,32 @@ export default {
     },
 
     /**
-     * 通話の開始
+     * 通話の終了
+     */
+    exitCall: async function () {
+      // 画面共有の停止
+      await this.stopShareDisplay();
+
+      if (this.peer !== null) {
+        // デバイスの使用を停止
+        this.localStream.getTracks().forEach((track) => track.stop());
+        this.localStream = null;
+
+        // 通話の接続を終了
+        this.peer.disconnect();
+        this.peer = null;
+      }
+    },
+
+    /**
+     * 参加者の追加
      */
     joinUser: function (stream) {
       this.participants.push(stream);
     },
 
     /**
-     * 通話の開始
+     * 参加者の退出
      */
     leaveUser: function (peerId) {
       this.participants = this.participants.filter((participant) => {
@@ -400,22 +436,37 @@ export default {
     },
 
     /**
-     * 画面共有
+     * 画面共有開始
      */
-    shareDisplay: async function () {
-      const displayPeer = new Peer({ key: API_KEY });
+    startShareDisplay: async function () {
+      if (this.shareDisplay.peer === null) {
+        this.shareDisplay.peer = new Peer({ key: API_KEY });
 
-      this.displayStream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-      });
+        this.shareDisplay.localStream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: false,
+        });
 
-      // 画面共有を表示
-      document.getElementById('my-display').srcObject = this.displayStream;
+        this.shareDisplay.peer.joinRoom(this.loungeId, {
+          mode: 'sfu',
+          stream: this.shareDisplay.localStream,
+        });
+      }
+    },
 
-      displayPeer.joinRoom(this.loungeId, {
-        mode: 'sfu',
-        stream: this.displayStream,
-      });
+    /**
+     * 画面共有停止
+     */
+    stopShareDisplay: async function () {
+      if (this.shareDisplay.peer !== null) {
+        // デバイスの画面共有を停止
+        this.shareDisplay.localStream.getTracks().forEach((track) => track.stop());
+        this.shareDisplay.localStream = null;
+
+        // 画面共有用の接続を終了
+        this.shareDisplay.peer.disconnect();
+        this.shareDisplay.peer = null;
+      }
     },
   },
 
@@ -423,8 +474,8 @@ export default {
     this.peer = new Peer({ key: API_KEY });
     // this.peer = new Peer({ key: API_KEY, debug: 3 });
 
-    this.accessDevice();
-    this.connectDevice();
+    await this.accessDevice();
+    await this.connectDevice();
     this.makeCall();
   },
 
@@ -438,6 +489,9 @@ export default {
     // }, 3000);
   },
   destroyed() {
+    // 念の為
+    this.exitCall();
+
     // 休憩室退出時にはタイマーを解除
     if (this.syncTimer !== null) {
       clearInterval(this.syncTimer);
@@ -467,7 +521,7 @@ export default {
 /* beautiful-chatのスタイル */
 .sc-launcher {
   // チャットオープンアイコンの無効化
-  display: none;
+  sharedisplay: none;
 }
 
 // .sc-chat-window {
