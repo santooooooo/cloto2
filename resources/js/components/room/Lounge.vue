@@ -17,6 +17,14 @@
       </div> -->
   <!-- <video id="their-video" width="200" autoplay playsinline></video> -->
   <v-container fluid id="lounge">
+    <div>
+      <p class="messages" id="js-messages" v-for="message in messages" :key="message.id">
+        {{ message }}
+      </p>
+      <v-text-field v-model="localText" solo rounded class="pa-2"></v-text-field>
+      <button id="js-send-trigger" @click="onClickSend()">Send</button>
+    </div>
+
     マイク:
     <select v-model="selectedAudio" @change="changeDevice()">
       <option
@@ -185,6 +193,8 @@ export default {
         peer: null,
         localStream: null,
       },
+      localText: '',
+      messages: [],
     };
   },
   computed: {
@@ -376,6 +386,14 @@ export default {
      * 通話のイベント
      */
     setupCallEvents: function () {
+      this.call.once('open', () => {
+        this.messages.push('=== You joined ===');
+      });
+
+      this.call.on('peerJoin', (peerId) => {
+        this.messages.push(`=== ${peerId} joined ===`);
+      });
+
       this.call.on('stream', (stream) => {
         // ビデオなどreplaceStreamでは，ここが発火する．
         // streamの中身で分岐できるかを確認する必要あり．
@@ -384,6 +402,11 @@ export default {
         if (stream.id !== this.shareDisplay.localStream.id) {
           this.joinUser(stream);
         }
+      });
+
+      this.call.on('data', ({ data, src }) => {
+        // Show a message sent to the room and who sent
+        this.messages.push(`${src}: ${data}`);
       });
 
       this.call.on('removeStream', (stream) => {
@@ -468,6 +491,15 @@ export default {
         this.shareDisplay.peer = null;
       }
     },
+
+    onClickSend: function () {
+      this.call.send(this.localText);
+
+      this.messages.push(`${this.peer.id}: ${this.localText}`);
+      this.localText = '';
+
+      console.log(this.messages);
+    },
   },
 
   async created() {
@@ -521,7 +553,7 @@ export default {
 /* beautiful-chatのスタイル */
 .sc-launcher {
   // チャットオープンアイコンの無効化
-  sharedisplay: none;
+  // sharedisplay: none;
 }
 
 // .sc-chat-window {
