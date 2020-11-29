@@ -6,7 +6,7 @@
     </v-overlay>
     <!-- 自習スタートローディング-->
     <v-overlay :opacity="0.8" :value="roomStatusDisplay" color="#f6bf00" dark>
-      <div class="statusDisplay">自習スタート</div>
+      <div class="statusDisplay">{{ displayText }}</div>
     </v-overlay>
 
     <Drawer
@@ -17,7 +17,13 @@
 
     <v-flex id="main">
       <!-- 教室 -->
-      <v-row no-gutters align="center" justify="center" id="room">
+      <v-row
+        no-gutters
+        align="center"
+        justify="center"
+        v-bind:style="{ background: roomColor }"
+        id="room"
+      >
         <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
       </v-row>
 
@@ -72,6 +78,7 @@ export default {
       isLoading: false, // ロードの制御
       roomStatusDisplay: false, //自習スタートローディング
       syncTimer: null, // 同期制御
+      displayText: '自習スタート', //部屋の状態表示のテキスト文字
       roomData: '', // 教室データ
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
@@ -89,6 +96,17 @@ export default {
       },
       now: '00:00', // 現在時刻 1240 １２時40分
       zIndex: 0,
+      roomColor: '#ffffff', //部屋の色
+      studyRoomColor: '#f4f4f4', //自習時間の背景色
+      loungeRoomColor: '#ffe89a', //休憩時間の背景色
+      timeTables: [
+        { time: '18:00', role: 'study' },
+        { time: '18:10', role: 'lounge' },
+        { time: '18:15', role: 'study' },
+        { time: '18:18', role: 'lounge' },
+        { time: '18:55', role: 'study' },
+        { time: '19:00', role: 'lounge' },
+      ], //時間割
     };
   },
 
@@ -397,30 +415,42 @@ export default {
       this.canvas.remove(removeObject);
       this.canvas.requestRenderAll();
     },
-    time: function (e) {
-      //function(e) この引数eは、eventの「e」
+    /**
+     * 時間による制御
+     */
+    time: function () {
       let date = new Date(); //new演算子でオブジェクトのインスタンスを生成
-      //現在時刻の取得 **ここからはjavascript**
-      // this.now = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      this.now = date.getHours() + ':' + date.getMinutes();
+      let nowRoomRole = ''; //現在の部屋の状態 自習 or 休憩
 
-      //休憩時間開始時刻仮置き
-      var loungeTimes = [
-        { hour: 17, minute: 45 },
-        { hour: 18, minute: 0 },
-        { hour: 18, minute: 39 },
-      ];
-      let currentHour = date.getHours(); //現在のhour
-      let currentMinutes = date.getMinutes(); //現在のminutesを取得
-
-      for (var loungeTime in loungeTimes) {
-        if (loungeTimes.hasOwnProperty(loungeTime)) {
-          if (
-            currentHour === loungeTimes[loungeTime].hour &&
-            currentMinutes === loungeTimes[loungeTime].minute
-          ) {
-            //this.startDisplay();
+      //現在時刻と休憩開始時刻を比較
+      for (var index in this.timeTables) {
+        if (this.timeTables.hasOwnProperty(index)) {
+          if (this.now === this.timeTables[index].time) {
+            // this.displayText = '休憩スタート';
+            this.startDisplay(this.timeTables[index].role);
+            nowRoomRole = this.timeTables[index].role;
+          } else if (this.timeTables[index].time < this.now) {
+            nowRoomRole = this.timeTables[index].role;
+          } else {
+            //console.log('時間割のどの時間にも属しません');
           }
         }
+      }
+      this.changeRoomColor(nowRoomRole); //時間割に合わせて背景色変更
+    },
+
+    /**
+     * 時間による背景色の変更
+     * @param status String 'study' or 'lounge'
+     */
+    changeRoomColor: function (status) {
+      if (status === 'study') {
+        //自習時間
+        this.roomColor = this.studyRoomColor;
+      } else {
+        //休憩室開放時間
+        this.roomColor = this.loungeRoomColor;
       }
     },
 
@@ -429,8 +459,7 @@ export default {
      */
     startStudy: async function () {
       this.projectDialog = false;
-
-      this.startDisplay(); //自習開始の表示
+      this.startDisplay('study'); //自習開始の表示
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
@@ -443,23 +472,19 @@ export default {
       this.projectDialog = false;
       this.leaveRoom();
     },
-
-    /**
-     * 自習継続
-     */
-    continueStudy: function () {
-      this.karte.dialog = false;
-      this.projectDialog = true;
-    },
-
     /**
      * ルームの状態表示開始(休憩時間開始、自習開始など)
      */
-    startDisplay: function () {
+    startDisplay: function (role) {
+      console.log(role);
+      if (role === 'study') {
+        this.displayText = '自習スタート';
+      } else {
+        this.displayText = '休憩スタート';
+      }
       this.roomStatusDisplay = true;
       setTimeout(this.closeDisplay, 2000);
     },
-
     /**
      * 自習開始
      */
@@ -480,6 +505,7 @@ export default {
 
   async mounted() {
     // ロード開始
+    this.time();
     this.isLoading = true;
 
     /**
@@ -567,8 +593,10 @@ export default {
      */
     this.syncTimer = setInterval(() => {
       this.getRoom();
-      this.time();
     }, 3000);
+    this.syncTimer = setInterval(() => {
+      this.time();
+    }, 6000);
   },
 
   destroyed() {
@@ -588,7 +616,7 @@ export default {
 }
 
 #main {
-  background-color: $light-yellow;
+  //background-color: $light-yellow;
 
   #room {
     height: 80vh;
