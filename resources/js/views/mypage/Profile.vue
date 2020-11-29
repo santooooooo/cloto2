@@ -8,9 +8,8 @@
      </ProfileEditDialog>
     <!-- アイコン表示 -->
     <v-card  class="text-center" flat>
-              <v-avatar
+           <v-avatar
             class="profile"
-            color="grey"
             size="150"
           >
            <img

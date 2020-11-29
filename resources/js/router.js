@@ -16,6 +16,8 @@ function isRelease() {
 import store from './store';
 
 import index from '@/views/Index';
+import company from '@/views/service/Company';
+import terms from '@/views/service/Terms';
 import preRegister from '@/views/auth/PreRegister';
 import register from '@/views/auth/Register';
 import login from '@/views/auth/Login';
@@ -58,6 +60,16 @@ const router = new VueRouter({
           meta: { isPublic: isRelease() },
         },
       ],
+    },
+    {
+      path: '/company',
+      name: 'company',
+      component: company,
+    },
+    {
+      path: '/terms',
+      name: 'terms',
+      component: terms,
     },
     {
       path: '/500',
