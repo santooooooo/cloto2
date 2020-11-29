@@ -28,7 +28,9 @@
 
       <v-btn color="white" text rounded class="my-2" :to="{ name: 'login' }"> ログイン </v-btn>
 
-      <v-btn color="white" text rounded class="my-2" :to="'hoge'"> 利用規約 </v-btn>
+      <v-btn color="white" text rounded class="my-2" :to="{ name: 'company' }"> About </v-btn>
+
+      <v-btn color="white" text rounded class="my-2" :to="{ name: 'terms' }"> 利用規約 </v-btn>
 
       <v-btn
         color="white"
@@ -60,7 +62,9 @@
         ログアウト
       </v-btn>
 
-      <v-btn color="white" text rounded class="my-2" :to="'hoge'"> 利用規約 </v-btn>
+      <v-btn color="white" text rounded class="my-2" :to="{ name: 'company' }"> About </v-btn>
+
+      <v-btn color="white" text rounded class="my-2" :to="{ name: 'terms' }"> 利用規約 </v-btn>
 
       <v-btn
         color="white"
@@ -128,3 +132,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.v-btn:hover {
+  text-decoration: none !important;
+}
+</style>
