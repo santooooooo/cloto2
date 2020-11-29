@@ -10,7 +10,7 @@
             ratio-y="1"
             @input="profileUpdateForm.icon = $event"
           />
-
+    
           <v-row>
             <v-col>
               <!-- ユーザー名 -->
@@ -54,8 +54,8 @@
             <v-col>
               <v-card-text class="pa-1 white--text">Twitter</v-card-text>
               <v-text-field
-                v-model="profileUpdateForm.twitter"
-                placeholder="Twitter 例：CLOTO_JP"
+                v-model="profileUpdateForm.sns.twitter"
+                placeholder="@以降を入力 例：CLOTO_JP"
                 solo
                 rounded
                 class="pa-2"
@@ -67,7 +67,7 @@
             <v-col>
               <v-card-text class="pa-1 white--text">GitHub</v-card-text>
               <v-text-field
-                v-model="profileUpdateForm.github"
+                v-model="profileUpdateForm.sns.github"
                 placeholder="GitHub 例：CLOTO_JP"
                 solo
                 rounded
@@ -82,7 +82,7 @@
             <v-col>
               <v-card-text class="pa-1 white--text">Qiita</v-card-text>
               <v-text-field
-                v-model="profileUpdateForm.qiita"
+                v-model="profileUpdateForm.sns.qiita"
                 placeholder="Qiita 例：CLOTO_JP"
                 solo
                 rounded
@@ -165,12 +165,14 @@ export default {
         email: '',
         handlename: '',
         icon: '',
-        twitter: '',
-        github: '',
-        qiita: '',
         web: '',
         introduction: '',
         loading: false,
+        sns:{
+        twitter: '',
+        github: '',
+        qiita: '',
+        },
         validation: {
           valid: false,
           usernameRules: [(v) => !!v || 'ユーザネームは必須項目です。'],
@@ -198,10 +200,10 @@ export default {
         input.append('icon', this.profileUpdateForm.icon);
         input.append(
           'twitter',
-          this.profileUpdateForm.twitter ? this.profileUpdateForm.twitter : ''
+          this.profileUpdateForm.sns.twitter ? this.profileUpdateForm.sns.twitter : ''
         );
-        input.append('github', this.profileUpdateForm.github ? this.profileUpdateForm.github : '');
-        input.append('qiita', this.profileUpdateForm.qiita ? this.profileUpdateForm.qiita : '');
+        input.append('github', this.profileUpdateForm.sns.github ? this.profileUpdateForm.sns.github : '');
+        input.append('qiita', this.profileUpdateForm.sns.qiita ? this.profileUpdateForm.sns.qiita : '');
         input.append('web', this.profileUpdateForm.web ? this.profileUpdateForm.web : '');
         input.append(
           'introduction',

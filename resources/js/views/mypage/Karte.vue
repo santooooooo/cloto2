@@ -3,11 +3,6 @@
     <v-row>
       <v-col cols="3" class="pa-0">
         <v-card tile min-height="700" color="blue-grey lighten-2">
-          <!-- <v-skeleton-loader
-            type="card-heading, list-item@10"
-            class="pt-1 px-4"
-           
-          ></v-skeleton-loader> -->
           <v-overlay v-if="projects.loading">
             <v-progress-circular indeterminate></v-progress-circular>
           </v-overlay>
@@ -27,12 +22,6 @@
 
       <v-col cols="3" class="pa-0">
         <v-card tile min-height="700" color="blue-grey lighten-3">
-          <!-- <v-skeleton-loader
-            type="card-heading, list-item@1"
-            class="pt-1 px-4"
-            v-if="tasks.loading"
-           
-          ></v-skeleton-loader> -->
           <v-overlay v-if="tasks.loading">
             <v-progress-circular indeterminate></v-progress-circular>
           </v-overlay>
@@ -52,11 +41,6 @@
 
       <v-col cols="5" class="pa-0">
         <v-card tile min-height="700" color="blue-grey lighten-4" width="700">
-          <!-- <v-skeleton-loader
-            type="card-heading, list-item@10"
-            class="pt-1 px-4"
-            v-if="kartes.loading"
-          ></v-skeleton-loader> -->
           <v-overlay v-if="kartes.loading">
             <v-progress-circular indeterminate></v-progress-circular>
           </v-overlay>
@@ -99,9 +83,35 @@
             </v-col>
 
             <v-col>
-              <v-card-text class="pa-0 white--text title font-weight-bold"> 画像 </v-card-text>
-              ここに画像を持ってくる処理を描く
+
+       
+
+
+          <v-card-text class="pa-0 white--text title font-weight-bold"> 画像 </v-card-text>
+
+        <v-card v-if="karteDialog.data.image!=null"  height="200" class="text-center pt-6">
+          <v-avatar
+            class="profile"
+            color="grey"
+            size="150"
+          >
+           <img
+            :src="$storage('karte')+karteDialog.data.image"
+            class="rounded-circle"
+          />
+          </v-avatar>  
               <!-- ここに画像持ってくる  -->
+        </v-card>
+
+        <v-card v-else height="200">
+          なし
+
+        </v-card>
+
+    
+
+
+  
             </v-col>
           </v-row>
           <v-row>
@@ -167,6 +177,8 @@ export default {
       },
     };
   },
+
+  
   methods: {
     /**
      * プロジェクトの取得
