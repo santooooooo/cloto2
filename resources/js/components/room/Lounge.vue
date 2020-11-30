@@ -1,131 +1,347 @@
 <template>
-  <!-- <v-overlay opacity="0.7" z-index="4"> -->
-  <!-- 新着メッセージ通知 -->
-  <!-- <v-row
-      justify="center"
-      class="mb-3"
-      :style="{ visibility: notification ? 'visible' : 'hidden' }"
-    >
-      <a @click="scrollToBottom()">
-        <v-badge inline :value="true" color="red" content="↓ 新着メッセージ"></v-badge>
-      </a>
-    </v-row> -->
+  <v-dialog v-model="isLoungeEnter" fullscreen transition="dialog-bottom-transition">
+    <v-layout class="px-2">
+      <v-flex>
+        <v-container fluid>
+          <v-row justify="center">
+            <div class="video-container" v-if="localStream && !isVideoOff" style="height: 117px">
+              <video width="208" height="117" autoplay :srcObject.prop="localStream"></video>
 
-  <!-- <v-container ma-0 pa-0 fluid> -->
-  <!-- <div class="videosContainer">
-        <video id="myStream" autoplay muted="true"></video>
-      </div> -->
-  <!-- <video id="their-video" width="200" autoplay playsinline></video> -->
-  <v-container fluid id="lounge">
-    <div>
-      <p class="messages" id="js-messages" v-for="message in messages" :key="message.id">
-        {{ message }}
-      </p>
-      <v-text-field v-model="localText" solo rounded class="pa-2"></v-text-field>
-      <button id="js-send-trigger" @click="onClickSend()">Send</button>
-    </div>
-
-    マイク:
-    <select v-model="selectedAudio" @change="changeDevice()">
-      <option
-        v-for="audioDevice in audioDevices"
-        :key="audioDevice.deviceId"
-        :value="audioDevice.deviceId"
-      >
-        {{ audioDevice.label }}
-      </option>
-    </select>
-
-    カメラ:
-    <select v-model="selectedVideo" @change="changeDevice()">
-      <option
-        v-for="videoDevice in videoDevices"
-        :key="videoDevice.deviceId"
-        :value="videoDevice.deviceId"
-      >
-        {{ videoDevice.label }}
-      </option>
-    </select>
-
-    <v-btn @click="mute()">ミュート</v-btn>
-    <v-btn @click="videoOff()">ビデオオフ</v-btn>
-
-    <v-btn @click="startShareDisplay()">画面共有</v-btn>
-    <v-btn @click="stopShareDisplay()">画面共有停止</v-btn>
-    <video id="my-shareDisplay" width="300" height="300" muted="true" autoplay playsinline></video>
-
-    <!-- <v-row justify="start"> aaaaaa </v-row> -->
-    <!-- <v-flex md9 class="videosContainer"> -->
-    <v-row>
-      <!-- <v-avatar size="200" @click="showProfile()"> -->
-      <video
-        width="800"
-        height="800"
-        v-for="participant in participants"
-        :key="participant.peerId"
-        autoplay
-        :srcObject.prop="participant"
-      ></video>
-      <!-- </v-avatar> -->
-      <!-- <v-avatar
-          size="200"
-          v-for="participant in participants"
-          :key="participant.peerId"
-          @click="showProfile()"
-        > -->
-      <video
-        width="800"
-        height="800"
-        autoplay
-        :srcObject.prop="localStream"
-        v-if="localStream && !isVideoOff"
-      ></video>
-      <v-img height="800" width="800" src="https://picsum.photos/id/11/500/300" v-else></v-img>
-
-      <video
-        width="800"
-        height="800"
-        autoplay
-        :srcObject.prop="shareDisplay.localStream"
-        v-if="shareDisplay.localStream"
-      ></video>
-      <!-- </v-avatar> -->
-      <!-- </v-flex> -->
-    </v-row>
-    <!-- <v-flex md3> -->
-    <!-- チャット -->
-    <!-- <beautiful-chat
-          :open="enterLounge"
-          :close="leaveLounge"
-          :onMessageWasSent="onMessageWasSent"
-          :colors="chatColors"
-          :isOpen="isLoungeEnter"
-          :messageList="messageList"
-          :participants="chatParticipants"
-          :showEmoji="true"
-          :showHeader="false"
-        >
-          <template v-slot:user-avatar="{ message, user }">
-            <div v-if="message.data.type === 'text' && user && user.name">
-              {{ user.name.toUpperCase()[0] }}
+              <small>{{ authUser.username }}</small>
             </div>
-          </template>
-        </beautiful-chat> -->
 
-    <v-btn fixed dark bottom right x-large color="error" class="ma-10" @click="leaveLounge()">
-      自習室に戻る
-    </v-btn>
+            <div class="video-container" v-else>
+              <v-sheet
+                color="black"
+                width="208"
+                height="117"
+                class="d-flex justify-center align-center"
+              >
+                <v-avatar size="50" class="aligh-self-center"
+                  ><img :src="$storage('icon') + authUser.icon"
+                /></v-avatar>
+              </v-sheet>
 
-    <!-- プロフィールダイアログ -->
-    <ProfileDialog
-      :user-id="profileUserId"
-      @close="profileDialog = $event"
-      v-if="profileDialog"
-    ></ProfileDialog>
-    <!-- </v-container> -->
-    <!-- </v-flex> -->
-  </v-container>
-  <!-- </v-overlay> -->
+              <small>{{ authUser.username }}</small>
+            </div>
+
+            <video
+              width="208"
+              height="117"
+              autoplay
+              :srcObject.prop="shareDisplay.localStream"
+              class="ml-10"
+              v-if="shareDisplay.localStream"
+            ></video>
+          </v-row>
+
+          <video
+            id="my-shareDisplay"
+            width="300"
+            height="300"
+            muted="true"
+            autoplay
+            playsinline
+          ></video>
+
+          <v-row>
+            <video
+              width="800"
+              height="800"
+              v-for="participant in participants"
+              :key="participant.peerId"
+              autoplay
+              :srcObject.prop="participant"
+            ></video>
+
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+            <v-sheet
+              color="black"
+              width="208"
+              height="208"
+              class="d-flex justify-center align-center"
+            >
+              <v-avatar size="50" class="aligh-self-center"
+                ><img :src="$storage('icon') + authUser.icon"
+              /></v-avatar>
+            </v-sheet>
+          </v-row>
+
+          <!-- プロフィールダイアログ -->
+          <ProfileDialog
+            :user-id="profileUserId"
+            @close="profileDialog = $event"
+            v-if="profileDialog"
+          ></ProfileDialog>
+        </v-container>
+      </v-flex>
+
+      <!-- チャットエリア -->
+      <v-flex v-show="isShowChat">
+        <v-card color="grey lighten-2" class="mx-auto" width="400" id="chat">
+          <v-card flat class="overflow-y-auto" height="600">
+            <v-card-text v-for="message in messages" :key="message.id">
+              {{ message }}
+            </v-card-text>
+          </v-card>
+
+          <v-card-actions>
+            <v-textarea
+              v-model="localText"
+              rows="1"
+              class="px-2"
+              label="メッセージを送ろう！"
+            ></v-textarea>
+            <v-btn icon @click="onClickSend()">
+              <v-icon>mdi-send</v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+
+      <!-- 通話終了ボタン -->
+      <v-btn fixed dark bottom right x-large color="error" class="ma-10" @click="leaveLounge()">
+        自習室に戻る
+      </v-btn>
+    </v-layout>
+
+    <v-app-bar color="yellow darken-4" fixed bottom height="100">
+      <!-- メニューボタン -->
+      <v-btn color="white" icon class="ml-10" @click="isShowMenu = true">
+        <v-icon large>mdi-menu</v-icon>
+      </v-btn>
+
+      <v-spacer></v-spacer>
+
+      <!-- ミュートボタン -->
+      <v-btn :color="!isMute ? 'white' : 'red'" fab depressed large class="mx-10" @click="mute()">
+        <v-icon large>{{ !isMute ? 'mdi-microphone' : 'mdi-microphone-off' }}</v-icon>
+      </v-btn>
+
+      <!-- ビデオオフボタン -->
+      <v-btn
+        :color="!isVideoOff ? 'white' : 'red'"
+        fab
+        depressed
+        large
+        class="mx-10"
+        @click="videoOff()"
+      >
+        <v-icon large>{{ !isVideoOff ? 'mdi-video' : 'mdi-video-off' }}</v-icon>
+      </v-btn>
+
+      <!-- 画面共有ボタン -->
+      <v-btn
+        :color="!shareDisplay.localStream ? 'white' : 'red'"
+        fab
+        depressed
+        large
+        class="mx-10"
+        @click="!shareDisplay.localStream ? startShareDisplay() : stopShareDisplay()"
+      >
+        <v-icon large>{{
+          !shareDisplay.localStream ? 'mdi-window-restore' : 'mdi-window-close'
+        }}</v-icon>
+      </v-btn>
+
+      <v-spacer></v-spacer>
+
+      <!-- チャットボタン -->
+      <v-btn color="white" icon class="mr-10" @click="isShowChat = !isShowChat">
+        <v-icon large>mdi-message-text</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <!-- デバイス選択メニュー -->
+    <v-dialog v-model="isShowMenu" persistent max-width="600">
+      <v-card color="grey darken-1" dark>
+        <v-container>
+          <v-row justify="end">
+            <v-btn fab x-small depressed color="error" class="mr-4" @click="isShowMenu = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-row>
+
+          <v-list-item>
+            <v-list-item-content>
+              マイク:
+              <v-select
+                v-model="selectedAudio"
+                :items="audioDevices"
+                item-value="deviceId"
+                item-text="label"
+                @change="changeDevice()"
+              >
+              </v-select>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-content>
+              ビデオ:
+              <v-select
+                v-model="selectedVideo"
+                :items="videoDevices"
+                item-value="deviceId"
+                item-text="label"
+                @change="changeDevice()"
+              >
+              </v-select>
+            </v-list-item-content>
+          </v-list-item>
+        </v-container>
+      </v-card>
+    </v-dialog>
+  </v-dialog>
 </template>
 
 <script>
@@ -182,31 +398,30 @@ export default {
       participants: [],
       audioDevices: [],
       videoDevices: [],
+      videoSize: {
+        width: 640,
+        height: 360,
+      },
       peer: null,
       localStream: null,
       call: null,
       selectedAudio: null,
       selectedVideo: null,
-      isMute: false,
-      isVideoOff: false,
+      isMute: false, // ミュート制御
+      isVideoOff: false, // ビデオオフ制御
+      isShowChat: false, // チャットエリア表示制御
+      isShowMenu: false, // デバイス選択メニュー表示制御
       shareDisplay: {
         peer: null,
         localStream: null,
       },
-      localText: '',
-      messages: [],
+      localText: '', // 送信するメッセージ
+      messages: [], // メッセージ一覧
     };
   },
   computed: {
-    leftSide() {
-      return this.chatParticipants.filter((participant, index) => {
-        return index % 2 === 0;
-      });
-    },
-    rightSide() {
-      return this.chatParticipants.filter((participant, index) => {
-        return index % 2 === 1;
-      });
+    authUser() {
+      return this.$store.getters['auth/user'];
     },
   },
   watch: {
@@ -329,9 +544,19 @@ export default {
      * 通話デバイスへの接続
      */
     connectDevice: async function () {
-      const constraints = {
+      var constraints = {
         audio: this.selectedAudio ? { deviceId: { exact: this.selectedAudio } } : false,
         video: this.selectedVideo ? { deviceId: { exact: this.selectedVideo } } : false,
+      };
+
+      // 録画サイズの設定
+      constraints.video.width = {
+        min: this.videoSize.width,
+        max: this.videoSize.width,
+      };
+      constraints.video.height = {
+        min: this.videoSize.height,
+        max: this.videoSize.height,
       };
 
       this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -493,12 +718,12 @@ export default {
     },
 
     onClickSend: function () {
+      // メッセージの送信
       this.call.send(this.localText);
 
+      // 自分の画面を更新
       this.messages.push(`${this.peer.id}: ${this.localText}`);
       this.localText = '';
-
-      console.log(this.messages);
     },
   },
 
@@ -547,6 +772,23 @@ export default {
   width: 100vw;
   max-width: 100%;
 }
+
+.video-container {
+  position: relative;
+
+  small {
+    position: absolute;
+    color: white;
+    bottom: 1px;
+    left: 1px;
+  }
+}
+
+#chat {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 20px;
+}
 </style>
 
 <style lang="scss">
@@ -554,6 +796,10 @@ export default {
 .sc-launcher {
   // チャットオープンアイコンの無効化
   // sharedisplay: none;
+}
+
+.v-dialog {
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 // .sc-chat-window {
