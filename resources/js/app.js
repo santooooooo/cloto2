@@ -24,7 +24,6 @@ Vue.component('InputImage', require('./components/form/InputImage').default);
  * Vueの定義
  */
 import VueHead from 'vue-head';
-import Chat from 'vue-beautiful-chat';
 import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
@@ -34,7 +33,6 @@ Vue.use(VueHead, {
   separator: '|',
   complement: 'CLOTO',
 });
-Vue.use(Chat);
 
 const app = new Vue({
   router,

@@ -53,16 +53,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Chat モデルのリレーション
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function chats()
-    {
-        return $this->hasMany('App\Models\Chat');
-    }
-
-    /**
      * Project モデルのリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

@@ -26,8 +26,6 @@ const seatSit = '/api/seat/sit/' + replaceChar[0];
 const seatLeave = '/api/seat/leave';
 const enterLounge = '/api/seat/enterlounge/' + replaceChar[0];
 const leaveLounge = '/api/seat/leavelounge/' + replaceChar[0];
-const chatShow = '/api/chat/' + replaceChar[0];
-const chatPost = '/api/chat/post';
 const projectIndex = '/api/project';
 const projectPost = '/api/project/post';
 const taskIndex = '/api/task/index/' + replaceChar[0];
@@ -110,14 +108,6 @@ export function getEndpoint(name, params) {
 
     case 'leaveLounge':
       endpoint = setParams(leaveLounge, params);
-      break;
-
-    case 'chatShow':
-      endpoint = setParams(chatShow, params);
-      break;
-
-    case 'chatPost':
-      endpoint = chatPost;
       break;
 
     case 'projectIndex':

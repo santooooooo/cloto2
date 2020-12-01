@@ -209,7 +209,6 @@ export default {
         case 'leave':
           // 退席処理
           endpoint = this.$endpoint('seatLeave');
-          this.isChatOpen = false;
           response = await this.$http.post(endpoint);
           break;
 
