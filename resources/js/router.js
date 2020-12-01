@@ -30,6 +30,7 @@ import entrance from '@/views/entrance/Entrance';
 import information from '@/views/entrance/Information';
 import floor from '@/views/entrance/Floor';
 import room from '@/views/room/Room';
+import notFound from "@/views/errors/NotFound";
 
 const router = new VueRouter({
   mode: 'history',
@@ -100,7 +101,7 @@ const router = new VueRouter({
       path: '/room/:roomId',
       name: 'room',
       component: room,
-    },
+      },
     {
       path: '/mypage',
       component: mypage,
@@ -117,6 +118,11 @@ const router = new VueRouter({
         },
       ],
     },
+    {
+      path: "*",
+      name: notFound,
+      component: notFound
+    }
   ],
 });
 
