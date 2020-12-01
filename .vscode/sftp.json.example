@@ -6,5 +6,6 @@
     "username": "hoge",
     "privateKeyPath": "/Users/hoge/.ssh/id_hoge_rsa",
     "remotePath": "/",
-    "sshConfigPath": "/Users/hoge/.ssh/config"
+    "sshConfigPath": "/Users/hoge/.ssh/config",
+    "uploadOnSave": false
 }
