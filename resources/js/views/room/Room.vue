@@ -91,6 +91,14 @@ export default {
       zIndex: 0,
     };
   },
+  beforeRouteEnter: async (to, from, next) => {
+    const response = await axios.get(`/api/room/${to.params.roomId}`);
+    if (response.data.roomData === null) {
+      next({ path: '/404' });
+    } else {
+      next();
+    }
+  },
 
   computed: {
     authUser() {
