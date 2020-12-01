@@ -35,25 +35,16 @@
             ></video>
           </v-row>
 
-          <video
-            id="my-shareDisplay"
-            width="300"
-            height="300"
-            muted="true"
-            autoplay
-            playsinline
-          ></video>
-
           <v-row>
             <video
-              width="800"
-              height="800"
+              width="320"
+              height="180"
               v-for="participant in participants"
               :key="participant.peerId"
               autoplay
               :srcObject.prop="participant"
             ></video>
-
+            {{ participants }}
             <v-sheet
               color="black"
               width="208"
@@ -302,7 +293,7 @@
     </v-app-bar>
 
     <!-- デバイス選択メニュー -->
-    <v-dialog v-model="isShowMenu" persistent max-width="600">
+    <v-dialog v-model="isShowMenu" max-width="600">
       <v-card color="grey darken-1" dark>
         <v-container>
           <v-row justify="end">
@@ -313,13 +304,15 @@
 
           <v-list-item>
             <v-list-item-content>
-              マイク:
+              <v-select disabled label="ミュート" v-if="isMute"> </v-select>
               <v-select
                 v-model="selectedAudio"
                 :items="audioDevices"
                 item-value="deviceId"
                 item-text="label"
                 @change="changeDevice()"
+                label="マイク"
+                v-else
               >
               </v-select>
             </v-list-item-content>
@@ -327,13 +320,15 @@
 
           <v-list-item>
             <v-list-item-content>
-              ビデオ:
+              <v-select disabled label="ビデオオフ" v-if="isVideoOff"> </v-select>
               <v-select
                 v-model="selectedVideo"
                 :items="videoDevices"
                 item-value="deviceId"
                 item-text="label"
                 @change="changeDevice()"
+                label="ビデオ"
+                v-else
               >
               </v-select>
             </v-list-item-content>
@@ -409,7 +404,7 @@ export default {
       selectedVideo: null,
       isMute: false, // ミュート制御
       isVideoOff: false, // ビデオオフ制御
-      isShowChat: false, // チャットエリア表示制御
+      isShowChat: true, // チャットエリア表示制御
       isShowMenu: false, // デバイス選択メニュー表示制御
       shareDisplay: {
         peer: null,
@@ -578,9 +573,6 @@ export default {
       const audioTrack = this.localStream.getAudioTracks()[0];
       this.isMute = !this.isMute;
       audioTrack.enabled = !this.isMute;
-
-      // ストリームの置き換え
-      this.call.replaceStream(this.localStream);
     },
 
     /**
@@ -590,9 +582,6 @@ export default {
       const videoTrack = this.localStream.getVideoTracks()[0];
       this.isVideoOff = !this.isVideoOff;
       videoTrack.enabled = !this.isVideoOff;
-
-      // ストリームの置き換え
-      this.call.replaceStream(this.localStream);
     },
 
     /**
@@ -622,9 +611,15 @@ export default {
       this.call.on('stream', (stream) => {
         // ビデオなどreplaceStreamでは，ここが発火する．
         // streamの中身で分岐できるかを確認する必要あり．
-        // 別ピアーで接続するため，画面共有も他人扱いされる
-        // そのため，自分の画面共有のストリームは除外
-        if (stream.id !== this.shareDisplay.localStream.id) {
+
+        // 画面共有中
+        if (this.shareDisplay.localStream !== null) {
+          // 自分の画面共有のストリームは除外
+          if (stream.id !== this.shareDisplay.localStream.id) {
+            // 別ピアーで接続するため，画面共有も他人扱いされる
+            this.joinUser(stream);
+          }
+        } else {
           this.joinUser(stream);
         }
       });
@@ -635,10 +630,12 @@ export default {
       });
 
       this.call.on('removeStream', (stream) => {
+        console.log(stream);
         this.leaveUser(stream.peerId);
       });
 
       this.call.on('peerLeave', (peerId) => {
+        console.log(peerId);
         this.leaveUser(peerId);
       });
 
