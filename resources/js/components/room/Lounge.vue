@@ -4,10 +4,10 @@
       <v-flex>
         <v-container fluid>
           <v-row justify="center">
-            <div class="video-container" v-if="localStream && !isVideoOff" style="height: 117px">
+            <div class="video-container" v-if="localStream && !isVideoOff">
               <video width="208" height="117" autoplay :srcObject.prop="localStream"></video>
 
-              <small>{{ authUser.username }}</small>
+              <p>{{ authUser.username }}</p>
             </div>
 
             <div class="video-container" v-else>
@@ -22,7 +22,7 @@
                 /></v-avatar>
               </v-sheet>
 
-              <small>{{ authUser.username }}</small>
+              <p>{{ authUser.username }}</p>
             </div>
 
             <video
@@ -35,176 +35,17 @@
             ></video>
           </v-row>
 
-          <v-row>
-            <video
-              width="320"
-              height="180"
+          <v-row justify="center" class="mt-3">
+            <div
+              class="video-container mx-1"
               v-for="participant in participants"
               :key="participant.peerId"
-              autoplay
-              :srcObject.prop="participant"
-            ></video>
-            {{ participants }}
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
             >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
-            <v-sheet
-              color="black"
-              width="208"
-              height="208"
-              class="d-flex justify-center align-center"
-            >
-              <v-avatar size="50" class="aligh-self-center"
-                ><img :src="$storage('icon') + authUser.icon"
-              /></v-avatar>
-            </v-sheet>
+              <video width="320" height="180" autoplay :srcObject.prop="participant"></video>
+
+              <!-- DBにPeerIDを保存して検索 -->
+              <p>{{ authUser.username }}</p>
+            </div>
           </v-row>
 
           <!-- プロフィールダイアログ -->
@@ -217,11 +58,19 @@
       </v-flex>
 
       <!-- チャットエリア -->
-      <v-flex v-show="isShowChat">
-        <v-card color="grey lighten-2" class="mx-auto" width="400" id="chat">
-          <v-card flat class="overflow-y-auto" height="600">
-            <v-card-text v-for="message in messages" :key="message.id">
-              {{ message }}
+      <v-flex xs3 v-show="isShowChat">
+        <v-card color="grey lighten-2" class="mx-auto" id="chat">
+          <v-card flat class="overflow-y-auto" height="500">
+            <v-card-text v-for="(message, index) in messages" :key="index">
+              <!-- システムメッセージ -->
+              <p class="text-center" style="color: red" v-if="message.type === 'system'">
+                {{ message.text }}
+              </p>
+
+              <!-- ユーザーメッセージ -->
+              <p v-else>
+                {{ message.peerId + '：' + message.text }}
+              </p>
             </v-card-text>
           </v-card>
 
@@ -238,17 +87,12 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-
-      <!-- 通話終了ボタン -->
-      <v-btn fixed dark bottom right x-large color="error" class="ma-10" @click="leaveLounge()">
-        自習室に戻る
-      </v-btn>
     </v-layout>
 
     <v-app-bar color="yellow darken-4" fixed bottom height="100">
-      <!-- メニューボタン -->
-      <v-btn color="white" icon class="ml-10" @click="isShowMenu = true">
-        <v-icon large>mdi-menu</v-icon>
+      <!-- 通話終了ボタン -->
+      <v-btn depressed x-large color="error" class="ml-10" @click="leaveLounge()">
+        自習室に戻る
       </v-btn>
 
       <v-spacer></v-spacer>
@@ -287,8 +131,13 @@
       <v-spacer></v-spacer>
 
       <!-- チャットボタン -->
-      <v-btn color="white" icon class="mr-10" @click="isShowChat = !isShowChat">
+      <v-btn color="white" icon class="mr-6" @click="isShowChat = !isShowChat">
         <v-icon large>mdi-message-text</v-icon>
+      </v-btn>
+
+      <!-- メニューボタン -->
+      <v-btn color="white" icon class="mr-10" @click="isShowMenu = true">
+        <v-icon large>mdi-menu</v-icon>
       </v-btn>
     </v-app-bar>
 
@@ -353,42 +202,9 @@ export default {
   },
   data() {
     return {
-      chatArea: '', // チャットエリア
-      syncTimer: null, // 同期制御
-      chatParticipants: [], // チャット参加者
-      messageList: [], // メッセージデータ
-      notification: false, // 新着通知
-      isLoungeEnter: false, // チャットのダイアログ制御
+      isLoungeEnter: false, // 休憩室入室制御
       profileDialog: false, // プロフィールのダイアログ制御
       profileUserId: null, // プロフィールを表示するユーザーID
-
-      chatColors: {
-        // beautiful-chatの色設定
-        messageList: {
-          bg: '#ffffff',
-        },
-        sentMessage: {
-          bg: '#f6bf00',
-          text: '#000000',
-        },
-        receivedMessage: {
-          bg: '#696969',
-          text: '#ffffff',
-        },
-        userInput: {
-          bg: '#ffffff',
-          text: '#212121',
-        },
-
-        // 以下は使用しないが定義上必要
-        header: {
-          bg: '',
-          text: '',
-        },
-        launcher: {
-          bg: '',
-        },
-      },
 
       participants: [],
       audioDevices: [],
@@ -404,7 +220,7 @@ export default {
       selectedVideo: null,
       isMute: false, // ミュート制御
       isVideoOff: false, // ビデオオフ制御
-      isShowChat: true, // チャットエリア表示制御
+      isShowChat: false, // チャットエリア表示制御
       isShowMenu: false, // デバイス選択メニュー表示制御
       shareDisplay: {
         peer: null,
@@ -419,63 +235,12 @@ export default {
       return this.$store.getters['auth/user'];
     },
   },
-  watch: {
-    /**
-     * メッセージ追加時
-     */
-    'messageList.length': function () {
-      if (!this.isBottom()) {
-        this.notification = true;
-      }
-    },
-  },
   methods: {
-    /**
-     * 末尾までスクロールされているか
-     */
-    isBottom() {
-      return this.chatArea.scrollTop === this.chatArea.scrollHeight - this.chatArea.clientHeight
-        ? true
-        : false;
-    },
-
-    /**
-     * スクロールイベント
-     */
-    scrollEvent: function () {
-      // 末尾に達したら通知を削除
-      if (this.isBottom()) {
-        this.notification = false;
-      }
-    },
-
-    /**
-     * チャットを末尾までスクロール
-     */
-    scrollToBottom: function () {
-      this.chatArea.scrollTop = this.chatArea.scrollHeight;
-    },
-
-    /**
-     * 休憩室データの取得
-     *
-     * @param Number  loungeId   入室している休憩室ID
-     */
-    getLounge: async function (loungeId) {
-      var response = await this.$http.get(this.$endpoint('chatShow', [loungeId]));
-      this.chatParticipants = response.data.chatParticipants;
-      this.messageList = response.data.messageList;
-    },
-
     /**
      * 休憩室へ入室
      */
     enterLounge: function () {
       this.isLoungeEnter = true;
-
-      // スクロールイベントの設定
-      this.chatArea = document.getElementsByClassName('sc-message-list')[0];
-      // this.chatArea.addEventListener('scroll', this.scrollEvent);
     },
 
     /**
@@ -487,20 +252,6 @@ export default {
       this.isLoungeEnter = false;
 
       this.$emit('leave-lounge');
-
-      // 同期停止
-      clearInterval(this.syncTimer);
-      this.syncTimer = null;
-    },
-
-    /**
-     * メッセージの送信
-     */
-    onMessageWasSent: function (message) {
-      this.$http.post(this.$endpoint('chatPost'), message);
-
-      // 一時的に描画するためリストへ追加
-      this.messageList = [...this.messageList, Object.assign({}, message, { id: Math.random() })];
     },
 
     /**
@@ -601,11 +352,15 @@ export default {
      */
     setupCallEvents: function () {
       this.call.once('open', () => {
-        this.messages.push('=== You joined ===');
+        this.messages.push({ type: 'system', peerId: null, text: '=== 入室しました！ ===' });
       });
 
       this.call.on('peerJoin', (peerId) => {
-        this.messages.push(`=== ${peerId} joined ===`);
+        this.messages.push({
+          type: 'system',
+          peerId: null,
+          text: '===' + peerId + 'が入室しました！ ===',
+        });
       });
 
       this.call.on('stream', (stream) => {
@@ -625,17 +380,14 @@ export default {
       });
 
       this.call.on('data', ({ data, src }) => {
-        // Show a message sent to the room and who sent
-        this.messages.push(`${src}: ${data}`);
+        this.messages.push({ type: 'user', peerId: src, text: data });
       });
 
       this.call.on('removeStream', (stream) => {
-        console.log(stream);
         this.leaveUser(stream.peerId);
       });
 
       this.call.on('peerLeave', (peerId) => {
-        console.log(peerId);
         this.leaveUser(peerId);
       });
 
@@ -734,22 +486,11 @@ export default {
   },
 
   async mounted() {
-    // 初回取得
-    await this.getLounge(this.loungeId);
     this.enterLounge();
-    // // 同期開始
-    // this.syncTimer = setInterval(() => {
-    //   this.getLounge(this.loungeId);
-    // }, 3000);
   },
   destroyed() {
     // 念の為
     this.exitCall();
-
-    // 休憩室退出時にはタイマーを解除
-    if (this.syncTimer !== null) {
-      clearInterval(this.syncTimer);
-    }
   },
 };
 </script>
@@ -773,17 +514,22 @@ export default {
 .video-container {
   position: relative;
 
-  small {
+  p {
     position: absolute;
+    background-color: black;
     color: white;
-    bottom: 1px;
-    left: 1px;
+    line-height: 1em;
+    bottom: 6px;
+    left: 0px;
+    margin: 0;
+    padding: 2px;
   }
 }
 
 #chat {
   position: -webkit-sticky;
   position: sticky;
+  margin-top: 20px;
   top: 20px;
 }
 </style>
