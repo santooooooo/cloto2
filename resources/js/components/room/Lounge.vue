@@ -41,7 +41,13 @@
               v-for="participant in participants"
               :key="participant.peerId"
             >
-              <video width="320" height="180" autoplay :srcObject.prop="participant"></video>
+              <video
+                width="320"
+                height="180"
+                autoplay
+                :srcObject.prop="participant"
+                :class="speakerId === participant.peerId ? 'speaker' : ''"
+              ></video>
 
               <!-- DBにPeerIDを保存して検索 -->
               <p>{{ authUser.username }}</p>
@@ -81,7 +87,7 @@
               class="px-2"
               label="メッセージを送ろう！"
             ></v-textarea>
-            <v-btn icon @click="onClickSend()">
+            <v-btn icon @click="sendMessage()">
               <v-icon>mdi-send</v-icon>
             </v-btn>
           </v-card-actions>
@@ -189,6 +195,7 @@
 </template>
 
 <script>
+import voiceDetection from 'voice-activity-detection';
 import ProfileDialog from '@/components/room/ProfileDialog';
 
 const API_KEY = '2e332f2b-d951-499d-bc1a-451f4aeaf7b1';
@@ -228,6 +235,8 @@ export default {
       },
       localText: '', // 送信するメッセージ
       messages: [], // メッセージ一覧
+      voiceDetectionObject: null, // 音声検出オブジェクト
+      speakerId: null, // 話し中ユーザーのID
     };
   },
   computed: {
@@ -412,6 +421,9 @@ export default {
       await this.stopScreenSharing();
 
       if (this.peer !== null) {
+        // 音声検知の終了
+        this.stopVoiceDetection();
+
         // デバイスの使用を停止
         this.localStream.getTracks().forEach((track) => track.stop());
         this.localStream = null;
@@ -424,13 +436,20 @@ export default {
 
     /**
      * 参加者の追加
+     *
+     * @param MediaStream stream  参加したユーザーのストリーム
      */
     joinUser: function (stream) {
+      // 参加者の追加
       this.participants.push(stream);
+      // 音声検知の開始
+      this.startVoiceDetection(stream);
     },
 
     /**
      * 参加者の退出
+     *
+     * @param String peerId  退出したユーザーのPeerID
      */
     leaveUser: function (peerId) {
       this.participants = this.participants.filter((participant) => {
@@ -485,13 +504,62 @@ export default {
       }
     },
 
-    onClickSend: function () {
+    /**
+     * メッセージの送信処理
+     */
+    sendMessage: function () {
       // メッセージの送信
       this.call.send(this.localText);
 
       // 自分の画面を更新
       this.messages.push(`${this.peer.id}: ${this.localText}`);
       this.localText = '';
+    },
+
+    /**
+     * 音声検知の開始
+     *
+     * @param MediaStream stream  音声検知するユーザー（全員）のストリーム
+     */
+    startVoiceDetection: function (stream) {
+      const audioContext = new AudioContext();
+
+      // 音声検知時のイベント
+      var options = {
+        // 検知開始（発声開始）
+        onVoiceStart: () => {
+          // 発言者の枠点灯
+          this.speakerUpdate(stream.peerId);
+        },
+
+        // 検知終了（発声終了）
+        onVoiceStop: () => {
+          // 発言者の枠消灯
+          this.speakerUpdate(null);
+        },
+      };
+
+      // 音声検出開始
+      this.voiceDetectionObject = voiceDetection(audioContext, stream, options);
+    },
+
+    /**
+     * 音声検知の終了
+     */
+    stopVoiceDetection() {
+      // 音声検知終了
+      if (this.voiceDetectionObject) {
+        this.voiceDetectionObject.destroy();
+      }
+    },
+
+    /**
+     * 発言者の更新
+     *
+     * @param String peerId  発言中のユーザーのPeerID
+     */
+    speakerUpdate(peerId) {
+      this.speakerId = peerId;
     },
   },
 
@@ -550,6 +618,11 @@ export default {
   position: sticky;
   margin-top: 20px;
   top: 20px;
+}
+
+.speaker {
+  outline: 5px solid #f6bf00;
+  outline-offset: -5px;
 }
 </style>
 
