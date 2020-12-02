@@ -36,6 +36,24 @@ class UserController extends Controller
 
 
     /**
+     * ログインユーザーの取得
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function auth()
+    {
+        if (empty($this->auth_user)) {
+            return response(null);
+        }
+
+        return response()->json($this->auth_user->load(['seat.section', 'tasks' => function ($query) {
+            // 進行中のタスク，プロジェクトのみを取得
+            $query->where('id', $this->auth_user->task_id);
+            $query->with('project');
+        }]));
+    }
+
+    /**
      * ユーザーの取得
      *
      * @param   String  $user_param ユーザーIDまたはユーザー名
@@ -53,21 +71,15 @@ class UserController extends Controller
     }
 
     /**
-     * ログインユーザーの取得
+     * PeerIDからユーザー名を取得
      *
-     * @return \Illuminate\Http\Response
+     * @param   String  $peer_id    PeerID
+     * @return  String  $username   ユーザー名
      */
-    public function auth()
+    public function get_username_by_peer_id(String $peer_id)
     {
-        if (empty($this->auth_user)) {
-            return response(null);
-        }
-
-        return response()->json($this->auth_user->load(['seat.section', 'tasks' => function ($query) {
-            // 進行中のタスク，プロジェクトのみを取得
-            $query->where('id', $this->auth_user->task_id);
-            $query->with('project');
-        }]));
+        $user = $this->user->where('peer_id', $peer_id)->first();
+        return $user->username;
     }
 
     /**
