@@ -42,7 +42,7 @@ class KarteController extends Controller
      * @param  Int $user_id カルテを持つユーザーID
      * @return \Illuminate\Http\Response
      */
-    public function index_from_user(Int $user_id)
+    public function index_by_user_id(Int $user_id)
     {
         return response()->json($this->karte->where('user_id', $user_id)->get());
     }
@@ -53,7 +53,7 @@ class KarteController extends Controller
      * @param  Int $task_id カルテを持つタスクID
      * @return \Illuminate\Http\Response
      */
-    public function index_from_task(Int $task_id)
+    public function index_by_task_id(Int $task_id)
     {
         return response()->json($this->karte->where('task_id', $task_id)->get());
     }

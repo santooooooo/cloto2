@@ -31,8 +31,8 @@ const projectPost = '/api/project/post';
 const taskIndex = '/api/task/index/' + replaceChar[0];
 const taskPost = '/api/task/post';
 const taskStart = '/api/task/start';
-const karteIndexFromUser = '/api/karte/index_from_user/' + replaceChar[0];
-const karteIndexFromTask = '/api/karte/index_from_task/' + replaceChar[0];
+const karteIndexByUserId = '/api/karte/index_by_user_id/' + replaceChar[0];
+const karteIndexByTaskId = '/api/karte/index_by_task_id/' + replaceChar[0];
 const kartePost = '/api/karte/post';
 const technologyIndex = '/api/technology';
 
@@ -130,12 +130,12 @@ export function getEndpoint(name, params) {
       endpoint = taskStart;
       break;
 
-    case 'karteIndexFromUser':
-      endpoint = setParams(karteIndexFromUser, params);
+    case 'karteIndexByUserId':
+      endpoint = setParams(karteIndexByUserId, params);
       break;
 
-    case 'karteIndexFromTask':
-      endpoint = setParams(karteIndexFromTask, params);
+    case 'karteIndexByTaskId':
+      endpoint = setParams(karteIndexByTaskId, params);
       break;
 
     case 'kartePost':
