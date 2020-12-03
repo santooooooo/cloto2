@@ -21,7 +21,7 @@ const authUser = '/api/auth/user';
 const authPeerId = '/api/auth/peer_id';
 const userShow = '/api/user/' + replaceChar[0];
 const profileUpdate = '/api/user/update';
-const getUsernameByPeerId = '/api/user/get_username_by_peer_id/' + replaceChar[0];
+const getNamesByPeerId = '/api/user/get_names_by_peer_id/' + replaceChar[0];
 const roomIndex = '/api/room';
 const roomShow = '/api/room/' + replaceChar[0];
 const seatSit = '/api/seat/sit/' + replaceChar[0];
@@ -92,8 +92,8 @@ export function getEndpoint(name, params) {
       endpoint = profileUpdate;
       break;
 
-    case 'getUsernameByPeerId':
-      endpoint = setParams(getUsernameByPeerId, params);
+    case 'getNamesByPeerId':
+      endpoint = setParams(getNamesByPeerId, params);
       break;
 
     case 'roomIndex':

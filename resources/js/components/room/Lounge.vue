@@ -4,6 +4,7 @@
       <v-flex>
         <v-container fluid>
           <v-row justify="center">
+            <!-- 自分のビデオ（オン） -->
             <div class="video-container" v-if="localStream && !isVideoOff">
               <video
                 width="208"
@@ -16,6 +17,7 @@
               <p>{{ authUser.username }}</p>
             </div>
 
+            <!-- 自分のビデオ（オフ） -->
             <div class="video-container" v-else>
               <v-sheet
                 color="black"
@@ -31,18 +33,12 @@
               <p>{{ authUser.username }}</p>
             </div>
 
-            <video
-              width="208"
-              height="117"
-              muted="true"
-              autoplay
-              :srcObject.prop="screenSharing.localStream"
-              class="ml-10"
-              v-if="screenSharing.localStream"
-            ></video>
+            <!-- 画面共有 -->
+            <video width="208" height="117" autoplay :srcObject.prop="screenSharing.stream"></video>
           </v-row>
 
           <v-row justify="center" class="mt-3">
+            <!-- 参加者のビデオ（オン） -->
             <div
               class="video-container mx-1"
               v-for="participant in participants"
@@ -56,7 +52,7 @@
                 :class="speakerId === participant.stream.peerId ? 'speaker' : ''"
               ></video>
 
-              <p>{{ participant.username }}</p>
+              <p>{{ participant.names.username }}</p>
             </div>
           </v-row>
 
@@ -128,16 +124,21 @@
 
       <!-- 画面共有ボタン -->
       <v-btn
-        :color="!screenSharing.localStream ? 'white' : 'red'"
+        :color="screenSharing.stream && screenSharing.isLocal ? 'red' : 'white'"
+        :disabled="screenSharing.stream && !screenSharing.isLocal"
         fab
         depressed
         large
         class="mx-10"
-        @click="!screenSharing.localStream ? startScreenSharing() : stopScreenSharing()"
+        @click="!screenSharing.stream ? startScreenSharing() : stopScreenSharing()"
       >
-        <v-icon large>{{
-          !screenSharing.localStream ? 'mdi-window-restore' : 'mdi-window-close'
-        }}</v-icon>
+        <v-icon large>
+          {{
+            screenSharing.stream && screenSharing.isLocal
+              ? 'mdi-window-close'
+              : 'mdi-window-restore'
+          }}
+        </v-icon>
       </v-btn>
 
       <v-spacer></v-spacer>
@@ -236,8 +237,9 @@ export default {
       isShowChat: false, // チャットエリア表示制御
       isShowMenu: false, // デバイス選択メニュー表示制御
       screenSharing: {
+        isLocal: false, // 自分の画面共有か
         peer: null,
-        localStream: null,
+        stream: null,
       },
       localText: '', // 送信するメッセージ
       messages: [], // メッセージ一覧
@@ -382,19 +384,7 @@ export default {
 
       // 他ユーザー参加イベント
       this.call.on('stream', (stream) => {
-        // ビデオなどreplaceStreamでは，ここが発火する．
-        // streamの中身で分岐できるかを確認する必要あり．
-
-        // 画面共有中
-        if (this.screenSharing.localStream !== null) {
-          // 自分の画面共有のストリームは除外
-          if (stream.peerId !== this.screenSharing.localStream.peer.id) {
-            // 別ピアーで接続するため，画面共有も他人扱いされる
-            this.joinUser(stream);
-          }
-        } else {
-          this.joinUser(stream);
-        }
+        this.joinUser(stream);
       });
 
       // メッセージ到着イベント
@@ -403,13 +393,14 @@ export default {
       });
 
       // 他ユーザー退出イベント
-      this.call.on('removeStream', (stream) => {
-        this.leaveUser(stream.peerId);
-      });
-
-      // 他ユーザー退出イベント
       this.call.on('peerLeave', (peerId) => {
-        this.leaveUser(peerId);
+        if (this.screenSharing.stream !== null && peerId === this.screenSharing.stream.peerId) {
+          // 参加者の画面共有の停止
+          this.screenSharing.stream = null;
+        } else {
+          // 参加者の退出
+          this.leaveUser(peerId);
+        }
       });
 
       // 自身の退出イベント
@@ -446,14 +437,30 @@ export default {
      * @param MediaStream stream  参加したユーザーのストリーム
      */
     joinUser: async function (stream) {
-      // ユーザー名の取得
-      var response = await this.$http.get(this.$endpoint('getUsernameByPeerId', [stream.peerId]));
-      var username = response.data;
+      // ユーザー名と表示名の取得
+      var response = await this.$http.get(this.$endpoint('getNamesByPeerId', [stream.peerId]));
+      var names = response.data;
 
-      // 参加者の追加
-      this.participants.push({ username: username, stream: stream });
-      // 音声検知の開始
-      this.startVoiceDetection(stream);
+      if (names !== '') {
+        // ユーザーが参加した場合
+        this.participants.push({ names: names, stream: stream });
+
+        // 音声検知の開始
+        this.startVoiceDetection(stream);
+
+        // 参加メッセージの送信
+        this.messages.push({
+          type: 'system',
+          peerId: null,
+          text: '===' + names.handlename + 'が入室しました！ ===',
+        });
+      } else {
+        // 画面共有が参加した場合
+        if (!this.screenSharing.isLocal) {
+          // 自分が画面共有していない場合（他人が画面共有を開始）
+          this.screenSharing.stream = stream;
+        }
+      }
     },
 
     /**
@@ -472,18 +479,20 @@ export default {
      * 画面共有開始
      */
     startScreenSharing: async function () {
-      if (this.screenSharing.peer === null) {
+      if (this.screenSharing.stream === null) {
         this.screenSharing.peer = new Peer({ key: API_KEY });
 
-        this.screenSharing.localStream = await navigator.mediaDevices.getDisplayMedia({
+        this.screenSharing.stream = await navigator.mediaDevices.getDisplayMedia({
           video: true,
           audio: false,
         });
 
         this.screenSharing.peer.joinRoom(this.loungeId, {
           mode: 'sfu',
-          stream: this.screenSharing.localStream,
+          stream: this.screenSharing.stream,
         });
+
+        this.screenSharing.isLocal = true;
 
         this.setupScreenSharingEvents();
       }
@@ -494,7 +503,7 @@ export default {
      */
     setupScreenSharingEvents: function () {
       // 画面共有終了イベント（Chromeの共有を停止ボタン押下時の処理）
-      this.screenSharing.localStream.getVideoTracks()[0].onended = () => {
+      this.screenSharing.stream.getVideoTracks()[0].onended = () => {
         this.stopScreenSharing();
       };
     },
@@ -503,10 +512,12 @@ export default {
      * 画面共有停止
      */
     stopScreenSharing: async function () {
-      if (this.screenSharing.peer !== null) {
+      if (this.screenSharing.stream !== null) {
+        this.screenSharing.isLocal = false;
+
         // デバイスの画面共有を停止
-        this.screenSharing.localStream.getTracks().forEach((track) => track.stop());
-        this.screenSharing.localStream = null;
+        this.screenSharing.stream.getTracks().forEach((track) => track.stop());
+        this.screenSharing.stream = null;
 
         // 画面共有用の接続を終了
         this.screenSharing.peer.disconnect();

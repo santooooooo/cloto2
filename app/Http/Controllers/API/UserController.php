@@ -85,15 +85,21 @@ class UserController extends Controller
     }
 
     /**
-     * PeerIDからユーザー名を取得
+     * PeerIDからユーザー名と表示名を取得
      *
      * @param   String  $peer_id    PeerID
      * @return \Illuminate\Http\Response
      */
-    public function get_username_by_peer_id(String $peer_id)
+    public function get_names_by_peer_id(String $peer_id)
     {
         $user = $this->user->where('peer_id', $peer_id)->first();
-        return response()->json($user->username);
+
+        // 画面共有のストリームの場合
+        if (empty($user)) {
+            return response(null);
+        }
+
+        return response()->json(['username' => $user->username, 'handlename' => $user->handlename]);
     }
 
     /**

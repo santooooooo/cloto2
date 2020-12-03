@@ -31,7 +31,7 @@ Route::get('/auth/user', 'API\UserController@auth')->name('authUser');
 Route::get('/auth/peer_id', 'API\UserController@auth_peer_id')->name('authPeerId');
 Route::get('/user/{user_param}', 'API\UserController@show')->name('userShow');
 Route::post('/user/update', 'API\UserController@update')->name('profileUpdate');
-Route::get('/user/get_username_by_peer_id/{peer_id}', 'API\UserController@get_username_by_peer_id')->name('getUsernameByPeerId');
+Route::get('/user/get_names_by_peer_id/{peer_id}', 'API\UserController@get_names_by_peer_id')->name('getNamesByPeerId');
 
 Route::get('/room', 'API\RoomController@index')->name('roomIndex');
 Route::get('/room/{room_id}', 'API\RoomController@show')->name('roomShow');
