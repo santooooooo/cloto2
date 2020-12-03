@@ -75,7 +75,7 @@
 <script>
 export default {
   props: {
-    userId: Number,
+    username: String,
   },
   data() {
     return {
@@ -87,7 +87,7 @@ export default {
     /**
      * ユーザーデータの取得
      */
-    var response = await this.$http.get(this.$endpoint('userShow', [this.userId]));
+    var response = await this.$http.get(this.$endpoint('userShow', [this.username]));
     this.user = response.data;
   },
 };

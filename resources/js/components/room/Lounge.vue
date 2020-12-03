@@ -54,15 +54,17 @@
                 :class="speakerId === participant.stream.peerId ? 'speaker' : ''"
               ></video>
 
-              <p>{{ participant.names.username }}</p>
+              <p @click="showProfile(participant.names.username)">
+                {{ participant.names.handlename }}
+              </p>
             </div>
           </v-row>
 
           <!-- プロフィールダイアログ -->
           <ProfileDialog
-            :user-id="profileUserId"
-            @close="profileDialog = $event"
-            v-if="profileDialog"
+            :username="profile.username"
+            @close="profile.dialog = $event"
+            v-if="profile.dialog"
           ></ProfileDialog>
         </v-container>
       </v-flex>
@@ -219,8 +221,10 @@ export default {
   data() {
     return {
       isLoungeEnter: false, // 休憩室入室制御
-      profileDialog: false, // プロフィールのダイアログ制御
-      profileUserId: null, // プロフィールを表示するユーザーID
+      profile: {
+        dialog: false, // プロフィールのダイアログ制御
+        username: null, // プロフィールを表示するユーザー名
+      },
 
       participants: [],
       audioDevices: [],
@@ -276,11 +280,11 @@ export default {
     /**
      * プロフィールの表示
      *
-     * @param Number  userId   プロフィールを表示するユーザーID
+     * @param String  username  プロフィールを表示するユーザー名
      */
-    showProfile: function (userId) {
-      this.profileUserId = userId;
-      this.profileDialog = true;
+    showProfile: function (username) {
+      this.profile.username = username;
+      this.profile.dialog = true;
     },
 
     /**
