@@ -32,9 +32,11 @@
 
               <p>{{ authUser.username }}</p>
             </div>
+          </v-row>
 
+          <v-row justify="center" class="mt-3" v-if="screenSharing.stream">
             <!-- 画面共有 -->
-            <video width="208" height="117" autoplay :srcObject.prop="screenSharing.stream"></video>
+            <video autoplay :srcObject.prop="screenSharing.stream" style="max-width: 80%"></video>
           </v-row>
 
           <v-row justify="center" class="mt-3">
