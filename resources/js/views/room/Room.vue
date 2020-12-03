@@ -9,11 +9,7 @@
       <div class="statusDisplay">{{ displayText }}</div>
     </v-overlay>
 
-    <Drawer
-      :room-name="roomData.name"
-      @input-karte="inputKarte(true)"
-      @leave-room="inputKarte(false)"
-    />
+    <Drawer :room-name="roomData.name" @input-karte="inputKarte(true)" @leave-room="leaveRoom()" />
 
     <v-flex id="main">
       <!-- 教室 -->
@@ -203,7 +199,7 @@ export default {
           // 着席処理
           endpoint = this.$endpoint('seatSit', [seatObject.seatId]);
           response = await this.$http.post(endpoint);
-          this.projectDialog = true;
+          //this.projectDialog = true;
           break;
 
         case 'leave':
@@ -293,9 +289,9 @@ export default {
             if (this.authUser.seat === null) {
               // 状態変更処理
               await this.userAction('sitting', event.target);
-              if (typeof this.authUser.seat_id === 'number') {
-                this.projectsDialog = true; //auth userが自習室に初めてsittingしたときモーダル表示
-              }
+              // if (typeof this.authUser.seat_id === 'number') {
+              //   this.projectsDialog = true; //auth userが自習室に初めてsittingしたときモーダル表示
+              // }
             }
             break;
 
@@ -485,7 +481,7 @@ export default {
      * 自習開始
      */
     startStudy: async function () {
-      this.projectDialog = false;
+      //this.projectDialog = false;
       this.startDisplay('study'); //自習開始の表示
 
       // ユーザーデータの同期
@@ -496,7 +492,7 @@ export default {
      * プロジェクト選択の中断
      */
     cancelStartStudy: function () {
-      this.projectDialog = false;
+      //this.projectDialog = false;
       this.leaveRoom();
     },
     /**

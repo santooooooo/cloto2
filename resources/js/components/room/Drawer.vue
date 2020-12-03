@@ -26,12 +26,7 @@
       </v-card>
 
       <div class="pa-2">
-        <v-btn
-          block
-          depressed
-          color="error"
-          :disabled="!authUser.tasks.length"
-          @click="$emit('leave-room')"
+        <v-btn block depressed color="error" :disabled="!authUser.seat" @click="$emit('leave-room')"
           >退席</v-btn
         >
       </div>
