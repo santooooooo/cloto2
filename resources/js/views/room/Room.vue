@@ -95,17 +95,18 @@ export default {
         confirm: true, // 自習継続の確認
       },
       now: '00:00', // 現在時刻 1240 １２時40分
+      nowTimeTable: '', //現在の時間割の状態を格納する study or lounge
       zIndex: 0,
       roomColor: '#ffffff', //部屋の色
       studyRoomColor: '#f4f4f4', //自習時間の背景色
       loungeRoomColor: '#ffe89a', //休憩時間の背景色
       timeTables: [
-        { time: '18:00', role: 'study' },
-        { time: '18:10', role: 'lounge' },
-        { time: '18:15', role: 'study' },
-        { time: '18:18', role: 'lounge' },
-        { time: '18:55', role: 'study' },
-        { time: '19:00', role: 'lounge' },
+        { time: '14:00', role: 'study' },
+        { time: '14:10', role: 'lounge' },
+        { time: '14:15', role: 'study' },
+        { time: '14:18', role: 'lounge' },
+        { time: '14:55', role: 'study' },
+        { time: '14:00', role: 'lounge' },
       ], //時間割
     };
   },
@@ -250,10 +251,14 @@ export default {
     canvasMouseOver: function (event) {
       if (event.target && event.target.fill === '') {
         // 着席前：自習室のみ点灯
-        // 着席中：休憩室のみ点灯
+        // 着席中：timetableが休憩室開放時間なら休憩室のみ点灯
+        // this.authUser.seat !== null && event.target.role === 'lounge' に休憩時間ならばを付け足す
+        console.log(`現在の部屋の時間割は${this.nowTimeTable}`);
         if (
           (this.authUser.seat === null && event.target.role === 'study') ||
-          (this.authUser.seat !== null && event.target.role === 'lounge')
+          (this.authUser.seat !== null &&
+            event.target.role === 'lounge' &&
+            this.nowTimeTable === 'lounge')
         ) {
           event.target.set({ fill: '#0000ff' });
           this.canvas.requestRenderAll();
@@ -419,6 +424,16 @@ export default {
      * 時間による制御
      */
     time: function () {
+      //test用 time tables
+      this.timeTables = [
+        { time: '16:00', role: 'study' },
+        { time: '16:06', role: 'lounge' },
+        { time: '16:30', role: 'study' },
+        { time: '16:53', role: 'lounge' },
+        { time: '16:55', role: 'study' },
+        { time: '17:00', role: 'lounge' },
+      ];
+
       let date = new Date(); //new演算子でオブジェクトのインスタンスを生成
       this.now = date.getHours() + ':' + date.getMinutes();
       let nowRoomRole = ''; //現在の部屋の状態 自習 or 休憩
@@ -427,16 +442,24 @@ export default {
       for (var index in this.timeTables) {
         if (this.timeTables.hasOwnProperty(index)) {
           if (this.now === this.timeTables[index].time) {
-            // this.displayText = '休憩スタート';
-            this.startDisplay(this.timeTables[index].role);
+            // 自習開始時刻 or　休憩開始時刻ならば
+            this.startDisplay(this.timeTables[index].role); //画面に表示
             nowRoomRole = this.timeTables[index].role;
+            this.nowTimeTable = nowRoomRole; //休憩室出席処理のために時間割状態を格納
+            // console.log(`時間ちょうど timeTables[index].time:${this.timeTables[index].time}
+            //  : this.timeTables[index].role:${this.timeTables[index].role}
+            //   nowRoomRole:${nowRoomRole} nowTimeTable: ${this.nowTimeTable}`);
           } else if (this.timeTables[index].time < this.now) {
+            //自主中　or　休憩中
+            //console.log(this.timeTables[index].time);
             nowRoomRole = this.timeTables[index].role;
+            this.nowTimeTable = nowRoomRole; //休憩室出席処理のために時間割状態を格納
           } else {
-            //console.log('時間割のどの時間にも属しません');
+            if (nowRoomRole === '') console.log('tameTable error');
           }
         }
       }
+      console.log(`nowRoomRole${nowRoomRole}`);
       this.changeRoomColor(nowRoomRole); //時間割に合わせて背景色変更
     },
 
