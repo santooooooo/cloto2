@@ -5,7 +5,13 @@
         <v-container fluid>
           <v-row justify="center">
             <div class="video-container" v-if="localStream && !isVideoOff">
-              <video width="208" height="117" autoplay :srcObject.prop="localStream"></video>
+              <video
+                width="208"
+                height="117"
+                muted="true"
+                autoplay
+                :srcObject.prop="localStream"
+              ></video>
 
               <p>{{ authUser.username }}</p>
             </div>
@@ -28,6 +34,7 @@
             <video
               width="208"
               height="117"
+              muted="true"
               autoplay
               :srcObject.prop="screenSharing.localStream"
               class="ml-10"
@@ -39,18 +46,17 @@
             <div
               class="video-container mx-1"
               v-for="participant in participants"
-              :key="participant.peerId"
+              :key="participant.stream.peerId"
             >
               <video
                 width="320"
                 height="180"
                 autoplay
-                :srcObject.prop="participant"
-                :class="speakerId === participant.peerId ? 'speaker' : ''"
+                :srcObject.prop="participant.stream"
+                :class="speakerId === participant.stream.peerId ? 'speaker' : ''"
               ></video>
 
-              <!-- DBにPeerIDを保存して検索 -->
-              <p>{{ authUser.username }}</p>
+              <p>{{ participant.username }}</p>
             </div>
           </v-row>
 
@@ -382,7 +388,7 @@ export default {
         // 画面共有中
         if (this.screenSharing.localStream !== null) {
           // 自分の画面共有のストリームは除外
-          if (stream.id !== this.screenSharing.localStream.id) {
+          if (stream.peerId !== this.screenSharing.localStream.peer.id) {
             // 別ピアーで接続するため，画面共有も他人扱いされる
             this.joinUser(stream);
           }
@@ -439,9 +445,13 @@ export default {
      *
      * @param MediaStream stream  参加したユーザーのストリーム
      */
-    joinUser: function (stream) {
+    joinUser: async function (stream) {
+      // ユーザー名の取得
+      var response = await this.$http.get(this.$endpoint('getUsernameByPeerId', [stream.peerId]));
+      var username = response.data;
+
       // 参加者の追加
-      this.participants.push(stream);
+      this.participants.push({ username: username, stream: stream });
       // 音声検知の開始
       this.startVoiceDetection(stream);
     },
@@ -454,7 +464,7 @@ export default {
     leaveUser: function (peerId) {
       this.participants = this.participants.filter((participant) => {
         // 退出したユーザーのpeerId以外を残す
-        return participant.peerId !== peerId;
+        return participant.stream.peerId !== peerId;
       });
     },
 
@@ -564,8 +574,10 @@ export default {
   },
 
   async created() {
-    this.peer = new Peer({ key: API_KEY });
-    // this.peer = new Peer({ key: API_KEY, debug: 3 });
+    // Peerの作成
+    var response = await this.$http.get(this.$endpoint('authPeerId'));
+    const myPeerId = response.data;
+    this.peer = new Peer(myPeerId, { key: API_KEY });
 
     await this.accessDevice();
     await this.connectDevice();
