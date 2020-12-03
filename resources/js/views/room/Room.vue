@@ -309,8 +309,17 @@ export default {
             } else {
               // 現在自習室に着席中の場合
               if (this.authUser.seat.section.role === 'study') {
-                // 状態変更処理
-                await this.userAction('enterLounge', event.target);
+                if (this.nowTimeTable != 'lounge') {
+                  //休憩室開放時間じゃなければ
+                  //休憩室がクリックされたときにユーザに伝える
+                  this.$store.dispatch('alert/show', {
+                    type: 'error',
+                    message: '休憩室は解放されていません',
+                  });
+                } else {
+                  // 状態変更処理
+                  await this.userAction('enterLounge', event.target);
+                }
               }
             }
             break;
@@ -429,7 +438,7 @@ export default {
         { time: '16:00', role: 'study' },
         { time: '16:06', role: 'lounge' },
         { time: '16:30', role: 'study' },
-        { time: '16:53', role: 'lounge' },
+        { time: '16:50', role: 'lounge' },
         { time: '16:55', role: 'study' },
         { time: '17:00', role: 'lounge' },
       ];
@@ -446,12 +455,8 @@ export default {
             this.startDisplay(this.timeTables[index].role); //画面に表示
             nowRoomRole = this.timeTables[index].role;
             this.nowTimeTable = nowRoomRole; //休憩室出席処理のために時間割状態を格納
-            // console.log(`時間ちょうど timeTables[index].time:${this.timeTables[index].time}
-            //  : this.timeTables[index].role:${this.timeTables[index].role}
-            //   nowRoomRole:${nowRoomRole} nowTimeTable: ${this.nowTimeTable}`);
           } else if (this.timeTables[index].time < this.now) {
             //自主中　or　休憩中
-            //console.log(this.timeTables[index].time);
             nowRoomRole = this.timeTables[index].role;
             this.nowTimeTable = nowRoomRole; //休憩室出席処理のために時間割状態を格納
           } else {
@@ -459,7 +464,6 @@ export default {
           }
         }
       }
-      console.log(`nowRoomRole${nowRoomRole}`);
       this.changeRoomColor(nowRoomRole); //時間割に合わせて背景色変更
     },
 
