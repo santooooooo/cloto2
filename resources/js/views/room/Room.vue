@@ -337,6 +337,7 @@ export default {
     inputKarte: function (confirm) {
       this.karte.confirm = confirm;
       this.karte.dialog = true;
+      console.log(this.karte.dialog);
     },
 
     /**
@@ -353,6 +354,13 @@ export default {
 
       // ロード終了
       this.isLoading = false;
+    },
+
+    /**
+     * カルテ記入後自習続行の処理
+     */
+    continueStudy: function () {
+      this.karte.dialog = false;
     },
 
     /**
@@ -520,10 +528,10 @@ export default {
     /**
      * 例外処理
      */
-    if (this.authUser.seat_id !== null && this.authUser.task_id === null) {
-      // タスク選択中にページ更新された場合の処理
-      this.leaveRoom();
-    }
+    // if (this.authUser.seat_id !== null && this.authUser.task_id === null) {
+    //   // タスク選択中にページ更新された場合の処理
+    //   this.leaveRoom();
+    // }
   },
 
   async mounted() {
