@@ -241,39 +241,37 @@ export default {
 
     submit: async function () {
       if (this.$refs.karteForm.validate()) {
-        // this.karteForm.loading = true;
+        this.karteForm.loading = true;
 
-        // var input = new FormData();
+        var input = new FormData();
         // input.append('task_id', this.authUser.tasks[0].id);
-        // input.append('body', this.karteForm.body);
-        // input.append('achieve', this.karteForm.achieve);
-        // input.append('trouble', this.karteForm.trouble);
-        // input.append('reference', this.karteForm.reference);
-        // input.append('image', this.karteForm.image);
-        // input.append('activity_time', this.karteForm.activityTime);
-        // input.append('technologies', this.technology.inputIds);
+        input.append('task_id', 1);
+        input.append('body', this.karteForm.body);
+        input.append('achieve', this.karteForm.achieve);
+        input.append('trouble', this.karteForm.trouble);
+        input.append('reference', this.karteForm.reference);
+        input.append('image', this.karteForm.image);
+        input.append('activity_time', this.karteForm.activityTime);
+        input.append('technologies', this.technology.inputIds);
 
-        // // カルテ保存処理
-        // var response = await this.$http.post(this.$endpoint('kartePost'), input);
+        // カルテ保存処理
+        var response = await this.$http.post(this.$endpoint('kartePost'), input);
 
-        // if (response.status === OK) {
-        //   this.$store.dispatch('alert/show', {
-        //     type: 'success',
-        //     message: 'カルテが保存されました。',
-        //   });
+        if (response.status === OK) {
+          this.$store.dispatch('alert/show', {
+            type: 'success',
+            message: 'カルテが保存されました。',
+          });
 
-        //   this.dialog = false;
-        // } else {
-        //   this.$store.dispatch('alert/show', {
-        //     type: 'error',
-        //     message: 'エラーが発生しました。',
-        //   });
+          this.dialog = false;
+        } else {
+          this.$store.dispatch('alert/show', {
+            type: 'error',
+            message: 'エラーが発生しました。',
+          });
 
-        //   this.karteForm.loading = false;
-        // }
-
-        //test用 データベースが修正されるまでpostせずモーダルをクローズ
-        this.dialog = false;
+          this.karteForm.loading = false;
+        }
 
         // 自習継続の確認
         if (this.confirm) {
