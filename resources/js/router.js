@@ -30,7 +30,6 @@ import entrance from '@/views/entrance/Entrance';
 import information from '@/views/entrance/Information';
 import floor from '@/views/entrance/Floor';
 import room from '@/views/room/Room';
-import test from '@/views/Test';
 
 const router = new VueRouter({
   mode: 'history',
@@ -117,11 +116,6 @@ const router = new VueRouter({
           component: karte,
         },
       ],
-    },
-    {
-      path: '/test',
-      name: 'test',
-      component: test,
     },
   ],
 });
