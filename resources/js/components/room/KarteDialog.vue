@@ -1,13 +1,14 @@
 <template>
   <!-- カルテ記入ダイアログ -->
   <v-container ma-0 pa-0>
-    <v-dialog persistent v-model="dialog" v-if="authUser.tasks[0]" width="1000">
+    <!-- <v-dialog persistent v-model="dialog" v-if="authUser.tasks[0]" width="1000"> -->
+    <v-dialog persistent v-model="dialog" v-if="authUser.seat" width="1000">
       <v-form ref="karteForm" v-model="karteForm.validation.valid" lazy-validation>
         <v-card class="headline grey darken-2 text-center px-2">
           <v-container>
-            <v-card-text class="pa-2 white--text text-h4 font-weight-bold">
+            <!-- <v-card-text class="pa-2 white--text text-h4 font-weight-bold">
               {{ authUser.tasks[0].body }}
-            </v-card-text>
+            </v-card-text> -->
 
             <v-row justify="center" align="center" class="mt-2">
               <input type="time" v-model="karteForm.activityTime" class="grey darken-2 mr-4" />
@@ -240,36 +241,39 @@ export default {
 
     submit: async function () {
       if (this.$refs.karteForm.validate()) {
-        this.karteForm.loading = true;
+        // this.karteForm.loading = true;
 
-        var input = new FormData();
-        input.append('task_id', this.authUser.tasks[0].id);
-        input.append('body', this.karteForm.body);
-        input.append('achieve', this.karteForm.achieve);
-        input.append('trouble', this.karteForm.trouble);
-        input.append('reference', this.karteForm.reference);
-        input.append('image', this.karteForm.image);
-        input.append('activity_time', this.karteForm.activityTime);
-        input.append('technologies', this.technology.inputIds);
+        // var input = new FormData();
+        // input.append('task_id', this.authUser.tasks[0].id);
+        // input.append('body', this.karteForm.body);
+        // input.append('achieve', this.karteForm.achieve);
+        // input.append('trouble', this.karteForm.trouble);
+        // input.append('reference', this.karteForm.reference);
+        // input.append('image', this.karteForm.image);
+        // input.append('activity_time', this.karteForm.activityTime);
+        // input.append('technologies', this.technology.inputIds);
 
-        // カルテ保存処理
-        var response = await this.$http.post(this.$endpoint('kartePost'), input);
+        // // カルテ保存処理
+        // var response = await this.$http.post(this.$endpoint('kartePost'), input);
 
-        if (response.status === OK) {
-          this.$store.dispatch('alert/show', {
-            type: 'success',
-            message: 'カルテが保存されました。',
-          });
+        // if (response.status === OK) {
+        //   this.$store.dispatch('alert/show', {
+        //     type: 'success',
+        //     message: 'カルテが保存されました。',
+        //   });
 
-          this.dialog = false;
-        } else {
-          this.$store.dispatch('alert/show', {
-            type: 'error',
-            message: 'エラーが発生しました。',
-          });
+        //   this.dialog = false;
+        // } else {
+        //   this.$store.dispatch('alert/show', {
+        //     type: 'error',
+        //     message: 'エラーが発生しました。',
+        //   });
 
-          this.karteForm.loading = false;
-        }
+        //   this.karteForm.loading = false;
+        // }
+
+        //test用 データベースが修正されるまでpostせずモーダルをクローズ
+        this.dialog = false;
 
         // 自習継続の確認
         if (this.confirm) {

@@ -9,7 +9,7 @@
         </v-list-item>
       </v-list>
 
-      <v-card v-if="authUser.tasks.length" class="ma-2 pa-3 grey darken-1 text-center">
+      <!-- <v-card v-if="authUser.tasks.length" class="ma-2 pa-3 grey darken-1 text-center">
         <v-container>
           <v-card-text class="pa-1 white--text font-weight-bold">プロジェクト</v-card-text>
 
@@ -23,15 +23,21 @@
             <span class="white--text">カルテ記入</span>
           </v-btn>
         </v-container>
-      </v-card>
+      </v-card> -->
 
       <div class="pa-2">
         <v-btn
           block
+          class="mb-3"
           depressed
-          color="error"
-          :disabled="!authUser.tasks.length"
-          @click="$emit('leave-room')"
+          color="#f6bf00"
+          dark
+          :disabled="!authUser.seat"
+          @click="$emit('input-karte')"
+        >
+          カルテ記入
+        </v-btn>
+        <v-btn block depressed color="error" :disabled="!authUser.seat" @click="$emit('leave-room')"
           >退席</v-btn
         >
       </div>

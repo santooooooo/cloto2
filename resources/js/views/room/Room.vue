@@ -9,11 +9,7 @@
       <div class="statusDisplay">{{ displayText }}</div>
     </v-overlay>
 
-    <Drawer
-      :room-name="roomData.name"
-      @input-karte="inputKarte(true)"
-      @leave-room="inputKarte(false)"
-    />
+    <Drawer :room-name="roomData.name" @input-karte="inputKarte(true)" @leave-room="leaveRoom()" />
 
     <!-- 休憩室 -->
     <v-dialog
@@ -108,17 +104,18 @@ export default {
         confirm: true, // 自習継続の確認
       },
       now: '00:00', // 現在時刻 1240 １２時40分
+      nowTimeTable: '', //現在の時間割の状態を格納する study or lounge
       zIndex: 0,
       roomColor: '#ffffff', //部屋の色
       studyRoomColor: '#f4f4f4', //自習時間の背景色
       loungeRoomColor: '#ffe89a', //休憩時間の背景色
       timeTables: [
-        { time: '18:00', role: 'study' },
-        { time: '18:10', role: 'lounge' },
-        { time: '18:15', role: 'study' },
-        { time: '18:18', role: 'lounge' },
-        { time: '18:55', role: 'study' },
-        { time: '19:00', role: 'lounge' },
+        { time: '14:00', role: 'study' },
+        { time: '14:10', role: 'lounge' },
+        { time: '14:15', role: 'study' },
+        { time: '14:18', role: 'lounge' },
+        { time: '14:55', role: 'study' },
+        { time: '14:00', role: 'lounge' },
       ], //時間割
     };
   },
@@ -223,7 +220,7 @@ export default {
           // 着席処理
           endpoint = this.$endpoint('seatSit', [seatObject.seatId]);
           response = await this.$http.post(endpoint);
-          this.projectDialog = true;
+          //this.projectDialog = true;
           break;
 
         case 'leave':
@@ -270,10 +267,13 @@ export default {
     canvasMouseOver: function (event) {
       if (event.target && event.target.fill === '') {
         // 着席前：自習室のみ点灯
-        // 着席中：休憩室のみ点灯
+        // 着席中：timetableが休憩室開放時間なら休憩室のみ点灯
+        // this.authUser.seat !== null && event.target.role === 'lounge' に休憩時間ならばを付け足す
         if (
           (this.authUser.seat === null && event.target.role === 'study') ||
-          (this.authUser.seat !== null && event.target.role === 'lounge')
+          (this.authUser.seat !== null &&
+            event.target.role === 'lounge' &&
+            this.nowTimeTable === 'lounge')
         ) {
           event.target.set({ fill: '#0000ff' });
           this.canvas.requestRenderAll();
@@ -307,10 +307,11 @@ export default {
             // 現在どこにも着席していない場合
             if (this.authUser.seat === null) {
               // 状態変更処理
+              this.startDisplay('study');
               await this.userAction('sitting', event.target);
-              if (typeof this.authUser.seat_id === 'number') {
-                this.projectsDialog = true; //auth userが自習室に初めてsittingしたときモーダル表示
-              }
+              // if (typeof this.authUser.seat_id === 'number') {
+              //   this.projectsDialog = true; //auth userが自習室に初めてsittingしたときモーダル表示
+              // }
             }
             break;
 
@@ -324,8 +325,17 @@ export default {
             } else {
               // 現在自習室に着席中の場合
               if (this.authUser.seat.section.role === 'study') {
-                // 状態変更処理
-                await this.userAction('enterLounge', event.target);
+                if (this.nowTimeTable != 'lounge') {
+                  //休憩室開放時間じゃなければ
+                  //休憩室がクリックされたときにユーザに伝える
+                  this.$store.dispatch('alert/show', {
+                    type: 'error',
+                    message: '休憩室は解放されていません',
+                  });
+                } else {
+                  // 状態変更処理
+                  await this.userAction('enterLounge', event.target);
+                }
               }
             }
             break;
@@ -363,6 +373,13 @@ export default {
 
       // ロード終了
       this.isLoading = false;
+    },
+
+    /**
+     * カルテ記入後自習続行の処理
+     */
+    continueStudy: function () {
+      this.karte.dialog = false;
     },
 
     /**
@@ -439,6 +456,16 @@ export default {
      * 時間による制御
      */
     time: function () {
+      //test用 time tables
+      this.timeTables = [
+        { time: '14:00', role: 'study' },
+        { time: '14:05', role: 'lounge' },
+        { time: '14:08', role: 'study' },
+        { time: '14:14', role: 'lounge' },
+        { time: '14:17', role: 'study' },
+        { time: '14:50', role: 'lounge' },
+      ];
+
       let date = new Date(); //new演算子でオブジェクトのインスタンスを生成
       this.now = date.getHours() + ':' + date.getMinutes();
       let nowRoomRole = ''; //現在の部屋の状態 自習 or 休憩
@@ -447,13 +474,16 @@ export default {
       for (var index in this.timeTables) {
         if (this.timeTables.hasOwnProperty(index)) {
           if (this.now === this.timeTables[index].time) {
-            // this.displayText = '休憩スタート';
-            this.startDisplay(this.timeTables[index].role);
+            // 自習開始時刻 or　休憩開始時刻ならば
+            this.startDisplay(this.timeTables[index].role); //画面に表示
             nowRoomRole = this.timeTables[index].role;
+            this.nowTimeTable = nowRoomRole; //休憩室出席処理のために時間割状態を格納
           } else if (this.timeTables[index].time < this.now) {
+            //自主中　or　休憩中
             nowRoomRole = this.timeTables[index].role;
+            this.nowTimeTable = nowRoomRole; //休憩室出席処理のために時間割状態を格納
           } else {
-            //console.log('時間割のどの時間にも属しません');
+            if (nowRoomRole === '') console.log('tameTable error');
           }
         }
       }
@@ -478,7 +508,7 @@ export default {
      * 自習開始
      */
     startStudy: async function () {
-      this.projectDialog = false;
+      //this.projectDialog = false;
       this.startDisplay('study'); //自習開始の表示
 
       // ユーザーデータの同期
@@ -489,14 +519,13 @@ export default {
      * プロジェクト選択の中断
      */
     cancelStartStudy: function () {
-      this.projectDialog = false;
+      //this.projectDialog = false;
       this.leaveRoom();
     },
     /**
      * ルームの状態表示開始(休憩時間開始、自習開始など)
      */
     startDisplay: function (role) {
-      console.log(role);
       if (role === 'study') {
         this.displayText = '自習スタート';
       } else {
@@ -517,10 +546,10 @@ export default {
     /**
      * 例外処理
      */
-    if (this.authUser.seat_id !== null && this.authUser.task_id === null) {
-      // タスク選択中にページ更新された場合の処理
-      this.leaveRoom();
-    }
+    // if (this.authUser.seat_id !== null && this.authUser.task_id === null) {
+    //   // タスク選択中にページ更新された場合の処理
+    //   this.leaveRoom();
+    // }
   },
 
   async mounted() {
@@ -614,9 +643,10 @@ export default {
     this.syncTimer = setInterval(() => {
       this.getRoom();
     }, 3000);
+
     this.syncTimer = setInterval(() => {
       this.time();
-    }, 6000);
+    }, 60000);
   },
 
   destroyed() {
