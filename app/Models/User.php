@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password', 'handlename', 'icon', 'sns', 'web', 'introduction',
+        'peer_id', 'username', 'email', 'password', 'handlename', 'icon', 'sns', 'web', 'introduction',
         'seat_id', 'task_id'
     ];
 
@@ -29,7 +29,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'peer_id', 'password', 'remember_token',
     ];
 
     /**
@@ -50,16 +50,6 @@ class User extends Authenticatable
     public function seat()
     {
         return $this->belongsTo('App\Models\Seat');
-    }
-
-    /**
-     * Chat モデルのリレーション
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function chats()
-    {
-        return $this->hasMany('App\Models\Chat');
     }
 
     /**

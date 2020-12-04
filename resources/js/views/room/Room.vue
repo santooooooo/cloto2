@@ -15,6 +15,19 @@
       @leave-room="inputKarte(false)"
     />
 
+    <!-- 休憩室 -->
+    <v-dialog
+      v-model="isLoungeEnter"
+      fullscreen
+      persistent
+      no-click-animation
+      transition="dialog-bottom-transition"
+    >
+      <!-- 正しく全画面表示にするため，コンポーネント外でダイアログを定義 -->
+      <!-- 内側にすると，下側の要素がスクロール可能な状態になる -->
+      <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
+    </v-dialog>
+
     <v-flex id="main">
       <!-- 教室 -->
       <v-row
@@ -28,7 +41,7 @@
       </v-row>
 
       <!-- 休憩室 -->
-      <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
+      <!-- <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge> -->
 
       <!-- プロフィールダイアログ -->
       <ProfileDialog
@@ -216,7 +229,6 @@ export default {
         case 'leave':
           // 退席処理
           endpoint = this.$endpoint('seatLeave');
-          this.isChatOpen = false;
           response = await this.$http.post(endpoint);
           break;
 
@@ -540,7 +552,7 @@ export default {
         this.canvas.add(
           new fabric.Circle({
             seatId: seat.id,
-            sectionId: section.id,
+            sectionId: section.uuid,
             role: section.role,
             fill: color,
             reservationId: seat.reservation_user_id,
@@ -565,7 +577,7 @@ export default {
 
           // ログインユーザーが座っており，座席が休憩室にある場合
           if (seat.id === this.authUser.seat_id && section.role === 'lounge') {
-            this.enterLounge(section.id);
+            this.enterLounge(section.uuid);
           }
         }
       });

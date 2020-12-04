@@ -14,7 +14,7 @@ class Section extends Model
      * @var array
      */
     protected $fillable = [
-        'room_id', 'role'
+        'uuid', 'room_id', 'role'
     ];
 
     public $timestamps = false;
@@ -37,15 +37,5 @@ class Section extends Model
     public function seats()
     {
         return $this->hasMany('App\Models\Seat');
-    }
-
-    /**
-     * Chat モデルのリレーション
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function chats()
-    {
-        return $this->hasMany('App\Models\Chat');
     }
 }

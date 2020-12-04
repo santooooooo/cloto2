@@ -28,8 +28,10 @@ Route::post('/login', 'Auth\LoginController@login')->name('login');
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('/auth/user', 'API\UserController@auth')->name('authUser');
+Route::get('/auth/peer_id', 'API\UserController@auth_peer_id')->name('authPeerId');
 Route::get('/user/{user_param}', 'API\UserController@show')->name('userShow');
 Route::post('/user/update', 'API\UserController@update')->name('profileUpdate');
+Route::get('/user/get_names_by_peer_id/{peer_id}', 'API\UserController@get_names_by_peer_id')->name('getNamesByPeerId');
 
 Route::get('/room', 'API\RoomController@index')->name('roomIndex');
 Route::get('/room/{room_id}', 'API\RoomController@show')->name('roomShow');
@@ -38,9 +40,6 @@ Route::post('/seat/leave', 'API\SeatController@leave')->name('seatLeave');
 Route::post('/seat/enterlounge/{seat}', 'API\SeatController@enter_lounge')->name('enterLounge');
 Route::post('/seat/leavelounge/{seat}', 'API\SeatController@leave_lounge')->name('leaveLounge');
 
-Route::get('/chat/{section}', 'API\ChatController@show')->name('chatShow');
-Route::post('/chat/post', 'API\ChatController@post')->name('chatPost');
-
 Route::get('/project', 'API\ProjectController@index')->name('projectIndex');
 Route::post('/project/post', 'API\ProjectController@post')->name('projectPost');
 
@@ -48,8 +47,8 @@ Route::get('/task/index/{project_id}', 'API\TaskController@index')->name('taskIn
 Route::post('/task/post', 'API\TaskController@post')->name('taskPost');
 Route::post('/task/start', 'API\TaskController@start')->name('taskStart');
 
-Route::get('/karte/index_from_user/{user_id}', 'API\KarteController@index_from_user')->name('karteIndexFromUser');
-Route::get('/karte/index_from_task/{task_id}', 'API\KarteController@index_from_task')->name('karteIndexFromTask');
+Route::get('/karte/index_by_user_id/{user_id}', 'API\KarteController@index_by_user_id')->name('karteIndexByUserId');
+Route::get('/karte/index_by_task_id/{task_id}', 'API\KarteController@index_by_task_id')->name('karteIndexByTaskId');
 Route::post('/karte/post', 'API\KarteController@post')->name('kartePost');
 
 Route::get('/technology', 'API\TechnologyController@index')->name('technologyIndex');

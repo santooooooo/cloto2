@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\RoomController;
 use App\Models\Seat;
-use App\Models\Chat;
 use Illuminate\Support\Facades\Auth;
 
 class SeatController extends RoomController
@@ -117,29 +116,6 @@ class SeatController extends RoomController
     public function leave_lounge(Seat $seat)
     {
         $room_id = $seat->section->room->id;
-
-        $user_id = $this->user->id;
-        $section_id = $this->user->seat->section->id;
-
-        // 過去の発言を隠す
-        $chat = Chat::where('section_id', $section_id)->where('user_id', $user_id);
-        // 発言が存在する時
-        if ($chat->exists()) {
-            $result = $chat->update(['data' => ['text' => '削除されたメッセージです']]);
-
-            if (empty($result)) {
-                $message = 'エラーが発生しました。';
-                return self::show($room_id, config('consts.status.INTERNAL_SERVER_ERROR'), $message);
-            }
-        }
-
-        // 退出システムメッセージの追加
-        Chat::create([
-            'section_id' => $section_id,
-            'type' => 'system',
-            'data' => ['text' => $this->user->username . 'が退出しました']
-        ]);
-
 
         // 着席していた座席を離席状態に変更
         $this->user->seat->fill(['status' => null])->save();

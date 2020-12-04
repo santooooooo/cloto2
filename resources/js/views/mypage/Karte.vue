@@ -83,35 +83,16 @@
             </v-col>
 
             <v-col>
+              <v-card-text class="pa-0 white--text title font-weight-bold"> 画像 </v-card-text>
 
-       
+              <v-card v-if="karteDialog.data.image != null" height="200" class="text-center pt-6">
+                <v-avatar class="profile" color="grey" size="150">
+                  <img :src="$storage('karte') + karteDialog.data.image" class="rounded-circle" />
+                </v-avatar>
+                <!-- ここに画像持ってくる  -->
+              </v-card>
 
-
-          <v-card-text class="pa-0 white--text title font-weight-bold"> 画像 </v-card-text>
-
-        <v-card v-if="karteDialog.data.image!=null"  height="200" class="text-center pt-6">
-          <v-avatar
-            class="profile"
-            color="grey"
-            size="150"
-          >
-           <img
-            :src="$storage('karte')+karteDialog.data.image"
-            class="rounded-circle"
-          />
-          </v-avatar>  
-              <!-- ここに画像持ってくる  -->
-        </v-card>
-
-        <v-card v-else height="200">
-          なし
-
-        </v-card>
-
-    
-
-
-  
+              <v-card v-else height="200"> なし </v-card>
             </v-col>
           </v-row>
           <v-row>
@@ -178,7 +159,6 @@ export default {
     };
   },
 
-  
   methods: {
     /**
      * プロジェクトの取得
@@ -215,7 +195,7 @@ export default {
     getKartes: async function (taskId) {
       this.kartes.loading = true;
 
-      var response = await this.$http.get(this.$endpoint('karteIndexFromTask', [taskId]));
+      var response = await this.$http.get(this.$endpoint('karteIndexByTaskId', [taskId]));
       this.kartes.data = response.data;
 
       this.kartes.loading = false;

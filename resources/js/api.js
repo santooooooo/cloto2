@@ -18,23 +18,23 @@ const register = '/api/register';
 const login = '/api/login';
 const logout = '/api/logout';
 const authUser = '/api/auth/user';
+const authPeerId = '/api/auth/peer_id';
 const userShow = '/api/user/' + replaceChar[0];
 const profileUpdate = '/api/user/update';
+const getNamesByPeerId = '/api/user/get_names_by_peer_id/' + replaceChar[0];
 const roomIndex = '/api/room';
 const roomShow = '/api/room/' + replaceChar[0];
 const seatSit = '/api/seat/sit/' + replaceChar[0];
 const seatLeave = '/api/seat/leave';
 const enterLounge = '/api/seat/enterlounge/' + replaceChar[0];
 const leaveLounge = '/api/seat/leavelounge/' + replaceChar[0];
-const chatShow = '/api/chat/' + replaceChar[0];
-const chatPost = '/api/chat/post';
 const projectIndex = '/api/project';
 const projectPost = '/api/project/post';
 const taskIndex = '/api/task/index/' + replaceChar[0];
 const taskPost = '/api/task/post';
 const taskStart = '/api/task/start';
-const karteIndexFromUser = '/api/karte/index_from_user/' + replaceChar[0];
-const karteIndexFromTask = '/api/karte/index_from_task/' + replaceChar[0];
+const karteIndexByUserId = '/api/karte/index_by_user_id/' + replaceChar[0];
+const karteIndexByTaskId = '/api/karte/index_by_task_id/' + replaceChar[0];
 const kartePost = '/api/karte/post';
 const technologyIndex = '/api/technology';
 
@@ -80,12 +80,20 @@ export function getEndpoint(name, params) {
       endpoint = authUser;
       break;
 
+    case 'authPeerId':
+      endpoint = authPeerId;
+      break;
+
     case 'userShow':
       endpoint = setParams(userShow, params);
       break;
 
     case 'profileUpdate':
       endpoint = profileUpdate;
+      break;
+
+    case 'getNamesByPeerId':
+      endpoint = setParams(getNamesByPeerId, params);
       break;
 
     case 'roomIndex':
@@ -112,14 +120,6 @@ export function getEndpoint(name, params) {
       endpoint = setParams(leaveLounge, params);
       break;
 
-    case 'chatShow':
-      endpoint = setParams(chatShow, params);
-      break;
-
-    case 'chatPost':
-      endpoint = chatPost;
-      break;
-
     case 'projectIndex':
       endpoint = projectIndex;
       break;
@@ -140,12 +140,12 @@ export function getEndpoint(name, params) {
       endpoint = taskStart;
       break;
 
-    case 'karteIndexFromUser':
-      endpoint = setParams(karteIndexFromUser, params);
+    case 'karteIndexByUserId':
+      endpoint = setParams(karteIndexByUserId, params);
       break;
 
-    case 'karteIndexFromTask':
-      endpoint = setParams(karteIndexFromTask, params);
+    case 'karteIndexByTaskId':
+      endpoint = setParams(karteIndexByTaskId, params);
       break;
 
     case 'kartePost':
