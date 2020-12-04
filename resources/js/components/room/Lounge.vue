@@ -167,7 +167,8 @@
 
               <!-- ユーザーメッセージ -->
               <p v-else>
-                {{ message.peerId + '：' + message.text }}
+                <span class="text-caption">{{ message.handlename }}</span>
+                <span class="text-body-1 font-weight-bold">{{ message.text }}</span>
               </p>
             </v-card-text>
           </v-card>
@@ -348,6 +349,17 @@ export default {
   },
   methods: {
     /**
+     * PeerIDからユーザーを取得
+     *
+     * @param String  peerId  検索するPeerID
+     * @returns Object {username, handlename} ユーザー名，表示名
+     */
+    getNamesByPeerId: async function (peerId) {
+      var response = await this.$http.get(this.$endpoint('getNamesByPeerId', [peerId]));
+      return response.data;
+    },
+
+    /**
      * 休憩室へ入室
      */
     enterLounge: function () {
@@ -464,16 +476,7 @@ export default {
     setupCallEvents: function () {
       // 自身の参加イベント
       this.call.once('open', () => {
-        this.messages.push({ type: 'system', peerId: null, text: '=== 入室しました！ ===' });
-      });
-
-      // 他ユーザー参加イベント
-      this.call.on('peerJoin', (peerId) => {
-        this.messages.push({
-          type: 'system',
-          peerId: null,
-          text: '===' + peerId + 'が入室しました！ ===',
-        });
+        this.messages.push({ type: 'system', handlename: null, text: '入室しました！' });
       });
 
       // 他ユーザー参加イベント
@@ -482,8 +485,10 @@ export default {
       });
 
       // メッセージ到着イベント
-      this.call.on('data', ({ data, src }) => {
-        this.messages.push({ type: 'user', peerId: src, text: data });
+      this.call.on('data', async ({ data, src }) => {
+        // ユーザー名と表示名の取得
+        var names = await this.getNamesByPeerId(src);
+        this.messages.push({ type: 'user', handlename: names.handlename, text: data });
       });
 
       // 他ユーザー退出イベント
@@ -532,8 +537,7 @@ export default {
      */
     joinUser: async function (stream) {
       // ユーザー名と表示名の取得
-      var response = await this.$http.get(this.$endpoint('getNamesByPeerId', [stream.peerId]));
-      var names = response.data;
+      var names = await this.getNamesByPeerId(stream.peerId);
 
       if (names !== '') {
         // ユーザーが参加した場合
@@ -546,7 +550,7 @@ export default {
         this.messages.push({
           type: 'system',
           peerId: null,
-          text: '===' + names.handlename + 'が入室しました！ ===',
+          text: names.handlename + 'が入室しました！',
         });
       } else {
         // 画面共有が参加した場合
@@ -627,7 +631,11 @@ export default {
       this.call.send(this.localText);
 
       // 自分の画面を更新
-      this.messages.push(`${this.peer.id}: ${this.localText}`);
+      this.messages.push({
+        type: 'user',
+        handlename: this.authUser.handlename,
+        text: this.localText,
+      });
       this.localText = '';
     },
 
