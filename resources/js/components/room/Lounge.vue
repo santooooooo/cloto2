@@ -5,7 +5,13 @@
         <v-container fluid>
           <v-row justify="center">
             <!-- 自分のビデオ（オン） -->
-            <div class="video-container" v-if="localStream && !isVideoOff">
+            <v-sheet
+              color="rgba(0, 0, 0, 1)"
+              width="208"
+              height="117"
+              class="video-container"
+              v-if="localStream && !isVideoOff"
+            >
               <video
                 width="208"
                 height="117"
@@ -15,10 +21,16 @@
               ></video>
 
               <p>{{ authUser.username }}</p>
-            </div>
+            </v-sheet>
 
             <!-- 自分のビデオ（オフ） -->
-            <div class="video-container" v-else>
+            <v-sheet
+              color="rgba(0, 0, 0, 1)"
+              width="208"
+              height="117"
+              class="video-container"
+              v-else
+            >
               <v-sheet
                 color="black"
                 width="208"
@@ -31,7 +43,7 @@
               </v-sheet>
 
               <p>{{ authUser.username }}</p>
-            </div>
+            </v-sheet>
           </v-row>
 
           <v-row justify="center" class="mt-3" v-if="screenSharing.stream">
@@ -41,23 +53,52 @@
 
           <v-row justify="center" class="mt-3">
             <!-- 参加者のビデオ（オン） -->
-            <div
-              class="video-container mx-1"
+            <v-hover
+              v-slot="{ hover }"
               v-for="participant in participants"
               :key="participant.stream.peerId"
             >
-              <video
-                width="320"
-                height="180"
-                autoplay
-                :srcObject.prop="participant.stream"
-                :class="speakerId === participant.stream.peerId ? 'speaker' : ''"
-              ></video>
+              <v-sheet
+                color="rgba(0, 0, 0, 1)"
+                :width="videoSize.showWidth"
+                :height="videoSize.showHeight"
+                class="video-container mx-1"
+              >
+                <video
+                  :width="videoSize.showWidth"
+                  :height="videoSize.showHeight"
+                  autoplay
+                  :srcObject.prop="participant.stream"
+                  :class="speakerId === participant.stream.peerId ? 'speaker' : ''"
+                ></video>
 
-              <p @click="showProfile(participant.names.username)">
-                {{ participant.names.handlename }}
-              </p>
-            </div>
+                <p>{{ participant.names.handlename }}</p>
+
+                <!-- hover時 -->
+                <v-fade-transition>
+                  <v-overlay absolute opacity="0.7" v-if="hover">
+                    <v-sheet
+                      color="rgba(0, 0, 0, 0)"
+                      :width="videoSize.showWidth"
+                      :height="videoSize.showHeight"
+                    >
+                      <v-btn icon x-large class="pin-button">
+                        <v-icon> mdi-pin </v-icon>
+                      </v-btn>
+
+                      <v-btn
+                        icon
+                        x-large
+                        class="account-button"
+                        @click="showProfile(participant.names.username)"
+                      >
+                        <v-icon> mdi-account </v-icon>
+                      </v-btn>
+                    </v-sheet>
+                  </v-overlay>
+                </v-fade-transition>
+              </v-sheet>
+            </v-hover>
           </v-row>
 
           <!-- プロフィールダイアログ -->
@@ -232,6 +273,8 @@ export default {
       videoSize: {
         width: 640,
         height: 360,
+        showWidth: 320,
+        showHeight: 180,
       },
       peer: null,
       localStream: null,
@@ -635,10 +678,33 @@ export default {
     background-color: black;
     color: white;
     line-height: 1em;
-    bottom: 6px;
-    left: 0px;
+    bottom: 0;
+    left: 0;
     margin: 0;
     padding: 2px;
+  }
+
+  .pin-button {
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+  }
+
+  .account-button {
+    position: absolute;
+    top: 50%;
+    right: 40%;
+    transform: translate(50%, -50%);
+    -webkit-transform: translate(50%, -50%);
+    -ms-transform: translate(50%, -50%);
+  }
+
+  .speaker {
+    outline: 5px solid #f6bf00;
+    outline-offset: -5px;
   }
 }
 
@@ -648,49 +714,10 @@ export default {
   margin-top: 20px;
   top: 20px;
 }
-
-.speaker {
-  outline: 5px solid #f6bf00;
-  outline-offset: -5px;
-}
 </style>
 
 <style lang="scss">
-/* beautiful-chatのスタイル */
-.sc-launcher {
-  // チャットオープンアイコンの無効化
-  // sharedisplay: none;
-}
-
 .v-dialog {
   background-color: rgba(0, 0, 0, 0.6);
 }
-
-// .sc-chat-window {
-//   // チャットの中央寄せ
-//   position: static !important;
-
-//   width: 60vw !important;
-
-//   .sc-user-input {
-//     border-bottom-left-radius: 0;
-//     border-bottom-right-radius: 0;
-//   }
-
-//   .sc-message-list {
-//     padding-left: 10px;
-
-//     // hover時のみスクロールバーを表示
-//     overflow-y: hidden;
-//     padding-right: 10px;
-//     &:hover {
-//       overflow-y: scroll;
-//       padding-right: 0;
-//     }
-
-//     .sc-message {
-//       width: 90%;
-//     }
-//   }
-// }
 </style>
