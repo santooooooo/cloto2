@@ -14,7 +14,19 @@
       @input-karte="inputKarte(true)"
       @leave-room="inputKarte(false)"
     />
-    <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
+
+    <!-- 休憩室 -->
+    <v-dialog
+      v-model="isLoungeEnter"
+      fullscreen
+      persistent
+      no-click-animation
+      transition="dialog-bottom-transition"
+    >
+      <!-- 正しく全画面表示にするため，コンポーネント外でダイアログを定義 -->
+      <!-- 内側にすると，下側の要素がスクロール可能な状態になる -->
+      <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
+    </v-dialog>
 
     <v-flex id="main">
       <!-- 教室 -->

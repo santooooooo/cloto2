@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="isLoungeEnter" fullscreen transition="dialog-bottom-transition">
+  <v-container fluid>
     <v-layout class="px-2">
       <v-flex>
         <v-container fluid>
@@ -289,7 +289,7 @@
         </v-container>
       </v-card>
     </v-dialog>
-  </v-dialog>
+  </v-container>
 </template>
 
 <script>
@@ -307,7 +307,6 @@ export default {
   },
   data() {
     return {
-      isLoungeEnter: false, // 休憩室入室制御
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
@@ -360,20 +359,10 @@ export default {
     },
 
     /**
-     * 休憩室へ入室
-     */
-    enterLounge: function () {
-      this.isLoungeEnter = true;
-    },
-
-    /**
      * 休憩室から退室
      */
     leaveLounge: function () {
       this.exitCall();
-
-      this.isLoungeEnter = false;
-
       this.$emit('leave-lounge');
     },
 
@@ -697,9 +686,6 @@ export default {
     this.makeCall();
   },
 
-  async mounted() {
-    this.enterLounge();
-  },
   destroyed() {
     // 念の為
     this.exitCall();
