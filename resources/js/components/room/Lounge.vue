@@ -20,7 +20,7 @@
                 :srcObject.prop="localStream"
               ></video>
 
-              <p>{{ authUser.username }}</p>
+              <p>{{ authUser.handlename }}</p>
             </v-sheet>
 
             <!-- 自分のビデオ（オフ） -->
@@ -42,7 +42,7 @@
                 /></v-avatar>
               </v-sheet>
 
-              <p>{{ authUser.username }}</p>
+              <p>{{ authUser.handlename }}</p>
             </v-sheet>
           </v-row>
 
