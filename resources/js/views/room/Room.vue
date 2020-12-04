@@ -249,7 +249,6 @@ export default {
         // 着席前：自習室のみ点灯
         // 着席中：timetableが休憩室開放時間なら休憩室のみ点灯
         // this.authUser.seat !== null && event.target.role === 'lounge' に休憩時間ならばを付け足す
-        console.log(`現在の部屋の時間割は${this.nowTimeTable}`);
         if (
           (this.authUser.seat === null && event.target.role === 'study') ||
           (this.authUser.seat !== null &&
@@ -288,6 +287,7 @@ export default {
             // 現在どこにも着席していない場合
             if (this.authUser.seat === null) {
               // 状態変更処理
+              this.startDisplay('study');
               await this.userAction('sitting', event.target);
               // if (typeof this.authUser.seat_id === 'number') {
               //   this.projectsDialog = true; //auth userが自習室に初めてsittingしたときモーダル表示
@@ -337,7 +337,6 @@ export default {
     inputKarte: function (confirm) {
       this.karte.confirm = confirm;
       this.karte.dialog = true;
-      console.log(this.karte.dialog);
     },
 
     /**
@@ -439,12 +438,12 @@ export default {
     time: function () {
       //test用 time tables
       this.timeTables = [
-        { time: '16:00', role: 'study' },
-        { time: '16:06', role: 'lounge' },
-        { time: '16:30', role: 'study' },
-        { time: '16:50', role: 'lounge' },
-        { time: '16:55', role: 'study' },
-        { time: '17:00', role: 'lounge' },
+        { time: '14:00', role: 'study' },
+        { time: '14:05', role: 'lounge' },
+        { time: '14:08', role: 'study' },
+        { time: '14:14', role: 'lounge' },
+        { time: '14:17', role: 'study' },
+        { time: '14:50', role: 'lounge' },
       ];
 
       let date = new Date(); //new演算子でオブジェクトのインスタンスを生成
@@ -507,7 +506,6 @@ export default {
      * ルームの状態表示開始(休憩時間開始、自習開始など)
      */
     startDisplay: function (role) {
-      console.log(role);
       if (role === 'study') {
         this.displayText = '自習スタート';
       } else {
@@ -625,9 +623,10 @@ export default {
     this.syncTimer = setInterval(() => {
       this.getRoom();
     }, 3000);
+
     this.syncTimer = setInterval(() => {
       this.time();
-    }, 6000);
+    }, 60000);
   },
 
   destroyed() {
