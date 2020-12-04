@@ -156,10 +156,10 @@
       </v-flex>
 
       <!-- チャットエリア -->
-      <v-flex xs3 v-show="isShowChat">
+      <v-flex xs3 v-show="chat.isOpen">
         <v-card color="grey lighten-2" class="mx-auto" id="chat">
           <v-card flat class="overflow-y-auto" height="500">
-            <v-card-text v-for="(message, index) in messages" :key="index">
+            <v-card-text v-for="(message, index) in chat.messages" :key="index">
               <!-- システムメッセージ -->
               <p class="text-center" style="color: red" v-if="message.type === 'system'">
                 {{ message.text }}
@@ -174,12 +174,12 @@
           </v-card>
 
           <v-card-actions>
-            <v-textarea
-              v-model="localText"
-              rows="1"
+            <v-text-field
+              v-model="chat.localText"
               class="px-2"
               label="メッセージを送ろう！"
-            ></v-textarea>
+              @keyup.enter="sendMessage()"
+            ></v-text-field>
             <v-btn icon @click="sendMessage()">
               <v-icon>mdi-send</v-icon>
             </v-btn>
@@ -235,22 +235,31 @@
       <v-spacer></v-spacer>
 
       <!-- チャットボタン -->
-      <v-btn color="white" icon class="mr-6" @click="isShowChat = !isShowChat">
-        <v-icon large>mdi-message-text</v-icon>
-      </v-btn>
+      <v-badge
+        bordered
+        dot
+        color="deep-purple accent-4"
+        :value="chat.notification"
+        offset-x="40"
+        offset-y="15"
+      >
+        <v-btn color="white" icon class="mr-6" @click="controlChat()">
+          <v-icon large>mdi-message-text</v-icon>
+        </v-btn>
+      </v-badge>
 
       <!-- メニューボタン -->
-      <v-btn color="white" icon class="mr-10" @click="isShowMenu = true">
+      <v-btn color="white" icon class="mr-10" @click="isOpenMenu = true">
         <v-icon large>mdi-menu</v-icon>
       </v-btn>
     </v-app-bar>
 
     <!-- デバイス選択メニュー -->
-    <v-dialog v-model="isShowMenu" max-width="600">
+    <v-dialog v-model="isOpenMenu" max-width="600">
       <v-card color="grey darken-1" dark>
         <v-container>
           <v-row justify="end">
-            <v-btn fab x-small depressed color="error" class="mr-4" @click="isShowMenu = false">
+            <v-btn fab x-small depressed color="error" class="mr-4" @click="isOpenMenu = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-row>
@@ -307,7 +316,7 @@ export default {
   },
   data() {
     return {
-      //*** 通話 ***/
+      //*** 通話 ***//
       participants: [], // 参加者
       peer: null, // Peer接続オブジェクト
       localStream: null, // 自分の送信データ
@@ -318,8 +327,8 @@ export default {
         stream: null, // 画面共有データ
       },
 
-      //*** 入力デバイス ***/
-      isShowMenu: false, // デバイス選択メニュー表示制御
+      //*** 入力デバイス ***//
+      isOpenMenu: false, // デバイス選択メニュー表示制御
       audioDevices: [], // 音声入力デバイス一覧
       videoDevices: [], // 映像入力デバイス一覧
       selectedAudio: null, // 選択されている音声入力
@@ -333,16 +342,19 @@ export default {
       isMute: false, // ミュート制御
       isVideoOff: false, // ビデオオフ制御
 
-      //*** 音声検出 ***/
+      //*** 音声検出 ***//
       voiceDetectionObject: null, // 音声検出オブジェクト
       speakerId: null, // 話し中ユーザーのID
 
-      //*** チャット ***/
-      isShowChat: false, // チャットエリア表示制御
-      localText: '', // 送信するメッセージ
-      messages: [], // メッセージ一覧
+      //*** チャット ***//
+      chat: {
+        isOpen: false, // チャットエリア表示制御
+        notification: false, // 通知制御
+        localText: '', // 送信するメッセージ
+        messages: [], // メッセージ一覧
+      },
 
-      //*** プロフィール ***/
+      //*** プロフィール ***//
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
@@ -392,7 +404,7 @@ export default {
     setupCallEvents: function () {
       // 自身の参加イベント
       this.call.once('open', () => {
-        this.messages.push({ type: 'system', handlename: null, text: '入室しました！' });
+        this.chat.messages.push({ type: 'system', handlename: null, text: '入室しました！' });
       });
 
       // 他ユーザー参加イベント
@@ -404,7 +416,12 @@ export default {
       this.call.on('data', async ({ data, src }) => {
         // ユーザー名と表示名の取得
         var names = await this.getNamesByPeerId(src);
-        this.messages.push({ type: 'user', handlename: names.handlename, text: data });
+        this.chat.messages.push({ type: 'user', handlename: names.handlename, text: data });
+
+        // 通知の表示
+        if (!this.chat.isOpen) {
+          this.chat.notification = true;
+        }
       });
 
       // 他ユーザー退出イベント
@@ -457,7 +474,7 @@ export default {
         this.startVoiceDetection(stream);
 
         // 参加メッセージの送信
-        this.messages.push({
+        this.chat.messages.push({
           type: 'system',
           peerId: null,
           text: names.handlename + 'が入室しました！',
@@ -651,19 +668,29 @@ export default {
     },
 
     /**
+     * チャットエリアの制御
+     */
+    controlChat: function () {
+      this.chat.isOpen = !this.chat.isOpen;
+      this.chat.notification = false;
+    },
+
+    /**
      * メッセージの送信処理
      */
     sendMessage: function () {
-      // メッセージの送信
-      this.call.send(this.localText);
+      if (this.chat.localText !== '') {
+        // メッセージの送信
+        this.call.send(this.chat.localText);
 
-      // 自分の画面を更新
-      this.messages.push({
-        type: 'user',
-        handlename: this.authUser.handlename,
-        text: this.localText,
-      });
-      this.localText = '';
+        // 自分の画面を更新
+        this.chat.messages.push({
+          type: 'user',
+          handlename: this.authUser.handlename,
+          text: this.chat.localText,
+        });
+        this.chat.localText = '';
+      }
     },
 
     /**
