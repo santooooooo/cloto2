@@ -58,11 +58,56 @@
               v-for="participant in participants"
               :key="participant.stream.peerId"
             >
+              <!-- ピン留め時 -->
+              <v-sheet
+                color="rgba(0, 0, 0, 1)"
+                :width="videoSize.width"
+                :height="videoSize.height"
+                class="video-container mx-1"
+                v-if="participant.isPinned"
+              >
+                <video
+                  :width="videoSize.width"
+                  :height="videoSize.height"
+                  autoplay
+                  :srcObject.prop="participant.stream"
+                  :class="speakerId === participant.stream.peerId ? 'speaker' : ''"
+                ></video>
+
+                <p>{{ participant.names.handlename }}</p>
+
+                <!-- hover時 -->
+                <v-fade-transition>
+                  <v-overlay absolute opacity="0.7" v-if="hover">
+                    <v-sheet
+                      color="rgba(0, 0, 0, 0)"
+                      :width="videoSize.width"
+                      :height="videoSize.height"
+                    >
+                      <v-btn icon x-large class="pin-button" @click="participant.isPinned = false">
+                        <v-icon> mdi-pin-off </v-icon>
+                      </v-btn>
+
+                      <v-btn
+                        icon
+                        x-large
+                        class="account-button"
+                        @click="showProfile(participant.names.username)"
+                      >
+                        <v-icon> mdi-account </v-icon>
+                      </v-btn>
+                    </v-sheet>
+                  </v-overlay>
+                </v-fade-transition>
+              </v-sheet>
+
+              <!-- 通常時 -->
               <v-sheet
                 color="rgba(0, 0, 0, 1)"
                 :width="videoSize.showWidth"
                 :height="videoSize.showHeight"
                 class="video-container mx-1"
+                v-else
               >
                 <video
                   :width="videoSize.showWidth"
@@ -82,7 +127,7 @@
                       :width="videoSize.showWidth"
                       :height="videoSize.showHeight"
                     >
-                      <v-btn icon x-large class="pin-button">
+                      <v-btn icon x-large class="pin-button" @click="participant.isPinned = true">
                         <v-icon> mdi-pin </v-icon>
                       </v-btn>
 
@@ -492,7 +537,7 @@ export default {
 
       if (names !== '') {
         // ユーザーが参加した場合
-        this.participants.push({ names: names, stream: stream });
+        this.participants.push({ isPinned: false, names: names, stream: stream });
 
         // 音声検知の開始
         this.startVoiceDetection(stream);
