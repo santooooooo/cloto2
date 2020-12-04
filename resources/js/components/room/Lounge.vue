@@ -307,38 +307,46 @@ export default {
   },
   data() {
     return {
+      //*** 通話 ***/
+      participants: [], // 参加者
+      peer: null, // Peer接続オブジェクト
+      localStream: null, // 自分の送信データ
+      call: null, // 接続プロパティ
+      screenSharing: {
+        isLocal: false, // 自分の画面共有か
+        peer: null, // Peer接続オブジェクト（画面共有用）
+        stream: null, // 画面共有データ
+      },
+
+      //*** 入力デバイス ***/
+      isShowMenu: false, // デバイス選択メニュー表示制御
+      audioDevices: [], // 音声入力デバイス一覧
+      videoDevices: [], // 映像入力デバイス一覧
+      selectedAudio: null, // 選択されている音声入力
+      selectedVideo: null, // 選択されている映像入力
+      videoSize: {
+        width: 640, // ビデオ取得サイズ（横）
+        height: 360, // ビデオ取得サイズ（縦）
+        showWidth: 320, // ビデオ表示サイズ（横）
+        showHeight: 180, // ビデオ表示サイズ（縦）
+      },
+      isMute: false, // ミュート制御
+      isVideoOff: false, // ビデオオフ制御
+
+      //*** 音声検出 ***/
+      voiceDetectionObject: null, // 音声検出オブジェクト
+      speakerId: null, // 話し中ユーザーのID
+
+      //*** チャット ***/
+      isShowChat: false, // チャットエリア表示制御
+      localText: '', // 送信するメッセージ
+      messages: [], // メッセージ一覧
+
+      //*** プロフィール ***/
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
       },
-
-      participants: [],
-      audioDevices: [],
-      videoDevices: [],
-      videoSize: {
-        width: 640,
-        height: 360,
-        showWidth: 320,
-        showHeight: 180,
-      },
-      peer: null,
-      localStream: null,
-      call: null,
-      selectedAudio: null,
-      selectedVideo: null,
-      isMute: false, // ミュート制御
-      isVideoOff: false, // ビデオオフ制御
-      isShowChat: false, // チャットエリア表示制御
-      isShowMenu: false, // デバイス選択メニュー表示制御
-      screenSharing: {
-        isLocal: false, // 自分の画面共有か
-        peer: null,
-        stream: null,
-      },
-      localText: '', // 送信するメッセージ
-      messages: [], // メッセージ一覧
-      voiceDetectionObject: null, // 音声検出オブジェクト
-      speakerId: null, // 話し中ユーザーのID
     };
   },
   computed: {
@@ -348,17 +356,6 @@ export default {
   },
   methods: {
     /**
-     * PeerIDからユーザーを取得
-     *
-     * @param String  peerId  検索するPeerID
-     * @returns Object {username, handlename} ユーザー名，表示名
-     */
-    getNamesByPeerId: async function (peerId) {
-      var response = await this.$http.get(this.$endpoint('getNamesByPeerId', [peerId]));
-      return response.data;
-    },
-
-    /**
      * 休憩室から退室
      */
     leaveLounge: function () {
@@ -367,84 +364,14 @@ export default {
     },
 
     /**
-     * プロフィールの表示
+     * PeerIDからユーザーを取得
      *
-     * @param String  username  プロフィールを表示するユーザー名
+     * @param String  peerId  検索するPeerID
+     * @returns Object {username, handlename} ユーザー名，表示名
      */
-    showProfile: function (username) {
-      this.profile.username = username;
-      this.profile.dialog = true;
-    },
-
-    /**
-     * 通話デバイスへのアクセス
-     */
-    accessDevice: async function () {
-      // デバイスへのアクセス可能にするためにgetUserMediaを実行
-      await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-      const devices = await navigator.mediaDevices.enumerateDevices();
-
-      // オーディオデバイスの情報を取得
-      this.audioDevices = devices.filter((device) => {
-        return device.kind === 'audioinput';
-      });
-
-      // カメラの情報を取得
-      this.videoDevices = devices.filter((device) => {
-        return device.kind === 'videoinput';
-      });
-
-      this.selectedAudio = this.audioDevices[0].deviceId;
-      this.selectedVideo = this.videoDevices[0].deviceId;
-    },
-
-    /**
-     * 通話デバイスへの接続
-     */
-    connectDevice: async function () {
-      var constraints = {
-        audio: this.selectedAudio ? { deviceId: { exact: this.selectedAudio } } : false,
-        video: this.selectedVideo ? { deviceId: { exact: this.selectedVideo } } : false,
-      };
-
-      // 録画サイズの設定
-      constraints.video.width = {
-        min: this.videoSize.width,
-        max: this.videoSize.width,
-      };
-      constraints.video.height = {
-        min: this.videoSize.height,
-        max: this.videoSize.height,
-      };
-
-      this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
-    },
-
-    /**
-     * 通話デバイスの切り替え
-     */
-    changeDevice: async function () {
-      await this.connectDevice();
-      // ストリームの置き換え
-      this.call.replaceStream(this.localStream);
-    },
-
-    /**
-     * ミュートの切り替え
-     */
-    mute: function () {
-      const audioTrack = this.localStream.getAudioTracks()[0];
-      this.isMute = !this.isMute;
-      audioTrack.enabled = !this.isMute;
-    },
-
-    /**
-     * ビデオのオン/オフ切り替え
-     */
-    videoOff: function () {
-      const videoTrack = this.localStream.getVideoTracks()[0];
-      this.isVideoOff = !this.isVideoOff;
-      videoTrack.enabled = !this.isVideoOff;
+    getNamesByPeerId: async function (peerId) {
+      var response = await this.$http.get(this.$endpoint('getNamesByPeerId', [peerId]));
+      return response.data;
     },
 
     /**
@@ -489,12 +416,6 @@ export default {
           // 参加者の退出
           this.leaveUser(peerId);
         }
-      });
-
-      // 自身の退出イベント
-      this.call.on('close', () => {
-        // this.removeAllRemoteVideos();
-        // setupMakeCallUI();
       });
     },
 
@@ -613,19 +534,74 @@ export default {
     },
 
     /**
-     * メッセージの送信処理
+     * 通話デバイスへのアクセス
      */
-    sendMessage: function () {
-      // メッセージの送信
-      this.call.send(this.localText);
+    accessDevice: async function () {
+      // デバイスへのアクセス可能にするためにgetUserMediaを実行
+      await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+      const devices = await navigator.mediaDevices.enumerateDevices();
 
-      // 自分の画面を更新
-      this.messages.push({
-        type: 'user',
-        handlename: this.authUser.handlename,
-        text: this.localText,
+      // オーディオデバイスの情報を取得
+      this.audioDevices = devices.filter((device) => {
+        return device.kind === 'audioinput';
       });
-      this.localText = '';
+
+      // カメラの情報を取得
+      this.videoDevices = devices.filter((device) => {
+        return device.kind === 'videoinput';
+      });
+
+      this.selectedAudio = this.audioDevices[0].deviceId;
+      this.selectedVideo = this.videoDevices[0].deviceId;
+    },
+
+    /**
+     * 通話デバイスへの接続
+     */
+    connectDevice: async function () {
+      var constraints = {
+        audio: this.selectedAudio ? { deviceId: { exact: this.selectedAudio } } : false,
+        video: this.selectedVideo ? { deviceId: { exact: this.selectedVideo } } : false,
+      };
+
+      // 録画サイズの設定
+      constraints.video.width = {
+        min: this.videoSize.width,
+        max: this.videoSize.width,
+      };
+      constraints.video.height = {
+        min: this.videoSize.height,
+        max: this.videoSize.height,
+      };
+
+      this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
+    },
+
+    /**
+     * 通話デバイスの切り替え
+     */
+    changeDevice: async function () {
+      await this.connectDevice();
+      // ストリームの置き換え
+      this.call.replaceStream(this.localStream);
+    },
+
+    /**
+     * ミュートの切り替え
+     */
+    mute: function () {
+      const audioTrack = this.localStream.getAudioTracks()[0];
+      this.isMute = !this.isMute;
+      audioTrack.enabled = !this.isMute;
+    },
+
+    /**
+     * ビデオのオン/オフ切り替え
+     */
+    videoOff: function () {
+      const videoTrack = this.localStream.getVideoTracks()[0];
+      this.isVideoOff = !this.isVideoOff;
+      videoTrack.enabled = !this.isVideoOff;
     },
 
     /**
@@ -656,6 +632,15 @@ export default {
     },
 
     /**
+     * 発言者の更新
+     *
+     * @param String peerId  発言中のユーザーのPeerID
+     */
+    speakerUpdate(peerId) {
+      this.speakerId = peerId;
+    },
+
+    /**
      * 音声検知の終了
      */
     stopVoiceDetection() {
@@ -666,12 +651,29 @@ export default {
     },
 
     /**
-     * 発言者の更新
-     *
-     * @param String peerId  発言中のユーザーのPeerID
+     * メッセージの送信処理
      */
-    speakerUpdate(peerId) {
-      this.speakerId = peerId;
+    sendMessage: function () {
+      // メッセージの送信
+      this.call.send(this.localText);
+
+      // 自分の画面を更新
+      this.messages.push({
+        type: 'user',
+        handlename: this.authUser.handlename,
+        text: this.localText,
+      });
+      this.localText = '';
+    },
+
+    /**
+     * プロフィールの表示
+     *
+     * @param String  username  プロフィールを表示するユーザー名
+     */
+    showProfile: function (username) {
+      this.profile.username = username;
+      this.profile.dialog = true;
     },
   },
 
@@ -681,33 +683,23 @@ export default {
     const myPeerId = response.data;
     this.peer = new Peer(myPeerId, { key: API_KEY });
 
+    // 入力デバイスへのアクセス
     await this.accessDevice();
+    // 入力デバイスへの接続
     await this.connectDevice();
-    this.makeCall();
-  },
 
-  destroyed() {
-    // 念の為
-    this.exitCall();
+    // 通話開始時はミュート/ビデオオフに設定
+    this.mute();
+    this.videoOff();
+
+    // 通話開始
+    this.makeCall();
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '~/_variables';
-
-.v-avatar {
-  cursor: pointer;
-
-  &__spacer {
-    cursor: default;
-  }
-}
-
-#lounge {
-  width: 100vw;
-  max-width: 100%;
-}
 
 .video-container {
   position: relative;
