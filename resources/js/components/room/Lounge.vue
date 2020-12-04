@@ -296,7 +296,7 @@
 import voiceDetection from 'voice-activity-detection';
 import ProfileDialog from '@/components/room/ProfileDialog';
 
-const API_KEY = '2e332f2b-d951-499d-bc1a-451f4aeaf7b1';
+const API_KEY = process.env.MIX_SKYWAY_API_KEY;
 
 export default {
   components: {
