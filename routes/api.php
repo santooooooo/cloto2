@@ -52,3 +52,6 @@ Route::get('/karte/index_by_task_id/{task_id}', 'API\KarteController@index_by_ta
 Route::post('/karte/post', 'API\KarteController@post')->name('kartePost');
 
 Route::get('/technology', 'API\TechnologyController@index')->name('technologyIndex');
+
+
+Route::get('/public-event', 'API\TestController@test');
