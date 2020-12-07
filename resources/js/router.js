@@ -16,7 +16,11 @@ function isRelease() {
 import store from './store';
 
 import index from '@/views/Index';
+import concept from '@/views/service/Concept';
+import product from '@/views/service/Product';
+import news from '@/views/service/News';
 import company from '@/views/service/Company';
+import contact from '@/views/service/Contact';
 import terms from '@/views/service/Terms';
 import preRegister from '@/views/auth/PreRegister';
 import register from '@/views/auth/Register';
@@ -30,7 +34,7 @@ import entrance from '@/views/entrance/Entrance';
 import information from '@/views/entrance/Information';
 import floor from '@/views/entrance/Floor';
 import room from '@/views/room/Room';
-import notFound from "@/views/errors/NotFound";
+import notFound from '@/views/errors/NotFound';
 
 const router = new VueRouter({
   mode: 'history',
@@ -62,9 +66,29 @@ const router = new VueRouter({
       ],
     },
     {
+      path: '/concept',
+      name: 'concept',
+      component: concept,
+    },
+    {
+      path: '/product',
+      name: 'product',
+      component: product,
+    },
+    {
+      path: '/news',
+      name: 'news',
+      component: news,
+    },
+    {
       path: '/company',
       name: 'company',
       component: company,
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: contact,
     },
     {
       path: '/terms',
@@ -101,7 +125,7 @@ const router = new VueRouter({
       path: '/room/:roomId',
       name: 'room',
       component: room,
-      },
+    },
     {
       path: '/mypage',
       component: mypage,
@@ -119,10 +143,10 @@ const router = new VueRouter({
       ],
     },
     {
-      path: "*",
+      path: '*',
       name: notFound,
-      component: notFound
-    }
+      component: notFound,
+    },
   ],
 });
 

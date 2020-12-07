@@ -18,6 +18,19 @@
       v-if="!isRelease"
       ><v-icon>mdi-twitter</v-icon>cloto_jp</v-btn
     >
+
+    <template v-slot:extension v-if="!authCheck">
+      <v-tabs align-with-title>
+        <v-tabs-slider color="yellow"></v-tabs-slider>
+
+        <v-tab :to="{ name: 'index' }">Top</v-tab>
+        <v-tab :to="{ name: 'concept' }">Concept</v-tab>
+        <v-tab :to="{ name: 'product' }">Product</v-tab>
+        <v-tab :to="{ name: 'news' }">News</v-tab>
+        <v-tab :to="{ name: 'company' }">About us</v-tab>
+        <v-tab :to="{ name: 'contact' }">Contact</v-tab>
+      </v-tabs>
+    </template>
   </v-app-bar>
 </template>
 
@@ -26,6 +39,9 @@ export default {
   computed: {
     isRelease() {
       return process.env.MIX_APP_RELEASE === 'true' ? true : false;
+    },
+    authCheck() {
+      return this.$store.getters['auth/check'];
     },
   },
 };
