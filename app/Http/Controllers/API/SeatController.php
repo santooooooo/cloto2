@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\RoomController;
 use App\Models\Seat;
+use App\Events\SeatEvent;
 use Illuminate\Support\Facades\Auth;
 
 class SeatController extends RoomController
@@ -51,8 +52,10 @@ class SeatController extends RoomController
         // 座席状態の更新
         $seat->fill(['status' => 'sitting'])->save();
 
-        // 更新後の部屋データ
-        return self::show($room_id);
+        broadcast(new SeatEvent($room_id));
+        return true;
+        // // 更新後の部屋データ
+        // return self::show($room_id);
     }
 
     /**
@@ -72,8 +75,10 @@ class SeatController extends RoomController
         // 進行中のタスクを初期化
         $this->user->fill(['task_id' => null])->save();
 
-        // 更新後の部屋データ
-        return self::show($room_id);
+        broadcast(new SeatEvent($room_id));
+        return true;
+        // // 更新後の部屋データ
+        // return self::show($room_id);
     }
 
     /**
@@ -103,8 +108,10 @@ class SeatController extends RoomController
         // 座席状態の更新
         $seat->fill(['status' => 'sitting'])->save();
 
-        // 更新後の部屋データ
-        return self::show($room_id);
+        broadcast(new SeatEvent($room_id));
+        return true;
+        // // 更新後の部屋データ
+        // return self::show($room_id);
     }
 
     /**
@@ -127,7 +134,9 @@ class SeatController extends RoomController
         // 座席状態の更新
         $seat->fill(['status' => 'sitting', 'reservation_user_id' => null])->save();
 
-        // 更新後の部屋データ
-        return self::show($room_id);
+        broadcast(new SeatEvent($room_id));
+        return true;
+        // // 更新後の部屋データ
+        // return self::show($room_id);
     }
 }
