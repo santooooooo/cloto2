@@ -38,5 +38,5 @@ window.io = require('socket.io-client');
 
 window.Echo = new Echo({
   broadcaster: 'socket.io',
-  host: 'http://localhost:6001',
+  host: process.env.MIX_ECHO_SERVER_HOST + ':' + process.env.MIX_ECHO_SERVER_PORT,
 });
