@@ -22,8 +22,8 @@ try {
 window.axios = require('axios');
 
 window.axios.interceptors.response.use(
-  response => response,
-  error => error.response || error
+  (response) => response,
+  (error) => error.response || error
 );
 
 /**
@@ -32,13 +32,11 @@ window.axios.interceptors.response.use(
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from 'laravel-echo';
+import Echo from 'laravel-echo';
 
-// window.Pusher = require('pusher-js');
+window.io = require('socket.io-client');
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     forceTLS: true
-// });
+window.Echo = new Echo({
+  broadcaster: 'socket.io',
+  host: process.env.MIX_ECHO_SERVER_HOST + ':' + process.env.MIX_ECHO_SERVER_PORT,
+});

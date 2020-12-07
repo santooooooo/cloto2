@@ -204,7 +204,7 @@ export default {
      */
     getRoom: async function () {
       var response = await this.$http.get(this.$endpoint('roomShow', [this.$route.params.roomId]));
-      this.roomData = response.data.roomData;
+      this.roomData = response.data;
     },
 
     /**
@@ -249,12 +249,9 @@ export default {
           break;
       }
 
-      // データの更新
-      this.roomData = response.data.roomData;
-
       // エラー発生時
       if (response.status !== OK) {
-        this.$store.dispatch('alert/show', { type: 'error', message: response.data.message });
+        this.$store.dispatch('alert/show', { type: 'error', message: response.data });
       }
 
       // ユーザーデータの同期
@@ -640,9 +637,9 @@ export default {
     /**
      * 部屋の同期開始
      */
-    this.syncTimer = setInterval(() => {
-      this.getRoom();
-    }, 3000);
+    Echo.channel('room-' + this.roomData.id).listen('SeatEvent', (event) => {
+      this.roomData = event;
+    });
 
     this.syncTimer = setInterval(() => {
       this.time();
