@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\API\RoomController;
+use App\Http\Controllers\Controller;
 use App\Models\Seat;
 use App\Events\SeatEvent;
 use Illuminate\Support\Facades\Auth;
 
-class SeatController extends RoomController
+class SeatController extends Controller
 {
     /** @var Seat */
     protected $seat;
@@ -41,7 +41,7 @@ class SeatController extends RoomController
         // 処理中止
         if ($seat->status != null) {
             $message = '他のユーザーが着席しています。';
-            return self::show($room_id, config('consts.status.INTERNAL_SERVER_ERROR'), $message);
+            return response()->json($message, config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
 
@@ -53,9 +53,7 @@ class SeatController extends RoomController
         $seat->fill(['status' => 'sitting'])->save();
 
         broadcast(new SeatEvent($room_id));
-        return true;
-        // // 更新後の部屋データ
-        // return self::show($room_id);
+        return response()->json();
     }
 
     /**
@@ -76,9 +74,7 @@ class SeatController extends RoomController
         $this->user->fill(['task_id' => null])->save();
 
         broadcast(new SeatEvent($room_id));
-        return true;
-        // // 更新後の部屋データ
-        // return self::show($room_id);
+        return response()->json();
     }
 
     /**
@@ -94,7 +90,7 @@ class SeatController extends RoomController
         // 処理中止
         if ($seat->status != null) {
             $message = '他のユーザーが着席しています。';
-            return self::show($room_id, config('consts.status.INTERNAL_SERVER_ERROR'), $message);
+            return response()->json($message, config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
 
@@ -109,9 +105,7 @@ class SeatController extends RoomController
         $seat->fill(['status' => 'sitting'])->save();
 
         broadcast(new SeatEvent($room_id));
-        return true;
-        // // 更新後の部屋データ
-        // return self::show($room_id);
+        return response()->json();
     }
 
     /**
@@ -135,8 +129,6 @@ class SeatController extends RoomController
         $seat->fill(['status' => 'sitting', 'reservation_user_id' => null])->save();
 
         broadcast(new SeatEvent($room_id));
-        return true;
-        // // 更新後の部屋データ
-        // return self::show($room_id);
+        return response()->json();
     }
 }

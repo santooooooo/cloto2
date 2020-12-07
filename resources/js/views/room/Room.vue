@@ -249,12 +249,9 @@ export default {
           break;
       }
 
-      // データの更新
-      this.roomData = response.data;
-
       // エラー発生時
       if (response.status !== OK) {
-        this.$store.dispatch('alert/show', { type: 'error', message: response.data.message });
+        this.$store.dispatch('alert/show', { type: 'error', message: response.data });
       }
 
       // ユーザーデータの同期
@@ -641,11 +638,8 @@ export default {
      * 部屋の同期開始
      */
     Echo.channel('room-' + this.roomData.id).listen('SeatEvent', (event) => {
-      console.log(event);
+      this.roomData = event;
     });
-    // this.syncTimer = setInterval(() => {
-    //   this.getRoom();
-    // }, 3000);
 
     this.syncTimer = setInterval(() => {
       this.time();
