@@ -15,6 +15,13 @@ class Room extends Model
      */
     protected $fillable = ['name'];
 
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['sections'];
+
     public $timestamps = false;
 
     /**
@@ -25,5 +32,15 @@ class Room extends Model
     public function sections()
     {
         return $this->hasMany('App\Models\Section');
+    }
+
+    /**
+     * 座席データの追加
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getSectionsAttribute()
+    {
+        return $this->sections()->with('seats.user')->get();
     }
 }

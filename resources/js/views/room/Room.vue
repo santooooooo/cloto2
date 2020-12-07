@@ -204,7 +204,7 @@ export default {
      */
     getRoom: async function () {
       var response = await this.$http.get(this.$endpoint('roomShow', [this.$route.params.roomId]));
-      this.roomData = response.data.roomData;
+      this.roomData = response.data;
     },
 
     /**
@@ -250,7 +250,7 @@ export default {
       }
 
       // データの更新
-      this.roomData = response.data.roomData;
+      this.roomData = response.data;
 
       // エラー発生時
       if (response.status !== OK) {
@@ -640,9 +640,12 @@ export default {
     /**
      * 部屋の同期開始
      */
-    this.syncTimer = setInterval(() => {
-      this.getRoom();
-    }, 3000);
+    Echo.channel('room-' + this.roomData.id).listen('SeatEvent', (event) => {
+      console.log(event);
+    });
+    // this.syncTimer = setInterval(() => {
+    //   this.getRoom();
+    // }, 3000);
 
     this.syncTimer = setInterval(() => {
       this.time();
