@@ -58,11 +58,12 @@
         </v-card>
       </v-col>
     </v-row> -->
-
-    <v-card  v-model="karteDialog.dialog" width="984">
+<!-- v-for="karte in kartes.data" :key="karte.id" -->
+    <v-card  width="984">
       <v-card color="grey darken-1">
         <v-container>
-          <!-- {{karteDialog.data}} -->
+           {{kartes.data}}
+         
           <v-row justify="center">
             <v-col>
               <v-card-text class="pa-2 white--text title font-weight-bold"> 活動内容 </v-card-text>
@@ -208,7 +209,7 @@ export default {
     getKartes: async function (taskId) {
       this.kartes.loading = true;
 
-      var response = await this.$http.get(this.$endpoint('karteIndexFromTask', [taskId]));
+      var response = await this.$http.get(this.$endpoint('karteIndexFromAuthUser'));
       this.kartes.data = response.data;
 
       this.kartes.loading = false;
@@ -218,6 +219,7 @@ export default {
   },
   mounted() {
     this.getProjects();
+    this.getKartes();
   },
 };
 </script>
