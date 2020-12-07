@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Karte;
+use App\Models\User;
 use App\Models\Technology;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,14 +38,13 @@ class KarteController extends Controller
 
 
     /**
-     * ユーザーが持つカルテの一覧を取得
+     * ログインユーザーが持つカルテの一覧を取得
      *
-     * @param  Int $user_id カルテを持つユーザーID
      * @return \Illuminate\Http\Response
      */
-    public function index_by_user_id(Int $user_id)
+    public function index_by_auth_user()
     {
-        return response()->json($this->karte->where('user_id', $user_id)->get());
+        return response()->json($this->karte->where('user_id', $this->user->id)->with('technologies')->get());
     }
 
     /**

@@ -47,7 +47,7 @@ Route::get('/task/index/{project_id}', 'API\TaskController@index')->name('taskIn
 Route::post('/task/post', 'API\TaskController@post')->name('taskPost');
 Route::post('/task/start', 'API\TaskController@start')->name('taskStart');
 
-Route::get('/karte/index_by_user_id/{user_id}', 'API\KarteController@index_by_user_id')->name('karteIndexByUserId');
+Route::get('/karte/index_by_auth_user', 'API\KarteController@index_by_auth_user')->name('karteIndexByAuthUser');
 Route::get('/karte/index_by_task_id/{task_id}', 'API\KarteController@index_by_task_id')->name('karteIndexByTaskId');
 Route::post('/karte/post', 'API\KarteController@post')->name('kartePost');
 

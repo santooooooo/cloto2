@@ -1,6 +1,6 @@
 <template>
   <v-container py-0>
-    <v-row>
+    <!-- <v-row>
       <v-col cols="3" class="pa-0">
         <v-card tile min-height="700" color="blue-grey lighten-2">
           <v-overlay v-if="projects.loading">
@@ -57,18 +57,12 @@
           </v-list>
         </v-card>
       </v-col>
-    </v-row>
-
-    <v-dialog persistent v-model="karteDialog.dialog" width="984">
+    </v-row> -->
+    <!-- v-for="karte in kartes.data" :key="karte.id" -->
+    <v-card width="984">
       <v-card color="grey darken-1">
         <v-container>
-          <!-- {{karteDialog.data}} -->
-          　
-          <v-row>
-            <v-btn x-small color="error" depressed class="ml-3" @click="karteDialog.dialog = false">
-              <v-icon dark>mdi-arrow-left</v-icon> 戻る
-            </v-btn>
-          </v-row>
+          {{ kartes.data }}
 
           <v-row justify="center">
             <v-col>
@@ -132,7 +126,7 @@
           </v-row>
         </v-container>
       </v-card>
-    </v-dialog>
+    </v-card>
   </v-container>
 </template>
 
@@ -195,24 +189,15 @@ export default {
     getKartes: async function (taskId) {
       this.kartes.loading = true;
 
-      var response = await this.$http.get(this.$endpoint('karteIndexByTaskId', [taskId]));
+      var response = await this.$http.get(this.$endpoint('karteIndexByAuthUser'));
       this.kartes.data = response.data;
 
       this.kartes.loading = false;
     },
-
-    /**
-     * カルテの表示
-     *
-     * @param Object  karte 表示するカルテ
-     */
-    showKarte: function (karte) {
-      this.karteDialog.data = karte;
-      this.karteDialog.dialog = true;
-    },
   },
   mounted() {
     this.getProjects();
+    this.getKartes();
   },
 };
 </script>
