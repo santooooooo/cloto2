@@ -33,7 +33,7 @@ const projectPost = '/api/project/post';
 const taskIndex = '/api/task/index/' + replaceChar[0];
 const taskPost = '/api/task/post';
 const taskStart = '/api/task/start';
-const karteIndexByUserId = '/api/karte/index_by_user_id/' + replaceChar[0];
+const karteIndexByAuthUser = '/api/karte/index_by_auth_user';
 const karteIndexByTaskId = '/api/karte/index_by_task_id/' + replaceChar[0];
 const kartePost = '/api/karte/post';
 const technologyIndex = '/api/technology';
@@ -140,8 +140,8 @@ export function getEndpoint(name, params) {
       endpoint = taskStart;
       break;
 
-    case 'karteIndexByUserId':
-      endpoint = setParams(karteIndexByUserId, params);
+    case 'karteIndexByAuthUser':
+      endpoint = karteIndexByAuthUser;
       break;
 
     case 'karteIndexByTaskId':
