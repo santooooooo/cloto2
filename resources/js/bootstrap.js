@@ -40,8 +40,3 @@ window.Echo = new Echo({
   broadcaster: 'socket.io',
   host: 'http://localhost:6001',
 });
-
-// テスト
-window.Echo.channel('public-event').listen('TestEvent', (e) => {
-  console.log(e);
-});
