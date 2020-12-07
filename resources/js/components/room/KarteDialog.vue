@@ -135,7 +135,7 @@
               multiple
               v-else
             >
-              <v-chip filter v-for="technology in technology.data" :key="technology.id">
+              <v-chip filter v-for="technology in technology.data" :key="technology.id" :value="technology.id">
                 {{ technology.name }}
               </v-chip>
             </v-chip-group>
