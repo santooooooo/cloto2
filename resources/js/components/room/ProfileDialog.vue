@@ -75,7 +75,7 @@
 <script>
 export default {
   props: {
-    username: String,
+    userParam: String, // 表示するユーザーのIDまたはユーザー名
   },
   data() {
     return {
@@ -87,7 +87,7 @@ export default {
     /**
      * ユーザーデータの取得
      */
-    var response = await this.$http.get(this.$endpoint('userShow', [this.username]));
+    var response = await this.$http.get(this.$endpoint('userShow', [this.userParam]));
     this.user = response.data;
   },
 };

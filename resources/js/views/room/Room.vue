@@ -41,7 +41,7 @@
 
       <!-- プロフィールダイアログ -->
       <ProfileDialog
-        :user-id="profile.userId"
+        :user-param="profile.userId"
         @close="profile.dialog = $event"
         v-if="profile.dialog"
       ></ProfileDialog>
@@ -342,7 +342,7 @@ export default {
         this.isLoading = false;
       } else if (targetType === 'icon') {
         this.profile.dialog = true;
-        this.profile.userId = event.target.userId;
+        this.profile.userId = String(event.target.userId);
       }
     },
 
