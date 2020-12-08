@@ -160,15 +160,15 @@
         <v-card color="grey lighten-2" class="mx-auto" id="chat">
           <v-card flat class="overflow-y-auto" height="500">
             <v-card-text v-for="(message, index) in chat.messages" :key="index">
-              <!-- システムメッセージ -->
-              <p class="text-center" style="color: red" v-if="message.type === 'system'">
-                {{ message.text }}
-              </p>
-
               <!-- ユーザーメッセージ -->
-              <p v-else>
+              <p v-if="message.handlename">
                 <span class="text-caption">{{ message.handlename }}</span>
                 <span class="text-body-1 font-weight-bold">{{ message.text }}</span>
+              </p>
+
+              <!-- システムメッセージ -->
+              <p class="text-center" style="color: red" v-else>
+                {{ message.text }}
               </p>
             </v-card-text>
           </v-card>
@@ -404,7 +404,7 @@ export default {
     setupCallEvents: function () {
       // 自身の参加イベント
       this.call.once('open', () => {
-        this.chat.messages.push({ type: 'system', handlename: null, text: '入室しました！' });
+        this.chat.messages.push({ handlename: null, text: '入室しました！' });
       });
 
       // 他ユーザー参加イベント
@@ -414,13 +414,19 @@ export default {
 
       // メッセージ到着イベント
       this.call.on('data', async ({ data, src }) => {
-        // ユーザー名と表示名の取得
-        var names = await this.getNamesByPeerId(src);
-        this.chat.messages.push({ type: 'user', handlename: names.handlename, text: data });
+        if (data.type === 'message') {
+          // ユーザー名と表示名の取得
+          var names = await this.getNamesByPeerId(src);
+          this.chat.messages.push({ handlename: names.handlename, text: data.content });
 
-        // 通知の表示
-        if (!this.chat.isOpen) {
-          this.chat.notification = true;
+          // 通知の表示
+          if (!this.chat.isOpen) {
+            this.chat.notification = true;
+          }
+        } else if (data.type === 'audioEvent') {
+          console.log(data);
+        } else if (data.type === 'videoEvent') {
+          console.log(data);
         }
       });
 
@@ -473,10 +479,9 @@ export default {
         // 音声検知の開始
         this.startVoiceDetection(stream);
 
-        // 参加メッセージの送信
+        // 参加メッセージの追加
         this.chat.messages.push({
-          type: 'system',
-          peerId: null,
+          handlename: null,
           text: names.handlename + 'が入室しました！',
         });
       } else {
@@ -610,6 +615,9 @@ export default {
       const audioTrack = this.localStream.getAudioTracks()[0];
       this.isMute = !this.isMute;
       audioTrack.enabled = !this.isMute;
+
+      // 通知
+      this.call.send({ type: 'audioEvent', content: { isMute: this.isMute } });
     },
 
     /**
@@ -619,6 +627,9 @@ export default {
       const videoTrack = this.localStream.getVideoTracks()[0];
       this.isVideoOff = !this.isVideoOff;
       videoTrack.enabled = !this.isVideoOff;
+
+      // 通知
+      this.call.send({ type: 'videoEvent', content: { isVideoOff: this.isVideoOff } });
     },
 
     /**
@@ -681,11 +692,10 @@ export default {
     sendMessage: function () {
       if (this.chat.localText !== '') {
         // メッセージの送信
-        this.call.send(this.chat.localText);
+        this.call.send({ type: 'message', content: this.chat.localText });
 
         // 自分の画面を更新
         this.chat.messages.push({
-          type: 'user',
           handlename: this.authUser.handlename,
           text: this.chat.localText,
         });
@@ -715,12 +725,12 @@ export default {
     // 入力デバイスへの接続
     await this.connectDevice();
 
+    // 通話開始
+    this.makeCall();
+
     // 通話開始時はミュート/ビデオオフに設定
     this.mute();
     this.videoOff();
-
-    // 通話開始
-    this.makeCall();
   },
 };
 </script>
