@@ -22,6 +22,7 @@
             :key="floor.id"
             class="mb-4"
             :to="{ name: 'floor', params: { roomId: floor.id } }"
+            @click="emitClick"
           >
             <v-list-item-content>
               <v-list-item-title class="text-body-1 font-weight-bold">
@@ -39,6 +40,11 @@
 export default {
   props: {
     floors: Array,
+  },
+  methods: {
+    emitClick() {
+      this.$emit('onClick');
+    },
   },
 };
 </script>
