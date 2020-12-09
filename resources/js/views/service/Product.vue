@@ -12,13 +12,17 @@
     </v-container>
     <v-container class="content">
       <v-row justify="center">
-        <v-card></v-card>
-        <v-data-table
-          :headers="headers"
-          :items="desserts"
-          :items-per-page="5"
-          class="elevation-1"
-        ></v-data-table>
+        <v-card justify="center" class="text-center">
+          <v-row no-gutters>
+            <v-card-title class="mx-auto">料金体系</v-card-title>
+          </v-row>
+          <v-data-table
+            :headers="headers"
+            :items="desserts"
+            :items-per-page="5"
+            class="elevation-1"
+          ></v-data-table>
+        </v-card>
       </v-row>
     </v-container>
   </div>

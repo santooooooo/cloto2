@@ -3,7 +3,6 @@
     <v-card max-width="600" class="mx-auto mb-12 pa-6">
       <v-container>
         <h5 class="text-center text-h5">お問い合わせ</h5>
-
         <v-form ref="contactForm" v-model="contactForm.validation.valid" lazy-validation>
           <v-text-field
             v-model="contactForm.name"
@@ -49,7 +48,56 @@ export default {
     Carousel,
   },
   data() {
-    return {};
+    return {
+      contactForm: {
+        name: '',
+        email: '',
+        body: '',
+        loading: false,
+        validation: {
+          valid: false,
+          nameRules: [(v) => !!v || '名前は必須項目です。'],
+          emailRules: [
+            (v) => !!v || 'メールアドレスは必須項目です。',
+            (v) => {
+              const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+              return pattern.test(v) || 'メールアドレスが無効です。';
+            },
+          ],
+          bodyRules: [(v) => !!v || 'お問い合わせ内容は必須項目です。'],
+        },
+      },
+    };
+  },
+  methods: {
+    sendContact: async function () {
+      if (this.$refs.contactForm.validate()) {
+        this.contactForm.loading = true;
+
+        var input = {
+          name: this.contactForm.name,
+          email: this.contactForm.email,
+          body: this.contactForm.body,
+        };
+
+        // 問い合わせ送信処理
+        var response = await this.$http.post(this.$endpoint('contact'), input);
+
+        if (response.status === OK) {
+          this.$refs.contactForm.reset();
+          var type = 'success';
+        } else {
+          var type = 'error';
+        }
+
+        this.$store.dispatch('alert/show', {
+          type: type,
+          message: response.data,
+        });
+
+        this.contactForm.loading = false;
+      }
+    },
   },
 };
 </script>
