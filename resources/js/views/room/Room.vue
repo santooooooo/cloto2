@@ -666,7 +666,8 @@ export default {
   //background-color: $light-yellow;
 
   #room {
-    height: 80vh;
+    min-height: 800px;
+    max-width: 1500px;
   }
 }
 </style>
