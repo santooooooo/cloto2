@@ -1,5 +1,10 @@
 <template>
-  <v-app>
+  <!-- 画面サイズの最小を設定 -->
+  <v-overlay v-if="$vuetify.breakpoint.sm">
+    <h1 class="font-weight-bold">ウィンドウを拡大してください。</h1>
+  </v-overlay>
+
+  <v-app v-else>
     <!-- アラート -->
     <v-alert
       :value="alert.show"
