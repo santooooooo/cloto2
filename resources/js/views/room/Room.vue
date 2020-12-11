@@ -4,8 +4,9 @@
     <v-overlay :value="isLoading">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
+
     <!-- 自習スタートローディング-->
-    <v-overlay :opacity="0.8" :value="roomStatusDisplay" color="#f6bf00" dark>
+    <v-overlay opacity="0.8" :value="roomStatusDisplay" color="#f6bf00" dark>
       <div class="statusDisplay">{{ displayText }}</div>
     </v-overlay>
 
@@ -24,13 +25,13 @@
       <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
     </v-dialog>
 
-    <v-flex id="main">
+    <v-flex>
       <!-- 教室 -->
       <v-row
         no-gutters
         align="center"
         justify="center"
-        v-bind:style="{ background: roomColor }"
+        :style="{ background: roomColor }"
         id="room"
       >
         <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
@@ -662,12 +663,8 @@ export default {
   font-size: 1000%;
 }
 
-#main {
-  //background-color: $light-yellow;
-
-  #room {
-    min-height: 800px;
-    max-width: 1500px;
-  }
+#room {
+  min-height: 800px;
+  max-width: 1500px;
 }
 </style>

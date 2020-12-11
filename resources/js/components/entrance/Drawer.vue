@@ -41,11 +41,6 @@ export default {
   props: {
     floors: Array,
   },
-  methods: {
-    emitClick() {
-      this.$emit('onClick');
-    },
-  },
 };
 </script>
 
