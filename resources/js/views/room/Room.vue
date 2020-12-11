@@ -122,7 +122,7 @@ export default {
   },
   beforeRouteEnter: async (to, from, next) => {
     const response = await axios.get(`/api/room/${to.params.roomId}`);
-    if (response.data.roomData === null) {
+    if (!Object.keys(response.data).length) {
       next({ path: '/404' });
     } else {
       next();

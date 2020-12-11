@@ -37,6 +37,7 @@ export default {
   },
   watch: {
     '$route.params.roomId': async function (val) {
+      // 着席中のユーザーを更新
       await this.setUser();
     },
   },
@@ -57,12 +58,12 @@ export default {
   },
   methods: {
     /**
-     * 教室データの設定
+     * 着席中のユーザーの設定
      */
     setUser: async function () {
       this.isLoading = true;
 
-      // 描画されているユーザーを削除
+      // 現在描画されているユーザーを削除
       this.canvas.getObjects().forEach((object) => {
         this.canvas.remove(object);
       });
@@ -148,6 +149,14 @@ export default {
         this.canvas.add(icon);
       });
     },
+  },
+  beforeRouteEnter: async (to, from, next) => {
+    const response = await axios.get(`/api/room/${to.params.roomId}`);
+    if (!Object.keys(response.data).length) {
+      next({ path: '/404' });
+    } else {
+      next();
+    }
   },
 };
 </script>
