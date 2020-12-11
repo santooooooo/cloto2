@@ -27,7 +27,7 @@
     <Drawer v-model="isShowDrawer" @logout="logout" v-if="isRelease" />
 
     <!-- メイン -->
-    <v-main>
+    <v-main id="main">
       <router-view />
     </v-main>
 
@@ -114,5 +114,9 @@ export default {
   transform: translateX(-50%);
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
+}
+
+#main {
+  min-height: 100vh;
 }
 </style>
