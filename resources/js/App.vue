@@ -86,14 +86,6 @@ export default {
       async handler(val) {
         if (val === INTERNAL_SERVER_ERROR) {
           this.$router.push({ name: 'INTERNAL_SERVER_ERROR' });
-        } else if (val === UNAUTHORIZED) {
-          // トークンの再発行
-          await this.$http.get(this.$endpoint('regenerateToken'));
-          // ストアのuserをクリア
-          this.$store.commit('auth/setUser', null);
-          // ログイン画面へ
-          // this.$router.push({ name: 'login' });
-          console.log('419');
         }
       },
       immediate: true,

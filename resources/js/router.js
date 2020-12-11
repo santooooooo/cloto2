@@ -49,19 +49,19 @@ const router = new VueRouter({
           path: 'preregister',
           name: 'preRegister',
           component: preRegister,
-          meta: { isPublic: !isRelease() },
+          meta: { isPublic: true },
         },
         {
           path: 'register',
           name: 'register',
           component: register,
-          meta: { isPublic: isRelease() },
+          meta: { isPublic: true },
         },
         {
           path: 'login',
           name: 'login',
           component: login,
-          meta: { isPublic: isRelease() },
+          meta: { isPublic: true },
         },
       ],
     },
@@ -69,36 +69,37 @@ const router = new VueRouter({
       path: '/concept',
       name: 'concept',
       component: concept,
+      meta: { isPublic: true },
     },
     {
       path: '/product',
       name: 'product',
       component: product,
+      meta: { isPublic: true },
     },
     {
       path: '/news',
       name: 'news',
       component: news,
+      meta: { isPublic: true },
     },
     {
       path: '/company',
       name: 'company',
       component: company,
+      meta: { isPublic: true },
     },
     {
       path: '/contact',
       name: 'contact',
       component: contact,
+      meta: { isPublic: true },
     },
     {
       path: '/terms',
       name: 'terms',
       component: terms,
-    },
-    {
-      path: '/500',
-      name: 'INTERNAL_SERVER_ERROR',
-      component: systemError,
+      meta: { isPublic: true },
     },
     {
       path: '/home',
@@ -143,24 +144,30 @@ const router = new VueRouter({
       ],
     },
     {
+      path: '/500',
+      name: 'INTERNAL_SERVER_ERROR',
+      component: systemError,
+      meta: { isPublic: true },
+    },
+    {
       path: '*',
       name: notFound,
       component: notFound,
+      meta: { isPublic: true },
     },
   ],
 });
 
-// router.beforeEach((to, from, next) => {
-//   // 未ログイン時のリダイレクト
-//   if (!store.getters['auth/check'] && to.matched.some((record) => !record.meta.isPublic)) {
-//     if (isRelease()) {
-//       next({ name: 'login' });
-//     } else {
-//       next({ name: 'preRegister' });
-//     }
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach(async (to, from, next) => {
+  // ログイン状態の更新
+  await store.dispatch('auth/syncAuthUser');
+
+  if (!store.getters['auth/check'] && to.matched.some((record) => !record.meta.isPublic)) {
+    // 未ログイン時のリダイレクト
+    next({ name: 'login' });
+  } else {
+    next();
+  }
+});
 
 export default router;
