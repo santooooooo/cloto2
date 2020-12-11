@@ -80,21 +80,6 @@ export default {
       }
     },
   },
-  watch: {
-    errorCode: {
-      // エラー発生
-      async handler(val) {
-        if (val === INTERNAL_SERVER_ERROR) {
-          this.$router.push({ name: 'INTERNAL_SERVER_ERROR' });
-        }
-      },
-      immediate: true,
-    },
-    $route() {
-      // エラーの初期化
-      this.$store.commit('error/setCode', null);
-    },
-  },
 };
 </script>
 

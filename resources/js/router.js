@@ -9,10 +9,6 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
-function isRelease() {
-  return process.env.MIX_APP_RELEASE === 'true' ? true : false;
-}
-
 import store from './store';
 
 import index from '@/views/Index';
@@ -25,7 +21,6 @@ import terms from '@/views/service/Terms';
 import preRegister from '@/views/auth/PreRegister';
 import register from '@/views/auth/Register';
 import login from '@/views/auth/Login';
-import systemError from '@/views/errors/System';
 import home from '@/views/Home';
 import mypage from '@/views/mypage/Mypage';
 import profile from '@/views/mypage/Profile';
@@ -142,12 +137,6 @@ const router = new VueRouter({
           component: karte,
         },
       ],
-    },
-    {
-      path: '/500',
-      name: 'INTERNAL_SERVER_ERROR',
-      component: systemError,
-      meta: { isPublic: true },
     },
     {
       path: '*',
