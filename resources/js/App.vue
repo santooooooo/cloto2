@@ -1,6 +1,6 @@
 <template>
   <!-- 画面サイズの最小を設定 -->
-  <v-overlay v-if="!this.$route.meta.isPublic && $vuetify.breakpoint.sm">
+  <v-overlay v-if="!$route.meta.isPublic && width < minWidth">
     <h1 class="font-weight-bold">ウィンドウを拡大してください。</h1>
   </v-overlay>
 
@@ -50,6 +50,8 @@ export default {
   },
   data() {
     return {
+      width: window.innerWidth, // ウィンドウの横幅
+      minWidth: 1350, // ウィンドウの最小サイズ
       isShowDrawer: false, // ドロワーメニューの表示制御
     };
   },
@@ -65,6 +67,16 @@ export default {
     },
   },
   methods: {
+    /**
+     * ウィンドウリサイズ時のイベント
+     */
+    resizeHandler: function () {
+      this.width = window.innerWidth;
+    },
+
+    /**
+     * ログアウト処理
+     */
     logout: async function () {
       // ログアウト処理
       await this.$store.dispatch('auth/logout');
@@ -74,6 +86,10 @@ export default {
         this.$router.push({ name: 'index' });
       }
     },
+
+    /**
+     * 退席処理
+     */
     leave: async function () {
       if (this.authUser.seat_id != null) {
         var endpoint = '';
@@ -81,6 +97,10 @@ export default {
         await this.$http.post(endpoint);
       }
     },
+  },
+  mounted: function () {
+    // ウィンドウリサイズ時のイベントを設定
+    window.addEventListener('resize', this.resizeHandler);
   },
 };
 </script>
