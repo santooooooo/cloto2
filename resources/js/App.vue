@@ -1,6 +1,6 @@
 <template>
   <!-- 画面サイズの最小を設定 -->
-  <v-overlay v-if="$vuetify.breakpoint.sm">
+  <v-overlay v-if="!this.$route.meta.isPublic && $vuetify.breakpoint.sm">
     <h1 class="font-weight-bold">ウィンドウを拡大してください。</h1>
   </v-overlay>
 
@@ -59,9 +59,6 @@ export default {
     },
     alert() {
       return this.$store.state.alert;
-    },
-    errorCode() {
-      return this.$store.state.error.code;
     },
     authUser() {
       return this.$store.getters['auth/user'];
