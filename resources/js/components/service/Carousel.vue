@@ -1,5 +1,6 @@
+c
 <template>
-  <v-carousel cycle>
+  <v-carousel>
     <!-- height="autoを挙動がおかしくなる" -->
     <v-carousel-item
       v-for="(item, i) in items"

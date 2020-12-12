@@ -10,10 +10,17 @@
         </v-row>
       </v-container>
     </v-container>
-    <v-container class="content">
-      <v-row justify="center">
-        <v-card></v-card>
-      </v-row>
+    <v-container class="content ma-auto">
+      <v-list class="rounded-lg text-center">
+        <v-list-item-group color="grey">
+          <v-list-item v-for="news in newsData" :key="news.id">
+            <v-list-item-content class="ma-5" @click="newsLink(news.link)">
+              <v-list-item-title v-text="news.date"></v-list-item-title>
+              <v-list-item-title v-text="news.text"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
     </v-container>
   </div>
 </template>
@@ -27,9 +34,28 @@ export default {
   },
   data() {
     return {
-      model: 0,
-      colors: ['primary', 'secondary', 'yellow darken-2', 'red', 'orange'],
+      newsData: [
+        {
+          id: 1,
+          link: 'https://u25.billage.space/archive/20200817/',
+          text: '関西若手起業家ピッチコンテストに参加',
+          date: '2020/08/17',
+          tag: 'event',
+        },
+        {
+          id: 2,
+          link: 'http://www.ritsumei.ac.jp/research/vc/',
+          text: '立命館大学学生ベンチャーコンテストに参加',
+          date: '2020/12/6',
+          tag: 'event',
+        },
+      ],
     };
+  },
+  methods: {
+    newsLink: function (link) {
+      location.href = link;
+    },
   },
 };
 </script>
@@ -46,7 +72,6 @@ export default {
     position: relative;
   }
   .content {
-    background-color: white;
   }
 }
 </style>

@@ -12,7 +12,45 @@
     </v-container>
     <v-container class="content">
       <v-row justify="center">
-        <v-card justify="center" class="text-center">
+        <v-row class="mt-12">
+          <v-col>
+            <v-img eager width="500" :src="$storage('system') + 'P3.svg'"></v-img>
+          </v-col>
+
+          <v-col align-self="center">
+            <p class="text-center text-h6">
+              好きな席を選んで着席！<br />
+              自習開始です<br />
+            </p>
+          </v-col>
+        </v-row>
+
+        <v-row class="mt-12">
+          <v-col>
+            <v-img eager width="500" :src="$storage('system') + 'P3.svg'"></v-img>
+          </v-col>
+
+          <v-col align-self="center">
+            <p class="text-center text-h6">
+              好きな席を選んで着席！<br />
+              自習開始です<br />
+            </p>
+          </v-col>
+        </v-row>
+        <v-row class="mt-12">
+          <v-col>
+            <v-img eager width="500" :src="$storage('system') + 'P3.svg'"></v-img>
+          </v-col>
+
+          <v-col align-self="center">
+            <p class="text-center text-h6">
+              好きな席を選んで着席！<br />
+              自習開始です<br />
+            </p>
+          </v-col>
+        </v-row>
+
+        <v-card justify="center" class="text-center mt-16">
           <v-row no-gutters>
             <v-card-title class="mx-auto">料金体系</v-card-title>
           </v-row>
@@ -143,6 +181,7 @@ export default {
 @import '~/_variables';
 
 .index {
+  background-color: $light-gray;
   .upper {
     max-width: 100%;
     background-color: $primary;
@@ -150,7 +189,6 @@ export default {
     position: relative;
   }
   .content {
-    background-color: $light-gray;
   }
 }
 </style>
