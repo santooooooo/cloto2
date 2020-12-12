@@ -11,16 +11,14 @@
       </v-container>
     </v-container>
     <v-container class="content ma-auto">
-      <v-list class="rounded-lg text-center">
-        <v-list-item-group color="grey">
-          <v-list-item v-for="news in newsData" :key="news.id">
-            <v-list-item-content class="ma-5" @click="newsLink(news.link)">
-              <v-list-item-title v-text="news.date"></v-list-item-title>
-              <v-list-item-title v-text="news.text"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
+      <v-col v-for="(news, i) in newsData" :key="i" cols="12">
+        <v-card @click="newsLink(news.link)">
+          <v-card-text
+            >{{ news.date }} <span class="font-weight-light">{{ news.tag }}</span></v-card-text
+          >
+          <v-card-text class="headline font-weight-bold"> {{ news.text }} </v-card-text>
+        </v-card>
+      </v-col>
     </v-container>
   </div>
 </template>
@@ -40,14 +38,14 @@ export default {
           link: 'https://u25.billage.space/archive/20200817/',
           text: '関西若手起業家ピッチコンテストに参加',
           date: '2020/08/17',
-          tag: 'event',
+          tag: 'イベント',
         },
         {
           id: 2,
           link: 'http://www.ritsumei.ac.jp/research/vc/',
           text: '立命館大学学生ベンチャーコンテストに参加',
           date: '2020/12/6',
-          tag: 'event',
+          tag: 'イベント',
         },
       ],
     };
