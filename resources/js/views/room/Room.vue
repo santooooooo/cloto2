@@ -27,13 +27,7 @@
 
     <v-flex>
       <!-- 教室 -->
-      <v-row
-        no-gutters
-        align="center"
-        justify="center"
-        :style="{ background: roomColor }"
-        id="room"
-      >
+      <v-row justify="center" class="pt-5" :style="{ background: roomColor }" id="room">
         <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
       </v-row>
 
@@ -664,7 +658,6 @@ export default {
 }
 
 #room {
-  min-height: 800px;
-  max-width: 1500px;
+  min-height: 100vh;
 }
 </style>

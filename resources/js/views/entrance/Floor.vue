@@ -6,11 +6,11 @@
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
 
-      <v-row no-gutters align="center" justify="center" id="room">
+      <v-row justify="center" class="py-5">
         <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
       </v-row>
 
-      <v-row justify="center" class="mb-10">
+      <v-row justify="center">
         <v-btn
           depressed
           color="#f6bf00"
@@ -163,11 +163,7 @@ export default {
 
 <style lang="scss" scoped>
 .floor {
+  min-height: 100vh;
   background-color: #ffe89a;
-
-  #room {
-    min-height: 800px;
-    max-width: 1500px;
-  }
 }
 </style>
