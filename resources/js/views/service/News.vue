@@ -16,6 +16,7 @@
           <v-card-text
             >{{ news.date }} <span class="font-weight-light">{{ news.tag }}</span></v-card-text
           >
+
           <v-card-text class="headline font-weight-bold"> {{ news.text }} </v-card-text>
         </v-card>
       </v-col>
