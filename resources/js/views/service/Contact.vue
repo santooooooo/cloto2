@@ -38,6 +38,11 @@
           </v-form>
         </v-container>
       </v-card>
+
+      <v-card max-width="900" class="mx-auto pa-6 question">
+        <h4>よくあるご質問</h4>
+        <v-treeview :items="questions"></v-treeview>
+      </v-card>
     </v-container>
     <v-container> </v-container>
   </div>
@@ -70,6 +75,23 @@ export default {
           bodyRules: [(v) => !!v || 'お問い合わせ内容は必須項目です。'],
         },
       },
+      questions: [
+        {
+          id: 1,
+          name: '複数の席に同時に着席することはできますか？',
+          children: [{ name: 'できません。他のお客様のご迷惑になります。' }],
+        },
+        {
+          id: 2,
+          name: '複数の席に同時に着席することはできますか？',
+          children: [{ name: 'できません。他のお客様のご迷惑になります。' }],
+        },
+        {
+          id: 3,
+          name: '複数の席に同時に着席することはできますか？',
+          children: [{ name: 'できません。他のお客様のご迷惑になります。' }],
+        },
+      ],
     };
   },
   methods: {
@@ -110,5 +132,8 @@ export default {
 
 .index {
   background-color: $light-gray;
+  .question {
+    background-color: white;
+  }
 }
 </style>

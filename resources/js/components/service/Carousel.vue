@@ -1,15 +1,17 @@
 c
 <template>
-  <v-carousel>
-    <!-- height="autoを挙動がおかしくなる" -->
-    <v-carousel-item
-      v-for="(item, i) in items"
-      :key="i"
-      :src="item.src"
-      reverse-transition="fade-transition"
-      transition="fade-transition"
-    ></v-carousel-item>
-  </v-carousel>
+  <div>
+    <v-carousel hide-delimiters>
+      <!-- height="autoを挙動がおかしくなる" -->
+      <v-carousel-item v-for="(item, i) in items" :key="i" :src="item.src"> </v-carousel-item>
+    </v-carousel>
+    <v-list
+      class="text-center"
+      color="grey lighten-2
+"
+      ><p>aiueokaiksuedfi</p></v-list
+    >
+  </div>
 </template>
 <script>
 export default {
