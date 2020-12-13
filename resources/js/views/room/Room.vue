@@ -458,12 +458,16 @@ export default {
     time: function () {
       //test用 time tables
       this.timeTables = [
+        { time: '00:00', role: 'study' },
+        { time: '01:00', role: 'lounge' },
         { time: '14:00', role: 'study' },
         { time: '14:05', role: 'lounge' },
         { time: '14:08', role: 'study' },
         { time: '14:14', role: 'lounge' },
         { time: '14:17', role: 'study' },
         { time: '14:50', role: 'lounge' },
+        { time: '23:00', role: 'study' },
+        { time: '23:45', role: 'lounge' },
       ];
 
       let date = new Date(); //new演算子でオブジェクトのインスタンスを生成
@@ -488,6 +492,7 @@ export default {
         }
       }
       this.changeRoomColor(nowRoomRole); //時間割に合わせて背景色変更
+      console.log(nowRoomRole);
     },
 
     /**
