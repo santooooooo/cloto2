@@ -6,6 +6,17 @@
       <img :src="$storage('system') + 'header-logo.svg'" />
     </router-link>
 
+    <v-tabs align-with-title v-if="!authCheck">
+      <v-tabs-slider color="yellow"></v-tabs-slider>
+
+      <v-tab :to="{ name: 'index' }">Top</v-tab>
+      <v-tab :to="{ name: 'concept' }">Concept</v-tab>
+      <v-tab :to="{ name: 'product' }">Product</v-tab>
+      <v-tab :to="{ name: 'news' }">News</v-tab>
+      <v-tab :to="{ name: 'company' }">About us</v-tab>
+      <v-tab :to="{ name: 'contact' }">Contact</v-tab>
+    </v-tabs>
+
     <v-spacer v-if="!isRelease"></v-spacer>
 
     <v-btn
@@ -18,19 +29,6 @@
       v-if="!isRelease"
       ><v-icon>mdi-twitter</v-icon>cloto_jp</v-btn
     >
-
-    <template v-slot:extension v-if="!authCheck">
-      <v-tabs align-with-title>
-        <v-tabs-slider color="yellow"></v-tabs-slider>
-
-        <v-tab :to="{ name: 'index' }">Top</v-tab>
-        <v-tab :to="{ name: 'concept' }">Concept</v-tab>
-        <v-tab :to="{ name: 'product' }">Product</v-tab>
-        <v-tab :to="{ name: 'news' }">News</v-tab>
-        <v-tab :to="{ name: 'company' }">About us</v-tab>
-        <v-tab :to="{ name: 'contact' }">Contact</v-tab>
-      </v-tabs>
-    </template>
   </v-app-bar>
 </template>
 
