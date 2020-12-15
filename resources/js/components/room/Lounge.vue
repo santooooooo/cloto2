@@ -20,7 +20,7 @@
                 :srcObject.prop="localStream"
               ></video>
 
-              <p>{{ authUser.handlename }}</p>
+              <p class="handlename">{{ authUser.handlename }}</p>
             </v-sheet>
 
             <!-- 自分のビデオ（オフ） -->
@@ -42,7 +42,7 @@
                 /></v-avatar>
               </v-sheet>
 
-              <p>{{ authUser.handlename }}</p>
+              <p class="handlename">{{ authUser.handlename }}</p>
             </v-sheet>
           </v-row>
 
@@ -117,7 +117,11 @@
                   :class="speakerId === participant.stream.peerId ? 'speaker' : ''"
                 ></video>
 
-                <p>{{ participant.names.handlename }}</p>
+                <p class="handlename">{{ participant.names.handlename }}</p>
+
+                <p class="is-mute" v-if="participant.isMute">
+                  <v-icon color="red">mdi-microphone-off</v-icon>
+                </p>
 
                 <!-- hover時 -->
                 <v-fade-transition>
@@ -409,6 +413,10 @@ export default {
 
       // 他ユーザー参加イベント
       this.call.on('stream', (stream) => {
+        // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
+        this.call.send({ type: 'audioEvent', content: { isMute: this.isMute } });
+        this.call.send({ type: 'videoEvent', content: { isVideoOff: this.isVideoOff } });
+
         this.joinUser(stream);
       });
 
@@ -424,9 +432,19 @@ export default {
             this.chat.notification = true;
           }
         } else if (data.type === 'audioEvent') {
-          console.log(data);
+          // 他のユーザーのミュート操作があった場合
+          this.participants.forEach((participant) => {
+            if (src === participant.stream.peerId) {
+              participant.isMute = data.content.isMute;
+            }
+          });
         } else if (data.type === 'videoEvent') {
-          console.log(data);
+          // 他のユーザーのビデオオフ操作があった場合
+          this.participants.forEach((participant) => {
+            if (src === participant.stream.peerId) {
+              participant.isVideoOff = data.content.isVideoOff;
+            }
+          });
         }
       });
 
@@ -476,7 +494,13 @@ export default {
 
       if (names !== '') {
         // ユーザーが参加した場合
-        this.participants.push({ isPinned: false, names: names, stream: stream });
+        this.participants.push({
+          isPinned: false, // ピン留めしているか
+          names: names, // ユーザー名
+          isMute: false, // ミュート状態
+          isVideoOff: false, // ビデオオフ状態
+          stream: stream,
+        });
 
         // 音声検知の開始
         this.startVoiceDetection(stream);
@@ -762,13 +786,23 @@ export default {
 .video-container {
   position: relative;
 
-  p {
+  .handlename {
     position: absolute;
     background-color: black;
     color: white;
     line-height: 1em;
     bottom: 0;
     left: 0;
+    margin: 0;
+    padding: 2px;
+  }
+
+  .is-mute {
+    position: absolute;
+    color: white;
+    line-height: 1em;
+    bottom: 0;
+    right: 0;
     margin: 0;
     padding: 2px;
   }
