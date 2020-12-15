@@ -85,12 +85,12 @@ class UserController extends Controller
     }
 
     /**
-     * PeerIDからユーザー名と表示名を取得
+     * PeerIDからユーザーを取得
      *
      * @param   String  $peer_id    PeerID
      * @return \Illuminate\Http\Response
      */
-    public function get_names_by_peer_id(String $peer_id)
+    public function get_user_by_peer_id(String $peer_id)
     {
         $user = $this->user->where('peer_id', $peer_id)->first();
 
@@ -99,7 +99,7 @@ class UserController extends Controller
             return response(null);
         }
 
-        return response()->json(['username' => $user->username, 'handlename' => $user->handlename]);
+        return response()->json($user);
     }
 
     /**
