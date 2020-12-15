@@ -59,7 +59,7 @@
                   v-if="pinnedParticipant.isVideoOff"
                 >
                   <v-avatar size="150" class="aligh-self-center"
-                    ><img :src="$storage('icon') + authUser.icon"
+                    ><img :src="$storage('icon') + pinnedParticipant.icon"
                   /></v-avatar>
                 </v-sheet>
 
@@ -73,7 +73,7 @@
                   v-else
                 ></video>
 
-                <p class="handlename">{{ pinnedParticipant.names.handlename }}</p>
+                <p class="handlename">{{ pinnedParticipant.handlename }}</p>
 
                 <p class="is-mute" v-if="pinnedParticipant.isMute">
                   <v-icon color="red">mdi-microphone-off</v-icon>
@@ -100,7 +100,7 @@
                         icon
                         x-large
                         class="account-button"
-                        @click="showProfile(pinnedParticipant.names.username)"
+                        @click="showProfile(pinnedParticipant.username)"
                       >
                         <v-icon> mdi-account </v-icon>
                       </v-btn>
@@ -134,7 +134,7 @@
                   v-if="participant.isVideoOff"
                 >
                   <v-avatar size="80" class="aligh-self-center"
-                    ><img :src="$storage('icon') + authUser.icon"
+                    ><img :src="$storage('icon') + participant.icon"
                   /></v-avatar>
                 </v-sheet>
 
@@ -148,7 +148,7 @@
                   v-else
                 ></video>
 
-                <p class="handlename">{{ participant.names.handlename }}</p>
+                <p class="handlename">{{ participant.handlename }}</p>
 
                 <p class="is-mute" v-if="participant.isMute">
                   <v-icon color="red">mdi-microphone-off</v-icon>
@@ -170,7 +170,7 @@
                         icon
                         x-large
                         class="account-button"
-                        @click="showProfile(participant.names.username)"
+                        @click="showProfile(participant.username)"
                       >
                         <v-icon> mdi-account </v-icon>
                       </v-btn>
@@ -445,19 +445,29 @@ export default {
 
       // 他ユーザー参加イベント
       this.call.on('stream', (stream) => {
+        this.joinUser(stream);
+
         // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
         this.call.send({ type: 'audioEvent', content: { isMute: this.isMute } });
         this.call.send({ type: 'videoEvent', content: { isVideoOff: this.isVideoOff } });
-
-        this.joinUser(stream);
       });
 
       // データ到着イベント
       this.call.on('data', async ({ data, src }) => {
-        // 送信者を検索（参加者のPeerIDを確認）
-        var participant = this.participants.filter((participant) => {
-          return src === participant.stream.peerId;
-        })[0];
+        // todo: エラー処理
+        setInterval(() => {
+          // 送信者を検索（参加者のPeerIDを確認）
+          var participant = this.participants.filter((participant) => {
+            return src === participant.stream.peerId;
+          })[0];
+
+          if (typeof participant !== 'undefined') {
+            clearInterval();
+          }
+        }, 10);
+        console.log(src);
+        console.log(this.participants);
+        console.log(participant);
 
         switch (data.type) {
           case 'message':
@@ -531,7 +541,9 @@ export default {
         // ユーザーが参加した場合
         this.participants.push({
           isPinned: false, // ピン留めしているか
-          names: { username: user.username, handlename: user.handlename }, // ユーザー名
+          username: user.username, // ユーザー名
+          handlename: user.handlename, // 表示名
+          icon: user.icon, // アイコン
           isMute: true, // ミュート状態
           isVideoOff: true, // ビデオオフ状態
           stream: stream,
