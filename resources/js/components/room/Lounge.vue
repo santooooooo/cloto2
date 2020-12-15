@@ -51,32 +51,30 @@
             <video autoplay :srcObject.prop="screenSharing.stream" style="max-width: 80%"></video>
           </v-row>
 
-          <v-row justify="center" class="mt-3">
-            <!-- 参加者のビデオ（オン） -->
-            <v-hover
-              v-slot="{ hover }"
-              v-for="participant in participants"
-              :key="participant.stream.peerId"
-            >
-              <!-- ピン留め時 -->
+          <!-- ピン留め時 -->
+          <v-row justify="center" class="mt-3" v-if="typeof pinnedParticipant !== 'undefined'">
+            <v-hover v-slot="{ hover }">
               <v-sheet
                 color="rgba(0, 0, 0, 1)"
                 :width="videoSize.width"
                 :height="videoSize.height"
                 class="video-container mx-1"
-                v-if="participant.isPinned"
               >
                 <video
                   :width="videoSize.width"
                   :height="videoSize.height"
                   autoplay
-                  :srcObject.prop="participant.stream"
-                  :class="speakerId === participant.stream.peerId ? 'speaker' : ''"
+                  :srcObject.prop="pinnedParticipant.stream"
+                  :class="speakerId === pinnedParticipant.stream.peerId ? 'speaker' : ''"
                 ></video>
 
-                <p>{{ participant.names.handlename }}</p>
+                <p class="handlename">{{ pinnedParticipant.names.handlename }}</p>
 
-                <!-- hover時 -->
+                <p class="is-mute" v-if="pinnedParticipant.isMute">
+                  <v-icon color="red">mdi-microphone-off</v-icon>
+                </p>
+
+                <!-- hover -->
                 <v-fade-transition>
                   <v-overlay absolute opacity="0.7" v-if="hover">
                     <v-sheet
@@ -84,7 +82,12 @@
                       :width="videoSize.width"
                       :height="videoSize.height"
                     >
-                      <v-btn icon x-large class="pin-button" @click="participant.isPinned = false">
+                      <v-btn
+                        icon
+                        x-large
+                        class="pin-button"
+                        @click="pinnedParticipant.isPinned = false"
+                      >
                         <v-icon> mdi-pin-off </v-icon>
                       </v-btn>
 
@@ -92,7 +95,7 @@
                         icon
                         x-large
                         class="account-button"
-                        @click="showProfile(participant.names.username)"
+                        @click="showProfile(pinnedParticipant.names.username)"
                       >
                         <v-icon> mdi-account </v-icon>
                       </v-btn>
@@ -100,14 +103,22 @@
                   </v-overlay>
                 </v-fade-transition>
               </v-sheet>
+            </v-hover>
+          </v-row>
 
-              <!-- 通常時 -->
+          <!-- 通常時 -->
+          <v-row justify="center" class="mt-3">
+            <!-- 参加者のビデオ（オン） -->
+            <v-hover
+              v-slot="{ hover }"
+              v-for="participant in notPinnedParticipants"
+              :key="participant.stream.peerId"
+            >
               <v-sheet
                 color="rgba(0, 0, 0, 1)"
                 :width="videoSize.showWidth"
                 :height="videoSize.showHeight"
                 class="video-container mx-1"
-                v-else
               >
                 <video
                   :width="videoSize.showWidth"
@@ -123,7 +134,7 @@
                   <v-icon color="red">mdi-microphone-off</v-icon>
                 </p>
 
-                <!-- hover時 -->
+                <!-- hover -->
                 <v-fade-transition>
                   <v-overlay absolute opacity="0.7" v-if="hover">
                     <v-sheet
@@ -368,6 +379,18 @@ export default {
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
+    },
+    pinnedParticipant() {
+      // ピン留めされている参加者（一人）
+      return this.participants.filter((participant) => {
+        return participant.isPinned === true;
+      })[0];
+    },
+    notPinnedParticipants() {
+      // ピン留めされていない参加者
+      return this.participants.filter((participant) => {
+        return participant.isPinned === false;
+      });
     },
   },
   methods: {
