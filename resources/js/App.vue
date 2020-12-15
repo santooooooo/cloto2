@@ -1,6 +1,6 @@
 <template>
   <!-- 画面サイズの最小を設定 -->
-  <v-overlay v-if="!$route.meta.isPublic && width < minWidth">
+  <v-overlay v-if="!isDebug && !$route.meta.isPublic && width < minWidth">
     <h1 class="font-weight-bold">ウィンドウを拡大してください。</h1>
   </v-overlay>
 
@@ -56,6 +56,9 @@ export default {
     };
   },
   computed: {
+    isDebug() {
+      return process.env.MIX_APP_DEBUG === 'true' ? true : false;
+    },
     isRelease() {
       return process.env.MIX_APP_RELEASE === 'true' ? true : false;
     },
