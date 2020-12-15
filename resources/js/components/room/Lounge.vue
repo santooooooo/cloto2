@@ -454,8 +454,10 @@ export default {
         this.stopVoiceDetection();
 
         // デバイスの使用を停止
-        this.localStream.getTracks().forEach((track) => track.stop());
-        this.localStream = null;
+        if (this.localStream !== null) {
+          this.localStream.getTracks().forEach((track) => track.stop());
+          this.localStream = null;
+        }
 
         // 通話の接続を終了
         this.peer.disconnect();
@@ -557,24 +559,33 @@ export default {
 
     /**
      * 通話デバイスへのアクセス
+     *
+     * @return Boolean アクセス成功/失敗
      */
     accessDevice: async function () {
-      // デバイスへのアクセス可能にするためにgetUserMediaを実行
-      await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-      const devices = await navigator.mediaDevices.enumerateDevices();
+      try {
+        // デバイスへのアクセス可能にするためにgetUserMediaを実行
+        await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+        const devices = await navigator.mediaDevices.enumerateDevices();
 
-      // オーディオデバイスの情報を取得
-      this.audioDevices = devices.filter((device) => {
-        return device.kind === 'audioinput';
-      });
+        // オーディオデバイスの情報を取得
+        this.audioDevices = devices.filter((device) => {
+          return device.kind === 'audioinput';
+        });
 
-      // カメラの情報を取得
-      this.videoDevices = devices.filter((device) => {
-        return device.kind === 'videoinput';
-      });
+        // カメラの情報を取得
+        this.videoDevices = devices.filter((device) => {
+          return device.kind === 'videoinput';
+        });
 
-      this.selectedAudio = this.audioDevices[0].deviceId;
-      this.selectedVideo = this.videoDevices[0].deviceId;
+        this.selectedAudio = this.audioDevices[0].deviceId;
+        this.selectedVideo = this.videoDevices[0].deviceId;
+
+        return true;
+      } catch (error) {
+        // 他のアプリがデバイスを使用している場合
+        return false;
+      }
     },
 
     /**
@@ -721,16 +732,26 @@ export default {
     this.peer = new Peer(myPeerId, { key: API_KEY });
 
     // 入力デバイスへのアクセス
-    await this.accessDevice();
-    // 入力デバイスへの接続
-    await this.connectDevice();
+    var access = await this.accessDevice();
 
-    // 通話開始
-    this.makeCall();
+    if (access) {
+      // 入力デバイスへの接続
+      await this.connectDevice();
 
-    // 通話開始時はミュート/ビデオオフに設定
-    this.mute();
-    this.videoOff();
+      // 通話開始
+      this.makeCall();
+
+      // 通話開始時はミュート/ビデオオフに設定
+      this.mute();
+      this.videoOff();
+    } else {
+      this.$store.dispatch('alert/show', {
+        type: 'error',
+        message: 'マイクまたはカメラが認識できませんでした．．．',
+      });
+
+      this.leaveLounge();
+    }
   },
 };
 </script>
