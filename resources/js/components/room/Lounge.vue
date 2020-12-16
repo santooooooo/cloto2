@@ -353,11 +353,13 @@ export default {
   },
   props: {
     loungeId: String,
+    capacity: Number,
   },
   data() {
     return {
       //*** 通話 ***//
       participants: [], // 参加者
+      roomMode: 'mesh', // 接続モード
       peer: null, // Peer接続オブジェクト
       localStream: null, // 自分の送信データ
       call: null, // 接続プロパティ
@@ -432,8 +434,8 @@ export default {
     /**
      * 休憩室から退室
      */
-    leaveLounge: function () {
-      this.exitCall();
+    leaveLounge: async function () {
+      await this.exitCall();
       this.$emit('leave-lounge');
     },
 
@@ -442,7 +444,7 @@ export default {
      */
     makeCall: async function () {
       this.call = this.peer.joinRoom(this.loungeId, {
-        mode: 'sfu',
+        mode: this.roomMode,
         stream: this.localStream,
       });
 
@@ -637,7 +639,7 @@ export default {
         });
 
         this.screenSharing.peer.joinRoom(this.loungeId, {
-          mode: 'sfu',
+          mode: this.roomMode,
           stream: this.screenSharing.stream,
         });
 
@@ -856,6 +858,11 @@ export default {
   },
 
   async created() {
+    // 定員が4人より多い場合はSFU方式を利用
+    if (this.capacity > 4) {
+      this.roomMode = 'sfu';
+    }
+
     // Peerの作成
     var response = await this.$http.get(this.$endpoint('authPeerId'));
     const myPeerId = response.data;

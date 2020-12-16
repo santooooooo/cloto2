@@ -14,7 +14,7 @@
 
     <!-- 休憩室 -->
     <v-dialog
-      v-model="isLoungeEnter"
+      v-model="lounge.isEnter"
       fullscreen
       persistent
       no-click-animation
@@ -22,7 +22,12 @@
     >
       <!-- 正しく全画面表示にするため，コンポーネント外でダイアログを定義 -->
       <!-- 内側にすると，下側の要素がスクロール可能な状態になる -->
-      <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge>
+      <Lounge
+        :lounge-id="lounge.id"
+        :capacity="lounge.capacity"
+        @leave-lounge="leaveLounge()"
+        v-if="lounge.isEnter"
+      ></Lounge>
     </v-dialog>
 
     <v-flex>
@@ -30,9 +35,6 @@
       <v-row justify="center" class="pt-5" :style="{ background: roomColor }" id="room">
         <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
       </v-row>
-
-      <!-- 休憩室 -->
-      <!-- <Lounge :lounge-id="loungeId" @leave-lounge="leaveLounge()" v-if="isLoungeEnter"></Lounge> -->
 
       <!-- プロフィールダイアログ -->
       <ProfileDialog
@@ -87,8 +89,11 @@ export default {
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
       iconSize: 30, // アイコンサイズ
-      isLoungeEnter: false, // 休憩室入室制御
-      loungeId: '', // 入室する休憩室のセクションID
+      lounge: {
+        isEnter: false, // 休憩室入室制御
+        id: '', // 入室する休憩室のセクションID
+        capacity: '', // 休憩室の定員
+      },
       profile: {
         dialog: false, // プロフィールのモーダル制御
         userId: null, // プロフィールを表示するユーザーID
@@ -229,7 +234,7 @@ export default {
           endpoint = this.$endpoint('enterLounge', [seatObject.seatId]);
           response = await this.$http.post(endpoint);
           if (response.status === OK) {
-            this.enterLounge(seatObject.sectionId);
+            this.enterLounge(seatObject.sectionId, seatObject.sectionCapacity);
           }
           break;
 
@@ -377,11 +382,13 @@ export default {
     /**
      * 休憩室への入室
      *
-     * @param Number  loungeId   入室する休憩室ID
+     * @param String  loungeId   入室する休憩室ID
+     * @param Number  capacity   休憩室の定員
      */
-    enterLounge: function (loungeId) {
-      this.loungeId = loungeId;
-      this.isLoungeEnter = true;
+    enterLounge: function (loungeId, capacity) {
+      this.lounge.id = loungeId;
+      this.lounge.capacity = capacity;
+      this.lounge.isEnter = true;
     },
 
     /**
@@ -392,8 +399,8 @@ export default {
       this.isLoading = true;
 
       // 休憩室の初期化
-      this.isLoungeEnter = false;
-      this.loungeId = '';
+      this.lounge.isEnter = false;
+      this.lounge.id = '';
 
       // 状態変更処理
       await this.userAction('leaveLounge');
@@ -573,8 +580,9 @@ export default {
         this.canvas.add(
           new fabric.Circle({
             seatId: seat.id,
-            sectionId: section.uuid,
             role: section.role,
+            sectionId: section.uuid,
+            sectionCapacity: section.seats.length,
             fill: color,
             reservationId: seat.reservation_user_id,
             opacity: 0.3,
@@ -595,11 +603,6 @@ export default {
         // 誰かが座っている時
         if (seat.status !== null && seat.status != 'break') {
           this.putIcon(seat.position.x, seat.position.y, seat.user);
-
-          // ログインユーザーが座っており，座席が休憩室にある場合
-          if (seat.id === this.authUser.seat_id && section.role === 'lounge') {
-            this.enterLounge(section.uuid);
-          }
         }
       });
     });
