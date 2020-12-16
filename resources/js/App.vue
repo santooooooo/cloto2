@@ -21,7 +21,7 @@
     </v-alert>
 
     <!-- ヘッダー -->
-    <Header @show-drawer="isShowDrawer = true" @logout="logout" @leave="leave" />
+    <Header @show-drawer="isShowDrawer = true" />
 
     <!-- ドロワーメニュー -->
     <Drawer v-model="isShowDrawer" @logout="logout" v-if="isRelease" />
@@ -32,7 +32,7 @@
     </v-main>
 
     <!-- フッター -->
-    <Footer @logout="logout" @leave="leave" />
+    <Footer @logout="logout" />
   </v-app>
 </template>
 
@@ -78,9 +78,22 @@ export default {
     },
 
     /**
+     * 終了処理
+     */
+    closeApp: async function () {
+      // 座席の開放
+      if (this.authUser.seat_id != null) {
+        await this.$http.post(this.$endpoint('closeApp'));
+      }
+    },
+
+    /**
      * ログアウト処理
      */
     logout: async function () {
+      // 終了処理
+      await this.closeApp();
+
       // ログアウト処理
       await this.$store.dispatch('auth/logout');
 
@@ -89,21 +102,13 @@ export default {
         this.$router.push({ name: 'index' });
       }
     },
-
-    /**
-     * 退席処理
-     */
-    leave: async function () {
-      if (this.authUser.seat_id != null) {
-        var endpoint = '';
-        endpoint = this.$endpoint('seatLeave');
-        await this.$http.post(endpoint);
-      }
-    },
   },
   mounted: function () {
-    // ウィンドウリサイズ時のイベントを設定
+    // ウィンドウリサイズ時のイベント
     window.addEventListener('resize', this.resizeHandler);
+
+    // ブラウザクローズ時のイベント
+    window.addEventListener('beforeunload', this.closeApp);
   },
 };
 </script>

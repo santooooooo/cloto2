@@ -65,7 +65,7 @@ class SeatController extends Controller
     {
         $room_id = $this->user->seat->section->room->id;
 
-        // 着席中の座席状態の初期化
+        // 着席中の座席の状態を初期化
         $this->user->seat->fill(['status' => null, 'reservation_user_id' => null])->save();
 
         // ユーザーと座席を紐付け解除
@@ -127,6 +127,34 @@ class SeatController extends Controller
 
         // 座席状態の更新
         $seat->fill(['status' => 'sitting', 'reservation_user_id' => null])->save();
+
+        broadcast(new SeatEvent($room_id));
+        return response()->json();
+    }
+
+    /**
+     * アプリケーションの終了時，座席を開放
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function close_app()
+    {
+        $room_id = $this->user->seat->section->room->id;
+
+        // 着席中の座席の状態を初期化
+        $this->user->seat->fill(['status' => null, 'reservation_user_id' => null])->save();
+
+        // ユーザーと座席を紐付け解除
+        $this->user->seat()->dissociate();
+
+        // 予約済みの座席を開放
+        $seat = $this->seat->where('reservation_user_id', $this->user->id)->first();
+        if (!empty($seat)) {
+            $seat->fill(['status' => null, 'reservation_user_id' => null])->save();
+        }
+
+        // 進行中のタスクを初期化
+        $this->user->fill(['task_id' => null])->save();
 
         broadcast(new SeatEvent($room_id));
         return response()->json();
