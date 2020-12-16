@@ -455,23 +455,32 @@ export default {
       // データ到着イベント
       this.call.on('data', async ({ data, src }) => {
         // 送信者が取得されるまで待機
-        for (var i = 0; i < 100; i++) {
+        for (var i = 0; i < 50; i++) {
           // 参加直後，this.participantsへの追加前に検索されるので回避
-          // 存在しない場合の対策として上限を100に設定
-          var sender = await new Promise((resolve) => {
-            // 送信者を検索（参加者のPeerIDを確認）
-            var participant = this.participants.filter((participant) => {
-              return src === participant.stream.peerId;
-            })[0];
+          // 新規ユーザーのstreamよりも先にdataが届く
+          // 存在しない場合の対策として上限を5秒に設定
+          try {
+            var sender = await new Promise((resolve, reject) => {
+              // 送信者を検索（参加者のPeerIDを確認）
+              var participant = this.participants.filter((participant) => {
+                return src === participant.stream.peerId;
+              })[0];
 
-            if (typeof participant !== 'undefined') {
-              resolve(participant);
-            }
-          });
+              if (typeof participant === 'undefined') {
+                // 再処理へ
+                reject();
+              } else {
+                // 終了
+                resolve(participant);
+              }
+            });
 
-          // 取得されたら終了
-          if (sender) {
             break;
+          } catch (error) {
+            // 0.1秒待機
+            await new Promise((resolve) => setTimeout(resolve, 100));
+            // 再処理
+            continue;
           }
         }
 
