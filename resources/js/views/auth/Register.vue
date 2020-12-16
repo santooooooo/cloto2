@@ -185,7 +185,7 @@ export default {
 
         if (this.apiStatus) {
           // ページ遷移
-          this.$router.push({ name: 'home' });
+          this.$router.push({ name: 'entrance' });
         } else {
           this.registerForm.loading = false;
         }
