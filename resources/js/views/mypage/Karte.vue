@@ -16,10 +16,9 @@
         </v-list-item-group>
       </v-list>
 
-      <v-dialog v-model="dialog" width="800">
+      <v-dialog v-model="dialog" width="800" >
         <v-card
           color="grey darken-1"
-          class="mt-2 mb-12"
          
         >
           <v-container>
