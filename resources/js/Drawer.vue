@@ -52,7 +52,7 @@
     <v-divider></v-divider>
 
     <v-list nav>
-      <v-list-item :to="{ name: 'home' }">
+      <v-list-item :to="{ name: 'entrance' }">
         <v-list-item-icon>
           <v-icon>mdi-home-city</v-icon>
         </v-list-item-icon>
