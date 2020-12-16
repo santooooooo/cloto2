@@ -1,76 +1,111 @@
 <template>
   <v-container py-0>
-    
-      
-      <v-card v-for="karte in kartes.data" :key="karte.id" color="grey darken-1" class=" mt-2 mb-12">
-        <v-container>
-          <!-- {{ kartes.data }} -->
-          <v-row justify="center">
-            <v-col>
-              <v-card-text class="pa-2 white--text title font-weight-bold"> 活動内容 </v-card-text>
-              <v-card rounded> {{ karte.body }}</v-card>
+    <!-- ローディング画面 -->
+    <v-overlay v-if="!kartes.data">
+      <v-progress-circular indeterminate size="64" v-if="!kartes.data"></v-progress-circular>
+    </v-overlay>
+    <v-card max-width="600" tile class="ml-10">
+      <v-list>
+        <v-subheader>カルテ一覧</v-subheader>
+        <v-list-item-group v-model="selectedItem">
+          <v-list-item v-for="karte in kartes.data" :key="karte.id">
+            <v-list-item-content @click="openKarte()">
+              <v-list-item-title>{{ karte.body }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
 
-              <v-card-text class="pa-2 white--text title font-weight-bold"> 参考文献 </v-card-text>
-              <v-card solo rounded height="30" v-if="karte.reference != null">{{
-                karte.reference
-              }}</v-card>
-              <v-card solo rounded height="30" v-else>なし</v-card>
-            </v-col>
+      <v-dialog v-model="dialog" width="800">
+        <v-card
+          v-for="karte in kartes.data"
+          :key="karte.id"
+          color="grey darken-1"
+          class="mt-2 mb-12"
+        >
+          <v-container>
+            {{ kartes.data }}
+            <v-row justify="center">
+              <v-col>
+                <v-card-text class="pa-2 white--text title font-weight-bold">
+                  活動内容
+                </v-card-text>
+                <v-card rounded> {{ karte.body }}</v-card>
 
-            <v-col>
-              <v-card-text class="pa-0 white--text title font-weight-bold"> 画像 </v-card-text>
+                <v-card-text class="pa-2 white--text title font-weight-bold">
+                  参考文献
+                </v-card-text>
+                <v-card solo rounded height="30" v-if="karte.reference != null">{{
+                  karte.reference
+                }}</v-card>
+                <v-card solo rounded height="30" v-else>なし</v-card>
+              </v-col>
 
-              <v-card v-if="karte.image != null" height="200" class="text-center pt-6">
-                <v-avatar class="profile" color="grey" size="150">
-                  <img :src="$storage('karte') + karte.image"  />
-                </v-avatar>
-                <!-- ここに画像持ってくる  -->
-              </v-card>
+              <v-col>
+                <v-card-text class="pa-0 white--text title font-weight-bold"> 画像 </v-card-text>
 
-              <v-card v-else height="200"> なし </v-card>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-card-text class="pa-2 white--text title font-weight-bold"> 技術タグ </v-card-text>
-              <v-card solo rounded height="30" v-if="karte.technologies && karte.technologies.length !== 0"><span v-for="technology in karte.technologies" :key="technology.id">{{technology.name}}　</span></v-card>
+                <v-card v-if="karte.image != null" height="200" class="text-center pt-6">
+                  <v-avatar class="profile" color="grey" size="150">
+                    <img :src="$storage('karte') + karte.image" />
+                  </v-avatar>
+                </v-card>
 
-            <v-card v-else height="30">なし</v-card>  
-  
-            </v-col>
+                <v-card v-else height="200"> なし </v-card>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-card-text class="pa-2 white--text title font-weight-bold">
+                  技術タグ
+                </v-card-text>
+                <v-card
+                  solo
+                  rounded
+                  height="30"
+                  v-if="karte.technologies && karte.technologies.length !== 0"
+                  ><span v-for="technology in karte.technologies" :key="technology.id"
+                    >{{ technology.name }}　</span
+                  ></v-card
+                >
 
-            <v-col>
-              <v-card-text class="pa-2 white--text title font-weight-bold"> 活動時間 </v-card-text>
-              <v-card solo rounded height="30">a</v-card>
-            </v-col>
-          </v-row>
+                <v-card v-else height="30">なし</v-card>
+              </v-col>
 
-          <v-row>
-            <v-col>
-              <v-card-text class="pa-2 white--text title font-weight-bold">
-                達成したこと
-              </v-card-text>
-              <v-card rounded height="200" v-if="karte.achieve != null">
-                {{ karte.achieve }}</v-card
-              >
+              <v-col>
+                <v-card-text class="pa-2 white--text title font-weight-bold">
+                  活動時間
+                </v-card-text>
+                <v-card solo rounded height="30">a</v-card>
+              </v-col>
+            </v-row>
 
-              <v-card rounded height="200" v-else> 特になし</v-card>
-            </v-col>
+            <v-row>
+              <v-col>
+                <v-card-text class="pa-2 white--text title font-weight-bold">
+                  達成したこと
+                </v-card-text>
+                <v-card rounded height="200" v-if="karte.achieve != null">
+                  {{ karte.achieve }}</v-card
+                >
 
-            <v-col>
-              <v-card-text class="pa-2 white--text title font-weight-bold">
-                できなかったこと
-              </v-card-text>
-              <v-card rounded height="200" v-if="karte.trouble != null">{{
-                karte.trouble
-              }}</v-card>
+                <v-card rounded height="200" v-else> 特になし</v-card>
+              </v-col>
 
-              <v-card rounded height="200" v-else>特になし</v-card>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card>
-   
+              <v-col>
+                <v-card-text class="pa-2 white--text title font-weight-bold">
+                  できなかったこと
+                </v-card-text>
+                <v-card rounded height="200" v-if="karte.trouble != null">{{
+                  karte.trouble
+                }}</v-card>
+
+                <v-card rounded height="200" v-else>特になし</v-card>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card>
+      </v-dialog>
+    </v-card>
   </v-container>
 </template>
 
@@ -94,6 +129,9 @@ export default {
         dialog: false,
         data: '',
       },
+      //カルテダイアログ
+      dialog: false,
+      selectedItem: null,
     };
   },
 
@@ -138,7 +176,13 @@ export default {
 
       this.kartes.loading = false;
     },
+
+    openKarte: function () {
+      this.dialog = true;
+      console.log(this.selectedItem);
+    },
   },
+
   mounted() {
     this.getProjects();
     this.getKartes();
