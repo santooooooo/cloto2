@@ -454,25 +454,31 @@ export default {
 
       // データ到着イベント
       this.call.on('data', async ({ data, src }) => {
-        // todo: エラー処理
-        setInterval(() => {
-          // 送信者を検索（参加者のPeerIDを確認）
-          var participant = this.participants.filter((participant) => {
-            return src === participant.stream.peerId;
-          })[0];
+        // 送信者が取得されるまで待機
+        for (var i = 0; i < 100; i++) {
+          // 参加直後，this.participantsへの追加前に検索されるので回避
+          // 存在しない場合の対策として上限を100に設定
+          var sender = await new Promise((resolve) => {
+            // 送信者を検索（参加者のPeerIDを確認）
+            var participant = this.participants.filter((participant) => {
+              return src === participant.stream.peerId;
+            })[0];
 
-          if (typeof participant !== 'undefined') {
-            clearInterval();
+            if (typeof participant !== 'undefined') {
+              resolve(participant);
+            }
+          });
+
+          // 取得されたら終了
+          if (sender) {
+            break;
           }
-        }, 10);
-        console.log(src);
-        console.log(this.participants);
-        console.log(participant);
+        }
 
         switch (data.type) {
           case 'message':
             // メッセージ受信イベント
-            this.chat.messages.push({ handlename: participant.handlename, text: data.content });
+            this.chat.messages.push({ handlename: sender.handlename, text: data.content });
 
             // 通知の表示
             if (!this.chat.isOpen) {
@@ -482,12 +488,12 @@ export default {
 
           case 'audioEvent':
             // ミュートイベント
-            participant.isMute = data.content.isMute;
+            sender.isMute = data.content.isMute;
             break;
 
           case 'videoEvent':
             // ビデオオフイベント
-            participant.isVideoOff = data.content.isVideoOff;
+            sender.isVideoOff = data.content.isVideoOff;
             break;
         }
       });
