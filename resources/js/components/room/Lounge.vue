@@ -269,6 +269,11 @@
 
       <v-spacer></v-spacer>
 
+      <!-- 通知音ボタン -->
+      <v-btn color="white" icon class="mr-6" @click="settingNotificationSound()">
+        <v-icon large>{{ notificationSound.isOn ? 'mdi-bell' : 'mdi-bell-off' }}</v-icon>
+      </v-btn>
+
       <!-- チャットボタン -->
       <v-badge
         bordered
@@ -389,6 +394,16 @@ export default {
         messages: [], // メッセージ一覧
       },
 
+      //*** 通知音 ***//
+      notificationSound: {
+        isOn: false, // 通知音制御
+        notificationOn: new Audio(this.$storage('system') + 'notification_sound_on.mp3'),
+        notificationOff: new Audio(this.$storage('system') + 'notification_sound_off.mp3'),
+        joinNotification: new Audio(this.$storage('system') + 'join_notification.mp3'),
+        leaveNotification: new Audio(this.$storage('system') + 'leave_notification.mp3'),
+        messageNotification: new Audio(this.$storage('system') + 'message_notification.mp3'),
+      },
+
       //*** プロフィール ***//
       profile: {
         dialog: false, // プロフィールのダイアログ制御
@@ -489,8 +504,13 @@ export default {
             // メッセージ受信イベント
             this.chat.messages.push({ handlename: sender.handlename, text: data.content });
 
-            // 通知の表示
             if (!this.chat.isOpen) {
+              // 通知音
+              if (this.notificationSound.isOn) {
+                this.notificationSound.messageNotification.play();
+              }
+
+              // 通知の表示
               this.chat.notification = true;
             }
             break;
@@ -552,8 +572,14 @@ export default {
       var response = await this.$http.get(this.$endpoint('getUserByPeerId', [stream.peerId]));
       var user = response.data;
 
+      // ユーザーが参加した場合
       if (user !== '') {
-        // ユーザーが参加した場合
+        // 通知音
+        if (this.notificationSound.isOn) {
+          this.notificationSound.joinNotification.play();
+        }
+
+        // 参加者の追加
         this.participants.push({
           isPinned: false, // ピン留めしているか
           username: user.username, // ユーザー名
@@ -587,6 +613,11 @@ export default {
      * @param String peerId  退出したユーザーのPeerID
      */
     leaveUser: function (peerId) {
+      // 通知音
+      if (this.notificationSound.isOn) {
+        this.notificationSound.leaveNotification.play();
+      }
+
       this.participants = this.participants.filter((participant) => {
         // 退出したユーザーのpeerId以外を残す
         return participant.stream.peerId !== peerId;
@@ -797,6 +828,19 @@ export default {
           text: this.chat.localText,
         });
         this.chat.localText = '';
+      }
+    },
+
+    /**
+     * 通知音の制御
+     */
+    settingNotificationSound: function () {
+      if (this.notificationSound.isOn) {
+        this.notificationSound.isOn = false;
+        this.notificationSound.notificationOff.play();
+      } else {
+        this.notificationSound.isOn = true;
+        this.notificationSound.notificationOn.play();
       }
     },
 
