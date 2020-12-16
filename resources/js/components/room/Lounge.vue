@@ -213,6 +213,7 @@
               v-model="chat.localText"
               class="px-2"
               label="メッセージを送ろう！"
+              @keypress="chat.canSubmit = true"
               @keyup.enter="sendMessage()"
             ></v-text-field>
             <v-btn icon @click="sendMessage()">
@@ -391,6 +392,7 @@ export default {
       //*** チャット ***//
       chat: {
         isOpen: false, // チャットエリア表示制御
+        canSubmit: false, // 送信制御
         notification: false, // 通知制御
         localText: '', // 送信するメッセージ
         messages: [], // メッセージ一覧
@@ -820,7 +822,7 @@ export default {
      * メッセージの送信処理
      */
     sendMessage: function () {
-      if (this.chat.localText !== '') {
+      if (this.chat.canSubmit && this.chat.localText !== '') {
         // メッセージの送信
         this.call.send({ type: 'message', content: this.chat.localText });
 
