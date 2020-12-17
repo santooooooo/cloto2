@@ -193,7 +193,7 @@
       <!-- チャットエリア -->
       <v-flex xs3 v-show="chat.isOpen">
         <v-card color="grey lighten-2" class="mx-auto" id="chat">
-          <v-card flat class="overflow-y-auto" height="500">
+          <div class="overflow-y-auto" ref="chatScrollArea">
             <v-card-text v-for="(message, index) in chat.messages" :key="index">
               <!-- ユーザーメッセージ -->
               <p v-if="message.handlename">
@@ -206,7 +206,7 @@
                 {{ message.text }}
               </p>
             </v-card-text>
-          </v-card>
+          </div>
 
           <v-card-actions>
             <v-text-field
@@ -459,7 +459,7 @@ export default {
     setupCallEvents: function () {
       // 自身の参加イベント
       this.call.once('open', () => {
-        this.chat.messages.push({ handlename: null, text: '入室しました！' });
+        this.addMessage(null, '入室しました！');
       });
 
       // 他ユーザー参加イベント
@@ -506,7 +506,7 @@ export default {
         switch (data.type) {
           case 'message':
             // メッセージ受信イベント
-            this.chat.messages.push({ handlename: sender.handlename, text: data.content });
+            this.addMessage(sender.handlename, data.content);
 
             if (!this.chat.isOpen) {
               // 通知音
@@ -598,10 +598,7 @@ export default {
         this.startVoiceDetection(stream);
 
         // 参加メッセージの追加
-        this.chat.messages.push({
-          handlename: null,
-          text: user.handlename + 'が入室しました！',
-        });
+        this.addMessage(null, user.handlename + 'が入室しました！');
       } else {
         // 画面共有が参加した場合
         if (!this.screenSharing.isLocal) {
@@ -827,12 +824,28 @@ export default {
         this.call.send({ type: 'message', content: this.chat.localText });
 
         // 自分の画面を更新
-        this.chat.messages.push({
-          handlename: this.authUser.handlename,
-          text: this.chat.localText,
-        });
+        this.addMessage(this.authUser.handlename, this.chat.localText);
         this.chat.localText = '';
       }
+    },
+
+    /**
+     * メッセージの追加処理
+     *
+     * @param String handlename 表示名
+     * @param String text 内容
+     */
+    addMessage: function (handlename, text) {
+      // メッセージの追加
+      this.chat.messages.push({
+        handlename: handlename,
+        text: text,
+      });
+
+      // 最下部へスクロール（DOM挿入後に実行）
+      this.$nextTick(() => {
+        this.$refs.chatScrollArea.scrollTop = this.$refs.chatScrollArea.scrollHeight;
+      });
     },
 
     /**
@@ -951,6 +964,11 @@ export default {
   position: sticky;
   margin-top: 20px;
   top: 20px;
+
+  .overflow-y-auto {
+    height: 500px;
+    background-color: white;
+  }
 }
 </style>
 
