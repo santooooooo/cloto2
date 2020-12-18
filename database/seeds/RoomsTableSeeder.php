@@ -16,7 +16,135 @@ class RoomsTableSeeder extends Seeder
     public function run()
     {
         // 部屋名
-        $names = ['チュートリアル部屋', '資格勉強部屋', 'Web制作部屋', 'アプリ開発部屋', 'イベントホール'];
+        $rooms = [
+            [
+                'name' => 'チュートリアル部屋',
+                'timetable' =>
+                [
+                    '00:00' => 'break'
+                ]
+            ],
+            [
+                'name' => '資格勉強部屋',
+                'timetable' =>
+                [
+                    '00:00' => 'study', '00:50' => 'break',
+                    '01:00' => 'study', '01:50' => 'break',
+                    '02:00' => 'study', '02:50' => 'break',
+                    '03:00' => 'study', '03:50' => 'break',
+                    '04:00' => 'study', '04:50' => 'break',
+                    '05:00' => 'study', '05:50' => 'break',
+                    '06:00' => 'study', '06:50' => 'break',
+                    '07:00' => 'study', '07:50' => 'break',
+                    '08:00' => 'study', '08:50' => 'break',
+                    '09:00' => 'study', '09:50' => 'break',
+                    '10:00' => 'study', '10:50' => 'break',
+                    '11:00' => 'study', '11:50' => 'break',
+                    '12:00' => 'study', '12:50' => 'break',
+                    '13:00' => 'study', '13:50' => 'break',
+                    '14:00' => 'study', '14:50' => 'break',
+                    '15:00' => 'study', '15:50' => 'break',
+                    '16:00' => 'study', '16:50' => 'break',
+                    '17:00' => 'study', '17:50' => 'break',
+                    '18:00' => 'study', '18:50' => 'break',
+                    '19:00' => 'study', '19:50' => 'break',
+                    '20:00' => 'study', '20:50' => 'break',
+                    '21:00' => 'study', '21:50' => 'break',
+                    '22:00' => 'study', '22:50' => 'break',
+                    '23:00' => 'study', '23:50' => 'break',
+                ]
+            ],
+            [
+                'name' => 'Web制作部屋',
+                'timetable' =>
+                [
+                    '00:00' => 'study', '00:50' => 'break',
+                    '01:00' => 'study', '01:50' => 'break',
+                    '02:00' => 'study', '02:50' => 'break',
+                    '03:00' => 'study', '03:50' => 'break',
+                    '04:00' => 'study', '04:50' => 'break',
+                    '05:00' => 'study', '05:50' => 'break',
+                    '06:00' => 'study', '06:50' => 'break',
+                    '07:00' => 'study', '07:50' => 'break',
+                    '08:00' => 'study', '08:50' => 'break',
+                    '09:00' => 'study', '09:50' => 'break',
+                    '10:00' => 'study', '10:50' => 'break',
+                    '11:00' => 'study', '11:50' => 'break',
+                    '12:00' => 'study', '12:50' => 'break',
+                    '13:00' => 'study', '13:50' => 'break',
+                    '14:00' => 'study', '14:50' => 'break',
+                    '15:00' => 'study', '15:50' => 'break',
+                    '16:00' => 'study', '16:50' => 'break',
+                    '17:00' => 'study', '17:50' => 'break',
+                    '18:00' => 'study', '18:50' => 'break',
+                    '19:00' => 'study', '19:50' => 'break',
+                    '20:00' => 'study', '20:50' => 'break',
+                    '21:00' => 'study', '21:50' => 'break',
+                    '22:00' => 'study', '22:50' => 'break',
+                    '23:00' => 'study', '23:50' => 'break',
+                ]
+            ],
+            [
+                'name' => 'アプリ開発部屋',
+                'timetable' =>
+                [
+                    '00:00' => 'study', '00:50' => 'break',
+                    '01:00' => 'study', '01:50' => 'break',
+                    '02:00' => 'study', '02:50' => 'break',
+                    '03:00' => 'study', '03:50' => 'break',
+                    '04:00' => 'study', '04:50' => 'break',
+                    '05:00' => 'study', '05:50' => 'break',
+                    '06:00' => 'study', '06:50' => 'break',
+                    '07:00' => 'study', '07:50' => 'break',
+                    '08:00' => 'study', '08:50' => 'break',
+                    '09:00' => 'study', '09:50' => 'break',
+                    '10:00' => 'study', '10:50' => 'break',
+                    '11:00' => 'study', '11:50' => 'break',
+                    '12:00' => 'study', '12:50' => 'break',
+                    '13:00' => 'study', '13:50' => 'break',
+                    '14:00' => 'study', '14:50' => 'break',
+                    '15:00' => 'study', '15:50' => 'break',
+                    '16:00' => 'study', '16:50' => 'break',
+                    '17:00' => 'study', '17:50' => 'break',
+                    '18:00' => 'study', '18:50' => 'break',
+                    '19:00' => 'study', '19:50' => 'break',
+                    '20:00' => 'study', '20:50' => 'break',
+                    '21:00' => 'study', '21:50' => 'break',
+                    '22:00' => 'study', '22:50' => 'break',
+                    '23:00' => 'study', '23:50' => 'break',
+                ]
+            ],
+            [
+                'name' => 'イベントホール',
+                'timetable' =>
+                [
+                    '00:00' => 'study', '00:50' => 'break',
+                    '01:00' => 'study', '01:50' => 'break',
+                    '02:00' => 'study', '02:50' => 'break',
+                    '03:00' => 'study', '03:50' => 'break',
+                    '04:00' => 'study', '04:50' => 'break',
+                    '05:00' => 'study', '05:50' => 'break',
+                    '06:00' => 'study', '06:50' => 'break',
+                    '07:00' => 'study', '07:50' => 'break',
+                    '08:00' => 'study', '08:50' => 'break',
+                    '09:00' => 'study', '09:50' => 'break',
+                    '10:00' => 'study', '10:50' => 'break',
+                    '11:00' => 'study', '11:50' => 'break',
+                    '12:00' => 'study', '12:50' => 'break',
+                    '13:00' => 'study', '13:50' => 'break',
+                    '14:00' => 'study', '14:50' => 'break',
+                    '15:00' => 'study', '15:50' => 'break',
+                    '16:00' => 'study', '16:50' => 'break',
+                    '17:00' => 'study', '17:50' => 'break',
+                    '18:00' => 'study', '18:50' => 'break',
+                    '19:00' => 'study', '19:50' => 'break',
+                    '20:00' => 'study', '20:50' => 'break',
+                    '21:00' => 'study', '21:50' => 'break',
+                    '22:00' => 'study', '22:50' => 'break',
+                    '23:00' => 'study', '23:50' => 'break',
+                ]
+            ]
+        ];
 
         // 座席一覧
         // 自習室
@@ -52,9 +180,9 @@ class RoomsTableSeeder extends Seeder
         ];
 
         // データ作成処理
-        foreach ($names as $name) {
+        foreach ($rooms as $data) {
             // 部屋作成
-            $room = Room::create(['name' => $name]);
+            $room = Room::create(['name' => $data['name'], 'timetable' => $data['timetable']]);
 
             // 自習室の座席配置
             foreach ($study_positions as $base_position) {

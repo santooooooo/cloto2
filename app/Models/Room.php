@@ -13,7 +13,14 @@ class Room extends Model
      *
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'timetable'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = ['timetable' => 'json'];
 
     /**
      * The accessors to append to the model's array form.
