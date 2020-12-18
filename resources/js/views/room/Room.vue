@@ -652,12 +652,19 @@ export default {
       this.roomData = event;
     });
 
+    Echo.channel('room-' + this.roomData.id).listen('TimetableEvent', (event) => {
+      console.log(event);
+    });
+
     this.syncTimer = setInterval(() => {
       this.time();
     }, 60000);
   },
 
   destroyed() {
+    Echo.channel('room-' + this.roomData.id).stopListening('SeatEvent');
+    Echo.channel('room-' + this.roomData.id).stopListening('TimetableEvent');
+
     // ページ遷移時にはタイマーを解除
     if (this.syncTimer !== null) {
       clearInterval(this.syncTimer);

@@ -17,6 +17,8 @@ class TimetableEvent implements ShouldBroadcast
 
     /** @var Room */
     protected $room;
+    /** @var String */
+    protected $key;
 
     /**
      * Create a new event instance.
