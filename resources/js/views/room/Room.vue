@@ -6,8 +6,8 @@
     </v-overlay>
 
     <!-- 自習スタートローディング-->
-    <v-overlay opacity="0.8" :value="roomStatusDisplay" color="#f6bf00" dark>
-      <div class="statusDisplay">{{ displayText }}</div>
+    <v-overlay opacity="0.8" :value="messageOverlay.isShow" color="#f6bf00" dark>
+      <div class="message-overlay">{{ messageOverlay.message }}</div>
     </v-overlay>
 
     <Drawer :room-name="roomData.name" @input-karte="inputKarte(true)" @leave-room="leaveRoom()" />
@@ -32,7 +32,7 @@
 
     <v-flex>
       <!-- 教室 -->
-      <v-row justify="center" class="pt-5" :style="{ background: roomColor }" id="room">
+      <v-row justify="center" class="pt-5" :style="{ background: backgroundColor }" id="room">
         <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
       </v-row>
 
@@ -80,12 +80,15 @@ export default {
   },
   data() {
     return {
+      chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
       canvas: '', // キャンバスエリア
       isLoading: false, // ロードの制御
-      roomStatusDisplay: false, //自習スタートローディング
-      syncTimer: null, // 同期制御
-      displayText: '自習スタート', //部屋の状態表示のテキスト文字
-      chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
+      messageOverlay: {
+        isShow: false, // メッセージオーバーレイ制御
+        message: '', // 表示メッセージ
+      },
+      backgroundColor: '', // 教室の背景色
+      roomStatus: '', // 教室の状態
       roomData: '', // 教室データ
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
@@ -104,20 +107,6 @@ export default {
         dialog: false, // カルテ記入ダイアログの制御
         confirm: true, // 自習継続の確認
       },
-      now: '00:00', // 現在時刻 1240 １２時40分
-      nowTimeTable: '', //現在の時間割の状態を格納する study or lounge
-      zIndex: 0,
-      roomColor: '#ffffff', //部屋の色
-      studyRoomColor: '#f4f4f4', //自習時間の背景色
-      loungeRoomColor: '#ffe89a', //休憩時間の背景色
-      timeTables: [
-        { time: '14:00', role: 'study' },
-        { time: '14:10', role: 'lounge' },
-        { time: '14:15', role: 'study' },
-        { time: '14:18', role: 'lounge' },
-        { time: '14:55', role: 'study' },
-        { time: '14:00', role: 'lounge' },
-      ], //時間割
     };
   },
   beforeRouteEnter: async (to, from, next) => {
@@ -151,7 +140,6 @@ export default {
                 switch (seat.status) {
                   case 'sitting':
                     this.putIcon(seat.position.x, seat.position.y, seat.user);
-                    this.time();
                     break;
 
                   case 'break':
@@ -271,7 +259,7 @@ export default {
           (this.authUser.seat === null && event.target.role === 'study') ||
           (this.authUser.seat !== null &&
             event.target.role === 'lounge' &&
-            this.nowTimeTable === 'lounge')
+            this.roomStatus === 'break')
         ) {
           event.target.set({ fill: '#0000ff' });
           this.canvas.requestRenderAll();
@@ -305,11 +293,12 @@ export default {
             // 現在どこにも着席していない場合
             if (this.authUser.seat === null) {
               // 状態変更処理
-              this.startDisplay('study');
               await this.userAction('sitting', event.target);
               // if (typeof this.authUser.seat_id === 'number') {
               //   this.projectsDialog = true; //auth userが自習室に初めてsittingしたときモーダル表示
               // }
+              // 自習開始
+              this.startStudy();
             }
             break;
 
@@ -323,12 +312,12 @@ export default {
             } else {
               // 現在自習室に着席中の場合
               if (this.authUser.seat.section.role === 'study') {
-                if (this.nowTimeTable != 'lounge') {
-                  //休憩室開放時間じゃなければ
-                  //休憩室がクリックされたときにユーザに伝える
+                if (this.roomStatus !== 'break') {
+                  // 休憩室開放時間じゃなければ
+                  // 休憩室がクリックされたときにユーザに伝える
                   this.$store.dispatch('alert/show', {
                     type: 'error',
-                    message: '休憩室は解放されていません',
+                    message: '休憩室は解放されていません！',
                   });
                 } else {
                   // 状態変更処理
@@ -452,60 +441,25 @@ export default {
       this.canvas.remove(removeObject);
       this.canvas.requestRenderAll();
     },
-    /**
-     * 時間による制御
-     */
-    time: function () {
-      //test用 time tables
-      this.timeTables = [
-        { time: '00:00', role: 'study' },
-        { time: '01:00', role: 'lounge' },
-        { time: '14:00', role: 'study' },
-        { time: '14:05', role: 'lounge' },
-        { time: '14:08', role: 'study' },
-        { time: '14:14', role: 'lounge' },
-        { time: '14:17', role: 'study' },
-        { time: '14:50', role: 'lounge' },
-        { time: '23:00', role: 'study' },
-        { time: '23:45', role: 'lounge' },
-      ];
-
-      let date = new Date(); //new演算子でオブジェクトのインスタンスを生成
-      this.now = date.getHours() + ':' + date.getMinutes();
-      let nowRoomRole = ''; //現在の部屋の状態 自習 or 休憩
-
-      //現在時刻と休憩開始時刻を比較
-      for (var index in this.timeTables) {
-        if (this.timeTables.hasOwnProperty(index)) {
-          if (this.now === this.timeTables[index].time) {
-            // 自習開始時刻 or　休憩開始時刻ならば
-            this.startDisplay(this.timeTables[index].role); //画面に表示
-            nowRoomRole = this.timeTables[index].role;
-            this.nowTimeTable = nowRoomRole; //休憩室出席処理のために時間割状態を格納
-          } else if (this.timeTables[index].time < this.now) {
-            //自主中　or　休憩中
-            nowRoomRole = this.timeTables[index].role;
-            this.nowTimeTable = nowRoomRole; //休憩室出席処理のために時間割状態を格納
-          } else {
-            if (nowRoomRole === '') console.log('tameTable error');
-          }
-        }
-      }
-      this.changeRoomColor(nowRoomRole); //時間割に合わせて背景色変更
-      console.log(nowRoomRole);
-    },
 
     /**
-     * 時間による背景色の変更
-     * @param status String 'study' or 'lounge'
+     * 部屋の状態を更新
+     *
+     * @param String  status  部屋の状態
      */
-    changeRoomColor: function (status) {
-      if (status === 'study') {
-        //自習時間
-        this.roomColor = this.studyRoomColor;
-      } else {
-        //休憩室開放時間
-        this.roomColor = this.loungeRoomColor;
+    updateRoomStatus: function (status) {
+      // 状態を更新
+      this.roomStatus = status;
+
+      // 背景色の変更
+      if (this.roomStatus === 'study') {
+        // 自習時間
+        this.showMessageOverlay('自習時間です！');
+        this.backgroundColor = '#f4f4f4';
+      } else if (this.roomStatus === 'break') {
+        // 休憩時間
+        this.showMessageOverlay('休憩時間です！');
+        this.backgroundColor = '#ffe89a';
       }
     },
 
@@ -514,7 +468,12 @@ export default {
      */
     startStudy: async function () {
       //this.projectDialog = false;
-      this.startDisplay('study'); //自習開始の表示
+      this.showMessageOverlay('自習開始！');
+
+      if (this.$store.getters['alert/isSoundOn']) {
+        // チャイム
+        this.chime.play();
+      }
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
@@ -527,27 +486,20 @@ export default {
       //this.projectDialog = false;
       this.leaveRoom();
     },
-    /**
-     * ルームの状態表示開始(休憩時間開始、自習開始など)
-     */
-    startDisplay: function (role) {
-      if (role === 'study') {
-        this.displayText = '自習スタート';
-      } else {
-        this.displayText = '休憩スタート';
-      }
-      this.roomStatusDisplay = true;
-      setTimeout(this.closeDisplay, 2000);
 
-      if (this.$store.getters['alert/isSoundOn']) {
-        this.chime.play();
-      }
-    },
     /**
-     * 自習開始
+     * メッセージの表示
+     *
+     * @param String  message  表示するテキスト
      */
-    closeDisplay: async function () {
-      this.roomStatusDisplay = false;
+    showMessageOverlay: function (message) {
+      this.messageOverlay.message = message;
+      this.messageOverlay.isShow = true;
+
+      // 2秒で閉じる
+      setTimeout(() => {
+        this.messageOverlay.isShow = false;
+      }, 2000);
     },
   },
 
@@ -562,12 +514,11 @@ export default {
   },
 
   async mounted() {
-    // ロード開始
-    this.time();
-    this.isLoading = true;
-
     // ボリュームの調整
     this.chime.volume = 0.2;
+
+    // ロード開始
+    this.isLoading = true;
 
     /**
      * キャンバスの設定
@@ -642,33 +593,51 @@ export default {
       }
     });
 
+    /**
+     * 現在の部屋の状態を確認
+     */
+    var date = new Date();
+    var now = date.getHours() + ':' + date.getMinutes();
+    Object.keys(this.roomData.timetable).forEach((separate) => {
+      if (now > separate) {
+        // 現在の状態を保存
+        this.roomStatus = this.roomData.timetable[separate];
+
+        // 背景色の設定
+        if (this.roomStatus === 'study') {
+          // 自習時間
+          this.backgroundColor = '#f4f4f4';
+        } else if (this.roomStatus === 'break') {
+          // 休憩時間
+          this.backgroundColor = '#ffe89a';
+        }
+      }
+    });
+
     // ロード終了
     this.isLoading = false;
 
     /**
-     * 部屋の同期開始
+     * データの同期開始
      */
-    Echo.channel('room-' + this.roomData.id).listen('SeatEvent', (event) => {
-      this.roomData = event;
-    });
-
-    Echo.channel('room-' + this.roomData.id).listen('TimetableEvent', (event) => {
-      console.log(event);
-    });
-
-    this.syncTimer = setInterval(() => {
-      this.time();
-    }, 60000);
+    Echo.channel('room-' + this.roomData.id)
+      .listen('SeatEvent', (event) => {
+        // 部屋情報の更新
+        this.roomData = event;
+      })
+      .listen('TimetableEvent', (event) => {
+        // 時間割イベントの受信
+        this.updateRoomStatus(event.status);
+      });
   },
 
-  destroyed() {
-    Echo.channel('room-' + this.roomData.id).stopListening('SeatEvent');
-    Echo.channel('room-' + this.roomData.id).stopListening('TimetableEvent');
-
-    // ページ遷移時にはタイマーを解除
-    if (this.syncTimer !== null) {
-      clearInterval(this.syncTimer);
-    }
+  beforeDestroy() {
+    /**
+     * データの同期終了
+     */
+    Echo.channel('room-' + this.roomData.id)
+      .stopListening('SeatEvent')
+      .stopListening('TimetableEvent');
   },
 };
 </script>
@@ -676,8 +645,8 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
-.statusDisplay {
-  font-size: 1000%;
+.message-overlay {
+  font-size: 100px;
 }
 
 #room {
