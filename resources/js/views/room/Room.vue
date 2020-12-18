@@ -85,6 +85,7 @@ export default {
       roomStatusDisplay: false, //自習スタートローディング
       syncTimer: null, // 同期制御
       displayText: '自習スタート', //部屋の状態表示のテキスト文字
+      chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
       roomData: '', // 教室データ
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
@@ -537,6 +538,10 @@ export default {
       }
       this.roomStatusDisplay = true;
       setTimeout(this.closeDisplay, 2000);
+
+      if (this.$store.getters['alert/isSoundOn']) {
+        this.chime.play();
+      }
     },
     /**
      * 自習開始
@@ -560,6 +565,9 @@ export default {
     // ロード開始
     this.time();
     this.isLoading = true;
+
+    // ボリュームの調整
+    this.chime.volume = 0.2;
 
     /**
      * キャンバスの設定

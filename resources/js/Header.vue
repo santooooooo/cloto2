@@ -17,7 +17,14 @@
       <v-tab :to="{ name: 'contact' }">Contact</v-tab>
     </v-tabs>
 
-    <v-spacer v-if="!isRelease"></v-spacer>
+    <v-spacer></v-spacer>
+
+    <!-- 通知音ボタン -->
+    <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
+      <v-icon large>
+        {{ $store.getters['alert/isSoundOn'] ? 'mdi-volume-high' : 'mdi-volume-off' }}
+      </v-icon>
+    </v-btn>
 
     <v-btn
       depressed

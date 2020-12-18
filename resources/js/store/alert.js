@@ -1,8 +1,21 @@
+const Storage = require('@/consts/storage').getStoragePath;
+
+// 通知音
+const onSound = new Audio(Storage('system') + 'notification_sound_on.mp3');
+const offSound = new Audio(Storage('system') + 'notification_sound_off.mp3');
+onSound.volume = 0.6;
+offSound.volume = 0.6;
+
 const state = {
   show: false,
   type: null,
   message: null,
   timeout: null,
+  isSoundOn: false,
+};
+
+const getters = {
+  isSoundOn: (state) => state.isSoundOn,
 };
 
 const mutations = {
@@ -22,6 +35,15 @@ const mutations = {
     }
     state.timeout = null;
   },
+  switchSound(state) {
+    if (state.isSoundOn) {
+      offSound.play();
+      state.isSoundOn = false;
+    } else {
+      onSound.play();
+      state.isSoundOn = true;
+    }
+  },
 };
 
 const actions = {
@@ -32,11 +54,15 @@ const actions = {
   hide(context) {
     context.commit('clearAlert');
   },
+  switchSound(context) {
+    context.commit('switchSound');
+  },
 };
 
 export default {
   namespaced: true,
   state,
+  getters,
   mutations,
   actions,
 };

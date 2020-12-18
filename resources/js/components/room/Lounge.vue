@@ -271,8 +271,8 @@
       <v-spacer></v-spacer>
 
       <!-- 通知音ボタン -->
-      <v-btn color="white" icon class="mr-6" @click="settingNotificationSound()">
-        <v-icon large>{{ notificationSound.isOn ? 'mdi-bell' : 'mdi-bell-off' }}</v-icon>
+      <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
+        <v-icon large>{{ isNotificationOn ? 'mdi-bell' : 'mdi-bell-off' }}</v-icon>
       </v-btn>
 
       <!-- チャットボタン -->
@@ -399,13 +399,10 @@ export default {
       },
 
       //*** 通知音 ***//
-      notificationSound: {
-        isOn: false, // 通知音制御
-        notificationOn: new Audio(this.$storage('system') + 'notification_sound_on.mp3'),
-        notificationOff: new Audio(this.$storage('system') + 'notification_sound_off.mp3'),
-        joinNotification: new Audio(this.$storage('system') + 'join_notification.mp3'),
-        leaveNotification: new Audio(this.$storage('system') + 'leave_notification.mp3'),
-        messageNotification: new Audio(this.$storage('system') + 'message_notification.mp3'),
+      notificationSounds: {
+        join: new Audio(this.$storage('system') + 'join_notification.mp3'),
+        leave: new Audio(this.$storage('system') + 'leave_notification.mp3'),
+        receiveMessage: new Audio(this.$storage('system') + 'message_notification.mp3'),
       },
 
       //*** プロフィール ***//
@@ -418,6 +415,9 @@ export default {
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
+    },
+    isNotificationOn() {
+      return this.$store.getters['alert/isSoundOn'];
     },
     pinnedParticipant() {
       // ピン留めされている参加者（一人）
@@ -510,8 +510,8 @@ export default {
 
             if (!this.chat.isOpen) {
               // 通知音
-              if (this.notificationSound.isOn) {
-                this.notificationSound.messageNotification.play();
+              if (this.isNotificationOn) {
+                this.notificationSounds.receiveMessage.play();
               }
 
               // 通知の表示
@@ -579,8 +579,8 @@ export default {
       // ユーザーが参加した場合
       if (user !== '') {
         // 通知音
-        if (this.notificationSound.isOn) {
-          this.notificationSound.joinNotification.play();
+        if (this.isNotificationOn) {
+          this.notificationSounds.join.play();
         }
 
         // 参加者の追加
@@ -615,8 +615,8 @@ export default {
      */
     leaveUser: function (peerId) {
       // 通知音
-      if (this.notificationSound.isOn) {
-        this.notificationSound.leaveNotification.play();
+      if (this.isNotificationOn) {
+        this.notificationSounds.leave.play();
       }
 
       this.participants = this.participants.filter((participant) => {
@@ -849,19 +849,6 @@ export default {
     },
 
     /**
-     * 通知音の制御
-     */
-    settingNotificationSound: function () {
-      if (this.notificationSound.isOn) {
-        this.notificationSound.isOn = false;
-        this.notificationSound.notificationOff.play();
-      } else {
-        this.notificationSound.isOn = true;
-        this.notificationSound.notificationOn.play();
-      }
-    },
-
-    /**
      * プロフィールの表示
      *
      * @param String  username  プロフィールを表示するユーザー名
@@ -873,6 +860,11 @@ export default {
   },
 
   async created() {
+    // ボリュームの調整
+    this.notificationSounds.join.volume = 0.6;
+    this.notificationSounds.leave.volume = 0.6;
+    this.notificationSounds.receiveMessage.volume = 0.6;
+
     // 定員が4人より多い場合はSFU方式を利用
     if (this.capacity > 4) {
       this.roomMode = 'sfu';
