@@ -621,35 +621,56 @@ export default {
       minute = '0' + minute;
     }
 
+    // 現在時刻
     var now = hour + ':' + minute;
 
-    var oneBefore; // 状態保存用変数
-    Object.keys(this.roomData.timetable).forEach((separate) => {
-      if (this.roomStatus === null) {
-        if (now === separate) {
-          // 現在の状態を保存
-          this.roomStatus = this.roomData.timetable[separate];
-        } else if (now < separate) {
-          // 一つ前の状態を保存（区切りに到達する前のため）
-          this.roomStatus = this.roomData.timetable[oneBefore];
-        }
-
-        // 背景色の設定
-        if (this.roomStatus === 'study') {
-          // 自習時間
-          this.backgroundColor = '#b0e0e6';
-        } else if (this.roomStatus === 'break') {
-          // 休憩時間
-          this.backgroundColor = '#ffe89a';
-        }
-
-        // 更新前に保存しておく
-        oneBefore = separate;
-      }
+    // オブジェクトを配列化
+    var timetable = [];
+    Object.keys(this.roomData.timetable).forEach((key) => {
+      timetable.push({ separate: key, status: this.roomData.timetable[key] });
     });
 
-    // ロード終了
-    this.isLoading = false;
+    // 時刻の小さい順に並べ替える
+    timetable.sort((a, b) => {
+      let comparison = 0;
+      if (a.separate > b.separate) {
+        comparison = 1;
+      } else if (a.separate < b.separate) {
+        comparison = -1;
+      }
+      return comparison;
+    });
+
+    // 小さい順に時間を確認していく
+    timetable.forEach((time, index) => {
+      if (this.roomStatus === null) {
+        if (now === time.separate) {
+          // 現在の状態を保存
+          this.roomStatus = timetable[index].status;
+
+          // 背景色の設定
+          if (this.roomStatus === 'study') {
+            // 自習時間
+            this.backgroundColor = '#b0e0e6';
+          } else if (this.roomStatus === 'break') {
+            // 休憩時間
+            this.backgroundColor = '#ffe89a';
+          }
+        } else if (now < time.separate) {
+          // 一つ前の状態を保存（区切りに到達する前のため）
+          this.roomStatus = timetable[index - 1].status;
+
+          // 背景色の設定
+          if (this.roomStatus === 'study') {
+            // 自習時間
+            this.backgroundColor = '#b0e0e6';
+          } else if (this.roomStatus === 'break') {
+            // 休憩時間
+            this.backgroundColor = '#ffe89a';
+          }
+        }
+      }
+    });
 
     /**
      * データの同期開始
@@ -663,6 +684,9 @@ export default {
         // 時間割イベントの受信
         this.updateRoomStatus(event.status);
       });
+
+    // ロード終了
+    this.isLoading = false;
   },
 
   beforeDestroy() {
