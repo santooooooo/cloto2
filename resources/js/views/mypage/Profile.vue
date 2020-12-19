@@ -1,8 +1,7 @@
 <template>
   <div class="card">
     <!-- 編集ダイアログ -->
-    <ProfileEditDialog @close="profileEditDialog = $event" v-if="profileEditDialog">
-    </ProfileEditDialog>
+    <ProfileEditDialog @close="profileEditDialog = $event" v-if="profileEditDialog" />
     <!-- アイコン表示 -->
     <v-card class="text-center" flat>
       <v-avatar class="profile" size="150">
@@ -20,7 +19,7 @@
     </div> -->
 
       <!-- ハンドルネームとユーザーネーム表示 -->
-      <v-card height="475" flat color="blue-grey lighten-5">
+      <v-card height="475" flat tile color="blue-grey lighten-5">
         <v-col class="pa-0"
           >　
           <v-list-item color="rgba(0, 0, 0, .4)" dark>
@@ -60,9 +59,11 @@ export default {
       };
     },
   },
+
   components: {
     ProfileEditDialog,
   },
+
   data() {
     return {
       profileEditDialog: false,

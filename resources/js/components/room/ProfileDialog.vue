@@ -61,12 +61,6 @@
             </v-card>
           </v-col>
         </v-row>
-
-        <v-tabs class="pa-0" fixed-tabs background-color="grey lighten-1" dark>
-          <v-tab> Projects </v-tab>
-          <v-tab> TO Do </v-tab>
-          <v-tab> Record </v-tab>
-        </v-tabs>
       </v-container>
     </v-card>
   </v-dialog>
