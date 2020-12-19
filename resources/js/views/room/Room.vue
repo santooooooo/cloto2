@@ -6,7 +6,7 @@
     </v-overlay>
 
     <!-- 自習スタートローディング-->
-    <v-overlay opacity="0.8" :value="messageOverlay.isShow" color="#f6bf00" dark>
+    <v-overlay opacity="0.8" :value="messageOverlay.isShow" :color="messageOverlay.color" dark>
       <div class="message-overlay">{{ messageOverlay.message }}</div>
     </v-overlay>
 
@@ -86,9 +86,10 @@ export default {
       messageOverlay: {
         isShow: false, // メッセージオーバーレイ制御
         message: '', // 表示メッセージ
+        color: '', // 表示色
       },
       backgroundColor: '', // 教室の背景色
-      roomStatus: '', // 教室の状態
+      roomStatus: null, // 教室の状態
       roomData: '', // 教室データ
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
@@ -454,15 +455,15 @@ export default {
       // 背景色の変更
       if (this.roomStatus === 'study') {
         // 自習時間
-        this.showMessageOverlay('自習時間です！');
+        this.showMessageOverlay('自習時間です！', '#ff4500');
         // チャイム
         if (this.$store.getters['alert/isSoundOn']) {
           this.chime.play();
         }
-        this.backgroundColor = '#f4f4f4';
+        this.backgroundColor = '#b0e0e6';
       } else if (this.roomStatus === 'break') {
         // 休憩時間
-        this.showMessageOverlay('休憩時間です！');
+        this.showMessageOverlay('休憩時間です！', '#4169e1');
         // チャイム
         if (this.$store.getters['alert/isSoundOn']) {
           this.chime.play();
@@ -476,7 +477,7 @@ export default {
      */
     startStudy: async function () {
       //this.projectDialog = false;
-      this.showMessageOverlay('自習開始！');
+      this.showMessageOverlay('自習開始！', '#228b22');
 
       // チャイム
       if (this.$store.getters['alert/isSoundOn']) {
@@ -498,10 +499,12 @@ export default {
     /**
      * メッセージの表示
      *
-     * @param String  message  表示するテキスト
+     * @param String  message 表示するテキスト
+     * @param String  color   表示色
      */
-    showMessageOverlay: function (message) {
+    showMessageOverlay: function (message, color) {
       this.messageOverlay.message = message;
+      this.messageOverlay.color = color;
       this.messageOverlay.isShow = true;
 
       // 2秒で閉じる
@@ -602,23 +605,46 @@ export default {
     });
 
     /**
-     * 現在の部屋の状態を確認
+     * 入室時には現在の部屋の状態を確認
      */
     var date = new Date();
-    var now = date.getHours() + ':' + date.getMinutes();
+
+    // 2桁で時間を取得
+    var hour = date.getHours();
+    if (hour.length === 1) {
+      hour = '0' + hour;
+    }
+
+    // 2桁で分数を取得
+    var minute = date.getMinutes();
+    if (minute.length === 1) {
+      minute = '0' + minute;
+    }
+
+    var now = hour + ':' + minute;
+
+    var oneBefore; // 状態保存用変数
     Object.keys(this.roomData.timetable).forEach((separate) => {
-      if (now > separate) {
-        // 現在の状態を保存
-        this.roomStatus = this.roomData.timetable[separate];
+      if (this.roomStatus === null) {
+        if (now === separate) {
+          // 現在の状態を保存
+          this.roomStatus = this.roomData.timetable[separate];
+        } else if (now < separate) {
+          // 一つ前の状態を保存（区切りに到達する前のため）
+          this.roomStatus = this.roomData.timetable[oneBefore];
+        }
 
         // 背景色の設定
         if (this.roomStatus === 'study') {
           // 自習時間
-          this.backgroundColor = '#f4f4f4';
+          this.backgroundColor = '#b0e0e6';
         } else if (this.roomStatus === 'break') {
           // 休憩時間
           this.backgroundColor = '#ffe89a';
         }
+
+        // 更新前に保存しておく
+        oneBefore = separate;
       }
     });
 
