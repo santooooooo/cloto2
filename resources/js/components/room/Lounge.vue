@@ -11,7 +11,7 @@
                 width="208"
                 height="117"
                 class="d-flex justify-center align-center"
-                v-if="isVideoOff || localStream === null"
+                v-if="isVideoLoading || isVideoOff || localStream === null"
               >
                 <v-avatar size="50" class="aligh-self-center"
                   ><img :src="$storage('icon') + authUser.icon"
@@ -30,7 +30,7 @@
 
               <p class="handlename">{{ authUser.handlename }}</p>
 
-              <p class="is-mute" v-if="isMute">
+              <p class="is-mute" v-if="isAudioLoading || isMute">
                 <v-icon color="red">mdi-microphone-off</v-icon>
               </p>
             </v-sheet>
@@ -233,13 +233,22 @@
       <v-spacer></v-spacer>
 
       <!-- ミュートボタン -->
-      <v-btn :color="!isMute ? 'white' : 'red'" fab depressed large class="mx-10" @click="mute()">
+      <v-btn
+        :color="!isMute ? 'white' : 'red'"
+        :disabled="isAudioLoading || isVideoLoading"
+        fab
+        depressed
+        large
+        class="mx-10"
+        @click="mute()"
+      >
         <v-icon large>{{ !isMute ? 'mdi-microphone' : 'mdi-microphone-off' }}</v-icon>
       </v-btn>
 
       <!-- ビデオオフボタン -->
       <v-btn
         :color="!isVideoOff ? 'white' : 'red'"
+        :disabled="isAudioLoading || isVideoLoading"
         fab
         depressed
         large
@@ -382,7 +391,9 @@ export default {
         showWidth: 320, // ビデオ表示サイズ（横）
         showHeight: 180, // ビデオ表示サイズ（縦）
       },
+      isAudioLoading: true, // マイク接続ローディング制御
       isMute: false, // ミュート制御
+      isVideoLoading: true, // ビデオ接続ローディング制御
       isVideoOff: false, // ビデオオフ制御
 
       //*** 音声検出 ***//
@@ -711,19 +722,25 @@ export default {
      */
     connectDevice: async function () {
       var constraints = {
-        audio: this.selectedAudio ? { deviceId: { exact: this.selectedAudio } } : false,
-        video: this.selectedVideo ? { deviceId: { exact: this.selectedVideo } } : false,
+        audio:
+          this.selectedAudio && !this.isMute ? { deviceId: { exact: this.selectedAudio } } : false,
+        video:
+          this.selectedVideo && !this.isVideoOff
+            ? { deviceId: { exact: this.selectedVideo } }
+            : false,
       };
 
       // 録画サイズの設定
-      constraints.video.width = {
-        min: this.videoSize.width,
-        max: this.videoSize.width,
-      };
-      constraints.video.height = {
-        min: this.videoSize.height,
-        max: this.videoSize.height,
-      };
+      if (constraints.video !== false) {
+        constraints.video.width = {
+          min: this.videoSize.width,
+          max: this.videoSize.width,
+        };
+        constraints.video.height = {
+          min: this.videoSize.height,
+          max: this.videoSize.height,
+        };
+      }
 
       this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
     },
@@ -740,25 +757,45 @@ export default {
     /**
      * ミュートの切り替え
      */
-    mute: function () {
-      const audioTrack = this.localStream.getAudioTracks()[0];
+    mute: async function () {
+      this.isAudioLoading = true;
+
       this.isMute = !this.isMute;
-      audioTrack.enabled = !this.isMute;
+
+      if (this.isMute) {
+        // マイクデバイスの停止
+        await this.localStream.getAudioTracks()[0].stop();
+      } else {
+        // マイクデバイスの再接続
+        await this.changeDevice();
+      }
 
       // 通知
       this.call.send({ type: 'audioEvent', content: { isMute: this.isMute } });
+
+      this.isAudioLoading = false;
     },
 
     /**
      * ビデオのオン/オフ切り替え
      */
-    videoOff: function () {
-      const videoTrack = this.localStream.getVideoTracks()[0];
+    videoOff: async function () {
+      this.isVideoLoading = true;
+
       this.isVideoOff = !this.isVideoOff;
-      videoTrack.enabled = !this.isVideoOff;
+
+      if (this.isVideoOff) {
+        // ビデオデバイスの停止
+        await this.localStream.getVideoTracks()[0].stop();
+      } else {
+        // ビデオデバイスの再接続
+        await this.changeDevice();
+      }
 
       // 通知
       this.call.send({ type: 'videoEvent', content: { isVideoOff: this.isVideoOff } });
+
+      this.isVideoLoading = false;
     },
 
     /**
