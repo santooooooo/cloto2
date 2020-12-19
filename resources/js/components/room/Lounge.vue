@@ -1,10 +1,10 @@
 <template>
   <v-container fluid>
-    <v-layout class="px-2">
+    <v-layout class="px-2 video-container">
       <v-flex>
         <v-container fluid>
           <v-row justify="center">
-            <v-sheet color="rgba(0, 0, 0, 1)" width="208" height="117" class="video-container">
+            <v-sheet color="rgba(0, 0, 0, 1)" width="208" height="117" class="video">
               <!-- 自分のビデオ（オフ） -->
               <v-sheet
                 color="black"
@@ -48,7 +48,7 @@
                 color="rgba(0, 0, 0, 1)"
                 :width="videoSize.width"
                 :height="videoSize.height"
-                class="video-container mx-1"
+                class="video mx-1"
               >
                 <!-- 参加者のビデオ（オフ） -->
                 <v-sheet
@@ -123,7 +123,7 @@
                 color="rgba(0, 0, 0, 1)"
                 :width="videoSize.showWidth"
                 :height="videoSize.showHeight"
-                class="video-container mx-1"
+                class="video mx-1"
               >
                 <!-- 参加者のビデオ（オフ） -->
                 <v-sheet
@@ -904,62 +904,66 @@ export default {
 @import '~/_variables';
 
 .video-container {
-  position: relative;
+  margin-bottom: 100px;
 
-  .handlename {
-    position: absolute;
-    background-color: black;
-    color: white;
-    line-height: 1em;
-    bottom: 0;
-    left: 0;
-    margin: 0;
-    padding: 2px;
+  .video {
+    position: relative;
+
+    .handlename {
+      position: absolute;
+      background-color: black;
+      color: white;
+      line-height: 1em;
+      bottom: 0;
+      left: 0;
+      margin: 0;
+      padding: 2px;
+    }
+
+    .is-mute {
+      position: absolute;
+      color: white;
+      line-height: 1em;
+      bottom: 0;
+      right: 0;
+      margin: 0;
+      padding: 2px;
+    }
+
+    .pin-button {
+      position: absolute;
+      top: 50%;
+      left: 40%;
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+    }
+
+    .account-button {
+      position: absolute;
+      top: 50%;
+      right: 40%;
+      transform: translate(50%, -50%);
+      -webkit-transform: translate(50%, -50%);
+      -ms-transform: translate(50%, -50%);
+    }
+
+    .speaker {
+      outline: 5px solid #f6bf00;
+      outline-offset: -5px;
+    }
   }
 
-  .is-mute {
-    position: absolute;
-    color: white;
-    line-height: 1em;
-    bottom: 0;
-    right: 0;
-    margin: 0;
-    padding: 2px;
-  }
+  #chat {
+    position: -webkit-sticky;
+    position: sticky;
+    margin-top: 20px;
+    top: 20px;
 
-  .pin-button {
-    position: absolute;
-    top: 50%;
-    left: 40%;
-    transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-  }
-
-  .account-button {
-    position: absolute;
-    top: 50%;
-    right: 40%;
-    transform: translate(50%, -50%);
-    -webkit-transform: translate(50%, -50%);
-    -ms-transform: translate(50%, -50%);
-  }
-
-  .speaker {
-    outline: 5px solid #f6bf00;
-    outline-offset: -5px;
-  }
-}
-
-#chat {
-  position: -webkit-sticky;
-  position: sticky;
-  margin-top: 20px;
-  top: 20px;
-
-  .overflow-y-auto {
-    height: 500px;
-    background-color: white;
+    .overflow-y-auto {
+      height: 500px;
+      background-color: white;
+    }
   }
 }
 </style>
