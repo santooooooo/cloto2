@@ -375,6 +375,9 @@ export default {
 
       // ロード終了
       this.isLoading = false;
+
+      // フロア一覧へ
+      this.$router.push({ name: 'entrance' });
     },
 
     /**
