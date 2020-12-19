@@ -1,131 +1,134 @@
 <template>
   <v-container py-0>
-    <!-- <v-row>
-      <v-col cols="3" class="pa-0">
-        <v-card tile min-height="700" color="blue-grey lighten-2">
-          <v-overlay v-if="projects.loading">
-            <v-progress-circular indeterminate></v-progress-circular>
-          </v-overlay>
+    <!-- ローディング画面 -->
+    <v-overlay v-if="!kartes.data">
+      <v-progress-circular indeterminate size="64" v-if="!kartes.data"></v-progress-circular>
+    </v-overlay>
+    <v-card max-width="1080" tile class="ml-10">
+      <!-- <v-row v-on:mouseover"open" width="225px">aaaaaaaaaaaaaaaaaaaaaa </v-row> -->
 
-          <v-list v-else nav permanent color="blue-grey lighten-2">
-            <v-subheader>プロジェクト</v-subheader>
-            <v-list-item-group color="primary">
-              <v-list-item v-for="project in projects.data" :key="project.id" color="primary">
-                <v-list-item-content @click="getTasks(project.id)">
-                  <v-list-item-title v-text="project.name"></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-card>
-      </v-col>
-
-      <v-col cols="3" class="pa-0">
-        <v-card tile min-height="700" color="blue-grey lighten-3">
-          <v-overlay v-if="tasks.loading">
-            <v-progress-circular indeterminate></v-progress-circular>
-          </v-overlay>
-
-          <v-list v-else nav permanent color="blue-grey lighten-3" width="300">
-            <v-subheader>タスク</v-subheader>
-            <v-list-item-group color="primary" class="mr-3">
-              <v-list-item v-for="task in tasks.data" :key="task.id" color="primary">
-                <v-list-item-content @click="getKartes(task.id)">
-                  <v-list-item-title v-text="task.body"></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-card>
-      </v-col>
-
-      <v-col cols="5" class="pa-0">
-        <v-card tile min-height="700" color="blue-grey lighten-4" width="700">
-          <v-overlay v-if="kartes.loading">
-            <v-progress-circular indeterminate></v-progress-circular>
-          </v-overlay>
-
-          <v-list v-else nav permanent color="blue-grey lighten-4">
-            <v-subheader>カルテ</v-subheader>
-            <v-list-item-group color="primary">
-              <v-list-item v-for="karte in kartes.data" :key="karte.id" color="primary">
-                <v-list-item-content @click="showKarte(karte)">
-                  <v-list-item-title v-text="karte.body"></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-card>
-      </v-col>
-    </v-row> -->
-    <!-- v-for="karte in kartes.data" :key="karte.id" -->
-    <v-card width="984">
-      <v-card color="grey darken-1">
-        <v-container>
-          {{ kartes.data }}
-
+      <v-list>
+        <v-subheader>
           <v-row justify="center">
-            <v-col>
-              <v-card-text class="pa-2 white--text title font-weight-bold"> 活動内容 </v-card-text>
-              <v-card rounded> {{ karteDialog.data.body }}</v-card>
-
-              <v-card-text class="pa-2 white--text title font-weight-bold"> 参考文献 </v-card-text>
-              <v-card solo rounded height="30" v-if="karteDialog.data.reference != null">{{
-                karteDialog.data.reference
-              }}</v-card>
-              <v-card solo rounded height="30" v-else>なし</v-card>
-            </v-col>
-
-            <v-col>
-              <v-card-text class="pa-0 white--text title font-weight-bold"> 画像 </v-card-text>
-
-              <v-card v-if="karteDialog.data.image != null" height="200" class="text-center pt-6">
-                <v-avatar class="profile" color="grey" size="150">
-                  <img :src="$storage('karte') + karteDialog.data.image" class="rounded-circle" />
-                </v-avatar>
-                <!-- ここに画像持ってくる  -->
-              </v-card>
-
-              <v-card v-else height="200"> なし </v-card>
-            </v-col>
+            <v-col> 画像 </v-col>
+            <v-col> 内容 </v-col>
+            <v-col> 投稿時間 </v-col>
+            <v-col> 達成 </v-col>
+            <v-col> できなかったこと </v-col>
+            <v-col>文献</v-col>
+            <v-col>技術タグ</v-col>
           </v-row>
-          <v-row>
-            <v-col>
-              <v-card-text class="pa-2 white--text title font-weight-bold"> 技術タグ </v-card-text>
-              <v-card solo rounded height="30">nullの時の処理を追加する</v-card>
-            </v-col>
+        </v-subheader>
+        <v-list-item-group v-model="selectedItem">
+          <v-list-item v-for="karte in kartes.data" :key="karte.id">
+            <v-list-item-content @click="openKarte(karte)">
+              <v-row justify="center">
+                <v-col v-on:mouseover="openKarte(karte.body)"> {{ karte.body }} </v-col>
+                <v-col> 画像 </v-col>
+                <v-col> 画像 </v-col>
+                <v-col> 画像 </v-col>
+                <v-col> 画像 </v-col>
+                <v-col> 画像 </v-col>
+                <v-col> 画像 </v-col>
+              </v-row>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
 
-            <v-col>
-              <v-card-text class="pa-2 white--text title font-weight-bold"> 活動時間 </v-card-text>
-              <v-card solo rounded height="30">a</v-card>
-            </v-col>
-          </v-row>
+      <v-dialog v-model="dialog" width="300">
+        <v-card>
+          <v-card-text>
+            {{ this.chosenKarte }}
+          </v-card-text>
+        </v-card>
+      </v-dialog>
 
-          <v-row>
-            <v-col>
-              <v-card-text class="pa-2 white--text title font-weight-bold">
-                達成したこと
-              </v-card-text>
-              <v-card rounded height="200" v-if="karteDialog.data.archive != null">
-                {{ karteDialog.data.achieve }}</v-card
-              >
+      <!-- <v-dialog v-model="dialog" width="800">
+        <v-card color="grey darken-1">
+          <v-container>
+            {{ kartes.data }}
+            <v-row justify="center">
+              <v-col>
+                <v-card-text class="pa-2 white--text title font-weight-bold">
+                  活動内容
+                </v-card-text>
+                <v-card rounded>
+                  <div>{{ chosenKarte.body }}</div></v-card
+                >
 
-              <v-card rounded height="200" v-else> 特になし</v-card>
-            </v-col>
+                <v-card-text class="pa-2 white--text title font-weight-bold">
+                  参考文献
+                </v-card-text>
+                <v-card solo rounded v-if="chosenKarte.reference != null">{{
+                  chosenKarte.reference
+                }}</v-card>
+                <v-card solo rounded v-else>なし</v-card>
+              </v-col>
 
-            <v-col>
-              <v-card-text class="pa-2 white--text title font-weight-bold">
-                できなかったこと
-              </v-card-text>
-              <v-card rounded height="200" v-if="karteDialog.data.troble != null">{{
-                karteDialog.data.troble
-              }}</v-card>
+              <v-col>
+                <v-card-text class="pa-0 white--text title font-weight-bold"> 画像 </v-card-text>
 
-              <v-card rounded height="200" v-else>特になし</v-card>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card>
+                <v-card v-if="chosenKarte.image != null" height="200" class="text-center pt-6">
+                  <v-avatar class="profile" color="grey" size="150">
+                    <img :src="$storage('karte') + chosenKarte.image" />
+                  </v-avatar>
+                </v-card>
+
+                <v-card v-else> なし </v-card>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-card-text class="pa-2 white--text title font-weight-bold">
+                  技術タグ
+                </v-card-text>
+                <v-card
+                  solo
+                  rounded
+                  v-if="chosenKarte.technologies && chosenKarte.technologies.length !== 0"
+                  ><span v-for="technology in chosenKarte.technologies" :key="technology.id"
+                    >{{ technology.name }}　</span
+                  ></v-card
+                >
+
+                <v-card v-else>なし</v-card>
+              </v-col>
+
+              <v-col>
+                <v-card-text class="pa-2 white--text title font-weight-bold">
+                  活動時間
+                </v-card-text>
+                <v-card solo rounded>a</v-card>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col>
+                <v-card-text class="pa-2 white--text title font-weight-bold">
+                  達成したこと
+                </v-card-text>
+                <v-card rounded v-if="chosenKarte.achieve != null">
+                  {{ chosenKarte.achieve }}</v-card
+                >
+
+                <v-card rounded v-else> 特になし</v-card>
+              </v-col>
+
+              <v-col>
+                <v-card-text class="pa-2 white--text title font-weight-bold">
+                  できなかったこと
+                </v-card-text>
+                <v-card rounded v-if="chosenKarte.trouble != null">{{
+                  chosenKarte.trouble
+                }}</v-card>
+
+                <v-card rounded v-else>特になし</v-card>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card>
+      </v-dialog> -->
     </v-card>
   </v-container>
 </template>
@@ -134,6 +137,7 @@
 export default {
   data() {
     return {
+      chosenKarte: '',
       projects: {
         data: '',
         loading: false,
@@ -150,6 +154,9 @@ export default {
         dialog: false,
         data: '',
       },
+      //カルテダイアログ
+      dialog: false,
+      selectedItem: null,
     };
   },
 
@@ -194,7 +201,14 @@ export default {
 
       this.kartes.loading = false;
     },
+
+    openKarte: function (content) {
+      this.dialog = true;
+      this.chosenKarte = content;
+      console.log(content);
+    },
   },
+
   mounted() {
     this.getProjects();
     this.getKartes();
