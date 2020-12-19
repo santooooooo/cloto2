@@ -7,7 +7,75 @@
     <v-card max-width="1080" tile class="ml-10">
       <!-- <v-row v-on:mouseover"open" width="225px">aaaaaaaaaaaaaaaaaaaaaa </v-row> -->
 
-      <v-list>
+      <v-simple-table>
+        <template v-slot:default>
+          <thead>
+            <tr>
+              <th class="text-left">画像</th>
+              <th class="text-left">内容</th>
+              <th class="text-left">投稿時間</th>
+              <th class="text-left">達成</th>
+              <th class="text-left">未達成</th>
+              <th class="text-left">参考文献</th>
+              <th class="text-left">技術タグ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="karte in kartes.data" :key="karte.id">
+              <td v-if="karte.image != null">
+                <p class="karteContent">
+                  <v-img
+                    max-width="120"
+                    class="mt-2"
+                    v-on:mouseover="openKarte(karte.body)"
+                    contain
+                    :src="$storage('karte') + karte.image"
+                  />
+                </p>
+              </td>
+              <td v-else>
+                <p class="karteContent">None</p>
+              </td>
+
+              <td v-if="karte.body != null">
+                <p class="karteContent">{{ karte.body }}</p>
+              </td>
+              <td v-else>
+                <p class="karteContent">None</p>
+              </td>
+              <td>
+                <p class="karteContent">00:00</p>
+              </td>
+              <td v-if="karte.achieve != null">
+                <p class="karteContent">{{ karte.achieve }}</p>
+              </td>
+              <td v-else>
+                <p class="karteContent">None</p>
+              </td>
+              <td v-if="karte.trouble != null">
+                <p class="karteContent">{{ karte.trouble }}</p>
+              </td>
+              <td v-else>
+                <p class="karteContent">None</p>
+              </td>
+              <td v-if="karte.reference != null">
+                <p class="karteContent">{{ karte.reference }}</p>
+              </td>
+              <td v-else>
+                <p class="karteContent">None</p>
+              </td>
+              <td v-if="karte.technologies.length != 0">
+                <p class="karteContent">{{ karte.technologies }}</p>
+              </td>
+              <td v-else>
+                <p class="karteContent">None</p>
+              </td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+
+      <!-- <v-list>
         <v-subheader>
           <v-row justify="center">
             <v-col> 画像 </v-col>
@@ -22,19 +90,26 @@
         <v-list-item-group v-model="selectedItem">
           <v-list-item v-for="karte in kartes.data" :key="karte.id">
             <v-list-item-content @click="openKarte(karte)">
-              <v-row justify="center">
-                <v-col v-on:mouseover="openKarte(karte.body)"> {{ karte.body }} </v-col>
-                <v-col> 画像 </v-col>
-                <v-col> 画像 </v-col>
-                <v-col> 画像 </v-col>
-                <v-col> 画像 </v-col>
-                <v-col> 画像 </v-col>
-                <v-col> 画像 </v-col>
+              <v-row>
+                <v-col
+                  ><v-img
+                    max-width="120"
+                    v-on:mouseover="openKarte(karte.body)"
+                    contain
+                    :src="$storage('karte') + karte.image"
+                  />
+                </v-col>
+                <v-col class="col-2 text-truncate pa-0"> {{ karte.body }} </v-col>
+                <v-col class="text-truncate pa-0"> 活動時間 </v-col>
+                <v-col class="text-truncate pa-0"> {{ karte.achieve }} </v-col>
+                <v-col class="text-truncate pa-0"> {{ karte.trouble }} </v-col>
+                <v-col class="text-truncate pa-0"> {{ karte.reference }} </v-col>
+                <v-col class="text-truncate pa-0"> 技術タグ </v-col>
               </v-row>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
-      </v-list>
+      </v-list> -->
 
       <v-dialog v-model="dialog" width="300">
         <v-card>
@@ -215,3 +290,18 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@import '~/_variables';
+
+element.style {
+  width: 0px;
+}
+
+.karteContent {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100px;
+}
+</style>
