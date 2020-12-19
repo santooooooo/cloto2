@@ -16,6 +16,7 @@
           color="#f6bf00"
           :to="{ name: 'room', params: { roomId: $route.params.roomId } }"
           class="font-weight-bold"
+          :disabled="isDisabled"
           >入室</v-btn
         >
       </v-row>
@@ -35,27 +36,34 @@ export default {
       iconSize: 30, // アイコンサイズ
     };
   },
+
+  computed: {
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
+
+    // 入室無効化制御
+    isDisabled() {
+      // 着席中
+      if (this.authUser.seat) {
+        // 着席中の座席のある部屋以外は入室禁止
+        if (this.authUser.seat.section.room_id !== this.$route.params.roomId) {
+          // 無効化
+          return true;
+        }
+      }
+
+      return false;
+    },
+  },
+
   watch: {
     '$route.params.roomId': async function (val) {
       // 着席中のユーザーを更新
       await this.setUser();
     },
   },
-  async mounted() {
-    /**
-     * キャンバスの設定
-     */
-    this.canvas = new fabric.Canvas('canvas', {
-      preserveObjectStacking: true, // オブジェクトの重なり順の固定
-    });
-    this.canvas.selection = false; // エリア選択の無効化
-    this.canvas.setBackgroundImage(
-      this.$storage('system') + 'room.png',
-      this.canvas.renderAll.bind(this.canvas)
-    );
 
-    await this.setUser();
-  },
   methods: {
     /**
      * 着席中のユーザーの設定
@@ -150,6 +158,7 @@ export default {
       });
     },
   },
+
   beforeRouteEnter: async (to, from, next) => {
     const response = await axios.get(`/api/room/${to.params.roomId}`);
     if (!Object.keys(response.data).length) {
@@ -157,6 +166,22 @@ export default {
     } else {
       next();
     }
+  },
+
+  async mounted() {
+    /**
+     * キャンバスの設定
+     */
+    this.canvas = new fabric.Canvas('canvas', {
+      preserveObjectStacking: true, // オブジェクトの重なり順の固定
+    });
+    this.canvas.selection = false; // エリア選択の無効化
+    this.canvas.setBackgroundImage(
+      this.$storage('system') + 'room.png',
+      this.canvas.renderAll.bind(this.canvas)
+    );
+
+    await this.setUser();
   },
 };
 </script>
