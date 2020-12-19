@@ -21,7 +21,8 @@ class RoomsTableSeeder extends Seeder
                 'name' => '無限休憩',
                 'timetable' =>
                 [
-                    '00:00' => 'break'
+                    '00:00' => 'break',
+                    '23:59' => 'break',
                 ]
             ],
             [
