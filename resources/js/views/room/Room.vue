@@ -455,10 +455,18 @@ export default {
       if (this.roomStatus === 'study') {
         // 自習時間
         this.showMessageOverlay('自習時間です！');
+        // チャイム
+        if (this.$store.getters['alert/isSoundOn']) {
+          this.chime.play();
+        }
         this.backgroundColor = '#f4f4f4';
       } else if (this.roomStatus === 'break') {
         // 休憩時間
         this.showMessageOverlay('休憩時間です！');
+        // チャイム
+        if (this.$store.getters['alert/isSoundOn']) {
+          this.chime.play();
+        }
         this.backgroundColor = '#ffe89a';
       }
     },
@@ -470,8 +478,8 @@ export default {
       //this.projectDialog = false;
       this.showMessageOverlay('自習開始！');
 
+      // チャイム
       if (this.$store.getters['alert/isSoundOn']) {
-        // チャイム
         this.chime.play();
       }
 
