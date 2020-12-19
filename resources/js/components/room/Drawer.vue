@@ -25,21 +25,20 @@
         </v-container>
       </v-card> -->
 
-      <div class="pa-2">
-        <v-btn
-          block
-          class="mb-3"
-          depressed
-          color="#f6bf00"
-          dark
-          :disabled="!authUser.seat"
-          @click="$emit('input-karte')"
-        >
+      <!-- 着席前 -->
+      <div class="pa-2" v-if="!authUser.seat">
+        <v-btn block depressed color="success" @click="$router.push({ name: 'entrance' })">
+          退室
+        </v-btn>
+      </div>
+
+      <!-- 着席後 -->
+      <div class="pa-2" v-else>
+        <v-btn block depressed color="error" @click="$emit('leave-room')">退席</v-btn>
+
+        <v-btn block depressed color="#f6bf00" dark @click="$emit('input-karte')" class="mt-3">
           カルテ記入
         </v-btn>
-        <v-btn block depressed color="error" :disabled="!authUser.seat" @click="$emit('leave-room')"
-          >退席</v-btn
-        >
       </div>
     </v-navigation-drawer>
   </v-card>
