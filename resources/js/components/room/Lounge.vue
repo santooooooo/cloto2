@@ -688,12 +688,10 @@ export default {
 
     /**
      * 通話デバイスへのアクセス
-     *
-     * @returns Boolean アクセス成功/失敗
      */
     accessDevice: async function () {
       try {
-        // デバイスへのアクセス可能にするためにgetUserMediaを実行
+        // デバイスへのアクセス可能にするために事前にgetUserMediaを実行
         await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
         const devices = await navigator.mediaDevices.enumerateDevices();
 
@@ -709,11 +707,9 @@ export default {
 
         this.selectedAudio = this.audioDevices[0].deviceId;
         this.selectedVideo = this.videoDevices[0].deviceId;
-
-        return true;
       } catch (error) {
         // 他のアプリがデバイスを使用している場合
-        return false;
+        this.errorEvent('マイクまたはカメラが認識できませんでした．．．');
       }
     },
 
@@ -742,7 +738,13 @@ export default {
         };
       }
 
-      this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
+      try {
+        // デバイスの接続
+        this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
+      } catch (error) {
+        // 他のアプリがデバイスを使用している場合
+        this.errorEvent('マイクまたはカメラが認識できませんでした．．．');
+      }
     },
 
     /**
@@ -894,6 +896,20 @@ export default {
       this.profile.username = username;
       this.profile.dialog = true;
     },
+
+    /**
+     * エラー発生時のイベント
+     *
+     * @param String  message エラーメッセージ
+     */
+    errorEvent: function (message) {
+      this.$store.dispatch('alert/show', {
+        type: 'error',
+        message: message,
+      });
+
+      this.leaveLounge();
+    },
   },
 
   async created() {
@@ -901,6 +917,11 @@ export default {
     this.notificationSounds.join.volume = 0.6;
     this.notificationSounds.leave.volume = 0.6;
     this.notificationSounds.receiveMessage.volume = 0.6;
+
+    // エラー発生時のイベントを設定
+    window.addEventListener('unhandledrejection', () => {
+      this.errorEvent('エラーが発生しました．．．');
+    });
 
     // 定員が4人より多い場合はSFU方式を利用
     if (this.capacity > 4) {
@@ -912,27 +933,16 @@ export default {
     const myPeerId = response.data;
     this.peer = new Peer(myPeerId, { key: API_KEY });
 
-    // 入力デバイスへのアクセス
-    var access = await this.accessDevice();
+    // デバイスの接続
+    await this.accessDevice();
+    await this.connectDevice();
 
-    if (access) {
-      // 入力デバイスへの接続
-      await this.connectDevice();
+    // 通話開始
+    this.makeCall();
 
-      // 通話開始
-      this.makeCall();
-
-      // 通話開始時はミュート/ビデオオフに設定
-      this.mute();
-      this.videoOff();
-    } else {
-      this.$store.dispatch('alert/show', {
-        type: 'error',
-        message: 'マイクまたはカメラが認識できませんでした．．．',
-      });
-
-      this.leaveLounge();
-    }
+    // 通話開始時はミュート/ビデオオフに設定
+    this.mute();
+    this.videoOff();
   },
 };
 </script>
