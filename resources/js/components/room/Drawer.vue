@@ -4,7 +4,7 @@
       <v-list>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title class="text-h5">Room {{ roomName }}</v-list-item-title>
+            <v-list-item-title class="text-h5">{{ roomName }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>

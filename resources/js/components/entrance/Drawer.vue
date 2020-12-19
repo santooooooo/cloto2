@@ -18,14 +18,14 @@
           </v-list-item>
 
           <v-list-item
-            v-for="(floor, index) in floors"
+            v-for="(floor, index) in floors.slice().reverse()"
             :key="floor.id"
             class="mb-4"
             :to="{ name: 'floor', params: { roomId: floor.id } }"
           >
             <v-list-item-content>
               <v-list-item-title class="text-body-1 font-weight-bold">
-                {{ index + 1 }}F {{ floor.name }}
+                {{ floors.length - index }}F {{ floor.name }}
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
