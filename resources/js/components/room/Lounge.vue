@@ -1,5 +1,10 @@
 <template>
   <v-container fluid>
+    <!-- ローディング画面 -->
+    <v-overlay :value="isLoading" z-index="6">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+
     <v-layout class="px-2 video-container">
       <v-flex>
         <v-container fluid>
@@ -367,6 +372,8 @@ export default {
   },
   data() {
     return {
+      isLoading: false, // ローディング制御
+
       //*** 通話 ***//
       participants: [], // 参加者
       roomMode: 'mesh', // 接続モード
@@ -572,7 +579,7 @@ export default {
         }
 
         // 通話の接続を終了
-        this.peer.disconnect();
+        await this.peer.disconnect();
         this.peer = null;
       }
     },
@@ -883,7 +890,9 @@ export default {
 
       // 最下部へスクロール（DOM挿入後に実行）
       this.$nextTick(() => {
-        this.$refs.chatScrollArea.scrollTop = this.$refs.chatScrollArea.scrollHeight;
+        if (this.$refs.chatScrollArea) {
+          this.$refs.chatScrollArea.scrollTop = this.$refs.chatScrollArea.scrollHeight;
+        }
       });
     },
 
@@ -913,12 +922,14 @@ export default {
   },
 
   async created() {
+    this.isLoading = true;
+
     // ボリュームの調整
     this.notificationSounds.join.volume = 0.6;
     this.notificationSounds.leave.volume = 0.6;
     this.notificationSounds.receiveMessage.volume = 0.6;
 
-    // エラー発生時のイベントを設定
+    // エラー発生時のイベント
     window.addEventListener('unhandledrejection', () => {
       this.errorEvent('エラーが発生しました．．．');
     });
@@ -938,11 +949,18 @@ export default {
     await this.connectDevice();
 
     // 通話開始
-    this.makeCall();
+    await this.makeCall();
 
     // 通話開始時はミュート/ビデオオフに設定
-    this.mute();
-    this.videoOff();
+    await this.mute();
+    await this.videoOff();
+
+    this.isLoading = false;
+  },
+
+  beforeDestroy() {
+    // 念の為
+    this.exitCall();
   },
 };
 </script>
