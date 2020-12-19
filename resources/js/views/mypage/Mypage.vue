@@ -12,13 +12,6 @@
 import Drawer from '@/components/mypage/Drawer';
 
 export default {
-  head: {
-    title() {
-      return {
-        inner: this.$route.params.username,
-      };
-    },
-  },
   components: {
     Drawer,
   },

@@ -12,13 +12,20 @@
 import Drawer from '@/components/entrance/Drawer';
 
 export default {
+  head: {
+    title() {
+      return {
+        inner: 'フロア案内',
+      };
+    },
+  },
   components: {
     Drawer,
   },
   data() {
     return {
       floors: [], // ドロワーメニュー用階層一覧
-      rooms: '',
+      rooms: null,
     };
   },
   async mounted() {

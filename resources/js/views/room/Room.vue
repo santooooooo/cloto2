@@ -10,7 +10,11 @@
       <div class="message-overlay">{{ messageOverlay.message }}</div>
     </v-overlay>
 
-    <Drawer :room-name="roomData.name" @input-karte="inputKarte(true)" @leave-room="leaveRoom()" />
+    <Drawer
+      :room-name="roomData !== null ? roomData.name : ''"
+      @input-karte="inputKarte(true)"
+      @leave-room="leaveRoom()"
+    />
 
     <!-- 休憩室 -->
     <v-dialog
@@ -71,6 +75,16 @@ import ProfileDialog from '@/components/room/ProfileDialog';
 import { OK } from '@/consts/status';
 
 export default {
+  head: {
+    title() {
+      // 部屋データが取得されるまでは表示しない
+      if (this.roomData !== null) {
+        return {
+          inner: this.roomData.name,
+        };
+      }
+    },
+  },
   components: {
     Drawer,
     Lounge,
@@ -90,7 +104,7 @@ export default {
       },
       backgroundColor: '', // 教室の背景色
       roomStatus: null, // 教室の状態
-      roomData: '', // 教室データ
+      roomData: null, // 教室データ
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
       iconSize: 30, // アイコンサイズ
@@ -543,8 +557,13 @@ export default {
       this.canvas.renderAll.bind(this.canvas)
     );
 
-    // クリックエリアの設定
+    // 部屋データの取得
     await this.getRoom();
+
+    // データ取得後にタブタイトルを更新
+    this.$emit('updateHead');
+
+    // クリックエリアの設定
     this.roomData.sections.forEach((section, sectionIndex) => {
       section.seats.forEach((seat, seatIndex) => {
         var color = '';
