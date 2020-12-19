@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-layout id="mypage">
     <Drawer />
 
     <v-flex>
@@ -24,3 +24,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+#mypage {
+  min-height: 100vh;
+}
+</style>
