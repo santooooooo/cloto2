@@ -483,10 +483,6 @@ export default {
       // 他ユーザー参加イベント
       this.call.on('stream', (stream) => {
         this.joinUser(stream);
-
-        // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
-        this.call.send({ type: 'audioEvent', content: { isMute: this.isMute } });
-        this.call.send({ type: 'videoEvent', content: { isVideoOff: this.isVideoOff } });
       });
 
       // データ到着イベント
@@ -590,38 +586,51 @@ export default {
      * @param MediaStream stream  参加したユーザーのストリーム
      */
     joinUser: async function (stream) {
-      // ユーザー名と表示名の取得
-      var response = await this.$http.get(this.$endpoint('getUserByPeerId', [stream.peerId]));
-      var user = response.data;
+      // 参加者がいるか確認
+      // ミュートやビデオの切替時にもストリームが置き換わるため発火する場合がある
+      // 同一のPeerIDが存在しないことを確認する
+      var isJoin = !this.participants.some(
+        (participant) => participant.stream.peerId === stream.peerId
+      );
 
-      // ユーザーが参加した場合
-      if (user !== '') {
-        // 通知音
-        if (this.isNotificationOn) {
-          this.notificationSounds.join.play();
-        }
+      if (isJoin) {
+        // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
+        this.call.send({ type: 'audioEvent', content: { isMute: this.isMute } });
+        this.call.send({ type: 'videoEvent', content: { isVideoOff: this.isVideoOff } });
 
-        // 参加者の追加
-        this.participants.push({
-          isPinned: false, // ピン留めしているか
-          username: user.username, // ユーザー名
-          handlename: user.handlename, // 表示名
-          icon: user.icon, // アイコン
-          isMute: true, // ミュート状態
-          isVideoOff: true, // ビデオオフ状態
-          stream: stream,
-        });
+        // ユーザー名と表示名の取得
+        var response = await this.$http.get(this.$endpoint('getUserByPeerId', [stream.peerId]));
+        var user = response.data;
 
-        // 音声検知の開始
-        this.startVoiceDetection(stream);
+        // ユーザーが参加した場合
+        if (user !== '') {
+          // 通知音
+          if (this.isNotificationOn) {
+            this.notificationSounds.join.play();
+          }
 
-        // 参加メッセージの追加
-        this.addMessage(null, user.handlename + 'が入室しました！');
-      } else {
-        // 画面共有が参加した場合
-        if (!this.screenSharing.isLocal) {
-          // 自分が画面共有していない場合（他人が画面共有を開始）
-          this.screenSharing.stream = stream;
+          // 参加者の追加
+          this.participants.push({
+            isPinned: false, // ピン留めしているか
+            username: user.username, // ユーザー名
+            handlename: user.handlename, // 表示名
+            icon: user.icon, // アイコン
+            isMute: true, // ミュート状態
+            isVideoOff: true, // ビデオオフ状態
+            stream: stream,
+          });
+
+          // 音声検知の開始
+          this.startVoiceDetection(stream);
+
+          // 参加メッセージの追加
+          this.addMessage(null, user.handlename + 'が入室しました！');
+        } else {
+          // 画面共有が参加した場合
+          if (!this.screenSharing.isLocal) {
+            // 自分が画面共有していない場合（他人が画面共有を開始）
+            this.screenSharing.stream = stream;
+          }
         }
       }
     },
