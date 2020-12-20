@@ -632,13 +632,13 @@ export default {
     var date = new Date();
 
     // 2桁で時間を取得
-    var hour = date.getHours();
+    var hour = String(date.getHours());
     if (hour.length === 1) {
       hour = '0' + hour;
     }
 
     // 2桁で分数を取得
-    var minute = date.getMinutes();
+    var minute = String(date.getMinutes());
     if (minute.length === 1) {
       minute = '0' + minute;
     }
