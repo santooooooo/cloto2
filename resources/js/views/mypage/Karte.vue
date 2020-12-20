@@ -33,46 +33,47 @@
           </thead>
           <tbody>
             <tr v-for="karte in kartes.data" :key="karte.id">
-              <td v-if="karte.image != null">
-                <p class="karteContent">
-                  <v-img
-                    style="cursor: pointer"
-                    @click="openKarte(karte)"
-                    max-width="120"
-                    class="mt-2"
-                    contain
-                    :src="$storage('karte') + karte.image"
-                  />
-                </p>
-              </td>
-              <td v-else>
-                <p class="karteContent">None</p>
+              <!-- 画像 -->
+              <td>
+                <v-img
+                  style="cursor: pointer"
+                  @click="openKarte(karte)"
+                  max-width="120"
+                  class="my-2"
+                  contain
+                  :src="$storage('karte') + karte.image"
+                  v-if="karte.image"
+                />
+
+                <v-sheet
+                  color="grey lighten-2"
+                  width="120"
+                  height="120"
+                  class="my-2"
+                  v-else
+                ></v-sheet>
               </td>
 
               <v-tooltip max-width="300" top>
                 <template v-slot:activator="{ on, attrs }">
-                  <td v-bind="attrs" v-on="on" v-if="karte.body != null">
-                    <p class="karteContent">{{ karte.body }}</p>
-                  </td>
-
-                  <td v-else>
-                    <p class="karteContent">None</p>
+                  <td v-bind="attrs" v-on="on" v-if="karte.body">
+                    <p class="karte-content">{{ karte.body }}</p>
                   </td>
                 </template>
                 <span>{{ karte.body }}</span>
               </v-tooltip>
 
               <td>
-                <p class="karteContent">00:00</p>
+                <p class="karte-content">00:00</p>
               </td>
               <v-tooltip max-width="300" top>
                 <template v-slot:activator="{ on, attrs }">
                   <td v-bind="attrs" v-on="on" v-if="karte.archive != null">
-                    <p class="karteContent">{{ karte.archive }}</p>
+                    <p class="karte-content">{{ karte.archive }}</p>
                   </td>
 
                   <td v-else>
-                    <p class="karteContent">None</p>
+                    <p class="karte-content">None</p>
                   </td>
                 </template>
                 <span>{{ karte.archive }}</span>
@@ -80,11 +81,11 @@
               <v-tooltip max-width="300" top>
                 <template v-slot:activator="{ on, attrs }">
                   <td v-bind="attrs" v-on="on" v-if="karte.trouble != null">
-                    <p class="karteContent">{{ karte.trouble }}</p>
+                    <p class="karte-content">{{ karte.trouble }}</p>
                   </td>
 
                   <td v-else>
-                    <p class="karteContent">None</p>
+                    <p class="karte-content">None</p>
                   </td>
                 </template>
                 <span>{{ karte.trouble }}</span>
@@ -92,11 +93,11 @@
               <v-tooltip max-width="300" top>
                 <template v-slot:activator="{ on, attrs }">
                   <td v-bind="attrs" v-on="on" v-if="karte.reference != null">
-                    <p class="karteContent">{{ karte.reference }}</p>
+                    <p class="karte-content">{{ karte.reference }}</p>
                   </td>
 
                   <td v-else>
-                    <p class="karteContent">None</p>
+                    <p class="karte-content">None</p>
                   </td>
                 </template>
                 <span>{{ karte.reference }}</span>
@@ -105,11 +106,11 @@
               <v-tooltip max-width="300" top>
                 <template v-slot:activator="{ on, attrs }">
                   <td v-bind="attrs" v-on="on" v-if="karte.technologies.length != 0">
-                    <p class="karteContent">技術タグ{{ karte.technologies.length }}個</p>
+                    <p class="karte-content">技術タグ{{ karte.technologies.length }}個</p>
                   </td>
 
                   <td v-else>
-                    <p class="karteContent">None</p>
+                    <p class="karte-content">None</p>
                   </td>
                 </template>
 
@@ -125,10 +126,10 @@
               </v-tooltip>
 
               <!-- <td v-if="karte.technologies.length != 0">
-                <p class="karteContent">技術タグ{{ karte.technologies.length }}個</p>
+                <p class="karte-content">技術タグ{{ karte.technologies.length }}個</p>
               </td>
               <td v-else>
-                <p class="karteContent">None</p>
+                <p class="karte-content">None</p>
               </td> -->
             </tr>
           </tbody>
@@ -237,10 +238,11 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
-.karteContent {
+.karte-content {
+  width: 100px;
+  margin: 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: 100px;
 }
 </style>
