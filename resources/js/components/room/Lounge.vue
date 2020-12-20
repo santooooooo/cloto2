@@ -733,9 +733,9 @@ export default {
      * 通話デバイスへの接続
      */
     connectDevice: async function () {
+      // Audioは常に残す（どちらかを定義しておく必要あり）
       var constraints = {
-        audio:
-          this.selectedAudio && !this.isMute ? { deviceId: { exact: this.selectedAudio } } : false,
+        audio: this.selectedAudio ? { deviceId: { exact: this.selectedAudio } } : false,
         video:
           this.selectedVideo && !this.isVideoOff
             ? { deviceId: { exact: this.selectedVideo } }
@@ -780,13 +780,8 @@ export default {
 
       this.isMute = !this.isMute;
 
-      if (this.isMute) {
-        // マイクデバイスの停止
-        await this.localStream.getAudioTracks()[0].stop();
-      } else {
-        // マイクデバイスの再接続
-        await this.changeDevice();
-      }
+      // Audio，Videoのいずれかを残しておく必要があるので，enableで制御
+      this.localStream.getAudioTracks()[0].enabled = this.isMute;
 
       // 通知
       this.call.send({ type: 'audioEvent', content: { isMute: this.isMute } });
@@ -805,10 +800,10 @@ export default {
       if (this.isVideoOff) {
         // ビデオデバイスの停止
         await this.localStream.getVideoTracks()[0].stop();
-      } else {
-        // ビデオデバイスの再接続
-        await this.changeDevice();
       }
+
+      // ビデオデバイスの再接続
+      await this.changeDevice();
 
       // 通知
       this.call.send({ type: 'videoEvent', content: { isVideoOff: this.isVideoOff } });
@@ -961,8 +956,8 @@ export default {
     await this.makeCall();
 
     // 通話開始時はミュート/ビデオオフに設定
-    await this.mute();
-    await this.videoOff();
+    this.mute();
+    this.videoOff();
 
     this.isLoading = false;
   },
