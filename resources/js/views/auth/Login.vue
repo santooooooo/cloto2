@@ -34,9 +34,8 @@
                   v-model="loginForm.password"
                   :rules="loginForm.validation.passwordRules"
                   label="パスワード"
-                  :append-icon="loginForm.showPassword ? 'far fa-eye' : 'far fa-eye-slash'"
+                  :append-icon="loginForm.showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                   :type="loginForm.showPassword ? 'text' : 'password'"
-                  class="input-group--focused"
                   @click:append="loginForm.showPassword = !loginForm.showPassword"
                 ></v-text-field>
 

@@ -20,7 +20,13 @@
     <v-spacer></v-spacer>
 
     <!-- 通知音ボタン -->
-    <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
+    <v-btn
+      color="white"
+      icon
+      class="mr-6"
+      @click="$store.dispatch('alert/switchSound')"
+      v-if="$route.path === $router.resolve({ name: 'room' }).href"
+    >
       <v-icon large>
         {{ $store.getters['alert/isSoundOn'] ? 'mdi-volume-high' : 'mdi-volume-off' }}
       </v-icon>

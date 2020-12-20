@@ -33,6 +33,7 @@
                   v-model="registerForm.username"
                   :rules="registerForm.validation.usernameRules"
                   label="ユーザー名"
+                  placeholder="cloto_jp"
                   maxlength="16"
                   counter
                 ></v-text-field>
@@ -41,15 +42,15 @@
                   v-model="registerForm.email"
                   :rules="registerForm.validation.emailRules"
                   label="メールアドレス"
+                  placeholder="email@cloto.jp"
                 ></v-text-field>
 
                 <v-text-field
                   v-model="registerForm.password"
                   :rules="registerForm.validation.passwordRules"
                   label="パスワード"
-                  :append-icon="registerForm.showPassword ? 'far fa-eye' : 'far fa-eye-slash'"
+                  :append-icon="registerForm.showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                   :type="registerForm.showPassword ? 'text' : 'password'"
-                  class="input-group--focused"
                   maxlength="64"
                   counter
                   @click:append="registerForm.showPassword = !registerForm.showPassword"
@@ -59,9 +60,7 @@
                   v-model="registerForm.passwordConfirmation"
                   :rules="registerForm.validation.passwordConfirmationRules"
                   label="パスワード再入力"
-                  :append-icon="
-                    registerForm.showPasswordConfirmation ? 'far fa-eye' : 'far fa-eye-slash'
-                  "
+                  :append-icon="registerForm.showPasswordConfirmation ? 'mdi-eye' : 'mdi-eye-off'"
                   :type="registerForm.showPasswordConfirmation ? 'text' : 'password'"
                   maxlength="64"
                   counter
@@ -74,6 +73,7 @@
                   v-model="registerForm.handlename"
                   :rules="registerForm.validation.handlenameRules"
                   label="表示名"
+                  placeholder="CLOTOくん"
                   maxlength="16"
                   counter
                 ></v-text-field>

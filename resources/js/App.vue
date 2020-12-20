@@ -82,7 +82,7 @@ export default {
      */
     closeApp: async function () {
       // 座席の開放
-      if (this.authUser.seat_id != null) {
+      if (this.authUser.seat_id !== null) {
         await this.$http.post(this.$endpoint('closeApp'));
       }
     },
@@ -98,7 +98,7 @@ export default {
       await this.$store.dispatch('auth/logout');
 
       // トップページへリダイレクト
-      if (this.$route.path != this.$router.resolve({ name: 'index' }).href) {
+      if (this.$route.path !== this.$router.resolve({ name: 'index' }).href) {
         this.$router.push({ name: 'index' });
       }
     },
