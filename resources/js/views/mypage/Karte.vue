@@ -1,43 +1,32 @@
 <template>
-  <v-container py-0>
+  <v-container>
     <!-- ローディング画面 -->
     <v-overlay v-if="!kartes.data">
       <v-progress-circular indeterminate size="64" v-if="!kartes.data"></v-progress-circular>
     </v-overlay>
 
-    <!-- <v-menu open-on-hover top offset-y>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on"> Dropdown </v-btn>
-      </template>
-
-      <v-list>
-        <v-list-item v-for="(item, index) in kartes.data" :key="index">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu> -->
-
-    <v-card max-width="1080" tile class="ml-10">
+    <v-card max-width="1080" tile class="ma-5">
       <v-simple-table headers-length:5>
         <template v-slot:default>
           <thead>
             <tr>
               <th class="text-left">画像</th>
-              <th class="text-left">内容</th>
-              <th class="text-left">投稿時間</th>
-              <th class="text-left">達成</th>
-              <th class="text-left">未達成</th>
+              <th class="text-left">活動内容</th>
+              <th class="text-left">活動時間</th>
+              <th class="text-left">達成したこと</th>
+              <th class="text-left">できなかったこと</th>
               <th class="text-left">参考文献</th>
-              <th class="text-left">技術タグ</th>
+              <th class="text-left">タグ</th>
             </tr>
           </thead>
+
           <tbody>
             <tr v-for="karte in kartes.data" :key="karte.id">
               <!-- 画像 -->
               <td>
                 <v-img
                   style="cursor: pointer"
-                  @click="openKarte(karte)"
+                  @click="expandImage(karte.image)"
                   max-width="120"
                   class="my-2"
                   contain
@@ -54,63 +43,72 @@
                 ></v-sheet>
               </td>
 
+              <!-- 活動内容 -->
               <v-tooltip max-width="300" top>
                 <template v-slot:activator="{ on, attrs }">
-                  <td v-bind="attrs" v-on="on" v-if="karte.body">
+                  <td v-bind="attrs" v-on="on">
                     <p class="karte-content">{{ karte.body }}</p>
                   </td>
                 </template>
                 <span>{{ karte.body }}</span>
               </v-tooltip>
 
+              <!-- 活動時間 -->
               <td>
-                <p class="karte-content">00:00</p>
+                <p class="karte-content">{{ karte.activity_time.slice(0, 5) }}</p>
               </td>
+
+              <!-- 達成したこと -->
               <v-tooltip max-width="300" top>
                 <template v-slot:activator="{ on, attrs }">
-                  <td v-bind="attrs" v-on="on" v-if="karte.archive != null">
-                    <p class="karte-content">{{ karte.archive }}</p>
+                  <td v-bind="attrs" v-on="on" v-if="karte.achieve">
+                    <p class="karte-content">{{ karte.achieve }}</p>
                   </td>
 
                   <td v-else>
-                    <p class="karte-content">None</p>
+                    <p class="karte-content">未入力</p>
                   </td>
                 </template>
-                <span>{{ karte.archive }}</span>
+                <span>{{ karte.achieve }}</span>
               </v-tooltip>
+
+              <!-- できなかったこと -->
               <v-tooltip max-width="300" top>
                 <template v-slot:activator="{ on, attrs }">
-                  <td v-bind="attrs" v-on="on" v-if="karte.trouble != null">
+                  <td v-bind="attrs" v-on="on" v-if="karte.trouble">
                     <p class="karte-content">{{ karte.trouble }}</p>
                   </td>
 
                   <td v-else>
-                    <p class="karte-content">None</p>
+                    <p class="karte-content">未入力</p>
                   </td>
                 </template>
                 <span>{{ karte.trouble }}</span>
               </v-tooltip>
+
+              <!-- 参考文献 -->
               <v-tooltip max-width="300" top>
                 <template v-slot:activator="{ on, attrs }">
-                  <td v-bind="attrs" v-on="on" v-if="karte.reference != null">
+                  <td v-bind="attrs" v-on="on" v-if="karte.reference">
                     <p class="karte-content">{{ karte.reference }}</p>
                   </td>
 
                   <td v-else>
-                    <p class="karte-content">None</p>
+                    <p class="karte-content">未入力</p>
                   </td>
                 </template>
                 <span>{{ karte.reference }}</span>
               </v-tooltip>
 
+              <!-- 技術タグ -->
               <v-tooltip max-width="300" top>
                 <template v-slot:activator="{ on, attrs }">
-                  <td v-bind="attrs" v-on="on" v-if="karte.technologies.length != 0">
-                    <p class="karte-content">技術タグ{{ karte.technologies.length }}個</p>
+                  <td v-bind="attrs" v-on="on" v-if="karte.technologies.length">
+                    <p class="karte-content">タグ{{ karte.technologies.length }}個</p>
                   </td>
 
                   <td v-else>
-                    <p class="karte-content">None</p>
+                    <p class="karte-content">タグなし</p>
                   </td>
                 </template>
 
@@ -124,24 +122,19 @@
                   {{ technology.name }}
                 </v-chip>
               </v-tooltip>
-
-              <!-- <td v-if="karte.technologies.length != 0">
-                <p class="karte-content">技術タグ{{ karte.technologies.length }}個</p>
-              </td>
-              <td v-else>
-                <p class="karte-content">None</p>
-              </td> -->
             </tr>
           </tbody>
         </template>
       </v-simple-table>
 
-      <v-dialog v-model="dialog" width="700">
-        <v-card>
-          <v-img contain :src="$storage('karte') + chosenKarte.image" />
-        </v-card>
-      </v-dialog>
+      <v-card-text class="text-center" v-if="!kartes.data.length">未投稿</v-card-text>
     </v-card>
+
+    <v-dialog v-model="dialog" width="700">
+      <v-card>
+        <v-img contain :src="$storage('karte') + image" />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -156,8 +149,8 @@ export default {
   },
   data() {
     return {
-      showMenu: false,
-      chosenKarte: '',
+      dialog: false,
+      image: null,
       projects: {
         data: '',
         loading: false,
@@ -170,13 +163,6 @@ export default {
         data: '',
         loading: false,
       },
-      karteDialog: {
-        dialog: false,
-        data: '',
-      },
-      //カルテダイアログ
-      dialog: false,
-      selectedItem: null,
     };
   },
 
@@ -222,9 +208,14 @@ export default {
       this.kartes.loading = false;
     },
 
-    openKarte: function (content) {
+    /**
+     * 画像の拡大
+     *
+     * @param String  image 拡大する画像
+     */
+    expandImage: function (image) {
       this.dialog = true;
-      this.chosenKarte = content;
+      this.image = image;
     },
   },
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <v-card flat>
     <!-- 編集ダイアログ -->
     <ProfileEditDialog @close="profileEditDialog = $event" v-if="profileEditDialog" />
     <!-- アイコン表示 -->
@@ -19,7 +19,7 @@
     </div> -->
 
       <!-- ハンドルネームとユーザーネーム表示 -->
-      <v-card height="475" flat tile color="blue-grey lighten-5">
+      <v-card height="475" flat color="blue-grey lighten-5">
         <v-col class="pa-0"
           >　
           <v-list-item color="rgba(0, 0, 0, .4)" dark>
@@ -44,7 +44,7 @@
         <!-- 編集ダイアログ -->
       </v-card>
     </v-card>
-  </div>
+  </v-card>
 </template>
 
 <script>
