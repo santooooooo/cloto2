@@ -27,6 +27,8 @@ class CreateUsersTable extends Migration
             $table->text('introduction')->nullable();           // 自己紹介
             $table->rememberToken();
             $table->dateTimes();
+
+            $table->softDeletes();
         });
     }
 
