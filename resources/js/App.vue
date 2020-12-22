@@ -65,6 +65,9 @@ export default {
     alert() {
       return this.$store.state.alert;
     },
+    authCheck() {
+      return this.$store.getters['auth/check'];
+    },
     authUser() {
       return this.$store.getters['auth/user'];
     },
@@ -81,9 +84,11 @@ export default {
      * 終了処理
      */
     closeApp: async function () {
-      // 座席の開放
-      if (this.authUser.seat_id !== null) {
-        await this.$http.post(this.$endpoint('closeApp'));
+      if (this.authCheck) {
+        // 座席の開放
+        if (this.authUser.seat_id !== null) {
+          await this.$http.post(this.$endpoint('closeApp'));
+        }
       }
     },
 
