@@ -27,6 +27,7 @@ mix.alias({
 
 mix
   .js('resources/js/app.js', 'public/js')
+  .js('resources/js/admin/app.js', 'public/js/admin')
   .copy('node_modules/please-wait/build/please-wait.min.js', 'public/js')
   .sass('resources/sass/app.scss', 'public/css')
   .copy('node_modules/please-wait/build/please-wait.css', 'public/css')
