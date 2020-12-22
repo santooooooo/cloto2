@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" width="650" persistent>
+  <v-dialog v-model="dialog" width="650" persistent v-if="dialog">
     <v-form ref="profileUpdateForm" v-model="profileUpdateForm.validation.valid" lazy-validation>
       <v-card class="headline grey darken-2 text-center px-2">
         <v-container>
@@ -160,20 +160,8 @@ export default {
   },
   data() {
     return {
-      dialog: true,
+      dialog: false,
       profileUpdateForm: {
-        username: '',
-        email: '',
-        handlename: '',
-        icon: '',
-        web: '',
-        introduction: '',
-        loading: false,
-        sns: {
-          twitter: '',
-          github: '',
-          qiita: '',
-        },
         validation: {
           valid: false,
           usernameRules: [(v) => !!v || 'ユーザネームは必須項目です。'],
@@ -245,6 +233,7 @@ export default {
 
   mounted() {
     Object.assign(this.profileUpdateForm, this.authUser);
+    this.dialog = true;
   },
 };
 </script>

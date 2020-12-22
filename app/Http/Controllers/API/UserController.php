@@ -143,11 +143,17 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $data = $request->all();
-        $data['sns'] = [
-            'twitter' => $data['twitter'],
-            'github' => $data['github'],
-            'qiita' => $data['qiita']
-        ];
+
+        $data['sns'] = [];
+        if (!empty($data['twitter'])) {
+            $data['sns'] += ['twitter' => $data['twitter']];
+        }
+        if (!empty($data['github'])) {
+            $data['sns'] += ['github' => $data['github']];
+        }
+        if (!empty($data['qiita'])) {
+            $data['sns'] += ['qiita' => $data['qiita']];
+        }
 
         // アイコンの保存
         if (!empty($request->file('icon'))) {
