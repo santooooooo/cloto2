@@ -1,8 +1,17 @@
 <template>
   <v-container fluid>
     <!-- ローディング画面 -->
-    <v-overlay :value="isLoading" z-index="6">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    <v-overlay :value="isLoading" z-index="6" class="text-center" opacity="0.9">
+      <v-progress-circular
+        size="70"
+        width="7"
+        color="#f6bf00"
+        indeterminate
+        class="mb-12"
+      ></v-progress-circular>
+      <p class="text-h5 mt-10">接続中です</p>
+
+      <p class="text-body-1 mt-12">カメラランプが10秒ほど点灯する場合があります．．．</p>
     </v-overlay>
 
     <v-layout class="px-2 video-container">
@@ -136,7 +145,7 @@
                   :width="videoSize.showWidth"
                   :height="videoSize.showHeight"
                   class="d-flex justify-center align-center"
-                  v-if="participant.isVideoOff"
+                  v-if="false"
                 >
                   <v-avatar size="80" class="aligh-self-center"
                     ><img :src="$storage('icon') + participant.icon"
@@ -757,6 +766,18 @@ export default {
       try {
         // デバイスの接続
         this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
+
+        // 起動時はすぐにカメラを停止する
+        if (this.isLoading) {
+          // 接続時にはenabledで停止
+          // デバイスを停止すると，相手にvideoストリームが届かない
+          this.localStream.getVideoTracks()[0].enabled = false;
+        }
+
+        // ストリーム再作成時にミュートが解除される（ビデオ切り替え時など）
+        if (this.isMute) {
+          this.localStream.getAudioTracks()[0].enabled = false;
+        }
       } catch (error) {
         // 他のアプリがデバイスを使用している場合
         this.errorEvent('マイクまたはカメラが認識できませんでした．．．');
@@ -781,7 +802,7 @@ export default {
       this.isMute = !this.isMute;
 
       // Audio，Videoのいずれかを残しておく必要があるので，enableで制御
-      this.localStream.getAudioTracks()[0].enabled = this.isMute;
+      this.localStream.getAudioTracks()[0].enabled = !this.isMute;
 
       // 通知
       this.call.send({ type: 'audioEvent', content: { isMute: this.isMute } });
@@ -799,11 +820,11 @@ export default {
 
       if (this.isVideoOff) {
         // ビデオデバイスの停止
-        await this.localStream.getVideoTracks()[0].stop();
+        this.localStream.getVideoTracks().forEach((track) => track.stop());
+      } else {
+        // ビデオデバイスの再接続
+        await this.changeDevice();
       }
-
-      // ビデオデバイスの再接続
-      await this.changeDevice();
 
       // 通知
       this.call.send({ type: 'videoEvent', content: { isVideoOff: this.isVideoOff } });
@@ -957,9 +978,11 @@ export default {
 
     // 通話開始時はミュート/ビデオオフに設定
     this.mute();
-    this.videoOff();
-
-    this.isLoading = false;
+    setTimeout(() => {
+      // ビデオオフを遅延させないと，videoストリームが相手に接続できない
+      this.videoOff();
+      this.isLoading = false;
+    }, 5000);
   },
 
   beforeDestroy() {
