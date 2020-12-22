@@ -2,16 +2,10 @@
   <v-container fluid>
     <!-- ローディング画面 -->
     <v-overlay :value="isLoading" z-index="6" class="text-center" opacity="0.9">
-      <v-progress-circular
-        size="70"
-        width="7"
-        color="#f6bf00"
-        indeterminate
-        class="mb-12"
-      ></v-progress-circular>
-      <p class="text-h5 mt-10">接続中です</p>
+      <p class="text-h5 mb-5">接続中</p>
+      <v-progress-linear indeterminate height="10" color="green" class="mb-12"></v-progress-linear>
 
-      <p class="text-body-1 mt-12">カメラランプが10秒ほど点灯する場合があります．．．</p>
+      <p class="text-body-2 mt-12">カメラランプが10秒ほど点灯する場合があります．．．</p>
     </v-overlay>
 
     <v-layout class="px-2 video-container">
@@ -70,11 +64,22 @@
                   :width="videoSize.width"
                   :height="videoSize.height"
                   class="d-flex justify-center align-center"
-                  v-if="pinnedParticipant.isVideoOff"
+                  v-if="pinnedParticipant.isLoading || pinnedParticipant.isVideoOff"
                 >
-                  <v-avatar size="150" class="aligh-self-center"
-                    ><img :src="$storage('icon') + pinnedParticipant.icon"
-                  /></v-avatar>
+                  <!-- ローディング中 -->
+                  <v-progress-circular
+                    size="70"
+                    width="4"
+                    color="green"
+                    indeterminate
+                    v-if="pinnedParticipant.isLoading"
+                  ></v-progress-circular>
+
+                  <v-avatar size="150" class="aligh-self-center" v-else>
+                    <img :src="$storage('icon') + pinnedParticipant.icon" />
+                  </v-avatar>
+
+                  <audio autoplay :srcObject.prop="pinnedParticipant.stream"></audio>
                 </v-sheet>
 
                 <!-- 参加者のビデオ（オン） -->
@@ -127,7 +132,6 @@
 
           <!-- 通常時 -->
           <v-row justify="center" class="mt-3">
-            <!-- 参加者のビデオ（オン） -->
             <v-hover
               v-slot="{ hover }"
               v-for="participant in notPinnedParticipants"
@@ -145,11 +149,22 @@
                   :width="videoSize.showWidth"
                   :height="videoSize.showHeight"
                   class="d-flex justify-center align-center"
-                  v-if="false"
+                  v-if="participant.isLoading || participant.isVideoOff"
                 >
-                  <v-avatar size="80" class="aligh-self-center"
-                    ><img :src="$storage('icon') + participant.icon"
-                  /></v-avatar>
+                  <!-- ローディング中 -->
+                  <v-progress-circular
+                    size="70"
+                    width="4"
+                    color="green"
+                    indeterminate
+                    v-if="participant.isLoading"
+                  ></v-progress-circular>
+
+                  <v-avatar size="80" class="aligh-self-center" v-else>
+                    <img :src="$storage('icon') + participant.icon" />
+                  </v-avatar>
+
+                  <audio autoplay :srcObject.prop="participant.stream"></audio>
                 </v-sheet>
 
                 <!-- 参加者のビデオ（オン） -->
@@ -542,6 +557,11 @@ export default {
             }
             break;
 
+          case 'loadingEvent':
+            // ローディングイベント
+            sender.isLoading = data.content.isLoading;
+            break;
+
           case 'audioEvent':
             // ミュートイベント
             sender.isMute = data.content.isMute;
@@ -604,6 +624,7 @@ export default {
 
       if (isJoin) {
         // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
+        this.call.send({ type: 'loadingEvent', content: { isLoading: this.isLoading } });
         this.call.send({ type: 'audioEvent', content: { isMute: this.isMute } });
         this.call.send({ type: 'videoEvent', content: { isVideoOff: this.isVideoOff } });
 
@@ -624,6 +645,7 @@ export default {
             username: user.username, // ユーザー名
             handlename: user.handlename, // 表示名
             icon: user.icon, // アイコン
+            isLoading: true, // 接続待ち状態
             isMute: true, // ミュート状態
             isVideoOff: true, // ビデオオフ状態
             stream: stream,
@@ -949,6 +971,13 @@ export default {
   async created() {
     this.isLoading = true;
 
+    // 15秒間接続できなければ終了
+    setTimeout(() => {
+      if (this.isLoading) {
+        this.errorEvent('エラーが発生しました．．．');
+      }
+    }, 15000);
+
     // ボリュームの調整
     this.notificationSounds.join.volume = 0.6;
     this.notificationSounds.leave.volume = 0.6;
@@ -982,6 +1011,7 @@ export default {
       // ビデオオフを遅延させないと，videoストリームが相手に接続できない
       this.videoOff();
       this.isLoading = false;
+      this.call.send({ type: 'loadingEvent', content: { isLoading: false } });
     }, 5000);
   },
 
