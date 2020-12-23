@@ -4,8 +4,8 @@
     <ProfileEditDialog @close="profileEditDialog = $event" v-if="profileEditDialog" />
     <!-- アイコン表示 -->
     <v-card class="text-center" flat>
-      <v-avatar class="profile" size="150">
-        <img :src="$storage('icon') + authUser.icon" class="rounded-circle" />
+      <v-avatar class="my-10" size="150">
+        <img :src="$storage('icon') + authUser.icon" />
       </v-avatar>
 
       <!-- アイコン編集 -->
@@ -19,20 +19,9 @@
     </div> -->
 
       <!-- ハンドルネームとユーザーネーム表示 -->
-      <v-card height="475" flat color="blue-grey lighten-5">
-        <v-col class="pa-0"
-          >　
-          <v-list-item color="rgba(0, 0, 0, .4)" dark>
-            <v-list-item-content>
-              <v-list-item-title class="black--text">
-                {{ authUser.handlename }}
-              </v-list-item-title>
-              <v-list-item-subtitle class="black--text">
-                {{ '@' + authUser.username }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-col>
+      <v-card height="475" flat tile color="blue-grey lighten-5">
+        <p class="text-h5 mb-2 pt-3">{{ authUser.handlename }}</p>
+        <p>{{ '@' + authUser.username }}</p>
 
         <v-row justify="center">
           <v-card light flat class="mt-2 pa-2 text-center" width="400">

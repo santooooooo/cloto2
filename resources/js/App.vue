@@ -86,7 +86,7 @@ export default {
     closeApp: async function () {
       if (this.authCheck) {
         // 座席の開放
-        if (this.authUser.seat_id !== null) {
+        if (this.authUser.seat !== null) {
           await this.$http.post(this.$endpoint('closeApp'));
         }
       }
