@@ -11,14 +11,25 @@
       </v-row>
 
       <v-row justify="center">
+        <!-- 未着席時 -->
         <v-btn
           depressed
           color="#f6bf00"
           :to="{ name: 'room', params: { roomId: $route.params.roomId } }"
-          class="font-weight-bold"
-          :disabled="isDisabled"
-          >入室</v-btn
+          v-if="!this.authUser.seat"
         >
+          入室
+        </v-btn>
+
+        <!-- 着席中 -->
+        <v-btn
+          depressed
+          color="error"
+          :to="{ name: 'room', params: { roomId: authUser.seat.section.room_id } }"
+          v-else
+        >
+          着席中の教室に戻る
+        </v-btn>
       </v-row>
     </v-flex>
   </v-layout>
@@ -40,20 +51,6 @@ export default {
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
-    },
-
-    // 入室無効化制御
-    isDisabled() {
-      // 着席中
-      if (this.authUser.seat) {
-        // 着席中の座席のある部屋以外は入室禁止
-        if (this.authUser.seat.section.room_id !== this.$route.params.roomId) {
-          // 無効化
-          return true;
-        }
-      }
-
-      return false;
     },
   },
 
