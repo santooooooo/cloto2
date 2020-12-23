@@ -592,8 +592,11 @@ export default {
      * 通話の終了
      */
     exitCall: async function () {
-      // 画面共有の停止
-      await this.stopScreenSharing();
+      // 自分の画面共有が有効な場合
+      if (this.screenSharing.isLocal) {
+        // 画面共有の停止
+        await this.stopScreenSharing();
+      }
 
       if (this.peer !== null) {
         // 音声検知の終了
@@ -625,17 +628,17 @@ export default {
       );
 
       if (isJoin) {
-        // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
-        this.call.send({ type: 'loadingEvent', content: { isLoading: this.isLoading } });
-        this.call.send({ type: 'audioEvent', content: { isMute: this.isMute } });
-        this.call.send({ type: 'videoEvent', content: { isVideoOff: this.isVideoOff } });
-
         // ユーザー名と表示名の取得
         var response = await this.$http.get(this.$endpoint('getUserByPeerId', [stream.peerId]));
         var user = response.data;
 
         // ユーザーが参加した場合
         if (user !== '') {
+          // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
+          this.call.send({ type: 'loadingEvent', content: { isLoading: this.isLoading } });
+          this.call.send({ type: 'audioEvent', content: { isMute: this.isMute } });
+          this.call.send({ type: 'videoEvent', content: { isVideoOff: this.isVideoOff } });
+
           // 通知音
           if (this.isNotificationOn) {
             this.notificationSounds.join.play();
@@ -690,21 +693,29 @@ export default {
      */
     startScreenSharing: async function () {
       if (this.screenSharing.stream === null) {
-        this.screenSharing.peer = new Peer({ key: API_KEY });
+        try {
+          this.screenSharing.peer = new Peer({ key: API_KEY });
 
-        this.screenSharing.stream = await navigator.mediaDevices.getDisplayMedia({
-          video: true,
-          audio: false,
-        });
+          this.screenSharing.stream = await navigator.mediaDevices.getDisplayMedia({
+            video: true,
+            audio: false,
+          });
 
-        this.screenSharing.peer.joinRoom(this.loungeId, {
-          mode: this.roomMode,
-          stream: this.screenSharing.stream,
-        });
+          this.screenSharing.peer.joinRoom(this.loungeId, {
+            mode: this.roomMode,
+            stream: this.screenSharing.stream,
+          });
 
-        this.screenSharing.isLocal = true;
+          this.screenSharing.isLocal = true;
 
-        this.setupScreenSharingEvents();
+          this.setupScreenSharingEvents();
+        } catch (error) {
+          // キャンセルボタン押下時
+          this.$store.dispatch('alert/show', {
+            type: 'error',
+            message: '画面共有がキャンセルされました．．．',
+          });
+        }
       }
     },
 
