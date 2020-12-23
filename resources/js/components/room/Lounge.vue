@@ -738,20 +738,26 @@ export default {
      */
     accessDevice: async function () {
       try {
-        // デバイスへのアクセス可能にするために事前にgetUserMediaを実行
-        await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-        const devices = await navigator.mediaDevices.enumerateDevices();
+        //** 権限確認 */
+        const userMedia = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video: true,
+        });
+        // デバイスの停止
+        userMedia.getTracks().forEach((track) => track.stop());
 
-        // オーディオデバイスの情報を取得
+        //** デバイスの一覧を取得 */
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        // マイクデバイスの一覧を取得
         this.audioDevices = devices.filter((device) => {
           return device.kind === 'audioinput';
         });
-
-        // カメラの情報を取得
+        // カメラデバイスの一覧を取得
         this.videoDevices = devices.filter((device) => {
           return device.kind === 'videoinput';
         });
 
+        // 初期値の設定
         this.selectedAudio = this.audioDevices[0].deviceId;
         this.selectedVideo = this.videoDevices[0].deviceId;
       } catch (error) {
