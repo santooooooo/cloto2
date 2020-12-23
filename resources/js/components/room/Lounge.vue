@@ -56,7 +56,11 @@
                 color="rgba(0, 0, 0, 1)"
                 :width="videoSize.width"
                 :height="videoSize.height"
-                class="video mx-1"
+                :class="[
+                  'video',
+                  'mx-1',
+                  speakerId === pinnedParticipant.stream.peerId ? 'speaker' : '',
+                ]"
               >
                 <!-- 参加者のビデオ（オフ） -->
                 <v-sheet
@@ -88,7 +92,6 @@
                   :height="videoSize.height"
                   autoplay
                   :srcObject.prop="pinnedParticipant.stream"
-                  :class="speakerId === pinnedParticipant.stream.peerId ? 'speaker' : ''"
                   v-else
                 ></video>
 
@@ -141,7 +144,7 @@
                 color="rgba(0, 0, 0, 1)"
                 :width="videoSize.showWidth"
                 :height="videoSize.showHeight"
-                class="video mx-1"
+                :class="['video', 'mx-1', speakerId === participant.stream.peerId ? 'speaker' : '']"
               >
                 <!-- 参加者のビデオ（オフ） -->
                 <v-sheet
@@ -173,7 +176,6 @@
                   :height="videoSize.showHeight"
                   autoplay
                   :srcObject.prop="participant.stream"
-                  :class="speakerId === participant.stream.peerId ? 'speaker' : ''"
                   v-else
                 ></video>
 
@@ -1076,9 +1078,8 @@ export default {
       -ms-transform: translate(50%, -50%);
     }
 
-    .speaker {
+    &.speaker {
       outline: 5px solid #f6bf00;
-      outline-offset: -5px;
     }
   }
 
