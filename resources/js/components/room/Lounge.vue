@@ -1,5 +1,11 @@
 <template>
   <v-container fluid>
+    <!-- 権限確認画面 -->
+    <v-overlay :value="permissionOverlay" z-index="7" class="text-center" opacity="1">
+      <div class="arrow"></div>
+      <p class="text-h4">権限を許可してください。</p>
+    </v-overlay>
+
     <!-- ローディング画面 -->
     <v-overlay :value="isLoading" z-index="6" class="text-center" opacity="0.9">
       <p class="text-h5 mb-5">接続中</p>
@@ -398,6 +404,7 @@ export default {
   },
   data() {
     return {
+      permissionOverlay: false, // 権限確認画面
       isLoading: false, // ローディング制御
 
       //*** 通話 ***//
@@ -752,6 +759,8 @@ export default {
     accessDevice: async function () {
       try {
         //** 権限確認 */
+        this.permissionOverlay = true;
+
         const userMedia = await navigator.mediaDevices.getUserMedia({
           audio: true,
           video: true,
@@ -773,9 +782,12 @@ export default {
         // 初期値の設定
         this.selectedAudio = this.audioDevices[0].deviceId;
         this.selectedVideo = this.videoDevices[0].deviceId;
+
+        this.permissionOverlay = false;
       } catch (error) {
-        // 他のアプリがデバイスを使用している場合
-        this.errorEvent('マイクまたはカメラが認識できませんでした．．．');
+        // connectDeviceの例外処理で上書きされるので，これは表示されない
+        // デバイスが存在しない場合
+        this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
       }
     },
 
@@ -821,7 +833,9 @@ export default {
         }
       } catch (error) {
         // 他のアプリがデバイスを使用している場合
-        this.errorEvent('マイクまたはカメラが認識できませんでした．．．');
+        this.errorEvent(
+          'マイクまたはカメラが認識できませんでした。ブラウザの設定から権限を有効化してから再読み込みしてください。'
+        );
       }
     },
 
@@ -991,11 +1005,17 @@ export default {
     this.isLoading = true;
 
     // 15秒間接続できなければ終了
-    setTimeout(() => {
-      if (this.isLoading) {
-        this.errorEvent('エラーが発生しました．．．');
+    function timeout() {
+      // 権限確認中の場合，再度待機
+      if (this.permissionOverlay) {
+        setTimeout(timeout, 15000);
+      } else {
+        if (this.isLoading) {
+          this.errorEvent('エラーが発生しました．．．');
+        }
       }
-    }, 15000);
+    }
+    setTimeout(timeout, 15000);
 
     // ボリュームの調整
     this.notificationSounds.join.volume = 0.6;
@@ -1111,5 +1131,26 @@ export default {
 <style lang="scss">
 .v-dialog {
   background-color: rgba(0, 0, 0, 0.6);
+}
+
+.arrow {
+  display: inline-block;
+  height: 80px;
+  width: 40px;
+  background-color: #5bc0de;
+  position: relative;
+  top: 60px;
+  left: -300px;
+}
+
+.arrow:before {
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  border: 60px solid transparent;
+  border-bottom: 60px solid #5bc0de;
+  left: -40px;
+  top: -120px;
 }
 </style>
