@@ -65,6 +65,7 @@ export default {
   },
   data() {
     return {
+      chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
       width: window.innerWidth, // ウィンドウの横幅
       minWidth: 1350, // ウィンドウの最小サイズ
       isShowDrawer: false, // ドロワーメニューの表示制御
@@ -85,6 +86,48 @@ export default {
     },
     authUser() {
       return this.$store.getters['auth/user'];
+    },
+  },
+  watch: {
+    'authUser.seat': function (val, oldVal) {
+      // 初回のデータ取得時には実行しない
+      if (typeof oldVal !== 'undefined') {
+        if (val !== null && oldVal === null) {
+          /**
+           * 着席時
+           */
+          // 時間割イベントの受信開始
+          Echo.channel('room-' + val.section.room_id).listen('TimetableEvent', (event) => {
+            if (event.status === 'study') {
+              // 自習時間
+              this.$store.dispatch('alert/showOverlay', {
+                color: '#ff4500',
+                message: '自習時間です！',
+              });
+              // チャイム
+              if (this.$store.getters['alert/isSoundOn']) {
+                this.chime.play();
+              }
+            } else if (event.status === 'break') {
+              // 休憩時間
+              this.$store.dispatch('alert/showOverlay', {
+                color: '#4169e1',
+                message: '休憩時間です！',
+              });
+              // チャイム
+              if (this.$store.getters['alert/isSoundOn']) {
+                this.chime.play();
+              }
+            }
+          });
+        } else if (val === null && oldVal !== null) {
+          /**
+           * 退席時
+           */
+          // 部屋イベントの受信終了
+          Echo.leave('room-' + oldVal.section.room_id);
+        }
+      }
     },
   },
   methods: {
@@ -124,6 +167,9 @@ export default {
     },
   },
   mounted: function () {
+    // ボリュームの調整
+    this.chime.volume = 0.2;
+
     // ウィンドウリサイズ時のイベント
     window.addEventListener('resize', this.resizeHandler);
 

@@ -25,7 +25,7 @@
       icon
       class="mr-6"
       @click="$store.dispatch('alert/switchSound')"
-      v-if="authCheck && $route.path.indexOf('room') !== -1"
+      v-if="authCheck"
     >
       <v-icon large>
         {{ $store.getters['alert/isSoundOn'] ? 'mdi-volume-high' : 'mdi-volume-off' }}

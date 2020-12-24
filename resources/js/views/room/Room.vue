@@ -464,19 +464,9 @@ export default {
       // 背景色の変更
       if (this.roomStatus === 'study') {
         // 自習時間
-        this.$store.dispatch('alert/showOverlay', { color: '#ff4500', message: '自習時間です！' });
-        // チャイム
-        if (this.$store.getters['alert/isSoundOn']) {
-          this.chime.play();
-        }
         this.backgroundColor = '#b0e0e6';
       } else if (this.roomStatus === 'break') {
         // 休憩時間
-        this.$store.dispatch('alert/showOverlay', { color: '#4169e1', message: '休憩時間です！' });
-        // チャイム
-        if (this.$store.getters['alert/isSoundOn']) {
-          this.chime.play();
-        }
         this.backgroundColor = '#ffe89a';
       }
     },
@@ -684,15 +674,6 @@ export default {
 
     // ロード終了
     this.isLoading = false;
-  },
-
-  beforeDestroy() {
-    /**
-     * データの同期終了
-     */
-    Echo.channel('room-' + this.roomData.id)
-      .stopListening('SeatEvent')
-      .stopListening('TimetableEvent');
   },
 };
 </script>
