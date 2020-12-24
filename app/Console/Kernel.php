@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\PublishTimetableEvent::class,
+        Commands\RefreshSeats::class,
     ];
 
     /**
@@ -26,6 +27,8 @@ class Kernel extends ConsoleKernel
     {
         // 5分毎に時間割の通知
         $schedule->command('publishevent:timetable')->everyFiveMinutes();
+        // 10分毎に座席を初期化
+        $schedule->command('refresh:seats')->everyTenMinutes();
     }
 
     /**

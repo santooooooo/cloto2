@@ -30,6 +30,7 @@ class UserController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->auth_user = Auth::user();
+            $this->set_online();
             return $next($request);
         });
 
