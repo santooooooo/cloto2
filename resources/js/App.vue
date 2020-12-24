@@ -1,10 +1,14 @@
 <template>
-  <!-- 画面サイズの最小を設定 -->
-  <v-overlay v-if="!isDebug && !$route.meta.isPublic && width < minWidth">
-    <h1 class="font-weight-bold">ウィンドウを拡大してください。</h1>
-  </v-overlay>
+  <v-app>
+    <!-- 画面サイズの最小を設定 -->
+    <v-overlay
+      z-index="9999"
+      opacity="0.9"
+      v-if="!isDebug && !$route.meta.isPublic && width < minWidth"
+    >
+      <h1 class="font-weight-bold">ウィンドウを拡大してください。</h1>
+    </v-overlay>
 
-  <v-app v-else>
     <!-- アラート -->
     <v-alert
       :value="alert.show"
@@ -22,13 +26,13 @@
 
     <!-- メッセージオーバーレイ-->
     <v-overlay
+      z-index="9997"
       opacity="0.8"
       :value="alert.overlay.show"
       :color="alert.overlay.color"
-      class="message-overlay"
       dark
     >
-      <p>{{ alert.overlay.message }}</p>
+      <p class="overlay-message">{{ alert.overlay.message }}</p>
     </v-overlay>
 
     <!-- ヘッダー -->
@@ -132,7 +136,7 @@ export default {
 <style lang="scss" scoped>
 .v-alert {
   position: fixed;
-  z-index: 9999;
+  z-index: 9998;
   top: 15px;
   left: 50%;
   transform: translateX(-50%);
@@ -140,12 +144,8 @@ export default {
   -ms-transform: translateX(-50%);
 }
 
-.message-overlay {
-  z-index: 9998;
-
-  p {
-    font-size: 100px;
-  }
+.overlay-message {
+  font-size: 100px;
 }
 
 #main {
