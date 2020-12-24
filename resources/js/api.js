@@ -18,6 +18,7 @@ const register = '/api/register';
 const login = '/api/login';
 const logout = '/api/logout';
 const closeApp = '/api/close_app';
+const setOnline = '/api/online';
 const authUser = '/api/auth/user';
 const authPeerId = '/api/auth/peer_id';
 const userShow = '/api/user/' + replaceChar[0];
@@ -79,6 +80,10 @@ export function getEndpoint(name, params) {
 
     case 'closeApp':
       endpoint = closeApp;
+      break;
+
+    case 'setOnline':
+      endpoint = setOnline;
       break;
 
     case 'authUser':

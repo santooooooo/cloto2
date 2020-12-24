@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Carbon;
 
 class UserController extends Controller
 {
@@ -34,6 +36,24 @@ class UserController extends Controller
         $this->user = $user;
     }
 
+
+    /**
+     * オンライン状態の更新
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function set_online()
+    {
+        if (empty($this->auth_user)) {
+            return response(null);
+        }
+
+        // 10分で期限切れ
+        $expires_at = Carbon::now()->addMinutes(10);
+        Cache::put('user-is-online-' . $this->auth_user->id, true, $expires_at);
+
+        return response(null);
+    }
 
     /**
      * ログインユーザーの取得

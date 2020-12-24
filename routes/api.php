@@ -30,6 +30,7 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::group(['middleware' => ['auth']], function () {
     Route::post('/close_app', 'API\SeatController@close_app')->name('closeApp');
 
+    Route::get('/online', 'API\UserController@set_online')->name('setOnline');
     Route::get('/auth/user', 'API\UserController@auth')->name('authUser');
     Route::get('/auth/peer_id', 'API\UserController@auth_peer_id')->name('authPeerId');
     Route::get('/user/{user_param}', 'API\UserController@show')->name('userShow');

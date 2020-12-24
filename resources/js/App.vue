@@ -66,6 +66,7 @@ export default {
   data() {
     return {
       chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
+      setOnlineTimer: null, // オンライン状態の通知制御
       width: window.innerWidth, // ウィンドウの横幅
       minWidth: 1350, // ウィンドウの最小サイズ
       isShowDrawer: false, // ドロワーメニューの表示制御
@@ -89,6 +90,17 @@ export default {
     },
   },
   watch: {
+    authCheck: function (val) {
+      if (val) {
+        // ログイン中は5分毎にオンライン状態を通知
+        this.setOnlineTimer = setInterval(() => {
+          this.$http.get(this.$endpoint('setOnline'));
+        }, 300000);
+      } else {
+        // ログアウト時に停止
+        clearInterval(this.setOnlineTimer);
+      }
+    },
     'authUser.seat': function (val, oldVal) {
       // 初回のデータ取得時には実行しない
       if (typeof oldVal !== 'undefined') {
@@ -134,8 +146,29 @@ export default {
     /**
      * ウィンドウリサイズ時のイベント
      */
-    resizeHandler: function () {
+    resizeEvent: function () {
       this.width = window.innerWidth;
+    },
+
+    /**
+     * オフライン時のイベント
+     */
+    offlineEvent: function () {
+      if (this.authUser.seat !== null) {
+        alert(
+          'インターネットに接続してください。5分以上接続が復帰しない場合は自動的に退席します。'
+        );
+      }
+    },
+
+    /**
+     * オンライン復帰時のイベント
+     */
+    onlineEvent: function () {
+      if (this.authCheck) {
+        // オンライン状態を通知
+        this.$http.get(this.$endpoint('setOnline'));
+      }
     },
 
     /**
@@ -170,8 +203,14 @@ export default {
     // ボリュームの調整
     this.chime.volume = 0.2;
 
+    // オフライン時のイベント
+    window.addEventListener('offline', this.offlineEvent);
+
+    // オンライン復帰時のイベント
+    window.addEventListener('online', this.onlineEvent);
+
     // ウィンドウリサイズ時のイベント
-    window.addEventListener('resize', this.resizeHandler);
+    window.addEventListener('resize', this.resizeEvent);
 
     // ブラウザクローズ時のイベント
     window.addEventListener('beforeunload', this.closeApp);
