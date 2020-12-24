@@ -5,11 +5,6 @@
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
 
-    <!-- 自習スタートローディング-->
-    <v-overlay opacity="0.8" :value="messageOverlay.isShow" :color="messageOverlay.color" dark>
-      <div class="message-overlay">{{ messageOverlay.message }}</div>
-    </v-overlay>
-
     <Drawer
       :room-name="roomData !== null ? roomData.name : ''"
       @input-karte="inputKarte(true)"
@@ -373,9 +368,6 @@ export default {
       // 状態変更処理
       await this.userAction('leave');
 
-      // ロード終了
-      this.isLoading = false;
-
       // フロア一覧へ
       this.$router.push({ name: 'entrance' });
     },
@@ -472,7 +464,7 @@ export default {
       // 背景色の変更
       if (this.roomStatus === 'study') {
         // 自習時間
-        this.showMessageOverlay('自習時間です！', '#ff4500');
+        this.$store.dispatch('alert/showOverlay', { color: '#ff4500', message: '自習時間です！' });
         // チャイム
         if (this.$store.getters['alert/isSoundOn']) {
           this.chime.play();
@@ -480,7 +472,7 @@ export default {
         this.backgroundColor = '#b0e0e6';
       } else if (this.roomStatus === 'break') {
         // 休憩時間
-        this.showMessageOverlay('休憩時間です！', '#4169e1');
+        this.$store.dispatch('alert/showOverlay', { color: '#4169e1', message: '休憩時間です！' });
         // チャイム
         if (this.$store.getters['alert/isSoundOn']) {
           this.chime.play();
@@ -494,7 +486,7 @@ export default {
      */
     startStudy: async function () {
       //this.projectDialog = false;
-      this.showMessageOverlay('自習開始！', '#228b22');
+      this.$store.dispatch('alert/showOverlay', { color: '#228b22', message: '自習開始！' });
 
       // チャイム
       if (this.$store.getters['alert/isSoundOn']) {
@@ -511,23 +503,6 @@ export default {
     cancelStartStudy: function () {
       //this.projectDialog = false;
       this.leaveRoom();
-    },
-
-    /**
-     * メッセージの表示
-     *
-     * @param String  message 表示するテキスト
-     * @param String  color   表示色
-     */
-    showMessageOverlay: function (message, color) {
-      this.messageOverlay.message = message;
-      this.messageOverlay.color = color;
-      this.messageOverlay.isShow = true;
-
-      // 2秒で閉じる
-      setTimeout(() => {
-        this.messageOverlay.isShow = false;
-      }, 2000);
     },
   },
 
@@ -724,10 +699,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/_variables';
-
-.message-overlay {
-  font-size: 100px;
-}
 
 #room {
   min-height: 100vh;

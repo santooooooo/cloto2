@@ -20,6 +20,17 @@
       </template>
     </v-alert>
 
+    <!-- メッセージオーバーレイ-->
+    <v-overlay
+      opacity="0.8"
+      :value="alert.overlay.show"
+      :color="alert.overlay.color"
+      class="message-overlay"
+      dark
+    >
+      <p>{{ alert.overlay.message }}</p>
+    </v-overlay>
+
     <!-- ヘッダー -->
     <Header @show-drawer="isShowDrawer = true" />
 
@@ -127,6 +138,14 @@ export default {
   transform: translateX(-50%);
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
+}
+
+.message-overlay {
+  z-index: 9998;
+
+  p {
+    font-size: 100px;
+  }
 }
 
 #main {
