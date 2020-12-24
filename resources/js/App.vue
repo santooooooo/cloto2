@@ -182,24 +182,9 @@ export default {
     },
 
     /**
-     * 終了処理
-     */
-    closeApp: async function () {
-      if (this.authCheck) {
-        // 座席の開放
-        if (this.authUser.seat !== null) {
-          await this.$http.post(this.$endpoint('closeApp'));
-        }
-      }
-    },
-
-    /**
      * ログアウト処理
      */
     logout: async function () {
-      // 終了処理
-      await this.closeApp();
-
       // ログアウト処理
       await this.$store.dispatch('auth/logout');
 
@@ -221,9 +206,6 @@ export default {
 
     // ウィンドウリサイズ時のイベント
     window.addEventListener('resize', this.resizeEvent);
-
-    // ブラウザクローズ時のイベント
-    window.addEventListener('beforeunload', this.closeApp);
   },
 };
 </script>
