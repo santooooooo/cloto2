@@ -9,6 +9,11 @@
       <h1 class="font-weight-bold">ウィンドウを拡大してください。</h1>
     </v-overlay>
 
+    <!-- オフライン時の操作無効化用オーバーレイ -->
+    <v-overlay z-index="9999" opacity="0.9" v-if="isOffline">
+      <h1 class="font-weight-bold">インターネットに接続してください。</h1>
+    </v-overlay>
+
     <!-- アラート -->
     <v-alert
       :value="alert.show"
@@ -66,6 +71,7 @@ export default {
   data() {
     return {
       chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
+      isOffline: false, // オフライン状態
       setOnlineTimer: null, // オンライン状態の通知制御
       width: window.innerWidth, // ウィンドウの横幅
       minWidth: 1350, // ウィンドウの最小サイズ
@@ -154,6 +160,8 @@ export default {
      * オフライン時のイベント
      */
     offlineEvent: function () {
+      this.isOffline = true;
+
       if (this.authUser.seat !== null) {
         alert(
           'インターネットに接続してください。5分以上接続が復帰しない場合は自動的に退席します。'
@@ -169,6 +177,8 @@ export default {
         // オンライン状態を通知
         this.$http.get(this.$endpoint('setOnline'));
       }
+
+      this.isOffline = false;
     },
 
     /**
