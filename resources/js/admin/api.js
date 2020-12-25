@@ -10,7 +10,7 @@ const replaceChar = ['#', '*', '$'];
 /**
  * API一覧
  */
-const logout = '/admin/logout';
+const logout = '/api/admin/logout';
 const users = '/api/admin/users';
 
 /**

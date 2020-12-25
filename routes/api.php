@@ -52,6 +52,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => ['auth:admin']], function () {
+        Route::post('/logout', 'Auth\Admin\LoginController@logout')->name('admin_logout');
+
         Route::get('/users', 'API\Admin\UserController@index')->name('users');
     });
 });
