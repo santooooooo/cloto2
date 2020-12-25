@@ -893,10 +893,11 @@ export default {
      * @param MediaStream stream  音声検知するユーザー（全員）のストリーム
      */
     startVoiceDetection: function (stream) {
-      const audioContext = new AudioContext();
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const audioCtx = new AudioContext();
 
       // 音声検知時のイベント
-      var options = {
+      const options = {
         // 検知開始（発声開始）
         onVoiceStart: () => {
           // 発言者の枠点灯
@@ -911,7 +912,7 @@ export default {
       };
 
       // 音声検出開始
-      this.voiceDetectionObject = voiceDetection(audioContext, stream, options);
+      this.voiceDetectionObject = voiceDetection(audioCtx, stream, options);
     },
 
     /**
