@@ -5,7 +5,9 @@
 <link rel="shortcut icon" href="{{ config('consts.storage.system').'favicon.ico' }}">
 
 <!-- Scripts -->
-<script src="{{ mix('js/admin/app.js') }}" defer></script>
+@if (!request()->is('admin/login'))
+    <script src="{{ mix('js/admin/app.js') }}" defer></script>
+@endif
 
 <!-- Fonts -->
 <link rel="dns-prefetch" href="//fonts.gstatic.com">

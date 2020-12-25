@@ -10,34 +10,7 @@ const replaceChar = ['#', '*', '$'];
 /**
  * API一覧
  */
-const home = '/';
-const regenerateToken = '/api/regenerate-token';
-const contact = '/api/contact';
-const preRegister = '/api/preregister';
-const register = '/api/register';
-const login = '/api/login';
-const logout = '/api/logout';
-const closeApp = '/api/close_app';
-const authUser = '/api/auth/user';
-const authPeerId = '/api/auth/peer_id';
-const userShow = '/api/user/' + replaceChar[0];
-const profileUpdate = '/api/user/update';
-const getUserByPeerId = '/api/user/get_user_by_peer_id/' + replaceChar[0];
-const roomIndex = '/api/room';
-const roomShow = '/api/room/' + replaceChar[0];
-const seatSit = '/api/seat/sit/' + replaceChar[0];
-const seatLeave = '/api/seat/leave';
-const enterLounge = '/api/seat/enterlounge/' + replaceChar[0];
-const leaveLounge = '/api/seat/leavelounge/' + replaceChar[0];
-const projectIndex = '/api/project';
-const projectPost = '/api/project/post';
-const taskIndex = '/api/task/index/' + replaceChar[0];
-const taskPost = '/api/task/post';
-const taskStart = '/api/task/start';
-const karteIndexByAuthUser = '/api/karte/index_by_auth_user';
-const karteIndexByTaskId = '/api/karte/index_by_task_id/' + replaceChar[0];
-const kartePost = '/api/karte/post';
-const technologyIndex = '/api/technology';
+const logout = '/admin/logout';
 
 /**
  * エンドポイントの取得
@@ -49,116 +22,8 @@ const technologyIndex = '/api/technology';
 export function getEndpoint(name, params) {
   var endpoint = '';
   switch (name) {
-    case 'home':
-      endpoint = home;
-      break;
-
-    case 'regenerateToken':
-      endpoint = regenerateToken;
-      break;
-
-    case 'contact':
-      endpoint = contact;
-      break;
-
-    case 'preRegister':
-      endpoint = preRegister;
-      break;
-
-    case 'register':
-      endpoint = register;
-      break;
-
-    case 'login':
-      endpoint = login;
-      break;
-
     case 'logout':
       endpoint = logout;
-      break;
-
-    case 'closeApp':
-      endpoint = closeApp;
-      break;
-
-    case 'authUser':
-      endpoint = authUser;
-      break;
-
-    case 'authPeerId':
-      endpoint = authPeerId;
-      break;
-
-    case 'userShow':
-      endpoint = setParams(userShow, params);
-      break;
-
-    case 'profileUpdate':
-      endpoint = profileUpdate;
-      break;
-
-    case 'getUserByPeerId':
-      endpoint = setParams(getUserByPeerId, params);
-      break;
-
-    case 'roomIndex':
-      endpoint = roomIndex;
-      break;
-
-    case 'roomShow':
-      endpoint = setParams(roomShow, params);
-      break;
-
-    case 'seatSit':
-      endpoint = setParams(seatSit, params);
-      break;
-
-    case 'seatLeave':
-      endpoint = seatLeave;
-      break;
-
-    case 'enterLounge':
-      endpoint = setParams(enterLounge, params);
-      break;
-
-    case 'leaveLounge':
-      endpoint = setParams(leaveLounge, params);
-      break;
-
-    case 'projectIndex':
-      endpoint = projectIndex;
-      break;
-
-    case 'projectPost':
-      endpoint = projectPost;
-      break;
-
-    case 'taskIndex':
-      endpoint = setParams(taskIndex, params);
-      break;
-
-    case 'taskPost':
-      endpoint = taskPost;
-      break;
-
-    case 'taskStart':
-      endpoint = taskStart;
-      break;
-
-    case 'karteIndexByAuthUser':
-      endpoint = karteIndexByAuthUser;
-      break;
-
-    case 'karteIndexByTaskId':
-      endpoint = setParams(karteIndexByTaskId, params);
-      break;
-
-    case 'kartePost':
-      endpoint = kartePost;
-      break;
-
-    case 'technologyIndex':
-      endpoint = technologyIndex;
       break;
   }
 

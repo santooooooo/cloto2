@@ -1,10 +1,5 @@
 <template>
-  <!-- 画面サイズの最小を設定 -->
-  <v-overlay v-if="!isDebug && !$route.meta.isPublic && width < minWidth">
-    <h1 class="font-weight-bold">ウィンドウを拡大してください。</h1>
-  </v-overlay>
-
-  <v-app v-else>
+  <v-app>
     <!-- アラート -->
     <v-alert
       :value="alert.show"
@@ -21,10 +16,10 @@
     </v-alert>
 
     <!-- ヘッダー -->
-    <Header @show-drawer="isShowDrawer = true" />
+    <Header @logout="logout" />
 
     <!-- ドロワーメニュー -->
-    <Drawer v-model="isShowDrawer" @logout="logout" v-if="isRelease" />
+    <Drawer @logout="logout" />
 
     <!-- メイン -->
     <v-main id="main">
@@ -48,72 +43,22 @@ export default {
     Drawer,
     Footer,
   },
-  data() {
-    return {
-      width: window.innerWidth, // ウィンドウの横幅
-      minWidth: 1350, // ウィンドウの最小サイズ
-      isShowDrawer: false, // ドロワーメニューの表示制御
-    };
-  },
   computed: {
-    isDebug() {
-      return process.env.MIX_APP_DEBUG === 'true' ? true : false;
-    },
-    isRelease() {
-      return process.env.MIX_APP_RELEASE === 'true' ? true : false;
-    },
     alert() {
       return this.$store.state.alert;
-    },
-    authCheck() {
-      return this.$store.getters['auth/check'];
-    },
-    authUser() {
-      return this.$store.getters['auth/user'];
     },
   },
   methods: {
     /**
-     * ウィンドウリサイズ時のイベント
-     */
-    resizeHandler: function () {
-      this.width = window.innerWidth;
-    },
-
-    /**
-     * 終了処理
-     */
-    closeApp: async function () {
-      if (this.authCheck) {
-        // 座席の開放
-        if (this.authUser.seat_id !== null) {
-          await this.$http.post(this.$endpoint('closeApp'));
-        }
-      }
-    },
-
-    /**
      * ログアウト処理
      */
     logout: async function () {
-      // 終了処理
-      await this.closeApp();
-
       // ログアウト処理
-      await this.$store.dispatch('auth/logout');
+      this.$http.post(this.$endpoint('logout'));
 
       // トップページへリダイレクト
-      if (this.$route.path !== this.$router.resolve({ name: 'index' }).href) {
-        this.$router.push({ name: 'index' });
-      }
+      window.location = '/admin/login';
     },
-  },
-  mounted: function () {
-    // ウィンドウリサイズ時のイベント
-    window.addEventListener('resize', this.resizeHandler);
-
-    // ブラウザクローズ時のイベント
-    window.addEventListener('beforeunload', this.closeApp);
   },
 };
 </script>
@@ -121,7 +66,7 @@ export default {
 <style lang="scss" scoped>
 .v-alert {
   position: fixed;
-  z-index: 9999;
+  z-index: 9998;
   top: 15px;
   left: 50%;
   transform: translateX(-50%);
