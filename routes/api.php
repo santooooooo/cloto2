@@ -49,3 +49,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/technology', 'API\TechnologyController@index')->name('technologyIndex');
 });
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::group(['middleware' => ['auth:admin']], function () {
+        Route::get('/users', 'API\Admin\UserController@index')->name('users');
+    });
+});

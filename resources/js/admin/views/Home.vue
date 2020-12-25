@@ -1,84 +1,15 @@
 <template>
-  <v-container fluid pa-0 class="index"> 管理画面 </v-container>
+  <v-container>管理画面</v-container>
 </template>
 
 <script>
-import { OK } from '@/consts/status';
-
 export default {
   head: {
     title() {
       return {
-        inner: 'CLOTO',
-        separator: ' ',
-        complement: ' ',
+        inner: '管理画面',
       };
-    },
-  },
-  data() {
-    return {
-      contactForm: {
-        name: '',
-        email: '',
-        body: '',
-        loading: false,
-        validation: {
-          valid: false,
-          nameRules: [(v) => !!v || '名前は必須項目です。'],
-          emailRules: [
-            (v) => !!v || 'メールアドレスは必須項目です。',
-            (v) => {
-              const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-              return pattern.test(v) || 'メールアドレスが無効です。';
-            },
-          ],
-          bodyRules: [(v) => !!v || 'お問い合わせ内容は必須項目です。'],
-        },
-      },
-    };
-  },
-  methods: {
-    sendContact: async function () {
-      if (this.$refs.contactForm.validate()) {
-        this.contactForm.loading = true;
-
-        var input = {
-          name: this.contactForm.name,
-          email: this.contactForm.email,
-          body: this.contactForm.body,
-        };
-
-        // 問い合わせ送信処理
-        var response = await this.$http.post(this.$endpoint('contact'), input);
-
-        if (response.status === OK) {
-          this.$refs.contactForm.reset();
-          var type = 'success';
-        } else {
-          var type = 'error';
-        }
-
-        this.$store.dispatch('alert/show', {
-          type: type,
-          message: response.data,
-        });
-
-        this.contactForm.loading = false;
-      }
     },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import '~/_variables';
-
-.index {
-  max-width: 100%;
-  background-color: $light-gray;
-
-  a:hover {
-    text-decoration: none;
-  }
-}
-</style>
