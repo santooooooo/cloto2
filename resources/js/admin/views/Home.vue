@@ -1,5 +1,8 @@
 <template>
-  <v-container>管理画面</v-container>
+  <v-container>
+    <h1>管理画面</h1>
+    <h5>CLOTO様 ご利用ありがとうございます。</h5>
+  </v-container>
 </template>
 
 <script>
