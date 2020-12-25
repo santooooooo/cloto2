@@ -154,6 +154,9 @@ router.beforeEach(async (to, from, next) => {
   if (!store.getters['auth/check'] && to.matched.some((record) => !record.meta.isPublic)) {
     // 未ログイン時のリダイレクト
     next({ name: 'login' });
+  } else if (store.getters['auth/check'] && (to.name === 'register' || to.name === 'login')) {
+    // ログイン時のリダイレクト
+    next({ name: 'entrance' });
   } else {
     next();
   }
