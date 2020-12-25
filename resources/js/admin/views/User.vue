@@ -89,10 +89,8 @@ export default {
       ],
       editUserForm: {
         index: -1,
-        data: {
-          handlename: '',
-          email: '',
-        },
+        loading: false,
+        data: {},
         validation: {
           valid: false,
           handlenameRules: [(v) => !!v || '表示名は必須項目です。'],
@@ -128,7 +126,7 @@ export default {
       this.dialog = false;
       this.editUserForm.loading = false;
       this.$nextTick(() => {
-        this.editUserForm.data = Object.assign({}, this.users);
+        this.$refs.editUserForm.reset();
         this.editUserForm.index = -1;
       });
     },
@@ -162,6 +160,7 @@ export default {
           } else {
             this.users.push(this.editUserForm);
           }
+
           this.close();
         } else {
           this.$store.dispatch('alert/show', {

@@ -8,7 +8,7 @@
             :no-change-crop-ratio="true"
             ratio-x="1"
             ratio-y="1"
-            @input="profileUpdateForm.icon = $event"
+            @input="profileUpdateForm.data.icon = $event"
           />
 
           <v-row>
@@ -16,7 +16,7 @@
               <!-- ユーザー名 -->
               <v-card-text class="pa-1 white--text">ユーザー名</v-card-text>
               <v-text-field
-                v-model="profileUpdateForm.username"
+                v-model="profileUpdateForm.data.username"
                 :rules="profileUpdateForm.validation.usernameRules"
                 label="ユーザー名"
                 solo
@@ -30,7 +30,7 @@
               <!-- アカウント名 -->
               <v-card-text class="pa-1 white--text">表示名</v-card-text>
               <v-text-field
-                v-model="profileUpdateForm.handlename"
+                v-model="profileUpdateForm.data.handlename"
                 :rules="profileUpdateForm.validation.handlenameRules"
                 label="表示名"
                 solo
@@ -43,7 +43,7 @@
           <!-- メールアドレス -->
           <v-card-text class="pa-1 white--text">メールアドレス</v-card-text>
           <v-text-field
-            v-model="profileUpdateForm.email"
+            v-model="profileUpdateForm.data.email"
             :rules="profileUpdateForm.validation.emailRules"
             label="メールアドレス"
             solo
@@ -56,7 +56,7 @@
             <v-col>
               <v-card-text class="pa-1 white--text">Twitter</v-card-text>
               <v-text-field
-                v-model="profileUpdateForm.sns.twitter"
+                v-model="profileUpdateForm.data.sns.twitter"
                 placeholder="@以降を入力 例：CLOTO_JP"
                 solo
                 rounded
@@ -69,7 +69,7 @@
             <v-col>
               <v-card-text class="pa-1 white--text">GitHub</v-card-text>
               <v-text-field
-                v-model="profileUpdateForm.sns.github"
+                v-model="profileUpdateForm.data.sns.github"
                 placeholder="GitHub 例：CLOTO_JP"
                 solo
                 rounded
@@ -84,7 +84,7 @@
             <v-col>
               <v-card-text class="pa-1 white--text">Qiita</v-card-text>
               <v-text-field
-                v-model="profileUpdateForm.sns.qiita"
+                v-model="profileUpdateForm.data.sns.qiita"
                 placeholder="Qiita 例：CLOTO_JP"
                 solo
                 rounded
@@ -97,7 +97,7 @@
             <v-col>
               <v-card-text class="pa-1 white--text">Webサイト</v-card-text>
               <v-text-field
-                v-model="profileUpdateForm.web"
+                v-model="profileUpdateForm.data.web"
                 placeholder="Webサイト 例：https://cloto.jp"
                 solo
                 rounded
@@ -115,18 +115,13 @@
             rounded
             rows="3"
             class="pa-1"
-            v-model="profileUpdateForm.introduction"
+            v-model="profileUpdateForm.data.introduction"
           ></v-textarea>
 
           <!-- ボタン -->
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              @click="$emit('close', false)"
-              depressed
-              class="mt-3 mr-8 white--text"
-              color="error"
-            >
+            <v-btn @click="close()" depressed class="mt-3 mr-8 white--text" color="error">
               閉じる
             </v-btn>
 
@@ -164,6 +159,7 @@ export default {
       dialog: false,
       profileUpdateForm: {
         loading: false,
+        data: {},
         validation: {
           valid: false,
           usernameRules: [(v) => !!v || 'ユーザネームは必須項目です。'],
@@ -181,31 +177,42 @@ export default {
   },
 
   methods: {
+    /**
+     * 編集ダイアログのクローズ
+     */
+    close: function () {
+      this.$refs.profileUpdateForm.reset();
+      this.$emit('close', false);
+    },
+
+    /**
+     * 編集データの保存
+     */
     submit: async function () {
       if (this.$refs.profileUpdateForm.validate()) {
         this.profileUpdateForm.loading = true;
 
         var input = new FormData();
-        input.append('username', this.profileUpdateForm.username);
-        input.append('email', this.profileUpdateForm.email);
-        input.append('handlename', this.profileUpdateForm.handlename);
-        input.append('icon', this.profileUpdateForm.icon);
+        input.append('username', this.profileUpdateForm.data.username);
+        input.append('email', this.profileUpdateForm.data.email);
+        input.append('handlename', this.profileUpdateForm.data.handlename);
+        input.append('icon', this.profileUpdateForm.data.icon);
         input.append(
           'twitter',
-          this.profileUpdateForm.sns.twitter ? this.profileUpdateForm.sns.twitter : ''
+          this.profileUpdateForm.data.sns.twitter ? this.profileUpdateForm.data.sns.twitter : ''
         );
         input.append(
           'github',
-          this.profileUpdateForm.sns.github ? this.profileUpdateForm.sns.github : ''
+          this.profileUpdateForm.data.sns.github ? this.profileUpdateForm.data.sns.github : ''
         );
         input.append(
           'qiita',
-          this.profileUpdateForm.sns.qiita ? this.profileUpdateForm.sns.qiita : ''
+          this.profileUpdateForm.data.sns.qiita ? this.profileUpdateForm.data.sns.qiita : ''
         );
-        input.append('web', this.profileUpdateForm.web ? this.profileUpdateForm.web : '');
+        input.append('web', this.profileUpdateForm.data.web ? this.profileUpdateForm.data.web : '');
         input.append(
           'introduction',
-          this.profileUpdateForm.introduction ? this.profileUpdateForm.introduction : ''
+          this.profileUpdateForm.data.introduction ? this.profileUpdateForm.data.introduction : ''
         );
 
         // ユーザーデータ保存処理
@@ -219,6 +226,8 @@ export default {
 
           // ユーザーデータの同期
           await this.$store.dispatch('auth/syncAuthUser');
+
+          this.$refs.profileUpdateForm.reset();
 
           this.dialog = false;
           this.$emit('close', false);
@@ -235,7 +244,7 @@ export default {
   },
 
   mounted() {
-    Object.assign(this.profileUpdateForm, this.authUser);
+    this.profileUpdateForm.data = Object.assign({}, this.authUser);
     this.dialog = true;
   },
 };
