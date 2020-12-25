@@ -44,6 +44,7 @@
           <v-card-text class="pa-1 white--text">メールアドレス</v-card-text>
           <v-text-field
             v-model="profileUpdateForm.email"
+            :rules="profileUpdateForm.validation.emailRules"
             label="メールアドレス"
             solo
             rounded
@@ -162,10 +163,12 @@ export default {
     return {
       dialog: false,
       profileUpdateForm: {
+        loading: false,
         validation: {
           valid: false,
           usernameRules: [(v) => !!v || 'ユーザネームは必須項目です。'],
           handlenameRules: [(v) => !!v || '表示名は必須項目です。'],
+          emailRules: [(v) => !!v || 'メールアドレスは必須項目です。'],
         },
       },
     };

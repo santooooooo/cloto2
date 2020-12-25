@@ -12,6 +12,7 @@ const replaceChar = ['#', '*', '$'];
  */
 const logout = '/api/admin/logout';
 const users = '/api/admin/users';
+const userUpdate = '/api/admin/user/update/' + replaceChar[0];
 
 /**
  * エンドポイントの取得
@@ -29,6 +30,10 @@ export function getEndpoint(name, params) {
 
     case 'users':
       endpoint = users;
+      break;
+
+    case 'userUpdate':
+      endpoint = setParams(userUpdate, params);
       break;
   }
 
