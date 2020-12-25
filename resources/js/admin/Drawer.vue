@@ -11,7 +11,7 @@
     </v-list-item>
 
     <v-list nav>
-      <v-list-item :to="{ name: 'home' }">
+      <v-list-item exact :to="{ name: 'home' }">
         <v-list-item-icon>
           <v-icon>mdi-information</v-icon>
         </v-list-item-icon>
@@ -20,7 +20,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item :to="{ name: 'user' }">
+      <v-list-item exact :to="{ name: 'user' }">
         <v-list-item-icon>
           <v-icon>mdi-account</v-icon>
         </v-list-item-icon>

@@ -8,7 +8,7 @@
     v-if="!authCheck"
   >
     <v-list nav>
-      <v-list-item :to="{ name: 'index' }">
+      <v-list-item exact :to="{ name: 'index' }">
         <v-list-item-icon>
           <v-icon>mdi-information</v-icon>
         </v-list-item-icon>
@@ -17,7 +17,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item :to="{ name: 'register' }">
+      <v-list-item exact :to="{ name: 'register' }">
         <v-list-item-icon>
           <v-icon>mdi-account-plus</v-icon>
         </v-list-item-icon>
@@ -26,7 +26,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item :to="{ name: 'login' }">
+      <v-list-item exact :to="{ name: 'login' }">
         <v-list-item-icon>
           <v-icon>mdi-login</v-icon>
         </v-list-item-icon>
@@ -52,7 +52,7 @@
     <v-divider></v-divider>
 
     <v-list nav>
-      <v-list-item :to="{ name: 'entrance' }">
+      <v-list-item exact :to="{ name: 'entrance' }">
         <v-list-item-icon>
           <v-icon>mdi-home-city</v-icon>
         </v-list-item-icon>
@@ -61,7 +61,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item :to="{ name: 'mypage' }">
+      <v-list-item exact :to="{ name: 'mypage' }">
         <v-list-item-icon>
           <v-icon>mdi-account</v-icon>
         </v-list-item-icon>
