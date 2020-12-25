@@ -182,6 +182,33 @@ export default {
     },
 
     /**
+     * 戻るボタンの無効化
+     */
+    stopBackButtonEvent: function () {
+      this.$store.dispatch('alert/show', {
+        type: 'error',
+        message: '戻るボタンでの操作は禁止されています。',
+      });
+
+      history.go(1);
+    },
+
+    /**
+     * 戻るボタンでページに復帰した時のイベント
+     *
+     * @param event
+     */
+    pageBackEvent: function (event) {
+      var historyTraversal =
+        event.persisted ||
+        (typeof window.performance != 'undefined' && window.performance.navigation.type === 2);
+      if (historyTraversal) {
+        // リロード（戻るボタンでアクセスすると休憩室に入室できない）
+        window.location.reload();
+      }
+    },
+
+    /**
      * ログアウト処理
      */
     logout: async function () {
@@ -194,7 +221,7 @@ export default {
       }
     },
   },
-  mounted: function () {
+  mounted() {
     // ボリュームの調整
     this.chime.volume = 0.2;
 
@@ -206,6 +233,15 @@ export default {
 
     // ウィンドウリサイズ時のイベント
     window.addEventListener('resize', this.resizeEvent);
+
+    // 戻るボタンの無効化
+    history.pushState(null, null, location.href);
+    window.addEventListener('popstate', this.stopBackButtonEvent);
+
+    // 戻るボタンでページに復帰した時のイベント
+    window.addEventListener('pageshow', (event) => {
+      this.pageBackEvent(event);
+    });
   },
 };
 </script>
