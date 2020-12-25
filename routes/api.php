@@ -14,12 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// トークンの再発行
-Route::get('/regenerate-token', function (Request $request) {
-    $request->session()->regenerateToken();
-    return response()->json();
-})->name('regenerateToken');
-
 Route::post('/contact', 'API\ContactController@contact')->name('contact');
 Route::post('/preregister', 'API\PreRegisterController@pre_register')->name('preRegister');
 

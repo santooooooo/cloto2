@@ -10,8 +10,6 @@ const replaceChar = ['#', '*', '$'];
 /**
  * API一覧
  */
-const home = '/';
-const regenerateToken = '/api/regenerate-token';
 const contact = '/api/contact';
 const preRegister = '/api/preregister';
 const register = '/api/register';
@@ -49,14 +47,6 @@ const technologyIndex = '/api/technology';
 export function getEndpoint(name, params) {
   var endpoint = '';
   switch (name) {
-    case 'home':
-      endpoint = home;
-      break;
-
-    case 'regenerateToken':
-      endpoint = regenerateToken;
-      break;
-
     case 'contact':
       endpoint = contact;
       break;
