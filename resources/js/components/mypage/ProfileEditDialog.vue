@@ -192,23 +192,23 @@ export default {
       if (this.$refs.profileUpdateForm.validate()) {
         this.profileUpdateForm.loading = true;
 
+        var sns = {};
+        if (this.profileUpdateForm.data.sns.twitter) {
+          sns['twitter'] = this.profileUpdateForm.data.sns.twitter;
+        }
+        if (this.profileUpdateForm.data.sns.github) {
+          sns['github'] = this.profileUpdateForm.data.sns.github;
+        }
+        if (this.profileUpdateForm.data.sns.qiita) {
+          sns['qiita'] = this.profileUpdateForm.data.sns.qiita;
+        }
+
         var input = new FormData();
         input.append('username', this.profileUpdateForm.data.username);
         input.append('email', this.profileUpdateForm.data.email);
         input.append('handlename', this.profileUpdateForm.data.handlename);
         input.append('icon', this.profileUpdateForm.data.icon);
-        input.append(
-          'twitter',
-          this.profileUpdateForm.data.sns.twitter ? this.profileUpdateForm.data.sns.twitter : ''
-        );
-        input.append(
-          'github',
-          this.profileUpdateForm.data.sns.github ? this.profileUpdateForm.data.sns.github : ''
-        );
-        input.append(
-          'qiita',
-          this.profileUpdateForm.data.sns.qiita ? this.profileUpdateForm.data.sns.qiita : ''
-        );
+        input.append('sns', JSON.stringify(sns));
         input.append('web', this.profileUpdateForm.data.web ? this.profileUpdateForm.data.web : '');
         input.append(
           'introduction',

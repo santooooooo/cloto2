@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'handlename' => $username,
                 'icon' => 'default.jpg',
-                'sns' => [],
+                'sns' => json_decode('{}'),
             ]);
         }
 
@@ -35,7 +35,7 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make($username),
                 'handlename' => $username,
                 'icon' => 'default.jpg',
-                'sns' => [],
+                'sns' => json_decode('{}'),
             ]);
         }
     }
