@@ -11,6 +11,7 @@ Vue.use(VueRouter);
 
 import home from '@/admin/views/Home';
 import user from '@/admin/views/User';
+import room from '@/admin/views/Room';
 import notFound from '@/admin/views/errors/NotFound';
 
 const router = new VueRouter({
@@ -25,6 +26,11 @@ const router = new VueRouter({
       path: '/admin/user',
       name: 'user',
       component: user,
+    },
+    {
+      path: '/admin/room',
+      name: 'room',
+      component: room,
     },
   ],
 });

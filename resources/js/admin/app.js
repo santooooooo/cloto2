@@ -29,7 +29,7 @@ import App from './App.vue';
 
 Vue.use(VueHead, {
   separator: '|',
-  complement: 'CLOTO',
+  complement: '管理画面',
 });
 
 new Vue({

@@ -56,5 +56,8 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('/users', 'API\Admin\UserController@index')->name('admin_users');
         Route::post('/user/update/{user_id}', 'API\Admin\UserController@update')->name('admin_userUpdate');
+
+        Route::get('/rooms', 'API\Admin\RoomController@index')->name('admin_rooms');
+        Route::post('/room/update/{room_id}', 'API\Admin\RoomController@update')->name('admin_roomUpdate');
     });
 });

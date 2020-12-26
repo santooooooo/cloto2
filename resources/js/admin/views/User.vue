@@ -6,7 +6,7 @@
           <v-toolbar-title>ユーザー一覧</v-toolbar-title>
 
           <!-- ユーザー編集ダイアログ -->
-          <v-dialog v-model="dialog" max-width="500px" persistent>
+          <v-dialog v-model="editUserForm.dialog" max-width="500px" persistent>
             <v-form ref="editUserForm" v-model="editUserForm.validation.valid" lazy-validation>
               <v-card class="headline grey darken-2 text-center pa-2">
                 <v-card-title>
@@ -41,12 +41,12 @@
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="error" :loading="editUserForm.loading" @click="close()"
-                    >キャンセル</v-btn
-                  >
-                  <v-btn color="success" :loading="editUserForm.loading" @click="submit()"
-                    >保存</v-btn
-                  >
+                  <v-btn color="error" :loading="editUserForm.loading" @click="close()">
+                    キャンセル
+                  </v-btn>
+                  <v-btn color="success" :loading="editUserForm.loading" @click="submit()">
+                    保存
+                  </v-btn>
                 </v-card-actions>
               </v-card>
             </v-form>
@@ -72,13 +72,12 @@ export default {
   head: {
     title() {
       return {
-        inner: '管理画面',
+        inner: 'ユーザー',
       };
     },
   },
   data() {
     return {
-      dialog: false,
       users: [],
       search: '',
       headers: [
@@ -88,8 +87,9 @@ export default {
         { text: '編集', value: 'actions', sortable: false, align: 'center' },
       ],
       editUserForm: {
-        index: -1,
+        dialog: false,
         loading: false,
+        index: -1,
         data: {},
         validation: {
           valid: false,
@@ -116,14 +116,14 @@ export default {
     editUser: function (user) {
       this.editUserForm.index = this.users.indexOf(user);
       this.editUserForm.data = Object.assign({}, user);
-      this.dialog = true;
+      this.editUserForm.dialog = true;
     },
 
     /**
      * 編集ダイアログのクローズ
      */
     close: function () {
-      this.dialog = false;
+      this.editUserForm.dialog = false;
       this.editUserForm.loading = false;
       this.$nextTick(() => {
         this.$refs.editUserForm.reset();

@@ -4,32 +4,32 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Room;
 
-class UserController extends Controller
+class RoomController extends Controller
 {
-    /** @var User */
-    protected $user;
+    /** @var Room */
+    protected $room;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(Room $room)
     {
-        $this->user = $user;
+        $this->room = $room;
     }
 
 
     /**
-     * ユーザーデータ一覧の取得
+     * 部屋データ一覧の取得
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return response()->json($this->user->all());
+        return response()->json($this->room->all());
     }
 
     /**
@@ -55,19 +55,21 @@ class UserController extends Controller
     }
 
     /**
-     * ユーザーデータの更新
+     * 部屋データの更新
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $user_id    更新するユーザーのID
+     * @param  int  $room_id    更新する部屋のID
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $user_id)
+    public function update(Request $request, $room_id)
     {
         $data = $request->all();
+        // 時間割データの型変換
+        $data['timetable'] = json_decode($data['timetable']);
 
-        $edit_user = $this->user->find($user_id);
+        $edit_room = $this->room->find($room_id);
 
-        $result = $edit_user->fill($data)->save();
+        $result = $edit_room->fill($data)->save();
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
