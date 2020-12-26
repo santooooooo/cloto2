@@ -4,7 +4,7 @@
       <v-img :src="$storage('system') + '404.svg'" contain class="mx-auto"></v-img>
       <v-col align="center">
         <h5>お探しの場所はここではないようです．．．</h5>
-        <router-link :to="{ name: 'index' }">
+        <router-link :to="{ name: 'home' }">
           <v-btn
             x-large
             depressed

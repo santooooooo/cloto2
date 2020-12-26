@@ -32,6 +32,11 @@ const router = new VueRouter({
       name: 'room',
       component: room,
     },
+    {
+      path: '*',
+      name: notFound,
+      component: notFound,
+    },
   ],
 });
 
