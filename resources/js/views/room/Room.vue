@@ -660,6 +660,21 @@ export default {
             // 休憩時間
             this.backgroundColor = '#ffe89a';
           }
+        } else {
+          // 時間割の最後まで確認した場合
+          if (index + 1 === timetable.length) {
+            // 日付更新後の最初の状態を保存
+            this.roomStatus = timetable[0].status;
+
+            // 背景色の設定
+            if (this.roomStatus === 'study') {
+              // 自習時間
+              this.backgroundColor = '#b0e0e6';
+            } else if (this.roomStatus === 'break') {
+              // 休憩時間
+              this.backgroundColor = '#ffe89a';
+            }
+          }
         }
       }
     });

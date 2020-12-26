@@ -186,6 +186,6 @@ export default {
 <style lang="scss" scoped>
 .floor {
   min-height: 100vh;
-  background-color: #ffe89a;
+  background-color: #caffd7;
 }
 </style>
