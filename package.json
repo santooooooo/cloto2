@@ -34,6 +34,7 @@
     "socket.io-client": "^2.3.1",
     "spinkit": "^2.0.1",
     "voice-activity-detection": "0.0.5",
+    "vue-beautiful-chat": "^2.5.0",
     "vue-cropper": "^0.5.5",
     "vue-head": "^2.2.0",
     "vue-router": "^3.4.3",
