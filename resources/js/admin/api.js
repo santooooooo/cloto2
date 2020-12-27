@@ -11,6 +11,7 @@ const replaceChar = ['#', '*', '$'];
  * API一覧
  */
 const logout = '/api/admin/logout';
+const authUser = '/api/admin/auth';
 const users = '/api/admin/users';
 const userUpdate = '/api/admin/user/update/' + replaceChar[0];
 const rooms = '/api/admin/rooms';
@@ -28,6 +29,10 @@ export function getEndpoint(name, params) {
   switch (name) {
     case 'logout':
       endpoint = logout;
+      break;
+
+    case 'authUser':
+      endpoint = authUser;
       break;
 
     case 'users':

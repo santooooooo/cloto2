@@ -9,6 +9,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+import store from './store';
+
 import home from '@/admin/views/Home';
 import user from '@/admin/views/User';
 import room from '@/admin/views/Room';
@@ -38,6 +40,18 @@ const router = new VueRouter({
       component: notFound,
     },
   ],
+});
+
+router.beforeEach(async (to, from, next) => {
+  // ログイン状態の更新
+  await store.dispatch('auth/syncAuthUser');
+
+  if (!store.getters['auth/check']) {
+    // 未ログイン時のリダイレクト（Laravel側でもリダイレクトしているため不要？）
+    window.location.pathname = '/admin/login';
+  } else {
+    next();
+  }
 });
 
 export default router;

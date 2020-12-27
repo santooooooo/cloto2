@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 class UserController extends Controller
@@ -18,9 +19,28 @@ class UserController extends Controller
      */
     public function __construct(User $user)
     {
+        $this->middleware(function ($request, $next) {
+            $this->auth_user = Auth::guard('admin')->user();
+            return $next($request);
+        });
+
         $this->user = $user;
     }
 
+
+    /**
+     * ログインユーザーの取得
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function auth()
+    {
+        if (empty($this->auth_user)) {
+            return response(null);
+        }
+
+        return response()->json($this->auth_user);
+    }
 
     /**
      * ユーザーデータ一覧の取得
