@@ -53,6 +53,45 @@
 
     <!-- フッター -->
     <Footer @logout="logout" />
+
+    <!-- 問い合わせ -->
+    <beautiful-chat
+      :open="openChat"
+      :close="closeChat"
+      :onMessageWasSent="onMessageWasSent"
+      :colors="chatColors"
+      :isOpen="isChatOpen"
+      :messageList="inquiries"
+      :participants="chatParticipants"
+      :showCloseButton="true"
+      :showEmoji="true"
+      :showHeader="true"
+      :alwaysScrollToBottom="true"
+      v-if="authCheck"
+    >
+      <template v-slot:user-avatar="{ message, user }">
+        <div
+          style="
+            border-radius: 50%;
+            color: pink;
+            font-size: 15px;
+            line-height: 25px;
+            text-align: center;
+            background: tomato;
+            width: 25px !important;
+            height: 25px !important;
+            min-width: 30px;
+            min-height: 30px;
+            margin: 5px;
+            font-weight: bold;
+          "
+          v-if="message.data.type === 'text' && user && user.name"
+        >
+          {{ user.name.toUpperCase()[0] }}
+        </div>
+      </template>
+      <template v-slot:system-message-body="{ message }"> [System]: {{ message.text }} </template>
+    </beautiful-chat>
   </v-app>
 </template>
 
@@ -76,6 +115,34 @@ export default {
       width: window.innerWidth, // ウィンドウの横幅
       minWidth: 1350, // ウィンドウの最小サイズ
       isShowDrawer: false, // ドロワーメニューの表示制御
+      inquiries: null, // 問い合わせ
+      chatParticipants: [], // チャット参加者
+      isChatOpen: false, // チャットモーダル制御
+      chatColors: {
+        // beautiful-chatの色設定
+        header: {
+          bg: '#D32F2F',
+          text: '#fff',
+        },
+        launcher: {
+          bg: '#D32F2F',
+        },
+        messageList: {
+          bg: '#fff',
+        },
+        sentMessage: {
+          bg: '#F44336',
+          text: '#fff',
+        },
+        receivedMessage: {
+          bg: '#eaeaea',
+          text: '#222222',
+        },
+        userInput: {
+          bg: '#fff',
+          text: '#212121',
+        },
+      },
     };
   },
   computed: {
@@ -149,6 +216,30 @@ export default {
     },
   },
   methods: {
+    onMessageWasSent(message) {
+      console.log(message);
+      var response = this.$http.post(this.$endpoint('POST:chatPost'), message);
+      this.messageList = [...this.messageList, Object.assign({}, message, { id: Math.random() })];
+      console.log('メッセージ送信');
+    },
+    openChat() {
+      this.isChatOpen = true;
+      console.log('チャットオープン');
+      this.getInquiry();
+    },
+    closeChat() {
+      this.isChatOpen = false;
+      console.log('チャットクローズ');
+    },
+
+    /**
+     * 問い合わせの取得
+     */
+    getInquiry: async function () {
+      var response = await this.$http.get(this.$endpoint('inquiryIndex'));
+      this.inquiries = response.data;
+    },
+
     /**
      * ウィンドウリサイズ時のイベント
      */

@@ -58,6 +58,7 @@
       class="ma-5"
       target="_blank"
       href="http://twitter.com/share?url=https://cloto.jp&text=駆け出しエンジニアからプロフェッショナルまで、プログラミングをもっと楽しく！&via=cloto_jp&hashtags=CLOTO,プログラミング"
+      v-if="!authCheck"
     >
       <v-icon>mdi-twitter</v-icon>
     </v-btn>
@@ -104,6 +105,11 @@ export default {
         },
       },
     };
+  },
+  computed: {
+    authCheck() {
+      return this.$store.getters['auth/check'];
+    },
   },
   methods: {
     sendContact: async function () {

@@ -84,6 +84,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Inquiry モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function inquiries()
+    {
+        return $this->hasMany('App\Models\Inquiry');
+    }
+
+    /**
      * ログイン状態の確認
      *
      * @return \Illuminate\Support\Facades\Cache

@@ -48,6 +48,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/karte/post', 'API\KarteController@post')->name('kartePost');
 
     Route::get('/technology', 'API\TechnologyController@index')->name('technologyIndex');
+
+    Route::get('/inquiry', 'API\InquiryController@index')->name('inquiryIndex');
 });
 
 Route::group(['prefix' => 'admin'], function () {

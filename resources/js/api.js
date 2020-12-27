@@ -36,6 +36,7 @@ const karteIndexByAuthUser = '/api/karte/index_by_auth_user';
 const karteIndexByTaskId = '/api/karte/index_by_task_id/' + replaceChar[0];
 const kartePost = '/api/karte/post';
 const technologyIndex = '/api/technology';
+const inquiryIndex = '/api/inquiry';
 
 /**
  * エンドポイントの取得
@@ -149,6 +150,10 @@ export function getEndpoint(name, params) {
 
     case 'technologyIndex':
       endpoint = technologyIndex;
+      break;
+
+    case 'inquiryIndex':
+      endpoint = inquiryIndex;
       break;
   }
 
