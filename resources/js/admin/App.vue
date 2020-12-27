@@ -84,7 +84,7 @@ export default {
       this.$http.post(this.$endpoint('logout'));
 
       // トップページへリダイレクト
-      window.location = '/admin/login';
+      window.location.pathname = '/admin/login';
     },
   },
   mounted() {
@@ -95,6 +95,30 @@ export default {
     // 戻るボタンでページに復帰した時のイベント
     window.addEventListener('pageshow', (event) => {
       this.pageBackEvent(event);
+    });
+
+    // エラー発生時のイベント
+    Vue.config.errorHandler = (err, vm, info) => {
+      this.$store.dispatch('alert/show', {
+        type: 'error',
+        message: 'エラーが発生しました。再読み込みしてください。',
+      });
+    };
+
+    // エラー発生時のイベント
+    window.addEventListener('error', (event) => {
+      this.$store.dispatch('alert/show', {
+        type: 'error',
+        message: 'エラーが発生しました。再読み込みしてください。',
+      });
+    });
+
+    // エラー発生時のイベント
+    window.addEventListener('unhandledrejection', (event) => {
+      this.$store.dispatch('alert/show', {
+        type: 'error',
+        message: 'エラーが発生しました。再読み込みしてください。',
+      });
     });
   },
 };
