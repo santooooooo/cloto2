@@ -242,6 +242,30 @@ export default {
     window.addEventListener('pageshow', (event) => {
       this.pageBackEvent(event);
     });
+
+    // エラー発生時のイベント
+    Vue.config.errorHandler = (err, vm, info) => {
+      this.$store.dispatch('alert/show', {
+        type: 'error',
+        message: 'エラーが発生しました。再読み込みしてください。',
+      });
+    };
+
+    // エラー発生時のイベント
+    window.addEventListener('error', (event) => {
+      this.$store.dispatch('alert/show', {
+        type: 'error',
+        message: 'エラーが発生しました。再読み込みしてください。',
+      });
+    });
+
+    // エラー発生時のイベント
+    window.addEventListener('unhandledrejection', (event) => {
+      this.$store.dispatch('alert/show', {
+        type: 'error',
+        message: 'エラーが発生しました。再読み込みしてください。',
+      });
+    });
   },
 };
 </script>

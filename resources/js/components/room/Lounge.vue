@@ -593,6 +593,9 @@ export default {
           this.leaveUser(peerId);
         }
       });
+
+      // エラー発生時のイベント
+      this.call.on('error', this.errorEvent('エラーが発生しました。再読み込みしてください。'));
     },
 
     /**
@@ -1012,7 +1015,7 @@ export default {
         setTimeout(timeout, 15000);
       } else {
         if (this.isLoading) {
-          this.errorEvent('エラーが発生しました．．．');
+          this.errorEvent('エラーが発生しました。再読み込みしてください。');
         }
       }
     }
@@ -1025,7 +1028,7 @@ export default {
 
     // エラー発生時のイベント
     window.addEventListener('unhandledrejection', () => {
-      this.errorEvent('エラーが発生しました．．．');
+      this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 
     // 定員が4人より多い場合はSFU方式を利用
