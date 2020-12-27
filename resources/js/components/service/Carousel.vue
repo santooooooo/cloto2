@@ -10,16 +10,19 @@
     <v-carousel hide-delimiters>
       <!-- height="autoを挙動がおかしくなる" -->
       <v-carousel-item v-for="(image, i) in images" :key="i" :src="image.src">
-        <v-row class="fill-height pa-13" align="center" justify="center">
+        <v-row style="height: 90%" align="center" justify="center">
           <div class="display-3">{{ image.title }}</div>
         </v-row>
+        <v-row style="height: auto" align="center" justify="center" color="grey darken-3">
+          <div class="pa-13">{{ image.subtitle }}</div>
+        </v-row>
+        <!-- <v-list class="text-center" color="grey darken-3"
+          ><v-list-item-content>
+            <v-list-item-title class="text-white">{{ image.subtitle }}</v-list-item-title>
+          </v-list-item-content></v-list
+        > -->
       </v-carousel-item>
     </v-carousel>
-    <v-list two-line class="text-center" color="grey darken-3"
-      ><v-list-item-content>
-        <v-list-item-title class="text-white">{{ images[1].subtitle }}</v-list-item-title>
-      </v-list-item-content></v-list
-    >
   </div>
 </template>
 <script>
@@ -62,7 +65,8 @@ export default {
         {
           src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
           title: 'イベントルーム',
-          subtitle: 'CLOTOとは学習目的、学習内容ごとに分けられた部屋が複数ある自習施設です。',
+          subtitle:
+            'CLOTOとは学習目的、学習内容ごとに分けられた部屋が複数ある自習施設です。aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
         },
       ],
     };
