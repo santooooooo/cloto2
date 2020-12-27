@@ -14,7 +14,7 @@ class Inquiry extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'message'
+        'user_id', 'type', 'data'
     ];
 
     /**
@@ -22,7 +22,7 @@ class Inquiry extends Model
      *
      * @var array
      */
-    protected $casts = ['message' => 'json'];
+    protected $casts = ['data' => 'json'];
 
     /**
      * User モデルのリレーション

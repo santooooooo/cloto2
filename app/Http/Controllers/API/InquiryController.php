@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 use App\Models\Inquiry;
 
 class InquiryController extends Controller
@@ -35,7 +36,19 @@ class InquiryController extends Controller
      */
     public function index()
     {
-        return response()->json($this->user->inquiries);
+        $inquiries = [];
+        foreach ($this->user->inquiries as $inquiry) {
+            $inquiry->data += ['meta' => (new Carbon($inquiry->created_at))->format('H時i分')];
+
+            array_push($inquiries, [
+                'id' => $this->user->id,
+                'author' => 'me',
+                'type' => $inquiry->type,
+                'data' => $inquiry->data
+            ]);
+        }
+
+        return response()->json($inquiries);
     }
 
     /**
@@ -55,7 +68,7 @@ class InquiryController extends Controller
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response(null);
+        return $this->index();
     }
 
     /**

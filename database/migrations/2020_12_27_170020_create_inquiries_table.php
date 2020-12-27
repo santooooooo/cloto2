@@ -15,8 +15,9 @@ class CreateInquiriesTable extends Migration
     {
         Schema::create('inquiries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();    // ユーザーID
-            $table->text('message');                        // メッセージ
+            $table->foreignId('user_id')->nullable()->constrained();    // ユーザーID
+            $table->string('type');                                     // 問い合わせタイプ
+            $table->json('data');                                       // 問い合わせ内容
             $table->dateTimes();
         });
     }

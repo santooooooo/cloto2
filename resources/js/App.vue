@@ -56,39 +56,20 @@
 
     <!-- 問い合わせ -->
     <beautiful-chat
-      :open="openChat"
-      :close="closeChat"
-      :onMessageWasSent="onMessageWasSent"
+      :open="openInquiry"
+      :close="closeInquiry"
+      :onMessageWasSent="submitInquiry"
       :colors="chatColors"
-      :isOpen="isChatOpen"
-      :inquiries="inquiries"
-      :participants="chatParticipants"
+      :isOpen="isOpenInquiry"
+      :messageList="inquiries"
+      :participants="inquiryParticipants"
       :showCloseButton="true"
-      :showEmoji="true"
       :showHeader="true"
       :alwaysScrollToBottom="true"
       v-if="authCheck"
     >
-      <template v-slot:user-avatar="{ message, user }">
-        <div
-          style="
-            border-radius: 50%;
-            color: pink;
-            font-size: 15px;
-            line-height: 25px;
-            text-align: center;
-            background: tomato;
-            width: 25px !important;
-            height: 25px !important;
-            min-width: 30px;
-            min-height: 30px;
-            margin: 5px;
-            font-weight: bold;
-          "
-          v-if="message.data.type === 'text' && user && user.name"
-        >
-          {{ user.name.toUpperCase()[0] }}
-        </div>
+      <template v-slot:header>
+        <div class="sc-header--title enabled font-weight-bold">お問い合わせ</div>
       </template>
       <template v-slot:system-message-body="{ message }"> [System]: {{ message.text }} </template>
     </beautiful-chat>
@@ -116,31 +97,31 @@ export default {
       minWidth: 1350, // ウィンドウの最小サイズ
       isShowDrawer: false, // ドロワーメニューの表示制御
       inquiries: null, // 問い合わせ
-      chatParticipants: [], // チャット参加者
-      isChatOpen: false, // チャットモーダル制御
+      inquiryParticipants: [], // 問い合わせ参加者
+      isOpenInquiry: false, // 問い合わせモーダル制御
       chatColors: {
         // beautiful-chatの色設定
-        header: {
-          bg: '#D32F2F',
-          text: '#fff',
-        },
-        launcher: {
-          bg: '#D32F2F',
-        },
         messageList: {
-          bg: '#fff',
+          bg: '#ffffff',
         },
         sentMessage: {
-          bg: '#F44336',
-          text: '#fff',
+          bg: '#f6bf00',
+          text: '#000000',
         },
         receivedMessage: {
-          bg: '#eaeaea',
-          text: '#222222',
+          bg: '#696969',
+          text: '#ffffff',
         },
         userInput: {
-          bg: '#fff',
+          bg: '#f4f2e9',
           text: '#212121',
+        },
+        header: {
+          bg: '#ff0000',
+          text: '#ffffff',
+        },
+        launcher: {
+          bg: '#ff0000',
         },
       },
     };
@@ -216,29 +197,36 @@ export default {
     },
   },
   methods: {
-    onMessageWasSent(message) {
-      console.log(message);
-      var response = this.$http.post(this.$endpoint('inquiryPost'), { message: message.data.text });
-      this.inquiries = [...this.inquiries, Object.assign({}, message, { id: Math.random() })];
-      console.log('メッセージ送信');
-    },
-    openChat() {
-      this.isChatOpen = true;
-      console.log('チャットオープン');
-      this.getInquiry();
-    },
-    closeChat() {
-      this.isChatOpen = false;
-      console.log('チャットクローズ');
+    /**
+     * 問い合わせのオープン
+     */
+    openInquiry: async function () {
+      // 問い合わせの取得
+      var response = await this.$http.get(this.$endpoint('inquiryIndex'));
+      this.inquiries = response.data;
+      this.isOpenInquiry = true;
     },
 
     /**
-     * 問い合わせの取得
+     * 問い合わせのクローズ
      */
-    getInquiry: async function () {
-      var response = await this.$http.get(this.$endpoint('inquiryIndex'));
+    closeInquiry: function () {
+      this.isOpenInquiry = false;
+    },
+
+    /**
+     * 問い合わせの送信
+     *
+     * @param Object message 送信データ
+     */
+    submitInquiry: async function (message) {
+      // 問い合わせの送信
+      var response = await this.$http.post(this.$endpoint('inquiryPost'), {
+        type: 'text',
+        data: { text: message.data.text },
+      });
+      // データの更新
       this.inquiries = response.data;
-      console.log(this.inquiries);
     },
 
     /**
