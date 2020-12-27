@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-list two-line class="text-center" color="grey darken-3"
+    <v-list style="height: 90%" class="text-center" color="grey darken-3"
       ><v-list-item-content>
         <v-list-item-title class="text-white"
           >プログラミング学習者向けバーチャル学習施設CLOTO</v-list-item-title
@@ -10,11 +10,16 @@
     <v-carousel hide-delimiters>
       <!-- height="autoを挙動がおかしくなる" -->
       <v-carousel-item v-for="(image, i) in images" :key="i" :src="image.src">
-        <v-row style="height: 90%" align="center" justify="center">
+        <v-row style="height: 87%" align="center" justify="center">
           <div class="display-3">{{ image.title }}</div>
         </v-row>
-        <v-row style="height: auto" align="center" justify="center" color="grey darken-3">
-          <div class="pa-13">{{ image.subtitle }}</div>
+        <v-row
+          class="grey darken-3 pl-16 pr-16 pt-1 pb-1"
+          align="center"
+          justify="center"
+          style="height: 13%"
+        >
+          <div>{{ image.subtitle }}</div>
         </v-row>
         <!-- <v-list class="text-center" color="grey darken-3"
           ><v-list-item-content>
@@ -66,7 +71,7 @@ export default {
           src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
           title: 'イベントルーム',
           subtitle:
-            'CLOTOとは学習目的、学習内容ごとに分けられた部屋が複数ある自習施設です。aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            'CLOTOとは学習目的、学習内容ごとに分けられた部屋が複数ある自習施設です。aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
         },
       ],
     };

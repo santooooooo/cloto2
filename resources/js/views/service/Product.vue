@@ -38,7 +38,6 @@
           <v-col>
             <v-img eager width="500" :src="$storage('system') + 'P3.svg'"></v-img>
           </v-col>
-
           <v-col align-self="center">
             <p class="text-center text-h6">
               好きな席を選んで着席！<br />
