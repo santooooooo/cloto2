@@ -772,11 +772,19 @@ export default {
         const devices = await navigator.mediaDevices.enumerateDevices();
         // マイクデバイスの一覧を取得
         this.audioDevices = devices.filter((device) => {
-          return device.kind === 'audioinput';
+          return (
+            device.kind === 'audioinput' &&
+            device.deviceId !== 'default' &&
+            device.deviceId !== 'communications'
+          );
         });
         // カメラデバイスの一覧を取得
         this.videoDevices = devices.filter((device) => {
-          return device.kind === 'videoinput';
+          return (
+            device.kind === 'videoinput' &&
+            device.deviceId !== 'default' &&
+            device.deviceId !== 'communications'
+          );
         });
 
         // 初期値の設定
