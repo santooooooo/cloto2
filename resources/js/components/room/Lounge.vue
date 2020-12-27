@@ -593,9 +593,6 @@ export default {
           this.leaveUser(peerId);
         }
       });
-
-      // エラー発生時のイベント
-      this.call.on('error', this.errorEvent('エラーが発生しました。再読み込みしてください。'));
     },
 
     /**
@@ -1009,7 +1006,7 @@ export default {
     this.isLoading = true;
 
     // 15秒間接続できなければ終了
-    function timeout() {
+    const timeout = () => {
       // 権限確認中の場合，再度待機
       if (this.permissionOverlay) {
         setTimeout(timeout, 15000);
@@ -1018,7 +1015,7 @@ export default {
           this.errorEvent('エラーが発生しました。再読み込みしてください。');
         }
       }
-    }
+    };
     setTimeout(timeout, 15000);
 
     // ボリュームの調整
@@ -1027,7 +1024,17 @@ export default {
     this.notificationSounds.receiveMessage.volume = 0.6;
 
     // エラー発生時のイベント
-    window.addEventListener('unhandledrejection', () => {
+    Vue.config.errorHandler = (err, vm, info) => {
+      this.errorEvent('エラーが発生しました。再読み込みしてください。');
+    };
+
+    // エラー発生時のイベント
+    window.addEventListener('error', (event) => {
+      this.errorEvent('エラーが発生しました。再読み込みしてください。');
+    });
+
+    // エラー発生時のイベント
+    window.addEventListener('unhandledrejection', (event) => {
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 
@@ -1041,21 +1048,26 @@ export default {
     const myPeerId = response.data;
     this.peer = new Peer(myPeerId, { key: API_KEY });
 
-    // デバイスの接続
-    await this.accessDevice();
-    await this.connectDevice();
+    // Peerの生成を待機
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    // 通話開始
-    await this.makeCall();
+    if (typeof this.peer.id !== 'undefined') {
+      // デバイスの接続
+      await this.accessDevice();
+      await this.connectDevice();
 
-    // 通話開始時はミュート/ビデオオフに設定
-    this.mute();
-    setTimeout(() => {
-      // ビデオオフを遅延させないと，videoストリームが相手に接続できない
-      this.videoOff();
-      this.isLoading = false;
-      this.call.send({ type: 'loadingEvent', content: { isLoading: false } });
-    }, 5000);
+      // 通話開始
+      await this.makeCall();
+
+      // 通話開始時はミュート/ビデオオフに設定
+      this.mute();
+      setTimeout(() => {
+        // ビデオオフを遅延させないと，videoストリームが相手に接続できない
+        this.videoOff();
+        this.isLoading = false;
+        this.call.send({ type: 'loadingEvent', content: { isLoading: false } });
+      }, 5000);
+    }
   },
 
   beforeDestroy() {
