@@ -50,6 +50,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/technology', 'API\TechnologyController@index')->name('technologyIndex');
 
     Route::get('/inquiry', 'API\InquiryController@index')->name('inquiryIndex');
+    Route::post('/inquiry/post', 'API\InquiryController@post')->name('inquiryPost');
 });
 
 Route::group(['prefix' => 'admin'], function () {

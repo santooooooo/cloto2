@@ -61,7 +61,7 @@
       :onMessageWasSent="onMessageWasSent"
       :colors="chatColors"
       :isOpen="isChatOpen"
-      :messageList="inquiries"
+      :inquiries="inquiries"
       :participants="chatParticipants"
       :showCloseButton="true"
       :showEmoji="true"
@@ -218,8 +218,8 @@ export default {
   methods: {
     onMessageWasSent(message) {
       console.log(message);
-      var response = this.$http.post(this.$endpoint('POST:chatPost'), message);
-      this.messageList = [...this.messageList, Object.assign({}, message, { id: Math.random() })];
+      var response = this.$http.post(this.$endpoint('inquiryPost'), { message: message.data.text });
+      this.inquiries = [...this.inquiries, Object.assign({}, message, { id: Math.random() })];
       console.log('メッセージ送信');
     },
     openChat() {
@@ -238,6 +238,7 @@ export default {
     getInquiry: async function () {
       var response = await this.$http.get(this.$endpoint('inquiryIndex'));
       this.inquiries = response.data;
+      console.log(this.inquiries);
     },
 
     /**

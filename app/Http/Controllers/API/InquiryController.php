@@ -35,7 +35,7 @@ class InquiryController extends Controller
      */
     public function index()
     {
-        return response()->json($this->user->inquiries());
+        return response()->json($this->user->inquiries);
     }
 
     /**
@@ -44,9 +44,18 @@ class InquiryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function post(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['user_id'] = $this->user->id;
+
+        $result = $this->inquiry->create($data);
+
+        if (empty($result)) {
+            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        return response(null);
     }
 
     /**
