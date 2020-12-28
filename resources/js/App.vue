@@ -62,11 +62,11 @@
       :colors="inquiry.colors"
       :isOpen="inquiry.isOpen"
       :messageList="inquiry.messages"
-      :participants="inquiry.participants"
       placeholder="ご質問を入力してください。"
       showCloseButton
       showHeader
       alwaysScrollToBottom
+      :participants="[]"
       v-if="authCheck"
     >
       <template v-slot:header>
@@ -99,8 +99,7 @@ export default {
       isShowDrawer: false, // ドロワーメニューの表示制御
       inquiry: {
         isOpen: false, // 問い合わせモーダル制御
-        messages: null, // 問い合わせ
-        participants: [], // 問い合わせ参加者
+        messages: [], // 問い合わせ
         colors: {
           // beautiful-chatの色設定
           messageList: {
@@ -159,8 +158,7 @@ export default {
       }
     },
     'authUser.seat': function (val, oldVal) {
-      // 初回のデータ取得時には実行しない
-      if (typeof oldVal !== 'undefined') {
+      if (typeof val !== 'undefined' && typeof oldVal !== 'undefined') {
         if (val !== null && oldVal === null) {
           /**
            * 着席時
@@ -230,6 +228,53 @@ export default {
       });
       // データの更新
       this.inquiry.messages = response.data;
+    },
+
+    /**
+     * イベントの設定
+     */
+    setupEvents: function () {
+      // オフライン時のイベント
+      window.addEventListener('offline', this.offlineEvent);
+
+      // オンライン復帰時のイベント
+      window.addEventListener('online', this.onlineEvent);
+
+      // ウィンドウリサイズ時のイベント
+      window.addEventListener('resize', this.resizeEvent);
+
+      // 戻るボタンの無効化
+      history.pushState(null, null, location.href);
+      window.addEventListener('popstate', this.stopBackButtonEvent);
+
+      // 戻るボタンでページに復帰した時のイベント
+      window.addEventListener('pageshow', (event) => {
+        this.pageBackEvent(event);
+      });
+
+      // エラー発生時のイベント
+      Vue.config.errorHandler = (error) => {
+        this.$store.dispatch('alert/show', {
+          type: 'error',
+          message: 'エラーが発生しました。再読み込みしてください。',
+        });
+      };
+
+      // エラー発生時のイベント
+      window.addEventListener('error', (event) => {
+        this.$store.dispatch('alert/show', {
+          type: 'error',
+          message: 'エラーが発生しました。再読み込みしてください。',
+        });
+      });
+
+      // エラー発生時のイベント
+      window.addEventListener('unhandledrejection', (event) => {
+        this.$store.dispatch('alert/show', {
+          type: 'error',
+          message: 'エラーが発生しました。再読み込みしてください。',
+        });
+      });
     },
 
     /**
@@ -308,47 +353,10 @@ export default {
     // ボリュームの調整
     this.chime.volume = 0.2;
 
-    // オフライン時のイベント
-    window.addEventListener('offline', this.offlineEvent);
-
-    // オンライン復帰時のイベント
-    window.addEventListener('online', this.onlineEvent);
-
-    // ウィンドウリサイズ時のイベント
-    window.addEventListener('resize', this.resizeEvent);
-
-    // 戻るボタンの無効化
-    history.pushState(null, null, location.href);
-    window.addEventListener('popstate', this.stopBackButtonEvent);
-
-    // 戻るボタンでページに復帰した時のイベント
-    window.addEventListener('pageshow', (event) => {
-      this.pageBackEvent(event);
-    });
-
-    // エラー発生時のイベント
-    Vue.config.errorHandler = (err, vm, info) => {
-      this.$store.dispatch('alert/show', {
-        type: 'error',
-        message: 'エラーが発生しました。再読み込みしてください。',
-      });
-    };
-
-    // エラー発生時のイベント
-    window.addEventListener('error', (event) => {
-      this.$store.dispatch('alert/show', {
-        type: 'error',
-        message: 'エラーが発生しました。再読み込みしてください。',
-      });
-    });
-
-    // エラー発生時のイベント
-    window.addEventListener('unhandledrejection', (event) => {
-      this.$store.dispatch('alert/show', {
-        type: 'error',
-        message: 'エラーが発生しました。再読み込みしてください。',
-      });
-    });
+    // イベントの設定
+    if (!this.isDebug) {
+      this.setupEvents();
+    }
   },
 };
 </script>
