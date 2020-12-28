@@ -59,13 +59,14 @@
       :open="openInquiry"
       :close="closeInquiry"
       :onMessageWasSent="submitInquiry"
-      :colors="chatColors"
-      :isOpen="isOpenInquiry"
-      :messageList="inquiries"
-      :participants="inquiryParticipants"
-      :showCloseButton="true"
-      :showHeader="true"
-      :alwaysScrollToBottom="true"
+      :colors="inquiry.colors"
+      :isOpen="inquiry.isOpen"
+      :messageList="inquiry.messages"
+      :participants="inquiry.participants"
+      placeholder="ご質問を入力してください。"
+      showCloseButton
+      showHeader
+      alwaysScrollToBottom
       v-if="authCheck"
     >
       <template v-slot:header>
@@ -96,32 +97,34 @@ export default {
       width: window.innerWidth, // ウィンドウの横幅
       minWidth: 1350, // ウィンドウの最小サイズ
       isShowDrawer: false, // ドロワーメニューの表示制御
-      inquiries: null, // 問い合わせ
-      inquiryParticipants: [], // 問い合わせ参加者
-      isOpenInquiry: false, // 問い合わせモーダル制御
-      chatColors: {
-        // beautiful-chatの色設定
-        messageList: {
-          bg: '#ffffff',
-        },
-        sentMessage: {
-          bg: '#f6bf00',
-          text: '#000000',
-        },
-        receivedMessage: {
-          bg: '#696969',
-          text: '#ffffff',
-        },
-        userInput: {
-          bg: '#f4f2e9',
-          text: '#212121',
-        },
-        header: {
-          bg: '#ff0000',
-          text: '#ffffff',
-        },
-        launcher: {
-          bg: '#ff0000',
+      inquiry: {
+        isOpen: false, // 問い合わせモーダル制御
+        messages: null, // 問い合わせ
+        participants: [], // 問い合わせ参加者
+        colors: {
+          // beautiful-chatの色設定
+          messageList: {
+            bg: '#ffffff',
+          },
+          sentMessage: {
+            bg: '#f6bf00',
+            text: '#000000',
+          },
+          receivedMessage: {
+            bg: '#696969',
+            text: '#ffffff',
+          },
+          userInput: {
+            bg: '#f4f2e9',
+            text: '#212121',
+          },
+          header: {
+            bg: '#ff0000',
+            text: '#ffffff',
+          },
+          launcher: {
+            bg: '#ff0000',
+          },
         },
       },
     };
@@ -203,15 +206,15 @@ export default {
     openInquiry: async function () {
       // 問い合わせの取得
       var response = await this.$http.get(this.$endpoint('inquiryIndex'));
-      this.inquiries = response.data;
-      this.isOpenInquiry = true;
+      this.inquiry.messages = response.data;
+      this.inquiry.isOpen = true;
     },
 
     /**
      * 問い合わせのクローズ
      */
     closeInquiry: function () {
-      this.isOpenInquiry = false;
+      this.inquiry.isOpen = false;
     },
 
     /**
@@ -226,7 +229,7 @@ export default {
         data: { text: message.data.text },
       });
       // データの更新
-      this.inquiries = response.data;
+      this.inquiry.messages = response.data;
     },
 
     /**
