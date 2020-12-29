@@ -65,6 +65,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/rooms', 'API\Admin\RoomController@index')->name('admin_rooms');
         Route::post('/room/update/{room_id}', 'API\Admin\RoomController@update')->name('admin_roomUpdate');
 
+        Route::get('/inquiries', 'API\Admin\InquiryController@index')->name('admin_inquiries');
         Route::get('/inquiry/{user_id}', 'API\Admin\InquiryController@show')->name('admin_inquiryShow');
     });
 });

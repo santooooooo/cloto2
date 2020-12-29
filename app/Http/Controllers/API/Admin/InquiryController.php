@@ -28,13 +28,21 @@ class InquiryController extends Controller
 
 
     /**
-     * Display a listing of the resource.
+     * 問い合わせのあるユーザー一覧を取得
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        // 新しい順で取得
+        $inquiries = $this->inquiry->all()->sortByDesc('created_at')->groupBy('user_id');
+
+        $users = [];
+        foreach ($inquiries as $inquiry_group_by_user) {
+            array_push($users, $inquiry_group_by_user->first()->user);
+        }
+
+        return response()->json($users);
     }
 
     /**
@@ -49,7 +57,7 @@ class InquiryController extends Controller
     }
 
     /**
-     * ログインユーザーの問い合わせ一覧を取得
+     * 問い合わせ一覧を取得
      *
      * @param  int  $user_id    問い合わせを表示するユーザーID
      * @return \Illuminate\Http\Response

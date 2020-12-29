@@ -16,6 +16,7 @@ const users = '/api/admin/users';
 const userUpdate = '/api/admin/user/update/' + replaceChar[0];
 const rooms = '/api/admin/rooms';
 const roomUpdate = '/api/admin/room/update/' + replaceChar[0];
+const inquiries = '/api/admin/inquiries';
 const inquiryShow = '/api/admin/inquiry/' + replaceChar[0];
 
 /**
@@ -50,6 +51,10 @@ export function getEndpoint(name, params) {
 
     case 'roomUpdate':
       endpoint = setParams(roomUpdate, params);
+      break;
+
+    case 'inquiries':
+      endpoint = inquiries;
       break;
 
     case 'inquiryShow':

@@ -12,6 +12,7 @@ Vue.use(VueRouter);
 import store from './store';
 
 import home from '@/admin/views/Home';
+import inquiry from '@/admin/views/Inquiry';
 import user from '@/admin/views/User';
 import room from '@/admin/views/Room';
 import notFound from '@/admin/views/errors/NotFound';
@@ -23,6 +24,11 @@ const router = new VueRouter({
       path: '/admin',
       name: 'home',
       component: home,
+    },
+    {
+      path: '/admin/inquiry',
+      name: 'inquiry',
+      component: inquiry,
     },
     {
       path: '/admin/user',

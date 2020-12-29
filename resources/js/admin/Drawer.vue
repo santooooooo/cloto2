@@ -20,6 +20,15 @@
         </v-list-item-content>
       </v-list-item>
 
+      <v-list-item exact :to="{ name: 'inquiry' }">
+        <v-list-item-icon>
+          <v-icon>mdi-help-circle</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>問い合わせ</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
       <v-list-item exact :to="{ name: 'user' }">
         <v-list-item-icon>
           <v-icon>mdi-account</v-icon>
