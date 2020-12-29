@@ -36,7 +36,7 @@ const karteIndexByAuthUser = '/api/karte/index_by_auth_user';
 const karteIndexByTaskId = '/api/karte/index_by_task_id/' + replaceChar[0];
 const kartePost = '/api/karte/post';
 const technologyIndex = '/api/technology';
-const inquiryIndex = '/api/inquiry';
+const inquiryShow = '/api/inquiry';
 const inquiryPost = '/api/inquiry/post';
 
 /**
@@ -153,8 +153,8 @@ export function getEndpoint(name, params) {
       endpoint = technologyIndex;
       break;
 
-    case 'inquiryIndex':
-      endpoint = inquiryIndex;
+    case 'inquiryShow':
+      endpoint = inquiryShow;
       break;
 
     case 'inquiryPost':

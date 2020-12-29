@@ -61,7 +61,7 @@ class RoomController extends Controller
      * @param  int  $room_id    更新する部屋のID
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $room_id)
+    public function update(Request $request, Int $room_id)
     {
         $data = $request->all();
         // 時間割データの型変換

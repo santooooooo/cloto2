@@ -203,7 +203,7 @@ export default {
      */
     openInquiry: async function () {
       // 問い合わせの取得
-      var response = await this.$http.get(this.$endpoint('inquiryIndex'));
+      var response = await this.$http.get(this.$endpoint('inquiryShow'));
       this.inquiry.messages = response.data;
       this.inquiry.isOpen = true;
     },

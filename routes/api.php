@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/technology', 'API\TechnologyController@index')->name('technologyIndex');
 
-    Route::get('/inquiry', 'API\InquiryController@index')->name('inquiryIndex');
+    Route::get('/inquiry', 'API\InquiryController@show')->name('inquiryShow');
     Route::post('/inquiry/post', 'API\InquiryController@post')->name('inquiryPost');
 });
 
@@ -64,5 +64,7 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('/rooms', 'API\Admin\RoomController@index')->name('admin_rooms');
         Route::post('/room/update/{room_id}', 'API\Admin\RoomController@update')->name('admin_roomUpdate');
+
+        Route::get('/inquiry/{user_id}', 'API\Admin\InquiryController@show')->name('admin_inquiryShow');
     });
 });

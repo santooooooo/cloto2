@@ -1,31 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use App\Models\Inquiry;
+use App\Models\User;
 
 class InquiryController extends Controller
 {
     /** @var Inquiry */
     protected $inquiry;
+    /** @var User */
+    protected $user;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Inquiry $inquiry)
+    public function __construct(Inquiry $inquiry, User $user)
     {
-        $this->middleware(function ($request, $next) {
-            $this->user = Auth::user();
-            return $next($request);
-        });
-
         $this->inquiry = $inquiry;
+        $this->user = $user;
     }
 
 
@@ -45,33 +43,27 @@ class InquiryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function post(Request $request)
+    public function store(Request $request)
     {
-        $data = $request->all();
-        $data['user_id'] = $this->user->id;
-
-        $result = $this->inquiry->create($data);
-
-        if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
-        }
-
-        return $this->index();
+        //
     }
 
     /**
      * ログインユーザーの問い合わせ一覧を取得
      *
+     * @param  int  $user_id    問い合わせを表示するユーザーID
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(Int $user_id)
     {
+        $user = $this->user->find($user_id);
+
         $inquiries = [];
-        foreach ($this->user->inquiries as $inquiry) {
+        foreach ($user->inquiries as $inquiry) {
             $inquiry->data += ['meta' => (new Carbon($inquiry->created_at))->format('H時i分')];
 
             array_push($inquiries, [
-                'author' => 'me',
+                'author' => 'user',
                 'type' => $inquiry->type,
                 'data' => $inquiry->data
             ]);

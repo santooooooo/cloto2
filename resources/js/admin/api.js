@@ -16,6 +16,7 @@ const users = '/api/admin/users';
 const userUpdate = '/api/admin/user/update/' + replaceChar[0];
 const rooms = '/api/admin/rooms';
 const roomUpdate = '/api/admin/room/update/' + replaceChar[0];
+const inquiryShow = '/api/admin/inquiry/' + replaceChar[0];
 
 /**
  * エンドポイントの取得
@@ -49,6 +50,10 @@ export function getEndpoint(name, params) {
 
     case 'roomUpdate':
       endpoint = setParams(roomUpdate, params);
+      break;
+
+    case 'inquiryShow':
+      endpoint = setParams(inquiryShow, params);
       break;
   }
 

@@ -81,7 +81,7 @@ class UserController extends Controller
      * @param  int  $user_id    更新するユーザーのID
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $user_id)
+    public function update(Request $request, Int $user_id)
     {
         $data = $request->all();
 
