@@ -14,7 +14,7 @@ class Inquiry extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'type', 'data'
+        'user_id', 'author', 'type', 'data'
     ];
 
     /**

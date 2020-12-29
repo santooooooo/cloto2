@@ -56,7 +56,7 @@ class InquiryController extends Controller
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return $this->index();
+        return $this->show();
     }
 
     /**
@@ -71,7 +71,7 @@ class InquiryController extends Controller
             $inquiry->data += ['meta' => (new Carbon($inquiry->created_at))->format('H時i分')];
 
             array_push($inquiries, [
-                'author' => 'me',
+                'author' => $inquiry->author,
                 'type' => $inquiry->type,
                 'data' => $inquiry->data
             ]);
