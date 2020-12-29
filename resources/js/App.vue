@@ -254,7 +254,7 @@ export default {
       });
 
       // エラー発生時のイベント
-      Vue.config.errorHandler = (error) => {
+      Vue.config.errorHandler = (event) => {
         this.$store.dispatch('alert/show', {
           type: 'error',
           message: 'エラーが発生しました。再読み込みしてください。',

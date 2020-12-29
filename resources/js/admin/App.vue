@@ -44,11 +44,52 @@ export default {
     Footer,
   },
   computed: {
+    isDebug() {
+      return process.env.MIX_APP_DEBUG === 'true' ? true : false;
+    },
     alert() {
       return this.$store.state.alert;
     },
   },
   methods: {
+    /**
+     * イベントの設定
+     */
+    setupEvents: function () {
+      // 戻るボタンの無効化
+      history.pushState(null, null, location.href);
+      window.addEventListener('popstate', this.stopBackButtonEvent);
+
+      // 戻るボタンでページに復帰した時のイベント
+      window.addEventListener('pageshow', (event) => {
+        this.pageBackEvent(event);
+      });
+
+      // エラー発生時のイベント
+      Vue.config.errorHandler = (event) => {
+        this.$store.dispatch('alert/show', {
+          type: 'error',
+          message: 'エラーが発生しました。再読み込みしてください。',
+        });
+      };
+
+      // エラー発生時のイベント
+      window.addEventListener('error', (event) => {
+        this.$store.dispatch('alert/show', {
+          type: 'error',
+          message: 'エラーが発生しました。再読み込みしてください。',
+        });
+      });
+
+      // エラー発生時のイベント
+      window.addEventListener('unhandledrejection', (event) => {
+        this.$store.dispatch('alert/show', {
+          type: 'error',
+          message: 'エラーが発生しました。再読み込みしてください。',
+        });
+      });
+    },
+
     /**
      * 戻るボタンの無効化
      */
@@ -88,38 +129,10 @@ export default {
     },
   },
   mounted() {
-    // 戻るボタンの無効化
-    history.pushState(null, null, location.href);
-    window.addEventListener('popstate', this.stopBackButtonEvent);
-
-    // 戻るボタンでページに復帰した時のイベント
-    window.addEventListener('pageshow', (event) => {
-      this.pageBackEvent(event);
-    });
-
-    // エラー発生時のイベント
-    Vue.config.errorHandler = (err, vm, info) => {
-      this.$store.dispatch('alert/show', {
-        type: 'error',
-        message: 'エラーが発生しました。再読み込みしてください。',
-      });
-    };
-
-    // エラー発生時のイベント
-    window.addEventListener('error', (event) => {
-      this.$store.dispatch('alert/show', {
-        type: 'error',
-        message: 'エラーが発生しました。再読み込みしてください。',
-      });
-    });
-
-    // エラー発生時のイベント
-    window.addEventListener('unhandledrejection', (event) => {
-      this.$store.dispatch('alert/show', {
-        type: 'error',
-        message: 'エラーが発生しました。再読み込みしてください。',
-      });
-    });
+    // イベントの設定
+    if (!this.isDebug) {
+      this.setupEvents();
+    }
   },
 };
 </script>

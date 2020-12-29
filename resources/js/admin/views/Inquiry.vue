@@ -64,7 +64,9 @@ export default {
 
       inquiry: {
         isOpen: false, // 問い合わせモーダル制御
-        user: null, // 問い合わせ相手のユーザー
+        user: {
+          handlename: '', // エラー回避
+        }, // 問い合わせ相手のユーザー
         messages: [], // 問い合わせ
         colors: {
           // beautiful-chatの色設定
