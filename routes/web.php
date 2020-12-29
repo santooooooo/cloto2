@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
  * 管理画面
  */
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('/login', 'Auth\Admin\LoginController@showLoginForm')->name('admin_login');
+    Route::get('/login', 'Auth\Admin\LoginController@showLoginForm')->name('admin.login');
     Route::post('/login', 'Auth\Admin\LoginController@login');
 
-    Route::group(['middleware' => ['auth:admin']], function () {
+    Route::group(['middleware' => 'auth:admin'], function () {
         Route::get('/{any?}', function () {
             // vue-routerで管理
             return view('admin.app');
