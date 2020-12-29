@@ -35,11 +35,16 @@ class InquiryController extends Controller
     public function index()
     {
         // 新しい順で取得
-        $inquiries = $this->inquiry->all()->sortByDesc('created_at')->groupBy('user_id');
+        $inquiry_groups = $this->inquiry->all()->sortByDesc('created_at')->groupBy('user_id');
 
         $users = [];
-        foreach ($inquiries as $inquiry_group_by_user) {
-            array_push($users, $inquiry_group_by_user->first()->user);
+        foreach ($inquiry_groups as $inquiries) {
+            // データの整形
+            $inquiry = $inquiries->first();
+            $user = $inquiry->user;
+            $user['replyed'] = $inquiry->replyed;
+            $user['last_date'] = (new Carbon($inquiry->created_at))->format('Y年m月d日 H時i分');
+            array_push($users, $user);
         }
 
         return response()->json($users);
@@ -61,7 +66,11 @@ class InquiryController extends Controller
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return $this->show($data['user_id']);
+        // 回答済みにする
+        $user = $this->user->find($data['user_id']);
+        $user->inquiries()->update(['replyed' => 1]);
+
+        return $this->show($user->id);
     }
 
     /**

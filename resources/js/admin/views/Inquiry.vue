@@ -1,6 +1,12 @@
 <template>
   <v-container>
-    <v-data-table :headers="headers" :items="users" class="elevation-1">
+    <v-data-table
+      :headers="headers"
+      :items="users"
+      sort-by="last_date"
+      sort-desc
+      class="elevation-1"
+    >
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>お問い合わせ</v-toolbar-title>
@@ -8,7 +14,9 @@
       </template>
 
       <template v-slot:[`item.inquiry`]="{ item }">
-        <v-icon small class="mr-2" @click="openInquiry(item)">mdi-help-circle</v-icon>
+        <v-icon small :color="item.replyed ? 'black' : 'red'" @click="openInquiry(item)">
+          mdi-email
+        </v-icon>
       </template>
 
       <template v-slot:no-data>
@@ -59,14 +67,13 @@ export default {
         { text: 'ユーザー名', value: 'username' },
         { text: '表示名', value: 'handlename' },
         { text: 'メールアドレス', value: 'email' },
-        { text: 'お問い合わせ', value: 'inquiry', sortable: false, align: 'center' },
+        { text: '最終日時', value: 'last_date' },
+        { text: '回答', value: 'inquiry', sortable: false, align: 'center' },
       ],
 
       inquiry: {
         isOpen: false, // 問い合わせモーダル制御
-        user: {
-          handlename: '', // エラー回避
-        }, // 問い合わせ相手のユーザー
+        user: {}, // 問い合わせ相手のユーザー
         messages: [], // 問い合わせ
         colors: {
           // beautiful-chatの色設定
@@ -150,8 +157,10 @@ export default {
         type: 'text',
         data: { text: message.data.text },
       });
+
       // データの更新
       this.inquiry.messages = response.data;
+      this.getInquiryUsers();
     },
 
     /**
