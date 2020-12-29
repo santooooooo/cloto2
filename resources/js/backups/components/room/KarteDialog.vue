@@ -222,7 +222,7 @@ export default {
       this.technology.loading = true;
       this.technology.dialog = true;
 
-      var response = await this.$http.get(this.$endpoint('technologyIndex'));
+      var response = await this.$http.get(this.$endpoint('technologies'));
       this.technology.data = response.data;
 
       this.technology.loading = false;

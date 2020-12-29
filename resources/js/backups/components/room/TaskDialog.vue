@@ -232,7 +232,7 @@ export default {
   },
 
   async mounted() {
-    var response = await this.$http.get(this.$endpoint('taskIndex', [this.projectId]));
+    var response = await this.$http.get(this.$endpoint('tasks', [this.projectId]));
     this.tasks = response.data;
   },
 };

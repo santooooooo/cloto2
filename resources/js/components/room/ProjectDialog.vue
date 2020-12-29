@@ -199,7 +199,7 @@ export default {
   },
 
   async mounted() {
-    var response = await this.$http.get(this.$endpoint('projectIndex'));
+    var response = await this.$http.get(this.$endpoint('projects'));
     this.projects = response.data;
   },
 };

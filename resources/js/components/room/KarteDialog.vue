@@ -135,7 +135,12 @@
               multiple
               v-else
             >
-              <v-chip filter v-for="technology in technology.data" :key="technology.id" :value="technology.id">
+              <v-chip
+                filter
+                v-for="technology in technology.data"
+                :key="technology.id"
+                :value="technology.id"
+              >
                 {{ technology.name }}
               </v-chip>
             </v-chip-group>
@@ -223,7 +228,7 @@ export default {
       this.technology.loading = true;
       this.technology.dialog = true;
 
-      var response = await this.$http.get(this.$endpoint('technologyIndex'));
+      var response = await this.$http.get(this.$endpoint('technologies'));
       this.technology.data = response.data;
 
       this.technology.loading = false;

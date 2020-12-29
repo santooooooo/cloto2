@@ -173,7 +173,7 @@ export default {
     getProjects: async function () {
       this.projects.loading = true;
 
-      var response = await this.$http.get(this.$endpoint('projectIndex'));
+      var response = await this.$http.get(this.$endpoint('projects'));
       this.projects.data = response.data;
 
       this.projects.loading = false;
@@ -188,7 +188,7 @@ export default {
       this.tasks.loading = true;
       this.kartes.data = '';
 
-      var response = await this.$http.get(this.$endpoint('taskIndex', [projectId]));
+      var response = await this.$http.get(this.$endpoint('tasks', [projectId]));
       this.tasks.data = response.data;
 
       this.tasks.loading = false;

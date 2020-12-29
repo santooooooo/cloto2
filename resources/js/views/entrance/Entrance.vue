@@ -29,7 +29,7 @@ export default {
     };
   },
   async mounted() {
-    var response = await this.$http.get(this.$endpoint('roomIndex'));
+    var response = await this.$http.get(this.$endpoint('rooms'));
     this.rooms = response.data;
 
     this.rooms.forEach((room) => {

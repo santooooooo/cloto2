@@ -29,17 +29,17 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/user/update', 'API\UserController@update')->name('profileUpdate');
     Route::get('/user/get_user_by_peer_id/{peer_id}', 'API\UserController@get_user_by_peer_id')->name('getUserByPeerId');
 
-    Route::get('/room', 'API\RoomController@index')->name('roomIndex');
+    Route::get('/rooms', 'API\RoomController@index')->name('rooms');
     Route::get('/room/{room_id}', 'API\RoomController@show')->name('roomShow');
     Route::post('/seat/sit/{seat}', 'API\SeatController@sit')->name('seatSit');
     Route::post('/seat/leave', 'API\SeatController@leave')->name('seatLeave');
     Route::post('/seat/enterlounge/{seat}', 'API\SeatController@enter_lounge')->name('enterLounge');
     Route::post('/seat/leavelounge/{seat}', 'API\SeatController@leave_lounge')->name('leaveLounge');
 
-    Route::get('/project', 'API\ProjectController@index')->name('projectIndex');
+    Route::get('/projects', 'API\ProjectController@index')->name('projects');
     Route::post('/project/post', 'API\ProjectController@post')->name('projectPost');
 
-    Route::get('/task/index/{project_id}', 'API\TaskController@index')->name('taskIndex');
+    Route::get('/tasks/{project_id}', 'API\TaskController@index')->name('tasks');
     Route::post('/task/post', 'API\TaskController@post')->name('taskPost');
     Route::post('/task/start', 'API\TaskController@start')->name('taskStart');
 
@@ -47,7 +47,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/karte/index_by_task_id/{task_id}', 'API\KarteController@index_by_task_id')->name('karteIndexByTaskId');
     Route::post('/karte/post', 'API\KarteController@post')->name('kartePost');
 
-    Route::get('/technology', 'API\TechnologyController@index')->name('technologyIndex');
+    Route::get('/technologies', 'API\TechnologyController@index')->name('technologies');
 
     Route::get('/inquiry', 'API\InquiryController@show')->name('inquiryShow');
     Route::post('/inquiry/post', 'API\InquiryController@post')->name('inquiryPost');
