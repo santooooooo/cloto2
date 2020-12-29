@@ -1,15 +1,12 @@
 <template>
   <div fluid class="index">
-    <v-container class="upper">
-      <v-container>
-        <Carousel></Carousel>
-        <v-row justify="center" class="mt-12">
-          <router-link :to="{ name: 'preRegister' }">
-            <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
-          </router-link>
-        </v-row>
-      </v-container>
-    </v-container>
+    <Carousel></Carousel>
+    <v-row justify="center" class="mt-12">
+      <router-link :to="{ name: 'preRegister' }">
+        <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
+      </router-link>
+    </v-row>
+
     <v-container class="content">
       <v-row justify="center">
         <v-row class="mt-12">
@@ -41,7 +38,6 @@
           <v-col>
             <v-img eager width="500" :src="$storage('system') + 'P3.svg'"></v-img>
           </v-col>
-
           <v-col align-self="center">
             <p class="text-center text-h6">
               好きな席を選んで着席！<br />
