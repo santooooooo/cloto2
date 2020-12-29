@@ -31,12 +31,18 @@
       :onMessageWasSent="submitInquiry"
       :colors="inquiry.colors"
       :isOpen="inquiry.isOpen"
+      :participants="[
+        {
+          id: 'user',
+          name: inquiry.user.handlename,
+          imageUrl: $storage('icon') + inquiry.user.icon,
+        },
+      ]"
       :messageList="inquiry.messages"
       placeholder="回答を入力してください。"
       showCloseButton
       showHeader
       alwaysScrollToBottom
-      :participants="[]"
     >
       <template v-slot:header>
         <div class="sc-header--title enabled font-weight-bold">

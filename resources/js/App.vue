@@ -61,12 +61,18 @@
       :onMessageWasSent="submitInquiry"
       :colors="inquiry.colors"
       :isOpen="inquiry.isOpen"
+      :participants="[
+        {
+          id: 'support',
+          name: 'サポートチーム',
+          imageUrl: $storage('system') + 'logo.svg',
+        },
+      ]"
       :messageList="inquiry.messages"
       placeholder="ご質問を入力してください。"
       showCloseButton
       showHeader
       alwaysScrollToBottom
-      :participants="[]"
       v-if="authCheck"
     >
       <template v-slot:header>
@@ -205,6 +211,44 @@ export default {
       // 問い合わせの取得
       var response = await this.$http.get(this.$endpoint('inquiryShow'));
       this.inquiry.messages = response.data;
+
+      // 現在時刻の取得
+      var date = new Date();
+
+      // 2桁で時間を取得
+      var hour = String(date.getHours());
+      if (hour.length === 1) {
+        hour = '0' + hour;
+      }
+
+      // 2桁で分数を取得
+      var minute = String(date.getMinutes());
+      if (minute.length === 1) {
+        minute = '0' + minute;
+      }
+
+      // 現在時刻
+      var now = hour + '時' + minute + '分';
+
+      // 挨拶メッセージの追加
+      this.inquiry.messages.unshift(
+        {
+          author: 'support',
+          type: 'text',
+          data: { meta: now, text: 'はじめまして！' },
+        },
+        {
+          author: 'support',
+          type: 'text',
+          data: { meta: now, text: 'CLOTOをご利用いただきありがとうございます。' },
+        },
+        {
+          author: 'support',
+          type: 'text',
+          data: { meta: now, text: '何かお困りごとがありますか？' },
+        }
+      );
+
       this.inquiry.isOpen = true;
     },
 

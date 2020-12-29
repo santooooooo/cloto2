@@ -89,7 +89,7 @@ class InquiryController extends Controller
 
             switch ($inquiry->author) {
                 case 'user':
-                    $author = 'support';
+                    $author = 'user';
                     break;
 
                 case 'support':
