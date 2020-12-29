@@ -67,5 +67,6 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('/inquiries', 'API\Admin\InquiryController@index')->name('admin_inquiries');
         Route::get('/inquiry/{user_id}', 'API\Admin\InquiryController@show')->name('admin_inquiryShow');
+        Route::post('/inquiry/post', 'API\Admin\InquiryController@post')->name('admin_inquiryPost');
     });
 });

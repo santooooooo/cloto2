@@ -3,7 +3,7 @@
     <v-data-table :headers="headers" :items="users" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>問い合わせ</v-toolbar-title>
+          <v-toolbar-title>お問い合わせ</v-toolbar-title>
         </v-toolbar>
       </template>
 
@@ -24,14 +24,16 @@
       :colors="inquiry.colors"
       :isOpen="inquiry.isOpen"
       :messageList="inquiry.messages"
-      placeholder="ご質問を入力してください。"
+      placeholder="回答を入力してください。"
       showCloseButton
       showHeader
       alwaysScrollToBottom
       :participants="[]"
     >
       <template v-slot:header>
-        <div class="sc-header--title enabled font-weight-bold">お問い合わせ</div>
+        <div class="sc-header--title enabled font-weight-bold">
+          {{ inquiry.user.handlename }} 様
+        </div>
       </template>
       <template v-slot:system-message-body="{ message }"> [System]: {{ message.text }} </template>
     </beautiful-chat>
@@ -57,10 +59,12 @@ export default {
         { text: 'ユーザー名', value: 'username' },
         { text: '表示名', value: 'handlename' },
         { text: 'メールアドレス', value: 'email' },
-        { text: '問い合わせ', value: 'inquiry', sortable: false, align: 'center' },
+        { text: 'お問い合わせ', value: 'inquiry', sortable: false, align: 'center' },
       ],
+
       inquiry: {
         isOpen: false, // 問い合わせモーダル制御
+        user: null, // 問い合わせ相手のユーザー
         messages: [], // 問い合わせ
         colors: {
           // beautiful-chatの色設定
@@ -114,11 +118,12 @@ export default {
     /**
      * 問い合わせのオープン
      *
-     * @param Object  user  編集するユーザー
+     * @param Object  user 対応するユーザー
      */
     openInquiry: async function (user) {
+      this.inquiry.user = user;
       // 問い合わせの取得
-      var response = await this.$http.get(this.$endpoint('inquiryShow', [user.id]));
+      var response = await this.$http.get(this.$endpoint('inquiryShow', [this.inquiry.user.id]));
       this.inquiry.messages = response.data;
       this.inquiry.isOpen = true;
     },
@@ -138,7 +143,8 @@ export default {
     submitInquiry: async function (message) {
       // 問い合わせの送信
       var response = await this.$http.post(this.$endpoint('inquiryPost'), {
-        author: 'me',
+        user_id: this.inquiry.user.id,
+        author: 'support',
         type: 'text',
         data: { text: message.data.text },
       });

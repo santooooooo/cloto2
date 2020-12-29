@@ -40,7 +40,7 @@ class InquiryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 問い合わせの投稿
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -70,8 +70,18 @@ class InquiryController extends Controller
         foreach ($this->user->inquiries as $inquiry) {
             $inquiry->data += ['meta' => (new Carbon($inquiry->created_at))->format('H時i分')];
 
+            switch ($inquiry->author) {
+                case 'user':
+                    $author = 'me';
+                    break;
+
+                case 'support':
+                    $author = 'support';
+                    break;
+            }
+
             array_push($inquiries, [
-                'author' => $inquiry->author,
+                'author' => $author,
                 'type' => $inquiry->type,
                 'data' => $inquiry->data
             ]);

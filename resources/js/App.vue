@@ -223,7 +223,7 @@ export default {
     submitInquiry: async function (message) {
       // 問い合わせの送信
       var response = await this.$http.post(this.$endpoint('inquiryPost'), {
-        author: 'me',
+        author: 'user',
         type: 'text',
         data: { text: message.data.text },
       });
