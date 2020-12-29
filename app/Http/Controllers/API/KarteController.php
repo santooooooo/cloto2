@@ -103,27 +103,4 @@ class KarteController extends Controller
 
         return response()->json($result);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Karte  $karte
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Karte $karte)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Karte  $karte
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Karte $karte)
-    {
-        //
-    }
 }

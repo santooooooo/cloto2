@@ -22,6 +22,16 @@ class RoomController extends Controller
 
 
     /**
+     * 部屋の一覧を取得
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return response()->json($this->room->with('sections.seats')->get());
+    }
+
+    /**
      * 部屋の区画と座席の一覧を取得
      *
      * @param  Int  $room_id  部屋ID
@@ -30,15 +40,5 @@ class RoomController extends Controller
     public function show(Int $room_id)
     {
         return response()->json($this->room->find($room_id));
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return response()->json($this->room->with('sections.seats')->get());
     }
 }

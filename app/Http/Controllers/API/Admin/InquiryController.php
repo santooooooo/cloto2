@@ -51,29 +51,6 @@ class InquiryController extends Controller
     }
 
     /**
-     * 問い合わせの投稿
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function post(Request $request)
-    {
-        $data = $request->all();
-
-        $result = $this->inquiry->create($data);
-
-        if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
-        }
-
-        // 回答済みにする
-        $user = $this->user->find($data['user_id']);
-        $user->inquiries()->update(['replyed' => 1]);
-
-        return $this->show($user->id);
-    }
-
-    /**
      * 問い合わせ一覧を取得
      *
      * @param  int  $user_id    問い合わせを表示するユーザーID
@@ -108,25 +85,25 @@ class InquiryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * 問い合わせの投稿
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function post(Request $request)
     {
-        //
-    }
+        $data = $request->all();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $result = $this->inquiry->create($data);
+
+        if (empty($result)) {
+            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        // 回答済みにする
+        $user = $this->user->find($data['user_id']);
+        $user->inquiries()->update(['replyed' => 1]);
+
+        return $this->show($user->id);
     }
 }
