@@ -4,6 +4,7 @@
     <v-overlay :value="permissionOverlay" z-index="7" class="text-center" opacity="1">
       <div class="arrow"></div>
       <p class="text-h4">権限を許可してください。</p>
+      <p class="text-body-2 mt-12 mr-8">（一度許可した方は必要ありません。）</p>
     </v-overlay>
 
     <!-- ローディング画面 -->
@@ -262,98 +263,11 @@
     </v-layout>
 
     <v-app-bar color="yellow darken-4" fixed bottom height="100">
-      <!-- 通話終了ボタン -->
-      <v-btn depressed x-large color="error" class="ml-10" @click="leaveLounge()">
-        自習室に戻る
-      </v-btn>
-
-      <v-spacer></v-spacer>
-
-      <!-- ミュートボタン -->
-      <v-btn
-        :color="!isMute ? 'white' : 'red'"
-        :disabled="isAudioLoading || isVideoLoading"
-        fab
-        depressed
-        large
-        class="mx-10"
-        @click="mute()"
-      >
-        <v-icon large>{{ !isMute ? 'mdi-microphone' : 'mdi-microphone-off' }}</v-icon>
-      </v-btn>
-
-      <!-- ビデオオフボタン -->
-      <v-btn
-        :color="!isVideoOff ? 'white' : 'red'"
-        :disabled="isAudioLoading || isVideoLoading"
-        fab
-        depressed
-        large
-        class="mx-10"
-        @click="videoOff()"
-      >
-        <v-icon large>{{ !isVideoOff ? 'mdi-video' : 'mdi-video-off' }}</v-icon>
-      </v-btn>
-
-      <!-- 画面共有ボタン -->
-      <v-btn
-        :color="screenSharing.stream && screenSharing.isLocal ? 'red' : 'white'"
-        :disabled="screenSharing.stream && !screenSharing.isLocal"
-        fab
-        depressed
-        large
-        class="mx-10"
-        @click="!screenSharing.stream ? startScreenSharing() : stopScreenSharing()"
-      >
-        <v-icon large>
-          {{
-            screenSharing.stream && screenSharing.isLocal
-              ? 'mdi-window-close'
-              : 'mdi-window-restore'
-          }}
-        </v-icon>
-      </v-btn>
-
-      <v-spacer></v-spacer>
-
-      <!-- 通知音ボタン -->
-      <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
-        <v-icon large>{{ isNotificationOn ? 'mdi-bell' : 'mdi-bell-off' }}</v-icon>
-      </v-btn>
-
-      <!-- チャットボタン -->
-      <v-badge
-        bordered
-        dot
-        color="deep-purple accent-4"
-        :value="chat.notification"
-        offset-x="40"
-        offset-y="15"
-      >
-        <v-btn color="white" icon class="mr-6" @click="controlChat()">
-          <v-icon large>mdi-message-text</v-icon>
-        </v-btn>
-      </v-badge>
-
-      <!-- メニューボタン -->
-      <v-btn color="white" icon class="mr-10" @click="isOpenMenu = true">
-        <v-icon large>mdi-menu</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <!-- デバイス選択メニュー -->
-    <v-dialog v-model="isOpenMenu" max-width="600">
-      <v-card color="grey darken-1" dark>
-        <v-container>
-          <v-row justify="end">
-            <v-btn fab x-small depressed color="error" class="mr-4" @click="isOpenMenu = false">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-row>
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-select disabled label="ミュート" v-if="isMute"> </v-select>
+      <v-row>
+        <v-col align-self="center">
+          <v-row justify="start" class="mt-8">
+            <v-col md="6">
+              <v-select disabled label="ミュート" v-if="isMute"></v-select>
               <v-select
                 v-model="selectedAudio"
                 :items="audioDevices"
@@ -364,12 +278,10 @@
                 v-else
               >
               </v-select>
-            </v-list-item-content>
-          </v-list-item>
+            </v-col>
 
-          <v-list-item>
-            <v-list-item-content>
-              <v-select disabled label="ビデオオフ" v-if="isVideoOff"> </v-select>
+            <v-col md="6">
+              <v-select disabled label="ビデオオフ" v-if="isVideoOff"></v-select>
               <v-select
                 v-model="selectedVideo"
                 :items="videoDevices"
@@ -380,11 +292,88 @@
                 v-else
               >
               </v-select>
-            </v-list-item-content>
-          </v-list-item>
-        </v-container>
-      </v-card>
-    </v-dialog>
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <v-col align-self="center">
+          <v-row justify="center">
+            <!-- ミュートボタン -->
+            <v-btn
+              :color="!isMute ? 'white' : 'red'"
+              :disabled="isAudioLoading || isVideoLoading"
+              fab
+              depressed
+              large
+              class="mx-10"
+              @click="mute()"
+            >
+              <v-icon large>{{ !isMute ? 'mdi-microphone' : 'mdi-microphone-off' }}</v-icon>
+            </v-btn>
+
+            <!-- ビデオオフボタン -->
+            <v-btn
+              :color="!isVideoOff ? 'white' : 'red'"
+              :disabled="isAudioLoading || isVideoLoading"
+              fab
+              depressed
+              large
+              class="mx-10"
+              @click="videoOff()"
+            >
+              <v-icon large>{{ !isVideoOff ? 'mdi-video' : 'mdi-video-off' }}</v-icon>
+            </v-btn>
+
+            <!-- 画面共有ボタン -->
+            <v-btn
+              :color="screenSharing.stream && screenSharing.isLocal ? 'red' : 'white'"
+              :disabled="screenSharing.stream && !screenSharing.isLocal"
+              fab
+              depressed
+              large
+              class="mx-10"
+              @click="!screenSharing.stream ? startScreenSharing() : stopScreenSharing()"
+            >
+              <v-icon large>
+                {{
+                  screenSharing.stream && screenSharing.isLocal
+                    ? 'mdi-window-close'
+                    : 'mdi-window-restore'
+                }}
+              </v-icon>
+            </v-btn>
+          </v-row>
+        </v-col>
+
+        <v-col align-self="center">
+          <v-row justify="end">
+            <!-- 通知音ボタン -->
+            <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
+              <v-icon large>{{ isNotificationOn ? 'mdi-bell' : 'mdi-bell-off' }}</v-icon>
+            </v-btn>
+
+            <!-- チャットボタン -->
+            <v-badge
+              bordered
+              dot
+              color="deep-purple accent-4"
+              :value="chat.notification"
+              offset-x="40"
+              offset-y="15"
+            >
+              <v-btn color="white" icon class="mr-5" @click="controlChat()">
+                <v-icon large>mdi-message-text</v-icon>
+              </v-btn>
+            </v-badge>
+
+            <!-- 通話終了ボタン -->
+            <v-btn depressed x-large color="error" class="mx-12" @click="leaveLounge()">
+              自習室に戻る
+            </v-btn>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-app-bar>
   </v-container>
 </template>
 
@@ -420,7 +409,6 @@ export default {
       },
 
       //*** 入力デバイス ***//
-      isOpenMenu: false, // デバイス選択メニュー表示制御
       audioDevices: [], // 音声入力デバイス一覧
       videoDevices: [], // 映像入力デバイス一覧
       selectedAudio: null, // 選択されている音声入力
@@ -1088,6 +1076,27 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
+.arrow {
+  display: inline-block;
+  height: 80px;
+  width: 40px;
+  background-color: #5bc0de;
+  position: relative;
+  top: 60px;
+  left: -300px;
+}
+
+.arrow:before {
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  border: 60px solid transparent;
+  border-bottom: 60px solid #5bc0de;
+  left: -40px;
+  top: -120px;
+}
+
 .video-container {
   margin-bottom: 100px;
 
@@ -1150,31 +1159,15 @@ export default {
     }
   }
 }
+
+.device-select {
+  width: 100px;
+  margin: 0 5px;
+}
 </style>
 
 <style lang="scss">
 .v-dialog {
   background-color: rgba(0, 0, 0, 0.6);
-}
-
-.arrow {
-  display: inline-block;
-  height: 80px;
-  width: 40px;
-  background-color: #5bc0de;
-  position: relative;
-  top: 60px;
-  left: -300px;
-}
-
-.arrow:before {
-  position: absolute;
-  content: '';
-  width: 0;
-  height: 0;
-  border: 60px solid transparent;
-  border-bottom: 60px solid #5bc0de;
-  left: -40px;
-  top: -120px;
 }
 </style>
