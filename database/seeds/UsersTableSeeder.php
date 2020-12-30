@@ -26,7 +26,7 @@ class UsersTableSeeder extends Seeder
             ]);
         }
 
-        $usernames = ['atsuhiro', 'yoshihito', 'shuto', 'sayuki'];
+        $usernames = ['atsuhiro', 'yoshihito', 'shuto', 'sayuki', 'hikaru', 'riku'];
         foreach ($usernames as $username) {
             User::create([
                 'peer_id' => uniqid(substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 3)),
