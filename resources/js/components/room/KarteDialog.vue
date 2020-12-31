@@ -6,6 +6,19 @@
       <v-form ref="karteForm" v-model="karteForm.validation.valid" lazy-validation>
         <v-card class="headline grey darken-2 text-center px-2">
           <v-container>
+            <v-row justify="end">
+              <v-btn
+                fab
+                x-small
+                depressed
+                color="error"
+                class="mr-4"
+                @click="$emit('close', false)"
+              >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-row>
+
             <!-- <v-card-text class="pa-2 white--text text-h4 font-weight-bold">
               {{ authUser.tasks[0].body }}
             </v-card-text> -->
