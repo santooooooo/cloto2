@@ -60,6 +60,7 @@
                   v-model="registerForm.passwordConfirmation"
                   :rules="registerForm.validation.passwordConfirmationRules"
                   label="パスワード再入力"
+                  type="password"
                   maxlength="64"
                   counter
                 ></v-text-field>
