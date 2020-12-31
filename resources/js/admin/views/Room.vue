@@ -248,7 +248,7 @@ export default {
         if (response.status === OK) {
           this.$store.dispatch('alert/show', {
             type: 'success',
-            message: 'ユーザーデータが更新されました。',
+            message: '部屋データが更新されました。',
           });
 
           if (this.editRoomForm.index > -1) {

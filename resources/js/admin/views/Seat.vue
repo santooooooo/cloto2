@@ -220,7 +220,7 @@ export default {
         if (response.status === OK) {
           this.$store.dispatch('alert/show', {
             type: 'success',
-            message: 'ユーザーデータが更新されました。',
+            message: '座席データが更新されました。',
           });
         } else {
           this.$store.dispatch('alert/show', {
