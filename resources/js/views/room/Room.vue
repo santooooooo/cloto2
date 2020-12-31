@@ -513,6 +513,12 @@ export default {
     // ロード開始
     this.isLoading = true;
 
+    // 部屋データの取得
+    await this.getRoom();
+
+    // データ取得後にタブタイトルを更新
+    this.$emit('updateHead');
+
     /**
      * キャンバスの設定
      */
@@ -521,15 +527,9 @@ export default {
     });
     this.canvas.selection = false; // エリア選択の無効化
     this.canvas.setBackgroundImage(
-      this.$storage('system') + 'room.png',
+      this.$storage('system') + this.roomData.background,
       this.canvas.renderAll.bind(this.canvas)
     );
-
-    // 部屋データの取得
-    await this.getRoom();
-
-    // データ取得後にタブタイトルを更新
-    this.$emit('updateHead');
 
     // クリックエリアの設定
     this.roomData.sections.forEach((section, sectionIndex) => {

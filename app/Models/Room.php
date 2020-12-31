@@ -13,7 +13,7 @@ class Room extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'timetable'];
+    protected $fillable = ['name', 'background', 'timetable'];
 
     /**
      * The attributes that should be cast to native types.

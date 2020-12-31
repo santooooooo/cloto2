@@ -56,25 +56,35 @@ export default {
 
   watch: {
     '$route.params.roomId': async function (val) {
-      // 着席中のユーザーを更新
-      await this.setUser();
+      // 教室を更新
+      await this.setRoom();
     },
   },
 
   methods: {
     /**
-     * 着席中のユーザーの設定
+     * 教室の設定
      */
-    setUser: async function () {
+    setRoom: async function () {
       this.isLoading = true;
 
-      // 現在描画されているユーザーを削除
-      this.canvas.getObjects().forEach((object) => {
-        this.canvas.remove(object);
+      // 教室データの取得
+      var response = await this.$http.get(this.$endpoint('roomShow', [this.$route.params.roomId]));
+      this.roomData = response.data;
+
+      /**
+       * キャンバスの設定
+       */
+      this.canvas = new fabric.Canvas('canvas', {
+        preserveObjectStacking: true, // オブジェクトの重なり順の固定
       });
+      this.canvas.selection = false; // エリア選択の無効化
+      this.canvas.setBackgroundImage(
+        this.$storage('system') + this.roomData.background,
+        this.canvas.renderAll.bind(this.canvas)
+      );
 
       // 座席の設定
-      await this.getRoom();
       this.roomData.sections.forEach((section, sectionIndex) => {
         section.seats.forEach((seat, seatIndex) => {
           var color = '';
@@ -112,14 +122,6 @@ export default {
 
         this.isLoading = false;
       });
-    },
-
-    /**
-     * 教室データの取得
-     */
-    getRoom: async function () {
-      var response = await this.$http.get(this.$endpoint('roomShow', [this.$route.params.roomId]));
-      this.roomData = response.data;
     },
 
     /**
@@ -166,19 +168,7 @@ export default {
   },
 
   async mounted() {
-    /**
-     * キャンバスの設定
-     */
-    this.canvas = new fabric.Canvas('canvas', {
-      preserveObjectStacking: true, // オブジェクトの重なり順の固定
-    });
-    this.canvas.selection = false; // エリア選択の無効化
-    this.canvas.setBackgroundImage(
-      this.$storage('system') + 'room.png',
-      this.canvas.renderAll.bind(this.canvas)
-    );
-
-    await this.setUser();
+    await this.setRoom();
   },
 };
 </script>
