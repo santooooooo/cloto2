@@ -75,11 +75,11 @@ export default {
         { text: '回答', value: 'inquiry', sortable: false, align: 'center' },
       ],
 
-      isOpen: false, // 問い合わせモーダル制御
-      user: {}, // 問い合わせ相手のユーザー
-      messages: [], // 問い合わせ
+      isOpen: false, // 表示制御
+      user: {}, // 問い合わせ相手
+      messages: [], // メッセージ一覧
       colors: {
-        // beautiful-chatの色設定
+        // 色設定
         messageList: {
           bg: '#ffffff',
         },
@@ -137,9 +137,14 @@ export default {
           type: event.type,
           data: event.data,
         });
+
+        // データの更新
+        this.getUsers();
       });
 
       this.isOpen = true;
+      // データの更新
+      this.getUsers();
     },
 
     /**
@@ -150,6 +155,8 @@ export default {
       Echo.leave('user-' + this.user.id);
 
       this.isOpen = false;
+      // データの更新
+      this.getUsers();
     },
 
     /**

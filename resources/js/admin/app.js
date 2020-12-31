@@ -1,7 +1,7 @@
 /**
  * 必要なライブラリの読み込み
  */
-require('./bootstrap');
+require('@/bootstrap');
 window.Vue = require('vue');
 window.API = require('./api');
 window.Storage = require('@/consts/storage');
