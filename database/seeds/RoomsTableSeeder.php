@@ -313,7 +313,7 @@ class RoomsTableSeeder extends Seeder
 
             // 自習室の座席配置
             foreach ($study_positions as $base_position) {
-                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'role' => 'study']);
+                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'name' => $room->name . 'の区画', 'role' => 'study']);
 
                 $x = $base_position['x'];
                 $y = $base_position['y'];
@@ -331,7 +331,7 @@ class RoomsTableSeeder extends Seeder
 
             // 三人がけ休憩室の座席配置
             foreach ($lounge3_positions as $base_positions) {
-                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'role' => 'lounge']);
+                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'name' => $room->name . 'の区画', 'role' => 'lounge']);
 
                 foreach ($base_positions as $base_position) {
                     $position = ['x' => $base_position['x'], 'y' => $base_position['y']];
@@ -341,7 +341,7 @@ class RoomsTableSeeder extends Seeder
 
             // 二人がけ休憩室の座席配置
             foreach ($lounge2_positions as $base_position) {
-                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'role' => 'lounge']);
+                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'name' => $room->name . 'の区画', 'role' => 'lounge']);
 
                 $x = $base_position['x'];
                 $y = $base_position['y'];
@@ -356,7 +356,7 @@ class RoomsTableSeeder extends Seeder
 
             // 四人がけ休憩室の座席配置
             foreach ($lounge4_positions as $base_position) {
-                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'role' => 'lounge']);
+                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'name' => $room->name . 'の区画', 'role' => 'lounge']);
 
                 $x = $base_position['x'];
                 $y = $base_position['y'];
@@ -379,7 +379,7 @@ class RoomsTableSeeder extends Seeder
 
             // 八人がけ休憩室の座席配置
             foreach ($lounge8_positions as $base_position) {
-                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'role' => 'lounge']);
+                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'name' => $room->name . 'の区画', 'role' => 'lounge']);
 
                 $x = $base_position['x'];
                 $y = $base_position['y'];
