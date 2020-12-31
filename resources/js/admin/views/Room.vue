@@ -246,10 +246,7 @@ export default {
         );
 
         if (response.status === OK) {
-          this.$store.dispatch('alert/show', {
-            type: 'success',
-            message: '部屋データが更新されました。',
-          });
+          this.$store.dispatch('alert/success', '部屋データが更新されました。');
 
           if (this.editRoomForm.index > -1) {
             this.rooms[this.editRoomForm.index].timetable = timetable;
@@ -259,10 +256,7 @@ export default {
 
           this.close();
         } else {
-          this.$store.dispatch('alert/show', {
-            type: 'error',
-            message: 'エラーが発生しました。',
-          });
+          this.$store.dispatch('alert/error');
 
           this.editRoomForm.loading = false;
         }

@@ -110,15 +110,10 @@ export default {
 
         if (response.status === OK) {
           this.$refs.contactForm.reset();
-          var type = 'success';
+          this.$store.dispatch('alert/success', response.data);
         } else {
-          var type = 'error';
+          this.$store.dispatch('alert/error', response.data);
         }
-
-        this.$store.dispatch('alert/show', {
-          type: type,
-          message: response.data,
-        });
 
         this.contactForm.loading = false;
       }

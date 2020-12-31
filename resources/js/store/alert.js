@@ -69,6 +69,20 @@ const mutations = {
 };
 
 const actions = {
+  success(context, option) {
+    context.commit('clearAlert');
+    context.commit('setAlert', {
+      type: 'success',
+      message: option || '処理が正常に終了しました。',
+    });
+  },
+  error(context, option) {
+    context.commit('clearAlert');
+    context.commit('setAlert', {
+      type: 'error',
+      message: option || 'エラーが発生しました。再読み込みしてください。',
+    });
+  },
   show(context, option) {
     context.commit('clearAlert');
     context.commit('setAlert', option);

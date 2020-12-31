@@ -67,26 +67,17 @@ export default {
 
       // エラー発生時のイベント
       Vue.config.errorHandler = (event) => {
-        this.$store.dispatch('alert/show', {
-          type: 'error',
-          message: 'エラーが発生しました。再読み込みしてください。',
-        });
+        this.$store.dispatch('alert/error');
       };
 
       // エラー発生時のイベント
       window.addEventListener('error', (event) => {
-        this.$store.dispatch('alert/show', {
-          type: 'error',
-          message: 'エラーが発生しました。再読み込みしてください。',
-        });
+        this.$store.dispatch('alert/error');
       });
 
       // エラー発生時のイベント
       window.addEventListener('unhandledrejection', (event) => {
-        this.$store.dispatch('alert/show', {
-          type: 'error',
-          message: 'エラーが発生しました。再読み込みしてください。',
-        });
+        this.$store.dispatch('alert/error');
       });
     },
 
@@ -94,10 +85,7 @@ export default {
      * 戻るボタンの無効化
      */
     stopBackButtonEvent: function () {
-      this.$store.dispatch('alert/show', {
-        type: 'error',
-        message: '戻るボタンでの操作は禁止されています。',
-      });
+      this.$store.dispatch('alert/error', '戻るボタンでの操作は禁止されています。');
 
       history.go(1);
     },

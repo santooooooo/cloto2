@@ -706,10 +706,7 @@ export default {
           this.setupScreenSharingEvents();
         } catch (error) {
           // キャンセルボタン押下時
-          this.$store.dispatch('alert/show', {
-            type: 'error',
-            message: '画面共有がキャンセルされました．．．',
-          });
+          this.$store.dispatch('alert/error', '画面共有がキャンセルされました．．．');
         }
       }
     },
@@ -989,11 +986,7 @@ export default {
      * @param String  message エラーメッセージ
      */
     errorEvent: function (message) {
-      this.$store.dispatch('alert/show', {
-        type: 'error',
-        message: message,
-      });
-
+      this.$store.dispatch('alert/error', message);
       this.leaveLounge();
     },
   },

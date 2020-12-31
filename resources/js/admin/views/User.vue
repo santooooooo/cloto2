@@ -153,10 +153,7 @@ export default {
         );
 
         if (response.status === OK) {
-          this.$store.dispatch('alert/show', {
-            type: 'success',
-            message: 'ユーザーデータが更新されました。',
-          });
+          this.$store.dispatch('alert/success', 'ユーザーデータが更新されました。');
 
           if (this.editUserForm.index > -1) {
             Object.assign(this.users[this.editUserForm.index], this.editUserForm.data);
@@ -166,10 +163,7 @@ export default {
 
           this.close();
         } else {
-          this.$store.dispatch('alert/show', {
-            type: 'error',
-            message: 'エラーが発生しました。',
-          });
+          this.$store.dispatch('alert/error');
 
           this.editUserForm.loading = false;
         }

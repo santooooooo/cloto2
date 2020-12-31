@@ -184,10 +184,7 @@ export default {
       if (response.status === OK) {
         this.$emit('start-study');
       } else {
-        this.$store.dispatch('alert/show', {
-          type: 'error',
-          message: 'エラーが発生しました。',
-        });
+        this.$store.dispatch('alert/error');
       }
     },
 
@@ -207,10 +204,7 @@ export default {
         var response = await this.$http.post(this.$endpoint('taskPost'), input);
 
         if (response.status === OK) {
-          this.$store.dispatch('alert/show', {
-            type: 'success',
-            message: 'タスクが追加されました。',
-          });
+          this.$store.dispatch('alert/success', 'タスクが追加されました。');
 
           // 新規タスクをリストに追加
           this.tasks.push(response.data);
@@ -220,10 +214,7 @@ export default {
           this.$refs.newTaskForm.reset();
           this.newTaskForm.loading = false;
         } else {
-          this.$store.dispatch('alert/show', {
-            type: 'error',
-            message: 'エラーが発生しました。',
-          });
+          this.$store.dispatch('alert/error');
 
           this.newTaskForm.loading = false;
         }

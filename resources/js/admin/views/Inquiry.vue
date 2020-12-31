@@ -174,10 +174,7 @@ export default {
       });
 
       if (response.status !== OK) {
-        this.$store.dispatch('alert/show', {
-          type: 'error',
-          message: 'エラー',
-        });
+        this.$store.dispatch('alert/error');
       }
 
       // データの更新

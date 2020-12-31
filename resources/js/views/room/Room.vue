@@ -249,7 +249,7 @@ export default {
 
       // エラー発生時
       if (response.status !== OK) {
-        this.$store.dispatch('alert/show', { type: 'error', message: response.data });
+        this.$store.dispatch('alert/error', response.data);
       }
 
       // ユーザーデータの同期
@@ -314,20 +314,14 @@ export default {
           case 'lounge': // 休憩室がクリックされた場合
             if (this.authUser.seat === null) {
               // どこにも着席していない状態で休憩室をクリックした場合
-              this.$store.dispatch('alert/show', {
-                type: 'error',
-                message: 'いきなり休憩ですか？まずは自習をしましょう！',
-              });
+              this.$store.dispatch('alert/error', 'いきなり休憩ですか？まずは自習をしましょう！');
             } else {
               // 現在自習室に着席中の場合
               if (this.authUser.seat.section.role === 'study') {
                 if (this.roomStatus !== 'break') {
                   // 休憩室開放時間じゃなければ
                   // 休憩室がクリックされたときにユーザに伝える
-                  this.$store.dispatch('alert/show', {
-                    type: 'error',
-                    message: '休憩室は解放されていません！',
-                  });
+                  this.$store.dispatch('alert/error', '休憩室は解放されていません！');
                 } else {
                   // 状態変更処理
                   await this.userAction('enterLounge', event.target);

@@ -256,17 +256,11 @@ export default {
         var response = await this.$http.post(this.$endpoint('kartePost'), input);
 
         if (response.status === OK) {
-          this.$store.dispatch('alert/show', {
-            type: 'success',
-            message: 'カルテが保存されました。',
-          });
+          this.$store.dispatch('alert/success', 'カルテが保存されました。');
 
           this.dialog = false;
         } else {
-          this.$store.dispatch('alert/show', {
-            type: 'error',
-            message: 'エラーが発生しました。',
-          });
+          this.$store.dispatch('alert/error');
 
           this.karteForm.loading = false;
         }

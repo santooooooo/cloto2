@@ -164,10 +164,7 @@ export default {
         var response = await this.$http.post(this.$endpoint('projectPost'), input);
 
         if (response.status === OK) {
-          this.$store.dispatch('alert/show', {
-            type: 'success',
-            message: 'プロジェクトが追加されました。',
-          });
+          this.$store.dispatch('alert/success', 'プロジェクトが追加されました。');
 
           // 新規プロジェクトをリストに追加
           this.projects.push(response.data);
@@ -177,10 +174,7 @@ export default {
           this.$refs.newProjectForm.reset();
           this.newProjectForm.loading = false;
         } else {
-          this.$store.dispatch('alert/show', {
-            type: 'error',
-            message: 'エラーが発生しました。',
-          });
+          this.$store.dispatch('alert/error');
 
           this.newProjectForm.loading = false;
         }

@@ -134,18 +134,10 @@ export default {
         var response = await this.$http.post(this.$endpoint('preRegister'), input);
 
         if (response.status === OK) {
-          this.$store.dispatch('alert/show', {
-            type: 'success',
-            message: response.data,
-          });
-
+          this.$store.dispatch('alert/success', response.data);
           this.$router.push({ name: 'index' });
         } else {
-          this.$store.dispatch('alert/show', {
-            type: 'error',
-            message: response.data,
-          });
-
+          this.$store.dispatch('alert/error', response.data);
           this.preRegisterForm.loading = false;
         }
       }

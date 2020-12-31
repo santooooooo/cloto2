@@ -10,7 +10,7 @@
             ratio-y="1"
             @input="profileUpdateForm.icon = $event"
           />
-    
+
           <v-row>
             <v-col>
               <!-- ユーザー名 -->
@@ -168,10 +168,10 @@ export default {
         web: '',
         introduction: '',
         loading: false,
-        sns:{
-        twitter: '',
-        github: '',
-        qiita: '',
+        sns: {
+          twitter: '',
+          github: '',
+          qiita: '',
         },
         validation: {
           valid: false,
@@ -202,8 +202,14 @@ export default {
           'twitter',
           this.profileUpdateForm.sns.twitter ? this.profileUpdateForm.sns.twitter : ''
         );
-        input.append('github', this.profileUpdateForm.sns.github ? this.profileUpdateForm.sns.github : '');
-        input.append('qiita', this.profileUpdateForm.sns.qiita ? this.profileUpdateForm.sns.qiita : '');
+        input.append(
+          'github',
+          this.profileUpdateForm.sns.github ? this.profileUpdateForm.sns.github : ''
+        );
+        input.append(
+          'qiita',
+          this.profileUpdateForm.sns.qiita ? this.profileUpdateForm.sns.qiita : ''
+        );
         input.append('web', this.profileUpdateForm.web ? this.profileUpdateForm.web : '');
         input.append(
           'introduction',
@@ -214,10 +220,7 @@ export default {
         var response = await this.$http.post(this.$endpoint('profileUpdate'), input);
 
         if (response.status === OK) {
-          this.$store.dispatch('alert/show', {
-            type: 'success',
-            message: 'ユーザーデータが更新されました。',
-          });
+          this.$store.dispatch('alert/success', 'ユーザーデータが更新されました。');
 
           // ユーザーデータの同期
           await this.$store.dispatch('auth/syncAuthUser');
@@ -225,10 +228,7 @@ export default {
           this.dialog = false;
           this.$emit('close', false);
         } else {
-          this.$store.dispatch('alert/show', {
-            type: 'error',
-            message: 'エラーが発生しました。',
-          });
+          this.$store.dispatch('alert/error');
 
           this.profileUpdateForm.loading = false;
         }

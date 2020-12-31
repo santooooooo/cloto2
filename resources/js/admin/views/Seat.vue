@@ -218,15 +218,9 @@ export default {
         var response = await this.$http.post(this.$endpoint('seatUpdate', [seatId]), input);
 
         if (response.status === OK) {
-          this.$store.dispatch('alert/show', {
-            type: 'success',
-            message: '座席データが更新されました。',
-          });
+          this.$store.dispatch('alert/success', '座席データが更新されました。');
         } else {
-          this.$store.dispatch('alert/show', {
-            type: 'error',
-            message: 'エラーが発生しました。',
-          });
+          this.$store.dispatch('alert/error');
         }
 
         this.editSeatForm.loading = false;
