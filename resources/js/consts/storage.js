@@ -6,6 +6,7 @@
  * ディレクトリ一覧
  */
 const system = '/storage/system/';
+const room = '/storage/system/room/';
 const icon = '/storage/user/icon/';
 const karte = '/storage/user/karte/';
 
@@ -20,6 +21,10 @@ export function getStoragePath(name) {
   switch (name) {
     case 'system':
       path = system;
+      break;
+
+    case 'room':
+      path = room;
       break;
 
     case 'icon':

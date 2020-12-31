@@ -18,6 +18,17 @@
 
                 <v-card-text>
                   <v-container>
+                    <!-- 背景画像 -->
+                    <v-card-text class="pa-1 white--text">部屋デザイン</v-card-text>
+                    <span class="red--text">*横幅1080px × 縦幅600px のみ対応</span>
+                    <InputImage
+                      :no-change-crop-ratio="true"
+                      ratio-x="9"
+                      ratio-y="5"
+                      @input="editRoomForm.data.background = $event"
+                      v-if="editRoomForm.dialog"
+                    />
+
                     <!-- 部屋名 -->
                     <v-card-text class="pa-1 white--text">部屋名</v-card-text>
                     <v-text-field
@@ -225,6 +236,7 @@ export default {
 
         var input = new FormData();
         input.append('name', this.editRoomForm.data.name);
+        input.append('background', this.editRoomForm.data.background);
         input.append('timetable', JSON.stringify(timetable));
 
         // ユーザーデータ保存処理
