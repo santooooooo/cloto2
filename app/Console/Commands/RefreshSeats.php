@@ -43,9 +43,9 @@ class RefreshSeats extends Command
         $seats = Seat::whereNotNull('status')->get();
 
         foreach ($seats as $seat) {
-            // 着席中のユーザーがいる場合
+            // 着席中の座席の確認
             if (!empty($seat->user)) {
-                // ユーザーが非オンライン状態の場合
+                // ユーザーがオフラインの場合
                 if (!$seat->user->isOnline()) {
                     // シートの初期化
                     $seat->fill(['status' => null, 'reservation_user_id' => null])->save();
@@ -54,15 +54,13 @@ class RefreshSeats extends Command
                 }
             }
 
-            // 予約中のユーザーがいる場合
+            // 予約中の座席の確認
             if (!empty($seat->reservation_user_id)) {
                 $reservation_user = User::find($seat->reservation_user_id);
-                // ユーザーが非オンライン状態の場合
+                // ユーザーがオフラインの場合
                 if (!$reservation_user->isOnline()) {
-                    // シートの初期化
+                    // シートの予約解除
                     $seat->fill(['status' => null, 'reservation_user_id' => null])->save();
-                    // ユーザーの退席処理
-                    $reservation_user->fill(['seat_id' => null, 'task_id' => null])->save();
                 }
             }
         }
