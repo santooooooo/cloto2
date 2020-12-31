@@ -210,12 +210,11 @@ export default {
       if (this.$refs.editSeatForm.validate()) {
         this.editSeatForm.loading = true;
 
-        var input = new FormData();
-        input.append('size', size);
-        input.append('position', JSON.stringify(position));
-
-        // ユーザーデータ保存処理
-        var response = await this.$http.post(this.$endpoint('seatUpdate', [seatId]), input);
+        // 座席データ保存処理
+        var response = await this.$http.post(this.$endpoint('seatUpdate', [seatId]), {
+          size: size,
+          position: position,
+        });
 
         if (response.status === OK) {
           this.$store.dispatch('alert/success', '座席データが更新されました。');

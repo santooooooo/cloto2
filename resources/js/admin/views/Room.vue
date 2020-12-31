@@ -239,7 +239,7 @@ export default {
         input.append('background', this.editRoomForm.data.background);
         input.append('timetable', JSON.stringify(timetable));
 
-        // ユーザーデータ保存処理
+        // 部屋データ保存処理
         var response = await this.$http.post(
           this.$endpoint('roomUpdate', [this.editRoomForm.data.id]),
           input

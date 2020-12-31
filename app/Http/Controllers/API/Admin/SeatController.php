@@ -32,8 +32,6 @@ class SeatController extends Controller
     public function update(Request $request, Int $seat_id)
     {
         $data = $request->all();
-        // 座標データの型変換
-        $data['position'] = json_decode($data['position']);
 
         $edit_seat = $this->seat->find($seat_id);
 
