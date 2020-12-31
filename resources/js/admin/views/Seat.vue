@@ -15,10 +15,13 @@
                 <v-card-title>
                   <span class="headline white--text">編集</span>
                 </v-card-title>
+                <v-card-text>
+                  <span class="white--text">1席ごとにデータを保存してください。</span>
+                </v-card-text>
 
                 <v-card-text>
                   <v-container>
-                    <!-- 座席位置 -->
+                    <!-- 区画 -->
                     <v-list-group
                       v-for="(section, sectionIndex) in editSeatForm.data.sections"
                       :key="section.id"
@@ -29,11 +32,8 @@
                         </v-list-item-title>
                       </template>
 
-                      <v-list-item
-                        sub-group
-                        v-for="(seat, seatIndex) in section.seats"
-                        :key="seat.id"
-                      >
+                      <!-- 座席 -->
+                      <v-list-item v-for="(seat, seatIndex) in section.seats" :key="seat.id">
                         <v-card-text class="white--text">座席 {{ seat.id }}</v-card-text>
                         <v-text-field
                           v-model="
@@ -62,7 +62,12 @@
                           text
                           color="success"
                           :loading="editSeatForm.loading"
-                          @click="submit()"
+                          @click="
+                            submit(
+                              seat.id,
+                              editSeatForm.data.sections[sectionIndex].seats[seatIndex].position
+                            )
+                          "
                         >
                           保存
                         </v-btn>
@@ -73,7 +78,7 @@
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="error" :loading="editSeatForm.loading" @click="close()">
+                  <v-btn color="success" :loading="editSeatForm.loading" @click="close()">
                     終了
                   </v-btn>
                 </v-card-actions>
@@ -84,7 +89,7 @@
       </template>
 
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small @click="editRoom(item)">mdi-pencil</v-icon>
+        <v-icon small @click="editSeat(item)">mdi-pencil</v-icon>
       </template>
 
       <template v-slot:no-data>
@@ -101,20 +106,13 @@ export default {
   head: {
     title() {
       return {
-        inner: '部屋',
+        inner: '座席',
       };
     },
   },
   data() {
     return {
       rooms: [],
-      status: ['study', 'break'],
-      timePicker: {
-        dialog: false,
-        index: null,
-        time: null,
-      },
-      search: '',
       headers: [
         { text: '部屋名', value: 'name' },
         { text: '編集', value: 'actions', sortable: false, align: 'center' },
@@ -122,11 +120,16 @@ export default {
       editSeatForm: {
         dialog: false,
         loading: false,
-        index: -1,
         data: {},
         validation: {
           valid: false,
-          positionRules: [(v) => !!v || '座標は必須項目です。'],
+          positionRules: [
+            (v) => !!v || '座標は必須項目です。',
+            (v) => {
+              const pattern = /^\d*$/;
+              return pattern.test(v) || '数値を入力してください。';
+            },
+          ],
         },
       },
     };
@@ -141,12 +144,11 @@ export default {
     },
 
     /**
-     * 部屋データの編集
+     * 座席データの編集
      *
      * @param Object  room  編集する部屋
      */
-    editRoom: async function (room) {
-      this.editSeatForm.index = this.rooms.indexOf(room);
+    editSeat: async function (room) {
       this.editSeatForm.data = Object.assign({}, room);
 
       this.editSeatForm.dialog = true;
@@ -160,7 +162,8 @@ export default {
       this.editSeatForm.loading = false;
       this.$nextTick(() => {
         this.$refs.editSeatForm.reset();
-        this.editSeatForm.index = -1;
+        // データの更新
+        this.getRooms();
       });
     },
 
@@ -185,16 +188,14 @@ export default {
             type: 'success',
             message: 'ユーザーデータが更新されました。',
           });
-
-          this.close();
         } else {
           this.$store.dispatch('alert/show', {
             type: 'error',
             message: 'エラーが発生しました。',
           });
-
-          this.editSeatForm.loading = false;
         }
+
+        this.editSeatForm.loading = false;
       }
     },
   },

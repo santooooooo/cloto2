@@ -114,6 +114,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     */
     Route::get('/rooms', 'API\Admin\RoomController@index')->name('admin.rooms');
     Route::post('/room/update/{room_id}', 'API\Admin\RoomController@update')->name('admin.roomUpdate');
+    Route::post('/seat/update/{seat_id}', 'API\Admin\SeatController@update')->name('admin.seatUpdate');
 
 
     /*
