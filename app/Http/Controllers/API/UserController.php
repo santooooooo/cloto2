@@ -15,7 +15,7 @@ class UserController extends Controller
     // アイコン保存ディレクトリ
     const ICON_STORE_DIR = 'public/user/icon/';
     // デフォルトアイコン名
-    const DEFAULT_ICON_NAME = 'default.jpg';
+    const DEFAULT_ICON_FILENAME = 'default.jpg';
 
 
     /** @var User */
@@ -149,16 +149,16 @@ class UserController extends Controller
         // アイコンの保存
         if (!empty($request->file('icon'))) {
             // 削除処理
-            if ($this->auth_user->icon != self::DEFAULT_ICON_NAME) {
+            if ($this->auth_user->icon != self::DEFAULT_ICON_FILENAME) {
                 // 初期アイコン以外の場合には登録中のアイコンを削除
                 Storage::delete(self::ICON_STORE_DIR . $this->auth_user->icon);
             }
 
             // 保存処理
-            $save_name = $request->file('icon')->hashName();
-            $request->file('icon')->storeAs(self::ICON_STORE_DIR, $save_name);
+            $filename = $request->file('icon')->hashName();
+            $request->file('icon')->storeAs(self::ICON_STORE_DIR, $filename);
 
-            $data['icon'] = $save_name;
+            $data['icon'] = $filename;
         }
 
 

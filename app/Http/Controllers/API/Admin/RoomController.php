@@ -63,10 +63,10 @@ class RoomController extends Controller
             }
 
             // 保存処理
-            $save_filename = $request->file('background')->hashName();
-            $request->file('background')->storeAs(self::BACKGROUND_STORE_DIR, $save_filename);
+            $filename = $request->file('background')->hashName();
+            $request->file('background')->storeAs(self::BACKGROUND_STORE_DIR, $filename);
 
-            $data['background'] = $save_filename;
+            $data['background'] = $filename;
         }
 
 

@@ -114,7 +114,7 @@ export default {
         centerBox: true,
         fixed: this.noChangeCropRatio,
         fixedNumber: [this.ratioX, this.ratioY],
-        fixedBox: false,
+        fixedBox: true,
         canMove: true,
       },
     };
