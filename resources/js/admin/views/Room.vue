@@ -249,6 +249,7 @@ export default {
           this.$store.dispatch('alert/success', '部屋データが更新されました。');
 
           if (this.editRoomForm.index > -1) {
+            this.rooms[this.editRoomForm.index].name = this.editRoomForm.data.name;
             this.rooms[this.editRoomForm.index].timetable = timetable;
           } else {
             this.rooms.push(this.editRoomForm);
