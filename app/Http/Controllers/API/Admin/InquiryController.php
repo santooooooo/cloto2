@@ -97,6 +97,7 @@ class InquiryController extends Controller
 
         // 投稿したデータを送信
         broadcast(new InquiryEvent($user->id, $result));
+
         return response(null);
     }
 }

@@ -11,7 +11,9 @@ class ContactMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    /** @var Array */
     protected $content;
+    /** @var String */
     protected $direction;
 
     /**
@@ -19,7 +21,7 @@ class ContactMail extends Mailable
      *
      * @return void
      */
-    public function __construct($content, $direction)
+    public function __construct(array $content, String $direction)
     {
         $this->content = $content;
         $this->direction = $direction;
