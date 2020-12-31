@@ -131,7 +131,7 @@ return [
     */
 
     'service' => [
-        'preregister' => env('MAIL_PREREGISTER', 'preregister@cloto.jp'),
-        'contact' => env('MAIL_CONTACT', 'contact@cloto.jp'),
+        'preregister' => env('MAIL_PREREGISTER_ADDRESS', 'preregister@cloto.jp'),
+        'contact' => env('MAIL_CONTACT_ADDRESS', 'contact@cloto.jp'),
     ]
 ];
