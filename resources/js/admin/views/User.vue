@@ -39,6 +39,18 @@
                       rounded
                       class="pa-2"
                     ></v-text-field>
+
+                    <!-- パスワード -->
+                    <v-card-text class="pa-1 white--text">パスワード</v-card-text>
+                    <v-text-field
+                      v-model="editUserForm.password"
+                      maxlength="64"
+                      counter
+                      label="パスワード（更新する場合のみ入力）"
+                      solo
+                      rounded
+                      class="pa-2"
+                    ></v-text-field>
                   </v-container>
                 </v-card-text>
 
@@ -94,6 +106,7 @@ export default {
         loading: false,
         index: -1,
         data: {},
+        password: '',
         validation: {
           valid: false,
           handlenameRules: [(v) => !!v || '表示名は必須項目です。'],
@@ -145,6 +158,9 @@ export default {
         input.append('username', this.editUserForm.data.username);
         input.append('email', this.editUserForm.data.email);
         input.append('handlename', this.editUserForm.data.handlename);
+        if (this.editUserForm.password !== '') {
+          input.append('password', this.editUserForm.password);
+        }
 
         // ユーザーデータ保存処理
         var response = await this.$http.post(

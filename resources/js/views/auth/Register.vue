@@ -60,13 +60,8 @@
                   v-model="registerForm.passwordConfirmation"
                   :rules="registerForm.validation.passwordConfirmationRules"
                   label="パスワード再入力"
-                  :append-icon="registerForm.showPasswordConfirmation ? 'mdi-eye' : 'mdi-eye-off'"
-                  :type="registerForm.showPasswordConfirmation ? 'text' : 'password'"
                   maxlength="64"
                   counter
-                  @click:append="
-                    registerForm.showPasswordConfirmation = !registerForm.showPasswordConfirmation
-                  "
                 ></v-text-field>
 
                 <v-text-field
@@ -122,7 +117,6 @@ export default {
         passwordConfirmation: '',
         handlename: '',
         showPassword: false,
-        showPasswordConfirmation: false,
         loading: false,
         validation: {
           valid: false,

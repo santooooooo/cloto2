@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class UserController extends Controller
@@ -62,6 +63,11 @@ class UserController extends Controller
     public function update(Request $request, Int $user_id)
     {
         $data = $request->all();
+
+        // パスワードのハッシュ化
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
 
         $edit_user = $this->user->find($user_id);
 
