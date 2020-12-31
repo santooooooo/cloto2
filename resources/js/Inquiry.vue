@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { OK } from '@/consts/status';
+
 export default {
   data() {
     return {
@@ -59,6 +61,11 @@ export default {
       },
     };
   },
+  computed: {
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
+  },
   methods: {
     /**
      * 問い合わせのオープン
@@ -67,6 +74,11 @@ export default {
       // 問い合わせの取得
       var response = await this.$http.get(this.$endpoint('inquiryShow'));
       this.messages = response.data;
+
+      // 投稿者の変換
+      this.messages.forEach((message) => {
+        message.author = this.setAuthor(message.author);
+      });
 
       // 現在時刻の取得
       var date = new Date();
@@ -105,6 +117,15 @@ export default {
         }
       );
 
+      // 問い合わせイベントの受信開始
+      Echo.channel('user-' + this.authUser.id).listen('InquiryEvent', (event) => {
+        this.messages.push({
+          author: this.setAuthor(event.author),
+          type: event.type,
+          data: event.data,
+        });
+      });
+
       this.isOpen = true;
     },
 
@@ -112,6 +133,9 @@ export default {
      * 問い合わせのクローズ
      */
     close: function () {
+      // 問い合わせイベントの受信終了
+      Echo.leave('user-' + this.authUser.id);
+
       this.isOpen = false;
     },
 
@@ -127,8 +151,34 @@ export default {
         type: 'text',
         data: { text: message.data.text },
       });
-      // データの更新
-      this.messages = response.data;
+
+      if (response.status !== OK) {
+        this.$store.dispatch('alert/show', {
+          type: 'error',
+          message: 'エラー',
+        });
+      }
+    },
+
+    /**
+     * 投稿者の設定
+     *
+     * @param   String  author  投稿者
+     * @returns String  show    変換済みの投稿者
+     */
+    setAuthor: function (author) {
+      var show;
+      switch (author) {
+        case 'user':
+          show = 'me';
+          break;
+
+        case 'support':
+          show = 'support';
+          break;
+      }
+
+      return show;
     },
   },
 };
