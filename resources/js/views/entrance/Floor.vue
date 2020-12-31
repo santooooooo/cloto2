@@ -44,7 +44,6 @@ export default {
       roomData: '', // 教室データ
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
-      iconSize: 30, // アイコンサイズ
     };
   },
 
@@ -104,7 +103,7 @@ export default {
               top: seat.position.y,
               originX: 'center',
               originY: 'center',
-              radius: this.iconSize / 2,
+              radius: seat.size / 2,
               strokeWidth: 1,
               hasControls: false, // 図形周囲のコントロールボタンの無効化
               hasBorders: false, // 図形周囲のボーダーの無効化
@@ -116,7 +115,7 @@ export default {
 
           // 誰かが座っている時
           if (seat.status !== null && seat.status != 'break') {
-            this.putIcon(seat.position.x, seat.position.y, seat.user);
+            this.setUser(seat);
           }
         });
 
@@ -125,26 +124,24 @@ export default {
     },
 
     /**
-     * アイコンの配置
+     * アイコンの設置
      *
-     * @param Number x 配置される座席のx座標
-     * @param Number y 配置される座席のy座標
-     * @param Object  user  描画するユーザー
+     * @param Object  seat  着席する座席
      */
-    putIcon: function (x, y, user) {
-      new fabric.Image.fromURL(this.$storage('icon') + user.icon, (icon) => {
+    setUser: function (seat) {
+      new fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (icon) => {
         icon.set({
-          userId: user.id,
-          left: x,
-          top: y,
+          userId: seat.user.id,
+          left: seat.position.x,
+          top: seat.position.y,
           originX: 'center',
           originY: 'center',
-          scaleX: this.iconSize / icon.width,
-          scaleY: this.iconSize / icon.height,
+          scaleX: seat.size / icon.width,
+          scaleY: seat.size / icon.height,
           clipPath: new fabric.Circle({
-            scaleX: icon.width / this.iconSize,
-            scaleY: icon.height / this.iconSize,
-            radius: this.iconSize / 2,
+            scaleX: icon.width / seat.size,
+            scaleY: icon.height / seat.size,
+            radius: seat.size / 2,
             originX: 'center',
             originY: 'center',
           }),

@@ -15,9 +15,9 @@ class CreateRoomsTable extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->string('name');                             // 部屋名
-            $table->string('background')->default('room.png');  // 背景画像
-            $table->json('timetable');                          // 時間割
+            $table->string('name');                                 // 部屋名
+            $table->string('background')->default('default.jpg');   // 背景画像
+            $table->json('timetable');                              // 時間割
         });
     }
 
