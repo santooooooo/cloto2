@@ -15,6 +15,7 @@ import home from '@/admin/views/Home';
 import inquiry from '@/admin/views/Inquiry';
 import user from '@/admin/views/User';
 import room from '@/admin/views/Room';
+import seat from '@/admin/views/Seat';
 import notFound from '@/admin/views/errors/NotFound';
 
 const router = new VueRouter({
@@ -39,6 +40,11 @@ const router = new VueRouter({
       path: '/admin/room',
       name: 'room',
       component: room,
+    },
+    {
+      path: '/admin/seat',
+      name: 'seat',
+      component: seat,
     },
     {
       path: '*',

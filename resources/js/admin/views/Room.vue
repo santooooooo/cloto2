@@ -121,7 +121,6 @@ export default {
         validation: {
           valid: false,
           nameRules: [(v) => !!v || '部屋名は必須項目です。'],
-          emailRules: [(v) => !!v || 'メールアドレスは必須項目です。'],
         },
       },
     };

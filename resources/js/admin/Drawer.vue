@@ -46,6 +46,15 @@
           <v-list-item-title>部屋</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+
+      <v-list-item exact :to="{ name: 'seat' }">
+        <v-list-item-icon>
+          <v-icon>mdi-map-marker-radius</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>座席</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>

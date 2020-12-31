@@ -4,6 +4,9 @@
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>ユーザー一覧</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+          <span>編集ボタンからユーザーデータを変更できます。</span>
 
           <!-- ユーザー編集ダイアログ -->
           <v-dialog v-model="editUserForm.dialog" max-width="500px" persistent>
