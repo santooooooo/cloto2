@@ -6,7 +6,7 @@
       <img :src="$storage('system') + 'header-logo.svg'" />
     </router-link>
 
-    <v-tabs align-with-title v-if="!authCheck">
+    <v-tabs align-with-title v-if="!isRelease || !authCheck">
       <v-tabs-slider color="yellow"></v-tabs-slider>
 
       <v-tab :to="{ name: 'index' }">Top</v-tab>
@@ -25,7 +25,7 @@
       icon
       class="mr-6"
       @click="$store.dispatch('alert/switchSound')"
-      v-if="authCheck"
+      v-if="isRelease && authCheck"
     >
       <v-icon large>
         {{ $store.getters['alert/isSoundOn'] ? 'mdi-volume-high' : 'mdi-volume-off' }}
