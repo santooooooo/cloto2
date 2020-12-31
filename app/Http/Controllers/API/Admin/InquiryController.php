@@ -5,8 +5,9 @@ namespace App\Http\Controllers\API\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use App\Models\Inquiry;
 use App\Models\User;
+use App\Models\Inquiry;
+use App\Events\InquiryEvent;
 
 class InquiryController extends Controller
 {
@@ -64,18 +65,8 @@ class InquiryController extends Controller
         foreach ($user->inquiries as $inquiry) {
             $inquiry->data += ['meta' => (new Carbon($inquiry->created_at))->format('H時i分')];
 
-            switch ($inquiry->author) {
-                case 'user':
-                    $author = 'user';
-                    break;
-
-                case 'support':
-                    $author = 'me';
-                    break;
-            }
-
             array_push($inquiries, [
-                'author' => $author,
+                'author' => $inquiry->author,
                 'type' => $inquiry->type,
                 'data' => $inquiry->data
             ]);
@@ -104,6 +95,8 @@ class InquiryController extends Controller
         $user = $this->user->find($data['user_id']);
         $user->inquiries()->update(['replyed' => 1]);
 
-        return $this->show($user->id);
+        // 投稿したデータを送信
+        broadcast(new InquiryEvent($user->id, $result));
+        return response(null);
     }
 }

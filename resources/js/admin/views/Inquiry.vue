@@ -14,40 +14,38 @@
       </template>
 
       <template v-slot:[`item.inquiry`]="{ item }">
-        <v-icon small :color="item.replyed ? 'black' : 'red'" @click="openInquiry(item)">
+        <v-icon small :color="item.replyed ? 'black' : 'red'" @click="open(item)">
           mdi-email
         </v-icon>
       </template>
 
       <template v-slot:no-data>
-        <v-btn color="primary" @click="getInquiryUsers()">再読み込み</v-btn>
+        <v-btn color="primary" @click="getUsers()">再読み込み</v-btn>
       </template>
     </v-data-table>
 
     <!-- 問い合わせ -->
     <beautiful-chat
-      :open="openInquiry"
-      :close="closeInquiry"
-      :onMessageWasSent="submitInquiry"
-      :colors="inquiry.colors"
-      :isOpen="inquiry.isOpen"
+      :open="open"
+      :close="close"
+      :onMessageWasSent="submit"
+      :colors="colors"
+      :isOpen="isOpen"
       :participants="[
         {
           id: 'user',
-          name: inquiry.user.handlename,
-          imageUrl: $storage('icon') + inquiry.user.icon,
+          name: user.handlename,
+          imageUrl: $storage('icon') + user.icon,
         },
       ]"
-      :messageList="inquiry.messages"
+      :messageList="messages"
       placeholder="回答を入力してください。"
       showCloseButton
       showHeader
       alwaysScrollToBottom
     >
       <template v-slot:header>
-        <div class="sc-header--title enabled font-weight-bold">
-          {{ inquiry.user.handlename }} 様
-        </div>
+        <div class="sc-header--title enabled font-weight-bold">{{ user.handlename }} 様</div>
       </template>
       <template v-slot:system-message-body="{ message }"> [System]: {{ message.text }} </template>
     </beautiful-chat>
@@ -77,46 +75,32 @@ export default {
         { text: '回答', value: 'inquiry', sortable: false, align: 'center' },
       ],
 
-      inquiry: {
-        isOpen: false, // 問い合わせモーダル制御
-        user: {}, // 問い合わせ相手のユーザー
-        messages: [], // 問い合わせ
-        colors: {
-          // beautiful-chatの色設定
-          messageList: {
-            bg: '#ffffff',
-          },
-          sentMessage: {
-            bg: '#f6bf00',
-            text: '#000000',
-          },
-          receivedMessage: {
-            bg: '#696969',
-            text: '#ffffff',
-          },
-          userInput: {
-            bg: '#f4f2e9',
-            text: '#212121',
-          },
-          header: {
-            bg: '#ff0000',
-            text: '#ffffff',
-          },
-          launcher: {
-            bg: '#ff0000',
-          },
+      isOpen: false, // 問い合わせモーダル制御
+      user: {}, // 問い合わせ相手のユーザー
+      messages: [], // 問い合わせ
+      colors: {
+        // beautiful-chatの色設定
+        messageList: {
+          bg: '#ffffff',
         },
-      },
-
-      editUserForm: {
-        dialog: false,
-        loading: false,
-        index: -1,
-        data: {},
-        validation: {
-          valid: false,
-          handlenameRules: [(v) => !!v || '表示名は必須項目です。'],
-          emailRules: [(v) => !!v || 'メールアドレスは必須項目です。'],
+        sentMessage: {
+          bg: '#f6bf00',
+          text: '#000000',
+        },
+        receivedMessage: {
+          bg: '#696969',
+          text: '#ffffff',
+        },
+        userInput: {
+          bg: '#f4f2e9',
+          text: '#212121',
+        },
+        header: {
+          bg: '#ff0000',
+          text: '#ffffff',
+        },
+        launcher: {
+          bg: '#ff0000',
         },
       },
     };
@@ -125,7 +109,7 @@ export default {
     /**
      * 問い合わせたユーザーの取得
      */
-    getInquiryUsers: async function () {
+    getUsers: async function () {
       var response = await this.$http.get(this.$endpoint('inquiries'));
       this.users = response.data;
     },
@@ -135,19 +119,37 @@ export default {
      *
      * @param Object  user 対応するユーザー
      */
-    openInquiry: async function (user) {
-      this.inquiry.user = user;
+    open: async function (user) {
+      this.user = user;
       // 問い合わせの取得
-      var response = await this.$http.get(this.$endpoint('inquiryShow', [this.inquiry.user.id]));
-      this.inquiry.messages = response.data;
-      this.inquiry.isOpen = true;
+      var response = await this.$http.get(this.$endpoint('inquiryShow', [this.user.id]));
+      this.messages = response.data;
+
+      // 投稿者の変換
+      this.messages.forEach((message) => {
+        message.author = this.setAuthor(message.author);
+      });
+
+      // 問い合わせイベントの受信開始
+      Echo.channel('user-' + this.user.id).listen('InquiryEvent', (event) => {
+        this.messages.push({
+          author: this.setAuthor(event.author),
+          type: event.type,
+          data: event.data,
+        });
+      });
+
+      this.isOpen = true;
     },
 
     /**
      * 問い合わせのクローズ
      */
-    closeInquiry: function () {
-      this.inquiry.isOpen = false;
+    close: function () {
+      // 問い合わせイベントの受信終了
+      Echo.leave('user-' + this.user.id);
+
+      this.isOpen = false;
     },
 
     /**
@@ -155,87 +157,49 @@ export default {
      *
      * @param Object message 送信データ
      */
-    submitInquiry: async function (message) {
+    submit: async function (message) {
       // 問い合わせの送信
       var response = await this.$http.post(this.$endpoint('inquiryPost'), {
-        user_id: this.inquiry.user.id,
+        user_id: this.user.id,
         author: 'support',
         type: 'text',
         data: { text: message.data.text },
       });
 
-      // データの更新
-      this.inquiry.messages = response.data;
-      this.getInquiryUsers();
-    },
-
-    /**
-     * ユーザーデータの編集
-     *
-     * @param Object  user  編集するユーザー
-     */
-    editUser: function (user) {
-      this.editUserForm.index = this.users.indexOf(user);
-      this.editUserForm.data = Object.assign({}, user);
-      this.editUserForm.dialog = true;
-    },
-
-    /**
-     * 編集ダイアログのクローズ
-     */
-    close: function () {
-      this.editUserForm.dialog = false;
-      this.editUserForm.loading = false;
-      this.$nextTick(() => {
-        this.$refs.editUserForm.reset();
-        this.editUserForm.index = -1;
-      });
-    },
-
-    /**
-     * 編集データの保存
-     */
-    submit: async function () {
-      if (this.$refs.editUserForm.validate()) {
-        this.editUserForm.loading = true;
-
-        var input = new FormData();
-        input.append('username', this.editUserForm.data.username);
-        input.append('email', this.editUserForm.data.email);
-        input.append('handlename', this.editUserForm.data.handlename);
-
-        // ユーザーデータ保存処理
-        var response = await this.$http.post(
-          this.$endpoint('userUpdate', [this.editUserForm.data.id]),
-          input
-        );
-
-        if (response.status === OK) {
-          this.$store.dispatch('alert/show', {
-            type: 'success',
-            message: 'ユーザーデータが更新されました。',
-          });
-
-          if (this.editUserForm.index > -1) {
-            Object.assign(this.users[this.editUserForm.index], this.editUserForm.data);
-          } else {
-            this.users.push(this.editUserForm);
-          }
-
-          this.close();
-        } else {
-          this.$store.dispatch('alert/show', {
-            type: 'error',
-            message: 'エラーが発生しました。',
-          });
-
-          this.editUserForm.loading = false;
-        }
+      if (response.status !== OK) {
+        this.$store.dispatch('alert/show', {
+          type: 'error',
+          message: 'エラー',
+        });
       }
+
+      // データの更新
+      this.getUsers();
+    },
+
+    /**
+     * 投稿者の設定
+     *
+     * @param   String  author  投稿者
+     * @returns String  show    変換済みの投稿者
+     */
+    setAuthor: function (author) {
+      var show;
+      switch (author) {
+        case 'user':
+          show = 'user';
+          break;
+
+        case 'support':
+          show = 'me';
+          break;
+      }
+
+      return show;
     },
   },
   created() {
-    this.getInquiryUsers();
+    this.getUsers();
   },
 };
 </script>

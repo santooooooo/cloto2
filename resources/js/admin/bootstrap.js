@@ -32,11 +32,11 @@ window.axios.interceptors.response.use(
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from 'laravel-echo';
+import Echo from 'laravel-echo';
 
-// window.io = require('socket.io-client');
+window.io = require('socket.io-client');
 
-// window.Echo = new Echo({
-//   broadcaster: 'socket.io',
-//   host: process.env.MIX_ECHO_SERVER_HOST + ':' + process.env.MIX_ECHO_SERVER_PORT,
-// });
+window.Echo = new Echo({
+  broadcaster: 'socket.io',
+  host: process.env.MIX_ECHO_SERVER_HOST + ':' + process.env.MIX_ECHO_SERVER_PORT,
+});
