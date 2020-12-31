@@ -9,7 +9,7 @@
           <span>編集ボタンから座席の位置を変更できます。</span>
 
           <!-- 部屋データ編集ダイアログ -->
-          <v-dialog v-model="editSeatForm.dialog" max-width="700px" persistent>
+          <v-dialog v-model="editSeatForm.dialog" max-width="800px" persistent>
             <v-form ref="editSeatForm" v-model="editSeatForm.validation.valid" lazy-validation>
               <v-card class="headline grey darken-2 text-center pa-2">
                 <v-card-title>
@@ -34,43 +34,68 @@
 
                       <!-- 座席 -->
                       <v-list-item v-for="(seat, seatIndex) in section.seats" :key="seat.id">
-                        <v-card-text class="white--text">座席 {{ seat.id }}</v-card-text>
-                        <v-text-field
-                          v-model="
-                            editSeatForm.data.sections[sectionIndex].seats[seatIndex].position.x
-                          "
-                          :rules="editSeatForm.validation.positionRules"
-                          label="x座標"
-                          solo
-                          rounded
-                          class="pa-2"
-                        ></v-text-field>
+                        <v-row>
+                          <v-col md="2" align-self="center">
+                            <span class="white--text">座席 {{ seat.id }}</span>
+                          </v-col>
 
-                        <v-text-field
-                          v-model="
-                            editSeatForm.data.sections[sectionIndex].seats[seatIndex].position.y
-                          "
-                          :rules="editSeatForm.validation.positionRules"
-                          label="y座標"
-                          solo
-                          rounded
-                          class="pa-2"
-                        ></v-text-field>
+                          <v-col md="2">
+                            <v-text-field
+                              v-model="
+                                editSeatForm.data.sections[sectionIndex].seats[seatIndex].size
+                              "
+                              :rules="editSeatForm.validation.sizeRules"
+                              label="サイズ"
+                              solo
+                              rounded
+                              class="pa-2"
+                            ></v-text-field>
+                          </v-col>
 
-                        <v-btn
-                          small
-                          text
-                          color="success"
-                          :loading="editSeatForm.loading"
-                          @click="
-                            submit(
-                              seat.id,
-                              editSeatForm.data.sections[sectionIndex].seats[seatIndex].position
-                            )
-                          "
-                        >
-                          保存
-                        </v-btn>
+                          <v-col md="3">
+                            <v-text-field
+                              v-model="
+                                editSeatForm.data.sections[sectionIndex].seats[seatIndex].position.x
+                              "
+                              :rules="editSeatForm.validation.positionRules"
+                              label="x座標"
+                              solo
+                              rounded
+                              class="pa-2"
+                            ></v-text-field>
+                          </v-col>
+
+                          <v-col md="3">
+                            <v-text-field
+                              v-model="
+                                editSeatForm.data.sections[sectionIndex].seats[seatIndex].position.y
+                              "
+                              :rules="editSeatForm.validation.positionRules"
+                              label="y座標"
+                              solo
+                              rounded
+                              class="pa-2"
+                            ></v-text-field>
+                          </v-col>
+
+                          <v-col md="2" align-self="center">
+                            <v-btn
+                              small
+                              text
+                              color="success"
+                              :loading="editSeatForm.loading"
+                              @click="
+                                submit(
+                                  seat.id,
+                                  editSeatForm.data.sections[sectionIndex].seats[seatIndex].size,
+                                  editSeatForm.data.sections[sectionIndex].seats[seatIndex].position
+                                )
+                              "
+                            >
+                              保存
+                            </v-btn>
+                          </v-col>
+                        </v-row>
                       </v-list-item>
                     </v-list-group>
                   </v-container>
@@ -123,6 +148,13 @@ export default {
         data: {},
         validation: {
           valid: false,
+          sizeRules: [
+            (v) => !!v || 'サイズは必須項目です。',
+            (v) => {
+              const pattern = /^\d*$/;
+              return pattern.test(v) || '数値を入力してください。';
+            },
+          ],
           positionRules: [
             (v) => !!v || '座標は必須項目です。',
             (v) => {
@@ -170,14 +202,16 @@ export default {
     /**
      * 編集データの保存
      *
-     * @param Int     seatId    更新する座席ID
+     * @param Number  seatId    更新する座席ID
+     * @param Number  size      サイズ
      * @param Object  position  座標
      */
-    submit: async function (seatId, position) {
+    submit: async function (seatId, size, position) {
       if (this.$refs.editSeatForm.validate()) {
         this.editSeatForm.loading = true;
 
         var input = new FormData();
+        input.append('size', size);
         input.append('position', JSON.stringify(position));
 
         // ユーザーデータ保存処理
