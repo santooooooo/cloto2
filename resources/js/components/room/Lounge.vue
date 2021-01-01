@@ -251,10 +251,9 @@
               v-model="chat.localText"
               class="px-2"
               label="メッセージを送ろう！"
-              @keypress="chat.canSubmit = true"
-              @keyup.enter="sendMessage()"
+              @keydown.enter="sendMessage"
             ></v-text-field>
-            <v-btn icon @click="sendMessage()">
+            <v-btn icon @click="sendMessage">
               <v-icon>mdi-send</v-icon>
             </v-btn>
           </v-card-actions>
@@ -431,7 +430,6 @@ export default {
       //*** チャット ***//
       chat: {
         isOpen: false, // チャットエリア表示制御
-        canSubmit: false, // 送信制御
         notification: false, // 通知制御
         localText: '', // 送信するメッセージ
         messages: [], // メッセージ一覧
@@ -937,15 +935,20 @@ export default {
 
     /**
      * メッセージの送信処理
+     *
+     * @param event クリック or キーボードイベント
      */
-    sendMessage: function () {
-      if (this.chat.canSubmit && this.chat.localText !== '') {
-        // メッセージの送信
-        this.call.send({ type: 'message', content: this.chat.localText });
+    sendMessage: function (event) {
+      // クリックまたは日本語変換以外のEnter押下時に発火
+      if (event.type === 'click' || (event.type === 'keydown' && event.keyCode === 13)) {
+        if (this.chat.localText !== '') {
+          // メッセージの送信
+          this.call.send({ type: 'message', content: this.chat.localText });
 
-        // 自分の画面を更新
-        this.addMessage(this.authUser.handlename, this.chat.localText);
-        this.chat.localText = '';
+          // 自分の画面を更新
+          this.addMessage(this.authUser.handlename, this.chat.localText);
+          this.chat.localText = '';
+        }
       }
     },
 
