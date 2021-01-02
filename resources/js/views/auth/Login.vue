@@ -28,6 +28,7 @@
                   v-model="loginForm.loginField"
                   :rules="loginForm.validation.loginFieldRules"
                   label="ユーザー名 または メールアドレス"
+                  @keydown.enter="login()"
                 ></v-text-field>
 
                 <v-text-field
@@ -37,6 +38,7 @@
                   :append-icon="loginForm.showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                   :type="loginForm.showPassword ? 'text' : 'password'"
                   @click:append="loginForm.showPassword = !loginForm.showPassword"
+                  @keydown.enter="login()"
                 ></v-text-field>
 
                 <v-row justify="center" class="mt-4">
