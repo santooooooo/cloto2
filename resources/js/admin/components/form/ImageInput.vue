@@ -21,7 +21,7 @@
       :color="areaColor"
       @dragover.prevent="areaColor = '#d9ffda'"
       @dragleave.prevent="areaColor = '#ffffff'"
-      @drop.prevent="inputImage()"
+      @drop.prevent="input()"
     >
       <v-layout style="height: 290px" align-center class="pa-1">
         <!-- 画像プレビュー -->
@@ -33,7 +33,7 @@
           <input
             ref="input"
             type="file"
-            @change="inputImage()"
+            @change="input()"
             style="display: none"
             accept="image/png, image/jpeg"
           />
@@ -77,7 +77,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn depressed color="#f6bf00" class="white--text" @click="cropImage()">決定</v-btn>
+            <v-btn depressed color="#f6bf00" class="white--text" @click="crop()">決定</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </v-container>
@@ -123,7 +123,7 @@ export default {
     /**
      * 画像の入力
      */
-    inputImage: function () {
+    input: function () {
       this.areaColor = '#ffffff';
       this.cropperDialog = true;
 
@@ -147,7 +147,7 @@ export default {
     /**
      * 画像のトリミング
      */
-    cropImage: function () {
+    crop: function () {
       this.cropperDialog = false;
 
       // プレビューデータの用意

@@ -4,7 +4,7 @@
       <v-card class="headline grey darken-2 text-center px-2">
         <v-container>
           <!-- アイコン -->
-          <InputImage
+          <ImageInput
             :no-change-crop-ratio="true"
             ratio-x="1"
             ratio-y="1"

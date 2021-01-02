@@ -21,7 +21,7 @@
                     <!-- 背景画像 -->
                     <v-card-text class="pa-1 white--text">部屋デザイン</v-card-text>
                     <span class="red--text">*横幅1080px × 縦幅600px のみ対応</span>
-                    <InputImage
+                    <ImageInput
                       :no-change-crop-ratio="true"
                       ratio-x="9"
                       ratio-y="5"
