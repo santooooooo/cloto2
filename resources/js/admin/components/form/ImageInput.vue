@@ -21,7 +21,7 @@
       :color="areaColor"
       @dragover.prevent="areaColor = '#d9ffda'"
       @dragleave.prevent="areaColor = '#ffffff'"
-      @drop.prevent="input()"
+      @drop.prevent="input"
     >
       <v-layout style="height: 290px" align-center class="pa-1">
         <!-- 画像プレビュー -->
@@ -33,7 +33,7 @@
           <input
             ref="input"
             type="file"
-            @change="input()"
+            @change="input"
             style="display: none"
             accept="image/jpeg, image/png"
           />
@@ -122,21 +122,23 @@ export default {
   methods: {
     /**
      * 画像の入力
+     *
+     * @param event 画像入力イベント
      */
-    input: function () {
+    input: function (event) {
       this.areaColor = '#ffffff';
 
       const files = event.target.files ? event.target.files : event.dataTransfer.files;
       const file = files[0];
 
-      if (!/\.(jpg|jpeg|png|JPG|PNG)$/.test(event.target.value)) {
+      if (!/\.(jpg|jpeg|png|JPG|PNG)$/.test(file.name)) {
         // 形式エラー
         alert('jpgまたはpng形式の画像をアップロードしてください。');
       } else {
         // 正しい形式
         var reader = new FileReader();
-        reader.onload = (event) => {
-          this.image = window.URL.createObjectURL(new Blob([event.target.result]));
+        reader.onload = (readerEvent) => {
+          this.image = window.URL.createObjectURL(new Blob([readerEvent.target.result]));
         };
         reader.readAsArrayBuffer(file);
 
@@ -151,8 +153,6 @@ export default {
      * 画像のトリミング
      */
     crop: function () {
-      this.dialog = false;
-
       // プレビューデータの用意
       this.$refs.cropper.getCropData((data) => {
         this.preview = data;
@@ -162,6 +162,8 @@ export default {
       this.$refs.cropper.getCropBlob((data) => {
         this.$emit('input', data);
       });
+
+      this.dialog = false;
     },
   },
 };
