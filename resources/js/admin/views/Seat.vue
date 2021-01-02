@@ -33,6 +33,21 @@
                       </template>
 
                       <!-- 座席 -->
+                      <v-list-item>
+                        <v-row>
+                          <v-spacer></v-spacer>
+                          <v-col md="2" align-self="center">
+                            <span class="white--text">サイズ</span>
+                          </v-col>
+                          <v-col md="3" align-self="center">
+                            <span class="white--text">x座標</span>
+                          </v-col>
+                          <v-col md="3" align-self="center">
+                            <span class="white--text">y座標</span>
+                          </v-col>
+                          <v-spacer></v-spacer>
+                        </v-row>
+                      </v-list-item>
                       <v-list-item v-for="(seat, seatIndex) in section.seats" :key="seat.id">
                         <v-row>
                           <v-col md="2" align-self="center">

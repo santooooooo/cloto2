@@ -41,6 +41,7 @@
                     ></v-text-field>
 
                     <!-- 時間割 -->
+                    <v-card-text class="pa-1 white--text">時間割</v-card-text>
                     <v-list-item v-for="(time, index) in editRoomForm.data.timetable" :key="index">
                       <v-text-field
                         v-model="time.separate"
