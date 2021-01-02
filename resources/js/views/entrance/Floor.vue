@@ -41,7 +41,7 @@ export default {
     return {
       canvas: '', // キャンバスエリア
       isLoading: false, // ロードの制御
-      roomData: '', // 教室データ
+      roomData: {}, // 教室データ
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
     };

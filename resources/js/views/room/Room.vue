@@ -5,11 +5,7 @@
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
 
-    <Drawer
-      :room-name="roomData !== null ? roomData.name : ''"
-      @input-karte="inputKarte(true)"
-      @leave-room="leaveRoom()"
-    />
+    <Drawer :room-name="roomData.name" @input-karte="inputKarte(true)" @leave-room="leaveRoom()" />
 
     <!-- 休憩室 -->
     <v-dialog
@@ -73,7 +69,7 @@ export default {
   head: {
     title() {
       // 部屋データが取得されるまでは表示しない
-      if (this.roomData !== null) {
+      if (Object.keys(this.roomData).length) {
         return {
           inner: this.roomData.name,
         };
@@ -99,7 +95,7 @@ export default {
       },
       backgroundColor: '', // 教室の背景色
       roomStatus: null, // 教室の状態
-      roomData: null, // 教室データ
+      roomData: {}, // 教室データ
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
       lounge: {
