@@ -187,13 +187,13 @@ export default {
 
         var sns = {};
         if (this.editProfileForm.data.sns.twitter) {
-          sns['twitter'] = this.editProfileForm.data.sns.twitter;
+          sns.twitter = this.editProfileForm.data.sns.twitter;
         }
         if (this.editProfileForm.data.sns.github) {
-          sns['github'] = this.editProfileForm.data.sns.github;
+          sns.github = this.editProfileForm.data.sns.github;
         }
         if (this.editProfileForm.data.sns.qiita) {
-          sns['qiita'] = this.editProfileForm.data.sns.qiita;
+          sns.qiita = this.editProfileForm.data.sns.qiita;
         }
 
         var input = new FormData();
