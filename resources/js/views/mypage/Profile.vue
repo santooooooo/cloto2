@@ -1,22 +1,12 @@
 <template>
   <v-card flat>
-    <!-- 編集ダイアログ -->
-    <ProfileEditDialog @close="profileEditDialog = $event" v-if="profileEditDialog" />
     <!-- アイコン表示 -->
     <v-card class="text-center" flat>
-      <v-avatar class="my-10" size="150">
-        <img :src="$storage('icon') + authUser.icon" />
-      </v-avatar>
-
-      <!-- アイコン編集 -->
-      <!-- <div class="form-group">
-      <image-drop-upload
-        :no-change-crop-ratio="true"
-        ratio-x="1"
-        ratio-y="1"
-        @input="authUser.icon = $event"
-      ></image-drop-upload>
-    </div> -->
+      <v-row justify="center">
+        <v-avatar class="my-10" size="150">
+          <img :src="$storage('icon') + authUser.icon" />
+        </v-avatar>
+      </v-row>
 
       <!-- ハンドルネームとユーザーネーム表示 -->
       <v-card height="475" flat tile color="blue-grey lighten-5">
@@ -30,9 +20,11 @@
         </v-row>
 
         <v-btn class="ma-4" @click="profileEditDialog = true">編集する</v-btn>
-        <!-- 編集ダイアログ -->
       </v-card>
     </v-card>
+
+    <!-- 編集ダイアログ -->
+    <ProfileEditDialog @close="profileEditDialog = $event" v-if="profileEditDialog" />
   </v-card>
 </template>
 
