@@ -35,7 +35,7 @@
             type="file"
             @change="input()"
             style="display: none"
-            accept="image/png, image/jpeg"
+            accept="image/jpeg, image/png"
           />
 
           <p class="mt-1 text-body-2 text--secondary">画像ファイルをドラッグ＆ドロップ</p>
@@ -43,15 +43,15 @@
       </v-layout>
     </v-card>
 
-    <!-- トリミングモーダル -->
-    <v-dialog persistent width="1200" v-model="cropperDialog">
+    <!-- トリミングダイアログ -->
+    <v-dialog persistent width="1200" v-model="dialog">
       <v-card class="headline grey darken-2 text-center">
         <v-container>
           <v-row>
             <v-btn
               depressed
               small
-              @click="cropperDialog = false"
+              @click="dialog = false"
               class="ml-3 mb-3"
               dark
               color="grey lighten-1"
@@ -102,7 +102,7 @@ export default {
     return {
       areaColor: '#ffffff', // ドロップエリアの背景色
       preview: '', // プレビュー用の画像データ
-      cropperDialog: false, // トリミングダイアログの制御
+      dialog: false, // トリミングダイアログの制御
       image: '', // トリミング前の画像データ（入力ファイル）
       option: {
         // vue-cropperの設定
@@ -125,30 +125,33 @@ export default {
      */
     input: function () {
       this.areaColor = '#ffffff';
-      this.cropperDialog = true;
 
       const files = event.target.files ? event.target.files : event.dataTransfer.files;
       const file = files[0];
 
-      // TODO: バリデーション作成の必要あり
-      //   if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(event.target.value)) {
-      //     alert("画像の形式ではありません！");
-      //     return false;
-      //   }
+      if (!/\.(jpg|jpeg|png|JPG|PNG)$/.test(event.target.value)) {
+        // 形式エラー
+        alert('jpgまたはpng形式の画像をアップロードしてください。');
+      } else {
+        // 正しい形式
+        var reader = new FileReader();
+        reader.onload = (event) => {
+          this.image = window.URL.createObjectURL(new Blob([event.target.result]));
+        };
+        reader.readAsArrayBuffer(file);
 
-      var reader = new FileReader();
-      reader.onload = (event) => {
-        this.image = window.URL.createObjectURL(new Blob([event.target.result]));
-      };
+        this.dialog = true;
+      }
 
-      reader.readAsArrayBuffer(file);
+      // フォームから入力ファイルを削除
+      this.$refs.input.value = '';
     },
 
     /**
      * 画像のトリミング
      */
     crop: function () {
-      this.cropperDialog = false;
+      this.dialog = false;
 
       // プレビューデータの用意
       this.$refs.cropper.getCropData((data) => {
