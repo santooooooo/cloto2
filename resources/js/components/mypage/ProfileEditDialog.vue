@@ -147,13 +147,6 @@
 import { OK } from '@/consts/status';
 
 export default {
-  head: {
-    title() {
-      return {
-        inner: this.$route.params.username + ' - ' + '編集',
-      };
-    },
-  },
   data() {
     return {
       dialog: false,
