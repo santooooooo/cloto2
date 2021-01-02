@@ -108,10 +108,10 @@ export default {
         capacity: '', // 休憩室の定員
       },
       profile: {
-        dialog: false, // プロフィールのモーダル制御
+        dialog: false, // プロフィールのダイアログ制御
         userId: null, // プロフィールを表示するユーザーID
       },
-      projectDialog: false, // プロジェクトモーダルの制御
+      projectDialog: false, // プロジェクトダイアログの制御
       karte: {
         dialog: false, // カルテ記入ダイアログの制御
         confirm: true, // 自習継続の確認
@@ -304,7 +304,7 @@ export default {
               // 状態変更処理
               await this.userAction('sitting', event.target);
               // if (typeof this.authUser.seat_id === 'number') {
-              //   this.projectsDialog = true; //auth userが自習室に初めてsittingしたときモーダル表示
+              //   this.projectsDialog = true; //auth userが自習室に初めてsittingしたときダイアログ表示
               // }
               // 自習開始
               this.startStudy();

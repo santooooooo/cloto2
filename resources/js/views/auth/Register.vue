@@ -155,7 +155,7 @@ export default {
   },
   watch: {
     dialog: function () {
-      // モーダルが閉じたらリダイレクト
+      // ダイアログが閉じたらリダイレクト
       if (this.dialog === false) {
         this.$router.push({ name: 'index' });
       }
