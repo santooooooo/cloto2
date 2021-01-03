@@ -32,6 +32,8 @@ class SeatController extends Controller
     public function update(Request $request, Int $seat_id)
     {
         $data = $request->all();
+        // 配列の中身をint化
+        $data['position'] = array_map('intval', $data['position']);
 
         $edit_seat = $this->seat->find($seat_id);
 
