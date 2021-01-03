@@ -8,22 +8,12 @@
     <Drawer :room-name="roomData.name" @input-karte="inputKarte(true)" @leave-room="leaveRoom()" />
 
     <!-- 休憩室 -->
-    <v-dialog
-      v-model="lounge.isEnter"
-      fullscreen
-      persistent
-      no-click-animation
-      transition="dialog-bottom-transition"
-    >
-      <!-- 正しく全画面表示にするため，コンポーネント外でダイアログを定義 -->
-      <!-- 内側にすると，下側の要素がスクロール可能な状態になる -->
-      <Lounge
-        :lounge-id="lounge.id"
-        :capacity="lounge.capacity"
-        @leave-lounge="leaveLounge()"
-        v-if="lounge.isEnter"
-      ></Lounge>
-    </v-dialog>
+    <Lounge
+      :lounge-id="lounge.id"
+      :capacity="lounge.capacity"
+      @leave-lounge="leaveLounge()"
+      v-if="lounge.isEnter"
+    ></Lounge>
 
     <v-flex>
       <!-- 教室 -->

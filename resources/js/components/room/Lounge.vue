@@ -1,379 +1,396 @@
 <template>
-  <v-container fluid>
-    <!-- 権限確認画面 -->
-    <v-overlay :value="permissionOverlay" z-index="7" class="text-center" opacity="1">
-      <div class="arrow"></div>
-      <p class="text-h4">権限を許可してください。</p>
-      <p class="text-body-2 mt-12 mr-8">（一度許可した方は必要ありません。）</p>
-    </v-overlay>
+  <v-dialog
+    v-model="dialog"
+    fullscreen
+    persistent
+    no-click-animation
+    transition="dialog-bottom-transition"
+  >
+    <v-container fluid>
+      <!-- 権限確認画面 -->
+      <v-overlay :value="permissionOverlay" z-index="7" class="text-center" opacity="1">
+        <div class="arrow"></div>
+        <p class="text-h4">権限を許可してください。</p>
+        <p class="text-body-2 mt-12 mr-8">（一度許可した方は必要ありません。）</p>
+      </v-overlay>
 
-    <!-- ローディング画面 -->
-    <v-overlay :value="isLoading" z-index="6" class="text-center" opacity="0.9">
-      <p class="text-h5 mb-5">接続中</p>
-      <v-progress-linear indeterminate height="10" color="green" class="mb-12"></v-progress-linear>
+      <!-- ローディング画面 -->
+      <v-overlay :value="isLoading" z-index="6" class="text-center" opacity="0.9">
+        <p class="text-h5 mb-5">接続中</p>
+        <v-progress-linear
+          indeterminate
+          height="10"
+          color="green"
+          class="mb-12"
+        ></v-progress-linear>
 
-      <p class="text-body-2 mt-12">カメラランプが10秒ほど点灯する場合があります．．．</p>
-    </v-overlay>
+        <p class="text-body-2 mt-12">カメラランプが10秒ほど点灯する場合があります．．．</p>
+      </v-overlay>
 
-    <v-layout class="px-2 video-container">
-      <v-flex>
-        <v-container fluid>
-          <v-row justify="center">
-            <v-sheet color="rgba(0, 0, 0, 1)" width="208" height="117" class="video">
-              <!-- 自分のビデオ（オフ） -->
-              <v-sheet
-                color="black"
-                width="208"
-                height="117"
-                class="d-flex justify-center align-center"
-                v-if="isVideoLoading || isVideoOff || localStream === null"
-              >
-                <v-avatar size="50" class="aligh-self-center"
-                  ><img :src="$storage('icon') + authUser.icon"
-                /></v-avatar>
-              </v-sheet>
-
-              <!-- 自分のビデオ（オン） -->
-              <video
-                width="208"
-                height="117"
-                muted="true"
-                autoplay
-                :srcObject.prop="localStream"
-                v-else
-              ></video>
-
-              <p class="handlename">{{ authUser.handlename }}</p>
-
-              <p class="is-mute" v-if="isAudioLoading || isMute">
-                <v-icon color="red">mdi-microphone-off</v-icon>
-              </p>
-            </v-sheet>
-          </v-row>
-
-          <v-row justify="center" class="mt-3" v-if="screenSharing.stream">
-            <!-- 画面共有 -->
-            <video autoplay :srcObject.prop="screenSharing.stream" style="max-width: 80%"></video>
-          </v-row>
-
-          <!-- ピン留め時 -->
-          <v-row justify="center" class="mt-3" v-if="typeof pinnedParticipant !== 'undefined'">
-            <v-hover v-slot="{ hover }">
-              <v-sheet
-                color="rgba(0, 0, 0, 1)"
-                :width="videoSize.width"
-                :height="videoSize.height"
-                :class="[
-                  'video',
-                  'mx-1',
-                  speakerId === pinnedParticipant.stream.peerId ? 'speaker' : '',
-                ]"
-              >
-                <!-- 参加者のビデオ（オフ） -->
+      <v-layout class="px-2 video-container">
+        <v-flex>
+          <v-container fluid>
+            <v-row justify="center">
+              <v-sheet color="rgba(0, 0, 0, 1)" width="208" height="117" class="video">
+                <!-- 自分のビデオ（オフ） -->
                 <v-sheet
                   color="black"
-                  :width="videoSize.width"
-                  :height="videoSize.height"
+                  width="208"
+                  height="117"
                   class="d-flex justify-center align-center"
-                  v-if="pinnedParticipant.isLoading || pinnedParticipant.isVideoOff"
+                  v-if="isVideoLoading || isVideoOff || localStream === null"
                 >
-                  <!-- ローディング中 -->
-                  <v-progress-circular
-                    size="70"
-                    width="4"
-                    color="green"
-                    indeterminate
-                    v-if="pinnedParticipant.isLoading"
-                  ></v-progress-circular>
-
-                  <v-avatar size="150" class="aligh-self-center" v-else>
-                    <img :src="$storage('icon') + pinnedParticipant.icon" />
-                  </v-avatar>
-
-                  <audio autoplay :srcObject.prop="pinnedParticipant.stream"></audio>
+                  <v-avatar size="50" class="aligh-self-center"
+                    ><img :src="$storage('icon') + authUser.icon"
+                  /></v-avatar>
                 </v-sheet>
 
-                <!-- 参加者のビデオ（オン） -->
+                <!-- 自分のビデオ（オン） -->
                 <video
-                  :width="videoSize.width"
-                  :height="videoSize.height"
+                  width="208"
+                  height="117"
+                  muted="true"
                   autoplay
-                  :srcObject.prop="pinnedParticipant.stream"
+                  :srcObject.prop="localStream"
                   v-else
                 ></video>
 
-                <p class="handlename">{{ pinnedParticipant.handlename }}</p>
+                <p class="handlename">{{ authUser.handlename }}</p>
 
-                <p class="is-mute" v-if="pinnedParticipant.isMute">
+                <p class="is-mute" v-if="isAudioLoading || isMute">
                   <v-icon color="red">mdi-microphone-off</v-icon>
                 </p>
-
-                <!-- hover -->
-                <v-fade-transition>
-                  <v-overlay absolute opacity="0.7" v-if="hover">
-                    <v-sheet
-                      color="rgba(0, 0, 0, 0)"
-                      :width="videoSize.width"
-                      :height="videoSize.height"
-                    >
-                      <v-btn
-                        icon
-                        x-large
-                        class="pin-button"
-                        @click="pinnedParticipant.isPinned = false"
-                      >
-                        <v-icon> mdi-pin-off </v-icon>
-                      </v-btn>
-
-                      <v-btn
-                        icon
-                        x-large
-                        class="account-button"
-                        @click="showProfile(pinnedParticipant.username)"
-                      >
-                        <v-icon> mdi-account </v-icon>
-                      </v-btn>
-                    </v-sheet>
-                  </v-overlay>
-                </v-fade-transition>
               </v-sheet>
-            </v-hover>
-          </v-row>
+            </v-row>
 
-          <!-- 通常時 -->
-          <v-row justify="center" class="mt-3">
-            <v-hover
-              v-slot="{ hover }"
-              v-for="participant in notPinnedParticipants"
-              :key="participant.stream.peerId"
-            >
-              <v-sheet
-                color="rgba(0, 0, 0, 1)"
-                :width="videoSize.showWidth"
-                :height="videoSize.showHeight"
-                :class="['video', 'mx-1', speakerId === participant.stream.peerId ? 'speaker' : '']"
-              >
-                <!-- 参加者のビデオ（オフ） -->
+            <v-row justify="center" class="mt-3" v-if="screenSharing.stream">
+              <!-- 画面共有 -->
+              <video autoplay :srcObject.prop="screenSharing.stream" style="max-width: 80%"></video>
+            </v-row>
+
+            <!-- ピン留め時 -->
+            <v-row justify="center" class="mt-3" v-if="typeof pinnedParticipant !== 'undefined'">
+              <v-hover v-slot="{ hover }">
                 <v-sheet
-                  color="black"
-                  :width="videoSize.showWidth"
-                  :height="videoSize.showHeight"
-                  class="d-flex justify-center align-center"
-                  v-if="participant.isLoading || participant.isVideoOff"
+                  color="rgba(0, 0, 0, 1)"
+                  :width="videoSize.width"
+                  :height="videoSize.height"
+                  :class="[
+                    'video',
+                    'mx-1',
+                    speakerId === pinnedParticipant.stream.peerId ? 'speaker' : '',
+                  ]"
                 >
-                  <!-- ローディング中 -->
-                  <v-progress-circular
-                    size="70"
-                    width="4"
-                    color="green"
-                    indeterminate
-                    v-if="participant.isLoading"
-                  ></v-progress-circular>
+                  <!-- 参加者のビデオ（オフ） -->
+                  <v-sheet
+                    color="black"
+                    :width="videoSize.width"
+                    :height="videoSize.height"
+                    class="d-flex justify-center align-center"
+                    v-if="pinnedParticipant.isLoading || pinnedParticipant.isVideoOff"
+                  >
+                    <!-- ローディング中 -->
+                    <v-progress-circular
+                      size="70"
+                      width="4"
+                      color="green"
+                      indeterminate
+                      v-if="pinnedParticipant.isLoading"
+                    ></v-progress-circular>
 
-                  <v-avatar size="80" class="aligh-self-center" v-else>
-                    <img :src="$storage('icon') + participant.icon" />
-                  </v-avatar>
+                    <v-avatar size="150" class="aligh-self-center" v-else>
+                      <img :src="$storage('icon') + pinnedParticipant.icon" />
+                    </v-avatar>
 
-                  <audio autoplay :srcObject.prop="participant.stream"></audio>
+                    <audio autoplay :srcObject.prop="pinnedParticipant.stream"></audio>
+                  </v-sheet>
+
+                  <!-- 参加者のビデオ（オン） -->
+                  <video
+                    :width="videoSize.width"
+                    :height="videoSize.height"
+                    autoplay
+                    :srcObject.prop="pinnedParticipant.stream"
+                    v-else
+                  ></video>
+
+                  <p class="handlename">{{ pinnedParticipant.handlename }}</p>
+
+                  <p class="is-mute" v-if="pinnedParticipant.isMute">
+                    <v-icon color="red">mdi-microphone-off</v-icon>
+                  </p>
+
+                  <!-- hover -->
+                  <v-fade-transition>
+                    <v-overlay absolute opacity="0.7" v-if="hover">
+                      <v-sheet
+                        color="rgba(0, 0, 0, 0)"
+                        :width="videoSize.width"
+                        :height="videoSize.height"
+                      >
+                        <v-btn
+                          icon
+                          x-large
+                          class="pin-button"
+                          @click="pinnedParticipant.isPinned = false"
+                        >
+                          <v-icon> mdi-pin-off </v-icon>
+                        </v-btn>
+
+                        <v-btn
+                          icon
+                          x-large
+                          class="account-button"
+                          @click="showProfile(pinnedParticipant.username)"
+                        >
+                          <v-icon> mdi-account </v-icon>
+                        </v-btn>
+                      </v-sheet>
+                    </v-overlay>
+                  </v-fade-transition>
                 </v-sheet>
+              </v-hover>
+            </v-row>
 
-                <!-- 参加者のビデオ（オン） -->
-                <video
+            <!-- 通常時 -->
+            <v-row justify="center" class="mt-3">
+              <v-hover
+                v-slot="{ hover }"
+                v-for="participant in notPinnedParticipants"
+                :key="participant.stream.peerId"
+              >
+                <v-sheet
+                  color="rgba(0, 0, 0, 1)"
                   :width="videoSize.showWidth"
                   :height="videoSize.showHeight"
-                  autoplay
-                  :srcObject.prop="participant.stream"
-                  v-else
-                ></video>
+                  :class="[
+                    'video',
+                    'mx-1',
+                    speakerId === participant.stream.peerId ? 'speaker' : '',
+                  ]"
+                >
+                  <!-- 参加者のビデオ（オフ） -->
+                  <v-sheet
+                    color="black"
+                    :width="videoSize.showWidth"
+                    :height="videoSize.showHeight"
+                    class="d-flex justify-center align-center"
+                    v-if="participant.isLoading || participant.isVideoOff"
+                  >
+                    <!-- ローディング中 -->
+                    <v-progress-circular
+                      size="70"
+                      width="4"
+                      color="green"
+                      indeterminate
+                      v-if="participant.isLoading"
+                    ></v-progress-circular>
 
-                <p class="handlename">{{ participant.handlename }}</p>
+                    <v-avatar size="80" class="aligh-self-center" v-else>
+                      <img :src="$storage('icon') + participant.icon" />
+                    </v-avatar>
 
-                <p class="is-mute" v-if="participant.isMute">
-                  <v-icon color="red">mdi-microphone-off</v-icon>
+                    <audio autoplay :srcObject.prop="participant.stream"></audio>
+                  </v-sheet>
+
+                  <!-- 参加者のビデオ（オン） -->
+                  <video
+                    :width="videoSize.showWidth"
+                    :height="videoSize.showHeight"
+                    autoplay
+                    :srcObject.prop="participant.stream"
+                    v-else
+                  ></video>
+
+                  <p class="handlename">{{ participant.handlename }}</p>
+
+                  <p class="is-mute" v-if="participant.isMute">
+                    <v-icon color="red">mdi-microphone-off</v-icon>
+                  </p>
+
+                  <!-- hover -->
+                  <v-fade-transition>
+                    <v-overlay absolute opacity="0.7" v-if="hover">
+                      <v-sheet
+                        color="rgba(0, 0, 0, 0)"
+                        :width="videoSize.showWidth"
+                        :height="videoSize.showHeight"
+                      >
+                        <v-btn icon x-large class="pin-button" @click="participant.isPinned = true">
+                          <v-icon> mdi-pin </v-icon>
+                        </v-btn>
+
+                        <v-btn
+                          icon
+                          x-large
+                          class="account-button"
+                          @click="showProfile(participant.username)"
+                        >
+                          <v-icon> mdi-account </v-icon>
+                        </v-btn>
+                      </v-sheet>
+                    </v-overlay>
+                  </v-fade-transition>
+                </v-sheet>
+              </v-hover>
+            </v-row>
+
+            <!-- プロフィールダイアログ -->
+            <ProfileDialog
+              :user-param="profile.username"
+              @close="profile.dialog = $event"
+              v-if="profile.dialog"
+            ></ProfileDialog>
+          </v-container>
+        </v-flex>
+
+        <!-- チャットエリア -->
+        <v-flex xs3 v-show="chat.isOpen">
+          <v-card color="grey lighten-2" class="mx-auto" id="chat">
+            <div class="overflow-y-auto" ref="chatScrollArea">
+              <v-card-text v-for="(message, index) in chat.messages" :key="index">
+                <!-- ユーザーメッセージ -->
+                <p v-if="message.handlename">
+                  <span class="text-caption">{{ message.handlename }}</span>
+                  <span class="text-body-1 font-weight-bold">{{ message.text }}</span>
                 </p>
 
-                <!-- hover -->
-                <v-fade-transition>
-                  <v-overlay absolute opacity="0.7" v-if="hover">
-                    <v-sheet
-                      color="rgba(0, 0, 0, 0)"
-                      :width="videoSize.showWidth"
-                      :height="videoSize.showHeight"
-                    >
-                      <v-btn icon x-large class="pin-button" @click="participant.isPinned = true">
-                        <v-icon> mdi-pin </v-icon>
-                      </v-btn>
+                <!-- システムメッセージ -->
+                <p class="text-center" style="color: red" v-else>
+                  {{ message.text }}
+                </p>
+              </v-card-text>
+            </div>
 
-                      <v-btn
-                        icon
-                        x-large
-                        class="account-button"
-                        @click="showProfile(participant.username)"
-                      >
-                        <v-icon> mdi-account </v-icon>
-                      </v-btn>
-                    </v-sheet>
-                  </v-overlay>
-                </v-fade-transition>
-              </v-sheet>
-            </v-hover>
-          </v-row>
-
-          <!-- プロフィールダイアログ -->
-          <ProfileDialog
-            :user-param="profile.username"
-            @close="profile.dialog = $event"
-            v-if="profile.dialog"
-          ></ProfileDialog>
-        </v-container>
-      </v-flex>
-
-      <!-- チャットエリア -->
-      <v-flex xs3 v-show="chat.isOpen">
-        <v-card color="grey lighten-2" class="mx-auto" id="chat">
-          <div class="overflow-y-auto" ref="chatScrollArea">
-            <v-card-text v-for="(message, index) in chat.messages" :key="index">
-              <!-- ユーザーメッセージ -->
-              <p v-if="message.handlename">
-                <span class="text-caption">{{ message.handlename }}</span>
-                <span class="text-body-1 font-weight-bold">{{ message.text }}</span>
-              </p>
-
-              <!-- システムメッセージ -->
-              <p class="text-center" style="color: red" v-else>
-                {{ message.text }}
-              </p>
-            </v-card-text>
-          </div>
-
-          <v-card-actions>
-            <v-text-field
-              v-model="chat.localText"
-              class="px-2"
-              label="メッセージを送ろう！"
-              @keydown.enter="sendMessage"
-            ></v-text-field>
-            <v-btn icon @click="sendMessage">
-              <v-icon>mdi-send</v-icon>
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-flex>
-    </v-layout>
-
-    <v-app-bar color="yellow darken-4" fixed bottom height="100">
-      <v-row>
-        <v-col align-self="center">
-          <v-row justify="start" class="mt-8">
-            <v-col md="6">
-              <v-select disabled label="ミュート" v-if="isMute"></v-select>
-              <v-select
-                v-model="selectedAudio"
-                :items="audioDevices"
-                item-value="deviceId"
-                item-text="label"
-                @change="changeDevice()"
-                label="マイク"
-                v-else
-              >
-              </v-select>
-            </v-col>
-
-            <v-col md="6">
-              <v-select disabled label="ビデオオフ" v-if="isVideoOff"></v-select>
-              <v-select
-                v-model="selectedVideo"
-                :items="videoDevices"
-                item-value="deviceId"
-                item-text="label"
-                @change="changeDevice()"
-                label="ビデオ"
-                v-else
-              >
-              </v-select>
-            </v-col>
-          </v-row>
-        </v-col>
-
-        <v-col align-self="center">
-          <v-row justify="center">
-            <!-- ミュートボタン -->
-            <v-btn
-              :color="!isMute ? 'white' : 'red'"
-              :disabled="isAudioLoading || isVideoLoading"
-              fab
-              depressed
-              large
-              class="mx-10"
-              @click="mute()"
-            >
-              <v-icon large>{{ !isMute ? 'mdi-microphone' : 'mdi-microphone-off' }}</v-icon>
-            </v-btn>
-
-            <!-- ビデオオフボタン -->
-            <v-btn
-              :color="!isVideoOff ? 'white' : 'red'"
-              :disabled="isAudioLoading || isVideoLoading"
-              fab
-              depressed
-              large
-              class="mx-10"
-              @click="videoOff()"
-            >
-              <v-icon large>{{ !isVideoOff ? 'mdi-video' : 'mdi-video-off' }}</v-icon>
-            </v-btn>
-
-            <!-- 画面共有ボタン -->
-            <v-btn
-              :color="screenSharing.stream && screenSharing.isLocal ? 'red' : 'white'"
-              :disabled="screenSharing.stream && !screenSharing.isLocal"
-              fab
-              depressed
-              large
-              class="mx-10"
-              @click="!screenSharing.stream ? startScreenSharing() : stopScreenSharing()"
-            >
-              <v-icon large>
-                {{
-                  screenSharing.stream && screenSharing.isLocal
-                    ? 'mdi-window-close'
-                    : 'mdi-window-restore'
-                }}
-              </v-icon>
-            </v-btn>
-          </v-row>
-        </v-col>
-
-        <v-col align-self="center">
-          <v-row justify="end">
-            <!-- 通知音ボタン -->
-            <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
-              <v-icon large>{{ isNotificationOn ? 'mdi-bell' : 'mdi-bell-off' }}</v-icon>
-            </v-btn>
-
-            <!-- チャットボタン -->
-            <v-badge
-              bordered
-              dot
-              color="deep-purple accent-4"
-              :value="chat.notification"
-              offset-x="40"
-              offset-y="15"
-            >
-              <v-btn color="white" icon class="mr-5" @click="controlChat()">
-                <v-icon large>mdi-message-text</v-icon>
+            <v-card-actions>
+              <v-text-field
+                v-model="chat.localText"
+                class="px-2"
+                label="メッセージを送ろう！"
+                @keydown.enter="sendMessage"
+              ></v-text-field>
+              <v-btn icon @click="sendMessage">
+                <v-icon>mdi-send</v-icon>
               </v-btn>
-            </v-badge>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </v-layout>
 
-            <!-- 通話終了ボタン -->
-            <v-btn depressed x-large color="error" class="mx-12" @click="leaveLounge()">
-              自習室に戻る
-            </v-btn>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-app-bar>
-  </v-container>
+      <v-app-bar color="yellow darken-4" fixed bottom height="100">
+        <v-row>
+          <v-col align-self="center">
+            <v-row justify="start" class="mt-8">
+              <v-col md="6">
+                <v-select disabled label="ミュート" v-if="isMute"></v-select>
+                <v-select
+                  v-model="selectedAudio"
+                  :items="audioDevices"
+                  item-value="deviceId"
+                  item-text="label"
+                  @change="changeDevice()"
+                  label="マイク"
+                  v-else
+                >
+                </v-select>
+              </v-col>
+
+              <v-col md="6">
+                <v-select disabled label="ビデオオフ" v-if="isVideoOff"></v-select>
+                <v-select
+                  v-model="selectedVideo"
+                  :items="videoDevices"
+                  item-value="deviceId"
+                  item-text="label"
+                  @change="changeDevice()"
+                  label="ビデオ"
+                  v-else
+                >
+                </v-select>
+              </v-col>
+            </v-row>
+          </v-col>
+
+          <v-col align-self="center">
+            <v-row justify="center">
+              <!-- ミュートボタン -->
+              <v-btn
+                :color="!isMute ? 'white' : 'red'"
+                :disabled="isAudioLoading || isVideoLoading"
+                fab
+                depressed
+                large
+                class="mx-10"
+                @click="mute()"
+              >
+                <v-icon large>{{ !isMute ? 'mdi-microphone' : 'mdi-microphone-off' }}</v-icon>
+              </v-btn>
+
+              <!-- ビデオオフボタン -->
+              <v-btn
+                :color="!isVideoOff ? 'white' : 'red'"
+                :disabled="isAudioLoading || isVideoLoading"
+                fab
+                depressed
+                large
+                class="mx-10"
+                @click="videoOff()"
+              >
+                <v-icon large>{{ !isVideoOff ? 'mdi-video' : 'mdi-video-off' }}</v-icon>
+              </v-btn>
+
+              <!-- 画面共有ボタン -->
+              <v-btn
+                :color="screenSharing.stream && screenSharing.isLocal ? 'red' : 'white'"
+                :disabled="screenSharing.stream && !screenSharing.isLocal"
+                fab
+                depressed
+                large
+                class="mx-10"
+                @click="!screenSharing.stream ? startScreenSharing() : stopScreenSharing()"
+              >
+                <v-icon large>
+                  {{
+                    screenSharing.stream && screenSharing.isLocal
+                      ? 'mdi-window-close'
+                      : 'mdi-window-restore'
+                  }}
+                </v-icon>
+              </v-btn>
+            </v-row>
+          </v-col>
+
+          <v-col align-self="center">
+            <v-row justify="end">
+              <!-- 通知音ボタン -->
+              <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
+                <v-icon large>{{ isNotificationOn ? 'mdi-bell' : 'mdi-bell-off' }}</v-icon>
+              </v-btn>
+
+              <!-- チャットボタン -->
+              <v-badge
+                bordered
+                dot
+                color="deep-purple accent-4"
+                :value="chat.notification"
+                offset-x="40"
+                offset-y="15"
+              >
+                <v-btn color="white" icon class="mr-5" @click="controlChat()">
+                  <v-icon large>mdi-message-text</v-icon>
+                </v-btn>
+              </v-badge>
+
+              <!-- 通話終了ボタン -->
+              <v-btn depressed x-large color="error" class="mx-12" @click="leaveLounge()">
+                自習室に戻る
+              </v-btn>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-app-bar>
+    </v-container>
+  </v-dialog>
 </template>
 
 <script>
@@ -392,6 +409,7 @@ export default {
   },
   data() {
     return {
+      dialog: true, // 入室制御
       permissionOverlay: false, // 権限確認画面
       isLoading: false, // ローディング制御
 
@@ -475,6 +493,7 @@ export default {
      */
     leaveLounge: async function () {
       await this.exitCall();
+      this.dialog = false;
       this.$emit('leave-lounge');
     },
 
@@ -1165,6 +1184,7 @@ export default {
 
 <style lang="scss">
 .v-dialog {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-image: url('/storage/system/information.png');
+  background-size: cover;
 }
 </style>
