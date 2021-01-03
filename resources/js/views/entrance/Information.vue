@@ -5,15 +5,7 @@
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
 
-    <v-container>
-      <v-img
-        :src="$storage('system') + 'information.png'"
-        cover
-        class="mx-auto"
-        max-width="700px"
-        @load="isLoading = false"
-      ></v-img>
-    </v-container>
+    <v-img :src="$storage('system') + 'information.png'" contain @load="isLoading = false"></v-img>
   </v-layout>
 </template>
 
