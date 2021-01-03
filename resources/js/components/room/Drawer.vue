@@ -4,7 +4,25 @@
       <v-list>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title class="text-h5">{{ roomName }}</v-list-item-title>
+            <v-list-item-title class="text-center text-h5">{{ roomName }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title
+              class="text-center text-h6 font-weight-bold"
+              v-if="roomStatus === 'study'"
+            >
+              自習時間
+            </v-list-item-title>
+
+            <v-list-item-title
+              class="text-center text-h6 font-weight-bold"
+              v-if="roomStatus === 'break'"
+            >
+              休憩時間
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -48,6 +66,7 @@
 export default {
   props: {
     roomName: String,
+    roomStatus: String,
   },
   computed: {
     authUser() {

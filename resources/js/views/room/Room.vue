@@ -5,7 +5,12 @@
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
 
-    <Drawer :room-name="roomData.name" @input-karte="inputKarte(true)" @leave-room="leaveRoom()" />
+    <Drawer
+      :room-name="roomData.name"
+      :room-status="roomStatus"
+      @input-karte="inputKarte(true)"
+      @leave-room="leaveRoom()"
+    />
 
     <!-- 休憩室 -->
     <Lounge
@@ -17,7 +22,7 @@
 
     <v-flex>
       <!-- 教室 -->
-      <v-row justify="center" class="pt-5" :style="{ background: backgroundColor }" id="room">
+      <v-row justify="center" class="pt-5" id="room">
         <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
       </v-row>
 
@@ -83,7 +88,6 @@ export default {
         message: '', // 表示メッセージ
         color: '', // 表示色
       },
-      backgroundColor: '', // 教室の背景色
       roomStatus: null, // 教室の状態
       roomData: {}, // 教室データ
       roomWidth: 1080, // 教室サイズ
@@ -430,25 +434,6 @@ export default {
     },
 
     /**
-     * 部屋の状態を更新
-     *
-     * @param String  status  部屋の状態
-     */
-    updateRoomStatus: function (status) {
-      // 状態を更新
-      this.roomStatus = status;
-
-      // 背景色の変更
-      if (this.roomStatus === 'study') {
-        // 自習時間
-        this.backgroundColor = '#b0e0e6';
-      } else if (this.roomStatus === 'break') {
-        // 休憩時間
-        this.backgroundColor = '#ffe89a';
-      }
-    },
-
-    /**
      * 自習開始
      */
     startStudy: async function () {
@@ -616,41 +601,14 @@ export default {
         if (now === time.separate) {
           // 現在の状態を保存
           this.roomStatus = timetable[index].status;
-
-          // 背景色の設定
-          if (this.roomStatus === 'study') {
-            // 自習時間
-            this.backgroundColor = '#b0e0e6';
-          } else if (this.roomStatus === 'break') {
-            // 休憩時間
-            this.backgroundColor = '#ffe89a';
-          }
         } else if (now < time.separate) {
           // 一つ前の状態を保存（区切りに到達する前のため）
           this.roomStatus = timetable[index - 1].status;
-
-          // 背景色の設定
-          if (this.roomStatus === 'study') {
-            // 自習時間
-            this.backgroundColor = '#b0e0e6';
-          } else if (this.roomStatus === 'break') {
-            // 休憩時間
-            this.backgroundColor = '#ffe89a';
-          }
         } else {
           // 時間割の最後まで確認した場合
           if (index + 1 === timetable.length) {
             // 日付更新後の最初の状態を保存
             this.roomStatus = timetable[0].status;
-
-            // 背景色の設定
-            if (this.roomStatus === 'study') {
-              // 自習時間
-              this.backgroundColor = '#b0e0e6';
-            } else if (this.roomStatus === 'break') {
-              // 休憩時間
-              this.backgroundColor = '#ffe89a';
-            }
           }
         }
       }
@@ -665,8 +623,8 @@ export default {
         this.roomData = event;
       })
       .listen('TimetableEvent', (event) => {
-        // 時間割イベントの受信
-        this.updateRoomStatus(event.status);
+        // 部屋状態の更新
+        this.roomStatus = event.status;
       });
 
     // ロード終了
