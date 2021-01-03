@@ -67,7 +67,6 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'peer_id' => uniqid(substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 3)),
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),

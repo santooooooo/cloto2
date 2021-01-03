@@ -16,7 +16,6 @@ class UsersTableSeeder extends Seeder
         $usernames = ['test', 'test2', 'test3', 'test4', 'test5'];
         foreach ($usernames as $username) {
             User::create([
-                'peer_id' => uniqid(substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 3)),
                 'username' => $username,
                 'email' => $username . '@cloto.jp',
                 'password' => Hash::make('password'),
@@ -29,7 +28,6 @@ class UsersTableSeeder extends Seeder
         $usernames = ['atsuhiro', 'yoshihito', 'shuto', 'sayuki', 'hikaru', 'riku'];
         foreach ($usernames as $username) {
             User::create([
-                'peer_id' => uniqid(substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 3)),
                 'username' => $username,
                 'email' => $username . '@cloto.jp',
                 'password' => Hash::make($username),

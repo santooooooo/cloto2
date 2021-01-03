@@ -75,20 +75,6 @@ class UserController extends Controller
     }
 
     /**
-     * ログインユーザーのPeerIDの取得
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function auth_peer_id()
-    {
-        if (empty($this->auth_user)) {
-            return response(null);
-        }
-
-        return response()->json($this->auth_user->peer_id);
-    }
-
-    /**
      * ユーザーの取得
      *
      * @param   String  $user_param ユーザーIDまたはユーザー名
@@ -103,24 +89,6 @@ class UserController extends Controller
         }
 
         return $user;
-    }
-
-    /**
-     * PeerIDからユーザーを取得
-     *
-     * @param   String  $peer_id    PeerID
-     * @return \Illuminate\Http\Response
-     */
-    public function get_user_by_peer_id(String $peer_id)
-    {
-        $user = $this->user->where('peer_id', $peer_id)->first();
-
-        // 画面共有のストリームの場合
-        if (empty($user)) {
-            return response(null);
-        }
-
-        return response()->json($user);
     }
 
     /**

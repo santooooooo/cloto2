@@ -36,7 +36,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
     Route::get('/online', 'API\UserController@set_online')->name('setOnline');
     Route::get('/auth/user', 'API\UserController@auth')->name('authUser');
-    Route::get('/auth/peer_id', 'API\UserController@auth_peer_id')->name('authPeerId');
 
 
     /*
@@ -46,7 +45,6 @@ Route::group(['middleware' => 'auth'], function () {
     */
     Route::get('/user/{user_param}', 'API\UserController@show')->name('userShow');
     Route::post('/user/update', 'API\UserController@update')->name('profileUpdate');
-    Route::get('/user/get_user_by_peer_id/{peer_id}', 'API\UserController@get_user_by_peer_id')->name('getUserByPeerId');
 
 
     /*

@@ -537,8 +537,32 @@ export default {
         }
 
         switch (data.type) {
+          case 'joinUserData':
+            // 参加したユーザーのデータの受信
+            sender.username = data.content.username;
+            sender.handlename = data.content.handlename;
+            sender.icon = data.content.icon;
+            // 参加メッセージの追加
+            this.addMessage(null, sender.handlename + 'が入室しました！');
+            break;
+
+          case 'loadingEvent':
+            // ローディングイベント
+            sender.isLoading = data.content;
+            break;
+
+          case 'audioEvent':
+            // ミュートイベント
+            sender.isMute = data.content;
+            break;
+
+          case 'videoEvent':
+            // ビデオオフイベント
+            sender.isVideoOff = data.content;
+            break;
+
           case 'message':
-            // メッセージ受信イベント
+            // メッセージの受信
             this.addMessage(sender.handlename, data.content);
 
             if (!this.chat.isOpen) {
@@ -550,21 +574,6 @@ export default {
               // 通知の表示
               this.chat.notification = true;
             }
-            break;
-
-          case 'loadingEvent':
-            // ローディングイベント
-            sender.isLoading = data.content.isLoading;
-            break;
-
-          case 'audioEvent':
-            // ミュートイベント
-            sender.isMute = data.content.isMute;
-            break;
-
-          case 'videoEvent':
-            // ビデオオフイベント
-            sender.isVideoOff = data.content.isVideoOff;
             break;
         }
       });
@@ -621,16 +630,13 @@ export default {
       );
 
       if (isJoin) {
-        // ユーザー名と表示名の取得
-        var response = await this.$http.get(this.$endpoint('getUserByPeerId', [stream.peerId]));
-        var user = response.data;
-
         // ユーザーが参加した場合
-        if (user !== '') {
+        if (stream.getAudioTracks().length > 0) {
           // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
-          this.call.send({ type: 'loadingEvent', content: { isLoading: this.isLoading } });
-          this.call.send({ type: 'audioEvent', content: { isMute: this.isMute } });
-          this.call.send({ type: 'videoEvent', content: { isVideoOff: this.isVideoOff } });
+          this.call.send({ type: 'joinUserData', content: this.authUser });
+          this.call.send({ type: 'loadingEvent', content: this.isLoading });
+          this.call.send({ type: 'audioEvent', content: this.isMute });
+          this.call.send({ type: 'videoEvent', content: this.isVideoOff });
 
           // 通知音
           if (this.isNotificationOn) {
@@ -640,9 +646,9 @@ export default {
           // 参加者の追加
           this.participants.push({
             isPinned: false, // ピン留めしているか
-            username: user.username, // ユーザー名
-            handlename: user.handlename, // 表示名
-            icon: user.icon, // アイコン
+            username: '', // ユーザー名
+            handlename: '', // 表示名
+            icon: '', // アイコン
             isLoading: true, // 接続待ち状態
             isMute: true, // ミュート状態
             isVideoOff: true, // ビデオオフ状態
@@ -651,9 +657,6 @@ export default {
 
           // 音声検知の開始
           this.startVoiceDetection(stream);
-
-          // 参加メッセージの追加
-          this.addMessage(null, user.handlename + 'が入室しました！');
         } else {
           // 画面共有が参加した場合
           if (!this.screenSharing.isLocal) {
@@ -851,7 +854,7 @@ export default {
       this.localStream.getAudioTracks()[0].enabled = !this.isMute;
 
       // 通知
-      this.call.send({ type: 'audioEvent', content: { isMute: this.isMute } });
+      this.call.send({ type: 'audioEvent', content: this.isMute });
 
       this.isAudioLoading = false;
     },
@@ -873,7 +876,7 @@ export default {
       }
 
       // 通知
-      this.call.send({ type: 'videoEvent', content: { isVideoOff: this.isVideoOff } });
+      this.call.send({ type: 'videoEvent', content: this.isVideoOff });
 
       this.isVideoLoading = false;
     },
@@ -1036,9 +1039,7 @@ export default {
     }
 
     // Peerの作成
-    var response = await this.$http.get(this.$endpoint('authPeerId'));
-    const myPeerId = response.data;
-    this.peer = new Peer(myPeerId, { key: API_KEY });
+    this.peer = new Peer({ key: API_KEY });
 
     // Peerの生成を待機
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -1057,7 +1058,7 @@ export default {
         // ビデオオフを遅延させないと，videoストリームが相手に接続できない
         this.videoOff();
         this.isLoading = false;
-        this.call.send({ type: 'loadingEvent', content: { isLoading: false } });
+        this.call.send({ type: 'loadingEvent', content: false });
       }, 5000);
     }
   },
