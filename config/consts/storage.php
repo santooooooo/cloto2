@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'system' => '/storage/system/',
-    'room' => '/storage/system/room/',
-    'icon' => '/storage/user/icon/',
-    'karte' => '/storage/user/karte/',
+    'system' => '/system/',
+    'room' => '/system/room/',
+    'icon' => '/user/icon/',
+    'karte' => '/user/karte/',
 ];
