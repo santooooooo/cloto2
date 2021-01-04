@@ -335,7 +335,8 @@ class RoomsTableSeeder extends Seeder
 
                 foreach ($base_positions as $base_position) {
                     $position = ['x' => $base_position['x'], 'y' => $base_position['y']];
-                    Seat::create(['section_id' => $section->id, 'position' => $position]);
+                    $seat = Seat::create(['section_id' => $section->id, 'position' => $position]);
+                    // $seat->fill(['background' => 'seat_' . $seat->id . '.jpg'])->save();
                 }
             }
 
@@ -348,7 +349,8 @@ class RoomsTableSeeder extends Seeder
 
                 for ($i = 0; $i < 2; $i++) {
                     $position = ['x' => $x, 'y' => $y];
-                    Seat::create(['section_id' => $section->id, 'position' => $position]);
+                    $seat = Seat::create(['section_id' => $section->id, 'position' => $position]);
+                    // $seat->fill(['background' => 'seat_' . $seat->id . '.jpg'])->save();
 
                     $x += 90;
                 }
@@ -363,7 +365,8 @@ class RoomsTableSeeder extends Seeder
 
                 for ($i = 0; $i < 4; $i++) {
                     $position = ['x' => $x, 'y' => $y];
-                    Seat::create(['section_id' => $section->id, 'position' => $position]);
+                    $seat = Seat::create(['section_id' => $section->id, 'position' => $position]);
+                    // $seat->fill(['background' => 'seat_' . $seat->id . '.jpg'])->save();
 
                     if ($i == 0) {
                         $x -= 55;
@@ -386,7 +389,8 @@ class RoomsTableSeeder extends Seeder
 
                 for ($i = 0; $i < 8; $i++) {
                     $position = ['x' => $x, 'y' => $y];
-                    Seat::create(['section_id' => $section->id, 'position' => $position]);
+                    $seat = Seat::create(['section_id' => $section->id, 'position' => $position]);
+                    // $seat->fill(['background' => 'seat_' . $seat->id . '.jpg'])->save();
 
                     if ($i == 0) {
                         $x -= 50;

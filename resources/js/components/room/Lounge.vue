@@ -1082,6 +1082,13 @@ export default {
     }
   },
 
+  mounted() {
+    // 背景画像の設定
+    var dialog = document.getElementsByClassName('v-dialog');
+    dialog[0].style.backgroundImage =
+      'url("' + this.$storage('seat') + this.authUser.seat.background + '")';
+  },
+
   beforeDestroy() {
     // 念の為
     this.exitCall();
@@ -1184,7 +1191,6 @@ export default {
 
 <style lang="scss">
 .v-dialog {
-  background-image: url('/storage/system/lounge.png');
   background-size: cover;
 }
 </style>

@@ -7,6 +7,7 @@
  */
 const system = '/storage/system/';
 const room = '/storage/system/room/';
+const seat = '/storage/system/room/seat/';
 const icon = '/storage/user/icon/';
 const karte = '/storage/user/karte/';
 
@@ -25,6 +26,10 @@ export function getStoragePath(name) {
 
     case 'room':
       path = room;
+      break;
+
+    case 'seat':
+      path = seat;
       break;
 
     case 'icon':
