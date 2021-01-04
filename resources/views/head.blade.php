@@ -21,7 +21,7 @@
 <meta property="og:url" content="{{ config('app.url') }}" />
 <meta property="og:title" content="{{ config('app.name') }}" />
 <meta property="og:description" content="プログラミングを楽しみながら継続できる環境がここに生まれました！" />
-<meta property="og:image" content="{{ config('app.url') . '/storage' . config('consts.storage.system') . 'card.png' }}" />
+<meta property="og:image" content="{{ config('app.url') . config('consts.storage.system') . 'card.png' }}" />
 <!-- Twitter card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@cloto_jp">

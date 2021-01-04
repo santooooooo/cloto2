@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'system' => '/system/',
-    'room' => '/system/room/',
-    'seat' => '/system/room/seat/',
-    'icon' => '/user/icon/',
-    'karte' => '/user/karte/',
+    'system' => '/storage/system/',
+    'room' => '/storage/system/room/',
+    'seat' => '/storage/system/room/seat/',
+    'icon' => '/storage/user/icon/',
+    'karte' => '/storage/user/karte/',
 ];

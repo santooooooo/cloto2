@@ -23,7 +23,7 @@
     <script src="{{ mix('js/please-wait.min.js') }}"></script>
     <script>
         window.loading_screen = window.pleaseWait({
-            logo: '{{ "/storage" . config("consts.storage.system") . "header-logo.svg" }}',
+            logo: '{{ config("consts.storage.system") . "header-logo.svg" }}',
             backgroundColor: '#f6bf00',
             loadingHtml: '<div class="sk-wave"><div class="sk-wave-rect"></div><div class="sk-wave-rect"></div><div class="sk-wave-rect"></div><div class="sk-wave-rect"></div><div class="sk-wave-rect"></div></div>'
         });
