@@ -14,7 +14,7 @@ class Seat extends Model
      * @var array
      */
     protected $fillable = [
-        'section_id', 'size', 'position', 'background', 'status', 'reservation_user_id'
+        'section_id', 'size', 'position', 'status', 'reservation_user_id'
     ];
 
     /**

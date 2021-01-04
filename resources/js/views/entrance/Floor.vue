@@ -79,7 +79,7 @@ export default {
       });
       this.canvas.selection = false; // エリア選択の無効化
       this.canvas.setBackgroundImage(
-        this.$storage('room') + this.roomData.background,
+        this.$storage('room') + 'room_' + this.roomData.id + '.png',
         this.canvas.renderAll.bind(this.canvas)
       );
 

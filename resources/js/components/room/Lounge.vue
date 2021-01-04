@@ -1086,7 +1086,7 @@ export default {
     // 背景画像の設定
     var dialog = document.getElementsByClassName('v-dialog');
     dialog[0].style.backgroundImage =
-      'url("' + this.$storage('seat') + this.authUser.seat.background + '")';
+      'url("' + this.$storage('seat') + 'seat_' + this.authUser.seat.id + '.png")';
   },
 
   beforeDestroy() {
