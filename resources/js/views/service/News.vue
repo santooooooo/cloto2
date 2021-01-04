@@ -11,6 +11,74 @@
       </v-container>
     </v-container>
     <v-container class="content ma-auto">
+      <v-tabs
+        v-model="selected"
+        background-color="grey darken-3"
+        class="white--text pt-13"
+        color="amber accent-3"
+        grow
+        dark
+      >
+        <v-tab v-for="tab in tabs" :key="tab">
+          {{ tab.title }}
+        </v-tab>
+      </v-tabs>
+
+      <v-tabs-items v-model="selected">
+        <v-tab-item v-for="tab in tabs" :key="tab.id">
+          <!-- イベント情報 -->
+          <v-card v-if="tab.id === 1" color="basil" flat>
+            <h3 class="text-center pa-4">{{ tab.title }}</h3>
+          </v-card>
+          <!-- 掲示板 -->
+          <v-card v-if="tab.id === 2" color="basil" flat>
+            <h3 class="text-center pa-4">{{ tab.title }}</h3>
+            <v-col v-for="(board, i) in boardData" :key="i" cols="12">
+              <v-card>
+                <v-card-text>{{ board.date }} </v-card-text>
+
+                <v-card-text class="headline font-weight-bold text-center">
+                  {{ board.title }}
+                </v-card-text>
+                <v-row justify="center" class="ma-1 pa-3">
+                  <v-btn color="primary">応募する</v-btn>
+                </v-row>
+              </v-card>
+            </v-col>
+          </v-card>
+          <!-- お知らせ -->
+          <v-card v-if="tab.id === 3" color="basil" flat>
+            <h3 class="text-center pt-2">{{ tab.title }}</h3>
+            <v-list>
+              <template v-for="(news, index) in newsData">
+                <v-divider></v-divider>
+                <v-list-item :key="news.title">
+                  <v-row justify="center">
+                    {{ news.title }}
+                  </v-row>
+                </v-list-item>
+              </template>
+            </v-list>
+          </v-card>
+
+          <v-card v-if="tab.id === 3" class="mt-10" color="basil" flat>
+            <h3 class="text-center pt-2">プレスリリース</h3>
+            <v-list>
+              <template v-for="(news, index) in newsData">
+                <v-divider></v-divider>
+                <v-list-item :key="news.title">
+                  <v-row justify="center">
+                    {{ news.title }}
+                  </v-row>
+                </v-list-item>
+              </template>
+            </v-list>
+          </v-card>
+        </v-tab-item>
+      </v-tabs-items>
+    </v-container>
+
+    <!-- <v-container class="content ma-auto">
       <v-col v-for="(news, i) in newsData" :key="i" cols="12">
         <v-card @click="newsLink(news.link)">
           <v-card-text
@@ -20,7 +88,7 @@
           <v-card-text class="headline font-weight-bold"> {{ news.text }} </v-card-text>
         </v-card>
       </v-col>
-    </v-container>
+    </v-container> -->
   </div>
 </template>
 
@@ -33,18 +101,57 @@ export default {
   },
   data() {
     return {
+      selected: null,
+      // items: ['イベント情報', '掲示板', 'お知らせ'],
+      tabs: [
+        {
+          id: 1,
+          title: 'イベント情報',
+        },
+        {
+          id: 2,
+          title: '掲示板',
+        },
+        {
+          id: 3,
+          title: 'お知らせ',
+        },
+      ],
+      boardData: [
+        {
+          id: 1,
+          to: '',
+          title: 'HP制作案件の　募集です',
+          body: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+          date: '2020/08/17',
+        },
+        {
+          id: 2,
+          to: '',
+          title: 'HP制作案件の　募集です',
+          body: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+          date: '2020/08/18',
+        },
+        {
+          id: 3,
+          to: '',
+          title: 'HP制作案件の　募集です',
+          body: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+          date: '2020/08/19',
+        },
+      ],
       newsData: [
         {
           id: 1,
           link: 'https://u25.billage.space/archive/20200817/',
-          text: '関西若手起業家ピッチコンテストに参加',
+          title: '関西若手起業家',
           date: '2020/08/17',
           tag: 'イベント',
         },
         {
           id: 2,
           link: 'http://www.ritsumei.ac.jp/research/vc/',
-          text: '立命館大学学生ベンチャーコンテストに参加',
+          title: '立命館大学学生ベンチャーコンテストに参加',
           date: '2020/12/6',
           tag: 'イベント',
         },
@@ -52,9 +159,9 @@ export default {
     };
   },
   methods: {
-    newsLink: function (link) {
-      location.href = link;
-    },
+    // newsLink: function (link) {
+    //   location.href = link;
+    // },
   },
 };
 </script>
