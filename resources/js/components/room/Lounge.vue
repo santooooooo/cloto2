@@ -1184,7 +1184,7 @@ export default {
 
 <style lang="scss">
 .v-dialog {
-  background-image: url('/storage/system/information.png');
+  background-image: url('/storage/system/lounge.png');
   background-size: cover;
 }
 </style>
