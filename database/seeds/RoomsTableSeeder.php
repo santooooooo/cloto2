@@ -15,400 +15,3819 @@ class RoomsTableSeeder extends Seeder
      */
     public function run()
     {
-        // 部屋名
-        $rooms = [
+        /*
+        |--------------------------------------------------------------------------
+        | 1階作成
+        |--------------------------------------------------------------------------
+        */
+        //*** 部屋1データ ***/
+        $room = [
+            'name' => '無限休憩',
+            'timetable' =>
             [
-                'name' => '無限休憩',
-                'timetable' =>
-                [
-                    '00:00' => 'break',
-                    '23:59' => 'break',
-                ]
-            ],
-            [
-                'name' => '時間割テスト',
-                'timetable' =>
-                [
-                    '00:00' => 'study', '00:05' => 'break',
-                    '00:10' => 'study', '00:15' => 'break',
-                    '00:20' => 'study', '00:25' => 'break',
-                    '00:30' => 'study', '00:35' => 'break',
-                    '00:40' => 'study', '00:45' => 'break',
-                    '00:50' => 'study', '00:55' => 'break',
-                    '00:00' => 'study', '00:05' => 'break',
-                    '00:10' => 'study', '00:15' => 'break',
-                    '00:20' => 'study', '00:25' => 'break',
-                    '00:30' => 'study', '00:35' => 'break',
-                    '00:40' => 'study', '00:45' => 'break',
-                    '00:50' => 'study', '00:55' => 'break',
-                    '01:00' => 'study', '01:05' => 'break',
-                    '01:10' => 'study', '01:15' => 'break',
-                    '01:20' => 'study', '01:25' => 'break',
-                    '01:30' => 'study', '01:35' => 'break',
-                    '01:40' => 'study', '01:45' => 'break',
-                    '01:50' => 'study', '01:55' => 'break',
-                    '02:00' => 'study', '02:05' => 'break',
-                    '02:10' => 'study', '02:15' => 'break',
-                    '02:20' => 'study', '02:25' => 'break',
-                    '02:30' => 'study', '02:35' => 'break',
-                    '02:40' => 'study', '02:45' => 'break',
-                    '02:50' => 'study', '02:55' => 'break',
-                    '03:00' => 'study', '03:05' => 'break',
-                    '03:10' => 'study', '03:15' => 'break',
-                    '03:20' => 'study', '03:25' => 'break',
-                    '03:30' => 'study', '03:35' => 'break',
-                    '03:40' => 'study', '03:45' => 'break',
-                    '03:50' => 'study', '03:55' => 'break',
-                    '04:00' => 'study', '04:05' => 'break',
-                    '04:10' => 'study', '04:15' => 'break',
-                    '04:20' => 'study', '04:25' => 'break',
-                    '04:30' => 'study', '04:35' => 'break',
-                    '04:40' => 'study', '04:45' => 'break',
-                    '04:50' => 'study', '04:55' => 'break',
-                    '05:00' => 'study', '05:05' => 'break',
-                    '05:10' => 'study', '05:15' => 'break',
-                    '05:20' => 'study', '05:25' => 'break',
-                    '05:30' => 'study', '05:35' => 'break',
-                    '05:40' => 'study', '05:45' => 'break',
-                    '05:50' => 'study', '05:55' => 'break',
-                    '06:00' => 'study', '06:05' => 'break',
-                    '06:10' => 'study', '06:15' => 'break',
-                    '06:20' => 'study', '06:25' => 'break',
-                    '06:30' => 'study', '06:35' => 'break',
-                    '06:40' => 'study', '06:45' => 'break',
-                    '06:50' => 'study', '06:55' => 'break',
-                    '07:00' => 'study', '07:05' => 'break',
-                    '07:10' => 'study', '07:15' => 'break',
-                    '07:20' => 'study', '07:25' => 'break',
-                    '07:30' => 'study', '07:35' => 'break',
-                    '07:40' => 'study', '07:45' => 'break',
-                    '07:50' => 'study', '07:55' => 'break',
-                    '08:00' => 'study', '08:05' => 'break',
-                    '08:10' => 'study', '08:15' => 'break',
-                    '08:20' => 'study', '08:25' => 'break',
-                    '08:30' => 'study', '08:35' => 'break',
-                    '08:40' => 'study', '08:45' => 'break',
-                    '08:50' => 'study', '08:55' => 'break',
-                    '09:00' => 'study', '09:05' => 'break',
-                    '09:10' => 'study', '09:15' => 'break',
-                    '09:20' => 'study', '09:25' => 'break',
-                    '09:30' => 'study', '09:35' => 'break',
-                    '09:40' => 'study', '09:45' => 'break',
-                    '09:50' => 'study', '09:55' => 'break',
-                    '10:00' => 'study', '10:05' => 'break',
-                    '10:10' => 'study', '10:15' => 'break',
-                    '10:20' => 'study', '10:25' => 'break',
-                    '10:30' => 'study', '10:35' => 'break',
-                    '10:40' => 'study', '10:45' => 'break',
-                    '10:50' => 'study', '10:55' => 'break',
-                    '11:00' => 'study', '11:05' => 'break',
-                    '11:10' => 'study', '11:15' => 'break',
-                    '11:20' => 'study', '11:25' => 'break',
-                    '11:30' => 'study', '11:35' => 'break',
-                    '11:40' => 'study', '11:45' => 'break',
-                    '11:50' => 'study', '11:55' => 'break',
-                    '12:00' => 'study', '12:05' => 'break',
-                    '12:10' => 'study', '12:15' => 'break',
-                    '12:20' => 'study', '12:25' => 'break',
-                    '12:30' => 'study', '12:35' => 'break',
-                    '12:40' => 'study', '12:45' => 'break',
-                    '12:50' => 'study', '12:55' => 'break',
-                    '13:00' => 'study', '13:05' => 'break',
-                    '13:10' => 'study', '13:15' => 'break',
-                    '13:20' => 'study', '13:25' => 'break',
-                    '13:30' => 'study', '13:35' => 'break',
-                    '13:40' => 'study', '13:45' => 'break',
-                    '13:50' => 'study', '13:55' => 'break',
-                    '14:00' => 'study', '14:05' => 'break',
-                    '14:10' => 'study', '14:15' => 'break',
-                    '14:20' => 'study', '14:25' => 'break',
-                    '14:30' => 'study', '14:35' => 'break',
-                    '14:40' => 'study', '14:45' => 'break',
-                    '14:50' => 'study', '14:55' => 'break',
-                    '15:00' => 'study', '15:05' => 'break',
-                    '15:10' => 'study', '15:15' => 'break',
-                    '15:20' => 'study', '15:25' => 'break',
-                    '15:30' => 'study', '15:35' => 'break',
-                    '15:40' => 'study', '15:45' => 'break',
-                    '15:50' => 'study', '15:55' => 'break',
-                    '16:00' => 'study', '16:05' => 'break',
-                    '16:10' => 'study', '16:15' => 'break',
-                    '16:20' => 'study', '16:25' => 'break',
-                    '16:30' => 'study', '16:35' => 'break',
-                    '16:40' => 'study', '16:45' => 'break',
-                    '16:50' => 'study', '16:55' => 'break',
-                    '17:00' => 'study', '17:05' => 'break',
-                    '17:10' => 'study', '17:15' => 'break',
-                    '17:20' => 'study', '17:25' => 'break',
-                    '17:30' => 'study', '17:35' => 'break',
-                    '17:40' => 'study', '17:45' => 'break',
-                    '17:50' => 'study', '17:55' => 'break',
-                    '18:00' => 'study', '18:05' => 'break',
-                    '18:10' => 'study', '18:15' => 'break',
-                    '18:20' => 'study', '18:25' => 'break',
-                    '18:30' => 'study', '18:35' => 'break',
-                    '18:40' => 'study', '18:45' => 'break',
-                    '18:50' => 'study', '18:55' => 'break',
-                    '19:00' => 'study', '19:05' => 'break',
-                    '19:10' => 'study', '19:15' => 'break',
-                    '19:20' => 'study', '19:25' => 'break',
-                    '19:30' => 'study', '19:35' => 'break',
-                    '19:40' => 'study', '19:45' => 'break',
-                    '19:50' => 'study', '19:55' => 'break',
-                    '20:00' => 'study', '20:05' => 'break',
-                    '20:10' => 'study', '20:15' => 'break',
-                    '20:20' => 'study', '20:25' => 'break',
-                    '20:30' => 'study', '20:35' => 'break',
-                    '20:40' => 'study', '20:45' => 'break',
-                    '20:50' => 'study', '20:55' => 'break',
-                    '21:00' => 'study', '21:05' => 'break',
-                    '21:10' => 'study', '21:15' => 'break',
-                    '21:20' => 'study', '21:25' => 'break',
-                    '21:30' => 'study', '21:35' => 'break',
-                    '21:40' => 'study', '21:45' => 'break',
-                    '21:50' => 'study', '21:55' => 'break',
-                    '22:00' => 'study', '22:05' => 'break',
-                    '22:10' => 'study', '22:15' => 'break',
-                    '22:20' => 'study', '22:25' => 'break',
-                    '22:30' => 'study', '22:35' => 'break',
-                    '22:40' => 'study', '22:45' => 'break',
-                    '22:50' => 'study', '22:55' => 'break',
-                    '23:00' => 'study', '23:05' => 'break',
-                    '23:10' => 'study', '23:15' => 'break',
-                    '23:20' => 'study', '23:25' => 'break',
-                    '23:30' => 'study', '23:35' => 'break',
-                    '23:40' => 'study', '23:45' => 'break',
-                    '23:50' => 'study', '23:55' => 'break',
-                ]
-            ],
-            [
-                'name' => 'Web制作部屋',
-                'timetable' =>
-                [
-                    '00:00' => 'study', '00:50' => 'break',
-                    '01:00' => 'study', '01:50' => 'break',
-                    '02:00' => 'study', '02:50' => 'break',
-                    '03:00' => 'study', '03:50' => 'break',
-                    '04:00' => 'study', '04:50' => 'break',
-                    '05:00' => 'study', '05:50' => 'break',
-                    '06:00' => 'study', '06:50' => 'break',
-                    '07:00' => 'study', '07:50' => 'break',
-                    '08:00' => 'study', '08:50' => 'break',
-                    '09:00' => 'study', '09:50' => 'break',
-                    '10:00' => 'study', '10:50' => 'break',
-                    '11:00' => 'study', '11:50' => 'break',
-                    '12:00' => 'study', '12:50' => 'break',
-                    '13:00' => 'study', '13:50' => 'break',
-                    '14:00' => 'study', '14:50' => 'break',
-                    '15:00' => 'study', '15:50' => 'break',
-                    '16:00' => 'study', '16:50' => 'break',
-                    '17:00' => 'study', '17:50' => 'break',
-                    '18:00' => 'study', '18:50' => 'break',
-                    '19:00' => 'study', '19:50' => 'break',
-                    '20:00' => 'study', '20:50' => 'break',
-                    '21:00' => 'study', '21:50' => 'break',
-                    '22:00' => 'study', '22:50' => 'break',
-                    '23:00' => 'study', '23:50' => 'break',
-                ]
-            ],
-            [
-                'name' => 'アプリ開発部屋',
-                'timetable' =>
-                [
-                    '00:00' => 'study', '00:50' => 'break',
-                    '01:00' => 'study', '01:50' => 'break',
-                    '02:00' => 'study', '02:50' => 'break',
-                    '03:00' => 'study', '03:50' => 'break',
-                    '04:00' => 'study', '04:50' => 'break',
-                    '05:00' => 'study', '05:50' => 'break',
-                    '06:00' => 'study', '06:50' => 'break',
-                    '07:00' => 'study', '07:50' => 'break',
-                    '08:00' => 'study', '08:50' => 'break',
-                    '09:00' => 'study', '09:50' => 'break',
-                    '10:00' => 'study', '10:50' => 'break',
-                    '11:00' => 'study', '11:50' => 'break',
-                    '12:00' => 'study', '12:50' => 'break',
-                    '13:00' => 'study', '13:50' => 'break',
-                    '14:00' => 'study', '14:50' => 'break',
-                    '15:00' => 'study', '15:50' => 'break',
-                    '16:00' => 'study', '16:50' => 'break',
-                    '17:00' => 'study', '17:50' => 'break',
-                    '18:00' => 'study', '18:50' => 'break',
-                    '19:00' => 'study', '19:50' => 'break',
-                    '20:00' => 'study', '20:50' => 'break',
-                    '21:00' => 'study', '21:50' => 'break',
-                    '22:00' => 'study', '22:50' => 'break',
-                    '23:00' => 'study', '23:50' => 'break',
-                ]
-            ],
-            [
-                'name' => 'イベントホール',
-                'timetable' =>
-                [
-                    '00:00' => 'study', '00:50' => 'break',
-                    '01:00' => 'study', '01:50' => 'break',
-                    '02:00' => 'study', '02:50' => 'break',
-                    '03:00' => 'study', '03:50' => 'break',
-                    '04:00' => 'study', '04:50' => 'break',
-                    '05:00' => 'study', '05:50' => 'break',
-                    '06:00' => 'study', '06:50' => 'break',
-                    '07:00' => 'study', '07:50' => 'break',
-                    '08:00' => 'study', '08:50' => 'break',
-                    '09:00' => 'study', '09:50' => 'break',
-                    '10:00' => 'study', '10:50' => 'break',
-                    '11:00' => 'study', '11:50' => 'break',
-                    '12:00' => 'study', '12:50' => 'break',
-                    '13:00' => 'study', '13:50' => 'break',
-                    '14:00' => 'study', '14:50' => 'break',
-                    '15:00' => 'study', '15:50' => 'break',
-                    '16:00' => 'study', '16:50' => 'break',
-                    '17:00' => 'study', '17:50' => 'break',
-                    '18:00' => 'study', '18:50' => 'break',
-                    '19:00' => 'study', '19:50' => 'break',
-                    '20:00' => 'study', '20:50' => 'break',
-                    '21:00' => 'study', '21:50' => 'break',
-                    '22:00' => 'study', '22:50' => 'break',
-                    '23:00' => 'study', '23:50' => 'break',
-                ]
+                '00:00' => 'break',
             ]
         ];
 
-        // 座席一覧
-        // 自習室
-        $study_positions = [
-            ['x' => 335, 'y' => 35], ['x' => 525, 'y' => 35],
-            ['x' => 725, 'y' => 35], ['x' => 915, 'y' => 35],
-            ['x' => 335, 'y' => 165], ['x' => 525, 'y' => 165],
-            ['x' => 725, 'y' => 165], ['x' => 915, 'y' => 165],
-            ['x' => 335, 'y' => 295], ['x' => 525, 'y' => 295],
-            ['x' => 725, 'y' => 295], ['x' => 915, 'y' => 295]
+        // 部屋1作成
+        $created_room = Room::create(['name' => $room['name'], 'timetable' => $room['timetable']]);
+
+
+
+        //*** 区画1データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画1作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席1データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 412, 'y' => 117]];
+
+        // 座席1作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席2データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 452, 'y' => 117]];
+
+        // 座席2作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席3データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 492, 'y' => 117]];
+
+        // 座席3作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画2データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画2作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席4データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 546, 'y' => 117]];
+
+        // 座席4作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席5データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 587, 'y' => 117]];
+
+        // 座席5作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席6データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 628, 'y' => 117]];
+
+        // 座席6作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画3データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画3作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席7データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 721, 'y' => 117]];
+
+        // 座席7作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席8データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 762, 'y' => 117]];
+
+        // 座席8作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席9データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 803, 'y' => 117]];
+
+        // 座席9作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画4データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画4作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席10データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 858, 'y' => 117]];
+
+        // 座席10作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席11データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 898, 'y' => 117]];
+
+        // 座席11作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席12データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 939, 'y' => 117]];
+
+        // 座席12作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画5データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画5作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席13データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 412, 'y' => 172]];
+
+        // 座席13作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席14データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 452, 'y' => 172]];
+
+        // 座席15作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席15データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 492, 'y' => 172]];
+
+        // 座席15作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画6データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画6作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席16データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 546, 'y' => 172]];
+
+        // 座席16作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席17データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 587, 'y' => 172]];
+
+        // 座席17作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席18データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 628, 'y' => 172]];
+
+        // 座席18作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画7データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画7作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席19データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 722, 'y' => 172]];
+
+        // 座席19作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席20データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 763, 'y' => 172]];
+
+        // 座席20作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席21データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 804, 'y' => 172]];
+
+        // 座席21作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画8データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画8作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席22データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 859, 'y' => 172]];
+
+        // 座席22作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席23データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 899, 'y' => 172]];
+
+        // 座席23作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席24データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 940, 'y' => 172]];
+
+        // 座席24作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画9データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画9作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席25データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 413, 'y' => 227]];
+
+        // 座席25作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席26データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 453, 'y' => 227]];
+
+        // 座席26作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席27データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 493, 'y' => 227]];
+
+        // 座席27作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画10データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画10作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席28データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 547, 'y' => 227]];
+
+        // 座席28作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席29データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 588, 'y' => 227]];
+
+        // 座席29作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席30データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 629, 'y' => 227]];
+
+        // 座席30作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画11データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画11作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席31データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 723, 'y' => 227]];
+
+        // 座席31作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席32データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 764, 'y' => 228]];
+
+        // 座席32作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席33データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 805, 'y' => 228]];
+
+        // 座席33作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画12データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画12作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席34データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 860, 'y' => 228]];
+
+        // 座席34作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席35データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 900, 'y' => 228]];
+
+        // 座席35作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席36データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 942, 'y' => 228]];
+
+        // 座席36作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画13データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画13作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席37データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 410, 'y' => 286]];
+
+        // 座席37作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席38データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 451, 'y' => 286]];
+
+        // 座席38作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席39データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 491, 'y' => 286]];
+
+        // 座席39作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画14データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画14作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席40データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 548, 'y' => 286]];
+
+        // 座席40作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席41データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 589, 'y' => 286]];
+
+        // 座席41作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席42データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 630, 'y' => 286]];
+
+        // 座席42作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画15データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画15作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席43データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 723, 'y' => 285]];
+
+        // 座席43作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席44データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 764, 'y' => 285]];
+
+        // 座席44作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席45データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 805, 'y' => 285]];
+
+        // 座席45作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画16データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画16作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席46データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 861, 'y' => 285]];
+
+        // 座席46作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席47データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 902, 'y' => 285]];
+
+        // 座席47作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席48データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 943, 'y' => 285]];
+
+        // 座席48作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画17データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画17作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席49データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 100, 'y' => 80]];
+
+        // 座席49作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画18データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画18作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席50データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 235, 'y' => 80]];
+
+        // 座席50作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席51データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 299, 'y' => 80]];
+
+        // 座席51作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画19データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画19作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席52データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 231, 'y' => 161]];
+
+        // 座席52作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席53データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 295, 'y' => 161]];
+
+        // 座席53作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画20データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画20作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席54データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 228, 'y' => 245]];
+
+        // 座席54作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席55データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 291, 'y' => 245]];
+
+        // 座席55作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画21データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画21作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席56データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 225, 'y' => 332]];
+
+        // 座席56作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席57データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 290, 'y' => 332]];
+
+        // 座席57作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画22データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画22作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席58データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 212, 'y' => 462]];
+
+        // 座席58作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席59データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 237, 'y' => 436]];
+
+        // 座席59作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席60データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 270, 'y' => 436]];
+
+        // 座席60作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席61データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 295, 'y' => 463]];
+
+        // 座席61作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画23データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画23作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席62データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 364, 'y' => 496]];
+
+        // 座席62作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席63データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 397, 'y' => 464]];
+
+        // 座席63作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席64データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 429, 'y' => 496]];
+
+        // 座席64作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席65データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 396, 'y' => 528]];
+
+        // 座席65作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画24データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画24作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席66データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 506, 'y' => 496]];
+
+        // 座席66作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席67データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 539, 'y' => 465]];
+
+        // 座席67作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席68データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 572, 'y' => 496]];
+
+        // 座席68作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席69データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 539, 'y' => 528]];
+
+        // 座席69作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画25データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画25作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席70データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 644, 'y' => 496]];
+
+        // 座席70作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席71データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 677, 'y' => 465]];
+
+        // 座席71作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席72データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 709, 'y' => 496]];
+
+        // 座席72作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席73データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 677, 'y' => 528]];
+
+        // 座席73作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画26データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画26作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席74データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 783, 'y' => 496]];
+
+        // 座席74作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席71データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 815, 'y' => 464]];
+
+        // 座席75作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席75データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 848, 'y' => 496]];
+
+        // 座席76作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席77データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 817, 'y' => 528]];
+
+        // 座席77作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画27データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画27作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席78データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 921, 'y' => 496]];
+
+        // 座席78作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席79データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 954, 'y' => 464]];
+
+        // 座席79作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席80データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 988, 'y' => 496]];
+
+        // 座席80作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席81データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 956, 'y' => 528]];
+
+        // 座席81作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | 2階作成
+        |--------------------------------------------------------------------------
+        */
+        //*** 部屋2データ ***/
+        $room = [
+            'name' => 'Webアプリ部屋',
+            'timetable' =>
+            [
+                '00:00' => 'study', '00:50' => 'break',
+                '01:00' => 'study', '01:50' => 'break',
+                '02:00' => 'study', '02:50' => 'break',
+                '03:00' => 'study', '03:50' => 'break',
+                '04:00' => 'study', '04:50' => 'break',
+                '05:00' => 'study', '05:50' => 'break',
+                '06:00' => 'study', '06:50' => 'break',
+                '07:00' => 'study', '07:50' => 'break',
+                '08:00' => 'study', '08:50' => 'break',
+                '09:00' => 'study', '09:50' => 'break',
+                '10:00' => 'study', '10:50' => 'break',
+                '11:00' => 'study', '11:50' => 'break',
+                '12:00' => 'study', '12:50' => 'break',
+                '13:00' => 'study', '13:50' => 'break',
+                '14:00' => 'study', '14:50' => 'break',
+                '15:00' => 'study', '15:50' => 'break',
+                '16:00' => 'study', '16:50' => 'break',
+                '17:00' => 'study', '17:50' => 'break',
+                '18:00' => 'study', '18:50' => 'break',
+                '19:00' => 'study', '19:50' => 'break',
+                '20:00' => 'study', '20:50' => 'break',
+                '21:00' => 'study', '21:50' => 'break',
+                '22:00' => 'study', '22:50' => 'break',
+                '23:00' => 'study', '23:50' => 'break',
+            ]
         ];
 
-        // 三人がけ休憩室
-        $lounge3_positions = [
-            [['x' => 145, 'y' => 55], ['x' => 215, 'y' => 55], ['x' => 180, 'y' => 110]],
-            [['x' => 145, 'y' => 175], ['x' => 215, 'y' => 175], ['x' => 180, 'y' => 230]]
+        // 部屋2作成
+        $created_room = Room::create(['name' => $room['name'], 'timetable' => $room['timetable']]);
+
+
+
+        //*** 区画1データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画1作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席1データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 412, 'y' => 117]];
+
+        // 座席1作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席2データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 452, 'y' => 117]];
+
+        // 座席2作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席3データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 492, 'y' => 117]];
+
+        // 座席3作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画2データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画2作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席4データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 546, 'y' => 117]];
+
+        // 座席4作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席5データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 587, 'y' => 117]];
+
+        // 座席5作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席6データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 628, 'y' => 117]];
+
+        // 座席6作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画3データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画3作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席7データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 721, 'y' => 117]];
+
+        // 座席7作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席8データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 762, 'y' => 117]];
+
+        // 座席8作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席9データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 803, 'y' => 117]];
+
+        // 座席9作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画4データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画4作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席10データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 858, 'y' => 117]];
+
+        // 座席10作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席11データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 898, 'y' => 117]];
+
+        // 座席11作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席12データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 939, 'y' => 117]];
+
+        // 座席12作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画5データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画5作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席13データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 412, 'y' => 172]];
+
+        // 座席13作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席14データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 452, 'y' => 172]];
+
+        // 座席15作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席15データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 492, 'y' => 172]];
+
+        // 座席15作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画6データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画6作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席16データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 546, 'y' => 172]];
+
+        // 座席16作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席17データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 587, 'y' => 172]];
+
+        // 座席17作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席18データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 628, 'y' => 172]];
+
+        // 座席18作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画7データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画7作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席19データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 722, 'y' => 172]];
+
+        // 座席19作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席20データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 763, 'y' => 172]];
+
+        // 座席20作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席21データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 804, 'y' => 172]];
+
+        // 座席21作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画8データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画8作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席22データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 859, 'y' => 172]];
+
+        // 座席22作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席23データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 899, 'y' => 172]];
+
+        // 座席23作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席24データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 940, 'y' => 172]];
+
+        // 座席24作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画9データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画9作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席25データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 413, 'y' => 227]];
+
+        // 座席25作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席26データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 453, 'y' => 227]];
+
+        // 座席26作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席27データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 493, 'y' => 227]];
+
+        // 座席27作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画10データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画10作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席28データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 547, 'y' => 227]];
+
+        // 座席28作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席29データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 588, 'y' => 227]];
+
+        // 座席29作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席30データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 629, 'y' => 227]];
+
+        // 座席30作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画11データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画11作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席31データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 723, 'y' => 227]];
+
+        // 座席31作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席32データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 764, 'y' => 228]];
+
+        // 座席32作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席33データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 805, 'y' => 228]];
+
+        // 座席33作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画12データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画12作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席34データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 860, 'y' => 228]];
+
+        // 座席34作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席35データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 900, 'y' => 228]];
+
+        // 座席35作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席36データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 942, 'y' => 228]];
+
+        // 座席36作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画13データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画13作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席37データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 410, 'y' => 286]];
+
+        // 座席37作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席38データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 451, 'y' => 286]];
+
+        // 座席38作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席39データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 491, 'y' => 286]];
+
+        // 座席39作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画14データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画14作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席40データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 548, 'y' => 286]];
+
+        // 座席40作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席41データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 589, 'y' => 286]];
+
+        // 座席41作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席42データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 630, 'y' => 286]];
+
+        // 座席42作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画15データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画15作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席43データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 723, 'y' => 285]];
+
+        // 座席43作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席44データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 764, 'y' => 285]];
+
+        // 座席44作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席45データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 805, 'y' => 285]];
+
+        // 座席45作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画16データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画16作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席46データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 861, 'y' => 285]];
+
+        // 座席46作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席47データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 902, 'y' => 285]];
+
+        // 座席47作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席48データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 943, 'y' => 285]];
+
+        // 座席48作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画17データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画17作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席49データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 100, 'y' => 80]];
+
+        // 座席49作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画18データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画18作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席50データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 235, 'y' => 80]];
+
+        // 座席50作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席51データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 299, 'y' => 80]];
+
+        // 座席51作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画19データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画19作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席52データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 231, 'y' => 161]];
+
+        // 座席52作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席53データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 295, 'y' => 161]];
+
+        // 座席53作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画20データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画20作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席54データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 228, 'y' => 245]];
+
+        // 座席54作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席55データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 291, 'y' => 245]];
+
+        // 座席55作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画21データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画21作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席56データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 225, 'y' => 332]];
+
+        // 座席56作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席57データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 290, 'y' => 332]];
+
+        // 座席57作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画22データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画22作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席58データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 212, 'y' => 462]];
+
+        // 座席58作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席59データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 237, 'y' => 436]];
+
+        // 座席59作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席60データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 270, 'y' => 436]];
+
+        // 座席60作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席61データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 295, 'y' => 463]];
+
+        // 座席61作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画23データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画23作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席62データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 364, 'y' => 496]];
+
+        // 座席62作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席63データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 397, 'y' => 464]];
+
+        // 座席63作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席64データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 429, 'y' => 496]];
+
+        // 座席64作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席65データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 396, 'y' => 528]];
+
+        // 座席65作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画24データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画24作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席66データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 506, 'y' => 496]];
+
+        // 座席66作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席67データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 539, 'y' => 465]];
+
+        // 座席67作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席68データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 572, 'y' => 496]];
+
+        // 座席68作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席69データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 539, 'y' => 528]];
+
+        // 座席69作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画25データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画25作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席70データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 644, 'y' => 496]];
+
+        // 座席70作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席71データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 677, 'y' => 465]];
+
+        // 座席71作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席72データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 709, 'y' => 496]];
+
+        // 座席72作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席73データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 677, 'y' => 528]];
+
+        // 座席73作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画26データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画26作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席74データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 783, 'y' => 496]];
+
+        // 座席74作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席71データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 815, 'y' => 464]];
+
+        // 座席75作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席75データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 848, 'y' => 496]];
+
+        // 座席76作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席77データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 817, 'y' => 528]];
+
+        // 座席77作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画27データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画27作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席78データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 921, 'y' => 496]];
+
+        // 座席78作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席79データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 954, 'y' => 464]];
+
+        // 座席79作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席80データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 988, 'y' => 496]];
+
+        // 座席80作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席81データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 956, 'y' => 528]];
+
+        // 座席81作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | 3階作成
+        |--------------------------------------------------------------------------
+        */
+        //*** 部屋3データ ***/
+        $room = [
+            'name' => '機械学習部屋',
+            'timetable' =>
+            [
+                '00:00' => 'study', '00:50' => 'break',
+                '01:00' => 'study', '01:50' => 'break',
+                '02:00' => 'study', '02:50' => 'break',
+                '03:00' => 'study', '03:50' => 'break',
+                '04:00' => 'study', '04:50' => 'break',
+                '05:00' => 'study', '05:50' => 'break',
+                '06:00' => 'study', '06:50' => 'break',
+                '07:00' => 'study', '07:50' => 'break',
+                '08:00' => 'study', '08:50' => 'break',
+                '09:00' => 'study', '09:50' => 'break',
+                '10:00' => 'study', '10:50' => 'break',
+                '11:00' => 'study', '11:50' => 'break',
+                '12:00' => 'study', '12:50' => 'break',
+                '13:00' => 'study', '13:50' => 'break',
+                '14:00' => 'study', '14:50' => 'break',
+                '15:00' => 'study', '15:50' => 'break',
+                '16:00' => 'study', '16:50' => 'break',
+                '17:00' => 'study', '17:50' => 'break',
+                '18:00' => 'study', '18:50' => 'break',
+                '19:00' => 'study', '19:50' => 'break',
+                '20:00' => 'study', '20:50' => 'break',
+                '21:00' => 'study', '21:50' => 'break',
+                '22:00' => 'study', '22:50' => 'break',
+                '23:00' => 'study', '23:50' => 'break',
+            ]
         ];
 
-        // 二人がけ休憩室
-        $lounge2_positions = [
-            ['x' => 135, 'y' => 295], ['x' => 135, 'y' => 355],
-            ['x' => 135, 'y' => 495], ['x' => 135, 'y' => 555]
+        // 部屋3作成
+        $created_room = Room::create(['name' => $room['name'], 'timetable' => $room['timetable']]);
+
+
+
+        //*** 区画1データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画1作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席1データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 412, 'y' => 117]];
+
+        // 座席1作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席2データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 452, 'y' => 117]];
+
+        // 座席2作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席3データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 492, 'y' => 117]];
+
+        // 座席3作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画2データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画2作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席4データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 546, 'y' => 117]];
+
+        // 座席4作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席5データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 587, 'y' => 117]];
+
+        // 座席5作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席6データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 628, 'y' => 117]];
+
+        // 座席6作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画3データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画3作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席7データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 721, 'y' => 117]];
+
+        // 座席7作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席8データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 762, 'y' => 117]];
+
+        // 座席8作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席9データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 803, 'y' => 117]];
+
+        // 座席9作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画4データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画4作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席10データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 858, 'y' => 117]];
+
+        // 座席10作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席11データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 898, 'y' => 117]];
+
+        // 座席11作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席12データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 939, 'y' => 117]];
+
+        // 座席12作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画5データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画5作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席13データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 412, 'y' => 172]];
+
+        // 座席13作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席14データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 452, 'y' => 172]];
+
+        // 座席15作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席15データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 492, 'y' => 172]];
+
+        // 座席15作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画6データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画6作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席16データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 546, 'y' => 172]];
+
+        // 座席16作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席17データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 587, 'y' => 172]];
+
+        // 座席17作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席18データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 628, 'y' => 172]];
+
+        // 座席18作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画7データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画7作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席19データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 722, 'y' => 172]];
+
+        // 座席19作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席20データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 763, 'y' => 172]];
+
+        // 座席20作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席21データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 804, 'y' => 172]];
+
+        // 座席21作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画8データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画8作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席22データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 859, 'y' => 172]];
+
+        // 座席22作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席23データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 899, 'y' => 172]];
+
+        // 座席23作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席24データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 940, 'y' => 172]];
+
+        // 座席24作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画9データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画9作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席25データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 413, 'y' => 227]];
+
+        // 座席25作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席26データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 453, 'y' => 227]];
+
+        // 座席26作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席27データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 493, 'y' => 227]];
+
+        // 座席27作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画10データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画10作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席28データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 547, 'y' => 227]];
+
+        // 座席28作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席29データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 588, 'y' => 227]];
+
+        // 座席29作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席30データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 629, 'y' => 227]];
+
+        // 座席30作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画11データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画11作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席31データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 723, 'y' => 227]];
+
+        // 座席31作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席32データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 764, 'y' => 228]];
+
+        // 座席32作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席33データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 805, 'y' => 228]];
+
+        // 座席33作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画12データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画12作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席34データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 860, 'y' => 228]];
+
+        // 座席34作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席35データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 900, 'y' => 228]];
+
+        // 座席35作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席36データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 942, 'y' => 228]];
+
+        // 座席36作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画13データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画13作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席37データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 410, 'y' => 286]];
+
+        // 座席37作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席38データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 451, 'y' => 286]];
+
+        // 座席38作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席39データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 491, 'y' => 286]];
+
+        // 座席39作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画14データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画14作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席40データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 548, 'y' => 286]];
+
+        // 座席40作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席41データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 589, 'y' => 286]];
+
+        // 座席41作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席42データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 630, 'y' => 286]];
+
+        // 座席42作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画15データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画15作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席43データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 723, 'y' => 285]];
+
+        // 座席43作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席44データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 764, 'y' => 285]];
+
+        // 座席44作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席45データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 805, 'y' => 285]];
+
+        // 座席45作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画16データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画16作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席46データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 861, 'y' => 285]];
+
+        // 座席46作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席47データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 902, 'y' => 285]];
+
+        // 座席47作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席48データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 943, 'y' => 285]];
+
+        // 座席48作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画17データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画17作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席49データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 100, 'y' => 80]];
+
+        // 座席49作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画18データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画18作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席50データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 235, 'y' => 80]];
+
+        // 座席50作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席51データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 299, 'y' => 80]];
+
+        // 座席51作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画19データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画19作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席52データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 231, 'y' => 161]];
+
+        // 座席52作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席53データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 295, 'y' => 161]];
+
+        // 座席53作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画20データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画20作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席54データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 228, 'y' => 245]];
+
+        // 座席54作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席55データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 291, 'y' => 245]];
+
+        // 座席55作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画21データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画21作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席56データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 225, 'y' => 332]];
+
+        // 座席56作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席57データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 290, 'y' => 332]];
+
+        // 座席57作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画22データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画22作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席58データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 212, 'y' => 462]];
+
+        // 座席58作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席59データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 237, 'y' => 436]];
+
+        // 座席59作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席60データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 270, 'y' => 436]];
+
+        // 座席60作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席61データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 295, 'y' => 463]];
+
+        // 座席61作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画23データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画23作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席62データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 364, 'y' => 496]];
+
+        // 座席62作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席63データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 397, 'y' => 464]];
+
+        // 座席63作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席64データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 429, 'y' => 496]];
+
+        // 座席64作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席65データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 396, 'y' => 528]];
+
+        // 座席65作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画24データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画24作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席66データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 506, 'y' => 496]];
+
+        // 座席66作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席67データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 539, 'y' => 465]];
+
+        // 座席67作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席68データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 572, 'y' => 496]];
+
+        // 座席68作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席69データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 539, 'y' => 528]];
+
+        // 座席69作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画25データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画25作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席70データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 644, 'y' => 496]];
+
+        // 座席70作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席71データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 677, 'y' => 465]];
+
+        // 座席71作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席72データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 709, 'y' => 496]];
+
+        // 座席72作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席73データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 677, 'y' => 528]];
+
+        // 座席73作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画26データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画26作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席74データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 783, 'y' => 496]];
+
+        // 座席74作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席71データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 815, 'y' => 464]];
+
+        // 座席75作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席75データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 848, 'y' => 496]];
+
+        // 座席76作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席77データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 817, 'y' => 528]];
+
+        // 座席77作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画27データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画27作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席78データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 921, 'y' => 496]];
+
+        // 座席78作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席79データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 954, 'y' => 464]];
+
+        // 座席79作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席80データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 988, 'y' => 496]];
+
+        // 座席80作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席81データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 956, 'y' => 528]];
+
+        // 座席81作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | 4階作成
+        |--------------------------------------------------------------------------
+        */
+        //*** 部屋4データ ***/
+        $room = [
+            'name' => 'マイコン部屋',
+            'timetable' =>
+            [
+                '00:00' => 'study', '00:50' => 'break',
+                '01:00' => 'study', '01:50' => 'break',
+                '02:00' => 'study', '02:50' => 'break',
+                '03:00' => 'study', '03:50' => 'break',
+                '04:00' => 'study', '04:50' => 'break',
+                '05:00' => 'study', '05:50' => 'break',
+                '06:00' => 'study', '06:50' => 'break',
+                '07:00' => 'study', '07:50' => 'break',
+                '08:00' => 'study', '08:50' => 'break',
+                '09:00' => 'study', '09:50' => 'break',
+                '10:00' => 'study', '10:50' => 'break',
+                '11:00' => 'study', '11:50' => 'break',
+                '12:00' => 'study', '12:50' => 'break',
+                '13:00' => 'study', '13:50' => 'break',
+                '14:00' => 'study', '14:50' => 'break',
+                '15:00' => 'study', '15:50' => 'break',
+                '16:00' => 'study', '16:50' => 'break',
+                '17:00' => 'study', '17:50' => 'break',
+                '18:00' => 'study', '18:50' => 'break',
+                '19:00' => 'study', '19:50' => 'break',
+                '20:00' => 'study', '20:50' => 'break',
+                '21:00' => 'study', '21:50' => 'break',
+                '22:00' => 'study', '22:50' => 'break',
+                '23:00' => 'study', '23:50' => 'break',
+            ]
         ];
 
-        // 四人がけ休憩室
-        $lounge4_positions = [
-            ['x' => 360, 'y' => 475], ['x' => 540, 'y' => 475], ['x' => 720, 'y' => 475]
+        // 部屋4作成
+        $created_room = Room::create(['name' => $room['name'], 'timetable' => $room['timetable']]);
+
+
+
+        //*** 区画1データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画1作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席1データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 412, 'y' => 117]];
+
+        // 座席1作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席2データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 452, 'y' => 117]];
+
+        // 座席2作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席3データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 492, 'y' => 117]];
+
+        // 座席3作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画2データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画2作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席4データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 546, 'y' => 117]];
+
+        // 座席4作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席5データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 587, 'y' => 117]];
+
+        // 座席5作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席6データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 628, 'y' => 117]];
+
+        // 座席6作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画3データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画3作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席7データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 721, 'y' => 117]];
+
+        // 座席7作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席8データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 762, 'y' => 117]];
+
+        // 座席8作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席9データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 803, 'y' => 117]];
+
+        // 座席9作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画4データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画4作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席10データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 858, 'y' => 117]];
+
+        // 座席10作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席11データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 898, 'y' => 117]];
+
+        // 座席11作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席12データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 939, 'y' => 117]];
+
+        // 座席12作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画5データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画5作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席13データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 412, 'y' => 172]];
+
+        // 座席13作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席14データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 452, 'y' => 172]];
+
+        // 座席15作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席15データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 492, 'y' => 172]];
+
+        // 座席15作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画6データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画6作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席16データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 546, 'y' => 172]];
+
+        // 座席16作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席17データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 587, 'y' => 172]];
+
+        // 座席17作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席18データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 628, 'y' => 172]];
+
+        // 座席18作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画7データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画7作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席19データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 722, 'y' => 172]];
+
+        // 座席19作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席20データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 763, 'y' => 172]];
+
+        // 座席20作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席21データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 804, 'y' => 172]];
+
+        // 座席21作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画8データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画8作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席22データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 859, 'y' => 172]];
+
+        // 座席22作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席23データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 899, 'y' => 172]];
+
+        // 座席23作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席24データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 940, 'y' => 172]];
+
+        // 座席24作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画9データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画9作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席25データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 413, 'y' => 227]];
+
+        // 座席25作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席26データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 453, 'y' => 227]];
+
+        // 座席26作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席27データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 493, 'y' => 227]];
+
+        // 座席27作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画10データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画10作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席28データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 547, 'y' => 227]];
+
+        // 座席28作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席29データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 588, 'y' => 227]];
+
+        // 座席29作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席30データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 629, 'y' => 227]];
+
+        // 座席30作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画11データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画11作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席31データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 723, 'y' => 227]];
+
+        // 座席31作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席32データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 764, 'y' => 228]];
+
+        // 座席32作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席33データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 805, 'y' => 228]];
+
+        // 座席33作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画12データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画12作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席34データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 860, 'y' => 228]];
+
+        // 座席34作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席35データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 900, 'y' => 228]];
+
+        // 座席35作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席36データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 942, 'y' => 228]];
+
+        // 座席36作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画13データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画13作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席37データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 410, 'y' => 286]];
+
+        // 座席37作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席38データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 451, 'y' => 286]];
+
+        // 座席38作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席39データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 491, 'y' => 286]];
+
+        // 座席39作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画14データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画14作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席40データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 548, 'y' => 286]];
+
+        // 座席40作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席41データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 589, 'y' => 286]];
+
+        // 座席41作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席42データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 630, 'y' => 286]];
+
+        // 座席42作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画15データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画15作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席43データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 723, 'y' => 285]];
+
+        // 座席43作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席44データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 764, 'y' => 285]];
+
+        // 座席44作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席45データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 805, 'y' => 285]];
+
+        // 座席45作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画16データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画16作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席46データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 861, 'y' => 285]];
+
+        // 座席46作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席47データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 902, 'y' => 285]];
+
+        // 座席47作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席48データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 943, 'y' => 285]];
+
+        // 座席48作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画17データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画17作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席49データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 100, 'y' => 80]];
+
+        // 座席49作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画18データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画18作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席50データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 235, 'y' => 80]];
+
+        // 座席50作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席51データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 299, 'y' => 80]];
+
+        // 座席51作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画19データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画19作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席52データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 231, 'y' => 161]];
+
+        // 座席52作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席53データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 295, 'y' => 161]];
+
+        // 座席53作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画20データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画20作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席54データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 228, 'y' => 245]];
+
+        // 座席54作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席55データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 291, 'y' => 245]];
+
+        // 座席55作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画21データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画21作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席56データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 225, 'y' => 332]];
+
+        // 座席56作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席57データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 290, 'y' => 332]];
+
+        // 座席57作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画22データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画22作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席58データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 212, 'y' => 462]];
+
+        // 座席58作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席59データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 237, 'y' => 436]];
+
+        // 座席59作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席60データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 270, 'y' => 436]];
+
+        // 座席60作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席61データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 295, 'y' => 463]];
+
+        // 座席61作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画23データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画23作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席62データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 364, 'y' => 496]];
+
+        // 座席62作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席63データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 397, 'y' => 464]];
+
+        // 座席63作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席64データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 429, 'y' => 496]];
+
+        // 座席64作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席65データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 396, 'y' => 528]];
+
+        // 座席65作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画24データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画24作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席66データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 506, 'y' => 496]];
+
+        // 座席66作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席67データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 539, 'y' => 465]];
+
+        // 座席67作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席68データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 572, 'y' => 496]];
+
+        // 座席68作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席69データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 539, 'y' => 528]];
+
+        // 座席69作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画25データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画25作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席70データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 644, 'y' => 496]];
+
+        // 座席70作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席71データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 677, 'y' => 465]];
+
+        // 座席71作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席72データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 709, 'y' => 496]];
+
+        // 座席72作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席73データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 677, 'y' => 528]];
+
+        // 座席73作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画26データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画26作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席74データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 783, 'y' => 496]];
+
+        // 座席74作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席71データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 815, 'y' => 464]];
+
+        // 座席75作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席75データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 848, 'y' => 496]];
+
+        // 座席76作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席77データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 817, 'y' => 528]];
+
+        // 座席77作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画27データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画27作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席78データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 921, 'y' => 496]];
+
+        // 座席78作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席79データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 954, 'y' => 464]];
+
+        // 座席79作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席80データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 988, 'y' => 496]];
+
+        // 座席80作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席81データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 956, 'y' => 528]];
+
+        // 座席81作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | 5階作成
+        |--------------------------------------------------------------------------
+        */
+        //*** 部屋5データ ***/
+        $room = [
+            'name' => 'イベントホール',
+            'timetable' =>
+            [
+                '00:00' => 'study',
+            ]
         ];
 
-        // 八人がけ休憩室
-        $lounge8_positions = [
-            ['x' => 945, 'y' => 475]
-        ];
+        // 部屋5作成
+        $created_room = Room::create(['name' => $room['name'], 'timetable' => $room['timetable']]);
 
-        // データ作成処理
-        foreach ($rooms as $data) {
-            // 部屋作成
-            $room = Room::create(['name' => $data['name'], 'timetable' => $data['timetable']]);
 
-            // 自習室の座席配置
-            foreach ($study_positions as $base_position) {
-                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'name' => $room->name . 'の区画', 'role' => 'study']);
 
-                $x = $base_position['x'];
-                $y = $base_position['y'];
+        //*** 区画1データ ***/
+        $section = ['role' => 'study'];
 
-                for ($i = 0; $i < 6; $i++) {
-                    $position = ['x' => ($x + (50 * ($i % 3))), 'y' => $y];
-                    Seat::create(['section_id' => $section->id, 'position' => $position]);
+        // 区画1作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
 
-                    if ($i == 2) {
-                        $x = $base_position['x'];
-                        $y += 70;
-                    }
-                }
-            }
 
-            // 三人がけ休憩室の座席配置
-            foreach ($lounge3_positions as $base_positions) {
-                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'name' => $room->name . 'の区画', 'role' => 'lounge']);
+        //*** 座席1データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 412, 'y' => 117]];
 
-                foreach ($base_positions as $base_position) {
-                    $position = ['x' => $base_position['x'], 'y' => $base_position['y']];
-                    Seat::create(['section_id' => $section->id, 'position' => $position]);
-                }
-            }
+        // 座席1作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
 
-            // 二人がけ休憩室の座席配置
-            foreach ($lounge2_positions as $base_position) {
-                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'name' => $room->name . 'の区画', 'role' => 'lounge']);
+        //*** 座席2データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 452, 'y' => 117]];
 
-                $x = $base_position['x'];
-                $y = $base_position['y'];
+        // 座席2作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
 
-                for ($i = 0; $i < 2; $i++) {
-                    $position = ['x' => $x, 'y' => $y];
-                    Seat::create(['section_id' => $section->id, 'position' => $position]);
+        //*** 座席3データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 492, 'y' => 117]];
 
-                    $x += 90;
-                }
-            }
+        // 座席3作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
 
-            // 四人がけ休憩室の座席配置
-            foreach ($lounge4_positions as $base_position) {
-                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'name' => $room->name . 'の区画', 'role' => 'lounge']);
 
-                $x = $base_position['x'];
-                $y = $base_position['y'];
 
-                for ($i = 0; $i < 4; $i++) {
-                    $position = ['x' => $x, 'y' => $y];
-                    Seat::create(['section_id' => $section->id, 'position' => $position]);
+        //*** 区画2データ ***/
+        $section = ['role' => 'study'];
 
-                    if ($i == 0) {
-                        $x -= 55;
-                        $y += 50;
-                    } else if ($i == 1) {
-                        $x += 110;
-                    } else if ($i == 2) {
-                        $x -= 55;
-                        $y += 50;
-                    }
-                }
-            }
+        // 区画2作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
 
-            // 八人がけ休憩室の座席配置
-            foreach ($lounge8_positions as $base_position) {
-                $section = Section::create(['uuid' => Str::uuid(), 'room_id' => $room->id, 'name' => $room->name . 'の区画', 'role' => 'lounge']);
 
-                $x = $base_position['x'];
-                $y = $base_position['y'];
+        //*** 座席4データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 546, 'y' => 117]];
 
-                for ($i = 0; $i < 8; $i++) {
-                    $position = ['x' => $x, 'y' => $y];
-                    Seat::create(['section_id' => $section->id, 'position' => $position]);
+        // 座席4作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
 
-                    if ($i == 0) {
-                        $x -= 50;
-                        $y += 10;
-                    } else if ($i == 1) {
-                        $x += 100;
-                    } else if ($i == 2) {
-                        $x -= 130;
-                        $y += 40;
-                    } else if ($i == 3) {
-                        $x += 160;
-                    } else if ($i == 4) {
-                        $x -= 130;
-                        $y += 40;
-                    } else if ($i == 5) {
-                        $x += 100;
-                    } else if ($i == 6) {
-                        $x -= 50;
-                        $y += 10;
-                    }
-                }
-            }
-        }
+        //*** 座席5データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 587, 'y' => 117]];
+
+        // 座席5作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席6データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 628, 'y' => 117]];
+
+        // 座席6作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画3データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画3作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席7データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 721, 'y' => 117]];
+
+        // 座席7作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席8データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 762, 'y' => 117]];
+
+        // 座席8作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席9データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 803, 'y' => 117]];
+
+        // 座席9作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画4データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画4作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席10データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 858, 'y' => 117]];
+
+        // 座席10作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席11データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 898, 'y' => 117]];
+
+        // 座席11作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席12データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 939, 'y' => 117]];
+
+        // 座席12作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画5データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画5作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席13データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 412, 'y' => 172]];
+
+        // 座席13作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席14データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 452, 'y' => 172]];
+
+        // 座席15作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席15データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 492, 'y' => 172]];
+
+        // 座席15作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画6データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画6作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席16データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 546, 'y' => 172]];
+
+        // 座席16作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席17データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 587, 'y' => 172]];
+
+        // 座席17作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席18データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 628, 'y' => 172]];
+
+        // 座席18作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画7データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画7作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席19データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 722, 'y' => 172]];
+
+        // 座席19作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席20データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 763, 'y' => 172]];
+
+        // 座席20作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席21データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 804, 'y' => 172]];
+
+        // 座席21作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画8データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画8作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席22データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 859, 'y' => 172]];
+
+        // 座席22作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席23データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 899, 'y' => 172]];
+
+        // 座席23作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席24データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 940, 'y' => 172]];
+
+        // 座席24作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画9データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画9作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席25データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 413, 'y' => 227]];
+
+        // 座席25作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席26データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 453, 'y' => 227]];
+
+        // 座席26作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席27データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 493, 'y' => 227]];
+
+        // 座席27作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画10データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画10作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席28データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 547, 'y' => 227]];
+
+        // 座席28作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席29データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 588, 'y' => 227]];
+
+        // 座席29作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席30データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 629, 'y' => 227]];
+
+        // 座席30作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画11データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画11作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席31データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 723, 'y' => 227]];
+
+        // 座席31作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席32データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 764, 'y' => 228]];
+
+        // 座席32作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席33データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 805, 'y' => 228]];
+
+        // 座席33作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画12データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画12作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席34データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 860, 'y' => 228]];
+
+        // 座席34作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席35データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 900, 'y' => 228]];
+
+        // 座席35作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席36データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 942, 'y' => 228]];
+
+        // 座席36作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画13データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画13作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席37データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 410, 'y' => 286]];
+
+        // 座席37作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席38データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 451, 'y' => 286]];
+
+        // 座席38作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席39データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 491, 'y' => 286]];
+
+        // 座席39作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画14データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画14作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席40データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 548, 'y' => 286]];
+
+        // 座席40作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席41データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 589, 'y' => 286]];
+
+        // 座席41作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席42データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 630, 'y' => 286]];
+
+        // 座席42作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画15データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画15作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席43データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 723, 'y' => 285]];
+
+        // 座席43作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席44データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 764, 'y' => 285]];
+
+        // 座席44作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席45データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 805, 'y' => 285]];
+
+        // 座席45作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画16データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画16作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席46データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 861, 'y' => 285]];
+
+        // 座席46作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席47データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 902, 'y' => 285]];
+
+        // 座席47作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席48データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 943, 'y' => 285]];
+
+        // 座席48作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画17データ ***/
+        $section = ['role' => 'study'];
+
+        // 区画17作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席49データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 100, 'y' => 80]];
+
+        // 座席49作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画18データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画18作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席50データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 235, 'y' => 80]];
+
+        // 座席50作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席51データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 299, 'y' => 80]];
+
+        // 座席51作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画19データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画19作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席52データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 231, 'y' => 161]];
+
+        // 座席52作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席53データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 295, 'y' => 161]];
+
+        // 座席53作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画20データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画20作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席54データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 228, 'y' => 245]];
+
+        // 座席54作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席55データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 291, 'y' => 245]];
+
+        // 座席55作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画21データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画21作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席56データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 225, 'y' => 332]];
+
+        // 座席56作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席57データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 290, 'y' => 332]];
+
+        // 座席57作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画22データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画22作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席58データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 212, 'y' => 462]];
+
+        // 座席58作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席59データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 237, 'y' => 436]];
+
+        // 座席59作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席60データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 270, 'y' => 436]];
+
+        // 座席60作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席61データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 295, 'y' => 463]];
+
+        // 座席61作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画23データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画23作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席62データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 364, 'y' => 496]];
+
+        // 座席62作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席63データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 397, 'y' => 464]];
+
+        // 座席63作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席64データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 429, 'y' => 496]];
+
+        // 座席64作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席65データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 396, 'y' => 528]];
+
+        // 座席65作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画24データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画24作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席66データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 506, 'y' => 496]];
+
+        // 座席66作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席67データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 539, 'y' => 465]];
+
+        // 座席67作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席68データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 572, 'y' => 496]];
+
+        // 座席68作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席69データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 539, 'y' => 528]];
+
+        // 座席69作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画25データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画25作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席70データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 644, 'y' => 496]];
+
+        // 座席70作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席71データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 677, 'y' => 465]];
+
+        // 座席71作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席72データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 709, 'y' => 496]];
+
+        // 座席72作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席73データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 677, 'y' => 528]];
+
+        // 座席73作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画26データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画26作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席74データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 783, 'y' => 496]];
+
+        // 座席74作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席71データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 815, 'y' => 464]];
+
+        // 座席75作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席75データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 848, 'y' => 496]];
+
+        // 座席76作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席77データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 817, 'y' => 528]];
+
+        // 座席77作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+
+
+        //*** 区画27データ ***/
+        $section = ['role' => 'lounge'];
+
+        // 区画27作成
+        $created_section = Section::create(['uuid' => Str::uuid(), 'room_id' => $created_room->id, 'name' => $created_room->name . 'の区画', 'role' => $section['role']]);
+
+
+        //*** 座席78データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 921, 'y' => 496]];
+
+        // 座席78作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席79データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 954, 'y' => 464]];
+
+        // 座席79作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席80データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 988, 'y' => 496]];
+
+        // 座席80作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
+
+        //*** 座席81データ ***/
+        $seat = ['size' => 25, 'position' => ['x' => 956, 'y' => 528]];
+
+        // 座席81作成
+        Seat::create(['section_id' => $created_section->id, 'size' => $seat['size'], 'position' => $seat['position']]);
     }
 }
