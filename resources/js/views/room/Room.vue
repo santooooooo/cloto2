@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-layout id="room">
     <!-- ローディング画面 -->
     <v-overlay :value="isLoading">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
@@ -22,7 +22,7 @@
 
     <v-flex>
       <!-- 教室 -->
-      <v-row justify="center" class="pt-5" id="room">
+      <v-row justify="center" class="pt-5">
         <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
       </v-row>
 
@@ -638,5 +638,7 @@ export default {
 
 #room {
   min-height: 100vh;
+  background-image: url('/storage/system/room_background.png');
+  background-size: cover;
 }
 </style>

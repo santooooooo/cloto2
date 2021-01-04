@@ -1,5 +1,5 @@
 <template>
-  <v-layout class="floor">
+  <v-layout id="floor">
     <v-flex>
       <!-- ローディング画面 -->
       <v-overlay :value="isLoading">
@@ -171,8 +171,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.floor {
+#floor {
   min-height: 100vh;
-  background-color: #caffd7;
+  background-image: url('/storage/system/room_background.png');
+  background-size: cover;
 }
 </style>
