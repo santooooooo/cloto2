@@ -38,8 +38,6 @@ class PreRegisterMail extends Mailable
             ->to($this->content['to'], $this->content['to_name'])
             ->from($this->content['from'], $this->content['from_name'])
             ->subject($this->content['subject'])
-            ->with([
-                'content' => $this->content,
-            ]);
+            ->with(['content' => $this->content]);
     }
 }
