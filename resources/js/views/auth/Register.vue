@@ -8,10 +8,14 @@
               <!-- エラーメッセージ -->
               <v-alert type="error" v-if="registerErrors">
                 <span v-if="registerErrors.username">
-                  <span v-for="msg in registerErrors.username" :key="msg">{{ msg }}</span>
+                  <span v-for="(message, index) in registerErrors.username" :key="index">
+                    {{ message }}
+                  </span>
                 </span>
                 <span v-if="registerErrors.email">
-                  <span v-for="msg in registerErrors.email" :key="msg">{{ msg }}</span>
+                  <span v-for="(message, index) in registerErrors.email" :key="index">
+                    {{ message }}
+                  </span>
                 </span>
               </v-alert>
 

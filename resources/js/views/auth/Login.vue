@@ -7,7 +7,9 @@
             <v-col>
               <!-- エラーメッセージ -->
               <v-alert type="error" v-if="loginErrors">
-                <span v-for="msg in loginErrors.loginField" :key="msg">{{ msg }}</span>
+                <span v-for="(message, index) in loginErrors.loginField" :key="index">
+                  {{ message }}
+                </span>
               </v-alert>
 
               <!-- ロゴ -->
