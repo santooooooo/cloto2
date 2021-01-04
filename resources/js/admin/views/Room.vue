@@ -26,7 +26,7 @@
                       ratio-x="9"
                       ratio-y="5"
                       output-type="png"
-                      @input="editRoomForm.data.background = $event"
+                      @input="editRoomForm.background = $event"
                       v-if="editRoomForm.dialog"
                     />
 
@@ -131,6 +131,7 @@ export default {
         loading: false,
         index: -1,
         data: {},
+        background: null, // 背景画像データ
         validation: {
           valid: false,
           nameRules: [(v) => !!v || '部屋名は必須項目です。'],
@@ -238,8 +239,10 @@ export default {
 
         var input = new FormData();
         input.append('name', this.editRoomForm.data.name);
-        input.append('background', this.editRoomForm.data.background);
         input.append('timetable', JSON.stringify(timetable));
+        if (this.editRoomForm.background !== null) {
+          input.append('background', this.editRoomForm.background);
+        }
 
         // 部屋データ保存処理
         var response = await this.$http.post(

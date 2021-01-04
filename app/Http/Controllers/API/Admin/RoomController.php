@@ -11,8 +11,6 @@ class RoomController extends Controller
 {
     // 背景保存ディレクトリ
     const BACKGROUND_STORE_DIR = 'public/system/room/';
-    // デフォルト背景名
-    const DEFAULT_BACKGROUND_FILENAME = 'default.jpg';
 
 
     /** @var Room */
@@ -56,17 +54,8 @@ class RoomController extends Controller
 
         // 背景の保存
         if (!empty($request->file('background'))) {
-            // 削除処理
-            if ($edit_room->background != self::DEFAULT_BACKGROUND_FILENAME) {
-                // 初期背景以外の場合には登録中の背景を削除
-                Storage::delete(self::BACKGROUND_STORE_DIR . $edit_room->background);
-            }
-
             // 保存処理
-            $filename = $request->file('background')->hashName();
-            $request->file('background')->storeAs(self::BACKGROUND_STORE_DIR, $filename);
-
-            $data['background'] = $filename;
+            $request->file('background')->storeAs(self::BACKGROUND_STORE_DIR, 'room_' . $edit_room->id . '.png');
         }
 
 
