@@ -97,6 +97,7 @@ export default {
     noChangeCropRatio: Boolean, // アスペクト比の変更許可
     ratioX: String, // 横の比
     ratioY: String, // 縦の比
+    outputType: String, // 出力形式
   },
   data: function () {
     return {
@@ -107,13 +108,13 @@ export default {
       option: {
         // vue-cropperの設定
         size: 1,
-        outputType: 'jpeg',
+        outputType: this.outputType || 'jpeg',
         autoCrop: true,
         autoCropWidth: 1024,
         autoCropHeight: 1024,
         centerBox: true,
         fixed: this.noChangeCropRatio,
-        fixedNumber: [this.ratioX, this.ratioY],
+        fixedNumber: [this.ratioX || 1, this.ratioY || 1],
         fixedBox: false,
         canMove: true,
       },

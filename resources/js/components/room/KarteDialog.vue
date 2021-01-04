@@ -67,7 +67,7 @@
               <v-col>
                 <v-card-text class="pa-0 white--text title font-weight-bold"> 画像 </v-card-text>
 
-                <ImageInput @input="karteForm.image = $event" />
+                <ImageInput output-type="png" @input="karteForm.image = $event" />
               </v-col>
             </v-row>
 

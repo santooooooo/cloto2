@@ -25,6 +25,7 @@
                       :no-change-crop-ratio="true"
                       ratio-x="9"
                       ratio-y="5"
+                      output-type="png"
                       @input="editRoomForm.data.background = $event"
                       v-if="editRoomForm.dialog"
                     />
