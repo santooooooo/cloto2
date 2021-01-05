@@ -2,12 +2,15 @@
   <div fluid class="index">
     <v-container class="upper">
       <v-container>
-        <Carousel></Carousel>
         <v-row justify="center" class="mt-12">
-          <router-link :to="{ name: 'preRegister' }">
-            <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
-          </router-link>
+          <h2>創る、繋がる、好きになる</h2>
         </v-row>
+        <div style="text-align:center" class="mt-12">
+          <p>Vision</p>
+          <h3>世界の学習プラットフォームになる。</h3>
+          <p>Mission</p>   
+          <h3>学びを多様化し、人々の想像力と新結合で地球を豊かにする。</h3>
+        </div>
       </v-container>
     </v-container>
     <v-container class="content">
@@ -95,6 +98,7 @@ export default {
   background-color: $light-gray;
   .upper {
     max-width: 100%;
+    height: 700px;
     background-color: $primary;
     color: $white;
     position: relative;
