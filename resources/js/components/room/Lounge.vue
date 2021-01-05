@@ -455,9 +455,9 @@ export default {
 
       //*** 通知音 ***//
       notificationSounds: {
-        join: new Audio(this.$storage('system') + 'join_notification.mp3'),
-        leave: new Audio(this.$storage('system') + 'leave_notification.mp3'),
-        receiveMessage: new Audio(this.$storage('system') + 'message_notification.mp3'),
+        join: new Audio(this.$storage('system') + 'join_lounge.mp3'),
+        leave: new Audio(this.$storage('system') + 'leave_lounge.mp3'),
+        receiveMessage: new Audio(this.$storage('system') + 'message_receive.mp3'),
       },
 
       //*** プロフィール ***//

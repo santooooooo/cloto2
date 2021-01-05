@@ -61,9 +61,9 @@
         Twitter
       </v-btn>
 
-      <v-btn color="white" text rounded exact class="my-2" href="mailto:contact@cloto.jp">
-        E-Mail
-      </v-btn>
+      <v-col class="py-4 text-center white--text" cols="12">
+        {{ new Date().getFullYear() }} — <strong>© CLOTO Team</strong>
+      </v-col>
     </v-row>
 
     <v-row justify="center" no-gutters class="black white--text" v-if="isRelease && authCheck">
@@ -101,10 +101,6 @@
         target="_blank"
       >
         Twitter
-      </v-btn>
-
-      <v-btn color="white" text rounded exact class="my-2" href="mailto:contact@cloto.jp">
-        E-Mail
       </v-btn>
 
       <v-col class="py-4 text-center white--text" cols="12">

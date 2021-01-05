@@ -1,8 +1,8 @@
 const Storage = require('@/consts/storage').getStoragePath;
 
 // 通知音
-const onSound = new Audio(Storage('system') + 'notification_sound_on.mp3');
-const offSound = new Audio(Storage('system') + 'notification_sound_off.mp3');
+const onSound = new Audio(Storage('system') + 'sound_on.mp3');
+const offSound = new Audio(Storage('system') + 'sound_off.mp3');
 onSound.volume = 0.6;
 offSound.volume = 0.6;
 
@@ -57,13 +57,19 @@ const mutations = {
     }
     state.overlay.timeout = null;
   },
-  switchSound(state) {
-    if (state.isSoundOn) {
-      offSound.play();
-      state.isSoundOn = false;
+  switchSound(state, option) {
+    if (option === null) {
+      if (state.isSoundOn) {
+        state.isSoundOn = false;
+        offSound.play();
+      } else {
+        state.isSoundOn = true;
+        onSound.play();
+      }
     } else {
-      onSound.play();
-      state.isSoundOn = true;
+      // 強制的に状態変更する場合（ログイン時など）
+      state.isSoundOn = option.isOn;
+      option.sound.play();
     }
   },
 };
@@ -97,8 +103,8 @@ const actions = {
   hideOverlay(context) {
     context.commit('clearOverlay');
   },
-  switchSound(context) {
-    context.commit('switchSound');
+  switchSound(context, option) {
+    context.commit('switchSound', option || null);
   },
 };
 
