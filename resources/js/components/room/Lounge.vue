@@ -599,8 +599,14 @@ export default {
 
       // 他ユーザー退出イベント
       this.call.on('peerLeave', (peerId) => {
-        if (this.screenSharing.stream !== null && peerId === this.screenSharing.stream.peerId) {
-          // 参加者の画面共有の停止
+        if (this.screenSharing.peer !== null && peerId === this.screenSharing.peer.id) {
+          // 自分の画面共有が停止された場合
+          this.screenSharing.peer = null;
+        } else if (
+          this.screenSharing.stream !== null &&
+          peerId === this.screenSharing.stream.peerId
+        ) {
+          // 参加者の画面共有が停止された場合
           this.screenSharing.stream = null;
         } else {
           // 参加者の退出
@@ -754,7 +760,6 @@ export default {
 
         // 画面共有用の接続を終了
         this.screenSharing.peer.disconnect();
-        this.screenSharing.peer = null;
       }
     },
 
