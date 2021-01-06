@@ -34,6 +34,7 @@ export default {
     return {
       isOpen: false, // 表示制御
       messages: [], // メッセージ一覧
+      notification: new Audio(this.$storage('system') + 'inquiry_receive.mp3'), // 通知音
       colors: {
         // 色設定
         messageList: {
@@ -70,62 +71,7 @@ export default {
     /**
      * 問い合わせのオープン
      */
-    open: async function () {
-      // 問い合わせの取得
-      var response = await this.$http.get(this.$endpoint('inquiryShow'));
-      this.messages = response.data;
-
-      // 投稿者の変換
-      this.messages.forEach((message) => {
-        message.author = this.setAuthor(message.author);
-      });
-
-      // 現在時刻の取得
-      var date = new Date();
-
-      // 2桁で時間を取得
-      var hour = String(date.getHours());
-      if (hour.length === 1) {
-        hour = '0' + hour;
-      }
-
-      // 2桁で分数を取得
-      var minute = String(date.getMinutes());
-      if (minute.length === 1) {
-        minute = '0' + minute;
-      }
-
-      // 現在時刻
-      var now = hour + '時' + minute + '分';
-
-      // 挨拶メッセージの追加
-      this.messages.unshift(
-        {
-          author: 'support',
-          type: 'text',
-          data: { meta: now, text: 'はじめまして！' },
-        },
-        {
-          author: 'support',
-          type: 'text',
-          data: { meta: now, text: 'CLOTOをご利用いただきありがとうございます。' },
-        },
-        {
-          author: 'support',
-          type: 'text',
-          data: { meta: now, text: '何かお困りごとがありますか？' },
-        }
-      );
-
-      // 問い合わせイベントの受信開始
-      Echo.channel('user-' + this.authUser.id).listen('InquiryEvent', (event) => {
-        this.messages.push({
-          author: this.setAuthor(event.author),
-          type: event.type,
-          data: event.data,
-        });
-      });
-
+    open: function () {
       this.isOpen = true;
     },
 
@@ -133,9 +79,6 @@ export default {
      * 問い合わせのクローズ
      */
     close: function () {
-      // 問い合わせイベントの受信終了
-      Echo.leave('user-' + this.authUser.id);
-
       this.isOpen = false;
     },
 
@@ -178,5 +121,106 @@ export default {
       return show;
     },
   },
+
+  async created() {
+    // 問い合わせの取得
+    var response = await this.$http.get(this.$endpoint('inquiryShow'));
+    this.messages = response.data;
+
+    // 投稿者の変換
+    this.messages.forEach((message) => {
+      message.author = this.setAuthor(message.author);
+    });
+
+    // 現在時刻の取得
+    var date = new Date();
+
+    // 2桁で時間を取得
+    var hour = String(date.getHours());
+    if (hour.length === 1) {
+      hour = '0' + hour;
+    }
+
+    // 2桁で分数を取得
+    var minute = String(date.getMinutes());
+    if (minute.length === 1) {
+      minute = '0' + minute;
+    }
+
+    // 現在時刻
+    var now = hour + '時' + minute + '分';
+
+    // 挨拶メッセージの追加
+    this.messages.unshift(
+      {
+        author: 'support',
+        type: 'text',
+        data: { meta: now, text: 'はじめまして！' },
+      },
+      {
+        author: 'support',
+        type: 'text',
+        data: { meta: now, text: 'CLOTOをご利用いただきありがとうございます。' },
+      },
+      {
+        author: 'support',
+        type: 'text',
+        data: { meta: now, text: '何かお困りごとがありますか？' },
+      }
+    );
+
+    // 問い合わせイベントの受信開始
+    Echo.channel('user-' + this.authUser.id).listen('InquiryEvent', (event) => {
+      this.messages.push({
+        author: this.setAuthor(event.author),
+        type: event.type,
+        data: event.data,
+      });
+
+      // 通知
+      if (!this.isOpen) {
+        if (this.$store.getters['alert/isSoundOn']) {
+          this.notification.play();
+        }
+        const inquiry = document.getElementsByClassName('sc-launcher')[0];
+        inquiry.classList.add('notification');
+      }
+    });
+  },
 };
 </script>
+
+<style lang="scss">
+// 通知
+.notification {
+  animation: scaleChange 3s infinite ease-out;
+  transform-origin: 50% 50%;
+  animation-play-state: running;
+
+  .sc-open-icon {
+    top: 0px;
+    left: 0px;
+  }
+
+  @keyframes scaleChange {
+    0% {
+      transform: scale(0.8, 0.8);
+    }
+    5% {
+      transform: scale(1.2, 1.2);
+    }
+    10% {
+      transform: scale(1, 1);
+    }
+    15% {
+      transform: scale(1.1, 1.1);
+    }
+    20% {
+      transform: scale(1, 1);
+    }
+    100% {
+      transform: scale(1, 1);
+    }
+  }
+}
+</style>
