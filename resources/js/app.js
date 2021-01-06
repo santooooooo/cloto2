@@ -25,6 +25,7 @@ Vue.component('ImageInput', require('./components/form/ImageInput').default);
  */
 import VueHead from 'vue-head';
 import Chat from 'vue-beautiful-chat';
+import VueDragscroll from 'vue-dragscroll';
 import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
@@ -36,6 +37,7 @@ Vue.use(VueHead, {
 });
 
 Vue.use(Chat);
+Vue.use(VueDragscroll);
 
 new Vue({
   router,

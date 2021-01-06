@@ -31,6 +31,30 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
+
+      <div class="pa-2">
+        <!-- 未着席時 -->
+        <v-btn
+          depressed
+          block
+          color="#f6bf00"
+          :to="{ name: 'room', params: { roomId: $route.params.roomId } }"
+          v-if="!this.authUser.seat"
+        >
+          入室
+        </v-btn>
+
+        <!-- 着席中 -->
+        <v-btn
+          depressed
+          block
+          color="error"
+          :to="{ name: 'room', params: { roomId: authUser.seat.section.room_id } }"
+          v-else
+        >
+          着席中の教室に戻る
+        </v-btn>
+      </div>
     </v-navigation-drawer>
   </v-card>
 </template>
@@ -39,6 +63,11 @@
 export default {
   props: {
     floors: Array,
+  },
+  computed: {
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
   },
 };
 </script>

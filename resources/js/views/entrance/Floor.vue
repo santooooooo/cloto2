@@ -6,30 +6,10 @@
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
 
-      <v-row justify="center" class="py-5">
-        <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
-      </v-row>
-
-      <v-row justify="center">
-        <!-- 未着席時 -->
-        <v-btn
-          depressed
-          color="#f6bf00"
-          :to="{ name: 'room', params: { roomId: $route.params.roomId } }"
-          v-if="!this.authUser.seat"
-        >
-          入室
-        </v-btn>
-
-        <!-- 着席中 -->
-        <v-btn
-          depressed
-          color="error"
-          :to="{ name: 'room', params: { roomId: authUser.seat.section.room_id } }"
-          v-else
-        >
-          着席中の教室に戻る
-        </v-btn>
+      <v-row no-gutters justify="center">
+        <div id="canvas-container" :style="canvasContainerStyle" v-dragscroll>
+          <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
+        </div>
       </v-row>
     </v-flex>
   </v-layout>
@@ -39,6 +19,8 @@
 export default {
   data() {
     return {
+      windowWidth: window.innerWidth, // ウィンドウの横幅
+      windowHeight: window.innerHeight, // ウィンドウの縦幅
       canvas: '', // キャンバスエリア
       isLoading: false, // ロードの制御
       roomData: {}, // 教室データ
@@ -48,8 +30,11 @@ export default {
   },
 
   computed: {
-    authUser() {
-      return this.$store.getters['auth/user'];
+    canvasContainerStyle() {
+      return {
+        height: this.windowHeight - 64 + 'px',
+        'margin-right': this.windowWidth < this.roomWidth + 250 ? '250px' : '0px',
+      };
     },
   },
 
@@ -166,6 +151,12 @@ export default {
 
   async mounted() {
     await this.setRoom();
+
+    // ウィンドウリサイズ時のイベント
+    window.addEventListener('resize', () => {
+      this.windowWidth = window.innerWidth;
+      this.windowHeight = window.innerHeight;
+    });
   },
 };
 </script>
@@ -175,5 +166,14 @@ export default {
   min-height: 100vh;
   background-image: url('/storage/system/room_background.jpg');
   background-size: cover;
+
+  #canvas-container {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 </style>

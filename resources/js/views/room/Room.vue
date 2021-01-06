@@ -22,8 +22,10 @@
 
     <v-flex>
       <!-- 教室 -->
-      <v-row justify="center" class="pt-5">
-        <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
+      <v-row no-gutters justify="center">
+        <div id="canvas-container" :style="canvasContainerStyle" v-dragscroll>
+          <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
+        </div>
       </v-row>
 
       <!-- プロフィールダイアログ -->
@@ -76,6 +78,8 @@ export default {
   },
   data() {
     return {
+      windowWidth: window.innerWidth, // ウィンドウの横幅
+      windowHeight: window.innerHeight, // ウィンドウの縦幅
       chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
       canvas: '', // キャンバスエリア
       isLoading: false, // ロードの制御
@@ -116,6 +120,12 @@ export default {
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
+    },
+    canvasContainerStyle() {
+      return {
+        height: this.windowHeight - 64 + 'px',
+        'margin-right': this.windowWidth < this.roomWidth + 250 ? '250px' : '0px',
+      };
     },
   },
 
@@ -667,6 +677,12 @@ export default {
         this.roomStatus = event.status;
       });
 
+    // ウィンドウリサイズ時のイベント
+    window.addEventListener('resize', () => {
+      this.windowWidth = window.innerWidth;
+      this.windowHeight = window.innerHeight;
+    });
+
     // ロード終了
     this.isLoading = false;
   },
@@ -680,5 +696,14 @@ export default {
   min-height: 100vh;
   background-image: url('/storage/system/room_background.jpg');
   background-size: cover;
+
+  #canvas-container {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 </style>

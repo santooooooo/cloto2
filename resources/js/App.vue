@@ -1,14 +1,5 @@
 <template>
   <v-app>
-    <!-- 画面サイズの最小を設定 -->
-    <v-overlay
-      z-index="9999"
-      opacity="0.9"
-      v-if="!isDebug && !$route.meta.isPublic && width < minWidth"
-    >
-      <h1 class="font-weight-bold">ウィンドウを拡大してください。</h1>
-    </v-overlay>
-
     <!-- オフライン時の操作無効化用オーバーレイ -->
     <v-overlay z-index="9999" opacity="0.9" v-if="isOffline">
       <h1 class="font-weight-bold">インターネットに接続してください。</h1>
@@ -78,8 +69,6 @@ export default {
       chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
       isOffline: false, // オフライン状態
       setOnlineTimer: null, // オンライン状態の通知制御
-      width: window.innerWidth, // ウィンドウの横幅
-      minWidth: 1350, // ウィンドウの最小サイズ
       isShowDrawer: false, // ドロワーメニューの表示制御
     };
   },
@@ -163,9 +152,6 @@ export default {
       // オンライン復帰時のイベント
       window.addEventListener('online', this.onlineEvent);
 
-      // ウィンドウリサイズ時のイベント
-      window.addEventListener('resize', this.resizeEvent);
-
       // 戻るボタンの無効化
       history.pushState(null, null, location.href);
       window.addEventListener('popstate', this.stopBackButtonEvent);
@@ -189,13 +175,6 @@ export default {
       window.addEventListener('unhandledrejection', (event) => {
         this.$store.dispatch('alert/error');
       });
-    },
-
-    /**
-     * ウィンドウリサイズ時のイベント
-     */
-    resizeEvent: function () {
-      this.width = window.innerWidth;
     },
 
     /**
