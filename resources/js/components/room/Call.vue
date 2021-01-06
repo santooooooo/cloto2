@@ -40,9 +40,9 @@
                   class="d-flex justify-center align-center"
                   v-if="isVideoLoading || isVideoOff || localStream === null"
                 >
-                  <v-avatar size="50" class="aligh-self-center"
-                    ><img :src="$storage('icon') + authUser.icon"
-                  /></v-avatar>
+                  <v-avatar size="50" class="aligh-self-center">
+                    <img :src="$storage('icon') + authUser.icon" />
+                  </v-avatar>
                 </v-sheet>
 
                 <!-- 自分のビデオ（オン） -->
@@ -95,7 +95,7 @@
                       width="4"
                       color="green"
                       indeterminate
-                      v-if="pinnedParticipant.isLoading"
+                      v-if="pinnedParticipant.isLoading || pinnedParticipant.icon === null"
                     ></v-progress-circular>
 
                     <v-avatar size="150" class="aligh-self-center" v-else>
@@ -183,7 +183,7 @@
                       width="4"
                       color="green"
                       indeterminate
-                      v-if="participant.isLoading"
+                      v-if="participant.isLoading || participant.icon === null"
                     ></v-progress-circular>
 
                     <v-avatar size="80" class="aligh-self-center" v-else>
@@ -673,7 +673,7 @@ export default {
             isPinned: false, // ピン留めしているか
             username: '', // ユーザー名
             handlename: '', // 表示名
-            icon: '', // アイコン
+            icon: null, // アイコン
             isLoading: true, // 接続待ち状態
             isMute: true, // ミュート状態
             isVideoOff: true, // ビデオオフ状態

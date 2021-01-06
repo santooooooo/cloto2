@@ -216,8 +216,14 @@ export default {
      */
     onlineEvent: function () {
       if (this.authCheck) {
-        // オンライン状態を通知
-        this.$http.get(this.$endpoint('setOnline'));
+        if (this.authUser.seat !== null && this.authUser.seat.role !== 'study') {
+          // 通話室に着席中の場合はリロード
+          alert('接続が復帰しました。再読み込みします。');
+          window.location.reload();
+        } else {
+          // オンライン状態を通知
+          this.$http.get(this.$endpoint('setOnline'));
+        }
       }
 
       this.isOffline = false;
