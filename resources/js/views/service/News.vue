@@ -28,7 +28,7 @@
         <v-tab-item v-for="tab in tabs" :key="tab.id">
           <!-- イベント情報 -->
           <v-card v-if="tab.id === 1" color="basil" flat>
-            <h3 class="text-center pa-4">{{ tab.title }}</h3>
+            <h3 class="text-center pa-2 font-weight-bold">{{ tab.title }}</h3>
           </v-card>
           <!-- 掲示板 -->
           <v-card v-if="tab.id === 2" color="basil" flat>
