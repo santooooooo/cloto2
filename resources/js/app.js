@@ -31,7 +31,7 @@ import vuetify from './plugins/vuetify';
 import App from './App.vue';
 
 Vue.use(VueHead, {
-  separator: '|',
+  separator: '/',
   complement: process.env.MIX_APP_NAME,
 });
 

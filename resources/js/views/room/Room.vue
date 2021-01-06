@@ -438,7 +438,7 @@ export default {
      * @param Object  seat  着席する座席
      */
     setUser: function (seat) {
-      new fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (icon) => {
+      fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (icon) => {
         icon.set({
           userId: seat.user.id,
           left: seat.position.x,
