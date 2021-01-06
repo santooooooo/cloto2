@@ -27,7 +27,7 @@
       <v-tabs-items v-model="selected">
         <v-tab-item v-for="tab in tabs" :key="tab.id">
           <!-- イベント情報 -->
-          <v-card v-if="tab.id === 1" color="basil" flat>
+          <v-card class="ma-5" v-if="tab.id === 1" color="basil" flat>
             <h3 class="text-center pa-2 font-weight-bold">{{ tab.title }}</h3>
             <v-row>
               <v-col cols="3">
@@ -44,48 +44,33 @@
                   </v-card>
                 </div>
               </v-col>
+              <v-col cols="9">
+                <v-row>
+                  <v-col v-for="event in eventData" :key="event.id" cols="4">
+                    <v-card class="mx-auto" max-width="400">
+                      <v-img
+                        class="white--text align-center"
+                        height="200px"
+                        :src="$storage('system') + event.img"
+                      >
+                        <v-card-title>{{ event.title }}</v-card-title>
+                      </v-img>
 
-              <v-col cols="3">
-                <div class="mx-auto">
-                  <h2 class="mt-12 text-center text-h5 font-weight-bold">
-                    プログラミング学習者が集まる
-                  </h2>
-                  <h2 class="text-center text-h5 font-weight-bold">オンラインコミュニティ</h2>
-                  <p class="mt-12 text-center text-body-1">
-                    プログラミング学習に取り組む方々の<br />
-                    集まるコミュニティを創り<br />
-                    学習するプログラミン言語によって<br />
-                    フロアを分けます。
-                  </p>
-                </div>
-              </v-col>
-              <v-col cols="3">
-                <div class="mx-auto">
-                  <h2 class="mt-12 text-center text-h5 font-weight-bold">
-                    プログラミング学習者が集まる
-                  </h2>
-                  <h2 class="text-center text-h5 font-weight-bold">オンラインコミュニティ</h2>
-                  <p class="mt-12 text-center text-body-1">
-                    プログラミング学習に取り組む方々の<br />
-                    集まるコミュニティを創り<br />
-                    学習するプログラミン言語によって<br />
-                    フロアを分けます。
-                  </p>
-                </div>
-              </v-col>
-              <v-col cols="3">
-                <div class="mx-auto">
-                  <h2 class="mt-12 text-center text-h5 font-weight-bold">
-                    プログラミング学習者が集まる
-                  </h2>
-                  <h2 class="text-center text-h5 font-weight-bold">オンラインコミュニティ</h2>
-                  <p class="mt-12 text-center text-body-1">
-                    プログラミング学習に取り組む方々の<br />
-                    集まるコミュニティを創り<br />
-                    学習するプログラミン言語によって<br />
-                    フロアを分けます。
-                  </p>
-                </div>
+                      <v-card-text class="text--primary">
+                        <div>日時:{{ event.date }}</div>
+                        <div>場所:{{ event.place }}</div>
+                        <div>主催:{{ event.organizer }}</div>
+                        <div>概要:{{ event.body }}</div>
+                      </v-card-text>
+
+                      <v-card-actions>
+                        <v-btn color="orange" text> Share </v-btn>
+
+                        <v-btn color="orange" text> Explore </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-col>
+                </v-row>
               </v-col>
             </v-row>
           </v-card>
@@ -201,6 +186,52 @@ export default {
           title: '立命館大学学生ベンチャーコンテストに参加',
           date: '2020/12/6',
           tag: 'イベント',
+        },
+      ],
+      eventData: [
+        {
+          id: 1,
+          img: 'P3.svg',
+          title: '現役エンジニアに質問しよう',
+          company: '日本マイクロソフト',
+          name: '山田太郎',
+          date: '2020/08/17',
+          place: 'イベントホール',
+          organizer: 'CLOTO運営',
+          body: 'SEとして第一線で活躍するエンジニアに、質問しよう',
+        },
+        {
+          id: 2,
+          img: 'P3.svg',
+          title: '現役エンジニアに質問しよう',
+          company: '日本マイクロソフト',
+          name: '山田太郎',
+          date: '2020/08/17',
+          place: 'イベントホール',
+          organizer: 'CLOTO運営',
+          body: 'SEとして第一線で活躍するエンジニアに、質問しよう',
+        },
+        {
+          id: 3,
+          img: 'P3.svg',
+          title: '現役エンジニアに質問しよう',
+          company: '日本マイクロソフト',
+          name: '山田太郎',
+          date: '2020/08/17',
+          place: 'イベントホール',
+          organizer: 'CLOTO運営',
+          body: 'SEとして第一線で活躍するエンジニアに、質問しよう',
+        },
+        {
+          id: 4,
+          img: 'P3.svg',
+          title: '現役エンジニアに質問しよう',
+          company: '日本マイクロソフト',
+          name: '山田太郎',
+          date: '2020/08/17',
+          place: 'イベントホール',
+          organizer: 'CLOTO運営',
+          body: 'SEとして第一線で活躍するエンジニアに、質問しよう',
         },
       ],
     };
