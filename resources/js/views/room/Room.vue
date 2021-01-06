@@ -168,7 +168,7 @@ export default {
 
                         // 休憩室から退席した場合は予約を解除
                         if (
-                          section.role === 'lounge' &&
+                          seat.role === 'lounge' &&
                           object.reservationId === oldVal[sectionIndex].seats[seatIndex].user.id
                         ) {
                           object.set({ reservationId: null, fill: '' });
@@ -251,17 +251,29 @@ export default {
      */
     canvasMouseOver: function (event) {
       if (event.target && event.target.fill === '') {
-        // 着席前：自習室のみ点灯
-        // 着席中：timetableが休憩室開放時間なら休憩室のみ点灯
-        // this.authUser.seat !== null && event.target.role === 'lounge' に休憩時間ならばを付け足す
-        if (
-          (this.authUser.seat === null && event.target.role === 'study') ||
-          (this.authUser.seat !== null &&
-            event.target.role === 'lounge' &&
-            this.roomStatus === 'break')
-        ) {
-          event.target.set({ fill: '#0000ff' });
-          this.canvas.requestRenderAll();
+        if (this.authUser.seat === null) {
+          // 着席前
+          // 自習室のみ着席可能
+          if (event.target.role === 'study') {
+            event.target.set({ fill: '#0000ff' });
+            this.canvas.requestRenderAll();
+          }
+        } else {
+          // 着席中
+          // 自習室での移動は禁止
+          if (event.target.role !== 'study') {
+            if (event.target.role === 'lounge') {
+              // 休憩室は休憩時間のみ開放
+              if (this.roomStatus === 'break') {
+                event.target.set({ fill: '#0000ff' });
+                this.canvas.requestRenderAll();
+              }
+            } else {
+              // その他は常に開放
+              event.target.set({ fill: '#0000ff' });
+              this.canvas.requestRenderAll();
+            }
+          }
         }
       }
     },
@@ -286,11 +298,10 @@ export default {
         // ロード開始
         this.isLoading = true;
 
-        // 着席処理
-        switch (event.target.role) {
-          case 'study': // 自習室がクリックされた場合
-            // 現在どこにも着席していない場合
-            if (this.authUser.seat === null) {
+        if (this.authUser.seat === null) {
+          // 着席前
+          switch (event.target.role) {
+            case 'study': // 自習室
               // 状態変更処理
               await this.userAction('sitting', event.target);
               // if (typeof this.authUser.seat_id === 'number') {
@@ -298,27 +309,60 @@ export default {
               // }
               // 自習開始
               this.startStudy();
-            }
-            break;
+              break;
 
-          case 'lounge': // 休憩室がクリックされた場合
-            if (this.authUser.seat === null) {
+            case 'lounge': // 休憩室
               // どこにも着席していない状態で休憩室をクリックした場合
               this.$store.dispatch('alert/error', 'いきなり休憩ですか？まずは自習をしましょう！');
-            } else {
-              // 現在自習室に着席中の場合
-              if (this.authUser.seat.section.role === 'study') {
-                if (this.roomStatus !== 'break') {
-                  // 休憩室開放時間じゃなければ
-                  // 休憩室がクリックされたときにユーザに伝える
-                  this.$store.dispatch('alert/error', '休憩室は解放されていません！');
-                } else {
-                  // 状態変更処理
-                  await this.userAction('enterLounge', event.target);
-                }
+              break;
+
+            case 'hangout': // たまり場
+              // どこにも着席していない状態でたまり場をクリックした場合
+              this.$store.dispatch('alert/error', '自習室に荷物を置きましょう！');
+              break;
+
+            case 'teacher': // メンタリングルーム（先生）
+              // どこにも着席していない状態でたまり場をクリックした場合
+              this.$store.dispatch('alert/error', '自習室に荷物を置きましょう！');
+
+              break;
+
+            case 'student': // メンタリングルーム（生徒）
+              // どこにも着席していない状態でたまり場をクリックした場合
+              this.$store.dispatch('alert/error', '自習室に荷物を置きましょう！');
+              break;
+          }
+        } else {
+          // 着席中
+          switch (event.target.role) {
+            case 'study': // 自習室
+              break;
+
+            case 'lounge': // 休憩室
+              if (this.roomStatus !== 'break') {
+                // 休憩時間以外
+                this.$store.dispatch('alert/error', '休憩室は解放されていません！');
+              } else {
+                // 状態変更処理
+                await this.userAction('enterLounge', event.target);
               }
-            }
-            break;
+              break;
+
+            case 'hangout': // たまり場
+              // 状態変更処理
+              await this.userAction('enterLounge', event.target);
+              break;
+
+            case 'teacher': // メンタリングルーム（先生）
+              // 状態変更処理
+              await this.userAction('enterLounge', event.target);
+              break;
+
+            case 'student': // メンタリングルーム（生徒）
+              // 状態変更処理
+              await this.userAction('enterLounge', event.target);
+              break;
+          }
         }
 
         // ロード終了
@@ -504,7 +548,7 @@ export default {
         this.canvas.add(
           new fabric.Circle({
             seatId: seat.id,
-            role: section.role,
+            role: seat.role,
             sectionId: section.uuid,
             sectionCapacity: section.seats.length,
             fill: color,
@@ -529,7 +573,7 @@ export default {
           this.setUser(seat);
 
           // ログインユーザーが座っており，座席が休憩室にある場合
-          if (seat.id === this.authUser.seat_id && section.role === 'lounge') {
+          if (seat.id === this.authUser.seat_id && seat.role === 'lounge') {
             this.enterLounge(section.uuid);
           }
         }
@@ -545,7 +589,7 @@ export default {
       // オブジェクトのクリック時にのみ実行
       if (event.target !== null) {
         // 入室前または自習室に着席している場合はクリックを受け付ける
-        if (this.authUser.seat === null || this.authUser.seat.section.role === 'study') {
+        if (this.authUser.seat === null || this.authUser.seat.role === 'study') {
           if (event.target.seatId !== null && event.target.reservationId === null) {
             // クリックした座席に誰も座っていないかつ，予約済みでない場合
             //** 座席のクリックイベントを発火 */
