@@ -4,7 +4,7 @@
       <v-row>
         <v-spacer></v-spacer>
 
-        <v-col cols="5" align-self="center">
+        <v-col cols="5" justify="center">
           <h1 class="text-center text-h4 font-weight-bold">創る、繋がる、好きになる</h1>
           <p class="text-center text-subtitle-1 font-weight-bold">
             プログラミングに取り組むみなさん、こんにちは。<br />
