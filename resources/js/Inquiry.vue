@@ -160,7 +160,10 @@ export default {
       {
         author: 'support',
         type: 'text',
-        data: { meta: now, text: 'CLOTOをご利用いただきありがとうございます。' },
+        data: {
+          meta: now,
+          text: process.env.MIX_APP_NAME + 'をご利用いただきありがとうございます。',
+        },
       },
       {
         author: 'support',

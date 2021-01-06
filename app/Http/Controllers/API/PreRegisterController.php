@@ -23,15 +23,15 @@ class PreRegisterController extends Controller
             'to' => $request->email,
             'to_name' => $request->name,
             'from' => config('mail.service.preregister'),
-            'from_name' => 'CLOTO',
-            'subject' => '【仮登録受付完了】- CLOTO',
+            'from_name' => config('app.name'),
+            'subject' => '【仮登録受付完了】- ' . config('app.name'),
             'newsletter' => $request->newsletter
         ], 'user'));
         $failures += count(Mail::failures());
 
         Mail::send(new PreRegisterMail([
             'to' => config('mail.service.preregister'),
-            'to_name' => 'CLOTO',
+            'to_name' => config('app.name'),
             'from' => $request->email,
             'from_name' => $request->name,
             'subject' => '仮登録申請の通知',

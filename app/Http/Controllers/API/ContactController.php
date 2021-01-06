@@ -23,15 +23,15 @@ class ContactController extends Controller
             'to' => $request->email,
             'to_name' => $request->name,
             'from' => config('mail.service.contact'),
-            'from_name' => 'CLOTO',
-            'subject' => '【お問い合わせ受付完了】- CLOTO',
+            'from_name' => config('app.name'),
+            'subject' => '【お問い合わせ受付完了】- ' . config('app.name'),
             'body' => $request->body
         ], 'user'));
         $failures += count(Mail::failures());
 
         Mail::send(new ContactMail([
             'to' => config('mail.service.contact'),
-            'to_name' => 'CLOTO',
+            'to_name' => config('app.name'),
             'from' => $request->email,
             'from_name' => $request->name,
             'subject' => 'お問い合わせ',

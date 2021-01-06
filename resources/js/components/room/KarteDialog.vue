@@ -13,6 +13,7 @@
                 depressed
                 color="error"
                 class="mr-4"
+                :disabled="karteForm.loading"
                 @click="$emit('close', false)"
               >
                 <v-icon>mdi-close</v-icon>

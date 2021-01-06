@@ -74,9 +74,8 @@ export default {
   head: {
     title() {
       return {
-        inner: 'CLOTO',
+        inner: '',
         separator: ' ',
-        complement: ' ',
       };
     },
   },

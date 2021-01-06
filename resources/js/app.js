@@ -32,7 +32,7 @@ import App from './App.vue';
 
 Vue.use(VueHead, {
   separator: '|',
-  complement: 'CLOTO',
+  complement: process.env.MIX_APP_NAME,
 });
 
 Vue.use(Chat);

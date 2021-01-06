@@ -83,7 +83,7 @@ class InquiryController extends Controller
                     'to_name' => $admin->handlename,
                     'from' => config('mail.system.address'),
                     'from_name' => config('mail.system.name'),
-                    'subject' => '【お問い合わせ】- CLOTO',
+                    'subject' => '【お問い合わせ】- ' . config('app.name'),
                     'handlename' => $this->user->handlename,
                     'body' => $data['data']['text']
                 ]));
