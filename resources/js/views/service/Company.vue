@@ -5,10 +5,10 @@
         <v-row justify="center" class="mt-12">
           <h2>創る、繋がる、好きになる</h2>
         </v-row>
-        <div style="text-align:center" class="mt-12">
+        <div style="text-align: center" class="mt-12">
           <p>Vision</p>
           <h3>世界の学習プラットフォームになる。</h3>
-          <p>Mission</p>   
+          <p>Mission</p>
           <h3>学びを多様化し、人々の想像力と新結合で地球を豊かにする。</h3>
         </div>
       </v-container>
@@ -30,8 +30,7 @@
       <h3 class="white--text">Comapny</h3>
       <v-container justify="center" class="mt-12 pa-16">
         <v-row>
-          <v-col cols="2">
-          </v-col>
+          <v-col cols="2"> </v-col>
           <v-col cols="4">
             <p class="white--text">社名</p>
           </v-col>
@@ -40,8 +39,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="2">
-          </v-col>
+          <v-col cols="2"> </v-col>
           <v-col cols="4">
             <p class="white--text">設立年月日</p>
           </v-col>
@@ -50,8 +48,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="2">
-          </v-col>
+          <v-col cols="2"> </v-col>
           <v-col cols="4">
             <p class="white--text">代表取締役</p>
           </v-col>
@@ -60,8 +57,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="2">
-          </v-col>
+          <v-col cols="2"> </v-col>
           <v-col cols="4">
             <p class="white--text">資本金</p>
           </v-col>
@@ -70,8 +66,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="2">
-          </v-col>
+          <v-col cols="2"> </v-col>
           <v-col cols="4">
             <p class="white--text">出資者</p>
           </v-col>
@@ -80,8 +75,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="2">
-          </v-col>
+          <v-col cols="2"> </v-col>
           <v-col cols="4">
             <p class="white--text">事業内容</p>
           </v-col>
@@ -90,8 +84,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="2">
-          </v-col>
+          <v-col cols="2"> </v-col>
           <v-col cols="4">
             <p class="white--text">本社所在地</p>
           </v-col>
@@ -110,8 +103,7 @@
       <h3 class="white--text">Team Member</h3>
       <v-container justify="center" class="mt-12 pa-16">
         <v-row>
-          <v-col cols="2">
-          </v-col>
+          <v-col cols="2"> </v-col>
           <v-col cols="4">
             <p class="white--text">代表者</p>
           </v-col>
@@ -120,8 +112,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="2">
-          </v-col>
+          <v-col cols="2"> </v-col>
           <v-col cols="4">
             <p class="white--text">副代表</p>
           </v-col>
@@ -130,8 +121,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="2">
-          </v-col>
+          <v-col cols="2"> </v-col>
           <v-col cols="4">
             <p class="white--text">エンジニア</p>
           </v-col>
@@ -139,22 +129,14 @@
             <p class="white--text">デザイナー</p>
           </v-col>
         </v-row>
-      <v-container>
+      </v-container>
     </div>
 
     <div class="grey darken-2 text-center">
       <span class="white--text">Lorem ipsum</span>
     </div>
 
-     <div class="grey darken-4 text-center">
-      <span class="white--text">Lorem ipsum</span>
-    </div>
-
-    <div class="grey darken-2 text-center">
-      <span class="white--text">Lorem ipsum</span>
-    </div>
-
-     <div class="grey darken-4 text-center">
+    <div class="grey darken-4 text-center">
       <span class="white--text">Lorem ipsum</span>
     </div>
 
@@ -162,7 +144,13 @@
       <span class="white--text">Lorem ipsum</span>
     </div>
 
-    
+    <div class="grey darken-4 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
+
+    <div class="grey darken-2 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
 
     <v-container class="content">
       <v-row justify="center">
