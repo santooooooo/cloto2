@@ -116,7 +116,7 @@
             <p class="white--text">代表者</p>
           </v-col>
           <v-col cols="6">
-            <p class="white--text">代表者</p>
+            <p class="white--text">山田太郎</p>
           </v-col>
         </v-row>
         <v-row>
@@ -126,7 +126,7 @@
             <p class="white--text">副代表</p>
           </v-col>
           <v-col cols="6">
-            <p class="white--text">副代表</p>
+            <p class="white--text">田中次郎</p>
           </v-col>
         </v-row>
         <v-row>
@@ -136,10 +136,52 @@
             <p class="white--text">エンジニア</p>
           </v-col>
           <v-col cols="6">
+            <p class="white--text">３名</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2">
+          </v-col>
+          <v-col cols="4">
             <p class="white--text">デザイナー</p>
           </v-col>
+          <v-col cols="6">
+            <p class="white--text">１名</p>
+          </v-col>
         </v-row>
-      <v-container>
+      </v-container>
+    </div>
+
+    <div class="grey darken-2 text-center">
+      <h4 class="white--text">御挨拶</h4>
+    </div>
+
+     <div class="grey darken-4 text-center">
+       <v-container class="content">
+        <v-row justify="center">
+            <v-row class="mt-12 pa-16">
+              <v-col>
+                <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
+              </v-col>
+
+              <v-col align-self="center">
+                <span class="name text-left ma-3">立花 慶人</span>
+                <span>Yoshihito Tachibana</span>
+
+                <p class="ma-3 text-left position">CEO/デザイン</p>
+                <v-spacer></v-spacer>
+                <p class="ma-3 text-left introduction">
+                  早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
+                  早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
+                  早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
+                  早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
+                </p>
+
+                <p></p
+              ></v-col>
+            </v-row>
+          </v-row>
+        </v-container>
     </div>
 
     <div class="grey darken-2 text-center">
@@ -147,53 +189,10 @@
     </div>
 
      <div class="grey darken-4 text-center">
-      <span class="white--text">Lorem ipsum</span>
-    </div>
-
-    <div class="grey darken-2 text-center">
-      <span class="white--text">Lorem ipsum</span>
-    </div>
-
-     <div class="grey darken-4 text-center">
-      <span class="white--text">Lorem ipsum</span>
-    </div>
-
-    <div class="grey darken-2 text-center">
-      <span class="white--text">Lorem ipsum</span>
-    </div>
-
-    
-
-    <v-container class="content">
+      <v-container class="content">
       <v-row justify="center">
-        <v-row class="mt-12 pa-16">
-          <v-col>
-            <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
-          </v-col>
-
-          <v-col align-self="center">
-            <span class="name text-left ma-3">立花 慶人</span>
-            <span>Yoshihito Tachibana</span>
-
-            <p class="ma-3 text-left position">CEO/デザイン</p>
-            <v-spacer></v-spacer>
-            <p class="ma-3 text-left introduction">
-              早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
-              早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
-              早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
-              早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
-            </p>
-
-            <p></p
-          ></v-col>
-        </v-row>
-
         <v-row class="mt-6 pa-16">
-          <v-col>
-            <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
-          </v-col>
-
-          <v-col align-self="center">
+         <v-col align-self="center">
             <span class="name text-left ma-3">藤井 敦寛</span>
             <span>Atsuhiro Fujii</span>
 
@@ -208,21 +207,18 @@
 
             <p></p
           ></v-col>
+          <v-col>
+            <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
+          </v-col>
         </v-row>
-
-        <!-- <v-card justify="center" class="text-center mt-16">
-          <v-row no-gutters>
-            <v-card-title class="mx-auto">料金体系</v-card-title>
-          </v-row>
-          <v-data-table
-            :headers="headers"
-            :items="desserts"
-            :items-per-page="5"
-            class="elevation-1"
-          ></v-data-table>
-        </v-card> -->
       </v-row>
     </v-container>
+    </div>
+
+    <div class="grey darken-2 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
+
   </div>
 </template>
 
