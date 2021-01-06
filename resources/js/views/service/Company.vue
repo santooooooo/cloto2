@@ -106,8 +106,40 @@
       <span class="white--text">Lorem ipsum</span>
     </div>
 
-     <div class="grey darken-4 text-center">
-      <span class="white--text">Lorem ipsum</span>
+    <div class="grey darken-4 text-center">
+      <h3 class="white--text">Team Member</h3>
+      <v-container justify="center" class="mt-12 pa-16">
+        <v-row>
+          <v-col cols="2">
+          </v-col>
+          <v-col cols="4">
+            <p class="white--text">代表者</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">代表者</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2">
+          </v-col>
+          <v-col cols="4">
+            <p class="white--text">副代表</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">副代表</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2">
+          </v-col>
+          <v-col cols="4">
+            <p class="white--text">エンジニア</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">デザイナー</p>
+          </v-col>
+        </v-row>
+      <v-container>
     </div>
 
     <div class="grey darken-2 text-center">
