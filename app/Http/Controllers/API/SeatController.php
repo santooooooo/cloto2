@@ -78,12 +78,12 @@ class SeatController extends Controller
     }
 
     /**
-     * 休憩室入室
+     * 通話室入室
      *
      * @param  \App\Models\Seat  $seat  着席する座席
      * @return \Illuminate\Http\Response
      */
-    public function enter_lounge(Seat $seat)
+    public function enter_call(Seat $seat)
     {
         $room_id = $seat->section->room->id;
 
@@ -109,12 +109,12 @@ class SeatController extends Controller
     }
 
     /**
-     * 休憩室退室
+     * 通話室退室
      *
      * @param  \App\Models\Seat  $seat  戻り先の座席
      * @return \Illuminate\Http\Response
      */
-    public function leave_lounge(Seat $seat)
+    public function leave_call(Seat $seat)
     {
         $room_id = $seat->section->room->id;
 

@@ -12,13 +12,13 @@
       @leave-room="leaveRoom()"
     />
 
-    <!-- 休憩室 -->
-    <Lounge
-      :lounge-id="lounge.id"
-      :capacity="lounge.capacity"
-      @leave-lounge="leaveLounge()"
-      v-if="lounge.isEnter"
-    ></Lounge>
+    <!-- 通話室 -->
+    <Call
+      :call-id="call.id"
+      :capacity="call.capacity"
+      @leave-call="leaveCall()"
+      v-if="call.isEnter"
+    />
 
     <v-flex>
       <!-- 教室 -->
@@ -31,14 +31,10 @@
         :user-param="profile.userId"
         @close="profile.dialog = $event"
         v-if="profile.dialog"
-      ></ProfileDialog>
+      />
 
       <!-- プロジェクトダイアログ -->
-      <ProjectDialog
-        @start-study="startStudy()"
-        @close="cancelStartStudy()"
-        v-if="projectDialog"
-      ></ProjectDialog>
+      <ProjectDialog @start-study="startStudy()" @close="cancelStartStudy()" v-if="projectDialog" />
 
       <!-- カルテダイアログ -->
       <KarteDialog
@@ -47,14 +43,14 @@
         @leave-room="leaveRoom()"
         @continue-study="continueStudy()"
         v-if="karte.dialog"
-      ></KarteDialog>
+      />
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 import Drawer from '@/components/room/Drawer';
-import Lounge from '@/components/room/Lounge';
+import Call from '@/components/room/Call';
 import ProjectDialog from '@/components/room/ProjectDialog';
 import KarteDialog from '@/components/room/KarteDialog';
 import ProfileDialog from '@/components/room/ProfileDialog';
@@ -73,7 +69,7 @@ export default {
   },
   components: {
     Drawer,
-    Lounge,
+    Call,
     ProjectDialog,
     KarteDialog,
     ProfileDialog,
@@ -92,10 +88,10 @@ export default {
       roomData: {}, // 教室データ
       roomWidth: 1080, // 教室サイズ
       roomHight: 600, // 教室サイズ
-      lounge: {
-        isEnter: false, // 休憩室入室制御
-        id: '', // 入室する休憩室のセクションID
-        capacity: '', // 休憩室の定員
+      call: {
+        isEnter: false, // 通話室入室制御
+        id: '', // 入室する通話室のID
+        capacity: '', // 通話室の定員
       },
       profile: {
         dialog: false, // プロフィールのダイアログ制御
@@ -217,20 +213,20 @@ export default {
           response = await this.$http.post(endpoint);
           break;
 
-        case 'enterLounge':
-          // 休憩室入室処理
-          endpoint = this.$endpoint('enterLounge', [seatObject.seatId]);
+        case 'enterCall':
+          // 通話室入室処理
+          endpoint = this.$endpoint('enterCall', [seatObject.seatId]);
           response = await this.$http.post(endpoint);
           if (response.status === OK) {
-            this.enterLounge(seatObject.sectionId, seatObject.sectionCapacity);
+            this.enterCall(seatObject.callId, seatObject.callCapacity);
           }
           break;
 
-        case 'leaveLounge':
-          // 休憩室退室処理
+        case 'leaveCall':
+          // 通話室退室処理
           this.canvas.getObjects().forEach((object) => {
             if (object.reservationId === this.authUser.id) {
-              endpoint = this.$endpoint('leaveLounge', [object.seatId]);
+              endpoint = this.$endpoint('leaveCall', [object.seatId]);
             }
           });
           response = await this.$http.post(endpoint);
@@ -344,23 +340,23 @@ export default {
                 this.$store.dispatch('alert/error', '休憩室は解放されていません！');
               } else {
                 // 状態変更処理
-                await this.userAction('enterLounge', event.target);
+                await this.userAction('enterCall', event.target);
               }
               break;
 
             case 'hangout': // たまり場
               // 状態変更処理
-              await this.userAction('enterLounge', event.target);
+              await this.userAction('enterCall', event.target);
               break;
 
             case 'teacher': // メンタリングルーム（先生）
               // 状態変更処理
-              await this.userAction('enterLounge', event.target);
+              await this.userAction('enterCall', event.target);
               break;
 
             case 'student': // メンタリングルーム（生徒）
               // 状態変更処理
-              await this.userAction('enterLounge', event.target);
+              await this.userAction('enterCall', event.target);
               break;
           }
         }
@@ -407,30 +403,30 @@ export default {
     },
 
     /**
-     * 休憩室への入室
+     * 通話室への入室
      *
-     * @param String  loungeId   入室する休憩室ID
-     * @param Number  capacity   休憩室の定員
+     * @param String  callId    入室する通話室ID
+     * @param Number  capacity  通話室の定員
      */
-    enterLounge: function (loungeId, capacity) {
-      this.lounge.id = loungeId;
-      this.lounge.capacity = capacity;
-      this.lounge.isEnter = true;
+    enterCall: function (callId, capacity) {
+      this.call.id = callId;
+      this.call.capacity = capacity;
+      this.call.isEnter = true;
     },
 
     /**
-     * 休憩室からの退室
+     * 通話室からの退室
      */
-    leaveLounge: async function () {
+    leaveCall: async function () {
       // ロード開始
       this.isLoading = true;
 
-      // 休憩室の初期化
-      this.lounge.isEnter = false;
-      this.lounge.id = '';
+      // 通話室の初期化
+      this.call.isEnter = false;
+      this.call.id = '';
 
       // 状態変更処理
-      await this.userAction('leaveLounge');
+      await this.userAction('leaveCall');
 
       // ロード終了
       this.isLoading = false;
@@ -549,8 +545,8 @@ export default {
           new fabric.Circle({
             seatId: seat.id,
             role: seat.role,
-            sectionId: section.uuid,
-            sectionCapacity: section.seats.length,
+            callId: section.uuid,
+            callCapacity: section.seats.length,
             fill: color,
             reservationId: seat.reservation_user_id,
             opacity: 0.3,
@@ -574,7 +570,7 @@ export default {
 
           // ログインユーザーが座っており，座席が自習室以外にある場合
           if (seat.id === this.authUser.seat_id && seat.role !== 'study') {
-            this.enterLounge(section.uuid);
+            this.enterCall(section.uuid, section.seats.length);
           }
         }
       });

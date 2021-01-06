@@ -382,7 +382,7 @@
               </v-badge>
 
               <!-- 通話終了ボタン -->
-              <v-btn depressed x-large color="error" class="mx-12" @click="leaveLounge()">
+              <v-btn depressed x-large color="error" class="mx-12" @click="leaveCall()">
                 自習室に戻る
               </v-btn>
             </v-row>
@@ -404,7 +404,7 @@ export default {
     ProfileDialog,
   },
   props: {
-    loungeId: String,
+    callId: String,
     capacity: Number,
   },
   data() {
@@ -489,19 +489,19 @@ export default {
   },
   methods: {
     /**
-     * 休憩室から退室
+     * 通話室から退室
      */
-    leaveLounge: async function () {
+    leaveCall: async function () {
       await this.exitCall();
       this.dialog = false;
-      this.$emit('leave-lounge');
+      this.$emit('leave-call');
     },
 
     /**
      * 通話の開始
      */
     makeCall: async function () {
-      this.call = this.peer.joinRoom(this.loungeId, {
+      this.call = this.peer.joinRoom(this.callId, {
         mode: this.roomMode,
         stream: this.localStream,
       });
@@ -722,7 +722,7 @@ export default {
             audio: false,
           });
 
-          this.screenSharing.peer.joinRoom(this.loungeId, {
+          this.screenSharing.peer.joinRoom(this.callId, {
             mode: this.roomMode,
             stream: this.screenSharing.stream,
           });
@@ -1017,7 +1017,7 @@ export default {
      */
     errorEvent: function (message) {
       this.$store.dispatch('alert/error', message);
-      this.leaveLounge();
+      this.leaveCall();
     },
   },
 

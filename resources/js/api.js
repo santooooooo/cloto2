@@ -23,8 +23,8 @@ const rooms = '/api/rooms';
 const roomShow = '/api/room/' + replaceChar[0];
 const seatSit = '/api/seat/sit/' + replaceChar[0];
 const seatLeave = '/api/seat/leave';
-const enterLounge = '/api/seat/enterlounge/' + replaceChar[0];
-const leaveLounge = '/api/seat/leavelounge/' + replaceChar[0];
+const enterCall = '/api/seat/enter_call/' + replaceChar[0];
+const leaveCall = '/api/seat/leave_call/' + replaceChar[0];
 const projects = '/api/projects';
 const projectPost = '/api/project/post';
 const tasks = '/api/tasks/' + replaceChar[0];
@@ -99,12 +99,12 @@ export function getEndpoint(name, params) {
       endpoint = seatLeave;
       break;
 
-    case 'enterLounge':
-      endpoint = setParams(enterLounge, params);
+    case 'enterCall':
+      endpoint = setParams(enterCall, params);
       break;
 
-    case 'leaveLounge':
-      endpoint = setParams(leaveLounge, params);
+    case 'leaveCall':
+      endpoint = setParams(leaveCall, params);
       break;
 
     case 'projects':

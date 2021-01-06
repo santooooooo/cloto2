@@ -56,8 +56,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/room/{room_id}', 'API\RoomController@show')->name('roomShow');
     Route::post('/seat/sit/{seat}', 'API\SeatController@sit')->name('seatSit');
     Route::post('/seat/leave', 'API\SeatController@leave')->name('seatLeave');
-    Route::post('/seat/enterlounge/{seat}', 'API\SeatController@enter_lounge')->name('enterLounge');
-    Route::post('/seat/leavelounge/{seat}', 'API\SeatController@leave_lounge')->name('leaveLounge');
+    Route::post('/seat/enter_call/{seat}', 'API\SeatController@enter_call')->name('enterCall');
+    Route::post('/seat/leave_call/{seat}', 'API\SeatController@leave_call')->name('leaveCall');
 
 
     /*
