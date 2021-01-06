@@ -678,7 +678,7 @@ export default {
 
 #room {
   min-height: 100vh;
-  background-image: url('/storage/system/room_background.png');
+  background-image: url('/storage/system/room_background.jpg');
   background-size: cover;
 }
 </style>
