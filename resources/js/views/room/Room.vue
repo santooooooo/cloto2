@@ -572,8 +572,8 @@ export default {
         if (seat.status !== null && seat.status != 'break') {
           this.setUser(seat);
 
-          // ログインユーザーが座っており，座席が休憩室にある場合
-          if (seat.id === this.authUser.seat_id && seat.role === 'lounge') {
+          // ログインユーザーが座っており，座席が自習室以外にある場合
+          if (seat.id === this.authUser.seat_id && seat.role !== 'study') {
             this.enterLounge(section.uuid);
           }
         }

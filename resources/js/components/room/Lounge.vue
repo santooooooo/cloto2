@@ -1087,11 +1087,20 @@ export default {
     }
   },
 
-  mounted() {
-    // 背景画像の設定
-    var dialog = document.getElementsByClassName('v-dialog');
-    dialog[0].style.backgroundImage =
-      'url("' + this.$storage('seat') + 'seat_' + this.authUser.seat.id + '.png")';
+  async mounted() {
+    // ユーザーデータの同期
+    await this.$store.dispatch('auth/syncAuthUser');
+
+    // 背景の設定
+    const dialog = document.getElementsByClassName('v-dialog')[0];
+    if (this.authUser.seat.role === 'teacher') {
+      // 透過
+      dialog.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    } else {
+      // 画像
+      dialog.style.backgroundImage =
+        'url("' + this.$storage('seat') + 'seat_' + this.authUser.seat.id + '.png")';
+    }
   },
 
   beforeDestroy() {
