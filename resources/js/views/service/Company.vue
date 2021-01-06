@@ -13,6 +13,125 @@
         </div>
       </v-container>
     </v-container>
+
+    <div class="grey darken-2 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
+
+    <div class="grey darken-4 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
+
+    <div class="grey darken-2 text-center">
+      <span class="white--text">会社概要</span>
+    </div>
+
+    <div class="grey darken-4 text-center">
+      <h3 class="white--text">Comapny</h3>
+      <v-container justify="center" class="mt-12 pa-16">
+        <v-row>
+          <v-col cols="2">
+          </v-col>
+          <v-col cols="4">
+            <p class="white--text">社名</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">株式会社CLOTO</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2">
+          </v-col>
+          <v-col cols="4">
+            <p class="white--text">設立年月日</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">令和3年4月1日</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2">
+          </v-col>
+          <v-col cols="4">
+            <p class="white--text">代表取締役</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">代表取締役</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2">
+          </v-col>
+          <v-col cols="4">
+            <p class="white--text">資本金</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">20円</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2">
+          </v-col>
+          <v-col cols="4">
+            <p class="white--text">出資者</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">なし</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2">
+          </v-col>
+          <v-col cols="4">
+            <p class="white--text">事業内容</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">プログラミング学習者向けバーチャル施設の提供</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2">
+          </v-col>
+          <v-col cols="4">
+            <p class="white--text">本社所在地</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">大阪府大阪市</p>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
+
+    <div class="grey darken-2 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
+
+     <div class="grey darken-4 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
+
+    <div class="grey darken-2 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
+
+     <div class="grey darken-4 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
+
+    <div class="grey darken-2 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
+
+     <div class="grey darken-4 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
+
+    <div class="grey darken-2 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
+
+    
+
     <v-container class="content">
       <v-row justify="center">
         <v-row class="mt-12 pa-16">
@@ -43,10 +162,10 @@
           </v-col>
 
           <v-col align-self="center">
-            <span class="name text-left ma-3">藤井 まめす</span>
+            <span class="name text-left ma-3">藤井 敦寛</span>
             <span>Atsuhiro Fujii</span>
 
-            <p class="ma-3 text-left position">企画/プロジェクトマネジメント</p>
+            <p class="ma-3 text-left position">CTO/プロジェクトマネジメント</p>
             <v-spacer></v-spacer>
             <p class="ma-3 text-left introduction">
               まめすまめすまめすまめすまめすまめす<br />
