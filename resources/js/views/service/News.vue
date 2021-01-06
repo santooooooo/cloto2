@@ -29,10 +29,69 @@
           <!-- イベント情報 -->
           <v-card v-if="tab.id === 1" color="basil" flat>
             <h3 class="text-center pa-2 font-weight-bold">{{ tab.title }}</h3>
+            <v-row>
+              <v-col cols="3">
+                <div class="mx-auto">
+                  <v-card height="500px" class="headline grey lighten-5 text-center px-2">
+                    <v-card-text class="pa-2 title font-weight-bold">
+                      イベント絞り込み
+                    </v-card-text>
+                    <v-text-field
+                      solo
+                      label="Prepend inner"
+                      prepend-inner-icon="mdi-map-marker"
+                    ></v-text-field>
+                  </v-card>
+                </div>
+              </v-col>
+
+              <v-col cols="3">
+                <div class="mx-auto">
+                  <h2 class="mt-12 text-center text-h5 font-weight-bold">
+                    プログラミング学習者が集まる
+                  </h2>
+                  <h2 class="text-center text-h5 font-weight-bold">オンラインコミュニティ</h2>
+                  <p class="mt-12 text-center text-body-1">
+                    プログラミング学習に取り組む方々の<br />
+                    集まるコミュニティを創り<br />
+                    学習するプログラミン言語によって<br />
+                    フロアを分けます。
+                  </p>
+                </div>
+              </v-col>
+              <v-col cols="3">
+                <div class="mx-auto">
+                  <h2 class="mt-12 text-center text-h5 font-weight-bold">
+                    プログラミング学習者が集まる
+                  </h2>
+                  <h2 class="text-center text-h5 font-weight-bold">オンラインコミュニティ</h2>
+                  <p class="mt-12 text-center text-body-1">
+                    プログラミング学習に取り組む方々の<br />
+                    集まるコミュニティを創り<br />
+                    学習するプログラミン言語によって<br />
+                    フロアを分けます。
+                  </p>
+                </div>
+              </v-col>
+              <v-col cols="3">
+                <div class="mx-auto">
+                  <h2 class="mt-12 text-center text-h5 font-weight-bold">
+                    プログラミング学習者が集まる
+                  </h2>
+                  <h2 class="text-center text-h5 font-weight-bold">オンラインコミュニティ</h2>
+                  <p class="mt-12 text-center text-body-1">
+                    プログラミング学習に取り組む方々の<br />
+                    集まるコミュニティを創り<br />
+                    学習するプログラミン言語によって<br />
+                    フロアを分けます。
+                  </p>
+                </div>
+              </v-col>
+            </v-row>
           </v-card>
           <!-- 掲示板 -->
           <v-card v-if="tab.id === 2" color="basil" flat>
-            <h3 class="text-center pa-4">{{ tab.title }}</h3>
+            <h3 class="text-center pa-2 font-weight-bold">{{ tab.title }}</h3>
             <v-col v-for="(board, i) in boardData" :key="i" cols="12">
               <v-card>
                 <v-card-text>{{ board.date }} </v-card-text>
@@ -48,7 +107,7 @@
           </v-card>
           <!-- お知らせ -->
           <v-card v-if="tab.id === 3" color="basil" flat>
-            <h3 class="text-center pt-2">{{ tab.title }}</h3>
+            <h3 class="text-center pa-2 font-weight-bold">{{ tab.title }}</h3>
             <v-list>
               <template v-for="(news, index) in newsData">
                 <v-divider></v-divider>
@@ -77,18 +136,6 @@
         </v-tab-item>
       </v-tabs-items>
     </v-container>
-
-    <!-- <v-container class="content ma-auto">
-      <v-col v-for="(news, i) in newsData" :key="i" cols="12">
-        <v-card @click="newsLink(news.link)">
-          <v-card-text
-            >{{ news.date }} <span class="font-weight-light">{{ news.tag }}</span></v-card-text
-          >
-
-          <v-card-text class="headline font-weight-bold"> {{ news.text }} </v-card-text>
-        </v-card>
-      </v-col>
-    </v-container> -->
   </div>
 </template>
 
