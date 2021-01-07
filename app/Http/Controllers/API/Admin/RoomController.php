@@ -41,25 +41,22 @@ class RoomController extends Controller
      * 部屋データの更新
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $room_id    更新する部屋のID
+     * @param  \App\Models\Room $room   更新する部屋
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Int $room_id)
+    public function update(Request $request, Room $room)
     {
         $data = $request->all();
         // 時間割データの型変換
         $data['timetable'] = json_decode($data['timetable']);
 
-        $edit_room = $this->room->find($room_id);
-
         // 背景の保存
         if (!empty($request->file('background'))) {
             // 保存処理
-            $request->file('background')->storeAs(self::BACKGROUND_STORE_DIR, 'room_' . $edit_room->id . '.png');
+            $request->file('background')->storeAs(self::BACKGROUND_STORE_DIR, 'room_' . $room->id . '.png');
         }
 
-
-        $result = $edit_room->fill($data)->save();
+        $result = $room->fill($data)->save();
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));

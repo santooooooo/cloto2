@@ -57,10 +57,10 @@ class UserController extends Controller
      * ユーザーデータの更新
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $user_id    更新するユーザーのID
+     * @param  \App\Models\User $user   更新するユーザー
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Int $user_id)
+    public function update(Request $request, User $user)
     {
         $data = $request->all();
 
@@ -69,9 +69,7 @@ class UserController extends Controller
             $data['password'] = Hash::make($data['password']);
         }
 
-        $edit_user = $this->user->find($user_id);
-
-        $result = $edit_user->fill($data)->save();
+        $result = $user->fill($data)->save();
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));

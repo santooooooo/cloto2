@@ -54,13 +54,11 @@ class InquiryController extends Controller
     /**
      * 問い合わせ一覧を取得
      *
-     * @param  int  $user_id    問い合わせを表示するユーザーID
+     * @param  \App\Models\User $user   問い合わせを表示するユーザー
      * @return \Illuminate\Http\Response
      */
-    public function show(Int $user_id)
+    public function show(User $user)
     {
-        $user = $this->user->find($user_id);
-
         $inquiries = [];
         foreach ($user->inquiries as $inquiry) {
             $inquiry->data += ['meta' => (new Carbon($inquiry->created_at))->format('H時i分')];

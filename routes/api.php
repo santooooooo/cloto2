@@ -53,12 +53,12 @@ Route::group(['middleware' => 'auth'], function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/rooms', 'API\RoomController@index')->name('rooms');
-    Route::get('/room/{room_id}', 'API\RoomController@show')->where('room_id', '[0-9]+')->name('roomShow');
-    Route::get('/room/auth_sit_down', 'API\RoomController@auth_sit')->name('roomAuthSit');
+    Route::get('/room/{room}', 'API\RoomController@show')->where('room', '[0-9]+')->name('roomShow');
+    Route::get('/room/auth_sit', 'API\RoomController@auth_sit')->name('roomAuthSit');
     Route::post('/seat/sit/{seat}', 'API\SeatController@sit')->name('seatSit');
     Route::post('/seat/leave', 'API\SeatController@leave')->name('seatLeave');
-    Route::post('/seat/enter_call/{seat}', 'API\SeatController@enter_call')->name('enterCall');
-    Route::post('/seat/leave_call/{seat}', 'API\SeatController@leave_call')->name('leaveCall');
+    Route::post('/seat/enter_call/{seat}', 'API\SeatController@enter_call')->where('seat', '[0-9]+')->name('enterCall');
+    Route::post('/seat/leave_call/{seat}', 'API\SeatController@leave_call')->where('seat', '[0-9]+')->name('leaveCall');
 
 
     /*
@@ -103,7 +103,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/users', 'API\Admin\UserController@index')->name('admin.users');
-    Route::post('/user/update/{user_id}', 'API\Admin\UserController@update')->name('admin.userUpdate');
+    Route::post('/user/update/{user}', 'API\Admin\UserController@update')->where('user', '[0-9]+')->name('admin.userUpdate');
 
 
     /*
@@ -112,8 +112,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/rooms', 'API\Admin\RoomController@index')->name('admin.rooms');
-    Route::post('/room/update/{room_id}', 'API\Admin\RoomController@update')->name('admin.roomUpdate');
-    Route::post('/seat/update/{seat_id}', 'API\Admin\SeatController@update')->name('admin.seatUpdate');
+    Route::post('/room/update/{room}', 'API\Admin\RoomController@update')->where('room', '[0-9]+')->name('admin.roomUpdate');
+    Route::post('/seat/update/{seat}', 'API\Admin\SeatController@update')->where('seat', '[0-9]+')->name('admin.seatUpdate');
 
 
     /*
@@ -122,6 +122,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/inquiries', 'API\Admin\InquiryController@index')->name('admin.inquiries');
-    Route::get('/inquiry/{user_id}', 'API\Admin\InquiryController@show')->name('admin.inquiryShow');
+    Route::get('/inquiry/{user}', 'API\Admin\InquiryController@show')->where('user', '[0-9]+')->name('admin.inquiryShow');
     Route::post('/inquiry/post', 'API\Admin\InquiryController@post')->name('admin.inquiryPost');
 });

@@ -26,18 +26,16 @@ class SeatController extends Controller
      * 座席データの更新
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $seat_id    更新する座席のID
+     * @param  \App\Models\Seat $seat   更新する座席
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Int $seat_id)
+    public function update(Request $request, Seat $seat)
     {
         $data = $request->all();
         // 配列の中身をint化
         $data['position'] = array_map('intval', $data['position']);
 
-        $edit_seat = $this->seat->find($seat_id);
-
-        $result = $edit_seat->fill($data)->save();
+        $result = $seat->fill($data)->save();
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));

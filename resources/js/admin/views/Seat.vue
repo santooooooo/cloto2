@@ -27,12 +27,8 @@
                       :key="section.id"
                     >
                       <template v-slot:activator>
-                        <v-list-item-title class="white--text" v-if="section.role === 'study'">
-                          区画 {{ section.id }}（自習室）
-                        </v-list-item-title>
-
-                        <v-list-item-title class="white--text" v-if="section.role === 'lounge'">
-                          区画 {{ section.id }}（休憩室）
+                        <v-list-item-title class="white--text">
+                          {{ section.name }}
                         </v-list-item-title>
                       </template>
 
