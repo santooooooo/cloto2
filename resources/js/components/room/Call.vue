@@ -57,11 +57,6 @@
             </v-sheet>
           </v-row>
 
-          <v-row justify="center" class="mt-3" v-if="screenSharing.stream">
-            <!-- 画面共有 -->
-            <video autoplay :srcObject.prop="screenSharing.stream" style="max-width: 80%"></video>
-          </v-row>
-
           <!-- ピン留め時 -->
           <v-row justify="center" class="mt-3" v-if="pinnedParticipant">
             <v-hover v-slot="{ hover }">
@@ -235,6 +230,11 @@
             </v-col>
           </v-row>
 
+          <!-- 画面共有 -->
+          <v-row justify="center" class="mt-3" v-if="screenSharing.stream">
+            <video autoplay :srcObject.prop="screenSharing.stream" style="max-width: 80%"></video>
+          </v-row>
+
           <!-- プロフィールダイアログ -->
           <ProfileDialog
             :user-param="profile.username"
@@ -321,6 +321,7 @@
               depressed
               :large="$vuetify.breakpoint.lg"
               :class="[
+                $vuetify.breakpoint.xl ? 'mx-10' : '',
                 $vuetify.breakpoint.lg ? 'mx-8' : '',
                 $vuetify.breakpoint.md ? 'mx-5' : 'mx-1',
               ]"
@@ -337,6 +338,7 @@
               depressed
               :large="$vuetify.breakpoint.lg"
               :class="[
+                $vuetify.breakpoint.xl ? 'mx-10' : '',
                 $vuetify.breakpoint.lg ? 'mx-8' : '',
                 $vuetify.breakpoint.md ? 'mx-5' : 'mx-1',
               ]"
@@ -353,6 +355,7 @@
               depressed
               :large="$vuetify.breakpoint.lg"
               :class="[
+                $vuetify.breakpoint.xl ? 'mx-10' : '',
                 $vuetify.breakpoint.lg ? 'mx-8' : '',
                 $vuetify.breakpoint.md ? 'mx-5' : 'mx-1',
               ]"
@@ -394,9 +397,9 @@
             <v-btn
               color="error"
               depressed
-              :x-large="$vuetify.breakpoint.lg"
+              :x-large="$vuetify.breakpoint.xl || $vuetify.breakpoint.lg"
               :large="$vuetify.breakpoint.md"
-              :class="[$vuetify.breakpoint.lg ? 'mx-12' : 'mx-5']"
+              :class="[$vuetify.breakpoint.xl || $vuetify.breakpoint.lg ? 'mx-12' : 'mx-5']"
               @click="leaveCall()"
             >
               自習室に戻る
