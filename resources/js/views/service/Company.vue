@@ -14,16 +14,36 @@
       </v-container>
     </v-container>
 
-    <div class="grey darken-4 text-center">
-      <span class="white--text">会社概要</span>
+    <div style="height: 100px" class="grey darken-4 text-center">
+      <h3 class="white--text pt-5">Greeting</h3>
+      <h6 class="white--text">御挨拶</h6>
+    </div>
+
+
+    <div class="black text-center">
+      <v-container justify="center" class="pa-16 text-left">
+        <v-row>
+          <v-col cols="2"> </v-col>
+          <v-col cols="4">
+            <p class="white--text">Twitter</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">@ycloto</p>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
+
+    <div style="height: 100px" class="grey darken-4 text-center">
+      <h3 class="white--text pt-5">Comapny</h3>
+      <h6 class="white--text">会社概要</h6>
     </div>
 
     <div class="black text-center">
-      <h3 class="white--text">Comapny</h3>
-      <v-container justify="center" class="mt-4 pa-16 text-left">
+      <v-container justify="center" class="pa-16 text-left">
         <v-row>
           <v-col cols="2"> </v-col>
-          <v-col cols="4">4
+          <v-col cols="4">
             <p class="white--text">社名</p>
           </v-col>
           <v-col cols="6">
@@ -87,17 +107,17 @@
       </v-container>
     </div>
 
-    <div class="grey darken-4 text-center">
-      <span class="white--text">Lorem ipsum</span>
+    <div style="height: 100px" class="grey darken-4 text-center">
+      <h3 class="white--text pt-5">Executive</h3>
+      <h6 class="white--text">役員</h6>
     </div>
 
     <div class="black text-center">
-      <h3 class="white--text">Team Member</h3>
-      <v-container justify="center" class="mt-4 pa-16 text-left">
+      <v-container justify="center" class="pa-16 text-left">
         <v-row>
           <v-col cols="2"> </v-col>
           <v-col cols="4">
-            <p class="white--text">代表者</p>
+            <p class="white--text">代表取締役社長</p>
           </v-col>
           <v-col cols="6">
             <p class="white--text">代表者</p>
@@ -106,7 +126,7 @@
         <v-row>
           <v-col cols="2"> </v-col>
           <v-col cols="4">
-            <p class="white--text">副代表</p>
+            <p class="white--text">副社長</p>
           </v-col>
           <v-col cols="6">
             <p class="white--text">副代表</p>
@@ -115,16 +135,16 @@
         <v-row>
           <v-col cols="2"> </v-col>
           <v-col cols="4">
-            <p class="white--text">エンジニア</p>
+            <p class="white--text">社外取締役</p>
           </v-col>
           <v-col cols="6">
-            <p class="white--text">開発者</p>
+            <p class="white--text">シャガール</p>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="2"> </v-col>
           <v-col cols="4">
-            <p class="white--text">デザイナー</p>
+            <p class="white--text">監査</p>
           </v-col>
           <v-col cols="6">
             <p class="white--text">設計者</p>
@@ -133,13 +153,14 @@
       </v-container>
     </div>
 
-    <div class="grey darken-4 text-center">
-      <span class="white--text">Lorem ipsum</span>
+    <div style="height: 100px" class="grey darken-4 text-center">
+      <h3 class="white--text pt-5">SNS</h3>
+      <h6 class="white--text">SNSアカウント</h6>
     </div>
 
+
     <div class="black text-center">
-      <h3 class="white--text">SNS</h3>
-      <v-container justify="center" class="mt-12 pa-16 text-left">
+      <v-container justify="center" class="pa-16 text-left">
         <v-row>
           <v-col cols="2"> </v-col>
           <v-col cols="4">
@@ -180,9 +201,11 @@
       </v-container>
     </div>
 
-    <div class="grey darken-4 text-center">
-      <span class="white--text">Lorem ipsum</span>
+    <div style="height: 100px" class="grey darken-4 text-center">
+      <h3 class="white--text pt-5">Team</h3>
+      <h6 class="white--text">チームメンバー</h6>
     </div>
+
 
     <div class="black text-center">
       <v-container class="content">
@@ -191,10 +214,9 @@
             <v-col>
               <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
             </v-col>
-
             <v-col class="white--text" align-self="center">
               <span class="name text-left ma-3">立花 慶人</span>
-              <span>Yoshihito Tachibana</span>
+              <span>Tachibana Yoshihito</span>
 
               <p class="ma-3 text-left position">CEO/デザイン</p>
               <v-spacer></v-spacer>
@@ -212,8 +234,7 @@
       </v-container>
     </div>
 
-    <div class="grey darken-4 text-center">
-      <span class="white--text">Lorem ipsum</span>
+    <div style="height: 20px" class="grey darken-4 text-center">
     </div>
 
     <div class="black text-center">
@@ -223,7 +244,7 @@
 
             <v-col class="white--text" align-self="center">
               <span class="name text-left ma-3">藤井 敦寛</span>
-              <span>Atsuhiro Fujii</span>
+              <span>Fujii Atsuhiro</span>
 
               <p class="ma-3 text-left position">CTO/プロジェクトマネジメント</p>
               <v-spacer></v-spacer>
@@ -240,28 +261,104 @@
               <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
             </v-col>
           </v-row>
-
-          <!-- <v-card justify="center" class="text-center mt-16">
-            <v-row no-gutters>
-              <v-card-title class="mx-auto">料金体系</v-card-title>
-            </v-row>
-            <v-data-table
-              :headers="headers"
-              :items="desserts"
-              :items-per-page="5"
-              class="elevation-1"
-            ></v-data-table>
-          </v-card> -->
         </v-row>
       </v-container>
     </div>
 
-    <div class="grey darken-4 text-center">
-      <span class="white--text">Lorem ipsum</span>
+    <div style="height: 20px" class="grey darken-4 text-center">
     </div>
 
-    <div class="grey darken-2 text-center">
-      <span class="white--text">Lorem ipsum</span>
+    <div class="black text-center">
+      <v-container class="content">
+        <v-row justify="center">
+          <v-row class="mt-12 pa-16">
+            <v-col>
+              <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
+            </v-col>
+
+            <v-col class="white--text" align-self="center">
+              <span class="name text-left ma-3">高橋 柊人</span>
+              <span>Takahashi Shuto</span>
+
+              <p class="ma-3 text-left position">エンジニア</p>
+              <v-spacer></v-spacer>
+              <p class="ma-3 text-left introduction">
+                ええからええからええからええからええから<br />
+                ええからええからええからええからええから<br />
+                ええからええからええからええからええから<br />
+                ええからええからええからええからええから<br />
+              </p>
+
+              <p></p
+            ></v-col>
+          </v-row>
+        </v-row>
+      </v-container>
+    </div>
+
+    <div style="height: 20px" class="grey darken-4 text-center">
+    </div>
+
+    <div class="black text-center">
+      <v-container class="content">
+        <v-row justify="center">    
+          <v-row class="mt-6 pa-16">
+
+            <v-col class="white--text" align-self="center">
+              <span class="name text-left ma-3">時原 陸</span>
+              <span>Tokihara Riku</span>
+
+              <p class="ma-3 text-left position">エンジニア</p>
+              <v-spacer></v-spacer>
+              <p class="ma-3 text-left introduction">
+                まめすまめすまめすまめすまめすまめす<br />
+                まめすまめすまめすまめすまめすまめす<br />
+                まめすまめすまめすまめすまめすまめす<br />
+                まめすまめすまめすまめすまめすまめす<br />
+              </p>
+
+              <p></p
+            ></v-col>
+            <v-col>
+              <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
+            </v-col>
+          </v-row>
+        </v-row>
+      </v-container>
+    </div>
+
+    <div class="black text-center">
+      <v-container class="content">
+        <v-row justify="center">
+          <v-row class="mt-12 pa-16">
+            <v-col>
+              <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
+            </v-col>
+
+            <v-col class="white--text" align-self="center">
+              <span class="name text-left ma-3">白石 晃</span>
+              <span>Shiraishi Hikaru</span>
+
+              <p class="ma-3 text-left position">デザイナー</p>
+              <v-spacer></v-spacer>
+              <p class="ma-3 text-left introduction">
+                ええからええからええからええからええから<br />
+                ええからええからええからええからええから<br />
+                ええからええからええからええからええから<br />
+                ええからええからええからええからええから<br />
+              </p>
+
+              <p></p
+            ></v-col>
+          </v-row>
+        </v-row>
+      </v-container>
+    </div>
+
+    <div style="height: 70px" class="grey darken-4 text-center">
+    </div>
+
+    <div style="height: 70px" class="black text-center">
     </div>
 
   </div>
