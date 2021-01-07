@@ -23,7 +23,7 @@
 
     <v-layout class="px-2 video-container">
       <v-flex>
-        <v-container>
+        <v-container fluid>
           <v-row justify="center">
             <v-sheet color="rgba(0, 0, 0, 1)" width="208" height="117" class="video">
               <!-- 自分のビデオ（オフ） -->
@@ -147,21 +147,23 @@
           </v-row>
 
           <!-- 通常時 -->
-          <v-row justify="center" class="mt-3">
-            <v-col md="6">
+          <v-row justify="center">
+            <v-col
+              sm="6"
+              md="6"
+              lg="4"
+              v-for="participant in notPinnedParticipants"
+              :key="participant.stream.peerId"
+            >
               <v-row justify="center">
-                <v-hover
-                  v-slot="{ hover }"
-                  v-for="participant in notPinnedParticipants"
-                  :key="participant.stream.peerId"
-                >
+                <v-hover v-slot="{ hover }">
                   <v-sheet
                     color="rgba(0, 0, 0, 1)"
                     :width="videoSize.showWidth"
                     :height="videoSize.showHeight"
                     :class="[
                       'video',
-                      'mx-1',
+                      'ma-1',
                       speakerId === participant.stream.peerId ? 'speaker' : '',
                     ]"
                   >
@@ -212,12 +214,7 @@
                           :width="videoSize.showWidth"
                           :height="videoSize.showHeight"
                         >
-                          <v-btn
-                            icon
-                            x-large
-                            class="pin-button"
-                            @click="participant.isPinned = true"
-                          >
+                          <v-btn icon x-large class="pin-button" @click="pin(participant)">
                             <v-icon> mdi-pin </v-icon>
                           </v-btn>
 
@@ -1021,6 +1018,20 @@ export default {
     },
 
     /**
+     * ピン留め
+     *
+     * @param Object  participant ピン留めする参加者
+     */
+    pin: function (participant) {
+      // 既にピン留めされているユーザーを解除
+      if (this.pinnedParticipant) {
+        this.pinnedParticipant.isPinned = false;
+      }
+
+      participant.isPinned = true;
+    },
+
+    /**
      * プロフィールの表示
      *
      * @param String  username  プロフィールを表示するユーザー名
@@ -1103,6 +1114,12 @@ export default {
         this.videoOff();
         this.isLoading = false;
         this.call.send({ type: 'loadingEvent', content: false });
+
+        // 通知音の有効化
+        this.$store.dispatch('alert/switchSound', {
+          isOn: true,
+          sound: this.notificationSounds.join,
+        });
       }, 5000);
     }
   },
