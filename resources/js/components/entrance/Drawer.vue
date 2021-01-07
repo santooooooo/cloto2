@@ -10,7 +10,7 @@
       </v-list>
 
       <v-list nav dense>
-        <v-list-item-group color="#f6bf00">
+        <v-list-item-group color="success">
           <v-list-item class="mb-4" :to="{ name: 'entrance' }">
             <v-list-item-content>
               <v-list-item-title class="text-body-1 font-weight-bold">施設案内</v-list-item-title>
