@@ -14,24 +14,16 @@
       </v-container>
     </v-container>
 
-    <div class="grey darken-2 text-center">
-      <span class="white--text">Lorem ipsum</span>
-    </div>
-
     <div class="grey darken-4 text-center">
-      <span class="white--text">Lorem ipsum</span>
-    </div>
-
-    <div class="grey darken-2 text-center">
       <span class="white--text">会社概要</span>
     </div>
 
-    <div class="grey darken-4 text-center">
+    <div class="black text-center">
       <h3 class="white--text">Comapny</h3>
-      <v-container justify="center" class="mt-12 pa-16">
+      <v-container justify="center" class="mt-4 pa-16 text-left">
         <v-row>
           <v-col cols="2"> </v-col>
-          <v-col cols="4">
+          <v-col cols="4">4
             <p class="white--text">社名</p>
           </v-col>
           <v-col cols="6">
@@ -95,13 +87,13 @@
       </v-container>
     </div>
 
-    <div class="grey darken-2 text-center">
+    <div class="grey darken-4 text-center">
       <span class="white--text">Lorem ipsum</span>
     </div>
 
-    <div class="grey darken-4 text-center">
+    <div class="black text-center">
       <h3 class="white--text">Team Member</h3>
-      <v-container justify="center" class="mt-12 pa-16">
+      <v-container justify="center" class="mt-4 pa-16 text-left">
         <v-row>
           <v-col cols="2"> </v-col>
           <v-col cols="4">
@@ -141,85 +133,137 @@
       </v-container>
     </div>
 
-    <div class="grey darken-2 text-center">
+    <div class="grey darken-4 text-center">
       <span class="white--text">Lorem ipsum</span>
+    </div>
+
+    <div class="black text-center">
+      <h3 class="white--text">SNS</h3>
+      <v-container justify="center" class="mt-12 pa-16 text-left">
+        <v-row>
+          <v-col cols="2"> </v-col>
+          <v-col cols="4">
+            <p class="white--text">Twitter</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">@ycloto</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2"> </v-col>
+          <v-col cols="4">
+            <p class="white--text">Facebook</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">@cloto</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2"> </v-col>
+          <v-col cols="4">
+            <p class="white--text">Instagram</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">@cloto</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2"> </v-col>
+          <v-col cols="4">
+            <p class="white--text">YouTube
+            </p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">clotoチャンネル</p>
+          </v-col>
+        </v-row>
+      </v-container>
     </div>
 
     <div class="grey darken-4 text-center">
       <span class="white--text">Lorem ipsum</span>
     </div>
 
-    <div class="grey darken-2 text-center">
-      <span class="white--text">Lorem ipsum</span>
-    </div>
+    <div class="black text-center">
+      <v-container class="content">
+        <v-row justify="center">
+          <v-row class="mt-12 pa-16">
+            <v-col>
+              <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
+            </v-col>
 
-    <div class="grey darken-4 text-center">
-      <span class="white--text">Lorem ipsum</span>
-    </div>
+            <v-col class="white--text" align-self="center">
+              <span class="name text-left ma-3">立花 慶人</span>
+              <span>Yoshihito Tachibana</span>
 
-    <div class="grey darken-2 text-center">
-      <span class="white--text">Lorem ipsum</span>
-    </div>
+              <p class="ma-3 text-left position">CEO/デザイン</p>
+              <v-spacer></v-spacer>
+              <p class="ma-3 text-left introduction">
+                早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
+                早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
+                早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
+                早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
+              </p>
 
-    <v-container class="content">
-      <v-row justify="center">
-        <v-row class="mt-12 pa-16">
-          <v-col>
-            <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
-          </v-col>
-
-          <v-col align-self="center">
-            <span class="name text-left ma-3">立花 慶人</span>
-            <span>Yoshihito Tachibana</span>
-
-            <p class="ma-3 text-left position">CEO/デザイン</p>
-            <v-spacer></v-spacer>
-            <p class="ma-3 text-left introduction">
-              早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
-              早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
-              早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
-              早稲田早稲田早稲田早稲田早稲田早稲田早稲田<br />
-            </p>
-
-            <p></p
-          ></v-col>
-        </v-row>
-
-        <v-row class="mt-6 pa-16">
-          
-          <v-col align-self="center">
-            <span class="name text-left ma-3">藤井 敦寛</span>
-            <span>Atsuhiro Fujii</span>
-
-            <p class="ma-3 text-left position">CTO/プロジェクトマネジメント</p>
-            <v-spacer></v-spacer>
-            <p class="ma-3 text-left introduction">
-              まめすまめすまめすまめすまめすまめす<br />
-              まめすまめすまめすまめすまめすまめす<br />
-              まめすまめすまめすまめすまめすまめす<br />
-              まめすまめすまめすまめすまめすまめす<br />
-            </p>
-
-            <p></p
-          ></v-col>
-          <v-col>
-            <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
-          </v-col>
-        </v-row>
-
-        <!-- <v-card justify="center" class="text-center mt-16">
-          <v-row no-gutters>
-            <v-card-title class="mx-auto">料金体系</v-card-title>
+              <p></p
+            ></v-col>
           </v-row>
-          <v-data-table
-            :headers="headers"
-            :items="desserts"
-            :items-per-page="5"
-            class="elevation-1"
-          ></v-data-table>
-        </v-card> -->
-      </v-row>
-    </v-container>
+        </v-row>
+      </v-container>
+    </div>
+
+    <div class="grey darken-4 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
+
+    <div class="black text-center">
+      <v-container class="content">
+        <v-row justify="center">    
+          <v-row class="mt-6 pa-16">
+
+            <v-col class="white--text" align-self="center">
+              <span class="name text-left ma-3">藤井 敦寛</span>
+              <span>Atsuhiro Fujii</span>
+
+              <p class="ma-3 text-left position">CTO/プロジェクトマネジメント</p>
+              <v-spacer></v-spacer>
+              <p class="ma-3 text-left introduction">
+                まめすまめすまめすまめすまめすまめす<br />
+                まめすまめすまめすまめすまめすまめす<br />
+                まめすまめすまめすまめすまめすまめす<br />
+                まめすまめすまめすまめすまめすまめす<br />
+              </p>
+
+              <p></p
+            ></v-col>
+            <v-col>
+              <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
+            </v-col>
+          </v-row>
+
+          <!-- <v-card justify="center" class="text-center mt-16">
+            <v-row no-gutters>
+              <v-card-title class="mx-auto">料金体系</v-card-title>
+            </v-row>
+            <v-data-table
+              :headers="headers"
+              :items="desserts"
+              :items-per-page="5"
+              class="elevation-1"
+            ></v-data-table>
+          </v-card> -->
+        </v-row>
+      </v-container>
+    </div>
+
+    <div class="grey darken-4 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
+
+    <div class="grey darken-2 text-center">
+      <span class="white--text">Lorem ipsum</span>
+    </div>
+
   </div>
 </template>
 
@@ -247,8 +291,8 @@ export default {
   .upper {
     max-width: 100%;
     height: 700px;
-    background-color: $primary;
-    color: $white;
+    background-color: white;
+    color: black;
     position: relative;
   }
 
@@ -257,7 +301,7 @@ export default {
     font-weight: 600;
   }
   .introduction {
-    color: grey;
+    color: white;
     font-size: 17px;
   }
 }
