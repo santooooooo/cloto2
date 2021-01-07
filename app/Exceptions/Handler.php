@@ -71,6 +71,6 @@ class Handler extends ExceptionHandler
 
         return $request->expectsJson()
             ? response()->json('', 401)
-            : redirect()->guest($exception->redirectTo() ?? route('login'));
+            : redirect()->guest(url('/login'));
     }
 }
