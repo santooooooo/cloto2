@@ -63,7 +63,7 @@
           </v-row>
 
           <!-- ピン留め時 -->
-          <v-row justify="center" class="mt-3" v-if="typeof pinnedParticipant !== 'undefined'">
+          <v-row justify="center" class="mt-3" v-if="pinnedParticipant">
             <v-hover v-slot="{ hover }">
               <v-sheet
                 color="rgba(0, 0, 0, 1)"
@@ -282,9 +282,9 @@
 
     <v-app-bar color="yellow darken-4" fixed bottom height="100">
       <v-row>
-        <v-col align-self="center">
+        <v-col md="4" sm="4" align-self="center">
           <v-row justify="start" class="mt-8">
-            <v-col md="6">
+            <v-col md="6" sm="6">
               <v-select disabled label="ミュート" v-if="isMute"></v-select>
               <v-select
                 v-model="selectedAudio"
@@ -298,7 +298,7 @@
               </v-select>
             </v-col>
 
-            <v-col md="6">
+            <v-col md="6" sm="6">
               <v-select disabled label="ビデオオフ" v-if="isVideoOff"></v-select>
               <v-select
                 v-model="selectedVideo"
@@ -314,7 +314,7 @@
           </v-row>
         </v-col>
 
-        <v-col align-self="center">
+        <v-col md="4" sm="4" align-self="center">
           <v-row justify="center">
             <!-- ミュートボタン -->
             <v-btn
@@ -322,8 +322,11 @@
               :disabled="isAudioLoading || isVideoLoading"
               fab
               depressed
-              large
-              class="mx-10"
+              :large="$vuetify.breakpoint.lg"
+              :class="[
+                $vuetify.breakpoint.lg ? 'mx-8' : '',
+                $vuetify.breakpoint.md ? 'mx-5' : 'mx-1',
+              ]"
               @click="mute()"
             >
               <v-icon large>{{ !isMute ? 'mdi-microphone' : 'mdi-microphone-off' }}</v-icon>
@@ -335,8 +338,11 @@
               :disabled="isAudioLoading || isVideoLoading"
               fab
               depressed
-              large
-              class="mx-10"
+              :large="$vuetify.breakpoint.lg"
+              :class="[
+                $vuetify.breakpoint.lg ? 'mx-8' : '',
+                $vuetify.breakpoint.md ? 'mx-5' : 'mx-1',
+              ]"
               @click="videoOff()"
             >
               <v-icon large>{{ !isVideoOff ? 'mdi-video' : 'mdi-video-off' }}</v-icon>
@@ -348,8 +354,11 @@
               :disabled="screenSharing.stream && !screenSharing.isLocal"
               fab
               depressed
-              large
-              class="mx-10"
+              :large="$vuetify.breakpoint.lg"
+              :class="[
+                $vuetify.breakpoint.lg ? 'mx-8' : '',
+                $vuetify.breakpoint.md ? 'mx-5' : 'mx-1',
+              ]"
               @click="!screenSharing.stream ? startScreenSharing() : stopScreenSharing()"
             >
               <v-icon large>
@@ -363,7 +372,7 @@
           </v-row>
         </v-col>
 
-        <v-col align-self="center">
+        <v-col md="4" sm="4" align-self="center">
           <v-row justify="end">
             <!-- 通知音ボタン -->
             <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
@@ -385,7 +394,14 @@
             </v-badge>
 
             <!-- 通話終了ボタン -->
-            <v-btn depressed x-large color="error" class="mx-12" @click="leaveCall()">
+            <v-btn
+              color="error"
+              depressed
+              :x-large="$vuetify.breakpoint.lg"
+              :large="$vuetify.breakpoint.md"
+              :class="[$vuetify.breakpoint.lg ? 'mx-12' : 'mx-5']"
+              @click="leaveCall()"
+            >
               自習室に戻る
             </v-btn>
           </v-row>
