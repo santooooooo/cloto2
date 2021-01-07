@@ -81,7 +81,7 @@ export default {
       windowWidth: window.innerWidth, // ウィンドウの横幅
       windowHeight: window.innerHeight - 64, // ウィンドウの縦幅（ヘッダーを除く）
       chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
-      canvas: '', // キャンバスエリア
+      canvas: null, // キャンバスエリア
       isLoading: false, // ロードの制御
       messageOverlay: {
         isShow: false, // メッセージオーバーレイ制御

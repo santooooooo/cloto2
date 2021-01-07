@@ -21,7 +21,7 @@ export default {
     return {
       windowWidth: window.innerWidth, // ウィンドウの横幅
       windowHeight: window.innerHeight - 64, // ウィンドウの縦幅（ヘッダーを除く）
-      canvas: '', // キャンバスエリア
+      canvas: null, // キャンバスエリア
       isLoading: false, // ロードの制御
       roomData: {}, // 教室データ
       roomWidth: 1080, // 教室サイズ
@@ -36,13 +36,6 @@ export default {
         'margin-top': this.windowHeight < this.roomHeight + 100 ? '0px' : '50px',
         'margin-right': this.windowWidth < this.roomWidth + 250 ? '250px' : '0px',
       };
-    },
-  },
-
-  watch: {
-    '$route.params.roomId': async function (val) {
-      // 教室を更新
-      await this.setRoom();
     },
   },
 
@@ -72,41 +65,34 @@ export default {
       // 座席の設定
       this.roomData.sections.forEach((section, sectionIndex) => {
         section.seats.forEach((seat, seatIndex) => {
-          var color = '';
           if (seat.status == 'break') {
-            color = '#FF0000';
+            this.canvas.add(
+              new fabric.Circle({
+                fill: '#FF0000',
+                opacity: 0.3,
+                left: seat.position.x,
+                top: seat.position.y,
+                originX: 'center',
+                originY: 'center',
+                radius: seat.size / 2,
+                strokeWidth: 1,
+                hasControls: false, // 図形周囲のコントロールボタンの無効化
+                hasBorders: false, // 図形周囲のボーダーの無効化
+                lockMovementX: true, // 横移動の禁止
+                lockMovementY: true, // 縦移動の禁止
+                hoverCursor: 'default', // カーソルの変更を禁止
+              })
+            );
           }
-
-          this.canvas.add(
-            new fabric.Circle({
-              seatId: seat.id,
-              sectionId: section.id,
-              role: section.role,
-              fill: color,
-              reservationId: seat.reservation_user_id,
-              opacity: 0.3,
-              left: seat.position.x,
-              top: seat.position.y,
-              originX: 'center',
-              originY: 'center',
-              radius: seat.size / 2,
-              strokeWidth: 1,
-              hasControls: false, // 図形周囲のコントロールボタンの無効化
-              hasBorders: false, // 図形周囲のボーダーの無効化
-              lockMovementX: true, // 横移動の禁止
-              lockMovementY: true, // 縦移動の禁止
-              hoverCursor: 'default', // カーソルの変更を禁止
-            })
-          );
 
           // 誰かが座っている時
           if (seat.status !== null && seat.status != 'break') {
             this.setUser(seat);
           }
         });
-
-        this.isLoading = false;
       });
+
+      this.isLoading = false;
     },
 
     /**

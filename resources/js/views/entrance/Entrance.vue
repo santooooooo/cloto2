@@ -3,7 +3,8 @@
     <Drawer :floors="floors" />
 
     <v-flex>
-      <router-view />
+      <!-- 強制的にコンポーネントを初期化（メモリリーク対策） -->
+      <router-view :key="$route.params.roomId" />
     </v-flex>
   </v-layout>
 </template>
