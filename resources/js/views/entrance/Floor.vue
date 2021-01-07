@@ -8,7 +8,7 @@
 
       <v-row no-gutters justify="center">
         <div id="canvas-container" :style="canvasContainerStyle" v-dragscroll>
-          <canvas :width="roomWidth" :height="roomHight" id="canvas"></canvas>
+          <canvas :width="roomWidth" :height="roomHeight" id="canvas"></canvas>
         </div>
       </v-row>
     </v-flex>
@@ -20,19 +20,20 @@ export default {
   data() {
     return {
       windowWidth: window.innerWidth, // ウィンドウの横幅
-      windowHeight: window.innerHeight, // ウィンドウの縦幅
+      windowHeight: window.innerHeight - 64, // ウィンドウの縦幅（ヘッダーを除く）
       canvas: '', // キャンバスエリア
       isLoading: false, // ロードの制御
       roomData: {}, // 教室データ
       roomWidth: 1080, // 教室サイズ
-      roomHight: 600, // 教室サイズ
+      roomHeight: 600, // 教室サイズ
     };
   },
 
   computed: {
     canvasContainerStyle() {
       return {
-        height: this.windowHeight - 64 + 'px',
+        height: this.windowHeight + 'px',
+        'margin-top': this.windowHeight < this.roomHeight + 100 ? '0px' : '50px',
         'margin-right': this.windowWidth < this.roomWidth + 250 ? '250px' : '0px',
       };
     },
@@ -155,7 +156,7 @@ export default {
     // ウィンドウリサイズ時のイベント
     window.addEventListener('resize', () => {
       this.windowWidth = window.innerWidth;
-      this.windowHeight = window.innerHeight;
+      this.windowHeight = window.innerHeight - 64;
     });
   },
 };
