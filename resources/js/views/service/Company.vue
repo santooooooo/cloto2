@@ -126,7 +126,16 @@
             <p class="white--text">エンジニア</p>
           </v-col>
           <v-col cols="6">
+            <p class="white--text">開発者</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2"> </v-col>
+          <v-col cols="4">
             <p class="white--text">デザイナー</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="white--text">設計者</p>
           </v-col>
         </v-row>
       </v-container>
@@ -177,10 +186,7 @@
         </v-row>
 
         <v-row class="mt-6 pa-16">
-          <v-col>
-            <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
-          </v-col>
-
+          
           <v-col align-self="center">
             <span class="name text-left ma-3">藤井 敦寛</span>
             <span>Atsuhiro Fujii</span>
@@ -196,6 +202,9 @@
 
             <p></p
           ></v-col>
+          <v-col>
+            <v-img eager width="400" :src="$storage('system') + 'top.svg'"></v-img>
+          </v-col>
         </v-row>
 
         <!-- <v-card justify="center" class="text-center mt-16">
