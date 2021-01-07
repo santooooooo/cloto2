@@ -25,14 +25,11 @@ export default {
   data() {
     return {
       floors: [], // ドロワーメニュー用階層一覧
-      rooms: null,
     };
   },
   async mounted() {
     var response = await this.$http.get(this.$endpoint('rooms'));
-    this.rooms = response.data;
-
-    this.rooms.forEach((room) => {
+    response.data.forEach((room) => {
       this.floors.push({ id: room.id, name: room.name });
     });
   },

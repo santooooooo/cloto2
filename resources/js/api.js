@@ -21,6 +21,7 @@ const userShow = '/api/user/' + replaceChar[0];
 const profileUpdate = '/api/user/update';
 const rooms = '/api/rooms';
 const roomShow = '/api/room/' + replaceChar[0];
+const roomAuthSit = '/api/room/auth_sit_down';
 const seatSit = '/api/seat/sit/' + replaceChar[0];
 const seatLeave = '/api/seat/leave';
 const enterCall = '/api/seat/enter_call/' + replaceChar[0];
@@ -89,6 +90,10 @@ export function getEndpoint(name, params) {
 
     case 'roomShow':
       endpoint = setParams(roomShow, params);
+      break;
+
+    case 'roomAuthSit':
+      endpoint = roomAuthSit;
       break;
 
     case 'seatSit':

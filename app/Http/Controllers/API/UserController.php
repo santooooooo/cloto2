@@ -67,7 +67,7 @@ class UserController extends Controller
             return response(null);
         }
 
-        return response()->json($this->auth_user->load(['seat.section', 'tasks' => function ($query) {
+        return response()->json($this->auth_user->load(['seat', 'tasks' => function ($query) {
             // 進行中のタスク，プロジェクトのみを取得
             $query->where('id', $this->auth_user->task_id);
             $query->with('project');

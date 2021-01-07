@@ -70,6 +70,7 @@ export default {
       isOffline: false, // オフライン状態
       setOnlineTimer: null, // オンライン状態の通知制御
       isShowDrawer: false, // ドロワーメニューの表示制御
+      sitRoom: null, // 着席中の部屋
     };
   },
   computed: {
@@ -101,43 +102,46 @@ export default {
         clearInterval(this.setOnlineTimer);
       }
     },
-    'authUser.seat': function (val, oldVal) {
-      if (typeof val !== 'undefined' && typeof oldVal !== 'undefined') {
-        if (val !== null && oldVal === null) {
-          /**
-           * 着席時
-           */
-          // 時間割イベントの受信開始
-          Echo.channel('room-' + val.section.room_id).listen('TimetableEvent', (event) => {
-            if (event.status === 'study') {
-              // 自習時間
-              this.$store.dispatch('alert/showOverlay', {
-                color: '#ff4500',
-                message: '自習時間です！',
-              });
-              // チャイム
-              if (this.$store.getters['alert/isSoundOn']) {
-                this.chime.play();
-              }
-            } else if (event.status === 'break') {
-              // 休憩時間
-              this.$store.dispatch('alert/showOverlay', {
-                color: '#4169e1',
-                message: '休憩時間です！',
-              });
-              // チャイム
-              if (this.$store.getters['alert/isSoundOn']) {
-                this.chime.play();
-              }
+    'authUser.seat': async function (val, oldVal) {
+      if (val != null && oldVal == null) {
+        /**
+         * 着席時
+         */
+        var response = await this.$http.get(this.$endpoint('roomAuthSit'));
+        this.sitRoom = response.data;
+
+        // 時間割イベントの受信開始
+        Echo.channel('room-' + this.sitRoom).listen('TimetableEvent', (event) => {
+          if (event.status === 'study') {
+            // 自習時間
+            this.$store.dispatch('alert/showOverlay', {
+              color: '#ff4500',
+              message: '自習時間です！',
+            });
+            // チャイム
+            if (this.$store.getters['alert/isSoundOn']) {
+              this.chime.play();
             }
-          });
-        } else if (val === null && oldVal !== null) {
-          /**
-           * 退席時
-           */
-          // 部屋イベントの受信終了
-          Echo.leave('room-' + oldVal.section.room_id);
-        }
+          } else if (event.status === 'break') {
+            // 休憩時間
+            this.$store.dispatch('alert/showOverlay', {
+              color: '#4169e1',
+              message: '休憩時間です！',
+            });
+            // チャイム
+            if (this.$store.getters['alert/isSoundOn']) {
+              this.chime.play();
+            }
+          }
+        });
+      } else if (val == null && oldVal != null) {
+        /**
+         * 退席時
+         */
+        // 部屋イベントの受信終了
+        Echo.leave('room-' + this.sitRoom);
+
+        this.sitRoom = null;
       }
     },
   },

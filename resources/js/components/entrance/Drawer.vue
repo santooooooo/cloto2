@@ -39,7 +39,7 @@
           block
           color="#f6bf00"
           :to="{ name: 'room', params: { roomId: $route.params.roomId } }"
-          v-if="!this.authUser.seat"
+          v-if="$route.name === 'floor' && !sitRoom"
         >
           入室
         </v-btn>
@@ -49,8 +49,8 @@
           depressed
           block
           color="error"
-          :to="{ name: 'room', params: { roomId: authUser.seat.section.room_id } }"
-          v-else
+          :to="{ name: 'room', params: { roomId: sitRoom } }"
+          v-if="sitRoom"
         >
           着席中の教室に戻る
         </v-btn>
@@ -64,10 +64,19 @@ export default {
   props: {
     floors: Array,
   },
+  data() {
+    return {
+      sitRoom: null, // 着席中の部屋
+    };
+  },
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
     },
+  },
+  async mounted() {
+    var response = await this.$http.get(this.$endpoint('roomAuthSit'));
+    this.sitRoom = response.data;
   },
 };
 </script>

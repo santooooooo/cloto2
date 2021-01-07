@@ -53,7 +53,8 @@ Route::group(['middleware' => 'auth'], function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/rooms', 'API\RoomController@index')->name('rooms');
-    Route::get('/room/{room_id}', 'API\RoomController@show')->name('roomShow');
+    Route::get('/room/{room_id}', 'API\RoomController@show')->where('room_id', '[0-9]+')->name('roomShow');
+    Route::get('/room/auth_sit_down', 'API\RoomController@auth_sit')->name('roomAuthSit');
     Route::post('/seat/sit/{seat}', 'API\SeatController@sit')->name('seatSit');
     Route::post('/seat/leave', 'API\SeatController@leave')->name('seatLeave');
     Route::post('/seat/enter_call/{seat}', 'API\SeatController@enter_call')->name('enterCall');
