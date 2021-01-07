@@ -12,7 +12,7 @@
       <v-carousel-item v-for="(page, i) in pages" :key="i" :src="page.image">
         <v-row style="height: 87%" align="center" justify="center">
           <div style="width: 100%" class="display-3 text-center">
-            <p class="mb-0">{{ page.title }}</p>
+            <p class="mb-0 font-weight-bold">{{ page.title }}</p>
             <v-btn :to="{ name: page.to }">{{ page.btnText }}</v-btn>
           </div>
         </v-row>

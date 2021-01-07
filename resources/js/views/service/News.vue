@@ -38,9 +38,18 @@
                     </v-card-text>
                     <v-text-field
                       solo
-                      label="Prepend inner"
-                      prepend-inner-icon="mdi-map-marker"
+                      prepend-inner-icon="mdi-magnify"
+                      color="grey lighten-5"
                     ></v-text-field>
+                    <!-- <v-text-field
+                      append-icon="mdi-microphone"
+                      class="mx-4"
+                      flat
+                      hide-details
+                      label="Search"
+                      prepend-inner-icon="mdi-magnify"
+                      solo-inverted
+                    ></v-text-field> -->
                   </v-card>
                 </div>
               </v-col>
@@ -57,10 +66,10 @@
                       </v-img>
 
                       <v-card-text class="text--primary">
-                        <div>日時:{{ event.date }}</div>
-                        <div>場所:{{ event.place }}</div>
-                        <div>主催:{{ event.organizer }}</div>
-                        <div>概要:{{ event.body }}</div>
+                        <div>日時 : {{ event.date }}</div>
+                        <div>場所 : {{ event.place }}</div>
+                        <div>主催 : {{ event.organizer }}</div>
+                        <div>概要 : {{ event.body }}</div>
                       </v-card-text>
 
                       <v-card-actions>

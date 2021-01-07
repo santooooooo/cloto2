@@ -10,9 +10,9 @@
     <h3 class="text-center mt-16 font-weight-bold">製品紹介</h3>
 
     <v-container class="content mt-8 pa-0 mb-12">
-      <v-card class="pa-0 pt-3 mr-0 ml-0 pb-3">
+      <v-card tile class="pa-0 pt-3 mr-0 ml-0 pb-3">
         <h2 class="text-center ma-5 font-weight-bold">ベータ版</h2>
-        <v-card color="#f6bf00" class="pa-0 ma-0">
+        <v-card tile outlined color="#f6bf00" class="pa-0 ma-0">
           <v-row>
             <v-col cols="6">
               <div class="mx-auto">
@@ -41,7 +41,7 @@
           </v-row>
         </v-card>
 
-        <v-card color="#f6bf00" class="pa-0 mt-6 ma-0">
+        <v-card tile outlined color="#f6bf00" class="pa-0 mt-6 ma-0">
           <v-row>
             <v-col cols="6">
               <div class="mx-auto">
