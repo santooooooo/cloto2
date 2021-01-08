@@ -91,7 +91,7 @@
                   できなかったこと
                 </v-card-text>
                 <v-textarea
-                  v-model="karteForm.trouble"
+                  v-model="karteForm.challenge"
                   solo
                   rounded
                   rows="6"
@@ -210,7 +210,7 @@ export default {
       karteForm: {
         body: '', // やったこと
         achieve: '', // 達成できたこと
-        trouble: '', // つまづいたこと
+        challenge: '', // つまづいたこと
         reference: '', // 参考文献
         image: '', // 画像
         activityTime: '00:00', // 活動時間
@@ -267,7 +267,7 @@ export default {
         input.append('task_id', 1);
         input.append('body', this.karteForm.body);
         input.append('achieve', this.karteForm.achieve);
-        input.append('trouble', this.karteForm.trouble);
+        input.append('challenge', this.karteForm.challenge);
         input.append('reference', this.karteForm.reference);
         input.append('image', this.karteForm.image);
         input.append('activity_time', this.karteForm.activityTime);

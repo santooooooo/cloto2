@@ -75,15 +75,15 @@
               <!-- できなかったこと -->
               <v-tooltip max-width="300" top>
                 <template v-slot:activator="{ on, attrs }">
-                  <td v-bind="attrs" v-on="on" v-if="karte.trouble">
-                    <p class="karte-content">{{ karte.trouble }}</p>
+                  <td v-bind="attrs" v-on="on" v-if="karte.challenge">
+                    <p class="karte-content">{{ karte.challenge }}</p>
                   </td>
 
                   <td v-else>
                     <p class="karte-content">未入力</p>
                   </td>
                 </template>
-                <span>{{ karte.trouble }}</span>
+                <span>{{ karte.challenge }}</span>
               </v-tooltip>
 
               <!-- 参考文献 -->

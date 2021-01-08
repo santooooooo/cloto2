@@ -19,7 +19,7 @@ class CreateKartesTable extends Migration
             $table->foreignId('task_id')->constrained();    // タスクID
             $table->text('body')->nullable();               // やったこと
             $table->text('achieve')->nullable();            // 達成できたこと
-            $table->text('trouble')->nullable();            // つまづいたこと
+            $table->text('challenge')->nullable();          // つまづいたこと
             $table->text('reference')->nullable();          // 参考文献
             $table->json('image')->nullable();              // 画像
             $table->time('activity_time');                  // 活動時間
