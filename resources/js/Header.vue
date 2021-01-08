@@ -16,7 +16,7 @@
           <v-tab v-bind="attrs" v-on="on">Concept</v-tab>
         </template>
         <v-list>
-          <v-list-item :to="{ name: concept.to }" v-for="concept in concepts" :key="concept">
+          <v-list-item :to="{ name: concept.to }" v-for="(concept, index) in concepts" :key="index">
             <v-list-item-title>{{ concept.text }}</v-list-item-title>
           </v-list-item>
         </v-list>

@@ -14,8 +14,14 @@ class CreateKarteTagTable extends Migration
     public function up()
     {
         Schema::create('karte_tag', function (Blueprint $table) {
-            $table->foreignId('karte_id')->constrained();
-            $table->foreignId('tag_id')->constrained();
+            $table->foreignId('karte_id')
+                ->constrained()
+                ->onDelete('cascade');
+            $table->foreignId('tag_id')
+                ->constrained()
+                ->onDelete('cascade');
+
+            $table->primary(['karte_id', 'tag_id']);
         });
     }
 
