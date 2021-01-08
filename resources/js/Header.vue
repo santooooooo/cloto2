@@ -31,6 +31,26 @@
 
     <v-spacer></v-spacer>
 
+    <v-btn
+      text
+      x-large
+      class="font-weight-bold"
+      :to="{ name: 'register' }"
+      v-if="isRelease && !authCheck"
+    >
+      新規登録
+    </v-btn>
+
+    <v-btn
+      text
+      x-large
+      class="font-weight-bold mx-12"
+      :to="{ name: 'login' }"
+      v-if="isRelease && !authCheck"
+    >
+      ログイン
+    </v-btn>
+
     <!-- 通知音ボタン -->
     <v-btn
       color="white"
