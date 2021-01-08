@@ -20,6 +20,8 @@ const seatUpdate = '/api/admin/seat/update/' + replaceChar[0];
 const inquiries = '/api/admin/inquiries';
 const inquiryShow = '/api/admin/inquiry/' + replaceChar[0];
 const inquiryPost = '/api/admin/inquiry/post';
+const tags = '/api/admin/tags';
+const tagUpdate = '/api/admin/tag/update/' + replaceChar[0];
 
 /**
  * エンドポイントの取得
@@ -69,6 +71,14 @@ export function getEndpoint(name, params) {
 
     case 'inquiryPost':
       endpoint = inquiryPost;
+      break;
+
+    case 'tags':
+      endpoint = tags;
+      break;
+
+    case 'tagUpdate':
+      endpoint = setParams(tagUpdate, params);
       break;
   }
 

@@ -124,4 +124,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/inquiries', 'API\Admin\InquiryController@index')->name('admin.inquiries');
     Route::get('/inquiry/{user}', 'API\Admin\InquiryController@show')->where('user', '[0-9]+')->name('admin.inquiryShow');
     Route::post('/inquiry/post', 'API\Admin\InquiryController@post')->name('admin.inquiryPost');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | タグ
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/tags', 'API\Admin\TagController@index')->name('tags');
+    Route::post('/tag/update/{tag}', 'API\Admin\TagController@update')->where('tag', '[0-9]+')->name('admin.tagUpdate');
 });

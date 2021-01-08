@@ -55,6 +55,15 @@
           <v-list-item-title>座席</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+
+      <v-list-item exact :to="{ name: 'tag' }">
+        <v-list-item-icon>
+          <v-icon>mdi-tag</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>タグ</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
