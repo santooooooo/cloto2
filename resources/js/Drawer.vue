@@ -57,7 +57,7 @@
           <v-icon>mdi-home-city</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title>ホーム</v-list-item-title>
+          <v-list-item-title>フロア案内</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
