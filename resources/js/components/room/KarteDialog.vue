@@ -27,14 +27,14 @@
             <v-row justify="center" align="center" class="mt-2">
               <input type="time" v-model="karteForm.activityTime" class="grey darken-2 mr-4" />
 
-              <v-btn bense small depressed color="success" class="ml-4" @click="getTechnology()">
-                技術タグ入力
+              <v-btn bense small depressed color="success" class="ml-4" @click="getTag()">
+                タグ入力
               </v-btn>
             </v-row>
 
             <v-row justify="center">
-              <v-chip class="ma-3" v-for="technologyId in technology.inputIds" :key="technologyId">
-                {{ technology.data[technologyId].name }}
+              <v-chip class="ma-3" v-for="tagId in tag.inputIds" :key="tagId">
+                {{ tag.data[tagId].name }}
               </v-chip>
             </v-row>
 
@@ -119,15 +119,15 @@
       </v-form>
     </v-dialog>
 
-    <!-- 技術タグ入力ダイアログ -->
-    <v-dialog persistent v-model="technology.dialog" width="600" height="600">
+    <!-- タグ入力ダイアログ -->
+    <v-dialog persistent v-model="tag.dialog" width="600" height="600">
       <v-card class="headline grey darken-2 text-center">
         <v-container>
           <v-row>
             <v-btn
               depressed
               small
-              @click="technology.dialog = false"
+              @click="tag.dialog = false"
               class="ml-3"
               dark
               color="grey lighten-1"
@@ -137,38 +137,21 @@
           </v-row>
 
           <v-card-text>
-            <h2 class="pa-2 white--text title font-weight-bold mb-2 text-center">使用技術タグ</h2>
+            <h2 class="pa-2 white--text title font-weight-bold mb-2 text-center">タグ</h2>
 
             <!-- ローディング -->
-            <v-skeleton-loader type="table-row@6" v-if="technology.loading"></v-skeleton-loader>
+            <v-skeleton-loader type="table-row@6" v-if="tag.loading"></v-skeleton-loader>
 
-            <v-chip-group
-              active-class="white--text"
-              v-model="technology.inputIds"
-              column
-              multiple
-              v-else
-            >
-              <v-chip
-                filter
-                v-for="technology in technology.data"
-                :key="technology.id"
-                :value="technology.id"
-              >
-                {{ technology.name }}
+            <v-chip-group active-class="white--text" v-model="tag.inputIds" column multiple v-else>
+              <v-chip filter v-for="tag in tag.data" :key="tag.id" :value="tag.id">
+                {{ tag.name }}
               </v-chip>
             </v-chip-group>
           </v-card-text>
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              depressed
-              @click="inputTechnology(technology.inputIds)"
-              class="mt-3"
-              color="#f6bf00"
-              dark
-            >
+            <v-btn depressed @click="inputTag(tag.inputIds)" class="mt-3" color="#f6bf00" dark>
               追加
             </v-btn>
             <v-spacer></v-spacer>
@@ -220,9 +203,9 @@ export default {
           bodyRules: [(v) => !!v || '活動内容は必須項目です。'],
         },
       },
-      technology: {
-        dialog: false, // 技術タグ入力ダイアログの制御
-        data: '', // 技術タグデータ
+      tag: {
+        dialog: false, // タグ入力ダイアログの制御
+        data: '', // タグデータ
         inputIds: [], // 選択済データ
         loading: false,
       },
@@ -236,26 +219,26 @@ export default {
   },
   methods: {
     /**
-     * 技術タグの取得
+     * タグの取得
      */
-    getTechnology: async function () {
-      this.technology.loading = true;
-      this.technology.dialog = true;
+    getTag: async function () {
+      this.tag.loading = true;
+      this.tag.dialog = true;
 
-      var response = await this.$http.get(this.$endpoint('technologies'));
-      this.technology.data = response.data;
+      var response = await this.$http.get(this.$endpoint('tags'));
+      this.tag.data = response.data;
 
-      this.technology.loading = false;
+      this.tag.loading = false;
     },
 
     /**
-     * 技術タグの入力決定
+     * タグの入力決定
      *
-     * @param Array technologyIds 入力された技術タグのID
+     * @param Array tagIds 入力されたタグのID
      */
-    inputTechnology: function (technologyIds) {
-      this.karteForm.technology = technologyIds;
-      this.technology.dialog = false;
+    inputTag: function (tagIds) {
+      this.karteForm.tag = tagIds;
+      this.tag.dialog = false;
     },
 
     submit: async function () {
@@ -271,7 +254,7 @@ export default {
         input.append('reference', this.karteForm.reference);
         input.append('image', this.karteForm.image);
         input.append('activity_time', this.karteForm.activityTime);
-        input.append('technologies', this.technology.inputIds);
+        input.append('tags', this.tag.inputIds);
 
         // カルテ保存処理
         var response = await this.$http.post(this.$endpoint('kartePost'), input);

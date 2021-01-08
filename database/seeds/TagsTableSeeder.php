@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\Technology;
+use App\Models\Tag;
 
-class TechnologiesTableSeeder extends Seeder
+class TagsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class TechnologiesTableSeeder extends Seeder
     {
         $names = ['C', 'C++', 'C#', 'Java', 'PHP', 'Ruby', 'JavaScript', 'TypeScript', 'Python', 'Kotlin'];
         foreach ($names as $name) {
-            Technology::create(['name' => $name]);
+            Tag::create(['name' => $name]);
         }
     }
 }

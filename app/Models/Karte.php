@@ -46,12 +46,12 @@ class Karte extends Model
     }
 
     /**
-     * Technology モデルのリレーション
+     * Tag モデルのリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function technologies()
+    public function tags()
     {
-        return $this->belongsToMany('App\Models\Technology');
+        return $this->belongsToMany('App\Models\Tag');
     }
 }

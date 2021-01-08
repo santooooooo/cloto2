@@ -74,7 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/karte/index_by_auth_user', 'API\KarteController@index_by_auth_user')->name('karteIndexByAuthUser');
     Route::get('/karte/index_by_task_id/{task_id}', 'API\KarteController@index_by_task_id')->name('karteIndexByTaskId');
     Route::post('/karte/post', 'API\KarteController@post')->name('kartePost');
-    Route::get('/technologies', 'API\TechnologyController@index')->name('technologies');
+    Route::get('/tags', 'API\TagController@index')->name('tags');
 
 
     /*

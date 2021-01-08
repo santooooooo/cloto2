@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use App\Database\Blueprint;
 use App\Facades\Schema;
 
-class CreateTechnologiesTable extends Migration
+class CreateTagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateTechnologiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('technologies', function (Blueprint $table) {
+        Schema::create('tags', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // 技術名
+            $table->string('name'); // タグ名
             $table->dateTimes();
         });
     }
@@ -27,6 +27,6 @@ class CreateTechnologiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('technologies');
+        Schema::dropIfExists('tags');
     }
 }

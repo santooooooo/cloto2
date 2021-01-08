@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKarteTechnologyTable extends Migration
+class CreateKarteTagTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateKarteTechnologyTable extends Migration
      */
     public function up()
     {
-        Schema::create('karte_technology', function (Blueprint $table) {
+        Schema::create('karte_tag', function (Blueprint $table) {
             $table->foreignId('karte_id')->constrained();
-            $table->foreignId('technology_id')->constrained();
+            $table->foreignId('tag_id')->constrained();
         });
     }
 
@@ -26,6 +26,6 @@ class CreateKarteTechnologyTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('karte_technology');
+        Schema::dropIfExists('karte_tag');
     }
 }

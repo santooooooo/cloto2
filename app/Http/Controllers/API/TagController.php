@@ -3,22 +3,22 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Technology;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
-class TechnologyController extends Controller
+class TagController extends Controller
 {
-    /** @var Technology */
-    protected $technology;
+    /** @var Tag */
+    protected $tag;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Technology $technology)
+    public function __construct(Tag $tag)
     {
-        $this->technology = $technology;
+        $this->tag = $tag;
     }
 
 
@@ -29,6 +29,6 @@ class TechnologyController extends Controller
      */
     public function index()
     {
-        return response()->json($this->technology->get());
+        return response()->json($this->tag->all());
     }
 }

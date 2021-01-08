@@ -100,11 +100,11 @@
                 <span>{{ karte.reference }}</span>
               </v-tooltip>
 
-              <!-- 技術タグ -->
+              <!-- タグ -->
               <v-tooltip max-width="300" top>
                 <template v-slot:activator="{ on, attrs }">
-                  <td v-bind="attrs" v-on="on" v-if="karte.technologies.length">
-                    <p class="karte-content">タグ{{ karte.technologies.length }}個</p>
+                  <td v-bind="attrs" v-on="on" v-if="karte.tags.length">
+                    <p class="karte-content">タグ{{ karte.tags.length }}個</p>
                   </td>
 
                   <td v-else>
@@ -112,14 +112,8 @@
                   </td>
                 </template>
 
-                <v-chip
-                  class="ma-2"
-                  filter
-                  v-for="technology in karte.technologies"
-                  :key="technology.id"
-                  :value="technology.id"
-                >
-                  {{ technology.name }}
+                <v-chip class="ma-2" filter v-for="tag in karte.tags" :key="tag.id" :value="tag.id">
+                  {{ tag.name }}
                 </v-chip>
               </v-tooltip>
             </tr>

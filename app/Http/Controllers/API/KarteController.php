@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Karte;
 use App\Models\User;
-use App\Models\Technology;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,15 +17,15 @@ class KarteController extends Controller
 
     /** @var Karte */
     protected $karte;
-    /** @var Technology */
-    protected $technology;
+    /** @var Tag */
+    protected $tag;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Karte $karte, Technology $technology)
+    public function __construct(Karte $karte, Tag $tag)
     {
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
@@ -33,7 +33,7 @@ class KarteController extends Controller
         });
 
         $this->karte = $karte;
-        $this->technology = $technology;
+        $this->tag = $tag;
     }
 
 
@@ -44,7 +44,7 @@ class KarteController extends Controller
      */
     public function index_by_auth_user()
     {
-        return response()->json($this->karte->where('user_id', $this->user->id)->with('technologies')->get());
+        return response()->json($this->karte->where('user_id', $this->user->id)->with('tags')->get());
     }
 
     /**
@@ -96,9 +96,9 @@ class KarteController extends Controller
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        // 技術タグの紐付け
-        if (!empty($data['technologies'])) {
-            $result->technologies()->sync(explode(',', $data['technologies']));
+        // タグの紐付け
+        if (!empty($data['tags'])) {
+            $result->tags()->sync(explode(',', $data['tags']));
         }
 
         return response()->json($result);
