@@ -5,15 +5,19 @@
         <v-toolbar flat>
           <v-toolbar-title>タグ一覧</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
           <span>編集ボタンからタグを変更できます。</span>
+          <v-spacer></v-spacer>
 
           <!-- タグ編集ダイアログ -->
           <v-dialog v-model="editTagForm.dialog" max-width="500px" persistent>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">新規作成</v-btn>
+            </template>
+
             <v-form ref="editTagForm" v-model="editTagForm.validation.valid" lazy-validation>
               <v-card class="headline grey darken-2 text-center pa-2">
                 <v-card-title>
-                  <span class="headline white--text">編集</span>
+                  <span class="headline white--text">{{ formTitle }}</span>
                 </v-card-title>
 
                 <v-card-text>
@@ -43,11 +47,43 @@
               </v-card>
             </v-form>
           </v-dialog>
+
+          <v-dialog v-model="deleteTagForm.dialog" max-width="500px" persistent>
+            <v-card class="headline grey darken-2 text-center pa-2">
+              <v-card-title>
+                <span class="headline white--text">本当に削除しますか？</span>
+              </v-card-title>
+
+              <v-card-text>
+                <v-container>
+                  <!-- 内容 -->
+                  <v-card-text class="pa-1 white--text">
+                    {{ deleteTagForm.data.name }}
+                  </v-card-text>
+                </v-container>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="error"
+                  :loading="deleteTagForm.loading"
+                  @click="deleteTagForm.dialog = false"
+                >
+                  キャンセル
+                </v-btn>
+                <v-btn color="success" :loading="deleteTagForm.loading" @click="deleteSubmit()">
+                  削除
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-toolbar>
       </template>
 
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small @click="editTag(item)">mdi-pencil</v-icon>
+        <v-icon small class="mr-2" @click="editTag(item)">mdi-pencil</v-icon>
+        <v-icon small class="ml-2" @click="deleteTag(item)"> mdi-delete </v-icon>
       </template>
 
       <template v-slot:no-data>
@@ -86,7 +122,17 @@ export default {
           nameRules: [(v) => !!v || '内容は必須項目です。'],
         },
       },
+      deleteTagForm: {
+        dialog: false,
+        loading: false,
+        data: {},
+      },
     };
+  },
+  computed: {
+    formTitle() {
+      return this.editTagForm.index === -1 ? 'タグ作成' : 'タグ編集';
+    },
   },
   methods: {
     /**
@@ -127,27 +173,66 @@ export default {
       if (this.$refs.editTagForm.validate()) {
         this.editTagForm.loading = true;
 
-        // タグ保存処理
-        var response = await this.$http.post(
-          this.$endpoint('tagUpdate', [this.editTagForm.data.id]),
-          { name: this.editTagForm.data.name }
-        );
+        if (this.editTagForm.index > -1) {
+          // タグ更新処理
+          var response = await this.$http.post(
+            this.$endpoint('tagUpdate', [this.editTagForm.data.id]),
+            { name: this.editTagForm.data.name }
+          );
 
-        if (response.status === OK) {
-          this.$store.dispatch('alert/success', 'タグが更新されました。');
-
-          if (this.editTagForm.index > -1) {
+          if (response.status === OK) {
+            this.$store.dispatch('alert/success', 'タグが更新されました。');
             Object.assign(this.tags[this.editTagForm.index], this.editTagForm.data);
+            this.close();
           } else {
-            this.tags.push(this.editTagForm);
+            this.$store.dispatch('alert/error');
+            this.editTagForm.loading = false;
           }
-
-          this.close();
         } else {
-          this.$store.dispatch('alert/error');
+          // タグ作成処理
+          var response = await this.$http.post('/api/admin/tags', {
+            name: this.editTagForm.data.name,
+          });
 
-          this.editTagForm.loading = false;
+          if (response.status === OK) {
+            this.$store.dispatch('alert/success', 'タグが作成されました。');
+            this.getTags();
+            this.close();
+          } else {
+            this.$store.dispatch('alert/error');
+            this.editTagForm.loading = false;
+          }
         }
+      }
+    },
+
+    /**
+     * タグの削除
+     *
+     * @param Object  tag  削除するタグ
+     */
+    deleteTag: function (tag) {
+      this.deleteTagForm.data = Object.assign({}, tag);
+      this.deleteTagForm.dialog = true;
+    },
+
+    /**
+     * 削除データの送信
+     */
+    deleteSubmit: async function () {
+      this.deleteTagForm.loading = true;
+
+      // タグ削除処理
+      var response = await this.$http.delete('/api/admin/tags/' + this.deleteTagForm.data.id);
+
+      if (response.status === OK) {
+        this.$store.dispatch('alert/success', 'タグが削除されました。');
+        this.getTags();
+        this.deleteTagForm.dialog = false;
+        this.deleteTagForm.loading = false;
+      } else {
+        this.$store.dispatch('alert/error');
+        this.deleteTagForm.loading = false;
       }
     },
   },

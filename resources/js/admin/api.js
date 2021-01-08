@@ -21,6 +21,7 @@ const inquiries = '/api/admin/inquiries';
 const inquiryShow = '/api/admin/inquiry/' + replaceChar[0];
 const inquiryPost = '/api/admin/inquiry/post';
 const tags = '/api/admin/tags';
+const tagsStore = '/api/admin/tags';
 const tagUpdate = '/api/admin/tag/update/' + replaceChar[0];
 
 /**
@@ -75,6 +76,10 @@ export function getEndpoint(name, params) {
 
     case 'tags':
       endpoint = tags;
+      break;
+
+    case 'tagsStore':
+      endpoint = tagsStore;
       break;
 
     case 'tagUpdate':

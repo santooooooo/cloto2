@@ -33,6 +33,25 @@ class TagController extends Controller
     }
 
     /**
+     * タグの作成
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $data = $request->all();
+
+        $result = $this->tag->create($data);
+
+        if (empty($result)) {
+            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        return response(null);
+    }
+
+    /**
      * タグの更新
      *
      * @param  \Illuminate\Http\Request  $request
@@ -44,6 +63,23 @@ class TagController extends Controller
         $data = $request->all();
 
         $result = $tag->fill($data)->save();
+
+        if (empty($result)) {
+            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        return response(null);
+    }
+
+    /**
+     * タグの削除
+     *
+     * @param  \App\Models\Tag  $tag
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Tag $tag)
+    {
+        $result = $tag->delete();
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));

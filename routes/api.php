@@ -132,5 +132,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/tags', 'API\Admin\TagController@index')->name('tags');
+    Route::post('/tags', 'API\Admin\TagController@store')->name('admin.tagsStore');
     Route::post('/tag/update/{tag}', 'API\Admin\TagController@update')->where('tag', '[0-9]+')->name('admin.tagUpdate');
+    Route::delete('/tags/{tag}', 'API\Admin\TagController@destroy')->where('tag', '[0-9]+')->name('admin.tagsDestroy');
 });
