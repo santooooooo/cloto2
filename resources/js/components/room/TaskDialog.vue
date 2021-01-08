@@ -179,7 +179,10 @@ export default {
         task_id: this.chosenTask.id,
       };
 
-      var response = await this.$http.post(this.$endpoint('taskStart'), input);
+      var response = await this.$http.post('/api/tasks/start', {
+        _method: 'patch',
+        data: input,
+      });
 
       if (response.status === OK) {
         this.$emit('start-study');
@@ -201,7 +204,7 @@ export default {
         };
 
         // タスク追加処理
-        var response = await this.$http.post(this.$endpoint('taskPost'), input);
+        var response = await this.$http.post('/api/tasks', input);
 
         if (response.status === OK) {
           this.$store.dispatch('alert/success', 'タスクが追加されました。');
@@ -223,7 +226,7 @@ export default {
   },
 
   async mounted() {
-    var response = await this.$http.get(this.$endpoint('tasks', [this.projectId]));
+    var response = await this.$http.get('/api/tasks/' + this.projectId);
     this.tasks = response.data;
   },
 };

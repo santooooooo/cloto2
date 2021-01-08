@@ -225,7 +225,7 @@ export default {
       this.tag.loading = true;
       this.tag.dialog = true;
 
-      var response = await this.$http.get(this.$endpoint('tags'));
+      var response = await this.$http.get('/api/tags');
       this.tag.data = response.data;
 
       this.tag.loading = false;
@@ -269,7 +269,7 @@ export default {
         input.append('tags', this.tag.inputIds);
 
         // カルテ保存処理
-        var response = await this.$http.post(this.$endpoint('kartePost'), input);
+        var response = await this.$http.post('/api/kartes', input);
 
         if (response.status === OK) {
           this.$store.dispatch('alert/success', 'カルテが保存されました。');

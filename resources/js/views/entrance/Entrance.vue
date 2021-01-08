@@ -29,7 +29,7 @@ export default {
     };
   },
   async mounted() {
-    var response = await this.$http.get(this.$endpoint('rooms'));
+    var response = await this.$http.get('/api/rooms');
     response.data.forEach((room) => {
       this.floors.push({ id: room.id, name: room.name });
     });

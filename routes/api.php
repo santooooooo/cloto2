@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/contact', 'API\ContactController@contact')->name('contact');
-Route::post('/preregister', 'API\PreRegisterController@pre_register')->name('preRegister');
+Route::post('/contact', 'API\ContactController@contact');
+Route::post('/preregister', 'API\PreRegisterController@pre_register');
 
 
 /*
@@ -23,8 +23,8 @@ Route::post('/preregister', 'API\PreRegisterController@pre_register')->name('pre
 | 新規登録，ログイン
 |--------------------------------------------------------------------------
 */
-Route::post('/register', 'Auth\RegisterController@register')->name('register');
-Route::post('/login', 'Auth\LoginController@login')->name('login');
+Route::post('/register', 'Auth\RegisterController@register');
+Route::post('/login', 'Auth\LoginController@login');
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -33,9 +33,9 @@ Route::group(['middleware' => 'auth'], function () {
     | ログインユーザー
     |--------------------------------------------------------------------------
     */
-    Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
-    Route::get('/online', 'API\UserController@set_online')->name('setOnline');
-    Route::get('/auth/user', 'API\UserController@auth')->name('authUser');
+    Route::post('/logout', 'Auth\LoginController@logout');
+    Route::get('/online', 'API\UserController@set_online');
+    Route::get('/auth', 'API\UserController@auth');
 
 
     Route::namespace('API')->group(function () {
@@ -44,8 +44,8 @@ Route::group(['middleware' => 'auth'], function () {
         | ユーザー
         |--------------------------------------------------------------------------
         */
-        Route::get('/user/{user_param}', 'UserController@show')->name('userShow');
-        Route::post('/user/update', 'UserController@update')->name('profileUpdate');
+        Route::get('/users/{user_param}', 'UserController@show');
+        Route::patch('/users', 'UserController@update');
 
 
         /*
@@ -53,13 +53,13 @@ Route::group(['middleware' => 'auth'], function () {
         | 部屋
         |--------------------------------------------------------------------------
         */
-        Route::get('/rooms', 'RoomController@index')->name('rooms');
-        Route::get('/room/{room}', 'RoomController@show')->where('room', '[0-9]+')->name('roomShow');
-        Route::get('/room/auth_sit', 'RoomController@auth_sit')->name('roomAuthSit');
-        Route::post('/seat/sit/{seat}', 'SeatController@sit')->name('seatSit');
-        Route::post('/seat/leave', 'SeatController@leave')->name('seatLeave');
-        Route::post('/seat/enter_call/{seat}', 'SeatController@enter_call')->where('seat', '[0-9]+')->name('enterCall');
-        Route::post('/seat/leave_call/{seat}', 'SeatController@leave_call')->where('seat', '[0-9]+')->name('leaveCall');
+        Route::get('/rooms', 'RoomController@index');
+        Route::get('/rooms/{room}', 'RoomController@show')->where('room', '[0-9]+');
+        Route::get('/rooms/auth_sit', 'RoomController@auth_sit');
+        Route::patch('/seats/sit/{seat}', 'SeatController@sit');
+        Route::patch('/seats/leave', 'SeatController@leave');
+        Route::patch('/seats/enter_call/{seat}', 'SeatController@enter_call')->where('seat', '[0-9]+');
+        Route::patch('/seats/leave_call', 'SeatController@leave_call')->where('seat', '[0-9]+');
 
 
         /*
@@ -67,15 +67,15 @@ Route::group(['middleware' => 'auth'], function () {
         | プロジェクト，タスク，カルテ
         |--------------------------------------------------------------------------
         */
-        Route::get('/projects', 'ProjectController@index')->name('projects');
-        Route::post('/project/post', 'ProjectController@post')->name('projectPost');
-        Route::get('/tasks/{project_id}', 'TaskController@index')->name('tasks');
-        Route::post('/task/post', 'TaskController@post')->name('taskPost');
-        Route::post('/task/start', 'TaskController@start')->name('taskStart');
-        Route::get('/karte/index_by_auth_user', 'KarteController@index_by_auth_user')->name('karteIndexByAuthUser');
-        Route::get('/karte/index_by_task_id/{task_id}', 'KarteController@index_by_task_id')->name('karteIndexByTaskId');
-        Route::post('/karte/post', 'KarteController@post')->name('kartePost');
-        Route::get('/tags', 'TagController@index')->name('tags');
+        Route::get('/projects', 'ProjectController@index');
+        Route::post('/projects', 'ProjectController@store');
+        Route::get('/tasks/{project_id}', 'TaskController@index');
+        Route::post('/tasks', 'TaskController@store');
+        Route::patch('/tasks/start', 'TaskController@start');
+        Route::get('/kartes/index_by_auth_user', 'KarteController@index_by_auth_user');
+        Route::get('/kartes/index_by_task_id/{task_id}', 'KarteController@index_by_task_id');
+        Route::post('/kartes', 'KarteController@store');
+        Route::get('/tags', 'TagController@index');
 
 
         /*
@@ -83,7 +83,7 @@ Route::group(['middleware' => 'auth'], function () {
         | 問い合わせ
         |--------------------------------------------------------------------------
         */
-        Route::get('/inquiry', 'InquiryController@show')->name('inquiryShow');
-        Route::post('/inquiry/post', 'InquiryController@post')->name('inquiryPost');
+        Route::get('/inquiries', 'InquiryController@index');
+        Route::post('/inquiries', 'InquiryController@store');
     });
 });

@@ -198,7 +198,7 @@ export default {
      * 教室データの取得
      */
     getRoom: async function () {
-      var response = await this.$http.get(this.$endpoint('roomShow', [this.$route.params.roomId]));
+      var response = await this.$http.get('/api/rooms/' + this.$route.params.roomId);
       this.roomData = response.data;
     },
 
@@ -209,25 +209,27 @@ export default {
      * @param Object  seatObject 状態を変更する座席
      */
     userAction: async function (action, seatObject = null) {
-      var endpoint, response;
       switch (action) {
         case 'sitting':
           // 着席処理
-          endpoint = this.$endpoint('seatSit', [seatObject.seatId]);
-          response = await this.$http.post(endpoint);
+          var response = await this.$http.post('/api/seats/sit/' + seatObject.seatId, {
+            _method: 'patch',
+          });
           //this.projectDialog = true;
           break;
 
         case 'leave':
           // 退席処理
-          endpoint = this.$endpoint('seatLeave');
-          response = await this.$http.post(endpoint);
+          var response = await this.$http.post('/api/seats/leave', {
+            _method: 'patch',
+          });
           break;
 
         case 'enterCall':
           // 通話室入室処理
-          endpoint = this.$endpoint('enterCall', [seatObject.seatId]);
-          response = await this.$http.post(endpoint);
+          var response = await this.$http.post('/api/seats/enter_call/' + seatObject.seatId, {
+            _method: 'patch',
+          });
           if (response.status === OK) {
             this.enterCall(seatObject.callId, seatObject.callCapacity);
           }
@@ -235,12 +237,9 @@ export default {
 
         case 'leaveCall':
           // 通話室退室処理
-          this.canvas.getObjects().forEach((object) => {
-            if (object.reservationId === this.authUser.id) {
-              endpoint = this.$endpoint('leaveCall', [object.seatId]);
-            }
+          var response = await this.$http.post('/api/seats/leave_call', {
+            _method: 'patch',
           });
-          response = await this.$http.post(endpoint);
           break;
       }
 

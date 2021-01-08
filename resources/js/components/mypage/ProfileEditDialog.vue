@@ -197,6 +197,7 @@ export default {
         }
 
         var input = new FormData();
+        input.append('_method', 'patch');
         input.append('username', this.editProfileForm.data.username);
         input.append('email', this.editProfileForm.data.email);
         input.append('handlename', this.editProfileForm.data.handlename);
@@ -209,7 +210,7 @@ export default {
         );
 
         // ユーザーデータ保存処理
-        var response = await this.$http.post(this.$endpoint('profileUpdate'), input);
+        var response = await this.$http.post('/api/users', input);
 
         if (response.status === OK) {
           this.$store.dispatch('alert/success', 'ユーザーデータが更新されました。');

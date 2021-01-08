@@ -161,7 +161,7 @@ export default {
         };
 
         // プロジェクト追加処理
-        var response = await this.$http.post(this.$endpoint('projectPost'), input);
+        var response = await this.$http.post('/api/projects', input);
 
         if (response.status === OK) {
           this.$store.dispatch('alert/success', 'プロジェクトが追加されました。');
@@ -193,7 +193,7 @@ export default {
   },
 
   async mounted() {
-    var response = await this.$http.get(this.$endpoint('projects'));
+    var response = await this.$http.get('/api/projects');
     this.projects = response.data;
   },
 };

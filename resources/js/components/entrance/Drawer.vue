@@ -75,7 +75,7 @@ export default {
     },
   },
   async mounted() {
-    var response = await this.$http.get(this.$endpoint('roomAuthSit'));
+    var response = await this.$http.get('/api/rooms/auth_sit');
     this.sitRoom = response.data;
   },
 };

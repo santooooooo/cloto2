@@ -39,7 +39,7 @@ class InquiryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function index()
     {
         $inquiries = [];
         foreach ($this->user->inquiries as $inquiry) {
@@ -61,7 +61,7 @@ class InquiryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function post(Request $request)
+    public function store(Request $request)
     {
         $data = $request->all();
         $data['user_id'] = $this->user->id;

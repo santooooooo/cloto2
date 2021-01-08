@@ -111,17 +111,18 @@ class SeatController extends Controller
     /**
      * 通話室退室
      *
-     * @param  \App\Models\Seat  $seat  戻り先の座席
      * @return \Illuminate\Http\Response
      */
-    public function leave_call(Seat $seat)
+    public function leave_call()
     {
+        // 戻り先の座席を検索
+        $seat = $this->seat->where('reservation_user_id', $this->user->id)->first();
         $room_id = $seat->section->room->id;
 
         // 着席していた座席を離席状態に変更
         $this->user->seat->fill(['status' => null])->save();
 
-        // ユーザーと座席を紐付け
+        // ユーザーと戻り先の座席を紐付け
         $this->user->seat()->associate($seat);
         $this->user->save();
 

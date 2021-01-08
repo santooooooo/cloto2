@@ -106,7 +106,7 @@ export default {
         };
 
         // 問い合わせ送信処理
-        var response = await this.$http.post(this.$endpoint('contact'), input);
+        var response = await this.$http.post('/api/contact', input);
 
         if (response.status === OK) {
           this.$refs.contactForm.reset();

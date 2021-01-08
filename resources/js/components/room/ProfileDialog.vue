@@ -81,7 +81,7 @@ export default {
     /**
      * ユーザーデータの取得
      */
-    var response = await this.$http.get(this.$endpoint('userShow', [this.userParam]));
+    var response = await this.$http.get('/api/users/' + this.userParam);
     this.user = response.data;
   },
 };
