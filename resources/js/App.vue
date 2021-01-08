@@ -97,9 +97,6 @@ export default {
         this.setOnlineTimer = setInterval(() => {
           this.$http.get(this.$endpoint('setOnline'));
         }, 300000);
-      } else {
-        // ログアウト時に停止
-        clearInterval(this.setOnlineTimer);
       }
     },
     'authUser.seat': async function (val, oldVal) {
@@ -242,11 +239,8 @@ export default {
     logout: async function () {
       // ログアウト処理
       await this.$store.dispatch('auth/logout');
-
-      // トップページへリダイレクト
-      if (this.$route.path !== this.$router.resolve({ name: 'index' }).href) {
-        this.$router.push({ name: 'index' });
-      }
+      // リロード
+      window.location.reload();
     },
   },
   mounted() {
