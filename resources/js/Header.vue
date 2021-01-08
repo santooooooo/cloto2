@@ -10,7 +10,19 @@
       <v-tabs-slider color="yellow"></v-tabs-slider>
 
       <v-tab :to="{ name: 'index' }">Top</v-tab>
-      <v-tab :to="{ name: 'concept' }">Concept</v-tab>
+      <!-- <v-tab :to="{ name: 'concept' }">Concept</v-tab> -->
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <!-- <v-btn color="primary" dark v-bind="attrs" v-on="on"> Dropdown </v-btn> -->
+          <v-tab v-bind="attrs" v-on="on">Concept</v-tab>
+        </template>
+        <v-list>
+          <v-list-item :to="{ name: cloto.to }" v-for="(cloto, index) in selectCloto" :key="index">
+            <v-list-item-title>{{ cloto.text }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <!-- <v-tab :to="{ name: 'concept' }">Concept</v-tab> -->
       <v-tab :to="{ name: 'product' }">Product</v-tab>
       <v-tab :to="{ name: 'news' }">News</v-tab>
       <v-tab :to="{ name: 'company' }">About us</v-tab>
@@ -47,6 +59,23 @@
 
 <script>
 export default {
+  data() {
+    return {
+      tab: null,
+      selectCloto: [
+        {
+          img: '',
+          text: 'プログラミング学習施設CLOTO',
+          to: 'concept',
+        },
+        {
+          img: '',
+          text: 'バーチャル商業施設CLOTO',
+          to: 'news',
+        },
+      ],
+    };
+  },
   computed: {
     isRelease() {
       return process.env.MIX_APP_RELEASE === 'true' ? true : false;

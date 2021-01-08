@@ -4,8 +4,9 @@
     <router-view />
 
     <!-- メイン -->
-    <Smartphone v-if="$vuetify.breakpoint.xs" />
-    <Laptop v-else />
+    <!-- <Smartphone v-if="$vuetify.breakpoint.xs" />
+    <Laptop v-else /> -->
+    top
 
     <!-- 問い合わせフォーム -->
     <v-card max-width="600" class="mx-auto mb-12 pa-6">
