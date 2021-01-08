@@ -34,7 +34,7 @@
 
             <v-row justify="center">
               <v-chip class="ma-3" v-for="tagId in tag.inputIds" :key="tagId">
-                {{ tag.data[tagId].name }}
+                {{ getSelectedTagName(tagId) }}
               </v-chip>
             </v-row>
 
@@ -239,6 +239,18 @@ export default {
     inputTag: function (tagIds) {
       this.karteForm.tag = tagIds;
       this.tag.dialog = false;
+    },
+
+    /**
+     * 選択済みタグの表示
+     *
+     * @param   Number  tagId 入力されたタグのID
+     * @returns String  タグ名
+     */
+    getSelectedTagName(tagId) {
+      return this.tag.data.filter((item) => {
+        return item.id === tagId;
+      })[0].name;
     },
 
     submit: async function () {
