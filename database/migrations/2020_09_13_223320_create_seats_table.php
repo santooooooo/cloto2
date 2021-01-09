@@ -15,7 +15,9 @@ class CreateSeatsTable extends Migration
     {
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('section_id')->constrained();             // 所属する区画ID
+            $table->foreignId('section_id')
+                ->constrained()
+                ->cascadeOnDelete();                                    // 所属する区画ID
             $table->unsignedInteger('size');                            // サイズ
             $table->json('position');                                   // 座標
             $table->string('role');                                     // 役割

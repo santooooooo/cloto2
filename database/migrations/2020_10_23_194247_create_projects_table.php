@@ -15,9 +15,11 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();    // ユーザーID
-            $table->string('name');                         // プロジェクト名
-            $table->text('detail')->nullable();             // プロジェクト詳細
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();            // ユーザーID
+            $table->string('name');             // プロジェクト名
+            $table->text('detail')->nullable(); // プロジェクト詳細
             $table->dateTimes();
         });
     }

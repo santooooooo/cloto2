@@ -16,8 +16,10 @@ class CreateSectionsTable extends Migration
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->foreignId('room_id')->constrained();    // 所属する部屋ID
-            $table->string('name');                         // 区画名
+            $table->foreignId('room_id')
+                ->constrained()
+                ->cascadeOnDelete();    // 所属する部屋ID
+            $table->string('name');     // 区画名
         });
     }
 

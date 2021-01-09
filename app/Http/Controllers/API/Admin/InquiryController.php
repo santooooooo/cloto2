@@ -91,7 +91,7 @@ class InquiryController extends Controller
 
         // 回答済みにする
         $user = $this->user->find($data['user_id']);
-        $user->inquiries()->update(['replyed' => 1]);
+        $user->inquiries()->update(['replyed' => true]);
 
         // 投稿したデータを送信
         broadcast(new InquiryEvent($user->id, $result));

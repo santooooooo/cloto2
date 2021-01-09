@@ -16,10 +16,10 @@ class CreateKarteTagTable extends Migration
         Schema::create('karte_tag', function (Blueprint $table) {
             $table->foreignId('karte_id')
                 ->constrained()
-                ->onDelete('cascade');
+                ->cascadeOnDelete();
             $table->foreignId('tag_id')
                 ->constrained()
-                ->onDelete('cascade');
+                ->cascadeOnDelete();
 
             $table->primary(['karte_id', 'tag_id']);
         });
