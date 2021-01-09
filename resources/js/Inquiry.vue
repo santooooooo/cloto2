@@ -89,7 +89,7 @@ export default {
      */
     submit: async function (message) {
       // 問い合わせの送信
-      var response = await this.$http.post('/api/inquiries', {
+      var response = await axios.post('/api/inquiries', {
         author: 'user',
         type: 'text',
         data: { text: message.data.text },
@@ -124,7 +124,7 @@ export default {
 
   async created() {
     // 問い合わせの取得
-    var response = await this.$http.get('/api/inquiries');
+    var response = await axios.get('/api/inquiries');
     this.messages = response.data;
 
     // 投稿者の変換

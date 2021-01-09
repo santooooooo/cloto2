@@ -167,7 +167,7 @@ export default {
     getProjects: async function () {
       this.projects.loading = true;
 
-      var response = await this.$http.get('/api/projects');
+      var response = await axios.get('/api/projects');
       this.projects.data = response.data;
 
       this.projects.loading = false;
@@ -182,7 +182,7 @@ export default {
       this.tasks.loading = true;
       this.kartes.data = '';
 
-      var response = await this.$http.get('/api/tasks/' + projectId);
+      var response = await axios.get('/api/tasks/' + projectId);
       this.tasks.data = response.data;
 
       this.tasks.loading = false;
@@ -196,7 +196,7 @@ export default {
     getKartes: async function (taskId) {
       this.kartes.loading = true;
 
-      var response = await this.$http.get('/api/kartes/index_by_auth_user');
+      var response = await axios.get('/api/kartes/index_by_auth_user');
       this.kartes.data = response.data;
 
       this.kartes.loading = false;

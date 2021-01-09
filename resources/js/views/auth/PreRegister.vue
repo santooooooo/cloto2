@@ -131,7 +131,7 @@ export default {
         };
 
         // 仮登録処理
-        var response = await this.$http.post('/api/preregister', input);
+        var response = await axios.post('/api/preregister', input);
 
         if (response.status === OK) {
           this.$store.dispatch('alert/success', response.data);

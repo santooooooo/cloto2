@@ -186,7 +186,7 @@ export default {
      * 部屋データの取得
      */
     getRooms: async function () {
-      var response = await this.$http.get('/api/admin/rooms');
+      var response = await axios.get('/api/admin/rooms');
       this.rooms = response.data;
     },
 
@@ -226,7 +226,7 @@ export default {
         this.editSeatForm.loading = true;
 
         // 座席データ保存処理
-        var response = await this.$http.post('/api/admin/seats/' + seatId, {
+        var response = await axios.post('/api/admin/seats/' + seatId, {
           _method: 'patch',
           size: size,
           position: position,

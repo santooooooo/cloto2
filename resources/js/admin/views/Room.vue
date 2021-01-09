@@ -144,7 +144,7 @@ export default {
      * 部屋データの取得
      */
     getRooms: async function () {
-      var response = await this.$http.get('/api/admin/rooms');
+      var response = await axios.get('/api/admin/rooms');
       this.rooms = response.data;
     },
 
@@ -246,10 +246,7 @@ export default {
         }
 
         // 部屋データ保存処理
-        var response = await this.$http.post(
-          '/api/admin/rooms/' + this.editRoomForm.data.id,
-          input
-        );
+        var response = await axios.post('/api/admin/rooms/' + this.editRoomForm.data.id, input);
 
         if (response.status === OK) {
           this.$store.dispatch('alert/success', '部屋データが更新されました。');

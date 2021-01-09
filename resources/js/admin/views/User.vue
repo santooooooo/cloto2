@@ -120,7 +120,7 @@ export default {
      * ユーザーデータの取得
      */
     getUsers: async function () {
-      var response = await this.$http.get('/api/admin/users');
+      var response = await axios.get('/api/admin/users');
       this.users = response.data;
     },
 
@@ -164,10 +164,7 @@ export default {
         }
 
         // ユーザーデータ保存処理
-        var response = await this.$http.post(
-          '/api/admin/users/' + this.editUserForm.data.id,
-          input
-        );
+        var response = await axios.post('/api/admin/users/' + this.editUserForm.data.id, input);
 
         if (response.status === OK) {
           this.$store.dispatch('alert/success', 'ユーザーデータが更新されました。');

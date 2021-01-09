@@ -10,7 +10,6 @@ window.Peer = require('skyway-js');
 /**
  * Vueプロトタイプの設定
  */
-Vue.prototype.$http = window.axios;
 Vue.prototype.$storage = window.Storage.getStoragePath;
 
 /**

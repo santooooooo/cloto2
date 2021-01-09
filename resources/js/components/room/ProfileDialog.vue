@@ -81,7 +81,7 @@ export default {
     /**
      * ユーザーデータの取得
      */
-    var response = await this.$http.get('/api/users/' + this.userParam);
+    var response = await axios.get('/api/users/' + this.userParam);
     this.user = response.data;
   },
 };

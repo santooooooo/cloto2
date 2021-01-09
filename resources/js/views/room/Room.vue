@@ -198,7 +198,7 @@ export default {
      * 教室データの取得
      */
     getRoom: async function () {
-      var response = await this.$http.get('/api/rooms/' + this.$route.params.roomId);
+      var response = await axios.get('/api/rooms/' + this.$route.params.roomId);
       this.roomData = response.data;
     },
 
@@ -212,7 +212,7 @@ export default {
       switch (action) {
         case 'sitting':
           // 着席処理
-          var response = await this.$http.post('/api/seats/sit/' + seatObject.seatId, {
+          var response = await axios.post('/api/seats/sit/' + seatObject.seatId, {
             _method: 'patch',
           });
           //this.projectDialog = true;
@@ -220,14 +220,14 @@ export default {
 
         case 'leave':
           // 退席処理
-          var response = await this.$http.post('/api/seats/leave', {
+          var response = await axios.post('/api/seats/leave', {
             _method: 'patch',
           });
           break;
 
         case 'enterCall':
           // 通話室入室処理
-          var response = await this.$http.post('/api/seats/enter_call/' + seatObject.seatId, {
+          var response = await axios.post('/api/seats/enter_call/' + seatObject.seatId, {
             _method: 'patch',
           });
           if (response.status === OK) {
@@ -237,7 +237,7 @@ export default {
 
         case 'leaveCall':
           // 通話室退室処理
-          var response = await this.$http.post('/api/seats/leave_call', {
+          var response = await axios.post('/api/seats/leave_call', {
             _method: 'patch',
           });
           break;

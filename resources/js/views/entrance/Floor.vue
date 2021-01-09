@@ -47,7 +47,7 @@ export default {
       this.isLoading = true;
 
       // 教室データの取得
-      var response = await this.$http.get('/api/rooms/' + this.$route.params.roomId);
+      var response = await axios.get('/api/rooms/' + this.$route.params.roomId);
       this.roomData = response.data;
 
       /**

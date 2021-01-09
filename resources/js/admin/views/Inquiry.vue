@@ -110,7 +110,7 @@ export default {
      * 問い合わせたユーザーの取得
      */
     getUsers: async function () {
-      var response = await this.$http.get('/api/admin/inquiries');
+      var response = await axios.get('/api/admin/inquiries');
       this.users = response.data;
     },
 
@@ -122,7 +122,7 @@ export default {
     open: async function (user) {
       this.user = user;
       // 問い合わせの取得
-      var response = await this.$http.get('/api/admin/inquiries/' + this.user.id);
+      var response = await axios.get('/api/admin/inquiries/' + this.user.id);
       this.messages = response.data;
 
       // 投稿者の変換
@@ -166,7 +166,7 @@ export default {
      */
     submit: async function (message) {
       // 問い合わせの送信
-      var response = await this.$http.post('/api/admin/inquiries', {
+      var response = await axios.post('/api/admin/inquiries', {
         user_id: this.user.id,
         author: 'support',
         type: 'text',

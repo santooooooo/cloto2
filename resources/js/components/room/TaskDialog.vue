@@ -175,7 +175,7 @@ export default {
     startStudy: async function () {
       this.confirm.loading = true;
 
-      var response = await this.$http.post('/api/tasks/start', {
+      var response = await axios.post('/api/tasks/start', {
         _method: 'patch',
         task_id: this.chosenTask.id,
       });
@@ -200,7 +200,7 @@ export default {
         };
 
         // タスク追加処理
-        var response = await this.$http.post('/api/tasks', input);
+        var response = await axios.post('/api/tasks', input);
 
         if (response.status === OK) {
           this.$store.dispatch('alert/success', 'タスクが追加されました。');
@@ -222,7 +222,7 @@ export default {
   },
 
   async mounted() {
-    var response = await this.$http.get('/api/tasks/' + this.projectId);
+    var response = await axios.get('/api/tasks/' + this.projectId);
     this.tasks = response.data;
   },
 };

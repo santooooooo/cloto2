@@ -95,7 +95,7 @@ export default {
       if (val) {
         // ログイン中は5分毎にオンライン状態を通知
         this.setOnlineTimer = setInterval(() => {
-          this.$http.get('/api/online');
+          axios.get('/api/online');
         }, 300000);
       }
     },
@@ -104,7 +104,7 @@ export default {
         /**
          * 着席時
          */
-        var response = await this.$http.get('/api/rooms/auth_sit');
+        var response = await axios.get('/api/rooms/auth_sit');
         this.sitRoom = response.data;
 
         // 時間割イベントの受信開始
@@ -202,7 +202,7 @@ export default {
           window.location.reload();
         } else {
           // オンライン状態を通知
-          this.$http.get('/api/online');
+          axios.get('/api/online');
         }
       }
 

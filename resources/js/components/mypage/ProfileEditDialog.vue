@@ -210,7 +210,7 @@ export default {
         );
 
         // ユーザーデータ保存処理
-        var response = await this.$http.post('/api/users', input);
+        var response = await axios.post('/api/users', input);
 
         if (response.status === OK) {
           this.$store.dispatch('alert/success', 'ユーザーデータが更新されました。');
