@@ -144,7 +144,7 @@ export default {
      * 部屋データの取得
      */
     getRooms: async function () {
-      var response = await this.$http.get(this.$endpoint('rooms'));
+      var response = await this.$http.get('/api/admin/rooms');
       this.rooms = response.data;
     },
 
@@ -238,6 +238,7 @@ export default {
         });
 
         var input = new FormData();
+        input.append('_method', 'patch');
         input.append('name', this.editRoomForm.data.name);
         input.append('timetable', JSON.stringify(timetable));
         if (this.editRoomForm.background !== null) {
@@ -246,7 +247,7 @@ export default {
 
         // 部屋データ保存処理
         var response = await this.$http.post(
-          this.$endpoint('roomUpdate', [this.editRoomForm.data.id]),
+          '/api/admin/rooms/' + this.editRoomForm.data.id,
           input
         );
 

@@ -110,7 +110,7 @@ export default {
      */
     logout: async function () {
       // ログアウト処理
-      this.$http.post(this.$endpoint('logout'));
+      this.$http.post('/api/admin/logout');
 
       // トップページへリダイレクト
       window.location.pathname = '/admin/login';

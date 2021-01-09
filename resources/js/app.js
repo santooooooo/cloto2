@@ -3,7 +3,6 @@
  */
 require('./bootstrap');
 window.Vue = require('vue');
-window.API = require('./api');
 window.Storage = require('./consts/storage');
 require('fabric');
 window.Peer = require('skyway-js');

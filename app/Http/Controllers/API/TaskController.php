@@ -78,7 +78,9 @@ class TaskController extends Controller
      */
     public function start(Request $request)
     {
-        $result = $this->user->fill($request->all())->save();
+        $data = $request->all();
+
+        $result = $this->user->fill($data)->save();
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));

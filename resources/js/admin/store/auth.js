@@ -1,4 +1,3 @@
-import { getEndpoint as $endpoint } from '@/admin/api';
 import { OK, CREATED, UNPROCESSABLE_ENTITY } from '@/consts/status';
 
 const state = {
@@ -31,7 +30,7 @@ const mutations = {
 const actions = {
   async syncAuthUser(context) {
     // ログインユーザーの取得
-    const response = await axios.get($endpoint('authUser'));
+    const response = await axios.get('/api/admin/auth');
     const user = response.data || null;
     context.commit('setUser', user);
   },
@@ -40,7 +39,7 @@ const actions = {
     context.commit('setApiStatus', null);
 
     // 登録リクエスト
-    const response = await axios.post($endpoint('register'), data);
+    const response = await axios.post('/api/admin/register', data);
 
     // 成功
     if (response.status === CREATED) {
@@ -64,7 +63,7 @@ const actions = {
     context.commit('setApiStatus', null);
 
     // ログインリクエスト
-    const response = await axios.post($endpoint('login'), data);
+    const response = await axios.post('/api/admin/login', data);
 
     // 成功
     if (response.status === OK) {
@@ -88,7 +87,7 @@ const actions = {
     context.commit('setApiStatus', null);
 
     // ログアウトリクエスト
-    const response = await axios.post($endpoint('logout'));
+    const response = await axios.post('/api/admin/logout');
 
     // 成功
     if (response.status === OK) {

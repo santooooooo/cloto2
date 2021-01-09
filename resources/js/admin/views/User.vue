@@ -120,7 +120,7 @@ export default {
      * ユーザーデータの取得
      */
     getUsers: async function () {
-      var response = await this.$http.get(this.$endpoint('users'));
+      var response = await this.$http.get('/api/admin/users');
       this.users = response.data;
     },
 
@@ -155,6 +155,7 @@ export default {
         this.editUserForm.loading = true;
 
         var input = new FormData();
+        input.append('_method', 'patch');
         input.append('username', this.editUserForm.data.username);
         input.append('email', this.editUserForm.data.email);
         input.append('handlename', this.editUserForm.data.handlename);
@@ -164,7 +165,7 @@ export default {
 
         // ユーザーデータ保存処理
         var response = await this.$http.post(
-          this.$endpoint('userUpdate', [this.editUserForm.data.id]),
+          '/api/admin/users/' + this.editUserForm.data.id,
           input
         );
 

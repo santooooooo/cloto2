@@ -139,7 +139,7 @@ export default {
      * タグの取得
      */
     getTags: async function () {
-      var response = await this.$http.get(this.$endpoint('tags'));
+      var response = await this.$http.get('/api/admin/tags');
       this.tags = response.data;
     },
 
@@ -175,10 +175,10 @@ export default {
 
         if (this.editTagForm.index > -1) {
           // タグ更新処理
-          var response = await this.$http.post(
-            this.$endpoint('tagUpdate', [this.editTagForm.data.id]),
-            { name: this.editTagForm.data.name }
-          );
+          var response = await this.$http.post('/api/admin/tags/' + this.editTagForm.data.id, {
+            _method: 'patch',
+            name: this.editTagForm.data.name,
+          });
 
           if (response.status === OK) {
             this.$store.dispatch('alert/success', 'タグが更新されました。');

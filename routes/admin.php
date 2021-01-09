@@ -20,8 +20,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
     | ログインユーザー
     |--------------------------------------------------------------------------
     */
-    Route::post('/logout', 'Auth\Admin\LoginController@logout')->name('admin.logout');
-    Route::get('/auth', 'API\Admin\UserController@auth')->name('admin.authUser');
+    Route::post('/logout', 'Auth\Admin\LoginController@logout');
+    Route::get('/auth', 'API\Admin\UserController@auth');
 
 
     Route::namespace('API\Admin')->group(function () {
@@ -30,8 +30,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
         | ユーザー
         |--------------------------------------------------------------------------
         */
-        Route::get('/users', 'UserController@index')->name('admin.users');
-        Route::post('/user/update/{user}', 'UserController@update')->where('user', '[0-9]+')->name('admin.userUpdate');
+        Route::get('/users', 'UserController@index');
+        Route::patch('/users/{user}', 'UserController@update')->where('user', '[0-9]+');
 
 
         /*
@@ -39,9 +39,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
         | 部屋
         |--------------------------------------------------------------------------
         */
-        Route::get('/rooms', 'RoomController@index')->name('admin.rooms');
-        Route::post('/room/update/{room}', 'RoomController@update')->where('room', '[0-9]+')->name('admin.roomUpdate');
-        Route::post('/seat/update/{seat}', 'SeatController@update')->where('seat', '[0-9]+')->name('admin.seatUpdate');
+        Route::get('/rooms', 'RoomController@index');
+        Route::patch('/rooms/{room}', 'RoomController@update')->where('room', '[0-9]+');
+        Route::patch('/seats/{seat}', 'SeatController@update')->where('seat', '[0-9]+');
 
 
         /*
@@ -49,9 +49,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
         | 問い合わせ
         |--------------------------------------------------------------------------
         */
-        Route::get('/inquiries', 'InquiryController@index')->name('admin.inquiries');
-        Route::get('/inquiry/{user}', 'InquiryController@show')->where('user', '[0-9]+')->name('admin.inquiryShow');
-        Route::post('/inquiry/post', 'InquiryController@post')->name('admin.inquiryPost');
+        Route::get('/inquiries', 'InquiryController@index');
+        Route::post('/inquiries', 'InquiryController@store');
+        Route::get('/inquiries/{user}', 'InquiryController@show')->where('user', '[0-9]+');
 
 
         /*
@@ -59,9 +59,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
         | タグ
         |--------------------------------------------------------------------------
         */
-        Route::get('/tags', 'TagController@index')->name('tags');
-        Route::post('/tags', 'TagController@store')->name('admin.tagsStore');
-        Route::post('/tag/update/{tag}', 'TagController@update')->where('tag', '[0-9]+')->name('admin.tagUpdate');
-        Route::delete('/tags/{tag}', 'TagController@destroy')->where('tag', '[0-9]+')->name('admin.tagsDestroy');
+        Route::get('/tags', 'TagController@index');
+        Route::post('/tags', 'TagController@store');
+        Route::patch('/tags/{tag}', 'TagController@update')->where('tag', '[0-9]+');
+        Route::delete('/tags/{tag}', 'TagController@destroy')->where('tag', '[0-9]+');
     });
 });

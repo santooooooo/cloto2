@@ -175,13 +175,9 @@ export default {
     startStudy: async function () {
       this.confirm.loading = true;
 
-      var input = {
-        task_id: this.chosenTask.id,
-      };
-
       var response = await this.$http.post('/api/tasks/start', {
         _method: 'patch',
-        data: input,
+        task_id: this.chosenTask.id,
       });
 
       if (response.status === OK) {
