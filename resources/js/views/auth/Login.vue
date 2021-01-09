@@ -131,6 +131,7 @@ export default {
           // ページ遷移
           this.$router.push({ name: 'entrance' });
         } else {
+          this.$store.dispatch('alert/error', '認証メールをご確認ください！');
           this.loginForm.loading = false;
         }
       }

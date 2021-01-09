@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,8 +23,10 @@ Route::post('/preregister', 'API\PreRegisterController@pre_register');
 |--------------------------------------------------------------------------
 */
 Route::post('/register', 'Auth\RegisterController@register');
-Route::post('/login', 'Auth\LoginController@login');
-
+Route::group(['middleware' => 'verified'], function () {
+    // 未認証ユーザーのログインを禁止
+    Route::post('/login', 'Auth\LoginController@login');
+});
 
 Route::group(['middleware' => 'auth'], function () {
     /*
