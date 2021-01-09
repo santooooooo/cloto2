@@ -24,7 +24,7 @@ class RedirectIfAuthenticated
                 break;
 
             default:
-                $redirect = redirect()->route('authUser');
+                $redirect = redirect('/');
                 break;
         }
 

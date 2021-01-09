@@ -30,9 +30,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
         | ユーザー
         |--------------------------------------------------------------------------
         */
-        Route::get('/users', 'UserController@index');
-        Route::patch('/users/{user}', 'UserController@update')->where('user', '[0-9]+');
-        Route::delete('/users/{user}', 'UserController@destroy')->where('user', '[0-9]+');
+        Route::resource('users', 'UserController', ['only' => ['index', 'update', 'destroy']]);
 
 
         /*
@@ -40,9 +38,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
         | 部屋
         |--------------------------------------------------------------------------
         */
-        Route::get('/rooms', 'RoomController@index');
-        Route::patch('/rooms/{room}', 'RoomController@update')->where('room', '[0-9]+');
-        Route::patch('/seats/{seat}', 'SeatController@update')->where('seat', '[0-9]+');
+        Route::resource('rooms', 'RoomController', ['only' => ['index', 'update']]);
+
+        Route::resource('seats', 'SeatController', ['only' => ['update']]);
 
 
         /*
@@ -50,8 +48,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
         | 問い合わせ
         |--------------------------------------------------------------------------
         */
-        Route::get('/inquiries', 'InquiryController@index');
-        Route::post('/inquiries', 'InquiryController@store');
+        Route::resource('inquiries', 'InquiryController', ['only' => ['index', 'store']]);
         Route::get('/inquiries/{user}', 'InquiryController@show')->where('user', '[0-9]+');
 
 
@@ -60,9 +57,6 @@ Route::group(['middleware' => 'auth:admin'], function () {
         | タグ
         |--------------------------------------------------------------------------
         */
-        Route::get('/tags', 'TagController@index');
-        Route::post('/tags', 'TagController@store');
-        Route::patch('/tags/{tag}', 'TagController@update')->where('tag', '[0-9]+');
-        Route::delete('/tags/{tag}', 'TagController@destroy')->where('tag', '[0-9]+');
+        Route::resource('tags', 'TagController', ['only' => ['index', 'store', 'update', 'destroy']]);
     });
 });
