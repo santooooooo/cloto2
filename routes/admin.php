@@ -32,6 +32,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
         */
         Route::get('/users', 'UserController@index');
         Route::patch('/users/{user}', 'UserController@update')->where('user', '[0-9]+');
+        Route::delete('/users/{user}', 'UserController@destroy')->where('user', '[0-9]+');
 
 
         /*

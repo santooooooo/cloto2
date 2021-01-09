@@ -44,7 +44,7 @@ class UserController extends Controller
     }
 
     /**
-     * ユーザーデータ一覧の取得
+     * ユーザー一覧の取得
      *
      * @return \Illuminate\Http\Response
      */
@@ -54,7 +54,7 @@ class UserController extends Controller
     }
 
     /**
-     * ユーザーデータの更新
+     * ユーザーの更新
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User $user   更新するユーザー
@@ -70,6 +70,23 @@ class UserController extends Controller
         }
 
         $result = $user->fill($data)->save();
+
+        if (empty($result)) {
+            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        return response(null);
+    }
+
+    /**
+     * ユーザーの削除
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(User $user)
+    {
+        $result = $user->delete();
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));

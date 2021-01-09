@@ -66,11 +66,50 @@
               </v-card>
             </v-form>
           </v-dialog>
+
+          <!-- ユーザー削除確認ダイアログ -->
+          <v-dialog v-model="deleteUserForm.dialog" max-width="500px" persistent>
+            <v-card class="headline grey darken-2 text-center pa-2">
+              <v-card-title>
+                <span class="headline white--text">本当に削除しますか？</span>
+              </v-card-title>
+
+              <v-card-text>
+                <v-container>
+                  <!-- 内容 -->
+                  <v-card-text class="pa-1 white--text">
+                    ユーザー名：{{ deleteUserForm.data.username }}
+                  </v-card-text>
+                  <v-card-text class="pa-1 white--text">
+                    メールアドレス：{{ deleteUserForm.data.email }}
+                  </v-card-text>
+                  <v-card-text class="pa-1 white--text">
+                    表示名：{{ deleteUserForm.data.handlename }}
+                  </v-card-text>
+                </v-container>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="error"
+                  :loading="deleteUserForm.loading"
+                  @click="deleteUserForm.dialog = false"
+                >
+                  キャンセル
+                </v-btn>
+                <v-btn color="success" :loading="deleteUserForm.loading" @click="deleteSubmit()">
+                  削除
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-toolbar>
       </template>
 
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small @click="editUser(item)">mdi-pencil</v-icon>
+        <v-icon small class="mr-2" @click="editUser(item)">mdi-pencil</v-icon>
+        <v-icon small class="ml-2" @click="deleteUser(item)">mdi-delete</v-icon>
       </template>
 
       <template v-slot:no-data>
@@ -112,6 +151,11 @@ export default {
           handlenameRules: [(v) => !!v || '表示名は必須項目です。'],
           emailRules: [(v) => !!v || 'メールアドレスは必須項目です。'],
         },
+      },
+      deleteUserForm: {
+        dialog: false,
+        loading: false,
+        data: {},
       },
     };
   },
@@ -181,6 +225,36 @@ export default {
 
           this.editUserForm.loading = false;
         }
+      }
+    },
+
+    /**
+     * ユーザーの削除
+     *
+     * @param Object  user  削除するユーザー
+     */
+    deleteUser: function (user) {
+      this.deleteUserForm.data = Object.assign({}, user);
+      this.deleteUserForm.dialog = true;
+    },
+
+    /**
+     * 削除データの送信
+     */
+    deleteSubmit: async function () {
+      this.deleteUserForm.loading = true;
+
+      // ユーザー削除処理
+      var response = await axios.delete('/api/admin/users/' + this.deleteUserForm.data.id);
+
+      if (response.status === OK) {
+        this.$store.dispatch('alert/success', 'ユーザーが削除されました。');
+        this.getUsers();
+        this.deleteUserForm.dialog = false;
+        this.deleteUserForm.loading = false;
+      } else {
+        this.$store.dispatch('alert/error');
+        this.deleteUserForm.loading = false;
       }
     },
   },

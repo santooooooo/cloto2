@@ -48,6 +48,7 @@
             </v-form>
           </v-dialog>
 
+          <!-- タグ削除確認ダイアログ -->
           <v-dialog v-model="deleteTagForm.dialog" max-width="500px" persistent>
             <v-card class="headline grey darken-2 text-center pa-2">
               <v-card-title>
@@ -83,7 +84,7 @@
 
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="editTag(item)">mdi-pencil</v-icon>
-        <v-icon small class="ml-2" @click="deleteTag(item)"> mdi-delete </v-icon>
+        <v-icon small class="ml-2" @click="deleteTag(item)">mdi-delete</v-icon>
       </template>
 
       <template v-slot:no-data>
