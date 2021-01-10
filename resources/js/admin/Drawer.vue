@@ -4,7 +4,7 @@
       <v-list-item-content>
         <v-list-item-title class="text-center">
           <router-link :to="{ name: 'home' }">
-            <img :src="$storage('system') + 'header-logo.svg'" />
+            <img :src="$storage('system') + 'header_logo.svg'" />
           </router-link>
         </v-list-item-title>
       </v-list-item-content>

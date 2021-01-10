@@ -3,7 +3,7 @@
     <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" v-if="isRelease" />
 
     <router-link :to="authCheck ? { name: 'entrance' } : { name: 'index' }">
-      <img :src="$storage('system') + 'header-logo.svg'" />
+      <img :src="$storage('system') + 'header_logo.svg'" />
     </router-link>
 
     <v-tabs align-with-title v-if="!isRelease || !authCheck">

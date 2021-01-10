@@ -9,7 +9,7 @@
       {
         id: 'support',
         name: 'サポートチーム',
-        imageUrl: $storage('system') + 'logo.svg',
+        imageUrl: $storage('system') + 'inquiry_icon.png',
       },
     ]"
     :messageList="messages"
