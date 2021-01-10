@@ -52,7 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
         |--------------------------------------------------------------------------
         */
         Route::resource('rooms', 'RoomController', ['only' => ['index', 'show']]);
-        Route::get('/rooms/auth_sit', 'RoomController@auth_sit');
+        Route::get('/auth_sit', 'RoomController@auth_sit');
 
         Route::patch('/seats/sit/{seat}', 'SeatController@sit')->where('seat', '[0-9]+');
         Route::patch('/seats/leave', 'SeatController@leave');

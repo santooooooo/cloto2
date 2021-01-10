@@ -104,7 +104,7 @@ export default {
         /**
          * 着席時
          */
-        var response = await axios.get('/api/rooms/auth_sit');
+        var response = await axios.get('/api/auth_sit');
         this.sitRoom = response.data;
 
         // 時間割イベントの受信開始
@@ -196,8 +196,8 @@ export default {
      */
     onlineEvent: function () {
       if (this.authCheck) {
-        if (this.authUser.seat !== null && this.authUser.seat.role !== 'study') {
-          // 通話室に着席中の場合はリロード
+        if (this.authUser.seat !== null && this.$route.name === 'room') {
+          // 着席中の場合はリロード
           alert('接続が復帰しました。再読み込みします。');
           window.location.reload();
         } else {

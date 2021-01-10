@@ -1012,7 +1012,7 @@ export default {
         text: text.replace(url, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'),
       });
 
-      // 最下部へスクロール（DOM挿入後に実行）
+      // 最下部へスクロール（メッセージのDOM挿入後に実行）
       this.$nextTick(() => {
         if (this.$refs.chatScrollArea) {
           this.$refs.chatScrollArea.scrollTop = this.$refs.chatScrollArea.scrollHeight;

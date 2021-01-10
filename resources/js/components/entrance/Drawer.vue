@@ -75,7 +75,7 @@ export default {
     },
   },
   async mounted() {
-    var response = await axios.get('/api/rooms/auth_sit');
+    var response = await axios.get('/api/auth_sit');
     this.sitRoom = response.data;
   },
 };
