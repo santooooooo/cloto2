@@ -162,12 +162,19 @@ router.beforeEach(async (to, from, next) => {
   if (!store.getters['auth/check'] && to.matched.some((record) => !record.meta.isPublic)) {
     // 未ログイン時のリダイレクト
     next({ name: 'login' });
-  } else if (store.getters['auth/check'] && (to.name === 'register' || to.name === 'login')) {
+  }
+
+  if (store.getters['auth/check'] && store.getters['auth/user'].email_verified_at === null) {
+    // 未認証時のリダイレクト
+    window.location.pathname = '/email/verify';
+  }
+
+  if (store.getters['auth/check'] && (to.name === 'register' || to.name === 'login')) {
     // ログイン時のリダイレクト
     next({ name: 'entrance' });
-  } else {
-    next();
   }
+
+  next();
 });
 
 export default router;

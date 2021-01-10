@@ -65,11 +65,11 @@ router.beforeEach(async (to, from, next) => {
   await store.dispatch('auth/syncAuthUser');
 
   if (!store.getters['auth/check']) {
-    // 未ログイン時のリダイレクト（Laravel側でもリダイレクトしているため不要？）
+    // 未ログイン時のリダイレクト（Laravel側でもリダイレクトしているが念の為）
     window.location.pathname = '/admin/login';
-  } else {
-    next();
   }
+
+  next();
 });
 
 export default router;
