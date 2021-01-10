@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Carbon;
 
 class UsersTableSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class UsersTableSeeder extends Seeder
             User::create([
                 'username' => $username,
                 'email' => $username . '@cloto.jp',
+                'email_verified_at' => Carbon::now(),
                 'password' => Hash::make('password'),
                 'handlename' => $username,
                 'icon' => 'default.jpg',
@@ -30,6 +32,7 @@ class UsersTableSeeder extends Seeder
             User::create([
                 'username' => $username,
                 'email' => $username . '@cloto.jp',
+                'email_verified_at' => Carbon::now(),
                 'password' => Hash::make($username),
                 'handlename' => $username,
                 'icon' => 'default.jpg',

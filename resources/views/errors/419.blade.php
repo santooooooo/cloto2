@@ -1,5 +1,5 @@
 @extends('errors::minimal')
 
-@section('title', __('Page Expired'))
+@section('title', '有効期限切れ')
 @section('code', '419')
-@section('message', __('Page Expired'))
+@section('message', 'ページの有効期限が切れています。再読み込みしてください。')
