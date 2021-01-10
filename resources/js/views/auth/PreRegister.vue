@@ -124,14 +124,12 @@ export default {
       if (this.$refs.preRegisterForm.validate()) {
         this.preRegisterForm.loading = true;
 
-        var input = {
+        // 仮登録処理
+        var response = await axios.post('/api/preregister', {
           name: this.preRegisterForm.name,
           email: this.preRegisterForm.email,
           newsletter: this.preRegisterForm.newsletter,
-        };
-
-        // 仮登録処理
-        var response = await axios.post('/api/preregister', input);
+        });
 
         if (response.status === OK) {
           this.$store.dispatch('alert/success', response.data);

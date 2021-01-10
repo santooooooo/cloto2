@@ -155,13 +155,11 @@ export default {
       if (this.$refs.newProjectForm.validate()) {
         this.newProjectForm.loading = true;
 
-        var input = {
+        // プロジェクト追加処理
+        var response = await axios.post('/api/projects', {
           name: this.newProjectForm.name,
           detail: this.newProjectForm.detail,
-        };
-
-        // プロジェクト追加処理
-        var response = await axios.post('/api/projects', input);
+        });
 
         if (response.status === OK) {
           this.$store.dispatch('alert/success', 'プロジェクトが追加されました。');

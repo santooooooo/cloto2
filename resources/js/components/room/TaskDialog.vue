@@ -194,13 +194,11 @@ export default {
       if (this.$refs.newTaskForm.validate()) {
         this.newTaskForm.loading = true;
 
-        var input = {
+        // タスク追加処理
+        var response = await axios.post('/api/tasks', {
           project_id: this.projectId,
           body: this.newTaskForm.body,
-        };
-
-        // タスク追加処理
-        var response = await axios.post('/api/tasks', input);
+        });
 
         if (response.status === OK) {
           this.$store.dispatch('alert/success', 'タスクが追加されました。');

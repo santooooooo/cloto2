@@ -170,17 +170,14 @@ export default {
       if (this.$refs.registerForm.validate()) {
         this.registerForm.loading = true;
 
-        // データの作成
-        var input = {
+        // 新規登録処理
+        await this.$store.dispatch('auth/register', {
           username: this.registerForm.username,
           email: this.registerForm.email,
           password: this.registerForm.password,
           password_confirmation: this.registerForm.passwordConfirmation,
           handlename: this.registerForm.handlename,
-        };
-
-        // 新規登録処理
-        await this.$store.dispatch('auth/register', input);
+        });
 
         if (this.apiStatus) {
           this.$store.dispatch(

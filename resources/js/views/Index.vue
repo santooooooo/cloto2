@@ -116,14 +116,12 @@ export default {
       if (this.$refs.contactForm.validate()) {
         this.contactForm.loading = true;
 
-        var input = {
+        // 問い合わせ送信処理
+        var response = await axios.post('/api/contact', {
           name: this.contactForm.name,
           email: this.contactForm.email,
           body: this.contactForm.body,
-        };
-
-        // 問い合わせ送信処理
-        var response = await axios.post('/api/contact', input);
+        });
 
         if (response.status === OK) {
           this.$refs.contactForm.reset();
