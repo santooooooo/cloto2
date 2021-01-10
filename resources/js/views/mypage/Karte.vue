@@ -146,16 +146,16 @@ export default {
       dialog: false,
       image: null,
       projects: {
-        data: '',
         loading: false,
+        data: {},
       },
       tasks: {
-        data: '',
         loading: false,
+        data: {},
       },
       kartes: {
-        data: '',
         loading: false,
+        data: {},
       },
     };
   },

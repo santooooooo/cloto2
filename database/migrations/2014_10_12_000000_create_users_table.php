@@ -19,7 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();                  // メール
             $table->dateTime('email_verified_at')->nullable();  // メール認証日時
             $table->string('password');                         // パスワード
-            $table->string('handlename')->nullable();           // 表示名
+            $table->string('handlename');                       // 表示名
+            $table->string('role')->default('user');            // 役割
             $table->string('icon')->nullable();                 // アイコン
             $table->json('sns')->nullable();                    // SNS
             $table->string('web')->nullable();                  // Webページ

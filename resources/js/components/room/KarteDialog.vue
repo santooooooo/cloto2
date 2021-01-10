@@ -259,13 +259,13 @@ export default {
         var input = new FormData();
         // input.append('task_id', this.authUser.tasks[0].id);
         input.append('task_id', 1);
+        input.append('activity_time', this.karteForm.activityTime);
+        input.append('tags', this.tag.inputIds);
         input.append('body', this.karteForm.body);
         input.append('achieve', this.karteForm.achieve);
         input.append('challenge', this.karteForm.challenge);
         input.append('reference', this.karteForm.reference);
         input.append('image', this.karteForm.image);
-        input.append('activity_time', this.karteForm.activityTime);
-        input.append('tags', this.tag.inputIds);
 
         // カルテ保存処理
         var response = await axios.post('/api/kartes', input);

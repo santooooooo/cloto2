@@ -51,6 +51,20 @@
                       rounded
                       class="pa-2"
                     ></v-text-field>
+
+                    <!-- 役割 -->
+                    <v-card-text class="pa-1 white--text">役割</v-card-text>
+                    <v-select
+                      v-model="editUserForm.data.role"
+                      :items="roles"
+                      item-text="text"
+                      item-value="value"
+                      :rules="editUserForm.validation.roleRules"
+                      label="役割"
+                      solo
+                      rounded
+                      class="pa-2"
+                    ></v-select>
                   </v-container>
                 </v-card-text>
 
@@ -140,6 +154,10 @@ export default {
         { text: 'メールアドレス', value: 'email' },
         { text: '編集', value: 'actions', sortable: false, align: 'center' },
       ],
+      roles: [
+        { text: '通常', value: 'user' },
+        { text: 'メンター', value: 'mentor' },
+      ], // 役割一覧
       editUserForm: {
         dialog: false,
         loading: false,
@@ -150,6 +168,7 @@ export default {
           valid: false,
           handlenameRules: [(v) => !!v || '表示名は必須項目です。'],
           emailRules: [(v) => !!v || 'メールアドレスは必須項目です。'],
+          roleRules: [(v) => !!v || '役割は必須項目です。'],
         },
       },
       deleteUserForm: {
@@ -200,12 +219,12 @@ export default {
 
         var input = new FormData();
         input.append('_method', 'patch');
-        input.append('username', this.editUserForm.data.username);
         input.append('email', this.editUserForm.data.email);
         input.append('handlename', this.editUserForm.data.handlename);
         if (this.editUserForm.password !== '') {
           input.append('password', this.editUserForm.password);
         }
+        input.append('role', this.editUserForm.data.role);
 
         // ユーザーデータ保存処理
         var response = await axios.post('/api/admin/users/' + this.editUserForm.data.id, input);
