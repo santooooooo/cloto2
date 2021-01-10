@@ -4,7 +4,7 @@
 <!-- Favicon -->
 <link rel="shortcut icon" href="{{ config('consts.storage.system').'favicon.ico' }}">
 
-@if (!request()->is('email/verify'))
+@if (Route::current()->getName() != 'verification.notice' && Route::current()->getName() != 'verification.verify')
   <!-- Scripts -->
   <script src="{{ mix('js/app.js') }}" defer></script>
 @endif

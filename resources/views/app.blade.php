@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    @if (request()->is('email/verify'))
+    @if (Route::current()->getName() == 'verification.notice' || Route::current()->getName() == 'verification.verify')
         @yield('content')
     @else
         <!-- PleaseWait.js & Spinkit -->

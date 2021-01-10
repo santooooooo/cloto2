@@ -5,7 +5,7 @@
 <link rel="shortcut icon" href="{{ config('consts.storage.system').'favicon.ico' }}">
 
 <!-- Scripts -->
-@if (!request()->is('admin/login'))
+@if (Route::current()->getName() != 'admin.login')
     <script src="{{ mix('js/admin/app.js') }}" defer></script>
 @endif
 

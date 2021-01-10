@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    @if (request()->is('admin/login'))
+    @if (Route::current()->getName() == 'admin.login')
         <!-- PleaseWait.js & Spinkit -->
         <link rel="stylesheet" href="{{ mix('css/please-wait.css') }}">
         <link rel="stylesheet" href="{{ mix('css/spinkit.min.css') }}">
