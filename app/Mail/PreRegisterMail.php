@@ -34,7 +34,7 @@ class PreRegisterMail extends Mailable
      */
     public function build()
     {
-        return $this->text('mail.pre_register.' . $this->direction)
+        return $this->text('emails.pre_register.' . $this->direction)
             ->to($this->content['to'], $this->content['to_name'])
             ->from($this->content['from'], $this->content['from_name'])
             ->subject($this->content['subject'])

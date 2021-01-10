@@ -23,7 +23,7 @@ class VerifyEmailNotification extends VerifyEmail
 
         return (new MailMessage)
             ->from(config('mail.service.verify'), config('mail.system.name'))
-            ->view('mail.auth.verify', ['url' => $verificationUrl])
+            ->view('emails.auth.verify', ['url' => $verificationUrl])
             ->subject('本登録確認メール');
     }
 }

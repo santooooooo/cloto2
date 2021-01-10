@@ -31,7 +31,7 @@ class InquiryMail extends Mailable
      */
     public function build()
     {
-        return $this->text('mail.inquiry')
+        return $this->text('emails.inquiry')
             ->to($this->content['to'], $this->content['to_name'])
             ->from($this->content['from'], $this->content['from_name'])
             ->subject($this->content['subject'])
