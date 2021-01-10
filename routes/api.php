@@ -71,8 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/tasks/{project_id}', 'TaskController@index');
         Route::patch('/tasks/start', 'TaskController@start');
 
-        Route::resource('kartes', 'KarteController', ['only' => ['store']]);
-        Route::get('/kartes/index_by_auth_user', 'KarteController@index_by_auth_user');
+        Route::resource('kartes', 'KarteController', ['only' => ['index', 'store']]);
         Route::get('/kartes/index_by_task_id/{task_id}', 'KarteController@index_by_task_id');
 
         Route::resource('tags', 'TagController', ['only' => ['index']]);

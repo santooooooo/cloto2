@@ -42,9 +42,9 @@ class KarteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index_by_auth_user()
+    public function index()
     {
-        return response()->json($this->karte->where('user_id', $this->user->id)->with('tags')->get());
+        return response()->json($this->user->kartes()->with('tags')->get());
     }
 
     /**

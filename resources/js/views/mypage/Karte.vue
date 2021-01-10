@@ -196,7 +196,7 @@ export default {
     getKartes: async function (taskId) {
       this.kartes.loading = true;
 
-      var response = await axios.get('/api/kartes/index_by_auth_user');
+      var response = await axios.get('/api/kartes');
       this.kartes.data = response.data;
 
       this.kartes.loading = false;
