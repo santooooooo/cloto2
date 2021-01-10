@@ -135,19 +135,6 @@
     <v-dialog persistent v-model="tag.dialog" width="600" height="600">
       <v-card class="headline grey darken-2 text-center">
         <v-container>
-          <v-row>
-            <v-btn
-              depressed
-              small
-              @click="tag.dialog = false"
-              class="ml-3"
-              dark
-              color="grey lighten-1"
-            >
-              <v-icon dark>mdi-arrow-left</v-icon> 戻る
-            </v-btn>
-          </v-row>
-
           <v-card-text>
             <h2 class="pa-2 white--text title font-weight-bold mb-2 text-center">タグ</h2>
 
@@ -164,7 +151,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn depressed @click="inputTag(tag.inputIds)" class="mt-3" color="#f6bf00" dark>
-              追加
+              保存
             </v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
