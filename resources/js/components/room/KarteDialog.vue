@@ -27,7 +27,15 @@
             <v-row justify="center" align="center" class="mt-2">
               <input type="time" v-model="karteForm.activityTime" class="grey darken-2 mr-4" />
 
-              <v-btn bense small depressed color="success" class="ml-4" @click="getTag()">
+              <v-btn
+                bense
+                small
+                depressed
+                color="success"
+                class="ml-4"
+                @click="getTag()"
+                :disabled="karteForm.loading"
+              >
                 タグ入力
               </v-btn>
             </v-row>
@@ -46,6 +54,7 @@
                 <v-textarea
                   v-model="karteForm.body"
                   :rules="karteForm.validation.bodyRules"
+                  :disabled="karteForm.loading"
                   solo
                   rounded
                   rows="6"
@@ -57,6 +66,7 @@
                 </v-card-text>
                 <v-textarea
                   v-model="karteForm.reference"
+                  :disabled="karteForm.loading"
                   solo
                   rounded
                   rows="1"
@@ -79,6 +89,7 @@
                 </v-card-text>
                 <v-textarea
                   v-model="karteForm.achieve"
+                  :disabled="karteForm.loading"
                   solo
                   rounded
                   rows="6"
@@ -92,6 +103,7 @@
                 </v-card-text>
                 <v-textarea
                   v-model="karteForm.challenge"
+                  :disabled="karteForm.loading"
                   solo
                   rounded
                   rows="6"
