@@ -92,6 +92,8 @@ class LoginController extends Controller
         // セッションを再生成する
         $request->session()->regenerate();
 
-        return response()->json();
+        return $request->expectsJson()
+            ? response()->json()
+            : redirect()->guest(url('/login'));
     }
 }

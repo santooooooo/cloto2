@@ -99,6 +99,9 @@ export default {
     loginErrors() {
       return this.$store.state.auth.loginErrorMessages;
     },
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
   },
   watch: {
     dialog: function () {
@@ -113,25 +116,26 @@ export default {
       if (this.$refs.loginForm.validate()) {
         this.loginForm.loading = true;
 
-        // データの作成
-        var input = {
+        // ログイン処理
+        await this.$store.dispatch('auth/login', {
           loginField: this.loginForm.loginField,
           password: this.loginForm.password,
-        };
-
-        // ログイン処理
-        await this.$store.dispatch('auth/login', input);
+        });
 
         if (this.apiStatus) {
-          // 通知音の有効化
-          const loginSound = new Audio(this.$storage('system') + 'login.mp3');
-          loginSound.volume = 0.6;
-          this.$store.dispatch('alert/switchSound', { isOn: true, sound: loginSound });
+          if (this.authUser.email_verified_at === null) {
+            // 未認証時のリダイレクト
+            window.location.pathname = '/email/verify';
+          } else {
+            // 通知音の有効化
+            const loginSound = new Audio(this.$storage('system') + 'login.mp3');
+            loginSound.volume = 0.6;
+            this.$store.dispatch('alert/switchSound', { isOn: true, sound: loginSound });
 
-          // ページ遷移
-          this.$router.push({ name: 'entrance' });
+            // ページ遷移
+            this.$router.push({ name: 'entrance' });
+          }
         } else {
-          this.$store.dispatch('alert/error', '認証メールをご確認ください！');
           this.loginForm.loading = false;
         }
       }

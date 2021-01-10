@@ -1,24 +1,36 @@
-@extends('layouts.app')
+@extends('app')
 
 @section('content')
-<div class="container">
+<!-- Title -->
+<title>メール認証 / {{ config('app.name') }}</title>
+
+<div class="container" style="margin-top: 50px;">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Verify Your Email Address') }}</div>
+                <div class="card-header">メールをご確認ください。</div>
 
                 <div class="card-body">
                     @if (session('resent'))
                         <div class="alert alert-success" role="alert">
-                            {{ __('A fresh verification link has been sent to your email address.') }}
+                            認証メールを再送しました。
                         </div>
                     @endif
 
-                    {{ __('Before proceeding, please check your email for a verification link.') }}
-                    {{ __('If you did not receive the email') }},
+                    認証完了後にサービスをご利用いただけます！
+                    
+                    <br><br>
+
                     <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
                         @csrf
-                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
+                        メールを再送する場合は<button type="submit" class="btn btn-link p-0 m-0 align-baseline">こちら</button>をクリックしてください。
+                    </form>
+
+                    <br><br>
+                    
+                    <form class="d-inline" method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline">ログアウト</button>
                     </form>
                 </div>
             </div>
