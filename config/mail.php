@@ -131,6 +131,7 @@ return [
     */
 
     'service' => [
+        'verify' => env('MAIL_VERIFY_ADDRESS', 'verify@cloto.jp'),
         'preregister' => env('MAIL_PREREGISTER_ADDRESS', 'preregister@cloto.jp'),
         'contact' => env('MAIL_CONTACT_ADDRESS', 'contact@cloto.jp'),
     ]
