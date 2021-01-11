@@ -283,7 +283,7 @@
       bottom
       height="100px"
       id="tool-bar"
-      :class="toolBar.isOpen ? 'open' : ''"
+      :class="toolBar.isShow ? 'show' : ''"
     >
       <v-row>
         <v-col md="4" sm="4" align-self="center">
@@ -439,7 +439,7 @@ export default {
       isLoading: false, // ローディング制御
       toolBar: {
         timer: null, // ツールバー表示タイマー
-        isOpen: false, // ツールバー表示制御
+        isShow: false, // ツールバー表示制御
       },
 
       //*** 通話 ***//
@@ -1060,12 +1060,12 @@ export default {
      */
     showToolBar: function () {
       // マウスが動作すると表示
-      this.toolBar.isOpen = true;
+      this.toolBar.isShow = true;
       clearTimeout(this.toolBar.timer);
 
       this.toolBar.timer = setTimeout(() => {
         // 停止1秒後に隠す
-        this.toolBar.isOpen = false;
+        this.toolBar.isShow = false;
       }, 1000);
     },
 
@@ -1269,7 +1269,7 @@ export default {
   opacity: 0;
   transition: 0.8s;
 
-  &.open {
+  &.show {
     display: block;
     opacity: 1;
   }
