@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
         |--------------------------------------------------------------------------
         */
         Route::get('/users/{user_param}', 'UserController@show');
-        Route::resource('users', 'UserController', ['only' => ['update']]);
+        Route::patch('/users', 'UserController@update');
 
 
         /*

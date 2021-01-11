@@ -47,6 +47,7 @@ class RoomController extends Controller
     public function update(Request $request, Room $room)
     {
         $data = $request->all();
+
         // 時間割データの型変換
         $data['timetable'] = json_decode($data['timetable']);
 

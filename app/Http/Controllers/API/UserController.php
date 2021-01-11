@@ -111,8 +111,11 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $data = $request->all();
+
         // SNSデータの型変換
-        $data['sns'] = json_decode($data['sns']);
+        if (!empty($data['sns'])) {
+            $data['sns'] = json_decode($data['sns']);
+        }
 
         // アイコンの保存
         if (!empty($request->file('icon'))) {
