@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Events\SeatEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -139,6 +140,10 @@ class UserController extends Controller
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
+        // 取り組み中のタスクが更新された場合は通知
+        if (array_key_exists('in_progress', $data)) {
+            broadcast(new SeatEvent($this->auth_user->seat->section->room_id));
+        }
         return response(null);
     }
 }
