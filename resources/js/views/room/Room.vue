@@ -194,6 +194,17 @@ export default {
                     });
                     break;
                 }
+              } else {
+                // 状態の変化がない場合は取り組み中のタスクのみ更新
+                if (seat.user) {
+                  // 座席に着席中のユーザーがいる場合
+                  this.canvas.getObjects().forEach((object) => {
+                    if (object.userId === seat.user.id) {
+                      object.set({ inProgress: seat.user.in_progress });
+                      this.canvas.requestRenderAll();
+                    }
+                  });
+                }
               }
             });
           });
@@ -318,7 +329,7 @@ export default {
         this.$refs.popup.style.left = window.event.clientX + 'px';
         this.$refs.popup.style.top = window.event.clientY + scrollTop - 50 + 'px';
         // 表示
-        this.popup.text = event.target.handlename;
+        this.popup.text = event.target.inProgress;
         this.popup.isShow = true;
       }
     },
@@ -531,7 +542,7 @@ export default {
       fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (icon) => {
         icon.set({
           userId: seat.user.id,
-          handlename: seat.user.handlename,
+          inProgress: seat.user.in_progress,
           left: seat.position.x,
           top: seat.position.y,
           originX: 'center',

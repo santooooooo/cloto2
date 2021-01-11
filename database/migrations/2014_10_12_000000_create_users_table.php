@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->json('sns')->nullable();                    // SNS
             $table->string('web')->nullable();                  // Webページ
             $table->text('introduction')->nullable();           // 自己紹介
+            $table->string('in_progress')->nullable();          // 取り組み中のタスク
             $table->rememberToken();
             $table->dateTimes();
 

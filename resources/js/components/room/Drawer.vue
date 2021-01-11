@@ -57,20 +57,74 @@
         <v-btn block depressed color="#f6bf00" dark @click="$emit('input-karte')" class="mt-3">
           カルテ記入
         </v-btn>
+
+        <v-card class="mt-5 pa-1 grey darken-1 text-center">
+          <v-container>
+            <v-card-text class="pa-1 white--text font-weight-bold">いまやっていること</v-card-text>
+            <v-textarea
+              v-model="inProgress"
+              :placeholder="authUser.in_progress"
+              :disabled="loading"
+              rows="2"
+              solo
+              class="pt-2 px-2"
+            ></v-textarea>
+
+            <v-btn small color="primary" :loading="loading" @click="submit()">
+              <span class="white--text">公開</span>
+            </v-btn>
+          </v-container>
+        </v-card>
       </div>
     </v-navigation-drawer>
   </v-card>
 </template>
 
 <script>
+import { OK } from '@/consts/status';
+
 export default {
   props: {
     roomName: String,
     roomStatus: String,
   },
+  data() {
+    return {
+      loading: false, // ローディング制御
+      inProgress: '', // 取り組み中のタスク
+    };
+  },
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
+    },
+  },
+  methods: {
+    /**
+     * 取り組み中のタスクの公開
+     */
+    submit: async function () {
+      // 変化があった場合のみ更新
+      if (this.inProgress !== (this.authUser.in_progress || '')) {
+        this.loading = true;
+
+        var response = await axios.post('/api/users', {
+          _method: 'patch',
+          in_progress: this.inProgress,
+        });
+
+        if (response.status === OK) {
+          // 表示の更新
+          await this.$store.dispatch('auth/syncAuthUser');
+
+          this.$store.dispatch('alert/success', '取り組み中のタスクが公開されました！');
+          this.inProgress = '';
+        } else {
+          this.$store.dispatch('alert/error', '公開に失敗しました．．．');
+        }
+
+        this.loading = false;
+      }
     },
   },
 };
