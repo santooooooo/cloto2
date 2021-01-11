@@ -32,6 +32,7 @@ class SeatController extends Controller
     public function update(Request $request, Seat $seat)
     {
         $data = $request->all();
+
         // 配列の中身をint化
         $data['position'] = array_map('intval', $data['position']);
 

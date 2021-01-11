@@ -311,9 +311,15 @@ export default {
                   this.canvas.requestRenderAll();
                 }
               } else if (event.target.role === 'mentor') {
-                // メンター席は講師室にいるメンターのみ着席可能
+                // メンタリングルーム（メンター）は講師室にいるメンターのみ着席可能
                 if (this.authUser.role === 'mentor' && this.authUser.seat.role === 'staff') {
                   event.target.set({ fill: '#00ff00' });
+                  this.canvas.requestRenderAll();
+                }
+              } else if (event.target.role === 'user') {
+                // メンタリングルーム（利用者）は自習室にいるユーザーのみ着席可能
+                if (this.authUser.seat.role === 'study') {
+                  event.target.set({ fill: '#0000ff' });
                   this.canvas.requestRenderAll();
                 }
               } else {
@@ -343,7 +349,7 @@ export default {
      */
     canvasMouseOut: function (event, type) {
       if (type === 'seat') {
-        if (event.target.fill === '#0000ff') {
+        if (event.target.fill === '#0000ff' || event.target.fill === '#00ff00') {
           event.target.set({ fill: '' });
           this.canvas.requestRenderAll();
         }
@@ -415,12 +421,12 @@ export default {
           // 着席中
           switch (event.target.role) {
             case 'study': // 自習室
-              this.$store.dispatch('alert/error', '自習室内では静かにしましょう！');
+              this.$store.dispatch('alert/error', '自習室内での移動はできません！');
               break;
 
             case 'staff': // 講師室
               if (this.authUser.role === 'mentor') {
-                this.$store.dispatch('alert/error', '講師室内では静かにしましょう！');
+                this.$store.dispatch('alert/error', '講師室内での移動はできません！');
               } else if (this.authUser.role === 'user') {
                 this.$store.dispatch('alert/error', '講師室には入れません！');
               }
