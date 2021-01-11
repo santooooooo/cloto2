@@ -28,6 +28,11 @@
         </div>
       </v-row>
 
+      <!-- プロフィール吹き出し -->
+      <div id="popup" ref="popup" v-show="profile.popup.isShow">
+        <p>{{ profile.popup.text }}</p>
+      </div>
+
       <!-- プロフィールダイアログ -->
       <ProfileDialog
         :user-param="profile.userId"
@@ -98,6 +103,10 @@ export default {
         capacity: '', // 通話室の定員
       },
       profile: {
+        popup: {
+          isShow: false, // 吹き出し制御
+          text: '', // 吹き出しに表示するテキスト
+        },
         dialog: false, // プロフィールのダイアログ制御
         userId: null, // プロフィールを表示するユーザーID
       },
@@ -254,70 +263,93 @@ export default {
 
     /**
      * キャンバスマウスオーバーイベント
+     *
+     * @param event マウスイベント
+     * @param String  type  ターゲットの種類
      */
-    canvasMouseOver: function (event) {
-      if (event.target && event.target.fill === '') {
-        if (this.authUser.seat === null) {
-          // 着席前
-          if (this.authUser.role === 'mentor') {
-            // 自習室または講師室のみ着席可能
-            if (event.target.role === 'study') {
-              event.target.set({ fill: '#0000ff' });
-              this.canvas.requestRenderAll();
-            } else if (event.target.role === 'staff') {
-              event.target.set({ fill: '#00ff00' });
-              this.canvas.requestRenderAll();
-            }
-          } else if (this.authUser.role === 'user') {
-            // 自習室のみ着席可能
-            if (event.target.role === 'study') {
-              event.target.set({ fill: '#0000ff' });
-              this.canvas.requestRenderAll();
-            }
-          }
-        } else {
-          // 着席中
-          // 自習室，講師室での移動は禁止
-          if (event.target.role !== 'study' && event.target.role !== 'staff') {
-            if (event.target.role === 'lounge') {
-              // 休憩室は休憩時間のみ開放
-              if (this.roomStatus === 'break') {
+    canvasMouseOver: function (event, type) {
+      if (type === 'seat') {
+        if (event.target.fill === '') {
+          if (this.authUser.seat === null) {
+            // 着席前
+            if (this.authUser.role === 'mentor') {
+              // 自習室または講師室のみ着席可能
+              if (event.target.role === 'study') {
                 event.target.set({ fill: '#0000ff' });
                 this.canvas.requestRenderAll();
-              }
-            } else if (event.target.role === 'mentor') {
-              // メンター席は講師室にいるメンターのみ着席可能
-              if (this.authUser.role === 'mentor' && this.authUser.seat.role === 'staff') {
+              } else if (event.target.role === 'staff') {
                 event.target.set({ fill: '#00ff00' });
                 this.canvas.requestRenderAll();
               }
-            } else {
-              // その他は常に開放
-              event.target.set({ fill: '#0000ff' });
-              this.canvas.requestRenderAll();
+            } else if (this.authUser.role === 'user') {
+              // 自習室のみ着席可能
+              if (event.target.role === 'study') {
+                event.target.set({ fill: '#0000ff' });
+                this.canvas.requestRenderAll();
+              }
+            }
+          } else {
+            // 着席中
+            // 自習室，講師室での移動は禁止
+            if (event.target.role !== 'study' && event.target.role !== 'staff') {
+              if (event.target.role === 'lounge') {
+                // 休憩室は休憩時間のみ開放
+                if (this.roomStatus === 'break') {
+                  event.target.set({ fill: '#0000ff' });
+                  this.canvas.requestRenderAll();
+                }
+              } else if (event.target.role === 'mentor') {
+                // メンター席は講師室にいるメンターのみ着席可能
+                if (this.authUser.role === 'mentor' && this.authUser.seat.role === 'staff') {
+                  event.target.set({ fill: '#00ff00' });
+                  this.canvas.requestRenderAll();
+                }
+              } else {
+                // その他は常に開放
+                event.target.set({ fill: '#0000ff' });
+                this.canvas.requestRenderAll();
+              }
             }
           }
         }
+      } else if (type === 'user') {
+        // 吹き出しの位置を設定
+        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        this.$refs.popup.style.left = window.event.clientX + 'px';
+        this.$refs.popup.style.top = window.event.clientY + scrollTop - 50 + 'px';
+        // 表示
+        this.profile.popup.text = event.target.handlename;
+        this.profile.popup.isShow = true;
       }
     },
 
     /**
      * キャンバスマウスオーバー解除イベント
+     *
+     * @param event マウスイベント
+     * @param String  type  ターゲットの種類
      */
-    canvasMouseOut: function (event) {
-      if (event.target && event.target.fill === '#0000ff') {
-        event.target.set({ fill: '' });
-        this.canvas.requestRenderAll();
+    canvasMouseOut: function (event, type) {
+      if (type === 'seat') {
+        if (event.target.fill === '#0000ff') {
+          event.target.set({ fill: '' });
+          this.canvas.requestRenderAll();
+        }
+      } else if (type === 'user') {
+        // 吹き出しの非表示
+        this.profile.popup.isShow = false;
+        this.profile.popup.text = '';
       }
     },
 
     /**
      * キャンバスクリックイベント
      *
-     * @param String  targetType  ターゲットの種類
+     * @param event マウスイベント
+     * @param String  type  ターゲットの種類
      */
-    canvasMouseDown: async function (event, targetType) {
-      if (targetType === 'seat') {
+    canvasMouseDown: async function (event, type) {
+      if (type === 'seat') {
         // ロード開始
         this.isLoading = true;
 
@@ -421,7 +453,7 @@ export default {
 
         // ロード終了
         this.isLoading = false;
-      } else if (targetType === 'icon') {
+      } else if (type === 'user') {
         this.profile.dialog = true;
         this.profile.userId = String(event.target.userId);
       }
@@ -499,6 +531,7 @@ export default {
       fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (icon) => {
         icon.set({
           userId: seat.user.id,
+          handlename: seat.user.handlename,
           left: seat.position.x,
           top: seat.position.y,
           originX: 'center',
@@ -635,26 +668,52 @@ export default {
     });
 
     // マウスオーバーイベントの設定
-    this.canvas.on('mouse:over', this.canvasMouseOver);
-    this.canvas.on('mouse:out', this.canvasMouseOut);
+    this.canvas.on('mouse:over', (event) => {
+      // オブジェクトのオーバー時にのみ実行
+      if (event.target) {
+        if (event.target.hasOwnProperty('seatId')) {
+          //** 座席オーバー時 */
+          this.canvasMouseOver(event, 'seat');
+        } else if (event.target.hasOwnProperty('userId')) {
+          //** アイコンオーバー時 */
+          this.canvasMouseOver(event, 'user');
+        }
+      }
+    });
+
+    // マウスオーバー解除イベントの設定
+    this.canvas.on('mouse:out', (event) => {
+      // オブジェクトのオーバー解除時にのみ実行
+      if (event.target) {
+        if (event.target.hasOwnProperty('seatId')) {
+          //** 座席オーバー解除時 */
+          this.canvasMouseOut(event, 'seat');
+        } else if (event.target.hasOwnProperty('userId')) {
+          //** アイコンオーバー解除時 */
+          this.canvasMouseOut(event, 'user');
+        }
+      }
+    });
 
     // クリックイベントの設定
     this.canvas.on('mouse:down', (event) => {
       // オブジェクトのクリック時にのみ実行
-      if (event.target !== null) {
+      if (event.target) {
         // 入室前または自習室，講師室に着席している場合はクリックを受け付ける
         if (
           this.authUser.seat === null ||
           this.authUser.seat.role === 'study' ||
           this.authUser.seat.role === 'staff'
         ) {
-          if (event.target.seatId !== null && event.target.reservationId === null) {
-            // クリックした座席に誰も座っていないかつ，予約済みでない場合
-            //** 座席のクリックイベントを発火 */
-            this.canvasMouseDown(event, 'seat');
-          } else if (typeof event.target.userId === 'number') {
-            //** アイコンのクリックイベントを発火 */
-            this.canvasMouseDown(event, 'icon');
+          if (event.target.hasOwnProperty('seatId')) {
+            //** 座席クリック時 */
+            if (event.target.seatId !== null && event.target.reservationId === null) {
+              // クリックした座席に誰も座っていないかつ，予約済みでない場合
+              this.canvasMouseDown(event, 'seat');
+            }
+          } else if (event.target.hasOwnProperty('userId')) {
+            //** アイコンクリック時 */
+            this.canvasMouseDown(event, 'user');
           }
         }
       }
@@ -755,6 +814,19 @@ export default {
 
     &::-webkit-scrollbar {
       display: none;
+    }
+  }
+
+  #popup {
+    position: absolute;
+    max-width: 300px;
+
+    p {
+      padding: 5px 10px;
+      background: #ffffff;
+      border: 2px solid #000000;
+      border-radius: 10px;
+      font-weight: bold;
     }
   }
 }
