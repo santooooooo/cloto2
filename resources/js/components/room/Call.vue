@@ -21,7 +21,7 @@
       <p class="text-body-2 mt-12">カメラランプが10秒ほど点灯する場合があります．．．</p>
     </v-overlay>
 
-    <v-layout class="px-2 video-container">
+    <v-layout class="px-2">
       <v-flex>
         <v-container fluid>
           <v-row justify="center">
@@ -277,7 +277,14 @@
       </v-flex>
     </v-layout>
 
-    <v-app-bar color="yellow darken-4" fixed bottom height="100">
+    <v-app-bar
+      color="yellow darken-4"
+      fixed
+      bottom
+      height="100px"
+      id="tool-bar"
+      :class="toolBar.isOpen ? 'open' : ''"
+    >
       <v-row>
         <v-col md="4" sm="4" align-self="center">
           <v-row justify="start" class="mt-8">
@@ -430,6 +437,10 @@ export default {
       dialog: true, // 入室制御
       permissionOverlay: false, // 権限確認画面
       isLoading: false, // ローディング制御
+      toolBar: {
+        timer: null, // ツールバー表示タイマー
+        isOpen: false, // ツールバー表示制御
+      },
 
       //*** 通話 ***//
       participants: [], // 参加者
@@ -1045,6 +1056,20 @@ export default {
     },
 
     /**
+     * ツールバーの表示制御
+     */
+    showToolBar: function () {
+      // マウスが動作すると表示
+      this.toolBar.isOpen = true;
+      clearTimeout(this.toolBar.timer);
+
+      this.toolBar.timer = setTimeout(() => {
+        // 停止1秒後に隠す
+        this.toolBar.isOpen = false;
+      }, 1000);
+    },
+
+    /**
      * エラー発生時のイベント
      *
      * @param String  message エラーメッセージ
@@ -1141,9 +1166,16 @@ export default {
       dialog.style.backgroundImage =
         'url("' + this.$storage('seat') + 'seat_' + this.authUser.seat.id + '.png")';
     }
+
+    // ツールバー表示制御の設定
+    window.addEventListener('mousemove', this.showToolBar);
   },
 
   beforeDestroy() {
+    // イベントの削除
+    window.removeEventListener('mousemove', this.showToolBar);
+    clearTimeout(this.toolBar.timer);
+
     // 念の為
     this.exitCall();
   },
@@ -1174,72 +1206,73 @@ export default {
   top: -120px;
 }
 
-.video-container {
-  margin-bottom: 100px;
+.video {
+  position: relative;
 
-  .video {
-    position: relative;
-
-    .handlename {
-      position: absolute;
-      background-color: black;
-      color: white;
-      line-height: 1em;
-      bottom: 0;
-      left: 0;
-      margin: 0;
-      padding: 2px;
-    }
-
-    .is-mute {
-      position: absolute;
-      color: white;
-      line-height: 1em;
-      bottom: 0;
-      right: 0;
-      margin: 0;
-      padding: 2px;
-    }
-
-    .pin-button {
-      position: absolute;
-      top: 50%;
-      left: 40%;
-      transform: translate(-50%, -50%);
-      -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-    }
-
-    .account-button {
-      position: absolute;
-      top: 50%;
-      right: 40%;
-      transform: translate(50%, -50%);
-      -webkit-transform: translate(50%, -50%);
-      -ms-transform: translate(50%, -50%);
-    }
-
-    &.speaker {
-      outline: 5px solid #f6bf00;
-    }
+  .handlename {
+    position: absolute;
+    background-color: black;
+    color: white;
+    line-height: 1em;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    padding: 2px;
   }
 
-  #chat {
-    position: -webkit-sticky;
-    position: sticky;
-    margin-top: 20px;
-    top: 20px;
+  .is-mute {
+    position: absolute;
+    color: white;
+    line-height: 1em;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    padding: 2px;
+  }
 
-    .overflow-y-auto {
-      height: 500px;
-      background-color: white;
-    }
+  .pin-button {
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+  }
+
+  .account-button {
+    position: absolute;
+    top: 50%;
+    right: 40%;
+    transform: translate(50%, -50%);
+    -webkit-transform: translate(50%, -50%);
+    -ms-transform: translate(50%, -50%);
+  }
+
+  &.speaker {
+    outline: 5px solid #f6bf00;
   }
 }
 
-.device-select {
-  width: 100px;
-  margin: 0 5px;
+#chat {
+  position: -webkit-sticky;
+  position: sticky;
+  margin-top: 20px;
+  top: 20px;
+
+  .overflow-y-auto {
+    height: 500px;
+    background-color: white;
+  }
+}
+
+#tool-bar {
+  opacity: 0;
+  transition: 0.8s;
+
+  &.open {
+    display: block;
+    opacity: 1;
+  }
 }
 </style>
 
