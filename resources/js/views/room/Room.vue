@@ -86,8 +86,9 @@ export default {
       windowWidth: window.innerWidth, // ウィンドウの横幅
       windowHeight: window.innerHeight - 64, // ウィンドウの縦幅（ヘッダーを除く）
       chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
-      canvas: null, // キャンバスエリア
       isLoading: false, // ロードの制御
+      timer: null, // 同期制御
+      canvas: null, // キャンバスエリア
       messageOverlay: {
         isShow: false, // メッセージオーバーレイ制御
         message: '', // 表示メッセージ
@@ -329,7 +330,7 @@ export default {
         this.$refs.popup.style.left = window.event.clientX + 'px';
         this.$refs.popup.style.top = window.event.clientY + scrollTop - 50 + 'px';
         // 表示
-        this.popup.text = event.target.inProgress;
+        this.popup.text = event.target.inProgress || '集中しています！';
         this.popup.isShow = true;
       }
     },
@@ -807,6 +808,14 @@ export default {
 
     // ロード終了
     this.isLoading = false;
+
+    // 念の為1分ごとにデータを同期
+    this.timer = setInterval(this.getRoom, 60000);
+  },
+
+  beforeDestroy() {
+    // 同期の停止
+    clearInterval(this.timer);
   },
 };
 </script>
