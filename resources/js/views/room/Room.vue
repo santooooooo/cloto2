@@ -29,8 +29,8 @@
       </v-row>
 
       <!-- プロフィール吹き出し -->
-      <div id="popup" ref="popup" v-show="profile.popup.isShow">
-        <p>{{ profile.popup.text }}</p>
+      <div id="popup" ref="popup" v-show="popup.isShow">
+        <p>{{ popup.text }}</p>
       </div>
 
       <!-- プロフィールダイアログ -->
@@ -102,11 +102,11 @@ export default {
         id: '', // 入室する通話室のID
         capacity: '', // 通話室の定員
       },
+      popup: {
+        isShow: false, // 吹き出し制御
+        text: '', // 吹き出しに表示するテキスト
+      },
       profile: {
-        popup: {
-          isShow: false, // 吹き出し制御
-          text: '', // 吹き出しに表示するテキスト
-        },
         dialog: false, // プロフィールのダイアログ制御
         userId: null, // プロフィールを表示するユーザーID
       },
@@ -318,8 +318,8 @@ export default {
         this.$refs.popup.style.left = window.event.clientX + 'px';
         this.$refs.popup.style.top = window.event.clientY + scrollTop - 50 + 'px';
         // 表示
-        this.profile.popup.text = event.target.handlename;
-        this.profile.popup.isShow = true;
+        this.popup.text = event.target.handlename;
+        this.popup.isShow = true;
       }
     },
 
@@ -337,8 +337,8 @@ export default {
         }
       } else if (type === 'user') {
         // 吹き出しの非表示
-        this.profile.popup.isShow = false;
-        this.profile.popup.text = '';
+        this.popup.isShow = false;
+        this.popup.text = '';
       }
     },
 
