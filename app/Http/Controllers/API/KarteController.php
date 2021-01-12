@@ -89,7 +89,6 @@ class KarteController extends Controller
             $data['image'] = [$save_name];
         }
 
-
         $result = $this->karte->create($data);
 
         if (empty($result)) {

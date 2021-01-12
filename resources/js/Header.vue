@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app dark>
+  <v-app-bar app dark height="64px">
     <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" v-if="isRelease" />
 
     <router-link :to="authCheck ? { name: 'entrance' } : { name: 'index' }">

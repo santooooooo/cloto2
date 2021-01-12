@@ -133,7 +133,6 @@ class UserController extends Controller
             $data['icon'] = $filename;
         }
 
-
         $result = $this->auth_user->fill($data)->save();
 
         if (empty($result)) {
