@@ -1,5 +1,11 @@
 <template>
-  <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
+  <v-dialog
+    v-model="dialog"
+    fullscreen
+    persistent
+    no-click-animation
+    transition="dialog-bottom-transition"
+  >
     <!-- 権限確認画面 -->
     <v-overlay :value="permissionOverlay" z-index="7" class="text-center" opacity="1">
       <div class="arrow"></div>

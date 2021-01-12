@@ -14,6 +14,7 @@ import store from './store';
 import home from '@/admin/views/Home';
 import inquiry from '@/admin/views/Inquiry';
 import user from '@/admin/views/User';
+import karte from '@/admin/views/Karte';
 import room from '@/admin/views/Room';
 import seat from '@/admin/views/Seat';
 import tag from '@/admin/views/Tag';
@@ -36,6 +37,11 @@ const router = new VueRouter({
       path: '/admin/user',
       name: 'user',
       component: user,
+    },
+    {
+      path: '/admin/karte',
+      name: 'karte',
+      component: karte,
     },
     {
       path: '/admin/room',

@@ -79,7 +79,7 @@ class UserController extends Controller
      * ユーザーの取得
      *
      * @param   String  $user_param ユーザーIDまたはユーザー名
-     * @return  User    $user       ユーザーデータ
+     * @return  \App\Models\User    ユーザーデータ
      */
     public function get_user(String $user_param)
     {
