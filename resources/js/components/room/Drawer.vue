@@ -70,8 +70,18 @@
               class="pt-2 px-2"
             ></v-textarea>
 
-            <v-btn small color="primary" :loading="loading" @click="submit()">
-              <span class="white--text">公開</span>
+            <v-btn small color="error" class="mx-1" :loading="loading" @click="submit(true)">
+              削除
+            </v-btn>
+            <v-btn
+              small
+              color="primary"
+              class="mx-1"
+              :loading="loading"
+              :disabled="inProgress === ''"
+              @click="submit(false)"
+            >
+              公開
             </v-btn>
           </v-container>
         </v-card>
@@ -102,8 +112,14 @@ export default {
   methods: {
     /**
      * 取り組み中のタスクの公開
+     *
+     * @param remove  削除するか
      */
-    submit: async function () {
+    submit: async function (remove) {
+      if (remove) {
+        this.inProgress = '';
+      }
+
       // 変化があった場合のみ更新
       if (this.inProgress !== (this.authUser.in_progress || '')) {
         this.loading = true;
@@ -117,8 +133,12 @@ export default {
           // 表示の更新
           await this.$store.dispatch('auth/syncAuthUser');
 
-          this.$store.dispatch('alert/success', '取り組み中のタスクが公開されました！');
-          this.inProgress = '';
+          if (remove) {
+            this.$store.dispatch('alert/success', '取り組み中のタスクが削除されました！');
+          } else {
+            this.$store.dispatch('alert/success', '取り組み中のタスクが公開されました！');
+            this.inProgress = '';
+          }
         } else {
           this.$store.dispatch('alert/error', '公開に失敗しました．．．');
         }
