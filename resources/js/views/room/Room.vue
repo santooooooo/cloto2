@@ -388,6 +388,8 @@ export default {
               if (this.authUser.role === 'mentor') {
                 // 状態変更処理
                 await this.userAction('sitting', event.target);
+                // 勤務開始
+                this.startWork();
               } else if (this.authUser.role === 'user') {
                 this.$store.dispatch('alert/error', '講師室には入れません！');
               }
@@ -604,6 +606,21 @@ export default {
     cancelStartStudy: function () {
       //this.projectDialog = false;
       this.leaveRoom();
+    },
+
+    /**
+     * 勤務開始
+     */
+    startWork: async function () {
+      this.$store.dispatch('alert/showOverlay', { color: '#8a2be2', message: '勤務開始！' });
+
+      // チャイム
+      if (this.$store.getters['alert/isSoundOn']) {
+        this.chime.play();
+      }
+
+      // ユーザーデータの同期
+      await this.$store.dispatch('auth/syncAuthUser');
     },
   },
 
