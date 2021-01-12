@@ -49,7 +49,9 @@ class RoomController extends Controller
         $data = $request->all();
 
         // 時間割データの型変換
-        $data['timetable'] = json_decode($data['timetable']);
+        if (!empty($data['timetable'])) {
+            $data['timetable'] = json_decode($data['timetable']);
+        }
 
         // 背景の保存
         if (!empty($request->file('background'))) {

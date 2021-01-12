@@ -34,7 +34,9 @@ class SeatController extends Controller
         $data = $request->all();
 
         // 配列の中身をint化
-        $data['position'] = array_map('intval', $data['position']);
+        if (!empty($data['position'])) {
+            $data['position'] = array_map('intval', $data['position']);
+        }
 
         $result = $seat->fill($data)->save();
 
