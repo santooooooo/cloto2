@@ -56,8 +56,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::patch('/seats/sit/{seat}', 'SeatController@sit')->where('seat', '[0-9]+');
         Route::patch('/seats/leave', 'SeatController@leave');
-        Route::patch('/seats/enter_call/{seat}', 'SeatController@enter_call')->where('seat', '[0-9]+');
-        Route::patch('/seats/leave_call', 'SeatController@leave_call');
+        Route::patch('/seats/move_seat/{seat}', 'SeatController@move_seat')->where('seat', '[0-9]+');
+        Route::patch('/seats/return_seat', 'SeatController@return_seat');
 
 
         /*

@@ -248,7 +248,7 @@ export default {
 
         case 'enterCall':
           // 通話室入室処理
-          var response = await axios.post('/api/seats/enter_call/' + seatObject.seatId, {
+          var response = await axios.post('/api/seats/move_seat/' + seatObject.seatId, {
             _method: 'patch',
           });
           if (response.status === OK) {
@@ -256,9 +256,9 @@ export default {
           }
           break;
 
-        case 'leaveCall':
-          // 通話室退室処理
-          var response = await axios.post('/api/seats/leave_call', {
+        case 'returnSeat':
+          // 元の座席に戻る処理
+          var response = await axios.post('/api/seats/return_seat', {
             _method: 'patch',
           });
           break;
@@ -536,7 +536,7 @@ export default {
       this.call.id = '';
 
       // 状態変更処理
-      await this.userAction('leaveCall');
+      await this.userAction('returnSeat');
 
       // ロード終了
       this.isLoading = false;

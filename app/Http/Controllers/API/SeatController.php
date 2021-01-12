@@ -78,12 +78,12 @@ class SeatController extends Controller
     }
 
     /**
-     * 通話室入室
+     * 座席の移動
      *
-     * @param  \App\Models\Seat  $seat  着席する座席
+     * @param  \App\Models\Seat  $seat  移動先の座席
      * @return \Illuminate\Http\Response
      */
-    public function enter_call(Seat $seat)
+    public function move_seat(Seat $seat)
     {
         $room_id = $seat->section->room->id;
 
@@ -109,11 +109,11 @@ class SeatController extends Controller
     }
 
     /**
-     * 通話室退室
+     * 元の座席に戻る
      *
      * @return \Illuminate\Http\Response
      */
-    public function leave_call()
+    public function return_seat()
     {
         // 戻り先の座席を検索
         $seat = $this->seat->where('reservation_user_id', $this->user->id)->first();
