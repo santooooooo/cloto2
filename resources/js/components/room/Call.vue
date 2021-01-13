@@ -24,9 +24,11 @@
     <v-layout class="px-2">
       <v-flex>
         <v-container fluid>
-          <v-row justify="center">
-            <v-sheet color="rgba(0, 0, 0, 1)" width="208" height="117" class="video">
-              <!-- 自分のビデオ（オフ） -->
+          <!--*** 画面共有ON ***-->
+          <v-row justify="center" v-if="screenSharing.stream">
+            <!-- 自分のビデオ -->
+            <v-sheet color="rgba(0, 0, 0, 1)" width="208" height="117" class="video ma-1">
+              <!-- オフ -->
               <v-sheet
                 color="black"
                 width="208"
@@ -39,7 +41,7 @@
                 </v-avatar>
               </v-sheet>
 
-              <!-- 自分のビデオ（オン） -->
+              <!-- オン -->
               <video
                 width="208"
                 height="117"
@@ -55,9 +57,82 @@
                 <v-icon color="red">mdi-microphone-off</v-icon>
               </p>
             </v-sheet>
+
+            <!-- 参加者のビデオ -->
+            <v-hover
+              v-slot="{ hover }"
+              v-for="participant in notPinnedParticipants"
+              :key="participant.stream.peerId"
+            >
+              <v-sheet
+                color="rgba(0, 0, 0, 1)"
+                width="208"
+                height="117"
+                :class="['video', 'ma-1', speakerId === participant.stream.peerId ? 'speaker' : '']"
+              >
+                <!-- オフ -->
+                <v-sheet
+                  color="black"
+                  width="208"
+                  height="117"
+                  class="d-flex justify-center align-center"
+                  v-if="participant.isLoading || participant.isVideoOff"
+                >
+                  <!-- ローディング中 -->
+                  <v-progress-circular
+                    size="40"
+                    width="4"
+                    color="green"
+                    indeterminate
+                    v-if="participant.isLoading || participant.icon === null"
+                  ></v-progress-circular>
+
+                  <v-avatar size="50" class="aligh-self-center" v-else>
+                    <img :src="$storage('icon') + participant.icon" />
+                  </v-avatar>
+
+                  <audio autoplay :srcObject.prop="participant.stream"></audio>
+                </v-sheet>
+
+                <!-- オン -->
+                <video
+                  width="208"
+                  height="117"
+                  autoplay
+                  :srcObject.prop="participant.stream"
+                  v-else
+                ></video>
+
+                <p class="handlename">{{ participant.handlename }}</p>
+
+                <p class="is-mute" v-if="participant.isMute">
+                  <v-icon color="red">mdi-microphone-off</v-icon>
+                </p>
+
+                <!-- hover -->
+                <v-fade-transition>
+                  <v-overlay absolute opacity="0.7" v-if="hover">
+                    <v-sheet color="rgba(0, 0, 0, 0)" width="208" height="117">
+                      <v-btn icon x-large class="pin-button" @click="pin(participant)">
+                        <v-icon> mdi-pin </v-icon>
+                      </v-btn>
+
+                      <v-btn
+                        icon
+                        x-large
+                        class="account-button"
+                        @click="showProfile(participant.username)"
+                      >
+                        <v-icon> mdi-account </v-icon>
+                      </v-btn>
+                    </v-sheet>
+                  </v-overlay>
+                </v-fade-transition>
+              </v-sheet>
+            </v-hover>
           </v-row>
 
-          <!-- ピン留め時 -->
+          <!--*** ピン留め時 ***-->
           <v-row justify="center" class="mt-3" v-if="pinnedParticipant">
             <v-hover v-slot="{ hover }">
               <v-sheet
@@ -70,7 +145,7 @@
                   speakerId === pinnedParticipant.stream.peerId ? 'speaker' : '',
                 ]"
               >
-                <!-- 参加者のビデオ（オフ） -->
+                <!-- オフ -->
                 <v-sheet
                   color="black"
                   :width="videoSize.width"
@@ -94,7 +169,7 @@
                   <audio autoplay :srcObject.prop="pinnedParticipant.stream"></audio>
                 </v-sheet>
 
-                <!-- 参加者のビデオ（オン） -->
+                <!-- オン -->
                 <video
                   :width="videoSize.width"
                   :height="videoSize.height"
@@ -141,12 +216,54 @@
             </v-hover>
           </v-row>
 
-          <!-- 通常時 -->
-          <v-row justify="center">
+          <!--*** 通常時 ***-->
+          <v-row justify="center" class="normal" v-if="!screenSharing.stream">
+            <!-- 自分のビデオ -->
+            <v-col sm="6" md="6" lg="6">
+              <v-row justify="center">
+                <v-sheet
+                  color="rgba(0, 0, 0, 1)"
+                  :width="videoShowWidth"
+                  :height="videoShowHeight"
+                  class="video ma-1"
+                >
+                  <!-- オフ -->
+                  <v-sheet
+                    color="black"
+                    :width="videoShowWidth"
+                    :height="videoShowHeight"
+                    class="d-flex justify-center align-center"
+                    v-if="isVideoLoading || isVideoOff || localStream === null"
+                  >
+                    <v-avatar size="80" class="aligh-self-center">
+                      <img :src="$storage('icon') + authUser.icon" />
+                    </v-avatar>
+                  </v-sheet>
+
+                  <!-- オン -->
+                  <video
+                    :width="videoShowWidth"
+                    :height="videoShowHeight"
+                    muted="true"
+                    autoplay
+                    :srcObject.prop="localStream"
+                    v-else
+                  ></video>
+
+                  <p class="handlename">{{ authUser.handlename }}</p>
+
+                  <p class="is-mute" v-if="isAudioLoading || isMute">
+                    <v-icon color="red">mdi-microphone-off</v-icon>
+                  </p>
+                </v-sheet>
+              </v-row>
+            </v-col>
+
+            <!-- 参加者のビデオ -->
             <v-col
               sm="6"
               md="6"
-              lg="4"
+              lg="6"
               v-for="participant in notPinnedParticipants"
               :key="participant.stream.peerId"
             >
@@ -154,19 +271,19 @@
                 <v-hover v-slot="{ hover }">
                   <v-sheet
                     color="rgba(0, 0, 0, 1)"
-                    :width="videoSize.showWidth"
-                    :height="videoSize.showHeight"
+                    :width="videoShowWidth"
+                    :height="videoShowHeight"
                     :class="[
                       'video',
                       'ma-1',
                       speakerId === participant.stream.peerId ? 'speaker' : '',
                     ]"
                   >
-                    <!-- 参加者のビデオ（オフ） -->
+                    <!-- オフ -->
                     <v-sheet
                       color="black"
-                      :width="videoSize.showWidth"
-                      :height="videoSize.showHeight"
+                      :width="videoShowWidth"
+                      :height="videoShowHeight"
                       class="d-flex justify-center align-center"
                       v-if="participant.isLoading || participant.isVideoOff"
                     >
@@ -186,10 +303,10 @@
                       <audio autoplay :srcObject.prop="participant.stream"></audio>
                     </v-sheet>
 
-                    <!-- 参加者のビデオ（オン） -->
+                    <!-- オン -->
                     <video
-                      :width="videoSize.showWidth"
-                      :height="videoSize.showHeight"
+                      :width="videoShowWidth"
+                      :height="videoShowHeight"
                       autoplay
                       :srcObject.prop="participant.stream"
                       v-else
@@ -206,8 +323,8 @@
                       <v-overlay absolute opacity="0.7" v-if="hover">
                         <v-sheet
                           color="rgba(0, 0, 0, 0)"
-                          :width="videoSize.showWidth"
-                          :height="videoSize.showHeight"
+                          :width="videoShowWidth"
+                          :height="videoShowHeight"
                         >
                           <v-btn icon x-large class="pin-button" @click="pin(participant)">
                             <v-icon> mdi-pin </v-icon>
@@ -266,7 +383,7 @@
             <v-text-field
               v-model="chat.localText"
               class="px-2"
-              label="メッセージを送ろう！"
+              label="入力"
               @keydown.enter="sendMessage"
             ></v-text-field>
             <v-btn icon @click="sendMessage">
@@ -434,6 +551,8 @@ export default {
   },
   data() {
     return {
+      windowWidth: window.innerWidth, // ウィンドウの横幅
+      windowHeight: window.innerHeight - 64, // ウィンドウの縦幅（ヘッダーを除く）
       dialog: true, // 入室制御
       permissionOverlay: false, // 権限確認画面
       isLoading: false, // ローディング制御
@@ -462,8 +581,6 @@ export default {
       videoSize: {
         width: 640, // ビデオ取得サイズ（横）
         height: 360, // ビデオ取得サイズ（縦）
-        showWidth: 400, // ビデオ表示サイズ（横）
-        showHeight: 225, // ビデオ表示サイズ（縦）
       },
       isAudioLoading: true, // マイク接続ローディング制御
       isMute: false, // ミュート制御
@@ -502,6 +619,12 @@ export default {
     },
     isNotificationOn() {
       return this.$store.getters['alert/isSoundOn'];
+    },
+    videoShowWidth() {
+      return this.windowWidth / 3;
+    },
+    videoShowHeight() {
+      return (this.videoShowWidth / 16) * 9;
     },
     pinnedParticipant() {
       // ピン留めされている参加者（一人）
@@ -1169,6 +1292,12 @@ export default {
 
     // ツールバー表示制御の設定
     window.addEventListener('mousemove', this.showToolBar);
+
+    // ウィンドウリサイズ時のイベント
+    window.addEventListener('resize', () => {
+      this.windowWidth = window.innerWidth;
+      this.windowHeight = window.innerHeight;
+    });
   },
 
   beforeDestroy() {
@@ -1206,6 +1335,10 @@ export default {
   top: -120px;
 }
 
+.normal {
+  height: 100vh;
+}
+
 .video {
   position: relative;
 
@@ -1214,6 +1347,7 @@ export default {
     background-color: black;
     color: white;
     line-height: 1em;
+    font-size: 0.8em;
     bottom: 0;
     left: 0;
     margin: 0;
