@@ -51,7 +51,7 @@
                 v-else
               ></video>
 
-              <p class="handlename">{{ authUser.handlename }}</p>
+              <p class="handlename" style="font-size: 0.8em">{{ authUser.handlename }}</p>
 
               <p class="is-mute" v-if="isAudioLoading || isMute">
                 <v-icon color="red">mdi-microphone-off</v-icon>
@@ -103,7 +103,7 @@
                   v-else
                 ></video>
 
-                <p class="handlename">{{ participant.handlename }}</p>
+                <p class="handlename" style="font-size: 0.8em">{{ participant.handlename }}</p>
 
                 <p class="is-mute" v-if="participant.isMute">
                   <v-icon color="red">mdi-microphone-off</v-icon>
@@ -216,7 +216,7 @@
             </v-hover>
           </v-row>
 
-          <!--*** 通常時 ***-->
+          <!--*** 通常時（画面共有OFF） ***-->
           <v-row justify="center" class="normal" v-if="!screenSharing.stream">
             <!-- 自分のビデオ -->
             <v-col sm="6" md="6" lg="6">
@@ -1347,7 +1347,6 @@ export default {
     background-color: black;
     color: white;
     line-height: 1em;
-    font-size: 0.8em;
     bottom: 0;
     left: 0;
     margin: 0;
