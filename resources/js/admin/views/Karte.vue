@@ -227,6 +227,16 @@ export default {
 };
 </script>
 
+<style lang="scss" scoped>
+.karte-content {
+  width: 100px;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+</style>
+
 <style lang="scss">
 .v-dialog {
   background-color: #ffffff;

@@ -5,10 +5,6 @@
         トップページ
       </v-btn>
 
-      <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'preRegister' }">
-        新規登録
-      </v-btn>
-
       <v-btn
         color="white"
         text
@@ -19,10 +15,6 @@
         target="_blank"
       >
         Twitter
-      </v-btn>
-
-      <v-btn color="white" text rounded exact class="my-2" href="mailto:contact@cloto.jp">
-        E-Mail
       </v-btn>
 
       <v-col class="py-4 text-center white--text" cols="12">

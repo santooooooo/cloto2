@@ -221,8 +221,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~/_variables';
-
 .karte-content {
   width: 100px;
   margin: 0;

@@ -47,7 +47,6 @@
       <template v-slot:header>
         <div class="sc-header--title enabled font-weight-bold">{{ user.handlename }} 様</div>
       </template>
-      <template v-slot:system-message-body="{ message }"> [System]: {{ message.text }} </template>
     </beautiful-chat>
   </v-container>
 </template>
@@ -59,7 +58,7 @@ export default {
   head: {
     title() {
       return {
-        inner: 'ユーザー',
+        inner: 'お問い合わせ',
       };
     },
   },
