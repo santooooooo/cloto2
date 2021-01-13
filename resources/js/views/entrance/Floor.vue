@@ -19,8 +19,6 @@
 export default {
   data() {
     return {
-      windowWidth: window.innerWidth, // ウィンドウの横幅
-      windowHeight: window.innerHeight - 64, // ウィンドウの縦幅（ヘッダーを除く）
       canvas: null, // キャンバスエリア
       isLoading: false, // ロードの制御
       roomData: {}, // 教室データ
@@ -32,9 +30,9 @@ export default {
   computed: {
     canvasContainerStyle() {
       return {
-        height: this.windowHeight + 'px',
-        'margin-top': this.windowHeight < this.roomHeight + 100 ? '0px' : '50px',
-        'margin-right': this.windowWidth < this.roomWidth + 250 ? '250px' : '0px',
+        height: this.$windowHeight - 64 + 'px', // ヘッダーを除いた高さ
+        'margin-top': this.$windowHeight - 64 < this.roomHeight + 100 ? '0px' : '50px',
+        'margin-right': this.$windowWidth < this.roomWidth + 250 ? '250px' : '0px',
       };
     },
   },
@@ -138,12 +136,6 @@ export default {
 
   async mounted() {
     await this.setRoom();
-
-    // ウィンドウリサイズ時のイベント
-    window.addEventListener('resize', () => {
-      this.windowWidth = window.innerWidth;
-      this.windowHeight = window.innerHeight - 64;
-    });
   },
 };
 </script>

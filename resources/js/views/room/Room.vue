@@ -83,8 +83,6 @@ export default {
   },
   data() {
     return {
-      windowWidth: window.innerWidth, // ウィンドウの横幅
-      windowHeight: window.innerHeight - 64, // ウィンドウの縦幅（ヘッダーを除く）
       chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
       isLoading: false, // ロードの制御
       timer: null, // 同期制御
@@ -133,9 +131,9 @@ export default {
     },
     canvasContainerStyle() {
       return {
-        height: this.windowHeight + 'px',
-        'margin-top': this.windowHeight < this.roomHeight + 100 ? '0px' : '50px',
-        'margin-right': this.windowWidth < this.roomWidth + 250 ? '250px' : '0px',
+        height: this.$windowHeight - 64 + 'px', // ヘッダーを除いた高さ
+        'margin-top': this.$windowHeight - 64 < this.roomHeight + 100 ? '0px' : '50px',
+        'margin-right': this.$windowWidth < this.roomWidth + 250 ? '250px' : '0px',
       };
     },
   },
@@ -822,12 +820,6 @@ export default {
         // 部屋状態の更新
         this.roomStatus = event.status;
       });
-
-    // ウィンドウリサイズ時のイベント
-    window.addEventListener('resize', () => {
-      this.windowWidth = window.innerWidth;
-      this.windowHeight = window.innerHeight - 64;
-    });
 
     // ロード終了
     this.isLoading = false;

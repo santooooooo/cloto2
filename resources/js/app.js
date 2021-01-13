@@ -20,21 +20,22 @@ Vue.component('ImageInput', require('./components/form/ImageInput').default);
 /**
  * Vueの定義
  */
-import VueHead from 'vue-head';
-import Chat from 'vue-beautiful-chat';
-import VueDragscroll from 'vue-dragscroll';
+import App from './App.vue';
 import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
-import App from './App.vue';
+import { VueWindowSizePlugin } from 'vue-window-size/option-api';
+import VueHead from 'vue-head';
+import VueDragscroll from 'vue-dragscroll';
+import Chat from 'vue-beautiful-chat';
 
+Vue.use(VueWindowSizePlugin);
 Vue.use(VueHead, {
   separator: '/',
   complement: process.env.MIX_APP_NAME,
 });
-
-Vue.use(Chat);
 Vue.use(VueDragscroll);
+Vue.use(Chat);
 
 new Vue({
   router,

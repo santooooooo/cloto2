@@ -551,8 +551,6 @@ export default {
   },
   data() {
     return {
-      windowWidth: window.innerWidth, // ウィンドウの横幅
-      windowHeight: window.innerHeight - 64, // ウィンドウの縦幅（ヘッダーを除く）
       dialog: true, // 入室制御
       permissionOverlay: false, // 権限確認画面
       isLoading: false, // ローディング制御
@@ -621,7 +619,7 @@ export default {
       return this.$store.getters['alert/isSoundOn'];
     },
     videoShowWidth() {
-      return this.windowWidth / 3;
+      return this.$windowWidth / 3;
     },
     videoShowHeight() {
       return (this.videoShowWidth / 16) * 9;
@@ -1292,12 +1290,6 @@ export default {
 
     // ツールバー表示制御の設定
     window.addEventListener('mousemove', this.showToolBar);
-
-    // ウィンドウリサイズ時のイベント
-    window.addEventListener('resize', () => {
-      this.windowWidth = window.innerWidth;
-      this.windowHeight = window.innerHeight;
-    });
   },
 
   beforeDestroy() {
