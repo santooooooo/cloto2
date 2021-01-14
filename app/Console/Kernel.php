@@ -26,9 +26,24 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // 毎日3時からメンテナンスモード
-        $schedule->command('system:down');
+        /**
+         * システムイベント
+         * 毎日午前3~5時はメンテナンスモード
+         */
+        // 3:00にユーザーへ通知
+        $schedule->command('system:down')->dailyAt('3:00');
+        // 3:15にシステムを停止
+        $schedule->command('down')->dailyAt('3:15');
 
+        //*** cronでバックアップなどを実行 ***//
+
+        // 4:45にシステムを復旧
+        $schedule->command('up')->dailyAt('4:45');
+
+
+        /**
+         * アプリケーションイベント
+         */
         // 5分毎に時間割の通知
         $schedule->command('publishevent:timetable')->everyFiveMinutes();
         // 10分毎に座席を初期化
