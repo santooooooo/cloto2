@@ -25,9 +25,9 @@ class InquiryEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Int $user_id, Inquiry $inquiry)
+    public function __construct(User $user, Inquiry $inquiry)
     {
-        $this->user = User::find($user_id);
+        $this->user = $user;
         $this->inquiry = $inquiry;
     }
 

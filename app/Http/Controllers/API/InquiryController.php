@@ -73,7 +73,7 @@ class InquiryController extends Controller
         }
 
         // 投稿したデータを送信
-        broadcast(new InquiryEvent($this->user->id, $result));
+        broadcast(new InquiryEvent($this->user, $result));
 
         // 管理者全員にメール通知
         foreach (Admin::all() as $admin) {

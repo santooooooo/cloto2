@@ -94,7 +94,7 @@ class InquiryController extends Controller
         $user->inquiries()->update(['replyed' => true]);
 
         // 投稿したデータを送信
-        broadcast(new InquiryEvent($user->id, $result));
+        broadcast(new InquiryEvent($user, $result));
 
         return response(null);
     }
