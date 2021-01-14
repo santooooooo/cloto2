@@ -20,7 +20,7 @@ class RefreshSeats extends Command
      *
      * @var string
      */
-    protected $description = 'refresh seats table';
+    protected $description = 'Refresh seats table';
 
     /**
      * Create a new command instance.

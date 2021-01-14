@@ -21,7 +21,7 @@ class PublishTimetableEvent extends Command
      *
      * @var string
      */
-    protected $description = 'publish timetable event';
+    protected $description = 'Publish timetable event';
 
     /**
      * Create a new command instance.

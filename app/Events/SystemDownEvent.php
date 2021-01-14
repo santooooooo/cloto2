@@ -7,23 +7,23 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Room;
+use App\Models\User;
 
-class SeatEvent implements ShouldBroadcast
+class SystemDownEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /** @var Room */
-    protected $room;
+    /** @var User */
+    protected $user;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Int $room_id)
+    public function __construct(User $user)
     {
-        $this->room = Room::find($room_id);
+        $this->user = $user;
     }
 
     /**
@@ -33,16 +33,6 @@ class SeatEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('room-' . $this->room->id);
-    }
-
-    /**
-     * Get the data to broadcast.
-     *
-     * @return array
-     */
-    public function broadcastWith()
-    {
-        return $this->room->toArray();
+        return new Channel('user-' . $this->user->id);
     }
 }
