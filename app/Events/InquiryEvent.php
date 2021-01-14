@@ -38,7 +38,7 @@ class InquiryEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('user-' . $this->user->id);
+        return new Channel('user.' . $this->user->id);
     }
 
     /**

@@ -130,7 +130,7 @@ export default {
       });
 
       // 問い合わせイベントの受信開始
-      Echo.channel('user-' + this.user.id).listen('InquiryEvent', (event) => {
+      Echo.channel('user.' + this.user.id).listen('InquiryEvent', (event) => {
         this.messages.push({
           author: this.setAuthor(event.author),
           type: event.type,
@@ -151,7 +151,7 @@ export default {
      */
     close: function () {
       // 問い合わせイベントの受信終了
-      Echo.leave('user-' + this.user.id);
+      Echo.leave('user.' + this.user.id);
 
       this.isOpen = false;
       // データの更新

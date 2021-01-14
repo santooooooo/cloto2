@@ -33,7 +33,7 @@ class SeatEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('room-' . $this->room->id);
+        return new Channel('room.' . $this->room->id);
     }
 
     /**

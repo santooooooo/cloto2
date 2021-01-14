@@ -108,7 +108,7 @@ export default {
         this.sitRoom = response.data;
 
         // 時間割イベントの受信開始
-        Echo.channel('room-' + this.sitRoom).listen('TimetableEvent', (event) => {
+        Echo.channel('room.' + this.sitRoom).listen('TimetableEvent', (event) => {
           if (event.status === 'study') {
             // 自習時間
             this.$store.dispatch('alert/showOverlay', {
@@ -136,7 +136,7 @@ export default {
          * 退席時
          */
         // 部屋イベントの受信終了
-        Echo.leave('room-' + this.sitRoom);
+        Echo.leave('room.' + this.sitRoom);
 
         this.sitRoom = null;
       }
