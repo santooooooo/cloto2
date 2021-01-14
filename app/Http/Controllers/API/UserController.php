@@ -141,7 +141,7 @@ class UserController extends Controller
 
         // 取り組み中のタスクが更新された場合は通知
         if (array_key_exists('in_progress', $data)) {
-            broadcast(new SeatEvent($this->auth_user->seat->section->room_id));
+            broadcast(new SeatEvent($this->auth_user->seat->section->room));
         }
         return response(null);
     }

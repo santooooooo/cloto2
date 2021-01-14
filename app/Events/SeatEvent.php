@@ -21,9 +21,9 @@ class SeatEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Int $room_id)
+    public function __construct(Room $room)
     {
-        $this->room = Room::find($room_id);
+        $this->room = $room;
     }
 
     /**

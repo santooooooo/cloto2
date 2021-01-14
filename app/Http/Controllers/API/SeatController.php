@@ -36,7 +36,7 @@ class SeatController extends Controller
      */
     public function sit(Seat $seat)
     {
-        $room_id = $seat->section->room->id;
+        $room = $seat->section->room;
 
         // 処理中止
         if ($seat->status != null) {
@@ -52,7 +52,7 @@ class SeatController extends Controller
         // 座席状態の更新
         $seat->fill(['status' => 'sitting'])->save();
 
-        broadcast(new SeatEvent($room_id));
+        broadcast(new SeatEvent($room));
         return response()->json();
     }
 
@@ -63,7 +63,7 @@ class SeatController extends Controller
      */
     public function leave()
     {
-        $room_id = $this->user->seat->section->room->id;
+        $room = $this->user->seat->section->room;
 
         // 着席中の座席の状態を初期化
         $this->user->seat->fill(['status' => null, 'reservation_user_id' => null])->save();
@@ -73,7 +73,7 @@ class SeatController extends Controller
         // 進行中のタスクを初期化
         $this->user->fill(['task_id' => null])->save();
 
-        broadcast(new SeatEvent($room_id));
+        broadcast(new SeatEvent($room));
         return response()->json();
     }
 
@@ -85,7 +85,7 @@ class SeatController extends Controller
      */
     public function move_seat(Seat $seat)
     {
-        $room_id = $seat->section->room->id;
+        $room = $seat->section->room;
 
         // 処理中止
         if ($seat->status != null) {
@@ -104,7 +104,7 @@ class SeatController extends Controller
         // 座席状態の更新
         $seat->fill(['status' => 'sitting'])->save();
 
-        broadcast(new SeatEvent($room_id));
+        broadcast(new SeatEvent($room));
         return response()->json();
     }
 
@@ -117,7 +117,7 @@ class SeatController extends Controller
     {
         // 戻り先の座席を検索
         $seat = $this->seat->where('reservation_user_id', $this->user->id)->first();
-        $room_id = $seat->section->room->id;
+        $room = $seat->section->room;
 
         // 着席していた座席を離席状態に変更
         $this->user->seat->fill(['status' => null])->save();
@@ -129,7 +129,7 @@ class SeatController extends Controller
         // 座席状態の更新
         $seat->fill(['status' => 'sitting', 'reservation_user_id' => null])->save();
 
-        broadcast(new SeatEvent($room_id));
+        broadcast(new SeatEvent($room));
         return response()->json();
     }
 }
