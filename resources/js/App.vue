@@ -4,7 +4,7 @@
     <v-overlay z-index="9999" opacity="1" v-if="isSystemDown">
       <h1 class="font-weight-bold text-center">メンテナンス中です。</h1>
       <h3 class="font-weight-bold text-center mt-12">
-        毎日午前３～５時はメンテナンスのためサービスを停止します。<br />明日もお待ちしております。
+        毎日午前３～５時はメンテナンスのためサービスを停止します。<br />明日もご利用お待ちしております。
       </h3>
     </v-overlay>
 

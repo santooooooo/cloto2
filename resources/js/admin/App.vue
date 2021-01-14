@@ -1,5 +1,18 @@
 <template>
   <v-app>
+    <!-- メンテナンス時の操作無効化用オーバーレイ -->
+    <v-overlay z-index="9999" opacity="1" v-if="isSystemDown">
+      <h1 class="font-weight-bold text-center">メンテナンス中です。</h1>
+      <h3 class="font-weight-bold text-center mt-12">
+        毎日午前３～５時はメンテナンスのためサービスを停止します。<br />明日もご利用お待ちしております。
+      </h3>
+    </v-overlay>
+
+    <!-- オフライン時の操作無効化用オーバーレイ -->
+    <v-overlay z-index="9999" opacity="0.9" v-if="isOffline">
+      <h1 class="font-weight-bold">インターネットに接続してください。</h1>
+    </v-overlay>
+
     <!-- アラート -->
     <v-alert
       :value="alert.show"
@@ -43,6 +56,12 @@ export default {
     Drawer,
     Footer,
   },
+  data() {
+    return {
+      isSystemDown: false, // メンテナンスモード
+      isOffline: false, // オフライン状態
+    };
+  },
   computed: {
     isDebug() {
       return process.env.MIX_APP_DEBUG === 'true' ? true : false;
@@ -56,6 +75,12 @@ export default {
      * イベントの設定
      */
     setupEvents: function () {
+      // オフライン時のイベント
+      window.addEventListener('offline', this.offlineEvent);
+
+      // オンライン復帰時のイベント
+      window.addEventListener('online', this.onlineEvent);
+
       // 戻るボタンの無効化
       history.pushState(null, null, location.href);
       window.addEventListener('popstate', this.stopBackButtonEvent);
@@ -79,6 +104,23 @@ export default {
       window.addEventListener('unhandledrejection', (event) => {
         this.$store.dispatch('alert/error');
       });
+    },
+
+    /**
+     * オフライン時のイベント
+     */
+    offlineEvent: function () {
+      this.isOffline = true;
+
+      alert('インターネットに接続してください。');
+    },
+
+    /**
+     * オンライン復帰時のイベント
+     */
+    onlineEvent: function () {
+      alert('接続が復帰しました。再読み込みします。');
+      window.location.reload();
     },
 
     /**
@@ -115,6 +157,13 @@ export default {
       // トップページへリダイレクト
       window.location.pathname = '/admin/login';
     },
+  },
+  created() {
+    // システムイベントの受信開始
+    Echo.channel('system').listen('SystemDownEvent', () => {
+      // メンテナンスモード開始
+      this.isSystemDown = true;
+    });
   },
   mounted() {
     // イベントの設定
