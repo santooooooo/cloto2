@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\User;
 use App\Events\SystemDownEvent;
 
 class PublishSystemDownEvent extends Command
@@ -39,14 +38,8 @@ class PublishSystemDownEvent extends Command
      */
     public function handle()
     {
-        $users = User::all();
-
-        // オンライン状態の全ユーザーに通知
-        foreach ($users as $user) {
-            if ($user->isOnline()) {
-                broadcast(new SystemDownEvent($user));
-            }
-        }
+        // システム停止イベントの発行
+        broadcast(new SystemDownEvent());
 
         return 0;
     }

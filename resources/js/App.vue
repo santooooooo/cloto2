@@ -1,5 +1,13 @@
 <template>
   <v-app>
+    <!-- メンテナンス時の操作無効化用オーバーレイ -->
+    <v-overlay z-index="9999" opacity="1" v-if="isSystemDown">
+      <h1 class="font-weight-bold text-center">メンテナンス中です。</h1>
+      <h3 class="font-weight-bold text-center mt-12">
+        毎日午前３～５時はメンテナンスのためサービスを停止します。<br />明日もお待ちしております。
+      </h3>
+    </v-overlay>
+
     <!-- オフライン時の操作無効化用オーバーレイ -->
     <v-overlay z-index="9999" opacity="0.9" v-if="isOffline">
       <h1 class="font-weight-bold">インターネットに接続してください。</h1>
@@ -67,6 +75,7 @@ export default {
   data() {
     return {
       chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
+      isSystemDown: false, // メンテナンスモード
       isOffline: false, // オフライン状態
       setOnlineTimer: null, // オンライン状態の通知制御
       isShowDrawer: false, // ドロワーメニューの表示制御
@@ -242,6 +251,13 @@ export default {
       // リロード
       window.location.reload();
     },
+  },
+  created() {
+    // システムイベントの受信開始
+    Echo.channel('system').listen('SystemDownEvent', () => {
+      // メンテナンスモード開始
+      this.isSystemDown = true;
+    });
   },
   mounted() {
     // ボリュームの調整
