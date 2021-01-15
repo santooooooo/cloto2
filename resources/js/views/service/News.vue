@@ -4,7 +4,7 @@
       <v-container>
         <Carousel></Carousel>
         <v-row justify="center" class="mt-12">
-          <router-link :to="{ name: 'preRegister' }">
+          <router-link :to="{ name: 'register' }">
             <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
           </router-link>
         </v-row>
@@ -102,8 +102,8 @@
           <!-- お知らせ -->
           <v-card v-if="tab.id === 3" color="basil" flat>
             <h3 class="text-center pa-2 font-weight-bold">{{ tab.title }}</h3>
-            <v-list>
-              <template v-for="(news, index) in newsData">
+            <v-list v-for="news in newsData" :key="news.id">
+              <template>
                 <v-divider></v-divider>
                 <v-list-item :key="news.title">
                   <v-row justify="center">
@@ -116,8 +116,8 @@
 
           <v-card v-if="tab.id === 3" class="mt-10" color="basil" flat>
             <h3 class="text-center pt-2">プレスリリース</h3>
-            <v-list>
-              <template v-for="(news, index) in newsData">
+            <v-list v-for="news in newsData" :key="news.id">
+              <template>
                 <v-divider></v-divider>
                 <v-list-item :key="news.title">
                   <v-row justify="center">
@@ -263,8 +263,6 @@ export default {
     background-color: $primary;
     color: $white;
     position: relative;
-  }
-  .content {
   }
 }
 </style>

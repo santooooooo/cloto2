@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/contact', 'API\ContactController@contact');
-Route::post('/preregister', 'API\PreRegisterController@pre_register');
 
 
 /*

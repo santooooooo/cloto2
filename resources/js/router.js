@@ -18,7 +18,6 @@ import news from '@/views/service/News';
 import company from '@/views/service/Company';
 import contact from '@/views/service/Contact';
 import terms from '@/views/service/Terms';
-import preRegister from '@/views/auth/PreRegister';
 import register from '@/views/auth/Register';
 import login from '@/views/auth/Login';
 import home from '@/views/Home';
@@ -40,12 +39,6 @@ const router = new VueRouter({
       component: index,
       meta: { isPublic: true },
       children: [
-        {
-          path: 'preregister',
-          name: 'preRegister',
-          component: preRegister,
-          meta: { isPublic: true },
-        },
         {
           path: 'register',
           name: 'register',
