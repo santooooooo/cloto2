@@ -172,17 +172,19 @@ export default {
       });
 
       // エラー発生時のイベント
-      Vue.config.errorHandler = (event) => {
+      Vue.config.errorHandler = (error) => {
         this.$store.dispatch('alert/error');
       };
 
       // エラー発生時のイベント
-      window.addEventListener('error', (event) => {
-        this.$store.dispatch('alert/error');
+      window.addEventListener('error', (error) => {
+        if (error.message !== 'ResizeObserver loop limit exceeded') {
+          this.$store.dispatch('alert/error');
+        }
       });
 
       // エラー発生時のイベント
-      window.addEventListener('unhandledrejection', (event) => {
+      window.addEventListener('unhandledrejection', (error) => {
         this.$store.dispatch('alert/error');
       });
     },
