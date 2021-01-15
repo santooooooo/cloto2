@@ -128,6 +128,10 @@ export default {
           usernameRules: [
             (v) => !!v || 'ユーザー名は必須項目です。',
             (v) => (v && v.length >= 4) || '4文字以上で入力してください。',
+            (v) => {
+              const pattern = /^(?=.*?[a-z0-9])[a-z0-9_]{4,16}$/;
+              return pattern.test(v) || '使用可能な文字：a~z, 0~9, _';
+            },
           ],
           emailRules: [
             (v) => !!v || 'メールアドレスは必須項目です。',
@@ -186,7 +190,7 @@ export default {
           );
 
           // ページ遷移
-          this.$router.push({ name: 'index' });
+          window.location.pathname = '/email/verify';
         } else {
           this.registerForm.loading = false;
         }
