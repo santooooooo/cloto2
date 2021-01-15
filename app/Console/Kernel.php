@@ -30,15 +30,16 @@ class Kernel extends ConsoleKernel
          * システムイベント
          * 毎日午前3~5時はメンテナンスモード
          */
-        // 3:00にユーザーへ通知
+        // 3:00にシステムを停止
         $schedule->command('system:down')->dailyAt('3:00');
-        // 3:15にシステムを停止
-        $schedule->command('down')->dailyAt('3:15');
+        $schedule->command('down')->dailyAt('3:00');
+        // 3:10に全員退席処理
+        $schedule->command('refresh:seats')->dailyAt('3:10')->evenInMaintenanceMode();
 
         //*** cronでバックアップなどを実行 ***//
 
         // 4:45にシステムを復旧
-        $schedule->command('up')->dailyAt('4:45');
+        $schedule->command('up')->dailyAt('4:45')->evenInMaintenanceMode();
 
 
         /**

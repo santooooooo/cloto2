@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 export PATH="/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin"
 export LANG=C
 
 
 # バックアップ先
-PATH="/home/admin/backup"
+BACKUP="/home/admin/backup"
 # データベースの一時出力先
 SQL="/home/admin/cloto.sql"
 
@@ -17,10 +17,10 @@ if [ -f $LOG ]; then
 fi
 
 # storageのバックアップ
-$RSYNC /var/www/html/storage/app/public $PATH >> $LOG 2>&1
+$RSYNC /var/www/html/storage/app/public $BACKUP >> $LOG 2>&1
 # データベースのバックアップ
 mysqldump -u root cloto > $SQL
-$RSYNC $SQL $PATH >> $LOG 2>&1
+$RSYNC $SQL $BACKUP >> $LOG 2>&1
 rm -f $SQL
 
 
