@@ -4,7 +4,7 @@
     <v-overlay z-index="9999" opacity="1" v-if="isSystemDown">
       <h1 class="font-weight-bold text-center">メンテナンス中です。</h1>
       <h3 class="font-weight-bold text-center mt-12">
-        毎日午前３～５時はメンテナンスのためサービスを停止します。<br />明日もご利用お待ちしております。<br /><br />30秒後に終了します．．．
+        毎日午前３～５時はメンテナンスのためサービスを停止します。<br />明日もご利用お待ちしております。<br /><br />30秒後にアプリケーションを終了します．．．
       </h3>
     </v-overlay>
 
@@ -259,7 +259,7 @@ export default {
     Echo.channel('system').listen('SystemDownEvent', () => {
       // メンテナンスモード開始
       this.isSystemDown = true;
-      // 30秒後に終了
+      // 30秒後にアプリケーションを終了
       setTimeout(() => {
         window.location.reload();
       }, 30000);
