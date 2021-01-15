@@ -4,22 +4,22 @@ export LANG=C
 
 
 # バックアップ先
-BACKUP="/home/admin/backup"
+BACKUP="/path-to-backup"
 # データベースの一時出力先
-SQL="/home/admin/cloto.sql"
+SQL="/path-to-backup/database-name.sql"
 
 
 RSYNC="rsync $1 -av --delete"
 
-LOG="/var/log/cloto_backup.log"
+LOG="/var/log/project-name-backup.log"
 if [ -f $LOG ]; then
         gzip -f $LOG
 fi
 
 # storageのバックアップ
-$RSYNC /var/www/html/storage/app/public $BACKUP >> $LOG 2>&1
+$RSYNC /path-to-project/storage/app/public $BACKUP >> $LOG 2>&1
 # データベースのバックアップ
-mysqldump -u root cloto > $SQL
+mysqldump -u root database-name > $SQL
 $RSYNC $SQL $BACKUP >> $LOG 2>&1
 rm -f $SQL
 
