@@ -99,29 +99,32 @@ export default {
      * @param Object  seat  着席する座席
      */
     setUser: function (seat) {
-      fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (icon) => {
-        icon.set({
-          userId: seat.user.id,
-          left: seat.position.x,
-          top: seat.position.y,
-          originX: 'center',
-          originY: 'center',
-          scaleX: seat.size / icon.width,
-          scaleY: seat.size / icon.height,
-          clipPath: new fabric.Circle({
-            scaleX: icon.width / seat.size,
-            scaleY: icon.height / seat.size,
-            radius: seat.size / 2,
+      // 念の為ユーザーの存在確認
+      if (seat.user) {
+        fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (icon) => {
+          icon.set({
+            userId: seat.user.id,
+            left: seat.position.x,
+            top: seat.position.y,
             originX: 'center',
             originY: 'center',
-          }),
-          selectable: false, // 図形の選択を禁止
-          hoverCursor: 'default', // カーソルの変更を禁止
-        });
+            scaleX: seat.size / icon.width,
+            scaleY: seat.size / icon.height,
+            clipPath: new fabric.Circle({
+              scaleX: icon.width / seat.size,
+              scaleY: icon.height / seat.size,
+              radius: seat.size / 2,
+              originX: 'center',
+              originY: 'center',
+            }),
+            selectable: false, // 図形の選択を禁止
+            hoverCursor: 'default', // カーソルの変更を禁止
+          });
 
-        // 描画
-        this.canvas.add(icon);
-      });
+          // 描画
+          this.canvas.add(icon);
+        });
+      }
     },
   },
 
