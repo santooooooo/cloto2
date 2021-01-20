@@ -33,6 +33,7 @@ export default {
   data() {
     return {
       isOpen: false, // 表示制御
+      isLoading: false, // ローディング制御
       messages: [], // メッセージ一覧
       notification: new Audio(this.$storage('system') + 'inquiry_receive.mp3'), // 通知音
       colors: {
@@ -88,15 +89,21 @@ export default {
      * @param Object message 送信データ
      */
     submit: async function (message) {
-      // 問い合わせの送信
-      var response = await axios.post('/api/inquiries', {
-        author: 'user',
-        type: 'text',
-        data: { text: message.data.text },
-      });
+      if (!this.isLoading) {
+        this.isLoading = true;
 
-      if (response.status !== OK) {
-        this.$store.dispatch('alert/error');
+        // 問い合わせの送信
+        var response = await axios.post('/api/inquiries', {
+          author: 'user',
+          type: 'text',
+          data: { text: message.data.text },
+        });
+
+        if (response.status !== OK) {
+          this.$store.dispatch('alert/error');
+        }
+
+        this.isLoading = false;
       }
     },
 

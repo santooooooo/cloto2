@@ -75,6 +75,7 @@ export default {
       ],
 
       isOpen: false, // 表示制御
+      isLoading: false, // ローディング制御
       user: {}, // 問い合わせ相手
       messages: [], // メッセージ一覧
       colors: {
@@ -164,20 +165,26 @@ export default {
      * @param Object message 送信データ
      */
     submit: async function (message) {
-      // 問い合わせの送信
-      var response = await axios.post('/api/admin/inquiries', {
-        user_id: this.user.id,
-        author: 'support',
-        type: 'text',
-        data: { text: message.data.text },
-      });
+      if (!this.isLoading) {
+        this.isLoading = true;
 
-      if (response.status !== OK) {
-        this.$store.dispatch('alert/error');
+        // 問い合わせの送信
+        var response = await axios.post('/api/admin/inquiries', {
+          user_id: this.user.id,
+          author: 'support',
+          type: 'text',
+          data: { text: message.data.text },
+        });
+
+        if (response.status !== OK) {
+          this.$store.dispatch('alert/error');
+        }
+
+        this.isLoading = false;
+
+        // データの更新
+        this.getUsers();
       }
-
-      // データの更新
-      this.getUsers();
     },
 
     /**
