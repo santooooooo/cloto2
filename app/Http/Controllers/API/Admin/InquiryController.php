@@ -43,7 +43,7 @@ class InquiryController extends Controller
             // データの整形
             $inquiry = $inquiries->first();
             $user = $inquiry->user;
-            $user['replyed'] = $inquiry->replyed;
+            $user['replied'] = $inquiry->author == 'support' ? true : false;
             $user['last_date'] = (new Carbon($inquiry->created_at))->format('Y年m月d日 H時i分');
             array_push($users, $user);
         }
@@ -89,12 +89,8 @@ class InquiryController extends Controller
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        // 回答済みにする
-        $user = $this->user->find($data['user_id']);
-        $user->inquiries()->update(['replyed' => true]);
-
         // 投稿したデータを送信
-        broadcast(new InquiryEvent($user, $result));
+        broadcast(new InquiryEvent($result->user, $result));
 
         return response(null);
     }

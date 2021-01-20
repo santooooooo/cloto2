@@ -21,7 +21,6 @@ class CreateInquiriesTable extends Migration
             $table->string('author');                   // 筆者
             $table->string('type');                     // 問い合わせタイプ
             $table->json('data');                       // 問い合わせ内容
-            $table->boolean('replyed')->default(false); // 返信済み
             $table->dateTimes();
         });
     }

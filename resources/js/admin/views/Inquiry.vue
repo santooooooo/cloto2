@@ -14,7 +14,7 @@
       </template>
 
       <template v-slot:[`item.inquiry`]="{ item }">
-        <v-icon small :color="item.replyed ? 'black' : 'red'" @click="open(item)">
+        <v-icon small :color="item.replied ? 'black' : 'red'" @click="open(item)">
           mdi-email
         </v-icon>
       </template>
