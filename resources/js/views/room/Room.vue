@@ -84,7 +84,7 @@ export default {
   data() {
     return {
       chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
-      isLoading: false, // ロードの制御
+      isLoading: false, // ローディング制御
       timer: null, // 同期制御
       canvas: null, // キャンバスエリア
       messageOverlay: {
@@ -94,8 +94,8 @@ export default {
       },
       roomStatus: null, // 教室の状態
       roomData: {}, // 教室データ
-      roomWidth: 1080, // 教室サイズ
-      roomHeight: 600, // 教室サイズ
+      roomWidth: 2160, // 教室サイズ
+      roomHeight: 1200, // 教室サイズ
       call: {
         isEnter: false, // 通話室入室制御
         id: '', // 入室する通話室のID
@@ -481,7 +481,7 @@ export default {
       var defaultZoom = (this.$windowHeight - 64) / this.roomHeight;
       var zoom = this.canvas.getZoom();
       zoom *= 0.999 ** delta;
-      if (zoom > 5) zoom = 5;
+      if (zoom > 1.3) zoom = 1.3;
       if (zoom < defaultZoom) zoom = defaultZoom;
 
       // 拡大の適用

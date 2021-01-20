@@ -20,10 +20,10 @@ export default {
   data() {
     return {
       canvas: null, // キャンバスエリア
-      isLoading: false, // ロードの制御
+      isLoading: false, // ローディング制御
       roomData: {}, // 教室データ
-      roomWidth: 1080, // 教室サイズ
-      roomHeight: 600, // 教室サイズ
+      roomWidth: 2160, // 教室サイズ
+      roomHeight: 1200, // 教室サイズ
     };
   },
 
