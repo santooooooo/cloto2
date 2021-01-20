@@ -23,7 +23,7 @@
     <v-flex>
       <!-- 教室 -->
       <v-row no-gutters justify="center">
-        <div id="canvas-container" :style="canvasContainerStyle" v-dragscroll>
+        <div id="canvas-container" v-dragscroll>
           <canvas :width="roomWidth" :height="roomHeight" id="canvas"></canvas>
         </div>
       </v-row>
@@ -128,13 +128,6 @@ export default {
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
-    },
-    canvasContainerStyle() {
-      return {
-        height: this.$windowHeight - 64 + 'px', // ヘッダーを除いた高さ
-        'margin-top': this.$windowHeight - 64 < this.roomHeight + 100 ? '0px' : '50px',
-        'margin-right': this.$windowWidth < this.roomWidth + 250 ? '250px' : '0px',
-      };
     },
   },
 
@@ -478,6 +471,30 @@ export default {
     },
 
     /**
+     * キャンバススクロールイベント
+     *
+     * @param event マウスイベント
+     */
+    canvasScroll: function (event) {
+      // 拡大率の計算
+      var delta = event.e.deltaY;
+      var defaultZoom = (this.$windowHeight - 64) / this.roomHeight;
+      var zoom = this.canvas.getZoom();
+      zoom *= 0.999 ** delta;
+      if (zoom > 5) zoom = 5;
+      if (zoom < defaultZoom) zoom = defaultZoom;
+
+      // 拡大の適用
+      this.canvas.setZoom(zoom);
+      this.canvas.setWidth(this.roomWidth * zoom);
+      this.canvas.setHeight(this.roomHeight * zoom);
+
+      // スクロールによる移動の無効化
+      event.e.preventDefault();
+      event.e.stopPropagation();
+    },
+
+    /**
      * カルテの記入
      *
      * @param Boolean confirm 自習継続の確認をするか
@@ -660,6 +677,12 @@ export default {
       this.canvas.renderAll.bind(this.canvas)
     );
 
+    // 初期サイズの設定（縦幅MAX）
+    var zoom = (this.$windowHeight - 64) / this.roomHeight;
+    this.canvas.setZoom(zoom);
+    this.canvas.setWidth(this.roomWidth * zoom);
+    this.canvas.setHeight(this.roomHeight * zoom);
+
     // クリックエリアの設定
     this.roomData.sections.forEach((section, sectionIndex) => {
       section.seats.forEach((seat, seatIndex) => {
@@ -755,6 +778,9 @@ export default {
       }
     });
 
+    // スクロールイベントの設定
+    this.canvas.on('mouse:wheel', this.canvasScroll);
+
     /**
      * 入室時には現在の部屋の状態を確認
      */
@@ -847,6 +873,8 @@ export default {
   background-size: cover;
 
   #canvas-container {
+    height: calc(100vh - 64px);
+    margin-right: 250px;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
 

@@ -7,7 +7,7 @@
       </v-overlay>
 
       <v-row no-gutters justify="center">
-        <div id="canvas-container" :style="canvasContainerStyle" v-dragscroll>
+        <div id="canvas-container" v-dragscroll>
           <canvas :width="roomWidth" :height="roomHeight" id="canvas"></canvas>
         </div>
       </v-row>
@@ -25,16 +25,6 @@ export default {
       roomWidth: 1080, // 教室サイズ
       roomHeight: 600, // 教室サイズ
     };
-  },
-
-  computed: {
-    canvasContainerStyle() {
-      return {
-        height: this.$windowHeight - 64 + 'px', // ヘッダーを除いた高さ
-        'margin-top': this.$windowHeight - 64 < this.roomHeight + 100 ? '0px' : '50px',
-        'margin-right': this.$windowWidth < this.roomWidth + 250 ? '250px' : '0px',
-      };
-    },
   },
 
   methods: {
@@ -59,6 +49,12 @@ export default {
         this.$storage('room') + 'room_' + this.roomData.id + '.png',
         this.canvas.renderAll.bind(this.canvas)
       );
+
+      // サイズの設定（縦幅MAX）
+      var zoom = (this.$windowHeight - 64) / this.roomHeight;
+      this.canvas.setZoom(zoom);
+      this.canvas.setWidth(this.roomWidth * zoom);
+      this.canvas.setHeight(this.roomHeight * zoom);
 
       // 座席の設定
       this.roomData.sections.forEach((section, sectionIndex) => {
@@ -150,6 +146,8 @@ export default {
   background-size: cover;
 
   #canvas-container {
+    height: calc(100vh - 64px);
+    margin-right: 250px;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
 
