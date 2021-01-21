@@ -206,8 +206,10 @@ export default {
 
     $windowWidth: function (val) {
       // ウィンドウリサイズ時に拡大率を変更
-      var zoom = (val - 260) / this.roomWidth;
-      this.setZoom(zoom);
+      if (this.canvas) {
+        var zoom = (val - 260) / this.roomWidth;
+        this.setZoom(zoom);
+      }
     },
   },
 
