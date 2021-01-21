@@ -62,23 +62,29 @@
           <v-container>
             <v-card-text class="pa-1 white--text font-weight-bold">いまやっていること</v-card-text>
             <v-textarea
-              v-model="inProgress"
+              v-model="inProgress.body"
               :placeholder="authUser.in_progress"
-              :disabled="loading"
+              :disabled="inProgress.loading"
               rows="2"
               solo
               class="pt-2 px-2"
             ></v-textarea>
 
-            <v-btn small color="error" class="mx-1" :loading="loading" @click="submit(true)">
+            <v-btn
+              small
+              color="error"
+              class="mx-1"
+              :loading="inProgress.loading"
+              @click="submit(true)"
+            >
               削除
             </v-btn>
             <v-btn
               small
               color="primary"
               class="mx-1"
-              :loading="loading"
-              :disabled="inProgress === ''"
+              :loading="inProgress.loading"
+              :disabled="inProgress.body === ''"
               @click="submit(false)"
             >
               公開
@@ -123,11 +129,13 @@ export default {
   },
   data() {
     return {
-      loading: false, // ローディング制御
-      inProgress: '', // 取り組み中のタスク
+      inProgress: {
+        loading: false, // ローディング制御
+        body: '', // 取り組み中のタスク
+      },
       announcement: {
-        loading: false,
-        message: '',
+        loading: false, // ローディング制御
+        message: '', // アナウンス内容
       },
     };
   },
@@ -144,16 +152,16 @@ export default {
      */
     submit: async function (remove) {
       if (remove) {
-        this.inProgress = '';
+        this.inProgress.body = '';
       }
 
       // 変化があった場合のみ更新
-      if (this.inProgress !== (this.authUser.in_progress || '')) {
-        this.loading = true;
+      if (this.inProgress.body !== (this.authUser.in_progress || '')) {
+        this.inProgress.loading = true;
 
         var response = await axios.post('/api/users', {
           _method: 'patch',
-          in_progress: this.inProgress,
+          in_progress: this.inProgress.body,
         });
 
         if (response.status === OK) {
@@ -164,13 +172,13 @@ export default {
             this.$store.dispatch('alert/success', '取り組み中のタスクが削除されました！');
           } else {
             this.$store.dispatch('alert/success', '取り組み中のタスクが公開されました！');
-            this.inProgress = '';
+            this.inProgress.body = '';
           }
         } else {
           this.$store.dispatch('alert/error', '公開に失敗しました．．．');
         }
 
-        this.loading = false;
+        this.inProgress.loading = false;
       }
     },
 

@@ -31,12 +31,22 @@
     <!-- メッセージオーバーレイ-->
     <v-overlay
       z-index="9997"
-      opacity="0.8"
+      opacity="0.9"
       :value="alert.overlay.show"
       :color="alert.overlay.color"
       dark
     >
-      <p class="overlay-message">{{ alert.overlay.message }}</p>
+      <p class="text-h1">{{ alert.overlay.message }}</p>
+    </v-overlay>
+
+    <!-- アナウンスオーバーレイ-->
+    <v-overlay z-index="9996" opacity="0.9" :value="announce !== ''" color="primary" dark>
+      <v-container>
+        <p class="text-h4 mb-12">{{ announce }}</p>
+        <v-row justify="center">
+          <v-btn @click="announce = ''">閉じる</v-btn>
+        </v-row>
+      </v-container>
     </v-overlay>
 
     <!-- ヘッダー -->
@@ -80,6 +90,7 @@ export default {
       setOnlineTimer: null, // オンライン状態の通知制御
       isShowDrawer: false, // ドロワーメニューの表示制御
       sitRoom: null, // 着席中の部屋
+      announce: '', // アナウンス
     };
   },
   computed: {
@@ -116,12 +127,13 @@ export default {
         var response = await axios.get('/api/auth_sit');
         this.sitRoom = response.data;
 
-        // 時間割イベントの受信開始
         Echo.channel('room.' + this.sitRoom)
           .listen('AnnounceEvent', (event) => {
-            console.log(event);
+            // アナウンスイベントの受信開始
+            this.announce = event.message;
           })
           .listen('TimetableEvent', (event) => {
+            // 時間割イベントの受信開始
             if (event.status === 'study') {
               // 自習時間
               this.$store.dispatch('alert/showOverlay', {
@@ -290,10 +302,6 @@ export default {
   transform: translateX(-50%);
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
-}
-
-.overlay-message {
-  font-size: 100px;
 }
 
 #main {
