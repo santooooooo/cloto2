@@ -31,8 +31,8 @@ class Kernel extends ConsoleKernel
          * 毎日午前3~5時はメンテナンスモード
          */
         // 3:00にシステムを停止
-        $schedule->command('system:down')->dailyAt('3:00');
         $schedule->command('down')->dailyAt('3:00');
+        $schedule->command('system:down')->dailyAt('3:00')->evenInMaintenanceMode();
 
         //*** cron ***//
         // 3:10にSSL証明書を更新（1回目）
