@@ -478,7 +478,7 @@ export default {
     canvasScroll: function (event) {
       // 拡大率の計算
       var delta = event.e.deltaY;
-      var defaultZoom = (this.$windowHeight - 64) / this.roomHeight;
+      var defaultZoom = (this.$windowWidth - 260) / this.roomWidth;
       var zoom = this.canvas.getZoom();
       zoom *= 0.999 ** delta;
       if (zoom > 1.3) zoom = 1.3;
@@ -677,8 +677,8 @@ export default {
       this.canvas.renderAll.bind(this.canvas)
     );
 
-    // 初期サイズの設定（縦幅MAX）
-    var zoom = (this.$windowHeight - 64) / this.roomHeight;
+    // 初期サイズの設定（横幅MAX）
+    var zoom = (this.$windowWidth - 260) / this.roomWidth;
     this.canvas.setZoom(zoom);
     this.canvas.setWidth(this.roomWidth * zoom);
     this.canvas.setHeight(this.roomHeight * zoom);

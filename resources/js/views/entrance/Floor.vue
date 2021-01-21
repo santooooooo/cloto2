@@ -50,8 +50,8 @@ export default {
         this.canvas.renderAll.bind(this.canvas)
       );
 
-      // サイズの設定（縦幅MAX）
-      var zoom = (this.$windowHeight - 64) / this.roomHeight;
+      // サイズの設定（横幅MAX）
+      var zoom = (this.$windowWidth - 260) / this.roomWidth;
       this.canvas.setZoom(zoom);
       this.canvas.setWidth(this.roomWidth * zoom);
       this.canvas.setHeight(this.roomHeight * zoom);
