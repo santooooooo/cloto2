@@ -27,6 +27,14 @@ export default {
     };
   },
 
+  watch: {
+    $windowWidth: function (val) {
+      // ウィンドウリサイズ時に拡大率を変更
+      var zoom = (val - 260) / this.roomWidth;
+      this.setZoom(zoom);
+    },
+  },
+
   methods: {
     /**
      * 教室の設定
@@ -52,9 +60,7 @@ export default {
 
       // サイズの設定（横幅MAX）
       var zoom = (this.$windowWidth - 260) / this.roomWidth;
-      this.canvas.setZoom(zoom);
-      this.canvas.setWidth(this.roomWidth * zoom);
-      this.canvas.setHeight(this.roomHeight * zoom);
+      this.setZoom(zoom);
 
       // 座席の設定
       this.roomData.sections.forEach((section, sectionIndex) => {
@@ -121,6 +127,17 @@ export default {
           this.canvas.add(icon);
         });
       }
+    },
+
+    /**
+     * 拡大の適用
+     *
+     * @param Number  zoom  拡大率
+     */
+    setZoom: function (zoom) {
+      this.canvas.setZoom(zoom);
+      this.canvas.setWidth(this.roomWidth * zoom);
+      this.canvas.setHeight(this.roomHeight * zoom);
     },
   },
 

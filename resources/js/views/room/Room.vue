@@ -203,6 +203,12 @@ export default {
         }
       },
     },
+
+    $windowWidth: function (val) {
+      // ウィンドウリサイズ時に拡大率を変更
+      var zoom = (val - 260) / this.roomWidth;
+      this.setZoom(zoom);
+    },
   },
 
   methods: {
@@ -485,13 +491,22 @@ export default {
       if (zoom < defaultZoom) zoom = defaultZoom;
 
       // 拡大の適用
-      this.canvas.setZoom(zoom);
-      this.canvas.setWidth(this.roomWidth * zoom);
-      this.canvas.setHeight(this.roomHeight * zoom);
+      this.setZoom(zoom);
 
       // スクロールによる移動の無効化
       event.e.preventDefault();
       event.e.stopPropagation();
+    },
+
+    /**
+     * 拡大の適用
+     *
+     * @param Number  zoom  拡大率
+     */
+    setZoom: function (zoom) {
+      this.canvas.setZoom(zoom);
+      this.canvas.setWidth(this.roomWidth * zoom);
+      this.canvas.setHeight(this.roomHeight * zoom);
     },
 
     /**
@@ -679,9 +694,7 @@ export default {
 
     // 初期サイズの設定（横幅MAX）
     var zoom = (this.$windowWidth - 260) / this.roomWidth;
-    this.canvas.setZoom(zoom);
-    this.canvas.setWidth(this.roomWidth * zoom);
-    this.canvas.setHeight(this.roomHeight * zoom);
+    this.setZoom(zoom);
 
     // クリックエリアの設定
     this.roomData.sections.forEach((section, sectionIndex) => {
