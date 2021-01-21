@@ -117,29 +117,33 @@ export default {
         this.sitRoom = response.data;
 
         // 時間割イベントの受信開始
-        Echo.channel('room.' + this.sitRoom).listen('TimetableEvent', (event) => {
-          if (event.status === 'study') {
-            // 自習時間
-            this.$store.dispatch('alert/showOverlay', {
-              color: '#ff4500',
-              message: '自習時間です！',
-            });
-            // チャイム
-            if (this.$store.getters['alert/isSoundOn']) {
-              this.chime.play();
+        Echo.channel('room.' + this.sitRoom)
+          .listen('AnnounceEvent', (event) => {
+            console.log(event);
+          })
+          .listen('TimetableEvent', (event) => {
+            if (event.status === 'study') {
+              // 自習時間
+              this.$store.dispatch('alert/showOverlay', {
+                color: '#ff4500',
+                message: '自習時間です！',
+              });
+              // チャイム
+              if (this.$store.getters['alert/isSoundOn']) {
+                this.chime.play();
+              }
+            } else if (event.status === 'break') {
+              // 休憩時間
+              this.$store.dispatch('alert/showOverlay', {
+                color: '#4169e1',
+                message: '休憩時間です！',
+              });
+              // チャイム
+              if (this.$store.getters['alert/isSoundOn']) {
+                this.chime.play();
+              }
             }
-          } else if (event.status === 'break') {
-            // 休憩時間
-            this.$store.dispatch('alert/showOverlay', {
-              color: '#4169e1',
-              message: '休憩時間です！',
-            });
-            // チャイム
-            if (this.$store.getters['alert/isSoundOn']) {
-              this.chime.play();
-            }
-          }
-        });
+          });
       } else if (val == null && oldVal != null) {
         /**
          * 退席時

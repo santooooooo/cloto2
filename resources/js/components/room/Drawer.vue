@@ -54,9 +54,9 @@
       <div class="pa-2" v-else>
         <v-btn block depressed color="error" @click="$emit('leave-room')">退席</v-btn>
 
-        <v-btn block depressed color="#f6bf00" dark @click="$emit('input-karte')" class="mt-3">
+        <!-- <v-btn block depressed color="#f6bf00" dark @click="$emit('input-karte')" class="mt-3">
           カルテ記入
-        </v-btn>
+        </v-btn> -->
 
         <v-card class="mt-5 pa-1 grey darken-1 text-center">
           <v-container>
@@ -85,6 +85,29 @@
             </v-btn>
           </v-container>
         </v-card>
+
+        <v-card class="mt-5 pa-1 grey darken-1 text-center" v-if="authUser.role === 'mentor'">
+          <v-container>
+            <v-card-text class="pa-1 white--text font-weight-bold">全体アナウンス</v-card-text>
+            <v-textarea
+              v-model="announcement.message"
+              :disabled="announcement.loading"
+              rows="2"
+              solo
+              class="pt-2 px-2"
+            ></v-textarea>
+
+            <v-btn
+              small
+              color="primary"
+              :loading="announcement.loading"
+              :disabled="announcement.message === ''"
+              @click="announce()"
+            >
+              送信
+            </v-btn>
+          </v-container>
+        </v-card>
       </div>
     </v-navigation-drawer>
   </v-card>
@@ -102,6 +125,10 @@ export default {
     return {
       loading: false, // ローディング制御
       inProgress: '', // 取り組み中のタスク
+      announcement: {
+        loading: false,
+        message: '',
+      },
     };
   },
   computed: {
@@ -145,6 +172,23 @@ export default {
 
         this.loading = false;
       }
+    },
+
+    /**
+     * アナウンス
+     */
+    announce: async function () {
+      this.announcement.loading = true;
+
+      var response = await axios.post('/api/announce', { message: this.announcement.message });
+
+      if (response.status === OK) {
+        this.announcement.message = '';
+      } else {
+        this.$store.dispatch('alert/error', 'アナウンスに失敗しました．．．');
+      }
+
+      this.announcement.loading = false;
     },
   },
 };
