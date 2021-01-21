@@ -160,7 +160,6 @@ export default {
 
 <style lang="scss" scoped>
 #floor {
-  min-height: 100vh;
   background-image: url('/storage/system/room_background.jpg');
   background-size: cover;
 

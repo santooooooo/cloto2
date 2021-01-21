@@ -883,7 +883,6 @@ export default {
 @import '~/_variables';
 
 #room {
-  min-height: 100vh;
   background-image: url('/storage/system/room_background.jpg');
   background-size: cover;
 

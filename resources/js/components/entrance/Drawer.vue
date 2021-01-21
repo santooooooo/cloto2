@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" width="250" min-height="100vh" flat tile>
+  <v-card class="mx-auto" width="250" flat tile>
     <v-navigation-drawer permanent>
       <v-list>
         <v-list-item>
