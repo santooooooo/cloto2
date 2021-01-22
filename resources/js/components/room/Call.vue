@@ -23,7 +23,7 @@
 
     <v-layout class="px-2">
       <v-flex>
-        <v-container fluid>
+        <v-container fluid py-0>
           <!--*** 画面共有ON ***-->
           <v-row justify="center" v-if="screenSharing.stream">
             <!-- 自分のビデオ -->
@@ -1381,8 +1381,7 @@ export default {
 #chat {
   position: -webkit-sticky;
   position: sticky;
-  margin-top: 20px;
-  top: 20px;
+  top: 8px;
 
   .overflow-y-auto {
     height: 500px;
