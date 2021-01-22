@@ -42,10 +42,10 @@
     </v-overlay>
 
     <!-- ヘッダー -->
-    <Header @show-drawer="isShowDrawer = true" />
+    <Header @open-drawer="isOpenDrawer = true" />
 
     <!-- ドロワーメニュー -->
-    <Drawer v-model="isShowDrawer" @logout="logout" v-if="isRelease" />
+    <Drawer v-model="isOpenDrawer" @logout="logout" />
 
     <!-- メイン -->
     <v-main id="main">
@@ -79,7 +79,7 @@ export default {
       chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
       isOffline: false, // オフライン状態
       setOnlineTimer: null, // オンライン状態の通知制御
-      isShowDrawer: false, // ドロワーメニューの表示制御
+      isOpenDrawer: false, // ドロワーメニューの表示制御
       sitRoom: null, // 着席中の部屋
       announce: {
         notification: new Audio(this.$storage('system') + 'announce.mp3'), // 通知音
@@ -261,6 +261,8 @@ export default {
      * ログアウト処理
      */
     logout: async function () {
+      this.isOpenDrawer = false;
+
       // ログアウト処理
       await this.$store.dispatch('auth/logout');
       // リロード

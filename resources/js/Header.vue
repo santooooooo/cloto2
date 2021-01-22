@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app dark height="64px" v-if="!isSmartphone">
-    <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" v-if="isRelease && authCheck" />
+    <v-app-bar-nav-icon @click.stop="$emit('open-drawer')" v-if="isRelease && authCheck" />
 
     <router-link :to="authCheck ? { name: 'entrance' } : { name: 'index' }">
       <img :src="$storage('system') + 'header_logo.svg'" />
