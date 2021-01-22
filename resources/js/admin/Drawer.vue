@@ -47,12 +47,12 @@
             </v-list-item-icon>
           </v-list-item>
 
-          <v-list-item dense exact :to="{ name: 'karte' }">
+          <!-- <v-list-item dense exact :to="{ name: 'karte' }">
             <v-list-item-title>カルテ</v-list-item-title>
             <v-list-item-icon>
               <v-icon>mdi-clipboard-text</v-icon>
             </v-list-item-icon>
-          </v-list-item>
+          </v-list-item> -->
         </v-list-group>
 
         <v-list-item exact :to="{ name: 'room' }">
@@ -73,14 +73,14 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item exact :to="{ name: 'tag' }">
+        <!-- <v-list-item exact :to="{ name: 'tag' }">
           <v-list-item-icon>
             <v-icon>mdi-tag</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>タグ</v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
       </v-list-item-group>
     </v-list>
   </v-navigation-drawer>
