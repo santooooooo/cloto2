@@ -32,11 +32,11 @@
     </v-overlay>
 
     <!-- アナウンスオーバーレイ-->
-    <v-overlay z-index="9996" opacity="0.9" :value="announce !== ''" color="primary" dark>
+    <v-overlay z-index="9996" opacity="0.9" :value="announce.message !== ''" color="primary" dark>
       <v-container>
-        <p class="text-h4 mb-12">{{ announce }}</p>
+        <p class="text-h4 mb-12">{{ announce.message }}</p>
         <v-row justify="center">
-          <v-btn @click="announce = ''">閉じる</v-btn>
+          <v-btn @click="announce.message = ''">閉じる</v-btn>
         </v-row>
       </v-container>
     </v-overlay>
@@ -81,7 +81,10 @@ export default {
       setOnlineTimer: null, // オンライン状態の通知制御
       isShowDrawer: false, // ドロワーメニューの表示制御
       sitRoom: null, // 着席中の部屋
-      announce: '', // アナウンス
+      announce: {
+        notification: new Audio(this.$storage('system') + 'announce.mp3'), // 通知音
+        message: '', // アナウンス内容
+      },
     };
   },
   computed: {
@@ -121,7 +124,8 @@ export default {
         Echo.channel('room.' + this.sitRoom)
           .listen('AnnounceEvent', (event) => {
             // アナウンスイベントの受信開始
-            this.announce = event.message;
+            this.announce.notification.play();
+            this.announce.message = event.message;
           })
           .listen('TimetableEvent', (event) => {
             // 時間割イベントの受信開始
