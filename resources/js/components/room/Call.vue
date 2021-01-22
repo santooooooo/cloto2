@@ -1279,7 +1279,7 @@ export default {
 
     // 背景の設定
     const dialog = document.getElementsByClassName('v-dialog')[0];
-    if (this.authUser.seat.role === 'teacher') {
+    if (this.authUser.seat.role === 'mentor') {
       // 透過
       dialog.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
     } else {

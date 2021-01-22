@@ -92,7 +92,7 @@
           </v-container>
         </v-card>
 
-        <v-card class="mt-5 pa-1 grey darken-1 text-center" v-if="authUser.role === 'mentor'">
+        <v-card class="mt-5 pa-1 grey darken-1 text-center" v-if="authUser.seat.role === 'staff'">
           <v-container>
             <v-card-text class="pa-1 white--text font-weight-bold">全体アナウンス</v-card-text>
             <v-textarea

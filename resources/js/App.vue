@@ -124,7 +124,9 @@ export default {
         Echo.channel('room.' + this.sitRoom)
           .listen('AnnounceEvent', (event) => {
             // アナウンスイベントの受信開始
-            this.announce.notification.play();
+            if (this.$store.getters['alert/isSoundOn']) {
+              this.announce.notification.play();
+            }
             this.announce.message = event.message;
           })
           .listen('TimetableEvent', (event) => {
@@ -274,7 +276,8 @@ export default {
   },
   mounted() {
     // ボリュームの調整
-    this.chime.volume = 0.2;
+    this.chime.volume = 0.8;
+    this.announce.notification.volume = 0.8;
 
     // イベントの設定
     if (!this.isDebug) {
