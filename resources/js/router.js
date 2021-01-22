@@ -106,14 +106,6 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  // 公開停止時のリダイレクト
-  if (
-    process.env.MIX_APP_RELEASE === 'false' &&
-    to.matched.some((record) => !record.meta.isPublic)
-  ) {
-    next({ name: 'index' });
-  }
-
   // ログイン状態の更新
   await store.dispatch('auth/syncAuthUser');
 

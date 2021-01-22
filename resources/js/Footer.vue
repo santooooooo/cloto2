@@ -1,63 +1,14 @@
 <template>
   <v-footer dark padless v-if="!isSmartphone">
-    <v-row justify="center" no-gutters class="black white--text" v-if="!isRelease">
-      <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'index' }">
-        トップページ
-      </v-btn>
-
+    <v-row justify="center" no-gutters class="black white--text">
       <v-btn
         color="white"
         text
         rounded
         exact
         class="my-2"
-        href="https://twitter.com/cloto_jp"
-        target="_blank"
+        :to="authCheck ? { name: 'entrance' } : { name: 'index' }"
       >
-        Twitter
-      </v-btn>
-
-      <v-col class="py-4 text-center white--text" cols="12">
-        {{ new Date().getFullYear() }} — <strong>© CLOTO Team</strong>
-      </v-col>
-    </v-row>
-
-    <v-row justify="center" no-gutters class="black white--text" v-if="isRelease && !authCheck">
-      <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'index' }">
-        トップページ
-      </v-btn>
-
-      <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'register' }">
-        新規登録
-      </v-btn>
-
-      <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'login' }">
-        ログイン
-      </v-btn>
-
-      <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'terms' }">
-        利用規約
-      </v-btn>
-
-      <v-btn
-        color="white"
-        text
-        rounded
-        exact
-        class="my-2"
-        href="https://twitter.com/cloto_jp"
-        target="_blank"
-      >
-        Twitter
-      </v-btn>
-
-      <v-col class="py-4 text-center white--text" cols="12">
-        {{ new Date().getFullYear() }} — <strong>© CLOTO Team</strong>
-      </v-col>
-    </v-row>
-
-    <v-row justify="center" no-gutters class="black white--text" v-if="isRelease && authCheck">
-      <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'entrance' }">
         ホーム
       </v-btn>
 
@@ -67,10 +18,32 @@
         rounded
         exact
         class="my-2"
-        @click="
-          $emit('leave');
-          $emit('logout');
-        "
+        :to="{ name: 'register' }"
+        v-if="!authCheck"
+      >
+        新規登録
+      </v-btn>
+
+      <v-btn
+        color="white"
+        text
+        rounded
+        exact
+        class="my-2"
+        :to="{ name: 'login' }"
+        v-if="!authCheck"
+      >
+        ログイン
+      </v-btn>
+
+      <v-btn
+        color="white"
+        text
+        rounded
+        exact
+        class="my-2"
+        @click="$emit('logout')"
+        v-if="authCheck"
       >
         ログアウト
       </v-btn>
@@ -127,9 +100,6 @@ export default {
       } else {
         return false;
       }
-    },
-    isRelease() {
-      return process.env.MIX_APP_RELEASE === 'true' ? true : false;
     },
     authCheck() {
       return this.$store.getters['auth/check'];

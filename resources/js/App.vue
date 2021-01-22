@@ -91,9 +91,6 @@ export default {
     isDebug() {
       return process.env.MIX_APP_DEBUG === 'true' ? true : false;
     },
-    isRelease() {
-      return process.env.MIX_APP_RELEASE === 'true' ? true : false;
-    },
     alert() {
       return this.$store.state.alert;
     },
