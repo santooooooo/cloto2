@@ -11,11 +11,6 @@ window.Storage = require('@/consts/storage');
 Vue.prototype.$storage = window.Storage.getStoragePath;
 
 /**
- * Vueコンポーネントの読み込み
- */
-Vue.component('ImageInput', require('./components/form/ImageInput').default);
-
-/**
  * Vueの定義
  */
 import VueHead from 'vue-head';

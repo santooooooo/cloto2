@@ -20,13 +20,13 @@
                   <v-container>
                     <!-- 背景画像 -->
                     <v-card-text class="pa-1 white--text">部屋デザイン</v-card-text>
-                    <span class="red--text">*横幅1080px × 縦幅600px のみ対応</span>
-                    <ImageInput
-                      :no-change-crop-ratio="true"
-                      ratio-x="9"
-                      ratio-y="5"
-                      output-type="png"
-                      @input="editRoomForm.background = $event"
+                    <span class="red--text">*PNG型式で2160px × 1200pxのみ対応</span>
+                    <input
+                      type="file"
+                      @change="inputImage"
+                      accept="image/png"
+                      class="pa-2 mt-2 mb-6"
+                      style="overflow: hidden"
                       v-if="editRoomForm.dialog"
                     />
 
@@ -178,6 +178,15 @@ export default {
       this.editRoomForm.data.timetable = sortedTimetable;
 
       this.editRoomForm.dialog = true;
+    },
+
+    /**
+     * 画像の入力
+     *
+     * @param event 入力イベント
+     */
+    inputImage: function (event) {
+      this.editRoomForm.background = event.target.files[0];
     },
 
     /**
