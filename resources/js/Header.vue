@@ -1,35 +1,10 @@
 <template>
-  <v-app-bar app dark height="64px">
-    <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" v-if="isRelease" />
+  <v-app-bar app dark height="64px" v-if="!isSmartphone">
+    <v-app-bar-nav-icon @click.stop="$emit('show-drawer')" v-if="isRelease && authCheck" />
 
     <router-link :to="authCheck ? { name: 'entrance' } : { name: 'index' }">
       <img :src="$storage('system') + 'header_logo.svg'" />
     </router-link>
-
-    <v-tabs align-with-title v-if="!isRelease || !authCheck">
-      <v-tabs-slider color="yellow"></v-tabs-slider>
-
-      <v-tab :to="{ name: 'index' }">Top</v-tab>
-
-      <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-tab v-bind="attrs" v-on="on">Concept</v-tab>
-        </template>
-        <v-list>
-          <v-list-item :to="{ name: concept.to }" v-for="(concept, index) in concepts" :key="index">
-            <v-list-item-title>{{ concept.text }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-
-      <v-tab :to="{ name: 'product' }">Product</v-tab>
-
-      <v-tab :to="{ name: 'news' }">News</v-tab>
-
-      <v-tab :to="{ name: 'company' }">About us</v-tab>
-
-      <v-tab :to="{ name: 'contact' }">Contact</v-tab>
-    </v-tabs>
 
     <v-spacer></v-spacer>
 
@@ -77,26 +52,22 @@
       ><v-icon>mdi-twitter</v-icon>cloto_jp</v-btn
     >
   </v-app-bar>
+
+  <v-app-bar app dark height="64px" v-else>
+    <img :src="$storage('system') + 'header_logo.svg'" />
+  </v-app-bar>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      tab: null,
-      concepts: [
-        {
-          text: 'プログラミング学習施設CLOTO',
-          to: 'concept',
-        },
-        {
-          text: 'バーチャル商業施設CLOTO',
-          to: 'news',
-        },
-      ],
-    };
-  },
   computed: {
+    isSmartphone() {
+      if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     isRelease() {
       return process.env.MIX_APP_RELEASE === 'true' ? true : false;
     },

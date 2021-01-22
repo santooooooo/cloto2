@@ -1,5 +1,5 @@
 <template>
-  <v-footer dark padless>
+  <v-footer dark padless v-if="!isSmartphone">
     <v-row justify="center" no-gutters class="black white--text" v-if="!isRelease">
       <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'index' }">
         トップページ
@@ -34,8 +34,6 @@
       <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'login' }">
         ログイン
       </v-btn>
-
-      <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'company' }"> About </v-btn>
 
       <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'terms' }">
         利用規約
@@ -77,12 +75,30 @@
         ログアウト
       </v-btn>
 
-      <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'company' }"> About </v-btn>
-
       <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'terms' }">
         利用規約
       </v-btn>
 
+      <v-btn
+        color="white"
+        text
+        rounded
+        exact
+        class="my-2"
+        href="https://twitter.com/cloto_jp"
+        target="_blank"
+      >
+        Twitter
+      </v-btn>
+
+      <v-col class="py-4 text-center white--text" cols="12">
+        {{ new Date().getFullYear() }} — <strong>© CLOTO Team</strong>
+      </v-col>
+    </v-row>
+  </v-footer>
+
+  <v-footer dark padless v-else>
+    <v-row justify="center" no-gutters class="black white--text">
       <v-btn
         color="white"
         text
@@ -105,6 +121,13 @@
 <script>
 export default {
   computed: {
+    isSmartphone() {
+      if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     isRelease() {
       return process.env.MIX_APP_RELEASE === 'true' ? true : false;
     },

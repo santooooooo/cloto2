@@ -12,11 +12,6 @@ Vue.use(VueRouter);
 import store from './store';
 
 import index from '@/views/Index';
-import concept from '@/views/service/Concept';
-import product from '@/views/service/Product';
-import news from '@/views/service/News';
-import company from '@/views/service/Company';
-import contact from '@/views/service/Contact';
 import terms from '@/views/service/Terms';
 import register from '@/views/auth/Register';
 import login from '@/views/auth/Login';
@@ -52,36 +47,6 @@ const router = new VueRouter({
           meta: { isPublic: true },
         },
       ],
-    },
-    {
-      path: '/concept',
-      name: 'concept',
-      component: concept,
-      meta: { isPublic: true },
-    },
-    {
-      path: '/product',
-      name: 'product',
-      component: product,
-      meta: { isPublic: true },
-    },
-    {
-      path: '/news',
-      name: 'news',
-      component: news,
-      meta: { isPublic: true },
-    },
-    {
-      path: '/company',
-      name: 'company',
-      component: company,
-      meta: { isPublic: true },
-    },
-    {
-      path: '/contact',
-      name: 'contact',
-      component: contact,
-      meta: { isPublic: true },
     },
     {
       path: '/terms',
