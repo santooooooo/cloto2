@@ -41,7 +41,7 @@
                         <th class="text-left">活動内容</th>
                         <th class="text-left">活動時間</th>
                         <th class="text-left">達成したこと</th>
-                        <th class="text-left">できなかったこと</th>
+                        <th class="text-left">次の課題</th>
                         <th class="text-left">参考文献</th>
                         <th class="text-left">タグ</th>
                       </tr>
@@ -97,7 +97,7 @@
                           <span>{{ karte.achieve }}</span>
                         </v-tooltip>
 
-                        <!-- できなかったこと -->
+                        <!-- 次の課題 -->
                         <v-tooltip max-width="300" top>
                           <template v-slot:activator="{ on, attrs }">
                             <td v-bind="attrs" v-on="on" v-if="karte.challenge">

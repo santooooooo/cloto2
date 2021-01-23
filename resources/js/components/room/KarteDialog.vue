@@ -99,7 +99,7 @@
 
               <v-col>
                 <v-card-text class="pa-2 white--text title font-weight-bold">
-                  できなかったこと
+                  次の課題
                 </v-card-text>
                 <v-textarea
                   v-model="karteForm.challenge"
@@ -192,7 +192,7 @@ export default {
       karteForm: {
         body: '', // やったこと
         achieve: '', // 達成できたこと
-        challenge: '', // つまづいたこと
+        challenge: '', // 次の課題
         reference: '', // 参考文献
         image: '', // 画像
         activityTime: '00:00', // 活動時間
