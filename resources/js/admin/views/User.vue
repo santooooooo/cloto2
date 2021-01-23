@@ -195,6 +195,7 @@ export default {
     editUser: function (user) {
       this.editUserForm.index = this.users.indexOf(user);
       this.editUserForm.data = Object.assign({}, user);
+      this.editUserForm.password = '';
       this.editUserForm.dialog = true;
     },
 
