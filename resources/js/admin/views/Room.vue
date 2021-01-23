@@ -115,7 +115,10 @@ export default {
   data() {
     return {
       rooms: [],
-      status: ['study', 'break'],
+      status: [
+        { text: '自習時間', value: 'study' },
+        { text: '休憩時間', value: 'break' },
+      ],
       timePicker: {
         dialog: false,
         index: null,

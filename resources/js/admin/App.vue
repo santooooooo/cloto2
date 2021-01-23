@@ -40,7 +40,6 @@
 import Header from './Header';
 import Drawer from './Drawer';
 import Footer from './Footer';
-import { UNAUTHORIZED, INTERNAL_SERVER_ERROR } from '@/consts/status';
 
 export default {
   components: {
