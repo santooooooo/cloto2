@@ -48,7 +48,7 @@
 <script>
 export default {
   props: {
-    sitRoom: Number,
+    sitRoom: Number, // 着席中の部屋
   },
   computed: {
     isSmartphone() {

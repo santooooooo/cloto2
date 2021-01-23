@@ -70,7 +70,7 @@
                   solo
                   rounded
                   rows="1"
-                  label="https://develop.cloto.jp"
+                  label="https://cloto.jp"
                   auto-grow
                 ></v-textarea>
               </v-col>

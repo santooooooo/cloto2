@@ -21,7 +21,7 @@
           </thead>
 
           <tbody>
-            <tr v-for="karte in kartes.data" :key="karte.id">
+            <tr v-for="karte in kartes.data" :key="karte.id" @click="showKarte = karte">
               <!-- 画像 -->
               <td>
                 <v-img
@@ -124,15 +124,14 @@
       <v-card-text class="text-center" v-if="!kartes.data.length">未投稿</v-card-text>
     </v-card>
 
-    <v-dialog v-model="dialog" width="700">
-      <v-card>
-        <v-img contain :src="$storage('karte') + image" />
-      </v-card>
-    </v-dialog>
+    <!-- カルテ表示ダイアログ -->
+    <KarteDialog :karte="showKarte" />
   </v-container>
 </template>
 
 <script>
+import KarteDialog from '@/components/mypage/KarteDialog';
+
 export default {
   head: {
     title() {
@@ -141,10 +140,11 @@ export default {
       };
     },
   },
+  components: {
+    KarteDialog,
+  },
   data() {
     return {
-      dialog: false,
-      image: null,
       projects: {
         loading: false,
         data: {},
@@ -157,6 +157,7 @@ export default {
         loading: false,
         data: {},
       },
+      showKarte: null, // 詳細を表示するカルテ
     };
   },
 
@@ -200,16 +201,6 @@ export default {
       this.kartes.data = response.data;
 
       this.kartes.loading = false;
-    },
-
-    /**
-     * 画像の拡大
-     *
-     * @param String  image 拡大する画像
-     */
-    expandImage: function (image) {
-      this.dialog = true;
-      this.image = image;
     },
   },
 
