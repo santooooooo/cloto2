@@ -52,8 +52,6 @@
                         <!-- 画像 -->
                         <td>
                           <v-img
-                            style="cursor: pointer"
-                            @click="expandImage(karte.image)"
                             max-width="120"
                             class="my-2"
                             contain
@@ -173,8 +171,6 @@
 </template>
 
 <script>
-import { OK } from '@/consts/status';
-
 export default {
   head: {
     title() {

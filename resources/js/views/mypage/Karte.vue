@@ -21,12 +21,15 @@
           </thead>
 
           <tbody>
-            <tr v-for="karte in kartes.data" :key="karte.id" @click="showKarte = karte">
+            <tr
+              v-for="karte in kartes.data"
+              :key="karte.id"
+              @click="showKarte = karte"
+              style="cursor: pointer"
+            >
               <!-- 画像 -->
               <td>
                 <v-img
-                  style="cursor: pointer"
-                  @click="expandImage(karte.image)"
                   max-width="120"
                   class="my-2"
                   contain
@@ -125,7 +128,7 @@
     </v-card>
 
     <!-- カルテ表示ダイアログ -->
-    <KarteDialog :karte="showKarte" />
+    <KarteDialog :karte="showKarte" @close="showKarte = $event" />
   </v-container>
 </template>
 

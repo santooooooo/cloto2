@@ -4,7 +4,7 @@
       <v-card class="headline grey darken-2 text-center px-2" v-if="karte">
         <v-container>
           <v-row justify="end">
-            <v-btn fab x-small depressed color="error" class="mr-4" @click="dialog = false">
+            <v-btn fab x-small depressed color="error" class="mr-4" @click="$emit('close', null)">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-row>
@@ -22,24 +22,17 @@
           <v-row justify="center">
             <v-col>
               <v-card-text class="pa-2 white--text title font-weight-bold"> 活動内容 </v-card-text>
-              <v-textarea
-                v-model="karte.body"
-                solo
-                rounded
-                rows="6"
-                auto-grow
-                disabled
-              ></v-textarea>
+              <v-card rounded="xl" min-height="154" max-width="457px" class="mb-4 text-left">
+                <pre class="px-6 py-2 text-body-1">{{ karte.body }}</pre>
+              </v-card>
 
               <v-card-text class="pa-2 white--text title font-weight-bold"> 参考文献 </v-card-text>
-              <v-textarea
-                v-model="karte.reference"
-                solo
-                rounded
-                rows="1"
-                auto-grow
-                disabled
-              ></v-textarea>
+              <v-card rounded="xl" min-height="48" max-width="457px" class="mb-4 text-left">
+                <p
+                  class="px-6 py-2 text-body-1"
+                  v-html="karte.reference ? setUrl(karte.reference) : ''"
+                ></p>
+              </v-card>
             </v-col>
 
             <v-col>
@@ -51,33 +44,23 @@
             </v-col>
           </v-row>
 
-          <v-row>
+          <v-row class="mb-7">
             <v-col>
               <v-card-text class="pa-2 white--text title font-weight-bold">
                 達成したこと
               </v-card-text>
-              <v-textarea
-                v-model="karte.achieve"
-                solo
-                rounded
-                rows="6"
-                auto-grow
-                disabled
-              ></v-textarea>
+              <v-card rounded="xl" min-height="154" max-width="457px" class="mb-4 text-left">
+                <pre class="px-6 py-2 text-body-1">{{ karte.achieve }}</pre>
+              </v-card>
             </v-col>
 
             <v-col>
               <v-card-text class="pa-2 white--text title font-weight-bold">
                 できなかったこと
               </v-card-text>
-              <v-textarea
-                v-model="karte.challenge"
-                solo
-                rounded
-                rows="6"
-                auto-grow
-                disabled
-              ></v-textarea>
+              <v-card rounded="xl" min-height="154" max-width="457px" class="mb-4 text-left">
+                <pre class="px-6 py-2 text-body-1">{{ karte.challenge }}</pre>
+              </v-card>
             </v-col>
           </v-row>
         </v-container>
@@ -97,9 +80,34 @@ export default {
     };
   },
   watch: {
-    karte: function () {
-      this.dialog = true;
+    karte: function (val) {
+      if (val) {
+        this.dialog = true;
+      } else {
+        this.dialog = false;
+      }
+    },
+  },
+  methods: {
+    /**
+     * 参考文献のURL置き換え
+     *
+     * @param   String  reference 参考文献
+     * @returns String  置換後の参考文献
+     */
+    setUrl: function (reference) {
+      const url = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+      return reference.replace(
+        url,
+        '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+      );
     },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+pre {
+  white-space: pre-wrap;
+}
+</style>
