@@ -39,20 +39,9 @@
           block
           color="#f6bf00"
           :to="{ name: 'room', params: { roomId: $route.params.roomId } }"
-          v-if="$route.name === 'floor' && !sitRoom"
+          v-if="$route.name === 'floor' && !authUser.seat"
         >
           入室
-        </v-btn>
-
-        <!-- 着席中 -->
-        <v-btn
-          depressed
-          block
-          color="error"
-          :to="{ name: 'room', params: { roomId: sitRoom } }"
-          v-if="sitRoom"
-        >
-          着席中の教室に戻る
         </v-btn>
       </div>
     </v-navigation-drawer>
@@ -64,19 +53,10 @@ export default {
   props: {
     floors: Array,
   },
-  data() {
-    return {
-      sitRoom: null, // 着席中の部屋
-    };
-  },
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
     },
-  },
-  async mounted() {
-    var response = await axios.get('/api/auth_sit');
-    this.sitRoom = response.data;
   },
 };
 </script>

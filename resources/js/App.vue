@@ -42,7 +42,7 @@
     </v-overlay>
 
     <!-- ヘッダー -->
-    <Header @open-drawer="isOpenDrawer = true" />
+    <Header :sit-room="sitRoom" @open-drawer="isOpenDrawer = true" />
 
     <!-- ドロワーメニュー -->
     <Drawer v-model="isOpenDrawer" @logout="logout" />
@@ -65,7 +65,6 @@ import Header from './Header';
 import Drawer from './Drawer';
 import Footer from './Footer';
 import Inquiry from './Inquiry';
-import { UNAUTHORIZED, INTERNAL_SERVER_ERROR } from '@/consts/status';
 
 export default {
   components: {

@@ -16,11 +16,21 @@
       ログイン
     </v-btn>
 
+    <!-- 教室へ戻るボタン -->
+    <v-btn
+      depressed
+      color="primary"
+      :to="{ name: 'room', params: { roomId: sitRoom } }"
+      v-if="$route.name !== 'room' && sitRoom"
+    >
+      教室へ戻る
+    </v-btn>
+
     <!-- 通知音ボタン -->
     <v-btn
       color="white"
       icon
-      class="mr-6"
+      class="mx-6"
       @click="$store.dispatch('alert/switchSound')"
       v-if="authCheck"
     >
@@ -37,6 +47,9 @@
 
 <script>
 export default {
+  props: {
+    sitRoom: Number,
+  },
   computed: {
     isSmartphone() {
       if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
