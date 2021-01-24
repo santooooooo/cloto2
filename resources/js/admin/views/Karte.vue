@@ -72,7 +72,7 @@
                         <v-tooltip max-width="300" top>
                           <template v-slot:activator="{ on, attrs }">
                             <td v-bind="attrs" v-on="on">
-                              <p class="karte-content">{{ karte.body }}</p>
+                              <p class="content">{{ karte.body }}</p>
                             </td>
                           </template>
                           <span>{{ karte.body }}</span>
@@ -80,18 +80,18 @@
 
                         <!-- 活動時間 -->
                         <td>
-                          <p class="karte-content">{{ karte.activity_time.slice(0, 5) }}</p>
+                          <p class="content">{{ karte.activity_time.slice(0, 5) }}</p>
                         </td>
 
                         <!-- 達成したこと -->
                         <v-tooltip max-width="300" top>
                           <template v-slot:activator="{ on, attrs }">
                             <td v-bind="attrs" v-on="on" v-if="karte.achieve">
-                              <p class="karte-content">{{ karte.achieve }}</p>
+                              <p class="content">{{ karte.achieve }}</p>
                             </td>
 
                             <td v-else>
-                              <p class="karte-content">未入力</p>
+                              <p class="content">未入力</p>
                             </td>
                           </template>
                           <span>{{ karte.achieve }}</span>
@@ -101,11 +101,11 @@
                         <v-tooltip max-width="300" top>
                           <template v-slot:activator="{ on, attrs }">
                             <td v-bind="attrs" v-on="on" v-if="karte.challenge">
-                              <p class="karte-content">{{ karte.challenge }}</p>
+                              <p class="content">{{ karte.challenge }}</p>
                             </td>
 
                             <td v-else>
-                              <p class="karte-content">未入力</p>
+                              <p class="content">未入力</p>
                             </td>
                           </template>
                           <span>{{ karte.challenge }}</span>
@@ -115,11 +115,11 @@
                         <v-tooltip max-width="300" top>
                           <template v-slot:activator="{ on, attrs }">
                             <td v-bind="attrs" v-on="on" v-if="karte.reference">
-                              <p class="karte-content">{{ karte.reference }}</p>
+                              <p class="content">{{ karte.reference }}</p>
                             </td>
 
                             <td v-else>
-                              <p class="karte-content">未入力</p>
+                              <p class="content">未入力</p>
                             </td>
                           </template>
                           <span>{{ karte.reference }}</span>
@@ -129,11 +129,11 @@
                         <v-tooltip max-width="300" top>
                           <template v-slot:activator="{ on, attrs }">
                             <td v-bind="attrs" v-on="on" v-if="karte.tags.length">
-                              <p class="karte-content">タグ{{ karte.tags.length }}個</p>
+                              <p class="content">タグ{{ karte.tags.length }}個</p>
                             </td>
 
                             <td v-else>
-                              <p class="karte-content">タグなし</p>
+                              <p class="content">タグなし</p>
                             </td>
                           </template>
 
@@ -224,7 +224,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.karte-content {
+.content {
   width: 100px;
   margin: 0;
   overflow: hidden;
