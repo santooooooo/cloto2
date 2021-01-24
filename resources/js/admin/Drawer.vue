@@ -21,6 +21,15 @@
           </v-list-item-content>
         </v-list-item>
 
+        <v-list-item exact :to="{ name: 'inquiry' }">
+          <v-list-item-icon>
+            <v-icon>mdi-help-circle</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>お問い合わせ</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
         <v-list-group no-action color="#f6bf00">
           <template v-slot:activator>
             <v-list-item-icon>
@@ -38,15 +47,6 @@
             </v-list-item-icon>
           </v-list-item>
         </v-list-group>
-
-        <v-list-item exact :to="{ name: 'inquiry' }">
-          <v-list-item-icon>
-            <v-icon>mdi-help-circle</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>お問い合わせ</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
 
         <v-list-group no-action color="#f6bf00">
           <template v-slot:activator>
@@ -73,23 +73,30 @@
           </v-list-item> -->
         </v-list-group>
 
-        <v-list-item exact :to="{ name: 'room' }">
-          <v-list-item-icon>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>部屋</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        <v-list-group no-action color="#f6bf00">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-home-modern</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>施設</v-list-item-title>
+            </v-list-item-content>
+          </template>
 
-        <v-list-item exact :to="{ name: 'seat' }">
-          <v-list-item-icon>
-            <v-icon>mdi-map-marker-radius</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
+          <v-list-item dense exact :to="{ name: 'room' }">
+            <v-list-item-title>部屋</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+
+          <v-list-item dense exact :to="{ name: 'seat' }">
             <v-list-item-title>座席</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-map-marker-radius</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+        </v-list-group>
 
         <!-- <v-list-item exact :to="{ name: 'tag' }">
           <v-list-item-icon>

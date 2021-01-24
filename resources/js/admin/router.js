@@ -12,12 +12,12 @@ Vue.use(VueRouter);
 import store from './store';
 
 import home from '@/admin/views/Home';
-import admin from '@/admin/views/Admin';
 import inquiry from '@/admin/views/Inquiry';
-import user from '@/admin/views/User';
-import karte from '@/admin/views/Karte';
-import room from '@/admin/views/Room';
-import seat from '@/admin/views/Seat';
+import admin from '@/admin/views/setting/Admin';
+import user from '@/admin/views/user/User';
+import karte from '@/admin/views/user/Karte';
+import room from '@/admin/views/room/Room';
+import seat from '@/admin/views/room/Seat';
 import tag from '@/admin/views/Tag';
 import notFound from '@/admin/views/errors/NotFound';
 
@@ -31,14 +31,14 @@ const router = new VueRouter({
       component: home,
     },
     {
-      path: '/setting/account',
-      name: 'admin',
-      component: admin,
-    },
-    {
       path: '/inquiry',
       name: 'inquiry',
       component: inquiry,
+    },
+    {
+      path: '/setting/account',
+      name: 'admin',
+      component: admin,
     },
     {
       path: '/user/account',
@@ -56,7 +56,7 @@ const router = new VueRouter({
       component: room,
     },
     {
-      path: '/seat',
+      path: '/room/seat',
       name: 'seat',
       component: seat,
     },
