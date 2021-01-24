@@ -34,14 +34,25 @@ class AdminController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 管理者の作成
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        // パスワードのハッシュ化
+        $data['password'] = Hash::make($data['password']);
+
+        $result = $this->admin->create($data);
+
+        if (empty($result)) {
+            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        return response(null);
     }
 
     /**

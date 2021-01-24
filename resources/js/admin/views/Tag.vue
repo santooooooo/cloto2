@@ -132,7 +132,7 @@ export default {
   },
   computed: {
     formTitle() {
-      return this.editTagForm.index === -1 ? 'タグ作成' : 'タグ編集';
+      return this.editTagForm.index === -1 ? '新規作成' : '編集';
     },
   },
   methods: {

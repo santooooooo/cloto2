@@ -5,15 +5,19 @@
         <v-toolbar flat>
           <v-toolbar-title>管理者一覧</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
           <span>編集ボタンから管理者データを変更できます。</span>
+          <v-spacer></v-spacer>
 
           <!-- 管理者編集ダイアログ -->
           <v-dialog v-model="editAdminForm.dialog" max-width="500px" persistent>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">新規作成</v-btn>
+            </template>
+
             <v-form ref="editAdminForm" v-model="editAdminForm.validation.valid" lazy-validation>
               <v-card class="headline grey darken-2 text-center pa-2">
                 <v-card-title>
-                  <span class="headline white--text">編集</span>
+                  <span class="headline white--text">{{ formTitle }}</span>
                 </v-card-title>
 
                 <v-card-text>
@@ -42,6 +46,20 @@
 
                     <!-- パスワード -->
                     <v-card-text class="pa-1 white--text">パスワード</v-card-text>
+                    <!-- 新規作成 -->
+                    <v-text-field
+                      v-model="editAdminForm.password"
+                      :rules="editAdminForm.validation.passwordRules"
+                      maxlength="64"
+                      counter
+                      label="パスワード"
+                      solo
+                      rounded
+                      class="pa-2"
+                      v-if="editAdminForm.index === -1"
+                    ></v-text-field>
+
+                    <!-- データ編集 -->
                     <v-text-field
                       v-model="editAdminForm.password"
                       maxlength="64"
@@ -50,6 +68,7 @@
                       solo
                       rounded
                       class="pa-2"
+                      v-else
                     ></v-text-field>
                   </v-container>
                 </v-card-text>
@@ -147,7 +166,14 @@ export default {
         validation: {
           valid: false,
           handlenameRules: [(v) => !!v || '管理者名は必須項目です。'],
-          emailRules: [(v) => !!v || 'メールアドレスは必須項目です。'],
+          emailRules: [
+            (v) => !!v || 'メールアドレスは必須項目です。',
+            (v) => {
+              const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+              return pattern.test(v) || 'メールアドレスが無効です。';
+            },
+          ],
+          passwordRules: [(v) => !!v || 'パスワードは必須項目です。'],
         },
       },
       deleteAdminForm: {
@@ -160,6 +186,9 @@ export default {
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
+    },
+    formTitle() {
+      return this.editAdminForm.index === -1 ? '新規作成' : '編集';
     },
   },
   methods: {
@@ -202,31 +231,42 @@ export default {
       if (this.$refs.editAdminForm.validate()) {
         this.editAdminForm.loading = true;
 
-        var input = new FormData();
-        input.append('_method', 'patch');
-        input.append('handlename', this.editAdminForm.data.handlename);
-        input.append('email', this.editAdminForm.data.email);
-        if (this.editAdminForm.password !== '') {
-          input.append('password', this.editAdminForm.password);
-        }
-
-        // 管理者データ保存処理
-        var response = await axios.post('/api/admin/admins/' + this.editAdminForm.data.id, input);
-
-        if (response.status === OK) {
-          this.$store.dispatch('alert/success', '管理者データが更新されました。');
-
-          if (this.editAdminForm.index > -1) {
-            Object.assign(this.admins[this.editAdminForm.index], this.editAdminForm.data);
-          } else {
-            this.admins.push(this.editAdminForm);
+        if (this.editAdminForm.index > -1) {
+          var input = new FormData();
+          input.append('_method', 'patch');
+          input.append('handlename', this.editAdminForm.data.handlename);
+          input.append('email', this.editAdminForm.data.email);
+          if (this.editAdminForm.password !== '') {
+            input.append('password', this.editAdminForm.password);
           }
 
-          this.close();
-        } else {
-          this.$store.dispatch('alert/error');
+          // 管理者データ更新処理
+          var response = await axios.post('/api/admin/admins/' + this.editAdminForm.data.id, input);
 
-          this.editAdminForm.loading = false;
+          if (response.status === OK) {
+            this.$store.dispatch('alert/success', '管理者が更新されました。');
+            Object.assign(this.admins[this.editAdminForm.index], this.editAdminForm.data);
+            this.close();
+          } else {
+            this.$store.dispatch('alert/error');
+            this.editAdminForm.loading = false;
+          }
+        } else {
+          // 管理者データ作成処理
+          var response = await axios.post('/api/admin/admins', {
+            handlename: this.editAdminForm.data.handlename,
+            email: this.editAdminForm.data.email,
+            password: this.editAdminForm.password,
+          });
+
+          if (response.status === OK) {
+            this.$store.dispatch('alert/success', '管理者が作成されました。');
+            this.getAdmins();
+            this.close();
+          } else {
+            this.$store.dispatch('alert/error');
+            this.editAdminForm.loading = false;
+          }
         }
       }
     },

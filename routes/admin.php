@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
         | 管理者アカウント
         |--------------------------------------------------------------------------
         */
-        Route::resource('admins', 'AdminController', ['only' => ['index', 'update', 'destroy']]);
+        Route::resource('admins', 'AdminController', ['only' => ['index', 'store', 'update', 'destroy']]);
 
 
         /*
