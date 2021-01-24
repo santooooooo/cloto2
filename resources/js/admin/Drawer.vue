@@ -21,6 +21,24 @@
           </v-list-item-content>
         </v-list-item>
 
+        <v-list-group no-action color="#f6bf00">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-security</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>設定</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item dense exact :to="{ name: 'admin' }">
+            <v-list-item-title>管理者アカウント</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+        </v-list-group>
+
         <v-list-item exact :to="{ name: 'inquiry' }">
           <v-list-item-icon>
             <v-icon>mdi-help-circle</v-icon>

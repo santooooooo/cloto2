@@ -12,6 +12,7 @@ Vue.use(VueRouter);
 import store from './store';
 
 import home from '@/admin/views/Home';
+import admin from '@/admin/views/Admin';
 import inquiry from '@/admin/views/Inquiry';
 import user from '@/admin/views/User';
 import karte from '@/admin/views/Karte';
@@ -22,39 +23,45 @@ import notFound from '@/admin/views/errors/NotFound';
 
 const router = new VueRouter({
   mode: 'history',
+  base: '/admin',
   routes: [
     {
-      path: '/admin',
+      path: '/',
       name: 'home',
       component: home,
     },
     {
-      path: '/admin/inquiry',
+      path: '/setting/account',
+      name: 'admin',
+      component: admin,
+    },
+    {
+      path: '/inquiry',
       name: 'inquiry',
       component: inquiry,
     },
     {
-      path: '/admin/user',
+      path: '/user/account',
       name: 'user',
       component: user,
     },
     {
-      path: '/admin/karte',
+      path: '/user/karte',
       name: 'karte',
       component: karte,
     },
     {
-      path: '/admin/room',
+      path: '/room',
       name: 'room',
       component: room,
     },
     {
-      path: '/admin/seat',
+      path: '/seat',
       name: 'seat',
       component: seat,
     },
     {
-      path: '/admin/tag',
+      path: '/tag',
       name: 'tag',
       component: tag,
     },
