@@ -6,10 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 
 class UserController extends Controller
 {
+    // アイコン保存ディレクトリ
+    const ICON_STORE_DIR = 'public/user/icon/';
+    // デフォルトアイコン名
+    const DEFAULT_ICON_FILENAME = 'default.jpg';
+
+
     /** @var User */
     protected $user;
 
@@ -86,6 +93,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        // 初期アイコン以外の場合にはアイコンを削除
+        if ($user->icon != self::DEFAULT_ICON_FILENAME) {
+            Storage::delete(self::ICON_STORE_DIR . $user->icon);
+        }
+
         $result = $user->delete();
 
         if (empty($result)) {
