@@ -4,65 +4,63 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Tag;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Admin;
 
-class TagController extends Controller
+class AdminController extends Controller
 {
-    /** @var Tag */
-    protected $tag;
+    /** @var Admin */
+    protected $admin;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Tag $tag)
+    public function __construct(Admin $admin)
     {
-        $this->tag = $tag;
+        $this->admin = $admin;
     }
 
 
     /**
-     * タグ一覧の取得
+     * 管理者一覧の取得
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return response()->json($this->tag->all());
+        return response()->json($this->admin->all());
     }
 
     /**
-     * タグの作成
+     * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-
-        $result = $this->tag->create($data);
-
-        if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
-        }
-
-        return response(null);
+        //
     }
 
     /**
-     * タグの更新
+     * 管理者の更新
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Tag $tag   更新するタグ
+     * @param  \App\Models\Admin $admin  更新する管理者
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tag $tag)
+    public function update(Request $request, Admin $admin)
     {
         $data = $request->all();
 
-        $result = $tag->fill($data)->save();
+        // パスワードのハッシュ化
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        $result = $admin->fill($data)->save();
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
@@ -72,14 +70,14 @@ class TagController extends Controller
     }
 
     /**
-     * タグの削除
+     * 管理者の削除
      *
-     * @param  \App\Models\Tag  $tag  削除するタグ
+     * @param  \App\Models\Admin  $admin  削除する管理者
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tag $tag)
+    public function destroy(Admin $admin)
     {
-        $result = $tag->delete();
+        $result = $admin->delete();
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));

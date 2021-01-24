@@ -1,16 +1,16 @@
 <template>
   <v-container>
-    <v-data-table :headers="headers" :items="users" sort-by="username" class="elevation-1">
+    <v-data-table :headers="headers" :items="admins" sort-by="email" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>ユーザー一覧</v-toolbar-title>
+          <v-toolbar-title>管理者一覧</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <span>編集ボタンからユーザーデータを変更できます。</span>
+          <span>編集ボタンから管理者データを変更できます。</span>
 
-          <!-- ユーザー編集ダイアログ -->
-          <v-dialog v-model="editUserForm.dialog" max-width="500px" persistent>
-            <v-form ref="editUserForm" v-model="editUserForm.validation.valid" lazy-validation>
+          <!-- 管理者編集ダイアログ -->
+          <v-dialog v-model="editAdminForm.dialog" max-width="500px" persistent>
+            <v-form ref="editAdminForm" v-model="editAdminForm.validation.valid" lazy-validation>
               <v-card class="headline grey darken-2 text-center pa-2">
                 <v-card-title>
                   <span class="headline white--text">編集</span>
@@ -18,12 +18,12 @@
 
                 <v-card-text>
                   <v-container>
-                    <!-- アカウント名 -->
-                    <v-card-text class="pa-1 white--text">表示名</v-card-text>
+                    <!-- 管理者名 -->
+                    <v-card-text class="pa-1 white--text">管理者名</v-card-text>
                     <v-text-field
-                      v-model="editUserForm.data.handlename"
-                      :rules="editUserForm.validation.handlenameRules"
-                      label="表示名"
+                      v-model="editAdminForm.data.handlename"
+                      :rules="editAdminForm.validation.handlenameRules"
+                      label="管理者名"
                       solo
                       rounded
                       class="pa-2"
@@ -32,8 +32,8 @@
                     <!-- メールアドレス -->
                     <v-card-text class="pa-1 white--text">メールアドレス</v-card-text>
                     <v-text-field
-                      v-model="editUserForm.data.email"
-                      :rules="editUserForm.validation.emailRules"
+                      v-model="editAdminForm.data.email"
+                      :rules="editAdminForm.validation.emailRules"
                       label="メールアドレス"
                       solo
                       rounded
@@ -43,7 +43,7 @@
                     <!-- パスワード -->
                     <v-card-text class="pa-1 white--text">パスワード</v-card-text>
                     <v-text-field
-                      v-model="editUserForm.password"
+                      v-model="editAdminForm.password"
                       maxlength="64"
                       counter
                       label="パスワード（更新する場合のみ入力）"
@@ -51,29 +51,15 @@
                       rounded
                       class="pa-2"
                     ></v-text-field>
-
-                    <!-- 役割 -->
-                    <v-card-text class="pa-1 white--text">役割</v-card-text>
-                    <v-select
-                      v-model="editUserForm.data.role"
-                      :items="roles"
-                      item-text="text"
-                      item-value="value"
-                      :rules="editUserForm.validation.roleRules"
-                      label="役割"
-                      solo
-                      rounded
-                      class="pa-2"
-                    ></v-select>
                   </v-container>
                 </v-card-text>
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="error" :loading="editUserForm.loading" @click="close()">
+                  <v-btn color="error" :loading="editAdminForm.loading" @click="close()">
                     キャンセル
                   </v-btn>
-                  <v-btn color="success" :loading="editUserForm.loading" @click="submit()">
+                  <v-btn color="success" :loading="editAdminForm.loading" @click="submit()">
                     保存
                   </v-btn>
                 </v-card-actions>
@@ -81,8 +67,8 @@
             </v-form>
           </v-dialog>
 
-          <!-- ユーザー削除確認ダイアログ -->
-          <v-dialog v-model="deleteUserForm.dialog" max-width="500px" persistent>
+          <!-- 管理者削除確認ダイアログ -->
+          <v-dialog v-model="deleteAdminForm.dialog" max-width="500px" persistent>
             <v-card class="headline grey darken-2 text-center pa-2">
               <v-card-title>
                 <span class="headline white--text">本当に削除しますか？</span>
@@ -92,13 +78,10 @@
                 <v-container>
                   <!-- 内容 -->
                   <v-card-text class="pa-1 white--text">
-                    ユーザー名：{{ deleteUserForm.data.username }}
+                    管理者名：{{ deleteAdminForm.data.handlename }}
                   </v-card-text>
                   <v-card-text class="pa-1 white--text">
-                    メールアドレス：{{ deleteUserForm.data.email }}
-                  </v-card-text>
-                  <v-card-text class="pa-1 white--text">
-                    表示名：{{ deleteUserForm.data.handlename }}
+                    メールアドレス：{{ deleteAdminForm.data.email }}
                   </v-card-text>
                 </v-container>
               </v-card-text>
@@ -107,12 +90,12 @@
                 <v-spacer></v-spacer>
                 <v-btn
                   color="error"
-                  :loading="deleteUserForm.loading"
-                  @click="deleteUserForm.dialog = false"
+                  :loading="deleteAdminForm.loading"
+                  @click="deleteAdminForm.dialog = false"
                 >
                   キャンセル
                 </v-btn>
-                <v-btn color="success" :loading="deleteUserForm.loading" @click="deleteSubmit()">
+                <v-btn color="success" :loading="deleteAdminForm.loading" @click="deleteSubmit()">
                   削除
                 </v-btn>
               </v-card-actions>
@@ -122,12 +105,14 @@
       </template>
 
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editUser(item)">mdi-pencil</v-icon>
-        <v-icon small class="ml-2" @click="deleteUser(item)">mdi-delete</v-icon>
+        <v-icon small class="mr-2" @click="editAdmin(item)">mdi-pencil</v-icon>
+        <v-icon small class="ml-2" @click="deleteAdmin(item)" :disabled="item.id === authUser.id">
+          mdi-delete
+        </v-icon>
       </template>
 
       <template v-slot:no-data>
-        <v-btn color="primary" @click="getUsers()">再読み込み</v-btn>
+        <v-btn color="primary" @click="getAdmins()">再読み込み</v-btn>
       </template>
     </v-data-table>
   </v-container>
@@ -140,25 +125,20 @@ export default {
   head: {
     title() {
       return {
-        inner: 'ユーザー',
+        inner: '管理者',
       };
     },
   },
   data() {
     return {
-      users: [],
+      admins: [],
       search: '',
       headers: [
-        { text: 'ユーザー名', value: 'username' },
-        { text: '表示名', value: 'handlename' },
+        { text: '管理者名', value: 'handlename' },
         { text: 'メールアドレス', value: 'email' },
         { text: '編集', value: 'actions', sortable: false, align: 'center' },
       ],
-      roles: [
-        { text: '通常', value: 'user' },
-        { text: 'メンター', value: 'mentor' },
-      ], // 役割一覧
-      editUserForm: {
+      editAdminForm: {
         dialog: false,
         loading: false,
         index: -1,
@@ -166,48 +146,52 @@ export default {
         password: '',
         validation: {
           valid: false,
-          handlenameRules: [(v) => !!v || '表示名は必須項目です。'],
+          handlenameRules: [(v) => !!v || '管理者名は必須項目です。'],
           emailRules: [(v) => !!v || 'メールアドレスは必須項目です。'],
-          roleRules: [(v) => !!v || '役割は必須項目です。'],
         },
       },
-      deleteUserForm: {
+      deleteAdminForm: {
         dialog: false,
         loading: false,
         data: {},
       },
     };
   },
+  computed: {
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
+  },
   methods: {
     /**
-     * ユーザーデータの取得
+     * 管理者データの取得
      */
-    getUsers: async function () {
-      var response = await axios.get('/api/admin/users');
-      this.users = response.data;
+    getAdmins: async function () {
+      var response = await axios.get('/api/admin/admins');
+      this.admins = response.data;
     },
 
     /**
-     * ユーザーデータの編集
+     * 管理者データの編集
      *
-     * @param Object  user  編集するユーザー
+     * @param Object  admin  編集する管理者
      */
-    editUser: function (user) {
-      this.editUserForm.index = this.users.indexOf(user);
-      this.editUserForm.data = Object.assign({}, user);
-      this.editUserForm.password = '';
-      this.editUserForm.dialog = true;
+    editAdmin: function (admin) {
+      this.editAdminForm.index = this.admins.indexOf(admin);
+      this.editAdminForm.data = Object.assign({}, admin);
+      this.editAdminForm.password = '';
+      this.editAdminForm.dialog = true;
     },
 
     /**
      * 編集ダイアログのクローズ
      */
     close: function () {
-      this.editUserForm.dialog = false;
-      this.editUserForm.loading = false;
+      this.editAdminForm.dialog = false;
+      this.editAdminForm.loading = false;
       this.$nextTick(() => {
-        this.$refs.editUserForm.reset();
-        this.editUserForm.index = -1;
+        this.$refs.editAdminForm.reset();
+        this.editAdminForm.index = -1;
       });
     },
 
@@ -215,71 +199,70 @@ export default {
      * 編集データの保存
      */
     submit: async function () {
-      if (this.$refs.editUserForm.validate()) {
-        this.editUserForm.loading = true;
+      if (this.$refs.editAdminForm.validate()) {
+        this.editAdminForm.loading = true;
 
         var input = new FormData();
         input.append('_method', 'patch');
-        input.append('email', this.editUserForm.data.email);
-        input.append('handlename', this.editUserForm.data.handlename);
-        if (this.editUserForm.password !== '') {
-          input.append('password', this.editUserForm.password);
+        input.append('handlename', this.editAdminForm.data.handlename);
+        input.append('email', this.editAdminForm.data.email);
+        if (this.editAdminForm.password !== '') {
+          input.append('password', this.editAdminForm.password);
         }
-        input.append('role', this.editUserForm.data.role);
 
-        // ユーザーデータ保存処理
-        var response = await axios.post('/api/admin/users/' + this.editUserForm.data.id, input);
+        // 管理者データ保存処理
+        var response = await axios.post('/api/admin/admins/' + this.editAdminForm.data.id, input);
 
         if (response.status === OK) {
-          this.$store.dispatch('alert/success', 'ユーザーデータが更新されました。');
+          this.$store.dispatch('alert/success', '管理者データが更新されました。');
 
-          if (this.editUserForm.index > -1) {
-            Object.assign(this.users[this.editUserForm.index], this.editUserForm.data);
+          if (this.editAdminForm.index > -1) {
+            Object.assign(this.admins[this.editAdminForm.index], this.editAdminForm.data);
           } else {
-            this.users.push(this.editUserForm);
+            this.admins.push(this.editAdminForm);
           }
 
           this.close();
         } else {
           this.$store.dispatch('alert/error');
 
-          this.editUserForm.loading = false;
+          this.editAdminForm.loading = false;
         }
       }
     },
 
     /**
-     * ユーザーの削除
+     * 管理者の削除
      *
-     * @param Object  user  削除するユーザー
+     * @param Object  admin  削除する管理者
      */
-    deleteUser: function (user) {
-      this.deleteUserForm.data = Object.assign({}, user);
-      this.deleteUserForm.dialog = true;
+    deleteAdmin: function (admin) {
+      this.deleteAdminForm.data = Object.assign({}, admin);
+      this.deleteAdminForm.dialog = true;
     },
 
     /**
      * 削除データの送信
      */
     deleteSubmit: async function () {
-      this.deleteUserForm.loading = true;
+      this.deleteAdminForm.loading = true;
 
-      // ユーザー削除処理
-      var response = await axios.delete('/api/admin/users/' + this.deleteUserForm.data.id);
+      // 管理者削除処理
+      var response = await axios.delete('/api/admin/admins/' + this.deleteAdminForm.data.id);
 
       if (response.status === OK) {
-        this.$store.dispatch('alert/success', 'ユーザーが削除されました。');
-        this.getUsers();
-        this.deleteUserForm.dialog = false;
-        this.deleteUserForm.loading = false;
+        this.$store.dispatch('alert/success', '管理者が削除されました。');
+        this.getAdmins();
+        this.deleteAdminForm.dialog = false;
+        this.deleteAdminForm.loading = false;
       } else {
         this.$store.dispatch('alert/error');
-        this.deleteUserForm.loading = false;
+        this.deleteAdminForm.loading = false;
       }
     },
   },
   created() {
-    this.getUsers();
+    this.getAdmins();
   },
 };
 </script>

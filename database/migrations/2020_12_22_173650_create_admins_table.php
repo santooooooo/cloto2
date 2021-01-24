@@ -18,7 +18,7 @@ class CreateAdminsTable extends Migration
             $table->string('email')->unique();                  // メール
             $table->dateTime('email_verified_at')->nullable();  // メール認証日時
             $table->string('password');                         // パスワード
-            $table->string('handlename')->nullable();           // 表示名
+            $table->string('handlename');                       // 表示名
             $table->rememberToken();
             $table->dateTimes();
         });

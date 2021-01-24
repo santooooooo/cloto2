@@ -88,7 +88,7 @@ class UserController extends Controller
     /**
      * ユーザーの削除
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $user  削除するユーザー
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
