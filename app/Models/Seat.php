@@ -22,7 +22,7 @@ class Seat extends Model
      *
      * @var array
      */
-    protected $casts = ['position' => 'json'];
+    protected $casts = ['position' => 'json', 'media' => 'json'];
 
     public $timestamps = false;
 

@@ -22,7 +22,7 @@ class CreateSeatsTable extends Migration
             $table->unsignedInteger('size');                            // サイズ
             $table->json('position');                                   // 座標
             $table->string('role');                                     // 役割
-            $table->string('media')->nullable();                        // メディア
+            $table->json('media')->nullable();                          // メディア
             $table->string('status')->nullable();                       // 座席状態
             $table->unsignedInteger('reservation_user_id')->nullable(); // 予約ID
         });

@@ -59,7 +59,7 @@
                       <input
                         type="file"
                         @change="inputMedia"
-                        accept="image/*, video/*"
+                        accept="image/jpeg, image/png, video/*"
                         class="pa-2"
                         style="overflow: hidden"
                         v-if="editMediaForm.dialog"

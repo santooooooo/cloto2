@@ -48,11 +48,39 @@ class SeatController extends Controller
                     Storage::delete(config('consts.storage.media') . $seat->media);
                 }
 
-                // 保存処理
+                // 拡張子の取得
+                $file_extension = $request->file('media')->getClientOriginalExtension();
+                switch (mb_strtolower($file_extension)) {
+                    case 'jpg':
+                        $type = 'image';
+                        break;
+
+                    case 'jpeg':
+                        $type = 'image';
+                        break;
+
+                    case 'png':
+                        $type = 'image';
+                        break;
+
+                    case 'mp4':
+                        $type = 'video';
+                        break;
+
+                    case 'wmv':
+                        $type = 'video';
+                        break;
+
+                    case 'mov':
+                        $type = 'video';
+                        break;
+                }
+
+                // ファイル保存処理
                 $filename = $request->file('media')->hashName();
                 $request->file('media')->storeAs(config('consts.storage.media'), $filename);
 
-                $data['media'] = $filename;
+                $data['media'] = ['type' => $type, 'data' => $filename];
             }
 
             // 動画の削除
