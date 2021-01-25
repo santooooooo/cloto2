@@ -29,9 +29,9 @@
               <v-card-text>
                 <v-container>
                   <v-list-item-group>
-                    <v-list-item v-for="(seat, index) in seats.data" :key="seat.id">
+                    <v-list-item v-for="seat in seats.data" :key="seat.id">
                       <v-card-text class="pa-1 white--text" @click="editMedia(seat.id)">
-                        メディア視聴ブース {{ index + 1 }}
+                        {{ seat.name }}
                       </v-card-text>
                     </v-list-item>
                   </v-list-item-group>

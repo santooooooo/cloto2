@@ -51,7 +51,13 @@
                       <v-list-item v-for="(seat, seatIndex) in section.seats" :key="seat.id">
                         <v-row>
                           <v-col md="2" align-self="center">
-                            <span class="white--text">座席 {{ seat.id }}</span>
+                            <v-text-field
+                              v-model="
+                                editSeatForm.data.sections[sectionIndex].seats[seatIndex].name
+                              "
+                              :rules="editSeatForm.validation.nameRules"
+                              label="座席名"
+                            ></v-text-field>
                           </v-col>
 
                           <v-col md="2">
@@ -102,6 +108,7 @@
                               @click="
                                 submit(
                                   seat.id,
+                                  editSeatForm.data.sections[sectionIndex].seats[seatIndex].name,
                                   editSeatForm.data.sections[sectionIndex].seats[seatIndex].size,
                                   editSeatForm.data.sections[sectionIndex].seats[seatIndex].position
                                 )
@@ -163,6 +170,7 @@ export default {
         data: {},
         validation: {
           valid: false,
+          nameRules: [(v) => !!v || '座席名は必須項目です。'],
           sizeRules: [
             (v) => !!v || 'サイズは必須項目です。',
             (v) => {
@@ -218,16 +226,18 @@ export default {
      * 編集データの保存
      *
      * @param Number  seatId    更新する座席ID
+     * @param String  name      座席名
      * @param Number  size      サイズ
      * @param Object  position  座標
      */
-    submit: async function (seatId, size, position) {
+    submit: async function (seatId, name, size, position) {
       if (this.$refs.editSeatForm.validate()) {
         this.editSeatForm.loading = true;
 
         // 座席データ保存処理
         var response = await axios.post('/api/admin/seats/' + seatId, {
           _method: 'patch',
+          name: name,
           size: size,
           position: position,
         });

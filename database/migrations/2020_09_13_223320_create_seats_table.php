@@ -18,6 +18,7 @@ class CreateSeatsTable extends Migration
             $table->foreignId('section_id')
                 ->constrained()
                 ->cascadeOnDelete();                                    // 所属する区画ID
+            $table->string('name');                                     // 座席名
             $table->unsignedInteger('size');                            // サイズ
             $table->json('position');                                   // 座標
             $table->string('role');                                     // 役割

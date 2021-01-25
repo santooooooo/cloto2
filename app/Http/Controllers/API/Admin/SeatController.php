@@ -39,28 +39,31 @@ class SeatController extends Controller
             $data['position'] = array_map('intval', $data['position']);
         }
 
-        // 動画の保存
-        if (!empty($request->file('media')) && !$data['remove_media']) {
-            // 削除処理
-            if (!empty($seat->media)) {
-                Storage::delete(config('consts.storage.media') . $seat->media);
+        // メディアの更新
+        if (isset($data['media'])) {
+            // 動画の保存
+            if (!empty($request->file('media')) && !$data['remove_media']) {
+                // 削除処理
+                if (!empty($seat->media)) {
+                    Storage::delete(config('consts.storage.media') . $seat->media);
+                }
+
+                // 保存処理
+                $filename = $request->file('media')->hashName();
+                $request->file('media')->storeAs(config('consts.storage.media'), $filename);
+
+                $data['media'] = $filename;
             }
 
-            // 保存処理
-            $filename = $request->file('media')->hashName();
-            $request->file('media')->storeAs(config('consts.storage.media'), $filename);
+            // 動画の削除
+            if ($data['remove_media']) {
+                // 削除処理
+                if (!empty($seat->media)) {
+                    Storage::delete(config('consts.storage.media') . $seat->media);
+                }
 
-            $data['media'] = $filename;
-        }
-
-        // 動画の削除
-        if ($data['remove_media']) {
-            // 削除処理
-            if (!empty($seat->media)) {
-                Storage::delete(config('consts.storage.media') . $seat->media);
+                $data['media'] = null;
             }
-
-            $data['media'] = null;
         }
 
         $result = $seat->fill($data)->save();
