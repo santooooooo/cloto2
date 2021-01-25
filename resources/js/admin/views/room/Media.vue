@@ -187,6 +187,7 @@ export default {
     editMedia: function (seatId) {
       // 入力値の初期化
       this.editMediaForm.removeMedia = 0;
+      this.editMediaForm.file = null;
       this.editMediaForm.text = '';
 
       this.editMediaForm.seatId = seatId;

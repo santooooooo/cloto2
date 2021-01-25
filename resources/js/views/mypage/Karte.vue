@@ -1,10 +1,5 @@
 <template>
   <v-container>
-    <!-- ローディング画面 -->
-    <v-overlay v-if="!kartes.data">
-      <v-progress-circular indeterminate size="64" v-if="!kartes.data"></v-progress-circular>
-    </v-overlay>
-
     <v-card max-width="1080" tile class="ma-5">
       <v-simple-table headers-length:5>
         <template v-slot:default>
@@ -22,7 +17,7 @@
 
           <tbody>
             <tr
-              v-for="karte in kartes.data"
+              v-for="karte in kartes"
               :key="karte.id"
               @click="showKarte = karte"
               style="cursor: pointer"
@@ -124,7 +119,7 @@
         </template>
       </v-simple-table>
 
-      <v-card-text class="text-center" v-if="!kartes.data.length">未投稿</v-card-text>
+      <v-card-text class="text-center" v-if="!kartes.length">未投稿</v-card-text>
     </v-card>
 
     <!-- カルテ表示ダイアログ -->
@@ -148,30 +143,13 @@ export default {
   },
   data() {
     return {
-      kartes: {
-        loading: false,
-        data: {},
-      },
+      kartes: [], // カルテ一覧
       showKarte: null, // 詳細を表示するカルテ
     };
   },
-
-  methods: {
-    /**
-     * カルテの取得
-     */
-    getKartes: async function () {
-      this.kartes.loading = true;
-
-      var response = await axios.get('/api/kartes');
-      this.kartes.data = response.data;
-
-      this.kartes.loading = false;
-    },
-  },
-
-  mounted() {
-    this.getKartes();
+  async mounted() {
+    var response = await axios.get('/api/kartes');
+    this.kartes = response.data;
   },
 };
 </script>

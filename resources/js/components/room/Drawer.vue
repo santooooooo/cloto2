@@ -38,9 +38,9 @@
       <div class="pa-2" v-else>
         <v-btn block depressed color="error" @click="$emit('leave-room')">退席</v-btn>
 
-        <!-- <v-btn block depressed color="#f6bf00" dark @click="$emit('input-karte')" class="mt-3">
+        <v-btn block depressed color="#f6bf00" dark @click="$emit('input-karte')" class="mt-3">
           カルテ記入
-        </v-btn> -->
+        </v-btn>
 
         <v-card class="mt-5 pa-1 grey darken-1 text-center">
           <v-container>
