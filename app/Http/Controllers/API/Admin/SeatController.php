@@ -45,7 +45,7 @@ class SeatController extends Controller
             if (!empty($request->file('media')) && !$data['remove_media']) {
                 // 削除処理
                 if (!empty($seat->media)) {
-                    Storage::delete(config('consts.storage.media') . $seat->media);
+                    Storage::delete(config('consts.storage.media') . $seat->media['data']);
                 }
 
                 // 拡張子の取得

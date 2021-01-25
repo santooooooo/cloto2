@@ -20,6 +20,12 @@
       v-if="call.isEnter"
     />
 
+    <!-- メディア視聴ブース -->
+    <Media
+      @close="userAction('returnSeat')"
+      v-if="authUser.seat && authUser.seat.role === 'media'"
+    />
+
     <v-flex>
       <!-- 教室 -->
       <v-row no-gutters justify="center">
@@ -58,6 +64,7 @@
 <script>
 import Drawer from '@/components/room/Drawer';
 import Call from '@/components/room/Call';
+import Media from '@/components/room/Media';
 import ProjectDialog from '@/components/room/ProjectDialog';
 import KarteDialog from '@/components/room/KarteDialog';
 import ProfileDialog from '@/components/room/ProfileDialog';
@@ -77,6 +84,7 @@ export default {
   components: {
     Drawer,
     Call,
+    Media,
     ProjectDialog,
     KarteDialog,
     ProfileDialog,
@@ -255,6 +263,13 @@ export default {
           }
           break;
 
+        case 'enterMedia':
+          // メディア視聴ブース入室処理
+          var response = await axios.post('/api/seats/move_seat/' + seatObject.seatId, {
+            _method: 'patch',
+          });
+          break;
+
         case 'returnSeat':
           // 元の座席に戻る処理
           var response = await axios.post('/api/seats/return_seat', {
@@ -417,6 +432,11 @@ export default {
               // どこにも着席していない状態でメンタリングルームをクリックした場合
               this.$store.dispatch('alert/error', '自習室に荷物を置きましょう！');
               break;
+
+            case 'media': // メディア視聴ブース
+              // どこにも着席していない状態でメディア視聴ブースをクリックした場合
+              this.$store.dispatch('alert/error', '自習室に荷物を置きましょう！');
+              break;
           }
         } else {
           // 着席中
@@ -466,6 +486,11 @@ export default {
                 // 状態変更処理
                 await this.userAction('enterCall', event.target);
               }
+              break;
+
+            case 'media': // メディア視聴ブース
+              // 状態変更処理
+              await this.userAction('enterMedia', event.target);
               break;
           }
         }
@@ -733,8 +758,14 @@ export default {
         if (seat.status !== null && seat.status != 'break') {
           this.setUser(seat);
 
-          // ログインユーザーが座っており，座席が自習室，講師室以外にある場合
-          if (seat.id === this.authUser.seat_id && seat.role !== 'study' && seat.role !== 'staff') {
+          // ログインユーザーが座っており，座席が通話席の場合
+          if (
+            seat.id === this.authUser.seat_id &&
+            (seat.role === 'lounge' ||
+              seat.role === 'hangout' ||
+              seat.role === 'mentor' ||
+              seat.role === 'user')
+          ) {
             this.enterCall(section.id, section.seats.length);
           }
         }
