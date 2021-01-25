@@ -20,12 +20,14 @@ class CreateUsersTable extends Migration
             $table->dateTime('email_verified_at')->nullable();  // メール認証日時
             $table->string('password');                         // パスワード
             $table->string('handlename');                       // 表示名
-            $table->string('role')->default('user');            // 役割
-            $table->string('icon')->nullable();                 // アイコン
+            $table->string('icon');                             // アイコン
             $table->json('sns')->nullable();                    // SNS
             $table->string('web')->nullable();                  // Webページ
             $table->text('introduction')->nullable();           // 自己紹介
+            $table->string('role')->default('user');            // 役割
+            // foreignId('seat_id')                             // 着席している座席ID
             $table->string('in_progress')->nullable();          // 取り組み中のタスク
+            // foreignId('task_id')                             // 進行中のタスクID
             $table->rememberToken();
             $table->dateTimes();
 

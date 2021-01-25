@@ -13,8 +13,6 @@ use Illuminate\Support\Carbon;
 
 class UserController extends Controller
 {
-    // アイコン保存ディレクトリ
-    const ICON_STORE_DIR = 'public/user/icon/';
     // デフォルトアイコン名
     const DEFAULT_ICON_FILENAME = 'default.jpg';
 
@@ -123,12 +121,12 @@ class UserController extends Controller
             // 削除処理
             if ($this->auth_user->icon != self::DEFAULT_ICON_FILENAME) {
                 // 初期アイコン以外の場合には登録中のアイコンを削除
-                Storage::delete(self::ICON_STORE_DIR . $this->auth_user->icon);
+                Storage::delete(config('consts.storage.icon') . $this->auth_user->icon);
             }
 
             // 保存処理
             $filename = $request->file('icon')->hashName();
-            $request->file('icon')->storeAs(self::ICON_STORE_DIR, $filename);
+            $request->file('icon')->storeAs(config('consts.storage.icon'), $filename);
 
             $data['icon'] = $filename;
         }

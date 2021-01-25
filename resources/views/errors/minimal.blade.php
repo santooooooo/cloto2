@@ -4,10 +4,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Favicon -->
-        <link rel="shortcut icon" href="{{ config('consts.storage.system').'favicon.ico' }}">
-
-        <!-- Title -->
         <title>@yield('title')</title>
 
         <!-- Fonts -->

@@ -11,8 +11,6 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    // アイコン保存ディレクトリ
-    const ICON_STORE_DIR = 'public/user/icon/';
     // デフォルトアイコン名
     const DEFAULT_ICON_FILENAME = 'default.jpg';
 
@@ -95,7 +93,7 @@ class UserController extends Controller
     {
         // 初期アイコン以外の場合にはアイコンを削除
         if ($user->icon != self::DEFAULT_ICON_FILENAME) {
-            Storage::delete(self::ICON_STORE_DIR . $user->icon);
+            Storage::delete(config('consts.storage.icon') . $user->icon);
         }
 
         $result = $user->delete();

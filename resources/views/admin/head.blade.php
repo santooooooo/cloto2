@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <!-- Favicon -->
-<link rel="shortcut icon" href="{{ config('consts.storage.system').'favicon.ico' }}">
+<link rel="shortcut icon" href="/storage/system/favicon.ico">
 
 <!-- Scripts -->
 @if (Route::current()->getName() != 'admin.login')
