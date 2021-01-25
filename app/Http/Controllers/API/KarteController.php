@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class KarteController extends Controller
 {
-    // 画像保存ディレクトリ
-    const IMAGE_STORE_DIR = 'public/user/karte/';
-
-
     /** @var Karte */
     protected $karte;
     /** @var Tag */
@@ -79,19 +75,23 @@ class KarteController extends Controller
         $data = $request->all();
         $data['user_id'] = $this->user->id;
 
-        // 画像の保存
+        // 画像ファイル名の取得
         if (!empty($request->file('image'))) {
-            $save_name = $request->file('image')->hashName();
-            $request->file('image')->storeAs(self::IMAGE_STORE_DIR, $save_name);
-
             // 現状では画像を1枚に制限
-            $data['image'] = [$save_name];
+            $filename = $request->file('image')->hashName();
+            $data['image'] = [$filename];
         }
 
         $result = $this->karte->create($data);
 
         if (empty($result)) {
             return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        // 画像ファイルの保存（カルテの作成日時を使用するためcreate後に実行）
+        if (!empty($request->file('image'))) {
+            $dir = config('consts.storage.karte') . $this->user->username . '/' . (new Carbon($result->created_at))->format('Y_md_Hi');
+            $request->file('image')->storeAs($dir, $filename);
         }
 
         // タグの紐付け
