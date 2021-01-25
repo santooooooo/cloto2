@@ -1,7 +1,6 @@
 <template>
   <!-- カルテ記入ダイアログ -->
   <v-container ma-0 pa-0>
-    <!-- <v-dialog persistent v-model="dialog" v-if="authUser.tasks[0]" width="1000"> -->
     <v-dialog persistent v-model="dialog" v-if="authUser.seat" width="1000">
       <v-form ref="karteForm" v-model="karteForm.validation.valid" lazy-validation>
         <v-card class="headline grey darken-2 text-center px-2">
@@ -19,10 +18,6 @@
                 <v-icon>mdi-close</v-icon>
               </v-btn>
             </v-row>
-
-            <!-- <v-card-text class="pa-2 white--text text-h4 font-weight-bold">
-              {{ authUser.tasks[0].body }}
-            </v-card-text> -->
 
             <v-row justify="center" align="center" class="mt-2">
               <input type="time" v-model="karteForm.activityTime" class="grey darken-2 mr-4" />
@@ -257,8 +252,6 @@ export default {
         this.karteForm.loading = true;
 
         var input = new FormData();
-        // input.append('task_id', this.authUser.tasks[0].id);
-        input.append('task_id', 1);
         input.append('activity_time', this.karteForm.activityTime);
         input.append('tags', this.tag.inputIds);
         input.append('body', this.karteForm.body);

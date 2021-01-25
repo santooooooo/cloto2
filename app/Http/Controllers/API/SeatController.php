@@ -70,8 +70,8 @@ class SeatController extends Controller
 
         // ユーザーと座席を紐付け解除
         $this->user->seat()->dissociate();
-        // 進行中のタスクを初期化
-        $this->user->fill(['task_id' => null])->save();
+        // 取り組み中のタスクを初期化
+        $this->user->fill(['in_progress' => null])->save();
 
         broadcast(new SeatEvent($room));
         return response()->json();

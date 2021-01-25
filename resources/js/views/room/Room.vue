@@ -46,9 +46,6 @@
         v-if="profile.dialog"
       />
 
-      <!-- プロジェクトダイアログ -->
-      <ProjectDialog @start-study="startStudy()" @close="cancelStartStudy()" v-if="projectDialog" />
-
       <!-- カルテダイアログ -->
       <KarteDialog
         :confirm="karte.confirm"
@@ -65,7 +62,6 @@
 import Drawer from '@/components/room/Drawer';
 import Call from '@/components/room/Call';
 import Media from '@/components/room/Media';
-import ProjectDialog from '@/components/room/ProjectDialog';
 import KarteDialog from '@/components/room/KarteDialog';
 import ProfileDialog from '@/components/room/ProfileDialog';
 import { OK } from '@/consts/status';
@@ -85,7 +81,6 @@ export default {
     Drawer,
     Call,
     Media,
-    ProjectDialog,
     KarteDialog,
     ProfileDialog,
   },
@@ -117,7 +112,6 @@ export default {
         dialog: false, // プロフィールのダイアログ制御
         userId: null, // プロフィールを表示するユーザーID
       },
-      projectDialog: false, // プロジェクトダイアログの制御
       karte: {
         dialog: false, // カルテ記入ダイアログの制御
         confirm: true, // 自習継続の確認
@@ -243,7 +237,6 @@ export default {
           var response = await axios.post('/api/seats/sit/' + seatObject.seatId, {
             _method: 'patch',
           });
-          //this.projectDialog = true;
           break;
 
         case 'leave':
@@ -391,9 +384,6 @@ export default {
             case 'study': // 自習室
               // 状態変更処理
               await this.userAction('sitting', event.target);
-              // if (typeof this.authUser.seat_id === 'number') {
-              //   this.projectsDialog = true; //auth userが自習室に初めてsittingしたときダイアログ表示
-              // }
               // 自習開始
               this.startStudy();
               break;
@@ -648,7 +638,6 @@ export default {
      * 自習開始
      */
     startStudy: async function () {
-      //this.projectDialog = false;
       this.$store.dispatch('alert/showOverlay', { color: '#228b22', message: '自習開始！' });
 
       // チャイム
@@ -658,14 +647,6 @@ export default {
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
-    },
-
-    /**
-     * プロジェクト選択の中断
-     */
-    cancelStartStudy: function () {
-      //this.projectDialog = false;
-      this.leaveRoom();
     },
 
     /**
@@ -682,16 +663,6 @@ export default {
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
     },
-  },
-
-  created() {
-    /**
-     * 例外処理
-     */
-    // if (this.authUser.seat_id !== null && this.authUser.task_id === null) {
-    //   // タスク選択中にページ更新された場合の処理
-    //   this.leaveRoom();
-    // }
   },
 
   async mounted() {

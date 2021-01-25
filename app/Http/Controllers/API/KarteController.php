@@ -43,17 +43,6 @@ class KarteController extends Controller
     }
 
     /**
-     * タスクが持つカルテの一覧を取得
-     *
-     * @param  Int $task_id カルテを持つタスクID
-     * @return \Illuminate\Http\Response
-     */
-    public function index_by_task_id(Int $task_id)
-    {
-        return response()->json($this->karte->where('task_id', $task_id)->get());
-    }
-
-    /**
      * カルテの詳細を取得
      *
      * @param  \App\Models\Karte  $karte

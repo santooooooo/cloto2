@@ -15,7 +15,7 @@ class Karte extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'task_id', 'body', 'achieve', 'challenge', 'reference', 'image', 'activity_time'
+        'user_id', 'body', 'achieve', 'challenge', 'reference', 'image', 'activity_time'
     ];
 
     /**
@@ -33,16 +33,6 @@ class Karte extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User');
-    }
-
-    /**
-     * Task モデルのリレーション
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function task()
-    {
-        return $this->belongsTo('App\Models\Task');
     }
 
     /**

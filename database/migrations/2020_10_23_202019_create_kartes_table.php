@@ -18,9 +18,6 @@ class CreateKartesTable extends Migration
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnDelete();                // ユーザーID
-            $table->foreignId('task_id')
-                ->constrained()
-                ->cascadeOnDelete();                // タスクID
             $table->text('body')->nullable();       // やったこと
             $table->text('achieve')->nullable();    // 達成できたこと
             $table->text('challenge')->nullable();  // 次の課題

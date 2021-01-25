@@ -62,17 +62,10 @@ Route::group(['middleware' => 'auth'], function () {
 
         /*
         |--------------------------------------------------------------------------
-        | プロジェクト，タスク，カルテ
+        | カルテ，タグ
         |--------------------------------------------------------------------------
         */
-        Route::resource('projects', 'ProjectController', ['only' => ['index', 'store']]);
-
-        Route::resource('tasks', 'TaskController', ['only' => ['store']]);
-        Route::get('/tasks/{project_id}', 'TaskController@index');
-        Route::patch('/tasks/start', 'TaskController@start');
-
         Route::resource('kartes', 'KarteController', ['only' => ['index', 'store']]);
-        Route::get('/kartes/index_by_task_id/{task_id}', 'KarteController@index_by_task_id');
 
         Route::resource('tags', 'TagController', ['only' => ['index']]);
 

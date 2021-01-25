@@ -21,8 +21,8 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password', 'handlename', 'role', 'icon', 'sns', 'web', 'introduction',
-        'in_progress', 'seat_id', 'task_id'
+        'username', 'email', 'password', 'handlename', 'icon', 'sns', 'web', 'introduction',
+        'role', 'seat_id', 'in_progress'
     ];
 
     /**
@@ -62,26 +62,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function seat()
     {
         return $this->belongsTo('App\Models\Seat');
-    }
-
-    /**
-     * Project モデルのリレーション
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function projects()
-    {
-        return $this->hasMany('App\Models\Project');
-    }
-
-    /**
-     * Task モデルのリレーション
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function tasks()
-    {
-        return $this->hasMany('App\Models\Task');
     }
 
     /**

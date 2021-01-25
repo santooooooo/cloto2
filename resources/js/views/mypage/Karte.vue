@@ -148,14 +148,6 @@ export default {
   },
   data() {
     return {
-      projects: {
-        loading: false,
-        data: {},
-      },
-      tasks: {
-        loading: false,
-        data: {},
-      },
       kartes: {
         loading: false,
         data: {},
@@ -166,38 +158,9 @@ export default {
 
   methods: {
     /**
-     * プロジェクトの取得
-     */
-    getProjects: async function () {
-      this.projects.loading = true;
-
-      var response = await axios.get('/api/projects');
-      this.projects.data = response.data;
-
-      this.projects.loading = false;
-    },
-
-    /**
-     * タスクの取得
-     *
-     * @param Number  projectId 取得するタスクのプロジェクトID
-     */
-    getTasks: async function (projectId) {
-      this.tasks.loading = true;
-      this.kartes.data = '';
-
-      var response = await axios.get('/api/tasks/' + projectId);
-      this.tasks.data = response.data;
-
-      this.tasks.loading = false;
-    },
-
-    /**
      * カルテの取得
-     *
-     * @param Number  taskId 取得するカルテのタスクID
      */
-    getKartes: async function (taskId) {
+    getKartes: async function () {
       this.kartes.loading = true;
 
       var response = await axios.get('/api/kartes');
@@ -208,7 +171,6 @@ export default {
   },
 
   mounted() {
-    this.getProjects();
     this.getKartes();
   },
 };

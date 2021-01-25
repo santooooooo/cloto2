@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSeatIdAndTaskIdToUsersTable extends Migration
+class AddSeatIdToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class AddSeatIdAndTaskIdToUsersTable extends Migration
      */
     public function up()
     {
-        // 外部キー制約のため，それぞれのテーブル作成後にしかカラムを追加できない
+        // 外部キー制約のため，seatsテーブル作成後にカラムを追加
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('seat_id')->after('role')->nullable()->constrained();         // 着席している座席ID
-            $table->foreignId('task_id')->after('in_progress')->nullable()->constrained();  // 進行中のタスクID
+            $table->foreignId('seat_id')->after('role')->nullable()->constrained(); // 着席している座席ID
         });
     }
 
@@ -28,7 +27,6 @@ class AddSeatIdAndTaskIdToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign('users_task_id_foreign');
             $table->dropForeign('users_seat_id_foreign');
         });
     }
