@@ -15,7 +15,6 @@ class CreateSectionsTable extends Migration
     {
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid')->unique();
             $table->foreignId('room_id')
                 ->constrained()
                 ->cascadeOnDelete();    // 所属する部屋ID

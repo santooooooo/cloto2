@@ -699,8 +699,8 @@ export default {
     this.setZoom(zoom);
 
     // クリックエリアの設定
-    this.roomData.sections.forEach((section, sectionIndex) => {
-      section.seats.forEach((seat, seatIndex) => {
+    this.roomData.sections.forEach((section) => {
+      section.seats.forEach((seat) => {
         var color = '';
         if (seat.status == 'break') {
           color = '#FF0000';
@@ -710,7 +710,7 @@ export default {
           new fabric.Circle({
             seatId: seat.id,
             role: seat.role,
-            callId: section.uuid,
+            callId: section.id,
             callCapacity: section.seats.length,
             fill: color,
             reservationId: seat.reservation_user_id,
@@ -735,7 +735,7 @@ export default {
 
           // ログインユーザーが座っており，座席が自習室，講師室以外にある場合
           if (seat.id === this.authUser.seat_id && seat.role !== 'study' && seat.role !== 'staff') {
-            this.enterCall(section.uuid, section.seats.length);
+            this.enterCall(section.id, section.seats.length);
           }
         }
       });

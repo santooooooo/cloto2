@@ -546,7 +546,7 @@ export default {
     ProfileDialog,
   },
   props: {
-    callId: String,
+    callId: Number,
     capacity: Number,
   },
   data() {
@@ -1223,17 +1223,17 @@ export default {
     this.notificationSounds.receiveMessage.volume = 0.6;
 
     // エラー発生時のイベント
-    Vue.config.errorHandler = (err, vm, info) => {
+    Vue.config.errorHandler = (error) => {
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     };
 
     // エラー発生時のイベント
-    window.addEventListener('error', (event) => {
+    window.addEventListener('error', (error) => {
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 
     // エラー発生時のイベント
-    window.addEventListener('unhandledrejection', (event) => {
+    window.addEventListener('unhandledrejection', (error) => {
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 

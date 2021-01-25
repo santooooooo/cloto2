@@ -14,7 +14,7 @@ class Section extends Model
      * @var array
      */
     protected $fillable = [
-        'uuid', 'room_id', 'name'
+        'room_id', 'name'
     ];
 
     public $timestamps = false;
