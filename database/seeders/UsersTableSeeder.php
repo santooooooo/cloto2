@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class UsersTableSeeder extends Seeder
 {
@@ -27,6 +28,9 @@ class UsersTableSeeder extends Seeder
                 'icon' => 'default.jpg',
                 'sns' => json_decode('{}'),
             ]);
+
+            // カルテ保存ディレクトリを作成
+            Storage::makeDirectory(config('consts.storage.karte') . $username);
         }
 
         $usernames = ['atsuhiro', 'yoshihito', 'shuto', 'sayuki', 'hikaru', 'riku'];
@@ -40,6 +44,9 @@ class UsersTableSeeder extends Seeder
                 'icon' => 'default.jpg',
                 'sns' => json_decode('{}'),
             ]);
+
+            // カルテ保存ディレクトリを作成
+            Storage::makeDirectory(config('consts.storage.karte') . $username);
         }
     }
 }

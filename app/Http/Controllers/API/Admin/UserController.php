@@ -96,6 +96,9 @@ class UserController extends Controller
             Storage::delete(config('consts.storage.icon') . $user->icon);
         }
 
+        // カルテ保存ディレクトリを削除
+        Storage::deleteDirectory(config('consts.storage.karte') . $user->username);
+
         $result = $user->delete();
 
         if (empty($result)) {

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RegisterController extends Controller
 {
@@ -85,6 +86,9 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $user)
     {
+        // カルテ保存ディレクトリを作成
+        Storage::makeDirectory(config('consts.storage.karte') . $user->username);
+
         return $user;
     }
 }
