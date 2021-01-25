@@ -18,6 +18,7 @@ import user from '@/admin/views/user/User';
 import karte from '@/admin/views/user/Karte';
 import room from '@/admin/views/room/Room';
 import seat from '@/admin/views/room/Seat';
+import media from '@/admin/views/room/Media';
 import tag from '@/admin/views/Tag';
 import notFound from '@/admin/views/errors/NotFound';
 
@@ -59,6 +60,11 @@ const router = new VueRouter({
       path: '/room/seat',
       name: 'seat',
       component: seat,
+    },
+    {
+      path: '/room/media',
+      name: 'media',
+      component: media,
     },
     {
       path: '/tag',

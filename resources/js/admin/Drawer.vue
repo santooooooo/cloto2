@@ -96,6 +96,13 @@
               <v-icon>mdi-map-marker-radius</v-icon>
             </v-list-item-icon>
           </v-list-item>
+
+          <v-list-item dense exact :to="{ name: 'media' }">
+            <v-list-item-title>メディア</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon>mdi-video</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
         </v-list-group>
 
         <!-- <v-list-item exact :to="{ name: 'tag' }">

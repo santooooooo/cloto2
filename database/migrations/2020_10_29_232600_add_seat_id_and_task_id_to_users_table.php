@@ -15,7 +15,7 @@ class AddSeatIdAndTaskIdToUsersTable extends Migration
     {
         // 外部キー制約のため，それぞれのテーブル作成後にしかカラムを追加できない
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('seat_id')->after('role')->nullable()->constrained(); // 着席している座席ID
+            $table->foreignId('seat_id')->after('role')->nullable()->constrained();         // 着席している座席ID
             $table->foreignId('task_id')->after('in_progress')->nullable()->constrained();  // 進行中のタスクID
         });
     }
