@@ -56,14 +56,28 @@
                 <v-card-text>
                   <v-container>
                     <v-row justify="center">
+                      <!-- ファイル -->
+                      <v-card-text class="pa-1 white--text">ファイル</v-card-text>
                       <input
                         type="file"
-                        @change="inputMedia"
+                        :disabled="editMediaForm.removeMedia || editMediaForm.text !== ''"
+                        @change="inputFile"
                         accept="image/jpeg, image/png, video/*"
-                        class="pa-2"
+                        class="pa-2 mb-5"
                         style="overflow: hidden"
                         v-if="editMediaForm.dialog"
                       />
+
+                      <!-- テキスト -->
+                      <v-card-text class="pa-1 white--text">テキスト</v-card-text>
+                      <v-textarea
+                        v-model="editMediaForm.text"
+                        :disabled="editMediaForm.removeMedia || editMediaForm.file !== null"
+                        label="テキスト"
+                        rows="6"
+                        solo
+                        class="pa-2"
+                      ></v-textarea>
                     </v-row>
 
                     <v-row justify="center">
@@ -128,7 +142,8 @@ export default {
         dialog: false,
         loading: false,
         seatId: null, // 編集する座席ID
-        media: null, // メディアアップロード
+        file: null, // ファイル
+        text: '', // テキスト
         removeMedia: 0, // メディアの削除
         validation: {
           valid: false,
@@ -172,18 +187,19 @@ export default {
     editMedia: function (seatId) {
       // 入力値の初期化
       this.editMediaForm.removeMedia = 0;
+      this.editMediaForm.text = '';
 
       this.editMediaForm.seatId = seatId;
       this.editMediaForm.dialog = true;
     },
 
     /**
-     * メディアの入力
+     * ファイルの入力
      *
      * @param event 入力イベント
      */
-    inputMedia: function (event) {
-      this.editMediaForm.media = event.target.files[0];
+    inputFile: function (event) {
+      this.editMediaForm.file = event.target.files[0];
     },
 
     /**
@@ -204,8 +220,18 @@ export default {
 
         var input = new FormData();
         input.append('_method', 'patch');
-        input.append('media', this.editMediaForm.media);
         input.append('remove_media', this.editMediaForm.removeMedia);
+        if (!this.editMediaForm.removeMedia) {
+          if (this.editMediaForm.text !== '') {
+            // テキストが入力されている場合
+            input.append('text', this.editMediaForm.text);
+          } else {
+            if (this.editMediaForm.file !== null) {
+              // ファイルが入力されている場合
+              input.append('file', this.editMediaForm.file);
+            }
+          }
+        }
 
         // 座席データ保存処理
         var response = await axios.post('/api/admin/seats/' + this.editMediaForm.seatId, input);

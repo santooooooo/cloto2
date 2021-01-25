@@ -16,25 +16,24 @@
 
     <div id="container" ref="container">
       <div v-if="authUser.seat.media">
+        <!-- 画像 -->
         <img
           :src="$storage('media') + authUser.seat.media.data"
+          class="media"
           v-if="authUser.seat.media.type === 'image'"
         />
 
+        <!-- ビデオ -->
         <video
           controls
           :src="$storage('media') + authUser.seat.media.data"
+          class="media"
           v-else-if="authUser.seat.media.type === 'video'"
         ></video>
 
-        <v-card
-          color="black"
-          width="50%"
-          height="50%"
-          class="d-flex justify-center align-center text-h6 white--text video"
-          v-else
-        >
-          現在放送されている動画はありません！
+        <!-- テキスト -->
+        <v-card flat class="media overflow-y-auto" v-else-if="authUser.seat.media.type === 'text'">
+          <pre class="text-body-1">{{ authUser.seat.media.data }}</pre>
         </v-card>
       </div>
     </div>
@@ -73,14 +72,18 @@ export default {
   height: calc(100vh - 64px);
   position: relative;
 
-  img,
-  video {
+  .media {
     max-width: 60%;
     max-height: 80%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    pre {
+      margin: 1em;
+      white-space: pre-wrap;
+    }
   }
 }
 </style>

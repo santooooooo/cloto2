@@ -40,54 +40,59 @@ class SeatController extends Controller
         }
 
         // メディアの更新
-        if (isset($data['media'])) {
-            // 動画の保存
-            if (!empty($request->file('media')) && !$data['remove_media']) {
-                // 削除処理
-                if (!empty($seat->media)) {
+        if (isset($data['remove_media'])) {
+            if (!$data['remove_media']) {
+                // テキストの保存
+                if (isset($data['text'])) {
+                    $data['media'] = ['type' => 'text', 'data' => $data['text']];
+                }
+
+                // ファイルの保存
+                else if (!empty($request->file('file'))) {
+                    // 削除処理
+                    if (!empty($seat->media)) {
+                        Storage::delete(config('consts.storage.media') . $seat->media['data']);
+                    }
+
+                    // 拡張子の取得
+                    $file_extension = $request->file('file')->getClientOriginalExtension();
+                    switch (mb_strtolower($file_extension)) {
+                        case 'jpg':
+                            $type = 'image';
+                            break;
+
+                        case 'jpeg':
+                            $type = 'image';
+                            break;
+
+                        case 'png':
+                            $type = 'image';
+                            break;
+
+                        case 'mp4':
+                            $type = 'video';
+                            break;
+
+                        case 'wmv':
+                            $type = 'video';
+                            break;
+
+                        case 'mov':
+                            $type = 'video';
+                            break;
+                    }
+
+                    // ファイル保存処理
+                    $filename = $request->file('file')->hashName();
+                    $request->file('file')->storeAs(config('consts.storage.media'), $filename);
+
+                    $data['media'] = ['type' => $type, 'data' => $filename];
+                }
+            } else {
+                // メディアの解除
+                if (!empty($seat->media) && $seat->media['type'] != 'text') {
+                    // ファイル削除処理
                     Storage::delete(config('consts.storage.media') . $seat->media['data']);
-                }
-
-                // 拡張子の取得
-                $file_extension = $request->file('media')->getClientOriginalExtension();
-                switch (mb_strtolower($file_extension)) {
-                    case 'jpg':
-                        $type = 'image';
-                        break;
-
-                    case 'jpeg':
-                        $type = 'image';
-                        break;
-
-                    case 'png':
-                        $type = 'image';
-                        break;
-
-                    case 'mp4':
-                        $type = 'video';
-                        break;
-
-                    case 'wmv':
-                        $type = 'video';
-                        break;
-
-                    case 'mov':
-                        $type = 'video';
-                        break;
-                }
-
-                // ファイル保存処理
-                $filename = $request->file('media')->hashName();
-                $request->file('media')->storeAs(config('consts.storage.media'), $filename);
-
-                $data['media'] = ['type' => $type, 'data' => $filename];
-            }
-
-            // 動画の削除
-            if ($data['remove_media']) {
-                // 削除処理
-                if (!empty($seat->media)) {
-                    Storage::delete(config('consts.storage.media') . $seat->media);
                 }
 
                 $data['media'] = null;
