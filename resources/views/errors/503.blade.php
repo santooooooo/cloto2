@@ -1,4 +1,4 @@
-@extends('errors::illustrated-layout')
+@extends('errors::layout')
 
 @section('title', 'メンテナンス中')
 @section('code', '503')

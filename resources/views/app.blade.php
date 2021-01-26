@@ -9,7 +9,7 @@
     @if (Route::current()->getName() == 'verification.notice' || Route::current()->getName() == 'verification.verify')
         @yield('content')
     @else
-        <!-- PleaseWait.js & Spinkit -->
+        {{-- PleaseWait.js & Spinkit --}}
         <link rel="stylesheet" href="{{ mix('css/please-wait.css') }}">
         <link rel="stylesheet" href="{{ mix('css/spinkit.min.css') }}">
         <style>
@@ -36,9 +36,8 @@
         </script>
 
 
-        <!-- App -->
+        {{-- App --}}
         <div id="app"></div>
-        <!-- built files will be auto injected -->
     @endif
 </body>
 

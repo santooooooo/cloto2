@@ -1,4 +1,4 @@
-@extends('errors::illustrated-layout')
+@extends('errors::layout')
 
 @section('title', '有効期限切れ')
 @section('code', '403')

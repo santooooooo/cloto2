@@ -7,7 +7,7 @@
 
 <body>
     @if (Route::current()->getName() == 'admin.login')
-        <!-- PleaseWait.js & Spinkit -->
+        {{-- PleaseWait.js & Spinkit --}}
         <link rel="stylesheet" href="{{ mix('css/please-wait.css') }}">
         <link rel="stylesheet" href="{{ mix('css/spinkit.min.css') }}">
         <style>
@@ -35,9 +35,8 @@
 
         @yield('login')
     @else
-        <!-- App -->
+        {{-- App --}}
         <div id="app"></div>
-        <!-- built files will be auto injected -->
     @endif
 </body>
 
