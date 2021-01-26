@@ -246,7 +246,7 @@ export default {
     pageBackEvent: function (event) {
       var historyTraversal =
         event.persisted ||
-        (typeof window.performance != 'undefined' && window.performance.navigation.type === 2);
+        (typeof window.performance !== 'undefined' && window.performance.navigation.type === 2);
       if (historyTraversal) {
         // リロード（戻るボタンでアクセスすると休憩室に入室できない）
         window.location.reload();
@@ -256,13 +256,13 @@ export default {
     /**
      * ログアウト処理
      */
-    logout: async function () {
+    logout: function () {
       this.isOpenDrawer = false;
 
+      // ログインページへリダイレクト
+      this.$router.go({ name: 'login' });
       // ログアウト処理
-      await this.$store.dispatch('auth/logout');
-      // リロード
-      window.location.reload();
+      this.$store.dispatch('auth/logout');
     },
   },
   created() {

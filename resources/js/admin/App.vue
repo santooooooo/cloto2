@@ -130,7 +130,7 @@ export default {
     pageBackEvent: function (event) {
       var historyTraversal =
         event.persisted ||
-        (typeof window.performance != 'undefined' && window.performance.navigation.type === 2);
+        (typeof window.performance !== 'undefined' && window.performance.navigation.type === 2);
       if (historyTraversal) {
         // リロード（戻るボタンでアクセスすると休憩室に入室できない）
         window.location.reload();
@@ -140,12 +140,11 @@ export default {
     /**
      * ログアウト処理
      */
-    logout: async function () {
+    logout: function () {
+      // ログインページへリダイレクト
+      this.$router.go({ path: '/admin/login' });
       // ログアウト処理
-      axios.post('/api/admin/logout');
-
-      // トップページへリダイレクト
-      window.location.pathname = '/admin/login';
+      this.$store.dispatch('auth/logout');
     },
   },
   created() {
