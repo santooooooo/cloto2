@@ -132,7 +132,7 @@ export default {
     /**
      * 取り組み中のタスクの公開
      *
-     * @param remove  削除するか
+     * @param remove  削除フラグ
      */
     submit: async function (remove) {
       if (remove) {

@@ -241,12 +241,15 @@ export default {
      * @param   Number  tagId 入力されたタグのID
      * @returns String  タグ名
      */
-    getSelectedTagName(tagId) {
+    getSelectedTagName: function (tagId) {
       return this.tag.data.filter((item) => {
         return item.id === tagId;
       })[0].name;
     },
 
+    /**
+     * カルテの投稿
+     */
     submit: async function () {
       if (this.$refs.karteForm.validate()) {
         this.karteForm.loading = true;
