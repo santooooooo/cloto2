@@ -184,11 +184,6 @@ export default {
         });
 
         if (this.apiStatus) {
-          this.$store.dispatch(
-            'alert/success',
-            '認証メールを送信しました。メールボックスをご確認ください！'
-          );
-
           // ページ遷移
           window.location.pathname = '/email/verify';
         } else {
