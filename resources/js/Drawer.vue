@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer app dark temporary :value="value" @input="$emit('input', $event)">
-    <v-list-item two-line class="px-3">
+    <v-list-item two-line class="px-3" v-if="authUser">
       <v-list-item-avatar>
         <img :src="$storage('icon') + authUser.icon" />
       </v-list-item-avatar>
