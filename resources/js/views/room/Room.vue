@@ -870,8 +870,8 @@ export default {
     // ロード終了
     this.isLoading = false;
 
-    // 念の為1分ごとにデータを同期
-    this.timer = setInterval(this.getRoom, 60000);
+    // 念の為10秒ごとにデータを同期
+    this.timer = setInterval(this.getRoom, 10000);
   },
 
   beforeDestroy() {
