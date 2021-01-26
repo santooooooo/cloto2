@@ -15,6 +15,5 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(AdminsTableSeeder::class);
         $this->call(RoomsTableSeeder::class);
-        $this->call(UsersTableSeeder::class);
     }
 }

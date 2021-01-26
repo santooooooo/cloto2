@@ -1,2 +1,6 @@
 *.sqlite
 *.sqlite-journal
+*.php
+!DatabaseSeeder.php
+!RoomsTableSeeder.php
+!*.example
