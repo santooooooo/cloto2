@@ -219,7 +219,7 @@ export default {
         if (this.authUser.seat !== null && this.$route.name === 'room') {
           // 着席中の場合はリロード
           alert('接続が復帰しました。再読み込みします。');
-          window.location.reload();
+          this.$router.go();
         } else {
           // オンライン状態を通知
           axios.get('/api/online');
@@ -234,8 +234,7 @@ export default {
      */
     stopBackButtonEvent: function () {
       this.$store.dispatch('alert/error', '戻るボタンでの操作は禁止されています。');
-
-      history.go(1);
+      this.$router.go(1);
     },
 
     /**
@@ -249,7 +248,7 @@ export default {
         (typeof window.performance !== 'undefined' && window.performance.navigation.type === 2);
       if (historyTraversal) {
         // リロード（戻るボタンでアクセスすると休憩室に入室できない）
-        window.location.reload();
+        this.$router.go();
       }
     },
 
@@ -260,7 +259,7 @@ export default {
       this.isOpenDrawer = false;
 
       // ログインページへリダイレクト
-      this.$router.go({ name: 'login' });
+      window.location.pathname = '/login';
       // ログアウト処理
       this.$store.dispatch('auth/logout');
     },
@@ -269,7 +268,7 @@ export default {
     // システムイベントの受信開始
     Echo.channel('system').listen('SystemDownEvent', () => {
       // メンテナンスモード開始
-      window.location.reload();
+      this.$router.go();
     });
   },
   mounted() {

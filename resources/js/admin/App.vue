@@ -101,7 +101,6 @@ export default {
      */
     offlineEvent: function () {
       this.isOffline = true;
-
       alert('インターネットに接続してください。');
     },
 
@@ -110,7 +109,7 @@ export default {
      */
     onlineEvent: function () {
       alert('接続が復帰しました。再読み込みします。');
-      window.location.reload();
+      this.$router.go();
     },
 
     /**
@@ -118,8 +117,7 @@ export default {
      */
     stopBackButtonEvent: function () {
       this.$store.dispatch('alert/error', '戻るボタンでの操作は禁止されています。');
-
-      history.go(1);
+      this.$router.go(1);
     },
 
     /**
@@ -132,8 +130,8 @@ export default {
         event.persisted ||
         (typeof window.performance !== 'undefined' && window.performance.navigation.type === 2);
       if (historyTraversal) {
-        // リロード（戻るボタンでアクセスすると休憩室に入室できない）
-        window.location.reload();
+        // リロード
+        this.$router.go();
       }
     },
 
@@ -142,7 +140,7 @@ export default {
      */
     logout: function () {
       // ログインページへリダイレクト
-      this.$router.go({ path: '/admin/login' });
+      window.location.pathname = '/admin/login';
       // ログアウト処理
       this.$store.dispatch('auth/logout');
     },
@@ -151,7 +149,7 @@ export default {
     // システムイベントの受信開始
     Echo.channel('system').listen('SystemDownEvent', () => {
       // メンテナンスモード開始
-      window.location.reload();
+      this.$router.go();
     });
   },
   mounted() {
