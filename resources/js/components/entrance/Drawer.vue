@@ -33,13 +33,12 @@
       </v-list>
 
       <div class="pa-2">
-        <!-- 未着席時 -->
         <v-btn
           depressed
           block
           color="#f6bf00"
           :to="{ name: 'room', params: { roomId: $route.params.roomId } }"
-          v-if="$route.name === 'floor' && !authUser.seat"
+          :disabled="$route.name !== 'floor' || authUser.seat !== null"
         >
           入室
         </v-btn>
