@@ -144,7 +144,7 @@ export default {
   data() {
     return {
       loading: false, // ローディング制御
-      kartes: [], // カルテ一覧
+      kartes: null, // カルテ一覧
       showKarte: null, // 詳細を表示するカルテ
     };
   },
