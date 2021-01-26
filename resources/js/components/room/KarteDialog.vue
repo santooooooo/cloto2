@@ -265,19 +265,17 @@ export default {
 
         if (response.status === OK) {
           this.$store.dispatch('alert/success', 'カルテが保存されました。');
-
           this.dialog = false;
+
+          // 自習継続の確認
+          if (this.confirm) {
+            this.confirmDialog = true;
+          } else {
+            this.$emit('leave-room');
+          }
         } else {
           this.$store.dispatch('alert/error');
-
           this.karteForm.loading = false;
-        }
-
-        // 自習継続の確認
-        if (this.confirm) {
-          this.confirmDialog = true;
-        } else {
-          this.$emit('leave-room');
         }
       }
     },

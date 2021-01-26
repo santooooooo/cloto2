@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card max-width="1080" tile class="ma-5">
+    <v-card max-width="1080" tile class="ma-5" :loading="loading">
       <v-simple-table headers-length:5>
         <template v-slot:default>
           <thead>
@@ -28,7 +28,7 @@
                   max-width="120"
                   class="my-2"
                   contain
-                  :src="$storage('karte') + karte.image"
+                  :src="getImagePath(karte)"
                   v-if="karte.image"
                 />
 
@@ -36,7 +36,7 @@
                   color="grey lighten-2"
                   width="120"
                   height="120"
-                  class="my-2"
+                  class="mx-auto my-2"
                   v-else
                 ></v-sheet>
               </td>
@@ -119,7 +119,7 @@
         </template>
       </v-simple-table>
 
-      <v-card-text class="text-center" v-if="!kartes.length">未投稿</v-card-text>
+      <v-card-text class="text-center" v-if="!loading && !kartes.length">未投稿</v-card-text>
     </v-card>
 
     <!-- カルテ表示ダイアログ -->
@@ -143,13 +143,62 @@ export default {
   },
   data() {
     return {
+      loading: false, // ローディング制御
       kartes: [], // カルテ一覧
       showKarte: null, // 詳細を表示するカルテ
     };
   },
-  async mounted() {
+  computed: {
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
+  },
+  methods: {
+    /**
+     * 画像パスの取得
+     *
+     * @param Object  karte カルテ
+     * @returns String  画像パス
+     */
+    getImagePath(karte) {
+      // 日時の取得
+      var dateTime = new Date(karte.created_at);
+
+      // 日にちの取得
+      var year = String(dateTime.getFullYear());
+      var month = String(dateTime.getMonth() + 1);
+      // 2桁で月を取得
+      var month = String(dateTime.getHours());
+      if (month.length === 1) {
+        month = '0' + month;
+      }
+      var day = String(dateTime.getDate());
+
+      // 2桁で時間を取得
+      var hour = String(dateTime.getHours());
+      if (hour.length === 1) {
+        hour = '0' + hour;
+      }
+      // 2桁で分数を取得
+      var minute = String(dateTime.getMinutes());
+      if (minute.length === 1) {
+        minute = '0' + minute;
+      }
+
+      var date = year + '_' + month + day;
+      var time = hour + minute;
+
+      var dir = this.$storage('karte') + this.authUser.username + '/' + date + '_' + time + '/';
+      return dir + karte.image;
+    },
+  },
+  async created() {
+    this.loading = true;
+
     var response = await axios.get('/api/kartes');
     this.kartes = response.data;
+
+    this.loading = false;
   },
 };
 </script>

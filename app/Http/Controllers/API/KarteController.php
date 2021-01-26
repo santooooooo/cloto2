@@ -7,6 +7,7 @@ use App\Models\Karte;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class KarteController extends Controller
 {
