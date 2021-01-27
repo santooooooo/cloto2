@@ -52,8 +52,6 @@
 </template>
 
 <script>
-import { OK } from '@/consts/status';
-
 export default {
   head: {
     title() {
@@ -169,16 +167,12 @@ export default {
         this.isLoading = true;
 
         // 問い合わせの送信
-        var response = await axios.post('/api/admin/inquiries', {
+        await axios.post('/api/admin/inquiries', {
           user_id: this.user.id,
           author: 'support',
           type: 'text',
           data: { text: message.data.text },
         });
-
-        if (response.status !== OK) {
-          this.$store.dispatch('alert/error');
-        }
 
         this.isLoading = false;
 

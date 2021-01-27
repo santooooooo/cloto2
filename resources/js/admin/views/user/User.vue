@@ -237,8 +237,6 @@ export default {
         var response = await axios.post('/api/admin/users/' + this.editUserForm.data.id, input);
 
         if (response.status === OK) {
-          this.$store.dispatch('alert/success', 'ユーザーデータが更新されました。');
-
           if (this.editUserForm.index > -1) {
             Object.assign(this.users[this.editUserForm.index], this.editUserForm.data);
           } else {
@@ -247,8 +245,6 @@ export default {
 
           this.close();
         } else {
-          this.$store.dispatch('alert/error');
-
           this.editUserForm.loading = false;
         }
       }
@@ -274,12 +270,10 @@ export default {
       var response = await axios.delete('/api/admin/users/' + this.deleteUserForm.data.id);
 
       if (response.status === OK) {
-        this.$store.dispatch('alert/success', 'ユーザーが削除されました。');
         this.getUsers();
         this.deleteUserForm.dialog = false;
         this.deleteUserForm.loading = false;
       } else {
-        this.$store.dispatch('alert/error');
         this.deleteUserForm.loading = false;
       }
     },

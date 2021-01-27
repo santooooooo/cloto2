@@ -45,10 +45,10 @@ class TagController extends Controller
         $result = $this->tag->create($data);
 
         if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'タグの作成に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response(null);
+        return response()->json(['message' => 'タグが作成されました。']);
     }
 
     /**
@@ -65,10 +65,10 @@ class TagController extends Controller
         $result = $tag->fill($data)->save();
 
         if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'タグの更新に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response(null);
+        return response()->json(['message' => 'タグが更新されました。']);
     }
 
     /**
@@ -82,9 +82,9 @@ class TagController extends Controller
         $result = $tag->delete();
 
         if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'タグの削除に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response(null);
+        return response()->json(['message' => 'タグが削除されました。']);
     }
 }

@@ -182,11 +182,9 @@ export default {
           });
 
           if (response.status === OK) {
-            this.$store.dispatch('alert/success', 'タグが更新されました。');
             Object.assign(this.tags[this.editTagForm.index], this.editTagForm.data);
             this.close();
           } else {
-            this.$store.dispatch('alert/error');
             this.editTagForm.loading = false;
           }
         } else {
@@ -196,11 +194,9 @@ export default {
           });
 
           if (response.status === OK) {
-            this.$store.dispatch('alert/success', 'タグが作成されました。');
             this.getTags();
             this.close();
           } else {
-            this.$store.dispatch('alert/error');
             this.editTagForm.loading = false;
           }
         }
@@ -227,12 +223,10 @@ export default {
       var response = await axios.delete('/api/admin/tags/' + this.deleteTagForm.data.id);
 
       if (response.status === OK) {
-        this.$store.dispatch('alert/success', 'タグが削除されました。');
         this.getTags();
         this.deleteTagForm.dialog = false;
         this.deleteTagForm.loading = false;
       } else {
-        this.$store.dispatch('alert/error');
         this.deleteTagForm.loading = false;
       }
     },

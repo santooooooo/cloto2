@@ -238,12 +238,8 @@ export default {
         var response = await axios.post('/api/admin/seats/' + this.editMediaForm.seatId, input);
 
         if (response.status === OK) {
-          this.$store.dispatch('alert/success', 'メディアが更新されました。');
-
           this.close();
         } else {
-          this.$store.dispatch('alert/error');
-
           this.editMediaForm.loading = false;
         }
       }

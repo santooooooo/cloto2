@@ -98,9 +98,9 @@ class SeatController extends Controller
         $result = $seat->fill($data)->save();
 
         if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => '座席データの更新に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response(null);
+        return response()->json(['message' => '座席データが更新されました。']);
     }
 }

@@ -58,10 +58,10 @@ class UserController extends Controller
         $result = $user->fill($data)->save();
 
         if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'ユーザーの更新に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response(null);
+        return response()->json(['message' => 'ユーザーが更新されました。']);
     }
 
     /**
@@ -83,9 +83,9 @@ class UserController extends Controller
         $result = $user->delete();
 
         if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'ユーザーの削除に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response(null);
+        return response()->json(['message' => 'ユーザーが削除されました。']);
     }
 }

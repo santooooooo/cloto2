@@ -69,10 +69,10 @@ class AdminController extends Controller
         $result = $this->admin->create($data);
 
         if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => '管理者の作成に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response(null);
+        return response()->json(['message' => '管理者が作成されました。']);
     }
 
     /**
@@ -94,10 +94,10 @@ class AdminController extends Controller
         $result = $admin->fill($data)->save();
 
         if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => '管理者の更新に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response(null);
+        return response()->json(['message' => '管理者が更新されました。']);
     }
 
     /**
@@ -111,9 +111,9 @@ class AdminController extends Controller
         $result = $admin->delete();
 
         if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => '管理者の削除に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response(null);
+        return response()->json(['message' => '管理者が削除されました。']);
     }
 }

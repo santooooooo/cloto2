@@ -147,8 +147,6 @@
 </template>
 
 <script>
-import { OK } from '@/consts/status';
-
 export default {
   head: {
     title() {
@@ -235,18 +233,12 @@ export default {
         this.editSeatForm.loading = true;
 
         // 座席データ保存処理
-        var response = await axios.post('/api/admin/seats/' + seatId, {
+        await axios.post('/api/admin/seats/' + seatId, {
           _method: 'patch',
           name: name,
           size: size,
           position: position,
         });
-
-        if (response.status === OK) {
-          this.$store.dispatch('alert/success', '座席データが更新されました。');
-        } else {
-          this.$store.dispatch('alert/error');
-        }
 
         this.editSeatForm.loading = false;
       }

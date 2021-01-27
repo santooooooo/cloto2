@@ -261,8 +261,6 @@ export default {
         var response = await axios.post('/api/admin/rooms/' + this.editRoomForm.data.id, input);
 
         if (response.status === OK) {
-          this.$store.dispatch('alert/success', '部屋データが更新されました。');
-
           if (this.editRoomForm.index > -1) {
             this.rooms[this.editRoomForm.index].name = this.editRoomForm.data.name;
             this.rooms[this.editRoomForm.index].timetable = timetable;
@@ -272,8 +270,6 @@ export default {
 
           this.close();
         } else {
-          this.$store.dispatch('alert/error');
-
           this.editRoomForm.loading = false;
         }
       }

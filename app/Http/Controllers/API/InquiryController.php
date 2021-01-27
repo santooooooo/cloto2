@@ -69,7 +69,7 @@ class InquiryController extends Controller
         $result = $this->inquiry->create($data);
 
         if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'お問い合わせの送信に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
         // 投稿したデータを送信
@@ -93,6 +93,6 @@ class InquiryController extends Controller
             }
         }
 
-        return response(null);
+        return response()->json();
     }
 }

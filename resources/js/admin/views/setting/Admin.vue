@@ -244,11 +244,9 @@ export default {
           var response = await axios.post('/api/admin/admins/' + this.editAdminForm.data.id, input);
 
           if (response.status === OK) {
-            this.$store.dispatch('alert/success', '管理者が更新されました。');
             Object.assign(this.admins[this.editAdminForm.index], this.editAdminForm.data);
             this.close();
           } else {
-            this.$store.dispatch('alert/error');
             this.editAdminForm.loading = false;
           }
         } else {
@@ -260,11 +258,9 @@ export default {
           });
 
           if (response.status === OK) {
-            this.$store.dispatch('alert/success', '管理者が作成されました。');
             this.getAdmins();
             this.close();
           } else {
-            this.$store.dispatch('alert/error');
             this.editAdminForm.loading = false;
           }
         }
@@ -291,12 +287,10 @@ export default {
       var response = await axios.delete('/api/admin/admins/' + this.deleteAdminForm.data.id);
 
       if (response.status === OK) {
-        this.$store.dispatch('alert/success', '管理者が削除されました。');
         this.getAdmins();
         this.deleteAdminForm.dialog = false;
         this.deleteAdminForm.loading = false;
       } else {
-        this.$store.dispatch('alert/error');
         this.deleteAdminForm.loading = false;
       }
     },

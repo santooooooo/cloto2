@@ -41,7 +41,7 @@
           </template>
 
           <v-list-item dense exact :to="{ name: 'admin' }">
-            <v-list-item-title>管理者アカウント</v-list-item-title>
+            <v-list-item-title>管理者</v-list-item-title>
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>

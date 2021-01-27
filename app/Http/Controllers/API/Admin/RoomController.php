@@ -61,9 +61,9 @@ class RoomController extends Controller
         $result = $room->fill($data)->save();
 
         if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => '部屋データの更新に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response(null);
+        return response()->json(['message' => '部屋データが更新されました。']);
     }
 }
