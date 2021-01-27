@@ -53,7 +53,7 @@
                         <td>
                           <v-img
                             max-width="120"
-                            class="my-2"
+                            class="mx-auto my-2"
                             contain
                             :src="getImagePath(karte)"
                             v-if="karte.image"
@@ -63,7 +63,7 @@
                             color="grey lighten-2"
                             width="120"
                             height="120"
-                            class="my-2"
+                            class="mx-auto my-2"
                             v-else
                           ></v-sheet>
                         </td>
@@ -227,11 +227,9 @@ export default {
       // 日時の取得
       var dateTime = new Date(karte.created_at);
 
-      // 日にちの取得
       var year = String(dateTime.getFullYear());
-      var month = String(dateTime.getMonth() + 1);
       // 2桁で月を取得
-      var month = String(dateTime.getHours());
+      var month = String(dateTime.getMonth() + 1);
       if (month.length === 1) {
         month = '0' + month;
       }

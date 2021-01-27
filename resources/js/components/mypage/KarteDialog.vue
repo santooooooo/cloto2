@@ -37,10 +37,14 @@
 
             <v-col>
               <v-card-text class="pa-2 white--text title font-weight-bold"> 画像 </v-card-text>
-              <v-img contain :src="getImagePath(karte)" v-if="karte.image"></v-img>
-              <v-row justify="center" v-else>
-                <v-sheet color="grey lighten-2" width="450" height="280"></v-sheet>
-              </v-row>
+              <v-img contain :src="getImagePath(karte)" class="mx-auto" v-if="karte.image"></v-img>
+              <v-sheet
+                color="grey lighten-2"
+                width="450"
+                height="280"
+                class="mx-auto"
+                v-else
+              ></v-sheet>
             </v-col>
           </v-row>
 
@@ -102,11 +106,9 @@ export default {
       // 日時の取得
       var dateTime = new Date(karte.created_at);
 
-      // 日にちの取得
       var year = String(dateTime.getFullYear());
-      var month = String(dateTime.getMonth() + 1);
       // 2桁で月を取得
-      var month = String(dateTime.getHours());
+      var month = String(dateTime.getMonth() + 1);
       if (month.length === 1) {
         month = '0' + month;
       }
