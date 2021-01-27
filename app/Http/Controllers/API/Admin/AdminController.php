@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 
@@ -19,9 +20,28 @@ class AdminController extends Controller
      */
     public function __construct(Admin $admin)
     {
+        $this->middleware(function ($request, $next) {
+            $this->auth_admin = Auth::guard('admin')->user();
+            return $next($request);
+        });
+
         $this->admin = $admin;
     }
 
+
+    /**
+     * ログイン管理者の取得
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function auth()
+    {
+        if (empty($this->auth_admin)) {
+            return response(null);
+        }
+
+        return response()->json($this->auth_admin);
+    }
 
     /**
      * 管理者一覧の取得

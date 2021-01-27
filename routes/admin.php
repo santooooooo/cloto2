@@ -20,7 +20,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     |--------------------------------------------------------------------------
     */
     Route::post('/logout', 'Auth\Admin\LoginController@logout');
-    Route::get('/auth', 'API\Admin\UserController@auth');
+    Route::get('/auth', 'API\Admin\AdminController@auth');
 
 
     Route::namespace('API\Admin')->group(function () {

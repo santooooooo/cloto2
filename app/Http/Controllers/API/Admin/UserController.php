@@ -25,28 +25,9 @@ class UserController extends Controller
      */
     public function __construct(User $user)
     {
-        $this->middleware(function ($request, $next) {
-            $this->auth_user = Auth::guard('admin')->user();
-            return $next($request);
-        });
-
         $this->user = $user;
     }
 
-
-    /**
-     * ログインユーザーの取得
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function auth()
-    {
-        if (empty($this->auth_user)) {
-            return response(null);
-        }
-
-        return response()->json($this->auth_user);
-    }
 
     /**
      * ユーザー一覧の取得
