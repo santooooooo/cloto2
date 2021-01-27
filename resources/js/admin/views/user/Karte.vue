@@ -171,7 +171,7 @@
       </template>
 
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon @click="showKartes(item)">mdi-folder-account</v-icon>
+        <v-icon @click="getKartes(item)">mdi-folder-account</v-icon>
       </template>
 
       <template v-slot:no-data>
@@ -223,11 +223,11 @@ export default {
     },
 
     /**
-     * カルテ一覧の表示
+     * カルテ一覧の取得
      *
-     * @param Object  user  表示するユーザー
+     * @param Object  user  カルテを取得するユーザー
      */
-    showKartes: async function (user) {
+    getKartes: async function (user) {
       this.kartes.user = user;
       var response = await axios.get('/api/admin/kartes/' + this.kartes.user.id);
       this.kartes.data = response.data;
