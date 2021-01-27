@@ -48,7 +48,12 @@
                     </thead>
 
                     <tbody>
-                      <tr v-for="karte in kartes.data" :key="karte.id">
+                      <tr
+                        v-for="karte in kartes.data"
+                        :key="karte.id"
+                        @click="kartes.showKarte = karte"
+                        style="cursor: pointer"
+                      >
                         <!-- 画像 -->
                         <td>
                           <v-img
@@ -155,6 +160,13 @@
                 <v-card-text class="text-center" v-if="!kartes.data.length">未投稿</v-card-text>
               </v-card>
             </v-container>
+
+            <!-- カルテ表示ダイアログ -->
+            <KarteDialog
+              :karte="kartes.showKarte"
+              :username="kartes.user.username"
+              @close="kartes.showKarte = $event"
+            />
           </v-dialog>
         </v-toolbar>
       </template>
@@ -171,6 +183,8 @@
 </template>
 
 <script>
+import KarteDialog from '@/admin/components/user/KarteDialog';
+
 export default {
   head: {
     title() {
@@ -178,6 +192,9 @@ export default {
         inner: 'カルテ',
       };
     },
+  },
+  components: {
+    KarteDialog,
   },
   data() {
     return {
@@ -193,6 +210,7 @@ export default {
         dialog: false,
         user: {},
         data: {},
+        showKarte: null, // 詳細を表示するカルテ
       },
     };
   },
