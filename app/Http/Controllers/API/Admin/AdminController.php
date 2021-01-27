@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Admin;
 
 class AdminController extends Controller
@@ -62,6 +63,11 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+
+        // メールアドレスのユニークチェック
+        if (Validator::make($data, ['email' => ['unique:admins']])->fails()) {
+            return response()->json(['message' => 'このメールアドレスは既に登録されています。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
 
         // パスワードのハッシュ化
         $data['password'] = Hash::make($data['password']);
