@@ -162,20 +162,26 @@ export default {
       {
         author: 'support',
         type: 'text',
-        data: { meta: now, text: 'はじめまして！' },
+        data: {
+          meta: now,
+          text: process.env.MIX_APP_NAME + 'をご利用いただきありがとうございます！',
+        },
       },
       {
         author: 'support',
         type: 'text',
         data: {
           meta: now,
-          text: process.env.MIX_APP_NAME + 'をご利用いただきありがとうございます。',
+          text: '何かお困りのことがございましたら、このチャットからお気軽にお申し付けください！',
         },
       },
       {
         author: 'support',
         type: 'text',
-        data: { meta: now, text: '何かお困りごとがありますか？' },
+        data: {
+          meta: now,
+          text: '１営業日以内にお返事致します。',
+        },
       }
     );
 
