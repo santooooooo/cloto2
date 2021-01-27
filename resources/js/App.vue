@@ -117,7 +117,7 @@ export default {
 
         // ログイン中は5分毎にオンライン状態を通知
         this.setOnlineTimer = setInterval(() => {
-          axios.get('/api/online');
+          axios.post('/api/online');
         }, 300000);
       }
     },
@@ -234,7 +234,7 @@ export default {
           this.$router.go();
         } else {
           // オンライン状態を通知
-          axios.get('/api/online');
+          axios.post('/api/online');
         }
       }
 

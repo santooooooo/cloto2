@@ -159,7 +159,7 @@ export default {
             this.inProgress.body = '';
           }
         } else {
-          this.$store.dispatch('alert/error', '公開に失敗しました．．．');
+          this.$store.dispatch('alert/error', '取り組み中のタスクの公開に失敗しました．．．');
         }
 
         this.inProgress.loading = false;

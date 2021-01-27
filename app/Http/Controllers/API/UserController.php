@@ -45,14 +45,14 @@ class UserController extends Controller
     public function set_online()
     {
         if (empty($this->auth_user)) {
-            return response(null);
+            return response()->json();
         }
 
         // 10分で期限切れ
         $expires_at = Carbon::now()->addMinutes(10);
         Cache::put('user-is-online-' . $this->auth_user->id, true, $expires_at);
 
-        return response(null);
+        return response()->json();
     }
 
     /**
@@ -63,7 +63,7 @@ class UserController extends Controller
     public function auth()
     {
         if (empty($this->auth_user)) {
-            return response(null);
+            return response()->json();
         }
 
         return response()->json($this->auth_user->load('seat'));

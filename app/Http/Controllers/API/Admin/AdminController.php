@@ -37,7 +37,7 @@ class AdminController extends Controller
     public function auth()
     {
         if (empty($this->auth_admin)) {
-            return response(null);
+            return response()->json();
         }
 
         return response()->json($this->auth_admin);

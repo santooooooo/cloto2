@@ -55,7 +55,7 @@ class RoomController extends Controller
         $user = Auth::user();
 
         if (empty($user) || empty($user->seat)) {
-            return response(null);
+            return response()->json();
         }
 
         $room_id = $user->seat->section->room_id;
