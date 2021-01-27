@@ -219,8 +219,6 @@ export default {
         var response = await axios.post('/api/users', input);
 
         if (response.status === OK) {
-          this.$store.dispatch('alert/success', 'ユーザーデータが更新されました。');
-
           // ユーザーデータの同期
           await this.$store.dispatch('auth/syncAuthUser');
 
@@ -229,8 +227,6 @@ export default {
           this.dialog = false;
           this.$emit('close', false);
         } else {
-          this.$store.dispatch('alert/error');
-
           this.editProfileForm.loading = false;
         }
       }

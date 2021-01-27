@@ -27,8 +27,6 @@
 </template>
 
 <script>
-import { OK } from '@/consts/status';
-
 export default {
   data() {
     return {
@@ -93,15 +91,11 @@ export default {
         this.isLoading = true;
 
         // 問い合わせの送信
-        var response = await axios.post('/api/inquiries', {
+        await axios.post('/api/inquiries', {
           author: 'user',
           type: 'text',
           data: { text: message.data.text },
         });
-
-        if (response.status !== OK) {
-          this.$store.dispatch('alert/error');
-        }
 
         this.isLoading = false;
       }

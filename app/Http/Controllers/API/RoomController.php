@@ -73,7 +73,7 @@ class RoomController extends Controller
         $user = Auth::user();
 
         if (empty($user) || empty($user->seat)) {
-            return response(null);
+            return response()->json(['message' => 'アナウンスに失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
         broadcast(new AnnounceEvent($user->seat->section->room, $request->message));

@@ -267,7 +267,6 @@ export default {
         var response = await axios.post('/api/kartes', input);
 
         if (response.status === OK) {
-          this.$store.dispatch('alert/success', 'カルテが保存されました。');
           this.dialog = false;
 
           // 自習継続の確認
@@ -277,7 +276,6 @@ export default {
             this.$emit('leave-room');
           }
         } else {
-          this.$store.dispatch('alert/error');
           this.karteForm.loading = false;
         }
       }

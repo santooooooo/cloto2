@@ -271,11 +271,6 @@ export default {
           break;
       }
 
-      // エラー発生時
-      if (response.status !== OK) {
-        this.$store.dispatch('alert/error', response.data);
-      }
-
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
     },

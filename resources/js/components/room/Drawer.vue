@@ -176,8 +176,6 @@ export default {
 
       if (response.status === OK) {
         this.announcement.message = '';
-      } else {
-        this.$store.dispatch('alert/error', 'アナウンスに失敗しました．．．');
       }
 
       this.announcement.loading = false;

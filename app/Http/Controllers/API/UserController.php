@@ -130,13 +130,15 @@ class UserController extends Controller
         $result = $this->auth_user->fill($data)->save();
 
         if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'ユーザーデータの更新に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        // 取り組み中のタスクが更新された場合は通知
+        // 取り組み中のタスクが更新された場合
         if (array_key_exists('in_progress', $data)) {
             broadcast(new SeatEvent($this->auth_user->seat->section->room));
+            return response()->json();
         }
-        return response(null);
+
+        return response()->json(['message' => 'ユーザーデータが更新されました。']);
     }
 }

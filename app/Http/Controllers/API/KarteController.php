@@ -75,7 +75,7 @@ class KarteController extends Controller
         $result = $this->karte->create($data);
 
         if (empty($result)) {
-            return response(null, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'カルテの保存に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
         // 画像ファイルの保存（カルテの作成日時を使用するためcreate後に実行）
@@ -89,6 +89,6 @@ class KarteController extends Controller
             $result->tags()->sync(explode(',', $data['tags']));
         }
 
-        return response()->json($result);
+        return response()->json(['message' => 'カルテが保存されました。']);
     }
 }

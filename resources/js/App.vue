@@ -65,6 +65,7 @@ import Header from './Header';
 import Drawer from './Drawer';
 import Footer from './Footer';
 import Inquiry from './Inquiry';
+import { OK, UNPROCESSABLE_ENTITY, INTERNAL_SERVER_ERROR } from '@/consts/status';
 
 export default {
   components: {
@@ -276,6 +277,24 @@ export default {
     },
   },
   created() {
+    // 処理結果の表示
+    axios.interceptors.response.use((response) => {
+      if (response.status === OK) {
+        // メッセージが存在する場合のみ表示
+        if (response.data.message) {
+          this.$store.dispatch('alert/success', response.data.message);
+        }
+      } else if (
+        response.status === UNPROCESSABLE_ENTITY ||
+        response.status === INTERNAL_SERVER_ERROR
+      ) {
+        // エラー発生時
+        this.$store.dispatch('alert/error', response.data.message || null);
+      }
+
+      return response;
+    });
+
     // システムイベントの受信開始
     Echo.channel('system').listen('SystemDownEvent', () => {
       // メンテナンスモード開始

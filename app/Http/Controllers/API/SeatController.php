@@ -40,8 +40,7 @@ class SeatController extends Controller
 
         // 処理中止
         if ($seat->status != null) {
-            $message = '他のユーザーが着席しています。';
-            return response()->json($message, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => '他のユーザーが着席しています。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
 
@@ -89,8 +88,7 @@ class SeatController extends Controller
 
         // 処理中止
         if ($seat->status != null) {
-            $message = '他のユーザーが着席しています。';
-            return response()->json($message, config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => '他のユーザーが着席しています。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
 
