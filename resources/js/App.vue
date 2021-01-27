@@ -102,7 +102,18 @@ export default {
   },
   watch: {
     authCheck: function (val) {
-      if (val) {
+      if (val === true) {
+        // ログアウトの検知
+        axios.interceptors.response.use((error) => {
+          if (error.status === 401) {
+            alert('ログアウトされました。');
+            window.location.pathname = '/login';
+            throw error.status;
+          }
+
+          return error;
+        });
+
         // ログイン中は5分毎にオンライン状態を通知
         this.setOnlineTimer = setInterval(() => {
           axios.get('/api/online');

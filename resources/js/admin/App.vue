@@ -59,6 +59,25 @@ export default {
     alert() {
       return this.$store.state.alert;
     },
+    authCheck() {
+      return this.$store.getters['auth/check'];
+    },
+  },
+  watch: {
+    authCheck: function (val) {
+      if (val === true) {
+        // ログアウトの検知
+        axios.interceptors.response.use((error) => {
+          if (error.status === 401) {
+            alert('ログアウトされました。');
+            window.location.pathname = '/admin/login';
+            throw error.status;
+          }
+
+          return error;
+        });
+      }
+    },
   },
   methods: {
     /**
