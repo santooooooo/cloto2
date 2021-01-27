@@ -105,7 +105,7 @@
                   </td>
                 </template>
 
-                <v-chip class="ma-2" filter v-for="tag in karte.tags" :key="tag.id" :value="tag.id">
+                <v-chip class="ma-2" v-for="tag in karte.tags" :key="tag.id" :value="tag.id">
                   {{ tag.name }}
                 </v-chip>
               </v-tooltip>

@@ -143,7 +143,6 @@
 
                           <v-chip
                             class="ma-2"
-                            filter
                             v-for="tag in karte.tags"
                             :key="tag.id"
                             :value="tag.id"

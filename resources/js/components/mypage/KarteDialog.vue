@@ -14,7 +14,7 @@
           </v-row>
 
           <v-row justify="center">
-            <v-chip class="ma-3" filter v-for="tag in karte.tags" :key="tag.id" :value="tag.id">
+            <v-chip class="ma-3" v-for="tag in karte.tags" :key="tag.id" :value="tag.id">
               {{ tag.name }}
             </v-chip>
           </v-row>
