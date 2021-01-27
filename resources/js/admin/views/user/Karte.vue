@@ -52,7 +52,6 @@
                         v-for="karte in kartes.data"
                         :key="karte.id"
                         @click="kartes.showKarte = karte"
-                        style="cursor: pointer"
                       >
                         <!-- 画像 -->
                         <td>
@@ -278,12 +277,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content {
-  width: 100px;
-  margin: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+tbody {
+  tr {
+    cursor: pointer;
+
+    .content {
+      width: 100px;
+      margin: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
 }
 </style>
 

@@ -16,12 +16,7 @@
           </thead>
 
           <tbody>
-            <tr
-              v-for="karte in kartes"
-              :key="karte.id"
-              @click="showKarte = karte"
-              style="cursor: pointer"
-            >
+            <tr v-for="karte in kartes" :key="karte.id" @click="showKarte = karte">
               <!-- 画像 -->
               <td>
                 <v-img
@@ -202,11 +197,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content {
-  width: 100px;
-  margin: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+tbody {
+  tr {
+    cursor: pointer;
+
+    .content {
+      width: 100px;
+      margin: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
 }
 </style>
