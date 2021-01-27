@@ -73,12 +73,8 @@ class SeatController extends Controller
                             $type = 'video';
                             break;
 
-                        case 'wmv':
-                            $type = 'video';
-                            break;
-
-                        case 'mov':
-                            $type = 'video';
+                        default:
+                            $type = 'text';
                             break;
                     }
 

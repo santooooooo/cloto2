@@ -62,7 +62,7 @@
                         type="file"
                         :disabled="editMediaForm.removeMedia || editMediaForm.text !== ''"
                         @change="inputFile"
-                        accept="image/jpeg, image/png, video/*"
+                        accept="image/jpeg, image/png, video/mp4"
                         class="pa-2 mb-5"
                         style="overflow: hidden"
                         v-if="editMediaForm.dialog"
