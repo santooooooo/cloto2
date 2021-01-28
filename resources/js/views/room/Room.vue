@@ -88,7 +88,6 @@ export default {
     return {
       chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
       isLoading: false, // ローディング制御
-      timer: null, // 同期制御
       canvas: null, // キャンバスエリア
       messageOverlay: {
         isShow: false, // メッセージオーバーレイ制御
@@ -864,14 +863,6 @@ export default {
 
     // ロード終了
     this.isLoading = false;
-
-    // 念の為10秒ごとにデータを同期
-    this.timer = setInterval(this.getRoom, 10000);
-  },
-
-  beforeDestroy() {
-    // 同期の停止
-    clearInterval(this.timer);
   },
 };
 </script>
