@@ -143,7 +143,9 @@ export default {
           val.forEach((section, sectionIndex) => {
             // 座席のループ
             section.seats.forEach((seat, seatIndex) => {
-              if (seat.status !== oldVal[sectionIndex].seats[seatIndex].status) {
+              var oldSeat = oldVal[sectionIndex].seats[seatIndex];
+
+              if (seat.status !== oldSeat.status) {
                 // 状態の変化があった座席は再描画
                 switch (seat.status) {
                   case 'sitting':
@@ -168,18 +170,15 @@ export default {
                   default:
                     // 退席された場合
                     this.canvas.getObjects().forEach((object) => {
-                      if (oldVal[sectionIndex].seats[seatIndex].user !== null) {
+                      if (oldSeat.user !== null) {
                         // 着席中の座席からの退席処理
-                        if (object.userId === oldVal[sectionIndex].seats[seatIndex].user.id) {
+                        if (object.userId === oldSeat.user.id) {
                           // アイコンの削除
                           this.removeIcon(object);
                         }
 
-                        // 休憩室から退席した場合は予約を解除
-                        if (
-                          seat.role === 'lounge' &&
-                          object.reservationId === oldVal[sectionIndex].seats[seatIndex].user.id
-                        ) {
+                        // 予約中の座席の解除処理
+                        if (object.reservationId === oldSeat.user.id) {
                           object.set({ reservationId: null, fill: '' });
                           this.canvas.requestRenderAll();
                         }
