@@ -354,7 +354,7 @@
 
           <!-- プロフィールダイアログ -->
           <ProfileDialog
-            :user-param="profile.username"
+            :username="profile.username"
             @close="profile.dialog = $event"
             v-if="profile.dialog"
           ></ProfileDialog>

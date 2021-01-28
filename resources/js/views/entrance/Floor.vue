@@ -107,7 +107,6 @@ export default {
       if (seat.user) {
         fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (icon) => {
           icon.set({
-            userId: seat.user.id,
             left: seat.position.x,
             top: seat.position.y,
             originX: 'center',

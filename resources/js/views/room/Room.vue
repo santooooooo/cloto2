@@ -41,7 +41,7 @@
 
       <!-- プロフィールダイアログ -->
       <ProfileDialog
-        :user-param="profile.userId"
+        :username="profile.username"
         @close="profile.dialog = $event"
         v-if="profile.dialog"
       />
@@ -109,7 +109,7 @@ export default {
       },
       profile: {
         dialog: false, // プロフィールのダイアログ制御
-        userId: null, // プロフィールを表示するユーザーID
+        username: null, // プロフィールを表示するユーザー名
       },
       karte: {
         dialog: false, // カルテ記入ダイアログの制御
@@ -143,25 +143,37 @@ export default {
           val.forEach((section, sectionIndex) => {
             // 座席のループ
             section.seats.forEach((seat, seatIndex) => {
-              var oldSeat = oldVal[sectionIndex].seats[seatIndex];
+              // 座席の元の値
+              var oldSeatData = oldVal[sectionIndex].seats[seatIndex];
 
-              if (seat.status !== oldSeat.status) {
+              if (seat.status !== oldSeatData.status) {
                 // 状態の変化があった座席は再描画
                 switch (seat.status) {
                   case 'sitting':
+                    // 着席された場合
                     this.setUser(seat);
+
+                    // その座席の予約解除処理
+                    if (oldSeatData.reservation_user_id !== null) {
+                      this.canvas.getObjects().forEach((object) => {
+                        if (object.type === 'seat' && object.seatId === seat.id) {
+                          object.set({ fill: '' });
+                          this.canvas.requestRenderAll();
+                        }
+                      });
+                    }
                     break;
 
                   case 'break':
                     this.canvas.getObjects().forEach((object) => {
                       // 座席を赤色に変更
-                      if (object.seatId === seat.id) {
-                        object.set({ fill: '#FF0000', reservationId: seat.reservation_user_id });
+                      if (object.type === 'seat' && object.seatId === seat.id) {
+                        object.set({ fill: '#FF0000' });
                         this.canvas.requestRenderAll();
                       }
 
                       // アイコンを削除
-                      if (object.userId === seat.reservation_user_id) {
+                      if (object.type === 'user' && object.seatId === seat.id) {
                         this.removeIcon(object);
                       }
                     });
@@ -169,21 +181,14 @@ export default {
 
                   default:
                     // 退席された場合
-                    this.canvas.getObjects().forEach((object) => {
-                      if (oldSeat.user !== null) {
-                        // 着席中の座席からの退席処理
-                        if (object.userId === oldSeat.user.id) {
-                          // アイコンの削除
+                    if (oldSeatData.user !== null) {
+                      this.canvas.getObjects().forEach((object) => {
+                        // アイコンを削除
+                        if (object.type === 'user' && object.seatId === seat.id) {
                           this.removeIcon(object);
                         }
-
-                        // 予約中の座席の解除処理
-                        if (object.reservationId === oldSeat.user.id) {
-                          object.set({ reservationId: null, fill: '' });
-                          this.canvas.requestRenderAll();
-                        }
-                      }
-                    });
+                      });
+                    }
                     break;
                 }
               } else {
@@ -191,7 +196,7 @@ export default {
                 if (seat.user) {
                   // 座席に着席中のユーザーがいる場合
                   this.canvas.getObjects().forEach((object) => {
-                    if (object.userId === seat.user.id) {
+                    if (object.type === 'user' && object.seatId === seat.id) {
                       object.set({ inProgress: seat.user.in_progress });
                       this.canvas.requestRenderAll();
                     }
@@ -366,7 +371,7 @@ export default {
     canvasMouseDown: async function (event) {
       if (event.target.type === 'seat') {
         // クリックした座席に誰も座っていないかつ，予約済みでない場合
-        if (event.target.seatId !== null && event.target.reservationId === null) {
+        if (event.target.seatId !== null && event.target.fill !== '#FF0000') {
           // ロード開始
           this.isLoading = true;
 
@@ -485,7 +490,7 @@ export default {
         }
       } else if (event.target.type === 'user') {
         this.profile.dialog = true;
-        this.profile.userId = String(event.target.userId);
+        this.profile.username = String(event.target.username);
       }
     },
 
@@ -596,8 +601,8 @@ export default {
         fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (icon) => {
           icon.set({
             type: 'user',
-            userId: seat.user.id,
             seatId: seat.id,
+            username: seat.user.username,
             inProgress: seat.user.in_progress,
             left: seat.position.x,
             top: seat.position.y,
@@ -708,7 +713,6 @@ export default {
             callId: section.id,
             callCapacity: section.seats.length,
             fill: color,
-            reservationId: seat.reservation_user_id,
             opacity: 0.3,
             left: seat.position.x,
             top: seat.position.y,

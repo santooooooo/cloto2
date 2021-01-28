@@ -69,7 +69,7 @@
 <script>
 export default {
   props: {
-    userParam: String, // 表示するユーザーのIDまたはユーザー名
+    username: String, // 表示するユーザー名
   },
   data() {
     return {
@@ -81,7 +81,7 @@ export default {
     /**
      * ユーザーデータの取得
      */
-    var response = await axios.get('/api/users/' + this.userParam);
+    var response = await axios.get('/api/users/' + this.username);
     this.user = response.data;
   },
 };
