@@ -155,16 +155,14 @@ export default {
                     // その座席の予約解除処理
                     if (oldSeatData.reservation_user_id !== null) {
                       var object = this.getCanvasObject('seat', 'seatId', seat.id);
-                      object.set({ fill: '' });
-                      this.canvas.requestRenderAll();
+                      this.resetColor(object);
                     }
                     break;
 
                   case 'break':
                     // 座席を赤色に変更
                     var object = this.getCanvasObject('seat', 'seatId', seat.id);
-                    object.set({ fill: '#FF0000' });
-                    this.canvas.requestRenderAll();
+                    this.setColor(object, '#FF0000');
 
                     // アイコンを削除
                     var object = this.getCanvasObject('user', 'seatId', seat.id);
@@ -230,6 +228,26 @@ export default {
     },
 
     /**
+     * 座席色の設定
+     *
+     * @param Object  seatObject  設定する座席オブジェクト
+     * @param String  color       設定する色
+     */
+    setColor: function (seatObject, color) {
+      seatObject.set({ fill: color });
+      this.canvas.requestRenderAll();
+    },
+
+    /**
+     * 座席色の初期化
+     *
+     * @param Object  seatObject  初期化する座席オブジェクト
+     */
+    resetColor: function (seatObject) {
+      this.setColor(seatObject, '');
+    },
+
+    /**
      * アイコンの設置
      *
      * @param Object  seat  着席する座席
@@ -289,17 +307,14 @@ export default {
             if (this.authUser.role === 'mentor') {
               // 自習室または講師室のみ着席可能
               if (target.role === 'study') {
-                target.set({ fill: '#0000ff' });
-                this.canvas.requestRenderAll();
+                this.setColor(target, '#0000FF');
               } else if (target.role === 'staff') {
-                target.set({ fill: '#00ff00' });
-                this.canvas.requestRenderAll();
+                this.setColor(target, '#00FF00');
               }
             } else if (this.authUser.role === 'user') {
               // 自習室のみ着席可能
               if (target.role === 'study') {
-                target.set({ fill: '#0000ff' });
-                this.canvas.requestRenderAll();
+                this.setColor(target, '#0000FF');
               }
             }
           } else {
@@ -309,25 +324,21 @@ export default {
               if (target.role === 'lounge') {
                 // 休憩室は休憩時間のみ開放
                 if (this.roomStatus === 'break') {
-                  target.set({ fill: '#0000ff' });
-                  this.canvas.requestRenderAll();
+                  this.setColor(target, '#0000FF');
                 }
               } else if (target.role === 'mentor') {
                 // メンタリングルーム（メンター）は講師室にいるメンターのみ着席可能
                 if (this.authUser.role === 'mentor' && this.authUser.seat.role === 'staff') {
-                  target.set({ fill: '#00ff00' });
-                  this.canvas.requestRenderAll();
+                  this.setColor(target, '#00FF00');
                 }
               } else if (target.role === 'user') {
                 // メンタリングルーム（利用者）は自習室にいるユーザーのみ着席可能
                 if (this.authUser.seat.role === 'study') {
-                  target.set({ fill: '#0000ff' });
-                  this.canvas.requestRenderAll();
+                  this.setColor(target, '#0000FF');
                 }
               } else {
                 // その他は常に開放
-                target.set({ fill: '#0000ff' });
-                this.canvas.requestRenderAll();
+                this.setColor(target, '#0000FF');
               }
             }
           }
@@ -350,9 +361,8 @@ export default {
      */
     canvasMouseOut: function (target) {
       if (target.type === 'seat') {
-        if (target.fill === '#0000ff' || target.fill === '#00ff00') {
-          target.set({ fill: '' });
-          this.canvas.requestRenderAll();
+        if (target.fill === '#0000FF' || target.fill === '#00FF00') {
+          this.resetColor(target);
         }
       } else if (target.type === 'user') {
         // 吹き出しの非表示
