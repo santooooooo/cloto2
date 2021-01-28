@@ -51,7 +51,6 @@
         :confirm="karte.confirm"
         @close="karte.dialog = $event"
         @leave-room="leaveRoom()"
-        @continue-study="continueStudy()"
         v-if="karte.dialog"
       />
     </v-flex>
@@ -215,57 +214,6 @@ export default {
     },
 
     /**
-     * ユーザーの行動の反映
-     *
-     * @param String  action  行動
-     * @param Object  seatObject 状態を変更する座席
-     */
-    userAction: async function (action, seatObject = null) {
-      switch (action) {
-        case 'sitting':
-          // 着席処理
-          var response = await axios.post('/api/seats/sit/' + seatObject.seatId, {
-            _method: 'patch',
-          });
-          break;
-
-        case 'leave':
-          // 退席処理
-          var response = await axios.post('/api/seats/leave', {
-            _method: 'patch',
-          });
-          break;
-
-        case 'enterCall':
-          // 通話室入室処理
-          var response = await axios.post('/api/seats/move_seat/' + seatObject.seatId, {
-            _method: 'patch',
-          });
-          if (response.status === OK) {
-            this.enterCall(seatObject.callId, seatObject.callCapacity);
-          }
-          break;
-
-        case 'enterMedia':
-          // メディア視聴ブース入室処理
-          var response = await axios.post('/api/seats/move_seat/' + seatObject.seatId, {
-            _method: 'patch',
-          });
-          break;
-
-        case 'returnSeat':
-          // 元の座席に戻る処理
-          var response = await axios.post('/api/seats/return_seat', {
-            _method: 'patch',
-          });
-          break;
-      }
-
-      // ユーザーデータの同期
-      await this.$store.dispatch('auth/syncAuthUser');
-    },
-
-    /**
      * キャンバス上のオブジェクトの取得
      *
      * @param   String  type  検索するタイプ
@@ -279,6 +227,53 @@ export default {
       })[0];
 
       return object || null;
+    },
+
+    /**
+     * アイコンの設置
+     *
+     * @param Object  seat  着席する座席
+     */
+    setUser: function (seat) {
+      // 念の為ユーザーの存在確認
+      if (seat.user) {
+        fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (icon) => {
+          icon.set({
+            type: 'user',
+            seatId: seat.id,
+            username: seat.user.username,
+            inProgress: seat.user.in_progress,
+            left: seat.position.x,
+            top: seat.position.y,
+            originX: 'center',
+            originY: 'center',
+            scaleX: seat.size / icon.width,
+            scaleY: seat.size / icon.height,
+            clipPath: new fabric.Circle({
+              scaleX: icon.width / seat.size,
+              scaleY: icon.height / seat.size,
+              radius: seat.size / 2,
+              originX: 'center',
+              originY: 'center',
+            }),
+            selectable: false, // 図形の選択を禁止
+            hoverCursor: 'default', // カーソルの変更を禁止
+          });
+
+          // 描画
+          this.canvas.add(icon);
+        });
+      }
+    },
+
+    /**
+     * アイコンの削除
+     *
+     * @param Object  removeObject  削除するアイコン
+     */
+    removeIcon: function (removeObject) {
+      this.canvas.remove(removeObject);
+      this.canvas.requestRenderAll();
     },
 
     /**
@@ -531,13 +526,84 @@ export default {
     },
 
     /**
-     * カルテの記入
+     * ユーザーの行動の反映
      *
-     * @param Boolean confirm 自習継続の確認をするか
+     * @param String  action  行動
+     * @param Object  seatObject 状態を変更する座席
      */
-    inputKarte: function (confirm) {
-      this.karte.confirm = confirm;
-      this.karte.dialog = true;
+    userAction: async function (action, seatObject = null) {
+      switch (action) {
+        case 'sitting':
+          // 着席処理
+          var response = await axios.post('/api/seats/sit/' + seatObject.seatId, {
+            _method: 'patch',
+          });
+          break;
+
+        case 'leave':
+          // 退席処理
+          var response = await axios.post('/api/seats/leave', {
+            _method: 'patch',
+          });
+          break;
+
+        case 'enterCall':
+          // 通話室入室処理
+          var response = await axios.post('/api/seats/move_seat/' + seatObject.seatId, {
+            _method: 'patch',
+          });
+          if (response.status === OK) {
+            this.enterCall(seatObject.callId, seatObject.callCapacity);
+          }
+          break;
+
+        case 'enterMedia':
+          // メディア視聴ブース入室処理
+          var response = await axios.post('/api/seats/move_seat/' + seatObject.seatId, {
+            _method: 'patch',
+          });
+          break;
+
+        case 'returnSeat':
+          // 元の座席に戻る処理
+          var response = await axios.post('/api/seats/return_seat', {
+            _method: 'patch',
+          });
+          break;
+      }
+
+      // ユーザーデータの同期
+      await this.$store.dispatch('auth/syncAuthUser');
+    },
+
+    /**
+     * 自習開始
+     */
+    startStudy: async function () {
+      this.$store.dispatch('alert/showOverlay', { color: '#228b22', message: '自習開始！' });
+
+      // チャイム
+      if (this.$store.getters['alert/isSoundOn']) {
+        this.chime.play();
+      }
+
+      // ユーザーデータの同期
+      await this.$store.dispatch('auth/syncAuthUser');
+    },
+
+    /**
+     * 勤務開始
+     */
+    startWork: async function () {
+      this.$store.dispatch('alert/showOverlay', { color: '#8a2be2', message: '勤務開始！' });
+
+      // チャイム
+      if (this.$store.getters['alert/isSoundOn']) {
+        this.chime.play();
+      }
+
+      // ユーザーデータの同期
+      await this.$store.dispatch('auth/syncAuthUser');
     },
 
     /**
@@ -554,13 +620,6 @@ export default {
 
       // フロア一覧へ
       this.$router.push({ name: 'entrance' });
-    },
-
-    /**
-     * カルテ記入後自習続行の処理
-     */
-    continueStudy: function () {
-      this.karte.dialog = false;
     },
 
     /**
@@ -594,80 +653,13 @@ export default {
     },
 
     /**
-     * アイコンの設置
+     * カルテの記入
      *
-     * @param Object  seat  着席する座席
+     * @param Boolean confirm 自習継続の確認をするか
      */
-    setUser: function (seat) {
-      // 念の為ユーザーの存在確認
-      if (seat.user) {
-        fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (icon) => {
-          icon.set({
-            type: 'user',
-            seatId: seat.id,
-            username: seat.user.username,
-            inProgress: seat.user.in_progress,
-            left: seat.position.x,
-            top: seat.position.y,
-            originX: 'center',
-            originY: 'center',
-            scaleX: seat.size / icon.width,
-            scaleY: seat.size / icon.height,
-            clipPath: new fabric.Circle({
-              scaleX: icon.width / seat.size,
-              scaleY: icon.height / seat.size,
-              radius: seat.size / 2,
-              originX: 'center',
-              originY: 'center',
-            }),
-            selectable: false, // 図形の選択を禁止
-            hoverCursor: 'default', // カーソルの変更を禁止
-          });
-
-          // 描画
-          this.canvas.add(icon);
-        });
-      }
-    },
-
-    /**
-     * アイコンの削除
-     *
-     * @param Object  removeObject  削除するアイコン
-     */
-    removeIcon: function (removeObject) {
-      this.canvas.remove(removeObject);
-      this.canvas.requestRenderAll();
-    },
-
-    /**
-     * 自習開始
-     */
-    startStudy: async function () {
-      this.$store.dispatch('alert/showOverlay', { color: '#228b22', message: '自習開始！' });
-
-      // チャイム
-      if (this.$store.getters['alert/isSoundOn']) {
-        this.chime.play();
-      }
-
-      // ユーザーデータの同期
-      await this.$store.dispatch('auth/syncAuthUser');
-    },
-
-    /**
-     * 勤務開始
-     */
-    startWork: async function () {
-      this.$store.dispatch('alert/showOverlay', { color: '#8a2be2', message: '勤務開始！' });
-
-      // チャイム
-      if (this.$store.getters['alert/isSoundOn']) {
-        this.chime.play();
-      }
-
-      // ユーザーデータの同期
-      await this.$store.dispatch('auth/syncAuthUser');
+    inputKarte: function (confirm) {
+      this.karte.confirm = confirm;
+      this.karte.dialog = true;
     },
   },
 

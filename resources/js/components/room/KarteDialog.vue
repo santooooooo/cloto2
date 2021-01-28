@@ -165,7 +165,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn text color="grey lighten-5" @click="$emit('leave-room')">いいえ</v-btn>
-            <v-btn text color="grey lighten-5" @click="$emit('continue-study')">はい</v-btn>
+            <v-btn text color="grey lighten-5" @click="$emit('close', false)">はい</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </v-container>
