@@ -62,7 +62,7 @@ class LoginController extends Controller
         // 別端末のログアウト処理
         auth()->logoutOtherDevices($request->input('password'));
 
-        return $user;
+        return redirect(url('/admin'));
     }
 
     /**
