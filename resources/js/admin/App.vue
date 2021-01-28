@@ -158,11 +158,11 @@ export default {
     /**
      * ログアウト処理
      */
-    logout: function () {
+    logout: async function () {
+      // ログアウト処理
+      await this.$store.dispatch('auth/logout');
       // ログインページへリダイレクト
       window.location.pathname = '/admin/login';
-      // ログアウト処理
-      this.$store.dispatch('auth/logout');
     },
   },
   created() {
