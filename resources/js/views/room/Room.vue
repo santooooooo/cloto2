@@ -155,39 +155,29 @@ export default {
 
                     // その座席の予約解除処理
                     if (oldSeatData.reservation_user_id !== null) {
-                      this.canvas.getObjects().forEach((object) => {
-                        if (object.type === 'seat' && object.seatId === seat.id) {
-                          object.set({ fill: '' });
-                          this.canvas.requestRenderAll();
-                        }
-                      });
+                      var object = this.getCanvasObject('seat', 'seatId', seat.id);
+                      object.set({ fill: '' });
+                      this.canvas.requestRenderAll();
                     }
                     break;
 
                   case 'break':
-                    this.canvas.getObjects().forEach((object) => {
-                      // 座席を赤色に変更
-                      if (object.type === 'seat' && object.seatId === seat.id) {
-                        object.set({ fill: '#FF0000' });
-                        this.canvas.requestRenderAll();
-                      }
+                    // 座席を赤色に変更
+                    var object = this.getCanvasObject('seat', 'seatId', seat.id);
+                    object.set({ fill: '#FF0000' });
+                    this.canvas.requestRenderAll();
 
-                      // アイコンを削除
-                      if (object.type === 'user' && object.seatId === seat.id) {
-                        this.removeIcon(object);
-                      }
-                    });
+                    // アイコンを削除
+                    var object = this.getCanvasObject('user', 'seatId', seat.id);
+                    this.removeIcon(object);
                     break;
 
                   default:
                     // 退席された場合
                     if (oldSeatData.user !== null) {
-                      this.canvas.getObjects().forEach((object) => {
-                        // アイコンを削除
-                        if (object.type === 'user' && object.seatId === seat.id) {
-                          this.removeIcon(object);
-                        }
-                      });
+                      // アイコンを削除
+                      var object = this.getCanvasObject('user', 'seatId', seat.id);
+                      this.removeIcon(object);
                     }
                     break;
                 }
@@ -195,12 +185,9 @@ export default {
                 // 状態の変化がない場合は取り組み中のタスクのみ更新
                 if (seat.user) {
                   // 座席に着席中のユーザーがいる場合
-                  this.canvas.getObjects().forEach((object) => {
-                    if (object.type === 'user' && object.seatId === seat.id) {
-                      object.set({ inProgress: seat.user.in_progress });
-                      this.canvas.requestRenderAll();
-                    }
-                  });
+                  var object = this.getCanvasObject('user', 'seatId', seat.id);
+                  object.set({ inProgress: seat.user.in_progress });
+                  this.canvas.requestRenderAll();
                 }
               }
             });
@@ -276,6 +263,22 @@ export default {
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
+    },
+
+    /**
+     * キャンバス上のオブジェクトの取得
+     *
+     * @param   String  type  検索するタイプ
+     * @param   String  key   要素
+     * @param   Number  value 値
+     * @returns Object  取得したオブジェクト
+     */
+    getCanvasObject: function (type, key, value) {
+      var object = this.canvas.getObjects().filter((object) => {
+        return object.type === type && object[key] === value;
+      })[0];
+
+      return object || null;
     },
 
     /**
