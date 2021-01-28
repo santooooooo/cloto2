@@ -277,7 +277,25 @@ export default {
     },
   },
   created() {
-    // 処理結果アラートの表示
+    // 複数タブ操作の禁止
+    setInterval(() => {
+      // タブ単位での記憶
+      var sessionTabID = sessionStorage.getItem('tabID');
+      // ブラウザ単位での記憶
+      var localTabID = localStorage.getItem('tabID');
+
+      if (sessionTabID === null) {
+        // 新規タブのオープン時にIDを発行
+        var tabID = new Date().getTime();
+        sessionStorage.setItem('tabID', tabID);
+        localStorage.setItem('tabID', tabID);
+      } else if (sessionTabID !== localTabID) {
+        // タブを無効化
+        window.open('about:blank', '_self').close();
+      }
+    }, 1000);
+
+    // 処理結果アラート表示処理の定義
     axios.interceptors.response.use((response) => {
       if (response.status === OK) {
         // メッセージが存在する場合のみ表示

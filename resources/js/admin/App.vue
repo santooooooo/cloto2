@@ -166,7 +166,7 @@ export default {
     },
   },
   created() {
-    // 処理結果アラートの表示
+    // 処理結果アラート表示処理の定義
     axios.interceptors.response.use((response) => {
       if (response.status === OK) {
         // メッセージが存在する場合のみ表示
