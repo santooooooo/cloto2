@@ -72,6 +72,10 @@ class SeatController extends Controller
         // 取り組み中のタスクを初期化
         $this->user->fill(['in_progress' => null])->save();
 
+        // 予約中の座席の状態を初期化（念の為）
+        $seat = $this->seat->where('reservation_user_id', $this->user->id)->first();
+        $seat->fill(['status' => null, 'reservation_user_id' => null])->save();
+
         broadcast(new SeatEvent($room));
         return response()->json();
     }
