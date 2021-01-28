@@ -60,7 +60,7 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         // 別端末のログアウト処理
-        auth()->logoutOtherDevices($request->input('password'));
+        auth('admin')->logoutOtherDevices($request->input('password'));
 
         return redirect(url('/admin'));
     }
