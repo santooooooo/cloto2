@@ -338,6 +338,14 @@
 
 <script>
 export default {
+  head: {
+    title() {
+      return {
+        inner: '',
+        separator: ' ',
+      };
+    },
+  },
   data() {
     return {
       hover1: false,
