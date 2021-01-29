@@ -274,8 +274,8 @@ export default {
               originX: 'center',
               originY: 'center',
             }),
+            hoverCursor: 'pointer',
             selectable: false, // 図形の選択を禁止
-            hoverCursor: 'default', // カーソルの変更を禁止
           });
 
           // 描画
@@ -697,6 +697,7 @@ export default {
       this.$storage('room') + 'room_' + this.roomData.id + '.png',
       this.canvas.renderAll.bind(this.canvas)
     );
+    this.canvas.defaultCursor = 'grab';
 
     // 初期サイズの設定（横幅MAX）
     var zoom = (this.$windowWidth - 260) / this.roomWidth;
@@ -725,11 +726,11 @@ export default {
             originY: 'center',
             radius: seat.size / 2,
             strokeWidth: 1,
+            hoverCursor: 'pointer',
             hasControls: false, // 図形周囲のコントロールボタンの無効化
             hasBorders: false, // 図形周囲のボーダーの無効化
             lockMovementX: true, // 横移動の禁止
             lockMovementY: true, // 縦移動の禁止
-            hoverCursor: 'default', // カーソルの変更を禁止
           })
         );
 
@@ -769,6 +770,8 @@ export default {
 
     // クリックイベントの設定
     this.canvas.on('mouse:down', (event) => {
+      this.canvas.defaultCursor = 'grabbing';
+
       // オブジェクトのクリック時にのみ実行
       if (event.target) {
         // 入室前または自習室，講師室に着席している場合はクリックを受け付ける
@@ -780,6 +783,11 @@ export default {
           this.canvasMouseDown(event.target);
         }
       }
+    });
+
+    // クリック終了イベントの設定
+    this.canvas.on('mouse:up', () => {
+      this.canvas.defaultCursor = 'grab';
     });
 
     // スクロールイベントの設定
