@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use App\Events\SystemDowned;
 
 class SystemDown extends Command
@@ -38,7 +39,9 @@ class SystemDown extends Command
      */
     public function handle()
     {
-        // システム停止イベントの発行
+        // システム停止
+        Artisan::call('down');
+        // ユーザーへ通知
         broadcast(new SystemDowned());
 
         return 0;
