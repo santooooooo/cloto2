@@ -846,14 +846,11 @@ export default {
      */
     Echo.channel('room.' + this.roomData.id)
       .listen('RoomDataUpdated', () => {
-        if (this.authUser.seat) {
-          this.leaveRoom();
-        } else {
-          this.$router.push({ name: 'entrance' });
-        }
+        // 管理画面から部屋データが更新された場合はリロード
+        this.$router.go();
       })
       .listen('SeatStatusUpdated', (event) => {
-        // 部屋情報の更新
+        // 座席情報の更新
         this.roomData = event;
       })
       .listen('RoomStatusChanged', (event) => {

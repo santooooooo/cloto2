@@ -65,7 +65,7 @@ class RoomController extends Controller
             return response()->json(['message' => '部屋データの更新に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        // 入室中のユーザーを退室
+        // 入室中のユーザーにリロードさせる
         broadcast(new RoomDataUpdated($room));
         return response()->json(['message' => '部屋データが更新されました。']);
     }
