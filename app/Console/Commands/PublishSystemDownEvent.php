@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Events\SystemDownEvent;
+use App\Events\SystemDown;
 
 class PublishSystemDownEvent extends Command
 {
@@ -39,7 +39,7 @@ class PublishSystemDownEvent extends Command
     public function handle()
     {
         // システム停止イベントの発行
-        broadcast(new SystemDownEvent());
+        broadcast(new SystemDown());
 
         return 0;
     }

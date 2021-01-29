@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use App\Models\Room;
-use App\Events\TimetableEvent;
+use App\Events\RoomStatusChanged;
 
 class PublishTimetableEvent extends Command
 {
@@ -48,7 +48,7 @@ class PublishTimetableEvent extends Command
             // 現在時刻が時間割に存在する時刻の場合
             if (array_key_exists($now, $room->timetable)) {
                 // 次の時間割の状態を送信
-                broadcast(new TimetableEvent($room, $now));
+                broadcast(new RoomStatusChanged($room, $now));
             }
         }
 

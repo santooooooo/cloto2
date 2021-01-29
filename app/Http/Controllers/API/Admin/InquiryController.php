@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\User;
 use App\Models\Inquiry;
-use App\Events\InquiryEvent;
+use App\Events\InquiryPosted;
 
 class InquiryController extends Controller
 {
@@ -90,7 +90,7 @@ class InquiryController extends Controller
         }
 
         // 投稿したデータを送信
-        broadcast(new InquiryEvent($result->user, $result));
+        broadcast(new InquiryPosted($result->user, $result));
 
         return response()->json();
     }

@@ -130,14 +130,14 @@ export default {
         this.sitRoom = response.data;
 
         Echo.channel('room.' + this.sitRoom)
-          .listen('AnnounceEvent', (event) => {
+          .listen('Announced', (event) => {
             // アナウンスイベントの受信開始
             if (this.$store.getters['alert/isSoundOn']) {
               this.announce.notification.play();
             }
             this.announce.message = event.message;
           })
-          .listen('TimetableEvent', (event) => {
+          .listen('RoomStatusChanged', (event) => {
             // 時間割イベントの受信開始
             if (event.status === 'study') {
               // 自習時間
@@ -317,7 +317,7 @@ export default {
     });
 
     // システムイベントの受信開始
-    Echo.channel('system').listen('SystemDownEvent', () => {
+    Echo.channel('system').listen('SystemDown', () => {
       // メンテナンスモード開始
       this.$router.go();
     });

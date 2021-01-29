@@ -7,23 +7,28 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Room;
+use Illuminate\Support\Carbon;
+use App\Models\User;
+use App\Models\Inquiry;
 
-class SeatEvent implements ShouldBroadcast
+class InquiryPosted implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /** @var Room */
-    protected $room;
+    /** @var User */
+    protected $user;
+    /** @var Inquiry */
+    protected $inquiry;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Room $room)
+    public function __construct(User $user, Inquiry $inquiry)
     {
-        $this->room = $room;
+        $this->user = $user;
+        $this->inquiry = $inquiry;
     }
 
     /**
@@ -33,7 +38,7 @@ class SeatEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('room.' . $this->room->id);
+        return new Channel('user.' . $this->user->id);
     }
 
     /**
@@ -43,6 +48,7 @@ class SeatEvent implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        return $this->room->toArray();
+        $this->inquiry->data += ['meta' => (new Carbon($this->inquiry->created_at))->format('H時i分')];
+        return $this->inquiry->toArray();
     }
 }

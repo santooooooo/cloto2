@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Events\AnnounceEvent;
+use App\Events\Announced;
 
 class RoomController extends Controller
 {
@@ -76,7 +76,7 @@ class RoomController extends Controller
             return response()->json(['message' => 'アナウンスに失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        broadcast(new AnnounceEvent($user->seat->section->room, $request->message));
+        broadcast(new Announced($user->seat->section->room, $request->message));
         return response()->json();
     }
 }

@@ -845,18 +845,18 @@ export default {
      * データの同期開始
      */
     Echo.channel('room.' + this.roomData.id)
-      .listen('RefreshRoomEvent', () => {
+      .listen('RoomDataUpdated', () => {
         if (this.authUser.seat) {
           this.leaveRoom();
         } else {
           this.$router.push({ name: 'entrance' });
         }
       })
-      .listen('SeatEvent', (event) => {
+      .listen('SeatStatusUpdated', (event) => {
         // 部屋情報の更新
         this.roomData = event;
       })
-      .listen('TimetableEvent', (event) => {
+      .listen('RoomStatusChanged', (event) => {
         // 部屋状態の更新
         this.roomStatus = event.status;
       });

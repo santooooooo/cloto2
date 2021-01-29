@@ -129,7 +129,7 @@ export default {
       });
 
       // 問い合わせイベントの受信開始
-      Echo.channel('user.' + this.user.id).listen('InquiryEvent', (event) => {
+      Echo.channel('user.' + this.user.id).listen('InquiryPosted', (event) => {
         this.messages.push({
           author: this.setAuthor(event.author),
           type: event.type,

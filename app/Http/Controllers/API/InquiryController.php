@@ -9,7 +9,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Admin;
 use App\Models\Inquiry;
-use App\Events\InquiryEvent;
+use App\Events\InquiryPosted;
 use App\Mail\InquiryMail;
 use Exception;
 
@@ -73,7 +73,7 @@ class InquiryController extends Controller
         }
 
         // 投稿したデータを送信
-        broadcast(new InquiryEvent($this->user, $result));
+        broadcast(new InquiryPosted($this->user, $result));
 
         // 管理者全員にメール通知
         foreach (Admin::all() as $admin) {

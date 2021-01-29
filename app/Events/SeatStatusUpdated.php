@@ -9,24 +9,21 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Room;
 
-class TimetableEvent implements ShouldBroadcast
+class SeatStatusUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /** @var Room */
     protected $room;
-    /** @var String */
-    protected $key;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Room $room, String $key)
+    public function __construct(Room $room)
     {
         $this->room = $room;
-        $this->key = $key;
     }
 
     /**
@@ -36,7 +33,6 @@ class TimetableEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-
         return new Channel('room.' . $this->room->id);
     }
 
@@ -47,6 +43,6 @@ class TimetableEvent implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        return ['status' => $this->room->timetable[$this->key]];
+        return $this->room->toArray();
     }
 }

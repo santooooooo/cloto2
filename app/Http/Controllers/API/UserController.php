@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Events\SeatEvent;
+use App\Events\SeatStatusUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -135,7 +135,7 @@ class UserController extends Controller
 
         // 取り組み中のタスクが更新された場合
         if (array_key_exists('in_progress', $data)) {
-            broadcast(new SeatEvent($this->auth_user->seat->section->room));
+            broadcast(new SeatStatusUpdated($this->auth_user->seat->section->room));
             return response()->json();
         }
 

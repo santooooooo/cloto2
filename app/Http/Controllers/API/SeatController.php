@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Seat;
-use App\Events\SeatEvent;
+use App\Events\SeatStatusUpdated;
 use Illuminate\Support\Facades\Auth;
 
 class SeatController extends Controller
@@ -51,7 +51,7 @@ class SeatController extends Controller
         // 座席状態の更新
         $seat->fill(['status' => 'sitting'])->save();
 
-        broadcast(new SeatEvent($room));
+        broadcast(new SeatStatusUpdated($room));
         return response()->json();
     }
 
@@ -78,7 +78,7 @@ class SeatController extends Controller
             $seat->fill(['status' => null, 'reservation_user_id' => null])->save();
         }
 
-        broadcast(new SeatEvent($room));
+        broadcast(new SeatStatusUpdated($room));
         return response()->json();
     }
 
@@ -108,7 +108,7 @@ class SeatController extends Controller
         // 座席状態の更新
         $seat->fill(['status' => 'sitting'])->save();
 
-        broadcast(new SeatEvent($room));
+        broadcast(new SeatStatusUpdated($room));
         return response()->json();
     }
 
@@ -133,7 +133,7 @@ class SeatController extends Controller
         // 座席状態の更新
         $seat->fill(['status' => 'sitting', 'reservation_user_id' => null])->save();
 
-        broadcast(new SeatEvent($room));
+        broadcast(new SeatStatusUpdated($room));
         return response()->json();
     }
 }
