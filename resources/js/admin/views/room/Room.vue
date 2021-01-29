@@ -91,8 +91,7 @@
       </template>
 
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editRoom(item)">mdi-pencil</v-icon>
-        <v-icon small class="ml-2" @click="forceLogoutFromRoom(item)">mdi-logout</v-icon>
+        <v-icon small @click="editRoom(item)">mdi-pencil</v-icon>
       </template>
 
       <template v-slot:no-data>
@@ -274,15 +273,6 @@ export default {
           this.editRoomForm.loading = false;
         }
       }
-    },
-
-    /**
-     * ユーザーの強制ログアウト
-     *
-     * @param Object  room  ログアウトさせる部屋
-     */
-    forceLogoutFromRoom: function (room) {
-      axios.post('/api/admin/users/force_logout_from_room/' + room.id);
     },
   },
   created() {

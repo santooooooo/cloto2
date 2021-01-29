@@ -38,7 +38,6 @@ Route::group(['middleware' => 'auth:admin'], function () {
         |--------------------------------------------------------------------------
         */
         Route::resource('users', 'UserController', ['only' => ['index', 'update', 'destroy']]);
-        Route::post('/users/force_logout_from_room/{room}', 'UserController@force_logout_from_room')->where('room', '[0-9]+');
 
 
         /*
