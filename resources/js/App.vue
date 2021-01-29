@@ -109,7 +109,7 @@ export default {
           if (error.status === 401) {
             alert('ログアウトされました。');
             window.location.pathname = '/login';
-            throw error.status;
+            throw new Error(error.status);
           }
 
           return error;
