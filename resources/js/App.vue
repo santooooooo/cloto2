@@ -324,8 +324,8 @@ export default {
   },
   mounted() {
     // ボリュームの調整
-    this.chime.volume = 0.8;
-    this.announce.notification.volume = 0.8;
+    this.chime.volume = 0.4;
+    this.announce.notification.volume = 0.4;
 
     // イベントの設定
     if (!this.isDebug) {

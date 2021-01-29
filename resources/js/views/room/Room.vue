@@ -675,7 +675,7 @@ export default {
 
   async mounted() {
     // ボリュームの調整
-    this.chime.volume = 0.8;
+    this.chime.volume = 0.4;
 
     // ロード開始
     this.isLoading = true;
