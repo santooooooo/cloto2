@@ -1,0 +1,5 @@
+*
+!.gitignore
+!*.example
+!DatabaseSeeder.php
+!RoomsTableSeeder.php
