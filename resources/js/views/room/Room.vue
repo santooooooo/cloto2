@@ -725,12 +725,8 @@ export default {
             originX: 'center',
             originY: 'center',
             radius: seat.size / 2,
-            strokeWidth: 1,
             hoverCursor: 'pointer',
-            hasControls: false, // 図形周囲のコントロールボタンの無効化
-            hasBorders: false, // 図形周囲のボーダーの無効化
-            lockMovementX: true, // 横移動の禁止
-            lockMovementY: true, // 縦移動の禁止
+            selectable: false, // 図形の選択を禁止
           })
         );
 
