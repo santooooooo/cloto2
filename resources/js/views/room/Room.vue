@@ -845,7 +845,7 @@ export default {
      * データの同期開始
      */
     Echo.channel('room.' + this.roomData.id)
-      .listen('RoomDataUpdated', () => {
+      .listen('RoomUpdated', () => {
         // 管理画面から部屋データが更新された場合はリロード
         this.$router.go();
       })

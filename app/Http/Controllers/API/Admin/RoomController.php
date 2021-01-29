@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Room;
-use App\Events\RoomDataUpdated;
+use App\Events\RoomUpdated;
 
 class RoomController extends Controller
 {
@@ -66,7 +66,7 @@ class RoomController extends Controller
         }
 
         // 入室中のユーザーにリロードさせる
-        broadcast(new RoomDataUpdated($room));
+        broadcast(new RoomUpdated($room));
         return response()->json(['message' => '部屋データが更新されました。']);
     }
 }
