@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use App\Models\Room;
 
 class UserController extends Controller
 {
@@ -87,5 +88,22 @@ class UserController extends Controller
         }
 
         return response()->json(['message' => 'ユーザーが削除されました。']);
+    }
+
+    /**
+     * ユーザーの強制ログアウト
+     *
+     * @param  \App\Models\Room $room   ログアウトさせる部屋
+     * @return \Illuminate\Http\Response
+     */
+    public function force_logout_from_room(Room $room)
+    {
+        foreach ($this->user->whereNotNull('seat_id')->get() as $user) {
+            if ($user->seat->section->room->id == $room->id) {
+                Auth::guard('user')->logout($user);
+            }
+        }
+
+        return response()->json(['message' => $room->name . 'に着席中のユーザーがログアウトされました。']);
     }
 }
