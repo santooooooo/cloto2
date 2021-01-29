@@ -3,9 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Events\SystemDown;
+use App\Events\SystemDowned;
 
-class PublishSystemDownEvent extends Command
+class SystemDown extends Command
 {
     /**
      * The name and signature of the console command.
@@ -19,7 +19,7 @@ class PublishSystemDownEvent extends Command
      *
      * @var string
      */
-    protected $description = 'Publish system down event';
+    protected $description = 'System down';
 
     /**
      * Create a new command instance.
@@ -39,7 +39,7 @@ class PublishSystemDownEvent extends Command
     public function handle()
     {
         // システム停止イベントの発行
-        broadcast(new SystemDown());
+        broadcast(new SystemDowned());
 
         return 0;
     }

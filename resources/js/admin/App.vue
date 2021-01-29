@@ -188,7 +188,7 @@ export default {
     });
 
     // システムイベントの受信開始
-    Echo.channel('system').listen('SystemDown', () => {
+    Echo.channel('system').listen('SystemDowned', () => {
       // メンテナンスモード開始
       this.$router.go();
     });

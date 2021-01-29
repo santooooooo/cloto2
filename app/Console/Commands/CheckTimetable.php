@@ -7,21 +7,21 @@ use Illuminate\Support\Carbon;
 use App\Models\Room;
 use App\Events\RoomStatusChanged;
 
-class PublishTimetableEvent extends Command
+class CheckTimetable extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'publishevent:timetable';
+    protected $signature = 'check:timetable';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Publish timetable event';
+    protected $description = 'Check timetable';
 
     /**
      * Create a new command instance.

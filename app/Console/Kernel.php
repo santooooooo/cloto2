@@ -13,8 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\PublishSystemDownEvent::class,
-        Commands\PublishTimetableEvent::class,
+        Commands\SystemDown::class,
+        Commands\CheckTimetable::class,
         Commands\RefreshSeats::class,
     ];
 
@@ -49,7 +49,7 @@ class Kernel extends ConsoleKernel
          * アプリケーションイベント
          */
         // 5分毎に時間割の通知
-        $schedule->command('publishevent:timetable')->everyFiveMinutes();
+        $schedule->command('check:timetable')->everyFiveMinutes();
         // 10分毎に座席を初期化
         $schedule->command('refresh:seats')->everyTenMinutes();
     }
