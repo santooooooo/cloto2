@@ -845,6 +845,7 @@ export default {
      * データの同期開始
      */
     Echo.channel('room.' + this.roomData.id)
+      .listen('RefreshRoomEvent', this.leaveRoom)
       .listen('SeatEvent', (event) => {
         // 部屋情報の更新
         this.roomData = event;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Room;
+use App\Events\RefreshRoomEvent;
 
 class RoomController extends Controller
 {
@@ -64,6 +65,8 @@ class RoomController extends Controller
             return response()->json(['message' => '部屋データの更新に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
+        // 入室中のユーザーを退室
+        broadcast(new RefreshRoomEvent($room));
         return response()->json(['message' => '部屋データが更新されました。']);
     }
 }
