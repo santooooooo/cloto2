@@ -1,4 +1,4 @@
-<p align="center"><a href="http://cloto.jp"><img src="storage/app/public/system/header_logo.svg" alt="ロゴ" height="80px"></a></p>
+<p align="center"><a href="https://cloto.jp"><img src="storage/app/public/system/header_logo.svg" alt="ロゴ" height="80px"></a></p>
 
 ## About CLOTO
 
