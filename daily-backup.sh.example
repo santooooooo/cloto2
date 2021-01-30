@@ -6,7 +6,7 @@ export LANG=C
 # バックアップ先
 BACKUP="/path-to-backup"
 # データベースの一時出力先
-SQL="/path-to-backup/database-name.sql"
+SQL="/path-to-temp/database-name.sql"
 
 
 RSYNC="rsync $1 -av --delete"

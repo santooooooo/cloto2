@@ -16,4 +16,4 @@ MAILTO=""
 *  *  *  *  *  root cd /path-to-project && php artisan schedule:run >> /dev/null 2>&1
 10 3  *  *  *  root certbot renew -q --deploy-hook "systemctl restart httpd"
 20 3  *  *  *  root certbot renew -q --deploy-hook "systemctl restart httpd"
-30 3  *  *  *  root /path-to-project/daily-backup.sh
+30 3  *  *  *  root sh /path-to-project/daily-backup.sh
