@@ -469,17 +469,14 @@ export default {
                   // 状態変更処理
                   await this.userAction('enterCall', target);
                 } else {
-                  this.$store.dispatch('alert/error', '講師用の座席です！反対側に座ってください。');
+                  this.$store.dispatch('alert/error', '講師用の座席です！');
                 }
                 break;
 
               case 'user': // メンタリングルーム（利用者）
                 // 講師室にいるメンター
                 if (this.authUser.role === 'mentor' && this.authUser.seat.role === 'staff') {
-                  this.$store.dispatch(
-                    'alert/error',
-                    '受講者用の座席です！反対側に座ってください。'
-                  );
+                  this.$store.dispatch('alert/error', '受講者用の座席です！');
                 } else {
                   // 状態変更処理
                   await this.userAction('enterCall', target);
