@@ -187,7 +187,7 @@ class RoomsTableSeeder extends Seeder
             Seat::create(['section_id' => $created_section->id, 'name' => $seat['size'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
 
             //*** 座席19データ ***//
-            $seat = ['name' => '休憩席', 'size' => 50, 'position' => ['x' => 1497, 'y' => 1004, 'role' => 'lounge']];
+            $seat = ['name' => '休憩席', 'size' => 50, 'position' => ['x' => 1497, 'y' => 1004], 'role' => 'lounge'];
 
             // 座席19作成
             Seat::create(['section_id' => $created_section->id, 'name' => $seat['size'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
