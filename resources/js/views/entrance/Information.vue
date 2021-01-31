@@ -21,7 +21,7 @@ export default {
 
 <style lang="scss" scoped>
 #information {
-  min-height: 100vh;
+  height: calc(100vh - 64px);
   background-color: white;
 }
 </style>

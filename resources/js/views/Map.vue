@@ -8,7 +8,7 @@
 
     <!-- 建物名吹き出し -->
     <div id="popup" ref="popup" v-show="popup.isShow">
-      <p>{{ popup.text }}</p>
+      <p class="text-h3">{{ popup.text }}</p>
     </div>
 
     <!-- 新規登録，ログインダイアログ -->
@@ -35,23 +35,23 @@ export default {
         {
           name: 'CLOTO',
           position: {
-            x: 470,
-            y: 300,
-            width: 300,
-            height: 300,
+            x: 700,
+            y: 200,
+            width: 1300,
+            height: 900,
           },
           url: 'https://cloto.jp',
         },
-        {
-          name: 'サブ塾',
-          position: {
-            x: 1450,
-            y: 550,
-            width: 300,
-            height: 300,
-          },
-          url: 'https://sub-juku.cloto.jp',
-        },
+        // {
+        //   name: 'サブ塾',
+        //   position: {
+        //     x: 1450,
+        //     y: 550,
+        //     width: 300,
+        //     height: 300,
+        //   },
+        //   url: 'https://sub-juku.cloto.jp',
+        // },
       ],
       popup: {
         isShow: false, // 吹き出し制御
@@ -193,7 +193,7 @@ export default {
     },
   },
 
-  async mounted() {
+  mounted() {
     // ロード開始
     this.isLoading = true;
 
@@ -221,7 +221,7 @@ export default {
           name: building.name,
           url: building.url,
           fill: '',
-          opacity: 0.3,
+          opacity: 0.1,
           left: building.position.x,
           top: building.position.y,
           width: building.position.width,
@@ -296,7 +296,7 @@ export default {
     p {
       padding: 5px 10px;
       background: #ffffff;
-      border: 2px solid #000000;
+      border: 5px solid #000000;
       border-radius: 10px;
       font-weight: bold;
     }
