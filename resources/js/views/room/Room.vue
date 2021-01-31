@@ -876,8 +876,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~/_variables';
-
 #room {
   background-image: url('/storage/system/room_background.jpg');
   background-size: cover;
