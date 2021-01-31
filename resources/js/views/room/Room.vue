@@ -88,11 +88,6 @@ export default {
       chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
       isLoading: false, // ローディング制御
       canvas: null, // キャンバスエリア
-      messageOverlay: {
-        isShow: false, // メッセージオーバーレイ制御
-        message: '', // 表示メッセージ
-        color: '', // 表示色
-      },
       roomStatus: null, // 教室の状態
       roomData: {}, // 教室データ
       roomWidth: 2160, // 教室サイズ
@@ -295,6 +290,29 @@ export default {
     },
 
     /**
+     * 吹き出しの表示
+     *
+     * @param Object  userObject  表示するユーザーオブジェクト
+     */
+    showPopup: function (userObject) {
+      // 吹き出しの位置を設定
+      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      this.$refs.popup.style.left = window.event.clientX + 'px';
+      this.$refs.popup.style.top = window.event.clientY + scrollTop - 50 + 'px';
+      // 表示
+      this.popup.text = userObject.inProgress || '集中しています！';
+      this.popup.isShow = true;
+    },
+
+    /**
+     * 吹き出しの非表示
+     */
+    hidePopup: function () {
+      this.popup.isShow = false;
+      this.popup.text = '';
+    },
+
+    /**
      * キャンバスマウスオーバーイベント
      *
      * @param target イベントの対象
@@ -344,13 +362,7 @@ export default {
           }
         }
       } else if (target.type === 'user') {
-        // 吹き出しの位置を設定
-        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        this.$refs.popup.style.left = window.event.clientX + 'px';
-        this.$refs.popup.style.top = window.event.clientY + scrollTop - 50 + 'px';
-        // 表示
-        this.popup.text = target.inProgress || '集中しています！';
-        this.popup.isShow = true;
+        this.showPopup(target);
       }
     },
 
@@ -365,9 +377,7 @@ export default {
           this.resetColor(target);
         }
       } else if (target.type === 'user') {
-        // 吹き出しの非表示
-        this.popup.isShow = false;
-        this.popup.text = '';
+        this.hidePopup();
       }
     },
 

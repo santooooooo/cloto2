@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import { OK } from '@/consts/status';
 import ProfileEditDialog from '@/components/mypage/ProfileEditDialog';
 
 export default {
