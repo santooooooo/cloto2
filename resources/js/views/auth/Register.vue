@@ -7,16 +7,16 @@
             <v-col>
               <!-- エラーメッセージ -->
               <v-alert type="error" v-if="registerErrors">
-                <span v-if="registerErrors.username">
+                <p class="mb-0" v-if="registerErrors.username">
                   <span v-for="(message, index) in registerErrors.username" :key="index">
                     {{ message }}
                   </span>
-                </span>
-                <span v-if="registerErrors.email">
+                </p>
+                <p class="mb-0" v-if="registerErrors.email">
                   <span v-for="(message, index) in registerErrors.email" :key="index">
                     {{ message }}
                   </span>
-                </span>
+                </p>
               </v-alert>
 
               <!-- ロゴ -->

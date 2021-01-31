@@ -309,8 +309,11 @@ export default {
         response.status === UNPROCESSABLE_ENTITY ||
         response.status === INTERNAL_SERVER_ERROR
       ) {
-        // エラー発生時
-        this.$store.dispatch('alert/error', response.data.message || null);
+        // 新規登録，ログイン時を除く
+        if (!response.config.url.match(/register|login/)) {
+          // エラー発生時
+          this.$store.dispatch('alert/error', response.data.message || null);
+        }
       }
 
       return response;
