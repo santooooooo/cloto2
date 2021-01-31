@@ -108,7 +108,7 @@ export default {
         axios.interceptors.response.use((error) => {
           if (error.status === 401) {
             alert('ログアウトされました。');
-            window.location.pathname = '/login';
+            window.location.pathname = '/map/login';
             throw new Error(error.status);
           }
 
@@ -273,7 +273,7 @@ export default {
       // ログアウト処理
       await this.$store.dispatch('auth/logout');
       // ログインページへリダイレクト
-      window.location.pathname = '/login';
+      window.location.pathname = '/map/login';
     },
   },
   created() {

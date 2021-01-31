@@ -18,8 +18,8 @@
           </p>
 
           <v-row justify="center" class="mt-12">
-            <router-link :to="{ name: 'register' }">
-              <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
+            <router-link :to="{ name: 'map' }">
+              <v-btn x-large color="primary" class="font-weight-bold">入場</v-btn>
             </router-link>
           </v-row>
         </v-col>

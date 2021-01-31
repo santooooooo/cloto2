@@ -15,7 +15,7 @@ import index from '@/views/Index';
 import terms from '@/views/service/Terms';
 import register from '@/views/auth/Register';
 import login from '@/views/auth/Login';
-import home from '@/views/Home';
+import map from '@/views/Map';
 import mypage from '@/views/mypage/Mypage';
 import profile from '@/views/mypage/Profile';
 import karte from '@/views/mypage/Karte';
@@ -33,6 +33,18 @@ const router = new VueRouter({
       name: 'index',
       component: index,
       meta: { isPublic: true },
+    },
+    {
+      path: '/terms',
+      name: 'terms',
+      component: terms,
+      meta: { isPublic: true },
+    },
+    {
+      path: '/map',
+      name: 'map',
+      component: map,
+      meta: { isPublic: true },
       children: [
         {
           path: 'register',
@@ -47,17 +59,6 @@ const router = new VueRouter({
           meta: { isPublic: true },
         },
       ],
-    },
-    {
-      path: '/terms',
-      name: 'terms',
-      component: terms,
-      meta: { isPublic: true },
-    },
-    {
-      path: '/home',
-      name: 'home',
-      component: home,
     },
     {
       path: '/entrance',

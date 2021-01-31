@@ -165,7 +165,7 @@ export default {
     dialog: function () {
       // ダイアログが閉じたらリダイレクト
       if (this.dialog === false) {
-        this.$router.push({ name: 'index' });
+        this.$router.push({ name: 'map' });
       }
     },
   },
