@@ -276,8 +276,7 @@ export default {
 
 <style lang="scss" scoped>
 #map {
-  background-image: url('/storage/system/room_background.jpg');
-  background-size: cover;
+  background-color: #000000;
 
   #canvas-container {
     height: calc(100vh - 64px);
