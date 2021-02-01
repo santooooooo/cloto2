@@ -1,27 +1,39 @@
 <template>
   <v-container fluid pa-0 class="index" v-if="!isSmartphone">
-    <!-- 新規登録，ログインフォーム -->
-    <router-view />
-
     <v-container fluid class="concept">
       <v-row>
         <v-spacer></v-spacer>
 
-        <v-col cols="5" justify="center">
-          <h1 class="text-center text-h4 font-weight-bold">創る、繋がる、好きになる</h1>
-          <p class="text-center text-subtitle-1 font-weight-bold">
-            プログラミングに取り組むみなさん、こんにちは。<br />
-            「実際のプログラミングって大変. . . 」<br />
-            「何からしたらいいんだろう」<br />
-            そんな悩みとは今日でさようなら。<br />
-            プログラミングを楽しみながら継続できる環境がここに生まれました！
-          </p>
+        <v-col cols="5" justify="center" align-self="center">
+          <div>
+            <h1 class="text-center text-h4 font-weight-bold">創る、繋がる、好きになる</h1>
+            <p class="text-center text-subtitle-1 font-weight-bold">
+              プログラミングに取り組むみなさん、こんにちは。<br />
+              「実際のプログラミングって大変. . . 」<br />
+              「何からしたらいいんだろう」<br />
+              そんな悩みとは今日でさようなら。<br />
+              プログラミングを楽しみながら継続できる環境がここに生まれました！
+            </p>
 
-          <v-row justify="center" class="mt-12">
-            <router-link :to="{ name: 'map' }">
-              <v-btn x-large color="primary" class="font-weight-bold">入場</v-btn>
-            </router-link>
-          </v-row>
+            <v-row justify="center" class="mt-12">
+              <v-btn
+                x-large
+                text
+                color="white"
+                class="text-h5 font-weight-bold text-decoration-underline"
+                href="https://spark.adobe.com/page/JwVbQbzQtbSkB"
+                target="_blank"
+              >
+                ＞ CLOTOについて詳しく見る
+              </v-btn>
+            </v-row>
+
+            <v-row justify="center" class="mt-12">
+              <v-btn x-large color="primary" class="font-weight-bold" :to="{ name: 'map' }">
+                入場
+              </v-btn>
+            </v-row>
+          </div>
         </v-col>
 
         <v-col cols="5" align-self="center">
@@ -148,186 +160,47 @@
         <v-spacer></v-spacer>
       </v-row>
 
-      <v-container>
-        <v-divider class="divider"></v-divider>
-        <v-row class="grey lighten-2">
-          <v-col align-self="center">
-            <v-card class="mx-auto" width="500">
-              <v-img eager width="500" :src="$storage('system') + 'P1.svg'"></v-img>
-            </v-card>
-          </v-col>
+      <v-card max-width="600" class="mx-auto my-12 pa-6">
+        <v-container>
+          <h5 class="text-center text-h5">お問い合わせ</h5>
 
-          <v-col align-self="center">
-            <p class="text-center text-h6">
-              プログラミング、1人で悩んでいませんか？<br />
-              技術面でもキャリア面でも相談できるって素晴らしい。<br />
-              周りにプログラミング仲間がいない<br />
-              そんなあなた、必見です。
-            </p>
-          </v-col>
-        </v-row>
+          <v-form ref="contactForm" v-model="contactForm.validation.valid" lazy-validation>
+            <v-text-field
+              v-model="contactForm.name"
+              :rules="contactForm.validation.nameRules"
+              :disabled="contactForm.loading"
+              label="お名前"
+              maxlength="16"
+              counter
+            ></v-text-field>
 
-        <v-row>
-          <div class="arrow-bottom"></div>
-        </v-row>
+            <v-text-field
+              v-model="contactForm.email"
+              :rules="contactForm.validation.emailRules"
+              :disabled="contactForm.loading"
+              label="メールアドレス"
+            ></v-text-field>
 
-        <v-row class="mb-12">
-          <v-col align-self="center">
-            <v-card class="mx-auto" width="500">
-              <v-img eager width="500" :src="$storage('system') + 'S1-1.svg'"></v-img>
-            </v-card>
-          </v-col>
+            <v-textarea
+              v-model="contactForm.body"
+              :rules="contactForm.validation.bodyRules"
+              :disabled="contactForm.loading"
+              label="お問い合わせ内容"
+            ></v-textarea>
 
-          <v-col align-self="center">
-            <h3 class="mb-6 text-center text-h4 font-weight-bold">創ってる 音がする</h3>
-            <p class="mt-6 text-center text-h6">
-              自習を開始すれば、自動的に音声チャットが起動<br />
-              隣の仲間がキーボードを叩く音が聞こえてきます。<br />
-              自宅にいながらそこはもう完全な自習室。<br />
-              程よい緊張があなたを集中へ誘います。
-            </p>
-          </v-col>
-        </v-row>
-
-        <v-row class="mt-12">
-          <v-col align-self="center">
-            <v-card class="mx-auto" width="500">
-              <v-img eager width="500" :src="$storage('system') + 'S1-2.svg'"></v-img>
-            </v-card>
-          </v-col>
-
-          <v-col align-self="center">
-            <h3 class="mb-6 text-center text-h4 font-weight-bold">プログラミングでつながる</h3>
-            <p class="mt-6 text-center text-h6">
-              集中のためにはメリハリが重要。<br />
-              「疲れてきたな」「煮詰まってきたな」<br />
-              そんな時は休憩室にいきましょう。<br />
-              プログラミングを愛する仲間があなたを待っています。
-            </p>
-          </v-col>
-        </v-row>
-
-        <v-divider class="divider"></v-divider>
-        <v-row class="grey lighten-2">
-          <v-col align-self="center">
-            <v-card class="mx-auto" width="500">
-              <v-img eager width="500" :src="$storage('system') + 'P2.svg'"></v-img>
-            </v-card>
-          </v-col>
-
-          <v-col align-self="center">
-            <p class="text-center text-h6">
-              「プログラミングは継続が大事」<br />
-              それを理解していても続かない<br />
-              続けたいけど楽しくない。<br />
-              そんなあなた、必見です。
-            </p>
-          </v-col>
-        </v-row>
-
-        <v-row>
-          <div class="arrow-bottom"></div>
-        </v-row>
-
-        <v-row class="mb-12">
-          <v-col align-self="center">
-            <v-card class="mx-auto" width="500">
-              <v-img eager width="500" :src="$storage('system') + 'S2-1.svg'"></v-img>
-            </v-card>
-          </v-col>
-
-          <v-col align-self="center">
-            <h3 class="mb-6 text-center text-h4 font-weight-bold">頑張りを、記録しよう</h3>
-            <p class="mt-6 text-center text-h6">
-              日々の活動を記録しないのはもったいない。<br />
-              プログラミングをする中で学んだこと、達成したことは<br />
-              どんどん記録して共有しましょう。<br />
-              日々記録をすることで、あなた自身が見えてくる。<br />
-              他の人からもフィードバックをもらえます。
-            </p>
-          </v-col>
-        </v-row>
-
-        <v-row class="mt-12">
-          <v-col align-self="center">
-            <v-card class="mx-auto" width="500">
-              <v-img eager width="500" :src="$storage('system') + 'S2-2.svg'"></v-img>
-            </v-card>
-          </v-col>
-
-          <v-col align-self="center">
-            <h3 class="mb-6 text-center text-h4 font-weight-bold">記録はあなたの力になる</h3>
-            <p class="mt-6 text-center text-h6">
-              あなたの活動記録はデータとなって力強くあなたをサポートします。<br />
-              今後、CLOTOはひとりひとりのデータを元に<br />
-              よりパーソナルな支援ができる環境を構築します。
-            </p>
-          </v-col>
-        </v-row>
-
-        <v-divider class="divider"></v-divider>
-        <v-row class="grey lighten-2">
-          <v-col align-self="center">
-            <v-card class="mx-auto" width="500">
-              <v-img eager width="500" :src="$storage('system') + 'P3.svg'"></v-img>
-            </v-card>
-          </v-col>
-
-          <v-col align-self="center">
-            <p class="text-center text-h6">
-              もくもく会やハッカソン、勉強会<br />
-              開催されているのは知っているけどなかなか一歩が踏み出せない<br />
-              そんなあなた、必見です。
-            </p>
-          </v-col>
-        </v-row>
-
-        <v-row>
-          <div class="arrow-bottom"></div>
-        </v-row>
-
-        <v-row class="mb-12">
-          <v-col align-self="center">
-            <v-card class="mx-auto" width="500">
-              <v-img eager width="500" :src="$storage('system') + 'S3-1.svg'"></v-img>
-            </v-card>
-          </v-col>
-
-          <v-col align-self="center">
-            <h3 class="mb-6 text-center text-h4 font-weight-bold">競争より、共創しよう</h3>
-            <p class="mt-6 text-center text-h6">
-              アイデアや技術を独占する時代はもう終わりです。<br />
-              積極的に学んだこと、創ったものを公開しあうことで<br />
-              お互いに刺激し合う方が有意義とは思いませんか？<br />
-              人のアイデアに触れ人に学ぶ。<br />
-              そこから独創性、創造性が生まれると信じています。
-            </p>
-          </v-col>
-        </v-row>
-
-        <v-row class="my-12">
-          <v-col align-self="center">
-            <v-card class="mx-auto" width="500">
-              <v-img eager width="500" :src="$storage('system') + 'S3-2.svg'"></v-img>
-            </v-card>
-          </v-col>
-
-          <v-col align-self="center">
-            <h3 class="mb-6 text-center text-h4 font-weight-bold">キャリアにもつながる</h3>
-            <p class="mt-6 text-center text-h6">
-              あなたの活動は公開され、あなた自身の魅力になります。<br />
-              楽しめば楽しんだ分だけ評価される。<br />
-              そんな環境になることをCLOTOは約束します。
-            </p>
-          </v-col>
-        </v-row>
-      </v-container>
-
-      <v-row justify="center" class="foot-btn">
-        <router-link :to="{ name: 'register' }">
-          <!-- <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn> -->
-        </router-link>
-      </v-row>
+            <v-btn
+              :loading="contactForm.loading"
+              :disabled="!contactForm.validation.valid"
+              @click="submit()"
+              block
+              large
+              color="primary"
+              class="mt-4 font-weight-bold"
+              >送信
+            </v-btn>
+          </v-form>
+        </v-container>
+      </v-card>
     </v-container>
   </v-container>
 
@@ -337,6 +210,8 @@
 </template>
 
 <script>
+import { OK } from '@/consts/status';
+
 export default {
   head: {
     title() {
@@ -348,9 +223,24 @@ export default {
   },
   data() {
     return {
-      hover1: false,
-      hover2: false,
-      hover3: false,
+      contactForm: {
+        name: '',
+        email: '',
+        body: '',
+        loading: false,
+        validation: {
+          valid: false,
+          nameRules: [(v) => !!v || '名前は必須項目です。'],
+          emailRules: [
+            (v) => !!v || 'メールアドレスは必須項目です。',
+            (v) => {
+              const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+              return pattern.test(v) || 'メールアドレスが無効です。';
+            },
+          ],
+          bodyRules: [(v) => !!v || 'お問い合わせ内容は必須項目です。'],
+        },
+      },
     };
   },
   computed: {
@@ -362,28 +252,25 @@ export default {
       }
     },
   },
-  mounted() {
-    window.onscroll = () => {
-      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  methods: {
+    submit: async function () {
+      if (this.$refs.contactForm.validate()) {
+        this.contactForm.loading = true;
 
-      if (scrollTop <= 2200) {
-        this.hover1 = false;
-        this.hover2 = false;
-        this.hover3 = false;
-      } else if (2200 < scrollTop && scrollTop <= 3000) {
-        this.hover1 = true;
-        this.hover2 = false;
-        this.hover3 = false;
-      } else if (3000 < scrollTop && scrollTop <= 3800) {
-        this.hover1 = true;
-        this.hover2 = true;
-        this.hover3 = false;
-      } else if (3800 < scrollTop) {
-        this.hover1 = true;
-        this.hover2 = true;
-        this.hover3 = true;
+        // 問い合わせ送信処理
+        var response = await axios.post('/api/contact', {
+          name: this.contactForm.name,
+          email: this.contactForm.email,
+          body: this.contactForm.body,
+        });
+
+        if (response.status === OK) {
+          this.$refs.contactForm.reset();
+        }
+
+        this.contactForm.loading = false;
       }
-    };
+    },
   },
 };
 </script>
@@ -428,8 +315,8 @@ export default {
     width: 24px;
     height: 24px;
     margin-left: -12px;
-    border-left: 1px solid #fff;
-    border-bottom: 1px solid #fff;
+    border-left: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
     -webkit-animation: sdb 2s infinite;
@@ -472,10 +359,6 @@ export default {
       margin-top: 200px;
     }
 
-    .divider {
-      margin: 100px 0;
-    }
-
     .icon {
       color: $primary;
       font-size: 5em;
@@ -489,15 +372,6 @@ export default {
       border-bottom: 4px solid $black;
       border-right: 4px solid $black;
       transform: rotate(45deg);
-    }
-
-    h3:first-letter {
-      font-size: 1.3em;
-      color: $primary;
-    }
-
-    .foot-btn {
-      padding: 200px 0;
     }
   }
 }
