@@ -11,21 +11,19 @@
       <p class="text-h3">{{ popup.text }}</p>
     </div>
 
-    <!-- 新規登録，ログインダイアログ -->
-    <!-- <router-view /> -->
-    <Login
-      :is-open="isOpenLoginForm"
-      @close="isOpenLoginForm = $event"
-      @open-register-dialog="isOpenRegisterForm = $event"
+    <!-- ログイン，新規登録ダイアログ -->
+    <LoginDialog
+      :is-open="isOpenLoginDialog"
+      @close="isOpenLoginDialog = $event"
+      @open-register-dialog="isOpenRegisterDialog = $event"
     />
-
-    <Register :is-open="isOpenRegisterForm" @close="isOpenRegisterForm = $event" />
+    <RegisterDialog :is-open="isOpenRegisterDialog" @close="isOpenRegisterDialog = $event" />
   </div>
 </template>
 
 <script>
-import Register from '@/views/auth/Register';
-import Login from '@/views/auth/Login';
+import LoginDialog from '@/components/auth/LoginDialog';
+import RegisterDialog from '@/components/auth/RegisterDialog';
 
 export default {
   head: {
@@ -36,13 +34,11 @@ export default {
     },
   },
   components: {
-    Register,
-    Login,
+    LoginDialog,
+    RegisterDialog,
   },
   data() {
     return {
-      isOpenRegisterForm: false,
-      isOpenLoginForm: false,
       isLoading: false, // ローディング制御
       canvas: null, // キャンバスエリア
       mapWidth: 2600, // マップサイズ
@@ -73,6 +69,8 @@ export default {
         isShow: false, // 吹き出し制御
         text: '', // 吹き出しに表示するテキスト
       },
+      isOpenLoginDialog: false, // ログインダイアログ表示制御
+      isOpenRegisterDialog: false, // 新規登録ダイアログ表示制御
     };
   },
 
@@ -163,10 +161,9 @@ export default {
      */
     canvasMouseDown: function (target) {
       if (target.name === process.env.MIX_APP_NAME) {
-        // ログイン
+        // ログイン処理
         if (!this.authCheck) {
-          this.isOpenLoginForm = true;
-          // this.$router.push({ name: 'login' });
+          this.isOpenLoginDialog = true;
         } else {
           this.$router.push({ name: 'entrance' });
         }
