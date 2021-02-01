@@ -12,11 +12,21 @@
     </div>
 
     <!-- 新規登録，ログインダイアログ -->
-    <router-view />
+    <!-- <router-view /> -->
+    <Login
+      :is-open="isOpenLoginForm"
+      @close="isOpenLoginForm = $event"
+      @openRegisterDialog="isOpenRegisterForm = $event"
+    />
+
+    <Register :is-open="isOpenRegisterForm" @close="isOpenRegisterForm = $event" />
   </div>
 </template>
 
 <script>
+import Register from '@/views/auth/Register';
+import Login from '@/views/auth/Login';
+
 export default {
   head: {
     title() {
@@ -25,8 +35,14 @@ export default {
       };
     },
   },
+  components: {
+    Register,
+    Login,
+  },
   data() {
     return {
+      isOpenRegisterForm: false,
+      isOpenLoginForm: false,
       isLoading: false, // ローディング制御
       canvas: null, // キャンバスエリア
       mapWidth: 2600, // マップサイズ
@@ -149,7 +165,8 @@ export default {
       if (target.name === process.env.MIX_APP_NAME) {
         // ログイン
         if (!this.authCheck) {
-          this.$router.push({ name: 'login' });
+          this.isOpenLoginForm = true;
+          // this.$router.push({ name: 'login' });
         } else {
           this.$router.push({ name: 'entrance' });
         }

@@ -8,20 +8,21 @@
 
     <v-spacer></v-spacer>
 
-    <v-btn text x-large class="font-weight-bold" :to="{ name: 'register' }" v-if="!authCheck">
-      新規登録
+    <v-btn
+      text
+      x-large
+      class="font-weight-bold"
+      :to="{ name: 'map' }"
+      v-if="!authCheck && $route.name !== 'map'"
+    >
+      入場
     </v-btn>
 
-    <v-btn text x-large class="font-weight-bold mx-12" :to="{ name: 'login' }" v-if="!authCheck">
-      ログイン
-    </v-btn>
-
-    <!-- 教室へ戻るボタン -->
     <v-btn
       depressed
       color="primary"
       :to="{ name: 'room', params: { roomId: sitRoom } }"
-      v-if="$route.name !== 'room' && sitRoom"
+      v-if="authCheck && sitRoom && $route.name !== 'room'"
     >
       教室へ戻る
     </v-btn>

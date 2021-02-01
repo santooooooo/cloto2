@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="440">
+  <v-dialog v-model="dialog" max-width="440" @click:outside="$emit('close', false)">
     <v-card>
       <v-card-text>
         <v-container>
@@ -96,7 +96,7 @@
         <!-- ログイン画面へのリンク -->
         <v-row justify="center">
           既にアカウントはお持ちの方は
-          <router-link :to="{ name: 'login' }">こちら</router-link>
+          <a class="blue--text" @click="$emit('close', false)">こちら</a>
         </v-row>
       </v-card-text>
     </v-card>
@@ -112,9 +112,12 @@ export default {
       };
     },
   },
+  props: {
+    isOpen: Boolean,
+  },
   data() {
     return {
-      dialog: true,
+      dialog: false,
       registerForm: {
         username: '',
         email: '',
@@ -162,10 +165,11 @@ export default {
     },
   },
   watch: {
-    dialog: function () {
-      // ダイアログが閉じたらリダイレクト
-      if (this.dialog === false) {
-        this.$router.push({ name: 'map' });
+    isOpen: function (val) {
+      if (val) {
+        this.dialog = true;
+      } else {
+        this.dialog = false;
       }
     },
   },

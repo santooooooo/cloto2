@@ -325,7 +325,7 @@
 
       <v-row justify="center" class="foot-btn">
         <router-link :to="{ name: 'register' }">
-          <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn>
+          <!-- <v-btn x-large color="primary" class="font-weight-bold">新規登録</v-btn> -->
         </router-link>
       </v-row>
     </v-container>

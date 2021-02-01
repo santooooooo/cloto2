@@ -13,8 +13,6 @@ import store from './store';
 
 import index from '@/views/Index';
 import terms from '@/views/service/Terms';
-import register from '@/views/auth/Register';
-import login from '@/views/auth/Login';
 import map from '@/views/Map';
 import mypage from '@/views/mypage/Mypage';
 import profile from '@/views/mypage/Profile';
@@ -45,20 +43,6 @@ const router = new VueRouter({
       name: 'map',
       component: map,
       meta: { isPublic: true },
-      children: [
-        {
-          path: 'register',
-          name: 'register',
-          component: register,
-          meta: { isPublic: true },
-        },
-        {
-          path: 'login',
-          name: 'login',
-          component: login,
-          meta: { isPublic: true },
-        },
-      ],
     },
     {
       path: '/entrance',
@@ -112,7 +96,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (!store.getters['auth/check'] && to.matched.some((record) => !record.meta.isPublic)) {
     // 未ログイン時のリダイレクト
-    next({ name: 'login' });
+    next({ name: 'map' });
   }
 
   if (store.getters['auth/check'] && store.getters['auth/user'].email_verified_at === null) {
