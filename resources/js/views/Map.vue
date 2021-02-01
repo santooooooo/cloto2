@@ -16,7 +16,7 @@
     <Login
       :is-open="isOpenLoginForm"
       @close="isOpenLoginForm = $event"
-      @openRegisterDialog="isOpenRegisterForm = $event"
+      @open-register-dialog="isOpenRegisterForm = $event"
     />
 
     <Register :is-open="isOpenRegisterForm" @close="isOpenRegisterForm = $event" />

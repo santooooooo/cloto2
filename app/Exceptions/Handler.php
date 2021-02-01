@@ -71,6 +71,6 @@ class Handler extends ExceptionHandler
 
         return $request->expectsJson()
             ? response()->json('', 401)
-            : redirect()->guest(url('/login'));
+            : redirect()->guest(url('/map'));
     }
 }

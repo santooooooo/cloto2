@@ -61,7 +61,7 @@
         <!-- 新規登録画面へのリンク -->
         <v-row justify="center">
           アカウントをお持ちでない方は
-          <a class="blue--text" @click="$emit('openRegisterDialog', true)">こちら</a>
+          <a class="blue--text" @click="$emit('open-register-dialog', true)">こちら</a>
         </v-row>
       </v-card-text>
     </v-card>

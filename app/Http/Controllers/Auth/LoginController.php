@@ -94,6 +94,6 @@ class LoginController extends Controller
     {
         return $request->expectsJson()
             ? response()->json()
-            : redirect()->guest(url('/login'));
+            : redirect()->guest(url('/map'));
     }
 }
