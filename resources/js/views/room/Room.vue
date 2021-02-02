@@ -17,7 +17,13 @@
       :call-id="call.id"
       :capacity="call.capacity"
       @leave-call="leaveCall()"
-      v-if="call.isEnter"
+      v-if="call.isEnter && call.capacity <= 4"
+    />
+    <MultiCall
+      :call-id="call.id"
+      :capacity="call.capacity"
+      @leave-call="leaveCall()"
+      v-if="call.isEnter && call.capacity > 4"
     />
 
     <!-- メディア視聴ブース -->
@@ -60,6 +66,7 @@
 <script>
 import Drawer from '@/components/room/Drawer';
 import Call from '@/components/room/Call';
+import MultiCall from '@/components/room/MultiCall';
 import Media from '@/components/room/Media';
 import KarteDialog from '@/components/room/KarteDialog';
 import ProfileDialog from '@/components/room/ProfileDialog';
@@ -79,6 +86,7 @@ export default {
   components: {
     Drawer,
     Call,
+    MultiCall,
     Media,
     KarteDialog,
     ProfileDialog,
@@ -442,6 +450,16 @@ export default {
                 // どこにも着席していない状態でメディア視聴ブースをクリックした場合
                 this.$store.dispatch('alert/error', '自習室に荷物を置きましょう！');
                 break;
+
+              case 'speak': // ホール（登壇者）
+                // どこにも着席していない状態でホール（登壇者）をクリックした場合
+                this.$store.dispatch('alert/error', '自習室に荷物を置きましょう！');
+                break;
+
+              case 'listen': // ホール（視聴者）
+                // どこにも着席していない状態でホール（視聴者）をクリックした場合
+                this.$store.dispatch('alert/error', '自習室に荷物を置きましょう！');
+                break;
             }
           } else {
             // 着席中
@@ -496,6 +514,16 @@ export default {
               case 'media': // メディア視聴ブース
                 // 状態変更処理
                 await this.userAction('enterMedia', target);
+                break;
+
+              case 'speak': // ホール（登壇者）
+                // 状態変更処理
+                await this.userAction('enterCall', target);
+                break;
+
+              case 'listen': // ホール（視聴者）
+                // 状態変更処理
+                await this.userAction('enterCall', target);
                 break;
             }
           }
@@ -747,7 +775,9 @@ export default {
             (seat.role === 'lounge' ||
               seat.role === 'hangout' ||
               seat.role === 'mentor' ||
-              seat.role === 'user')
+              seat.role === 'user' ||
+              seat.role === 'speak' ||
+              seat.role === 'listen')
           ) {
             this.enterCall(section.id, section.seats.length);
           }
