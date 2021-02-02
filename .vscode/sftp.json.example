@@ -4,6 +4,7 @@
     "protocol": "sftp",
     "port": 22,
     "username": "hoge",
+    "password": "hoge",
     "privateKeyPath": "/Users/hoge/.ssh/id_hoge_rsa",
     "remotePath": "/",
     "sshConfigPath": "/Users/hoge/.ssh/config",
