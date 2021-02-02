@@ -867,8 +867,8 @@ export default {
           this.screenSharing.peer = new Peer({ key: API_KEY });
 
           this.screenSharing.stream = await navigator.mediaDevices.getDisplayMedia({
-            video: true,
             audio: false,
+            video: true,
           });
 
           this.screenSharing.peer.joinRoom(this.callId, {

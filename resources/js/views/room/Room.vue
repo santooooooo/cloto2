@@ -24,7 +24,12 @@
         @leave-call="leaveCall()"
         v-else-if="authUser.seat.role === 'listen'"
       />
-      <Call :call-id="call.id" :capacity="call.capacity" @leave-call="leaveCall()" v-else />
+      <Call
+        :call-id="call.id"
+        :capacity="call.capacity"
+        @leave-call="leaveCall()"
+        v-else-if="call.roles.includes(authUser.seat.role)"
+      />
     </div>
 
     <!-- メディア視聴ブース -->
@@ -104,6 +109,7 @@ export default {
       roomWidth: 2160, // 教室サイズ
       roomHeight: 1200, // 教室サイズ
       call: {
+        roles: ['lounge', 'hangout', 'mentor', 'user'], // 通常通話部屋
         isEnter: false, // 通話室入室制御
         id: '', // 入室する通話室のID
         capacity: '', // 通話室の定員
@@ -775,12 +781,7 @@ export default {
           // ログインユーザーが座っており，座席が通話席の場合
           if (
             seat.id === this.authUser.seat_id &&
-            (seat.role === 'lounge' ||
-              seat.role === 'hangout' ||
-              seat.role === 'mentor' ||
-              seat.role === 'user' ||
-              seat.role === 'speak' ||
-              seat.role === 'listen')
+            (this.call.roles.includes(seat.role) || seat.role === 'speak' || seat.role === 'listen')
           ) {
             this.enterCall(section.id, section.seats.length);
           }
