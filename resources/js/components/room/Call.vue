@@ -512,7 +512,7 @@
               offset-x="40"
               offset-y="15"
             >
-              <v-btn color="white" icon class="mr-5" @click="controlChat()">
+              <v-btn color="white" icon class="mr-5" @click="toggleChat()">
                 <v-icon large>mdi-message-text</v-icon>
               </v-btn>
             </v-badge>
@@ -1103,9 +1103,9 @@ export default {
     },
 
     /**
-     * チャットエリアの制御
+     * チャットエリアの表示切り替え
      */
-    controlChat: function () {
+    toggleChat: function () {
       this.chat.isOpen = !this.chat.isOpen;
       this.chat.notification = false;
     },
