@@ -404,34 +404,8 @@
     >
       <v-row>
         <v-col md="4" sm="4" align-self="center">
-          <v-row justify="start" class="mt-8">
-            <v-col md="6" sm="6">
-              <v-select disabled label="ミュート" v-if="isMute"></v-select>
-              <v-select
-                v-model="selectedAudio"
-                :items="audioDevices"
-                item-value="deviceId"
-                item-text="label"
-                @change="changeDevice()"
-                label="マイク"
-                v-else
-              >
-              </v-select>
-            </v-col>
-
-            <v-col md="6" sm="6">
-              <v-select disabled label="ビデオオフ" v-if="isVideoOff"></v-select>
-              <v-select
-                v-model="selectedVideo"
-                :items="videoDevices"
-                item-value="deviceId"
-                item-text="label"
-                @change="changeDevice()"
-                label="ビデオ"
-                v-else
-              >
-              </v-select>
-            </v-col>
+          <v-row justify="start">
+            <span class="ml-10 text-h4">視聴席</span>
           </v-row>
         </v-col>
 
@@ -439,8 +413,7 @@
           <v-row justify="center">
             <!-- ミュートボタン -->
             <v-btn
-              :color="!isMute ? 'white' : 'red'"
-              :disabled="isAudioLoading || isVideoLoading"
+              disabled
               fab
               depressed
               :large="$vuetify.breakpoint.lg"
@@ -449,15 +422,13 @@
                 $vuetify.breakpoint.lg ? 'mx-8' : '',
                 $vuetify.breakpoint.md ? 'mx-5' : 'mx-1',
               ]"
-              @click="mute()"
             >
-              <v-icon large>{{ !isMute ? 'mdi-microphone' : 'mdi-microphone-off' }}</v-icon>
+              <v-icon large>mdi-microphone-off</v-icon>
             </v-btn>
 
             <!-- ビデオオフボタン -->
             <v-btn
-              :color="!isVideoOff ? 'white' : 'red'"
-              :disabled="isAudioLoading || isVideoLoading"
+              disabled
               fab
               depressed
               :large="$vuetify.breakpoint.lg"
@@ -466,15 +437,13 @@
                 $vuetify.breakpoint.lg ? 'mx-8' : '',
                 $vuetify.breakpoint.md ? 'mx-5' : 'mx-1',
               ]"
-              @click="videoOff()"
             >
-              <v-icon large>{{ !isVideoOff ? 'mdi-video' : 'mdi-video-off' }}</v-icon>
+              <v-icon large>mdi-video-off</v-icon>
             </v-btn>
 
             <!-- 画面共有ボタン -->
             <v-btn
-              :color="screenSharing.stream && screenSharing.isLocal ? 'red' : 'white'"
-              :disabled="screenSharing.stream && !screenSharing.isLocal"
+              disabled
               fab
               depressed
               :large="$vuetify.breakpoint.lg"
@@ -483,15 +452,8 @@
                 $vuetify.breakpoint.lg ? 'mx-8' : '',
                 $vuetify.breakpoint.md ? 'mx-5' : 'mx-1',
               ]"
-              @click="!screenSharing.stream ? startScreenSharing() : stopScreenSharing()"
             >
-              <v-icon large>
-                {{
-                  screenSharing.stream && screenSharing.isLocal
-                    ? 'mdi-window-close'
-                    : 'mdi-window-restore'
-                }}
-              </v-icon>
+              <v-icon large>mdi-window-restore</v-icon>
             </v-btn>
           </v-row>
         </v-col>
@@ -512,7 +474,7 @@
               offset-x="40"
               offset-y="15"
             >
-              <v-btn color="white" icon class="mr-5" @click="controlChat()">
+              <v-btn color="white" icon class="mr-5" @click="toggleChat()">
                 <v-icon large>mdi-message-text</v-icon>
               </v-btn>
             </v-badge>
@@ -652,7 +614,6 @@ export default {
     makeCall: async function () {
       this.call = this.peer.joinRoom(this.callId, {
         mode: this.roomMode,
-        stream: this.localStream,
       });
 
       this.setupCallEvents();
@@ -859,202 +820,6 @@ export default {
     },
 
     /**
-     * 画面共有開始
-     */
-    startScreenSharing: async function () {
-      if (this.screenSharing.stream === null) {
-        try {
-          this.screenSharing.peer = new Peer({ key: API_KEY });
-
-          this.screenSharing.stream = await navigator.mediaDevices.getDisplayMedia({
-            video: true,
-            audio: false,
-          });
-
-          this.screenSharing.peer.joinRoom(this.callId, {
-            mode: this.roomMode,
-            stream: this.screenSharing.stream,
-          });
-
-          this.screenSharing.isLocal = true;
-
-          this.setupScreenSharingEvents();
-        } catch (error) {
-          // キャンセルボタン押下時
-          this.$store.dispatch('alert/error', '画面共有がキャンセルされました．．．');
-        }
-      }
-    },
-
-    /**
-     * 画面共有のイベント
-     */
-    setupScreenSharingEvents: function () {
-      // 画面共有終了イベント（Chromeの共有を停止ボタン押下時の処理）
-      this.screenSharing.stream.getVideoTracks()[0].onended = () => {
-        this.stopScreenSharing();
-      };
-    },
-
-    /**
-     * 画面共有停止
-     */
-    stopScreenSharing: async function () {
-      if (this.screenSharing.stream !== null) {
-        this.screenSharing.isLocal = false;
-
-        // デバイスの画面共有を停止
-        this.screenSharing.stream.getTracks().forEach((track) => track.stop());
-        this.screenSharing.stream = null;
-
-        // 画面共有用の接続を終了
-        this.screenSharing.peer.disconnect();
-      }
-    },
-
-    /**
-     * 通話デバイスへのアクセス
-     */
-    accessDevice: async function () {
-      try {
-        //** 権限確認 */
-        this.permissionOverlay = true;
-
-        const userMedia = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-          video: true,
-        });
-        // デバイスの停止
-        userMedia.getTracks().forEach((track) => track.stop());
-
-        //** デバイスの一覧を取得 */
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        // マイクデバイスの一覧を取得
-        this.audioDevices = devices.filter((device) => {
-          return (
-            device.kind === 'audioinput' &&
-            device.deviceId !== 'default' &&
-            device.deviceId !== 'communications'
-          );
-        });
-        // カメラデバイスの一覧を取得
-        this.videoDevices = devices.filter((device) => {
-          return (
-            device.kind === 'videoinput' &&
-            device.deviceId !== 'default' &&
-            device.deviceId !== 'communications'
-          );
-        });
-
-        // 初期値の設定
-        this.selectedAudio = this.audioDevices[0].deviceId;
-        this.selectedVideo = this.videoDevices[0].deviceId;
-
-        this.permissionOverlay = false;
-      } catch (error) {
-        // connectDeviceの例外処理で上書きされるので，これは表示されない
-        // デバイスが存在しない場合
-        this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
-      }
-    },
-
-    /**
-     * 通話デバイスへの接続
-     */
-    connectDevice: async function () {
-      // Audioは常に残す（どちらかを定義しておく必要あり）
-      var constraints = {
-        audio: this.selectedAudio ? { deviceId: { exact: this.selectedAudio } } : false,
-        video:
-          this.selectedVideo && !this.isVideoOff
-            ? { deviceId: { exact: this.selectedVideo } }
-            : false,
-      };
-
-      // 録画サイズの設定
-      if (constraints.video !== false) {
-        constraints.video.width = {
-          min: this.videoSize.width,
-          max: this.videoSize.width,
-        };
-        constraints.video.height = {
-          min: this.videoSize.height,
-          max: this.videoSize.height,
-        };
-      }
-
-      try {
-        // デバイスの接続
-        this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
-
-        // 起動時はすぐにカメラを停止する
-        if (this.isLoading) {
-          // 接続時にはenabledで停止
-          // デバイスを停止すると，相手にvideoストリームが届かない
-          this.localStream.getVideoTracks()[0].enabled = false;
-        }
-
-        // ストリーム再作成時にミュートが解除される（ビデオ切り替え時など）
-        if (this.isMute) {
-          this.localStream.getAudioTracks()[0].enabled = false;
-        }
-      } catch (error) {
-        // 他のアプリがデバイスを使用している場合
-        this.errorEvent(
-          'マイクまたはカメラが認識できませんでした。ブラウザの設定から権限を有効化してから再読み込みしてください。'
-        );
-      }
-    },
-
-    /**
-     * 通話デバイスの切り替え
-     */
-    changeDevice: async function () {
-      await this.connectDevice();
-      // ストリームの置き換え
-      this.call.replaceStream(this.localStream);
-    },
-
-    /**
-     * ミュートの切り替え
-     */
-    mute: async function () {
-      this.isAudioLoading = true;
-
-      this.isMute = !this.isMute;
-
-      // Audio，Videoのいずれかを残しておく必要があるので，enableで制御
-      this.localStream.getAudioTracks()[0].enabled = !this.isMute;
-
-      // 通知
-      this.call.send({ type: 'audioEvent', content: this.isMute });
-
-      this.isAudioLoading = false;
-    },
-
-    /**
-     * ビデオのオン/オフ切り替え
-     */
-    videoOff: async function () {
-      this.isVideoLoading = true;
-
-      this.isVideoOff = !this.isVideoOff;
-
-      if (this.isVideoOff) {
-        // ビデオデバイスの停止
-        this.localStream.getVideoTracks().forEach((track) => track.stop());
-      } else {
-        // ビデオデバイスの再接続
-        await this.changeDevice();
-      }
-
-      // 通知
-      this.call.send({ type: 'videoEvent', content: this.isVideoOff });
-
-      this.isVideoLoading = false;
-    },
-
-    /**
      * 音声検知の開始
      *
      * @param MediaStream stream  音声検知するユーザー（全員）のストリーム
@@ -1102,9 +867,9 @@ export default {
     },
 
     /**
-     * チャットエリアの制御
+     * チャットエリアの表示切り替え
      */
-    controlChat: function () {
+    toggleChat: function () {
       this.chat.isOpen = !this.chat.isOpen;
       this.chat.notification = false;
     },
@@ -1221,20 +986,20 @@ export default {
     this.notificationSounds.leave.volume = 0.6;
     this.notificationSounds.receiveMessage.volume = 0.6;
 
-    // エラー発生時のイベント
-    Vue.config.errorHandler = (error) => {
-      this.errorEvent('エラーが発生しました。再読み込みしてください。');
-    };
+    // // エラー発生時のイベント
+    // Vue.config.errorHandler = (error) => {
+    //   this.errorEvent('エラーが発生しました。再読み込みしてください。');
+    // };
 
-    // エラー発生時のイベント
-    window.addEventListener('error', (error) => {
-      this.errorEvent('エラーが発生しました。再読み込みしてください。');
-    });
+    // // エラー発生時のイベント
+    // window.addEventListener('error', (error) => {
+    //   this.errorEvent('エラーが発生しました。再読み込みしてください。');
+    // });
 
-    // エラー発生時のイベント
-    window.addEventListener('unhandledrejection', (error) => {
-      this.errorEvent('エラーが発生しました。再読み込みしてください。');
-    });
+    // // エラー発生時のイベント
+    // window.addEventListener('unhandledrejection', (error) => {
+    //   this.errorEvent('エラーが発生しました。再読み込みしてください。');
+    // });
 
     // Peerの作成
     this.peer = new Peer({ key: API_KEY });
@@ -1243,27 +1008,17 @@ export default {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     if (typeof this.peer.id !== 'undefined') {
-      // デバイスの接続
-      await this.accessDevice();
-      await this.connectDevice();
-
       // 通話開始
       await this.makeCall();
 
-      // 通話開始時はミュート/ビデオオフに設定
-      this.mute();
-      setTimeout(() => {
-        // ビデオオフを遅延させないと，videoストリームが相手に接続できない
-        this.videoOff();
-        this.isLoading = false;
-        this.call.send({ type: 'loadingEvent', content: false });
+      this.isLoading = false;
+      this.call.send({ type: 'loadingEvent', content: false });
 
-        // 通知音の有効化
-        this.$store.dispatch('alert/switchSound', {
-          isOn: true,
-          sound: this.notificationSounds.join,
-        });
-      }, 5000);
+      // 通知音の有効化
+      this.$store.dispatch('alert/switchSound', {
+        isOn: true,
+        sound: this.notificationSounds.join,
+      });
     }
   },
 
