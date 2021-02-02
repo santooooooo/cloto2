@@ -19,11 +19,17 @@
       @leave-call="leaveCall()"
       v-if="call.isEnter && call.capacity <= 4"
     />
-    <MultiCall
+    <MultiCallSpeak
       :call-id="call.id"
       :capacity="call.capacity"
       @leave-call="leaveCall()"
-      v-if="call.isEnter && call.capacity > 4"
+      v-if="call.isEnter && call.capacity > 4 && authUser.seat.role === 'speak'"
+    />
+    <MultiCallListen
+      :call-id="call.id"
+      :capacity="call.capacity"
+      @leave-call="leaveCall()"
+      v-if="call.isEnter && call.capacity > 4 && authUser.seat.role === 'listen'"
     />
 
     <!-- メディア視聴ブース -->
@@ -66,7 +72,8 @@
 <script>
 import Drawer from '@/components/room/Drawer';
 import Call from '@/components/room/Call';
-import MultiCall from '@/components/room/MultiCall';
+import MultiCallSpeak from '@/components/room/MultiCallSpeak';
+import MultiCallListen from '@/components/room/MultiCallListen';
 import Media from '@/components/room/Media';
 import KarteDialog from '@/components/room/KarteDialog';
 import ProfileDialog from '@/components/room/ProfileDialog';
@@ -86,7 +93,8 @@ export default {
   components: {
     Drawer,
     Call,
-    MultiCall,
+    MultiCallSpeak,
+    MultiCallListen,
     Media,
     KarteDialog,
     ProfileDialog,
