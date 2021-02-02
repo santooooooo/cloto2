@@ -13,24 +13,19 @@
     />
 
     <!-- 通話室 -->
-    <Call
-      :call-id="call.id"
-      :capacity="call.capacity"
-      @leave-call="leaveCall()"
-      v-if="call.isEnter && call.capacity <= 4"
-    />
-    <MultiCallSpeak
-      :call-id="call.id"
-      :capacity="call.capacity"
-      @leave-call="leaveCall()"
-      v-if="call.isEnter && call.capacity > 4 && authUser.seat.role === 'speak'"
-    />
-    <MultiCallListen
-      :call-id="call.id"
-      :capacity="call.capacity"
-      @leave-call="leaveCall()"
-      v-if="call.isEnter && call.capacity > 4 && authUser.seat.role === 'listen'"
-    />
+    <div v-if="call.isEnter">
+      <SeminarSpeak
+        :call-id="call.id"
+        @leave-call="leaveCall()"
+        v-if="authUser.seat.role === 'speak'"
+      />
+      <SeminarListen
+        :call-id="call.id"
+        @leave-call="leaveCall()"
+        v-else-if="authUser.seat.role === 'listen'"
+      />
+      <Call :call-id="call.id" :capacity="call.capacity" @leave-call="leaveCall()" v-else />
+    </div>
 
     <!-- メディア視聴ブース -->
     <Media
@@ -72,8 +67,8 @@
 <script>
 import Drawer from '@/components/room/Drawer';
 import Call from '@/components/room/Call';
-import MultiCallSpeak from '@/components/room/MultiCallSpeak';
-import MultiCallListen from '@/components/room/MultiCallListen';
+import SeminarSpeak from '@/components/room/SeminarSpeak';
+import SeminarListen from '@/components/room/SeminarListen';
 import Media from '@/components/room/Media';
 import KarteDialog from '@/components/room/KarteDialog';
 import ProfileDialog from '@/components/room/ProfileDialog';
@@ -93,8 +88,8 @@ export default {
   components: {
     Drawer,
     Call,
-    MultiCallSpeak,
-    MultiCallListen,
+    SeminarSpeak,
+    SeminarListen,
     Media,
     KarteDialog,
     ProfileDialog,
