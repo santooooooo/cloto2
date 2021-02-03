@@ -23,8 +23,7 @@
       fixed
       top
       height="60px"
-      id="app-bar"
-      :class="appBar.isShow ? 'show' : ''"
+      :class="['app-bar', appBar.isShow ? 'show' : '']"
     >
       <v-row dense justify="center">
         <span class="text-h4">{{ topic }}</span>
@@ -333,8 +332,7 @@
       fixed
       bottom
       height="100px"
-      id="app-bar"
-      :class="appBar.isShow ? 'show' : ''"
+      :class="['app-bar', appBar.isShow ? 'show' : '']"
     >
       <v-row>
         <v-col md="4" sm="4" align-self="center">
@@ -1077,7 +1075,7 @@ export default {
   }
 }
 
-#app-bar {
+.app-bar {
   opacity: 0;
   transition: 0.8s;
 
