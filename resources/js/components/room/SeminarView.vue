@@ -17,8 +17,22 @@
       ></v-progress-linear>
     </v-overlay>
 
-    <!-- 視聴者 -->
+    <!-- トピック -->
+    <v-app-bar
+      color="grey lighten-2"
+      fixed
+      top
+      height="60px"
+      id="app-bar"
+      :class="appBar.isShow ? 'show' : ''"
+    >
+      <v-row dense justify="center">
+        <span class="text-h4">{{ topic }}</span>
+      </v-row>
+    </v-app-bar>
+
     <v-layout class="px-2">
+      <!-- 視聴者一覧 -->
       <v-flex xs1 v-if="viewers.length">
         <v-avatar
           size="40"
@@ -319,8 +333,8 @@
       fixed
       bottom
       height="100px"
-      id="tool-bar"
-      :class="toolBar.isShow ? 'show' : ''"
+      id="app-bar"
+      :class="appBar.isShow ? 'show' : ''"
     >
       <v-row>
         <v-col md="4" sm="4" align-self="center">
@@ -439,10 +453,11 @@ export default {
     return {
       dialog: true, // 入室制御
       isLoading: false, // ローディング制御
-      toolBar: {
+      appBar: {
         timer: null, // ツールバー表示タイマー
         isShow: false, // ツールバー表示制御
       },
+      topic: '', // トピック
 
       //*** 通話 ***//
       participants: [], // 参加者
@@ -617,6 +632,12 @@ export default {
             sender.isVideoOff = data.content;
             break;
 
+          case 'topic':
+            // トピックの受信
+            this.topic = data.content;
+            this.showAppBar();
+            break;
+
           case 'message':
             // メッセージの受信
             this.addMessage(sender.handlename, data.content);
@@ -629,6 +650,7 @@ export default {
 
               // 通知の表示
               this.chat.notification = true;
+              this.showAppBar();
             }
             break;
         }
@@ -682,6 +704,8 @@ export default {
         if (stream.getAudioTracks().length > 0) {
           // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
           this.call.send({ type: 'joinViewerData', content: this.authUser });
+          // 現在のトピックを送信
+          this.call.send({ type: 'topic', content: this.topic });
 
           // 通知音
           if (this.isNotificationOn) {
@@ -882,14 +906,14 @@ export default {
     /**
      * ツールバーの表示制御
      */
-    showToolBar: function () {
+    showAppBar: function () {
       // マウスが動作すると表示
-      this.toolBar.isShow = true;
-      clearTimeout(this.toolBar.timer);
+      this.appBar.isShow = true;
+      clearTimeout(this.appBar.timer);
 
-      this.toolBar.timer = setTimeout(() => {
+      this.appBar.timer = setTimeout(() => {
         // 停止2秒後に隠す
-        this.toolBar.isShow = false;
+        this.appBar.isShow = false;
       }, 2000);
     },
 
@@ -968,13 +992,13 @@ export default {
     }
 
     // ツールバー表示制御の設定
-    window.addEventListener('mousemove', this.showToolBar);
+    window.addEventListener('mousemove', this.showAppBar);
   },
 
   beforeDestroy() {
     // イベントの削除
-    window.removeEventListener('mousemove', this.showToolBar);
-    clearTimeout(this.toolBar.timer);
+    window.removeEventListener('mousemove', this.showAppBar);
+    clearTimeout(this.appBar.timer);
 
     // 念の為
     this.exitCall();
@@ -1053,7 +1077,7 @@ export default {
   }
 }
 
-#tool-bar {
+#app-bar {
   opacity: 0;
   transition: 0.8s;
 

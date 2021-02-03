@@ -26,8 +26,37 @@
       <p class="text-body-2 mt-12">カメラランプが10秒ほど点灯する場合があります．．．</p>
     </v-overlay>
 
-    <!-- 視聴者 -->
+    <!-- トピック -->
+    <v-app-bar
+      color="grey lighten-2"
+      fixed
+      top
+      height="60px"
+      id="app-bar"
+      :class="appBar.isShow ? 'show' : ''"
+    >
+      <v-row dense justify="center">
+        <v-col md="6" sm="10">
+          <v-row dense>
+            <v-text-field
+              v-model="topic"
+              clearable
+              class="mt-8 px-2"
+              label="トピック"
+              @keydown="showAppBar"
+              @keydown.enter="updateTopic"
+              @click:clear="updateTopic"
+            ></v-text-field>
+            <v-btn icon class="mt-6" @click="updateTopic">
+              <v-icon>mdi-send</v-icon>
+            </v-btn>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-app-bar>
+
     <v-layout class="px-2">
+      <!-- 視聴者一覧 -->
       <v-flex xs1 v-if="viewers.length">
         <v-avatar
           size="40"
@@ -399,8 +428,8 @@
       fixed
       bottom
       height="100px"
-      id="tool-bar"
-      :class="toolBar.isShow ? 'show' : ''"
+      id="app-bar"
+      :class="appBar.isShow ? 'show' : ''"
     >
       <v-row>
         <v-col md="4" sm="4" align-self="center">
@@ -558,10 +587,11 @@ export default {
       dialog: true, // 入室制御
       permissionOverlay: false, // 権限確認画面
       isLoading: false, // ローディング制御
-      toolBar: {
+      appBar: {
         timer: null, // ツールバー表示タイマー
         isShow: false, // ツールバー表示制御
       },
+      topic: '', // トピック
 
       //*** 通話 ***//
       participants: [], // 参加者
@@ -747,6 +777,12 @@ export default {
             sender.isVideoOff = data.content;
             break;
 
+          case 'topic':
+            // トピックの受信
+            this.topic = data.content;
+            this.showAppBar();
+            break;
+
           case 'message':
             // メッセージの受信
             this.addMessage(sender.handlename, data.content);
@@ -759,6 +795,7 @@ export default {
 
               // 通知の表示
               this.chat.notification = true;
+              this.showAppBar();
             }
             break;
         }
@@ -876,6 +913,8 @@ export default {
         this.call.send({ type: 'loadingEvent', content: this.isLoading });
         this.call.send({ type: 'audioEvent', content: this.isMute });
         this.call.send({ type: 'videoEvent', content: this.isVideoOff });
+        // 現在のトピックを送信
+        this.call.send({ type: 'topic', content: this.topic });
 
         // 通知音
         if (this.isNotificationOn) {
@@ -1153,6 +1192,25 @@ export default {
     },
 
     /**
+     * トピックの更新処理
+     *
+     * @param event クリック or キーボードイベント
+     */
+    updateTopic: function (event) {
+      // クリックまたは日本語変換以外のEnter押下時に発火
+      if (event.type === 'click' || (event.type === 'keydown' && event.keyCode === 13)) {
+        // ×アイコンの押下時
+        if (event.target.ariaLabel === 'clear icon') {
+          this.topic = '';
+        }
+
+        // トピックの更新
+        this.call.send({ type: 'topic', content: this.topic });
+        this.$store.dispatch('alert/success', 'トピックが更新されました。');
+      }
+    },
+
+    /**
      * チャットエリアの表示切り替え
      */
     toggleChat: function () {
@@ -1229,14 +1287,14 @@ export default {
     /**
      * ツールバーの表示制御
      */
-    showToolBar: function () {
+    showAppBar: function () {
       // マウスが動作すると表示
-      this.toolBar.isShow = true;
-      clearTimeout(this.toolBar.timer);
+      this.appBar.isShow = true;
+      clearTimeout(this.appBar.timer);
 
-      this.toolBar.timer = setTimeout(() => {
+      this.appBar.timer = setTimeout(() => {
         // 停止2秒後に隠す
-        this.toolBar.isShow = false;
+        this.appBar.isShow = false;
       }, 2000);
     },
 
@@ -1334,13 +1392,13 @@ export default {
     }
 
     // ツールバー表示制御の設定
-    window.addEventListener('mousemove', this.showToolBar);
+    window.addEventListener('mousemove', this.showAppBar);
   },
 
   beforeDestroy() {
     // イベントの削除
-    window.removeEventListener('mousemove', this.showToolBar);
-    clearTimeout(this.toolBar.timer);
+    window.removeEventListener('mousemove', this.showAppBar);
+    clearTimeout(this.appBar.timer);
 
     // 念の為
     this.exitCall();
@@ -1440,7 +1498,7 @@ export default {
   }
 }
 
-#tool-bar {
+#app-bar {
   opacity: 0;
   transition: 0.8s;
 

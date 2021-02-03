@@ -36,7 +36,7 @@
       :class="appBar.isShow ? 'show' : ''"
     >
       <v-row dense justify="center">
-        <v-col md="6" sm="6">
+        <v-col md="6" sm="10">
           <v-row dense>
             <v-text-field
               v-model="topic"
