@@ -117,6 +117,11 @@
                 </v-fade-transition>
               </v-sheet>
             </v-hover>
+
+            <!-- 画面共有 -->
+            <v-row justify="center" class="mt-3">
+              <video autoplay :srcObject.prop="screenSharing.stream" class="screen-sharing"></video>
+            </v-row>
           </v-row>
 
           <!--*** ピン留め時 ***-->
@@ -278,11 +283,6 @@
                 </v-hover>
               </v-row>
             </v-col>
-          </v-row>
-
-          <!-- 画面共有 -->
-          <v-row justify="center" class="mt-3" v-if="screenSharing.stream">
-            <video autoplay :srcObject.prop="screenSharing.stream" style="max-width: 80%"></video>
           </v-row>
 
           <!-- プロフィールダイアログ -->
@@ -1017,10 +1017,6 @@ export default {
   }
 }
 
-.normal-container {
-  height: 100vh;
-}
-
 .video {
   position: relative;
 
@@ -1066,6 +1062,14 @@ export default {
   &.speaker {
     outline: 5px solid #f6bf00;
   }
+}
+
+.screen-sharing {
+  max-width: 80%;
+}
+
+.normal-container {
+  height: 100vh;
 }
 
 #chat {
