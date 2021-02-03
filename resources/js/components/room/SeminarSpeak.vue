@@ -62,13 +62,13 @@
             <v-hover
               v-slot="{ hover }"
               v-for="participant in notPinnedParticipants"
-              :key="participant.stream.peerId"
+              :key="participant.peerId"
             >
               <v-sheet
                 color="rgba(0, 0, 0, 1)"
                 width="208"
                 height="117"
-                :class="['video', 'ma-1', speakerId === participant.stream.peerId ? 'speaker' : '']"
+                :class="['video', 'ma-1', speakerId === participant.peerId ? 'speaker' : '']"
               >
                 <!-- オフ -->
                 <v-sheet
@@ -139,11 +139,7 @@
                 color="rgba(0, 0, 0, 1)"
                 :width="videoSize.width"
                 :height="videoSize.height"
-                :class="[
-                  'video',
-                  'mx-1',
-                  speakerId === pinnedParticipant.stream.peerId ? 'speaker' : '',
-                ]"
+                :class="['video', 'mx-1', speakerId === pinnedParticipant.peerId ? 'speaker' : '']"
               >
                 <!-- オフ -->
                 <v-sheet
@@ -265,7 +261,7 @@
               md="6"
               lg="6"
               v-for="participant in notPinnedParticipants"
-              :key="participant.stream.peerId"
+              :key="participant.peerId"
             >
               <v-row justify="center">
                 <v-hover v-slot="{ hover }">
@@ -273,11 +269,7 @@
                     color="rgba(0, 0, 0, 1)"
                     :width="videoShowWidth"
                     :height="videoShowHeight"
-                    :class="[
-                      'video',
-                      'ma-1',
-                      speakerId === participant.stream.peerId ? 'speaker' : '',
-                    ]"
+                    :class="['video', 'ma-1', speakerId === participant.peerId ? 'speaker' : '']"
                   >
                     <!-- オフ -->
                     <v-sheet
@@ -683,7 +675,7 @@ export default {
             var sender = await new Promise((resolve, reject) => {
               // 送信者を検索（参加者のPeerIDを確認）
               var participant = this.participants.filter((participant) => {
-                return src === participant.stream.peerId;
+                return src === participant.peerId;
               })[0];
 
               if (typeof participant === 'undefined') {
@@ -799,9 +791,7 @@ export default {
       // 参加者がいるか確認
       // ミュートやビデオの切替時にもストリームが置き換わるため発火する場合がある
       // 同一のPeerIDが存在しないことを確認する
-      var isJoin = !this.participants.some(
-        (participant) => participant.stream.peerId === stream.peerId
-      );
+      var isJoin = !this.participants.some((participant) => participant.peerId === stream.peerId);
 
       if (isJoin) {
         // ユーザーが参加した場合
@@ -826,6 +816,7 @@ export default {
             isLoading: true, // 接続待ち状態
             isMute: true, // ミュート状態
             isVideoOff: true, // ビデオオフ状態
+            peerId: stream.peerId,
             stream: stream,
           });
 
@@ -854,7 +845,7 @@ export default {
 
       this.participants = this.participants.filter((participant) => {
         // 退出したユーザーのpeerId以外を残す
-        return participant.stream.peerId !== peerId;
+        return participant.peerId !== peerId;
       });
     },
 
