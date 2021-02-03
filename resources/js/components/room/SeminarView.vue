@@ -6,8 +6,21 @@
     no-click-animation
     transition="dialog-bottom-transition"
   >
+    <!-- 権限確認画面 -->
+    <v-overlay :value="permissionOverlay" z-index="7" class="text-center" opacity="0.9">
+      <p class="text-h5 mb-5">ここは視聴席です。発言はできません。</p>
+      <v-row justify="center">
+        <v-btn depressed color="primary" @click="permissionOverlay = false">閉じる</v-btn>
+      </v-row>
+    </v-overlay>
+
     <!-- ローディング画面 -->
-    <v-overlay :value="isLoading" z-index="6" class="text-center" opacity="0.9">
+    <v-overlay
+      :value="isLoading && !permissionOverlay"
+      z-index="6"
+      class="text-center"
+      opacity="0.9"
+    >
       <p class="text-h5 mb-5">接続中</p>
       <v-progress-linear
         indeterminate
@@ -450,6 +463,7 @@ export default {
   data() {
     return {
       dialog: true, // 入室制御
+      permissionOverlay: false, // 権限確認画面（リロード時にも通知音有効化のため）
       isLoading: false, // ローディング制御
       appBar: {
         timer: null, // ツールバー表示タイマー
@@ -931,8 +945,13 @@ export default {
 
     // 15秒間接続できなければ終了
     const timeout = () => {
-      if (this.isLoading) {
-        this.errorEvent('エラーが発生しました。再読み込みしてください。');
+      // 権限確認中の場合，再度待機
+      if (this.permissionOverlay) {
+        setTimeout(timeout, 15000);
+      } else {
+        if (this.isLoading) {
+          this.errorEvent('エラーが発生しました。再読み込みしてください。');
+        }
       }
     };
     setTimeout(timeout, 15000);
@@ -942,20 +961,43 @@ export default {
     this.notificationSounds.leave.volume = 0.6;
     this.notificationSounds.receiveMessage.volume = 0.6;
 
-    // // エラー発生時のイベント
-    // Vue.config.errorHandler = (error) => {
-    //   this.errorEvent('エラーが発生しました。再読み込みしてください。');
-    // };
+    // エラー発生時のイベント
+    Vue.config.errorHandler = (error) => {
+      this.errorEvent('エラーが発生しました。再読み込みしてください。');
+    };
 
-    // // エラー発生時のイベント
-    // window.addEventListener('error', (error) => {
-    //   this.errorEvent('エラーが発生しました。再読み込みしてください。');
-    // });
+    // エラー発生時のイベント
+    window.addEventListener('error', (error) => {
+      this.errorEvent('エラーが発生しました。再読み込みしてください。');
+    });
 
-    // // エラー発生時のイベント
-    // window.addEventListener('unhandledrejection', (error) => {
-    //   this.errorEvent('エラーが発生しました。再読み込みしてください。');
-    // });
+    // エラー発生時のイベント
+    window.addEventListener('unhandledrejection', (error) => {
+      this.errorEvent('エラーが発生しました。再読み込みしてください。');
+    });
+
+    // 権限確認画面が閉じられるまで待機
+    this.permissionOverlay = true;
+    while (true) {
+      try {
+        await new Promise((resolve, reject) => {
+          if (this.permissionOverlay) {
+            // 再処理へ
+            reject();
+          } else {
+            // 終了
+            resolve();
+          }
+        });
+
+        break;
+      } catch (error) {
+        // 0.1秒待機
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        // 再処理
+        continue;
+      }
+    }
 
     // Peerの作成
     this.peer = new Peer({ key: API_KEY });
@@ -967,8 +1009,13 @@ export default {
       // 通話開始
       await this.makeCall();
 
-      this.isLoading = false;
+      // 通知音の有効化
+      this.$store.dispatch('alert/switchSound', {
+        isOn: true,
+        sound: this.notificationSounds.join,
+      });
 
+      this.isLoading = false;
       // 自分の情報を送信
       this.call.send({ type: 'joinViewerData', content: this.authUser });
     }

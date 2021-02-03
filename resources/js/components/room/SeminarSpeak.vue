@@ -1362,14 +1362,15 @@ export default {
       setTimeout(() => {
         // ビデオオフを遅延させないと，videoストリームが相手に接続できない
         this.videoOff();
-        this.isLoading = false;
-        this.call.send({ type: 'loadingEvent', content: false });
 
         // 通知音の有効化
         this.$store.dispatch('alert/switchSound', {
           isOn: true,
           sound: this.notificationSounds.join,
         });
+
+        this.isLoading = false;
+        this.call.send({ type: 'loadingEvent', content: false });
       }, 5000);
     }
   },

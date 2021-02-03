@@ -32,7 +32,7 @@
     </v-overlay>
 
     <!-- アナウンスオーバーレイ-->
-    <v-overlay z-index="9996" opacity="0.9" :value="announce.message !== ''" color="primary" dark>
+    <v-overlay z-index="9996" opacity="0.9" :value="announce.message !== ''" color="primary">
       <v-container>
         <p class="text-h4 mb-12">{{ announce.message }}</p>
         <v-row justify="center">
