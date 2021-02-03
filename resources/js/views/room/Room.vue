@@ -19,7 +19,7 @@
         @leave-call="leaveCall()"
         v-if="authUser.seat.role === 'speak'"
       />
-      <SeminarListen
+      <SeminarView
         :call-id="call.id"
         @leave-call="leaveCall()"
         v-else-if="authUser.seat.role === 'listen'"
@@ -73,7 +73,7 @@
 import Drawer from '@/components/room/Drawer';
 import Call from '@/components/room/Call';
 import SeminarSpeak from '@/components/room/SeminarSpeak';
-import SeminarListen from '@/components/room/SeminarListen';
+import SeminarView from '@/components/room/SeminarView';
 import Media from '@/components/room/Media';
 import KarteDialog from '@/components/room/KarteDialog';
 import ProfileDialog from '@/components/room/ProfileDialog';
@@ -94,7 +94,7 @@ export default {
     Drawer,
     Call,
     SeminarSpeak,
-    SeminarListen,
+    SeminarView,
     Media,
     KarteDialog,
     ProfileDialog,
