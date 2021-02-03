@@ -120,7 +120,7 @@
 
             <!-- 画面共有 -->
             <v-row justify="center" class="mt-3">
-              <video autoplay :srcObject.prop="screenSharing.stream" class="screen-sharing"></video>
+              <video autoplay :srcObject.prop="screenSharing.stream" id="screen-sharing"></video>
             </v-row>
           </v-row>
 
@@ -1064,7 +1064,7 @@ export default {
   }
 }
 
-.screen-sharing {
+#screen-sharing {
   max-width: 80%;
 }
 
