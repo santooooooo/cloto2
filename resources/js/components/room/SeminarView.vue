@@ -391,10 +391,15 @@
               dot
               color="deep-purple accent-4"
               :value="chat.notification"
-              offset-x="40"
-              offset-y="15"
+              offset-x="35"
+              offset-y="13"
             >
-              <v-btn color="white" icon class="mr-5" @click="toggleChat()">
+              <v-btn
+                color="white"
+                icon
+                :class="['mr-5', chat.notification ? 'notification' : '']"
+                @click="toggleChat()"
+              >
                 <v-icon large>mdi-message-text</v-icon>
               </v-btn>
             </v-badge>
@@ -883,9 +888,9 @@ export default {
       clearTimeout(this.toolBar.timer);
 
       this.toolBar.timer = setTimeout(() => {
-        // 停止1秒後に隠す
+        // 停止2秒後に隠す
         this.toolBar.isShow = false;
-      }, 1000);
+      }, 2000);
     },
 
     /**
@@ -1055,6 +1060,34 @@ export default {
   &.show {
     display: block;
     opacity: 1;
+  }
+
+  // 通知
+  .notification {
+    animation: scaleChange 2s infinite ease-out;
+    transform-origin: 50% 50%;
+    animation-play-state: running;
+
+    @keyframes scaleChange {
+      0% {
+        transform: scale(0.8, 0.8);
+      }
+      5% {
+        transform: scale(1.2, 1.2);
+      }
+      10% {
+        transform: scale(1, 1);
+      }
+      15% {
+        transform: scale(1.1, 1.1);
+      }
+      20% {
+        transform: scale(1, 1);
+      }
+      100% {
+        transform: scale(1, 1);
+      }
+    }
   }
 }
 </style>
