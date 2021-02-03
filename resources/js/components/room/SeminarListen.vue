@@ -21,54 +21,36 @@
       <p class="text-body-2 mt-12">カメラランプが10秒ほど点灯する場合があります．．．</p>
     </v-overlay>
 
+    <!-- 視聴者 -->
     <v-layout class="px-2">
+      <v-flex xs1>
+        <v-avatar
+          size="50"
+          class="listener ma-2"
+          v-for="participant in participants"
+          :key="participant.peerId"
+          @click="showProfile(participant.username)"
+        >
+          <img :src="$storage('icon') + participant.icon" />
+        </v-avatar>
+      </v-flex>
+
       <v-flex>
         <v-container fluid py-0>
           <!--*** 画面共有ON ***-->
           <v-row justify="center" v-if="screenSharing.stream">
-            <!-- 自分のビデオ -->
-            <v-sheet color="rgba(0, 0, 0, 1)" width="208" height="117" class="video ma-1">
-              <!-- オフ -->
-              <v-sheet
-                color="black"
-                width="208"
-                height="117"
-                class="d-flex justify-center align-center"
-                v-if="isVideoLoading || isVideoOff || localStream === null"
-              >
-                <v-avatar size="50" class="aligh-self-center">
-                  <img :src="$storage('icon') + authUser.icon" />
-                </v-avatar>
-              </v-sheet>
-
-              <!-- オン -->
-              <video
-                width="208"
-                height="117"
-                muted="true"
-                autoplay
-                :srcObject.prop="localStream"
-                v-else
-              ></video>
-
-              <p class="handlename" style="font-size: 0.8em">{{ authUser.handlename }}</p>
-
-              <p class="is-mute" v-if="isAudioLoading || isMute">
-                <v-icon color="red">mdi-microphone-off</v-icon>
-              </p>
-            </v-sheet>
-
             <!-- 参加者のビデオ -->
             <v-hover
               v-slot="{ hover }"
               v-for="participant in notPinnedParticipants"
-              :key="participant.stream.peerId"
+              :key="participant.peerId"
             >
               <v-sheet
                 color="rgba(0, 0, 0, 1)"
                 width="208"
                 height="117"
-                :class="['video', 'ma-1', speakerId === participant.stream.peerId ? 'speaker' : '']"
+                :class="['video', 'ma-1', speakerId === participant.peerId ? 'speaker' : '']"
+                v-if="participant.stream"
               >
                 <!-- オフ -->
                 <v-sheet
@@ -139,11 +121,7 @@
                 color="rgba(0, 0, 0, 1)"
                 :width="videoSize.width"
                 :height="videoSize.height"
-                :class="[
-                  'video',
-                  'mx-1',
-                  speakerId === pinnedParticipant.stream.peerId ? 'speaker' : '',
-                ]"
+                :class="['video', 'mx-1', speakerId === pinnedParticipant.peerId ? 'speaker' : '']"
               >
                 <!-- オフ -->
                 <v-sheet
@@ -218,54 +196,13 @@
 
           <!--*** 通常時（画面共有OFF） ***-->
           <v-row justify="center" class="normal" v-if="!screenSharing.stream">
-            <!-- 自分のビデオ -->
-            <v-col sm="6" md="6" lg="6">
-              <v-row justify="center">
-                <v-sheet
-                  color="rgba(0, 0, 0, 1)"
-                  :width="videoShowWidth"
-                  :height="videoShowHeight"
-                  class="video ma-1"
-                >
-                  <!-- オフ -->
-                  <v-sheet
-                    color="black"
-                    :width="videoShowWidth"
-                    :height="videoShowHeight"
-                    class="d-flex justify-center align-center"
-                    v-if="isVideoLoading || isVideoOff || localStream === null"
-                  >
-                    <v-avatar size="80" class="aligh-self-center">
-                      <img :src="$storage('icon') + authUser.icon" />
-                    </v-avatar>
-                  </v-sheet>
-
-                  <!-- オン -->
-                  <video
-                    :width="videoShowWidth"
-                    :height="videoShowHeight"
-                    muted="true"
-                    autoplay
-                    :srcObject.prop="localStream"
-                    v-else
-                  ></video>
-
-                  <p class="handlename">{{ authUser.handlename }}</p>
-
-                  <p class="is-mute" v-if="isAudioLoading || isMute">
-                    <v-icon color="red">mdi-microphone-off</v-icon>
-                  </p>
-                </v-sheet>
-              </v-row>
-            </v-col>
-
             <!-- 参加者のビデオ -->
             <v-col
               sm="6"
               md="6"
               lg="6"
               v-for="participant in notPinnedParticipants"
-              :key="participant.stream.peerId"
+              :key="participant.peerId"
             >
               <v-row justify="center">
                 <v-hover v-slot="{ hover }">
@@ -273,11 +210,8 @@
                     color="rgba(0, 0, 0, 1)"
                     :width="videoShowWidth"
                     :height="videoShowHeight"
-                    :class="[
-                      'video',
-                      'ma-1',
-                      speakerId === participant.stream.peerId ? 'speaker' : '',
-                    ]"
+                    :class="['video', 'ma-1', speakerId === participant.peerId ? 'speaker' : '']"
+                    v-if="participant.stream"
                   >
                     <!-- オフ -->
                     <v-sheet
@@ -524,27 +458,11 @@ export default {
       participants: [], // 参加者
       roomMode: 'mesh', // 接続モード
       peer: null, // Peer接続オブジェクト
-      localStream: null, // 自分の送信データ
       call: null, // 接続プロパティ
       screenSharing: {
-        isLocal: false, // 自分の画面共有か
         peer: null, // Peer接続オブジェクト（画面共有用）
         stream: null, // 画面共有データ
       },
-
-      //*** 入力デバイス ***//
-      audioDevices: [], // 音声入力デバイス一覧
-      videoDevices: [], // 映像入力デバイス一覧
-      selectedAudio: null, // 選択されている音声入力
-      selectedVideo: null, // 選択されている映像入力
-      videoSize: {
-        width: 640, // ビデオ取得サイズ（横）
-        height: 360, // ビデオ取得サイズ（縦）
-      },
-      isAudioLoading: true, // マイク接続ローディング制御
-      isMute: false, // ミュート制御
-      isVideoLoading: true, // ビデオ接続ローディング制御
-      isVideoOff: false, // ビデオオフ制御
 
       //*** 音声検出 ***//
       voiceDetectionObject: null, // 音声検出オブジェクト
@@ -630,7 +548,7 @@ export default {
 
       // 他ユーザー参加イベント
       this.call.on('stream', (stream) => {
-        this.joinUser(stream);
+        this.joinSpeaker(stream);
       });
 
       // データ到着イベント
@@ -644,7 +562,7 @@ export default {
             var sender = await new Promise((resolve, reject) => {
               // 送信者を検索（参加者のPeerIDを確認）
               var participant = this.participants.filter((participant) => {
-                return src === participant.stream.peerId;
+                return src === participant.peerId;
               })[0];
 
               if (typeof participant === 'undefined') {
@@ -666,13 +584,20 @@ export default {
         }
 
         switch (data.type) {
-          case 'joinUserData':
+          case 'joinSpeakerData':
             // 参加したユーザーのデータの受信
             sender.username = data.content.username;
             sender.handlename = data.content.handlename;
             sender.icon = data.content.icon;
             // 参加メッセージの追加
             this.addMessage(null, sender.handlename + 'が入室しました！');
+            break;
+
+          case 'joinListenerData':
+            // 参加したユーザーのデータの受信
+            this.joinListener(src, data.content);
+            // 参加メッセージの追加
+            this.addMessage(null, data.content.handlename + 'が入室しました！');
             break;
 
           case 'loadingEvent':
@@ -720,7 +645,7 @@ export default {
           this.screenSharing.stream = null;
         } else {
           // 参加者の退出
-          this.leaveUser(peerId);
+          this.leaveSpeaker(peerId);
         }
       });
     },
@@ -729,21 +654,9 @@ export default {
      * 通話の終了
      */
     exitCall: async function () {
-      // 自分の画面共有が有効な場合
-      if (this.screenSharing.isLocal) {
-        // 画面共有の停止
-        await this.stopScreenSharing();
-      }
-
       if (this.peer !== null) {
         // 音声検知の終了
         this.stopVoiceDetection();
-
-        // デバイスの使用を停止
-        if (this.localStream !== null) {
-          this.localStream.getTracks().forEach((track) => track.stop());
-          this.localStream = null;
-        }
 
         // 通話の接続を終了
         await this.peer.disconnect();
@@ -756,19 +669,17 @@ export default {
      *
      * @param MediaStream stream  参加したユーザーのストリーム
      */
-    joinUser: async function (stream) {
+    joinSpeaker: async function (stream) {
       // 参加者がいるか確認
       // ミュートやビデオの切替時にもストリームが置き換わるため発火する場合がある
       // 同一のPeerIDが存在しないことを確認する
-      var isJoin = !this.participants.some(
-        (participant) => participant.stream.peerId === stream.peerId
-      );
+      var isJoin = !this.participants.some((participant) => participant.peerId === stream.peerId);
 
       if (isJoin) {
         // ユーザーが参加した場合
         if (stream.getAudioTracks().length > 0) {
           // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
-          this.call.send({ type: 'joinUserData', content: this.authUser });
+          this.call.send({ type: 'joinSpeakerData', content: this.authUser });
           this.call.send({ type: 'loadingEvent', content: this.isLoading });
           this.call.send({ type: 'audioEvent', content: this.isMute });
           this.call.send({ type: 'videoEvent', content: this.isVideoOff });
@@ -787,6 +698,7 @@ export default {
             isLoading: true, // 接続待ち状態
             isMute: true, // ミュート状態
             isVideoOff: true, // ビデオオフ状態
+            peerId: stream.peerId,
             stream: stream,
           });
 
@@ -794,10 +706,7 @@ export default {
           this.startVoiceDetection(stream);
         } else {
           // 画面共有が参加した場合
-          if (!this.screenSharing.isLocal) {
-            // 自分が画面共有していない場合（他人が画面共有を開始）
-            this.screenSharing.stream = stream;
-          }
+          this.screenSharing.stream = stream;
         }
       }
     },
@@ -807,7 +716,7 @@ export default {
      *
      * @param String peerId  退出したユーザーのPeerID
      */
-    leaveUser: function (peerId) {
+    leaveSpeaker: function (peerId) {
       // 通知音
       if (this.isNotificationOn) {
         this.notificationSounds.leave.play();
@@ -815,8 +724,39 @@ export default {
 
       this.participants = this.participants.filter((participant) => {
         // 退出したユーザーのpeerId以外を残す
-        return participant.stream.peerId !== peerId;
+        return participant.peerId !== peerId;
       });
+    },
+
+    /**
+     * 参加者の追加
+     *
+     * @param String  peerId  参加したユーザーのPeerID
+     * @param Object  user    参加したユーザー
+     */
+    joinListener: async function (peerId, user) {
+      // 参加者がいるか確認
+      // ミュートやビデオの切替時にもストリームが置き換わるため発火する場合がある
+      // 同一のPeerIDが存在しないことを確認する
+      var isJoin = !this.participants.some((participant) => participant.peerId === peerId);
+
+      if (isJoin) {
+        // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
+        this.call.send({ type: 'joinListenerData', content: this.authUser });
+
+        // 通知音
+        if (this.isNotificationOn) {
+          this.notificationSounds.join.play();
+        }
+
+        // 参加者の追加
+        this.participants.push({
+          username: user.username, // ユーザー名
+          handlename: user.handlename, // 表示名
+          icon: user.icon, // アイコン
+          peerId: peerId,
+        });
+      }
     },
 
     /**
@@ -1012,13 +952,7 @@ export default {
       await this.makeCall();
 
       this.isLoading = false;
-      this.call.send({ type: 'loadingEvent', content: false });
-
-      // 通知音の有効化
-      this.$store.dispatch('alert/switchSound', {
-        isOn: true,
-        sound: this.notificationSounds.join,
-      });
+      this.call.send({ type: 'joinListenerData', content: this.authUser });
     }
   },
 
@@ -1074,6 +1008,10 @@ export default {
   border-bottom: 60px solid #5bc0de;
   left: -40px;
   top: -120px;
+}
+
+.listener {
+  cursor: pointer;
 }
 
 .normal {
