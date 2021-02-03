@@ -1375,8 +1375,8 @@ export default {
 .arrow:before {
   position: absolute;
   content: '';
-  width: 0;
-  height: 0;
+  width: 0px;
+  height: 0px;
   border: 60px solid transparent;
   border-bottom: 60px solid #5bc0de;
   left: -40px;

@@ -56,10 +56,10 @@
 
     <v-layout class="px-2">
       <!-- 視聴者一覧 -->
-      <v-flex xs1 v-if="viewers.length">
+      <v-flex xs1 class="viewer-container" v-if="viewers.length">
         <v-avatar
           size="40"
-          class="viewer ma-2"
+          class="viewer ma-1"
           v-for="viewer in viewers"
           :key="viewer.peerId"
           @click="showProfile(viewer.username)"
@@ -1418,8 +1418,8 @@ export default {
 .arrow:before {
   position: absolute;
   content: '';
-  width: 0;
-  height: 0;
+  width: 0px;
+  height: 0px;
   border: 60px solid transparent;
   border-bottom: 60px solid #5bc0de;
   left: -40px;
@@ -1430,8 +1430,12 @@ export default {
   width: 430px;
 }
 
-.viewer {
-  cursor: pointer;
+.viewer-container {
+  margin: 65px 0px 105px 0px;
+
+  .viewer {
+    cursor: pointer;
+  }
 }
 
 .normal-container {

@@ -26,16 +26,16 @@
       :class="['app-bar', appBar.isShow ? 'show' : '']"
     >
       <v-row dense justify="center">
-        <span class="text-h4">{{ topic }}</span>
+        <span class="text-h4">{{ topic || 'トピック未設定' }}</span>
       </v-row>
     </v-app-bar>
 
     <v-layout class="px-2">
       <!-- 視聴者一覧 -->
-      <v-flex xs1 v-if="viewers.length">
+      <v-flex xs1 class="viewer-container" v-if="viewers.length">
         <v-avatar
           size="40"
-          class="viewer ma-2"
+          class="viewer ma-1"
           v-for="viewer in viewers"
           :key="viewer.peerId"
           @click="showProfile(viewer.username)"
@@ -1009,8 +1009,12 @@ export default {
   width: 430px;
 }
 
-.viewer {
-  cursor: pointer;
+.viewer-container {
+  margin: 65px 0px 105px 0px;
+
+  .viewer {
+    cursor: pointer;
+  }
 }
 
 .normal-container {
