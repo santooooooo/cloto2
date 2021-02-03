@@ -6,19 +6,15 @@
     no-click-animation
     transition="dialog-bottom-transition"
   >
-    <!-- 権限確認画面 -->
-    <v-overlay :value="permissionOverlay" z-index="7" class="text-center" opacity="1">
-      <div class="arrow"></div>
-      <p class="text-h4">権限を許可してください。</p>
-      <p class="text-body-2 mt-12 mr-8">（一度許可した方は必要ありません。）</p>
-    </v-overlay>
-
     <!-- ローディング画面 -->
     <v-overlay :value="isLoading" z-index="6" class="text-center" opacity="0.9">
       <p class="text-h5 mb-5">接続中</p>
-      <v-progress-linear indeterminate height="10" color="green" class="mb-12"></v-progress-linear>
-
-      <p class="text-body-2 mt-12">カメラランプが10秒ほど点灯する場合があります．．．</p>
+      <v-progress-linear
+        indeterminate
+        height="10"
+        color="green"
+        class="progress-linear mb-12"
+      ></v-progress-linear>
     </v-overlay>
 
     <!-- 視聴者 -->
@@ -69,7 +65,7 @@
                     v-if="participant.isLoading || participant.icon === null"
                   ></v-progress-circular>
 
-                  <v-avatar size="50" class="aligh-self-center" v-else>
+                  <v-avatar size="50" v-else>
                     <img :src="$storage('icon') + participant.icon" />
                   </v-avatar>
 
@@ -140,7 +136,7 @@
                     v-if="pinnedParticipant.isLoading || pinnedParticipant.icon === null"
                   ></v-progress-circular>
 
-                  <v-avatar size="150" class="aligh-self-center" v-else>
+                  <v-avatar size="150" v-else>
                     <img :src="$storage('icon') + pinnedParticipant.icon" />
                   </v-avatar>
 
@@ -195,7 +191,7 @@
           </v-row>
 
           <!--*** 通常時（画面共有OFF） ***-->
-          <v-row justify="center" class="normal" v-if="!screenSharing.stream">
+          <v-row justify="center" class="normal-container" v-if="!screenSharing.stream">
             <!-- 参加者のビデオ -->
             <v-col
               sm="6"
@@ -230,7 +226,7 @@
                         v-if="participant.isLoading || participant.icon === null"
                       ></v-progress-circular>
 
-                      <v-avatar size="80" class="aligh-self-center" v-else>
+                      <v-avatar size="80" v-else>
                         <img :src="$storage('icon') + participant.icon" />
                       </v-avatar>
 
@@ -447,7 +443,6 @@ export default {
   data() {
     return {
       dialog: true, // 入室制御
-      permissionOverlay: false, // 権限確認画面
       isLoading: false, // ローディング制御
       toolBar: {
         timer: null, // ツールバー表示タイマー
@@ -585,7 +580,7 @@ export default {
 
         switch (data.type) {
           case 'joinSpeakerData':
-            // 参加したユーザーのデータの受信
+            // 参加した登壇者のデータの受信
             sender.username = data.content.username;
             sender.handlename = data.content.handlename;
             sender.icon = data.content.icon;
@@ -594,7 +589,7 @@ export default {
             break;
 
           case 'joinListenerData':
-            // 参加したユーザーのデータの受信
+            // 参加した視聴者のデータの受信
             this.joinListener(src, data.content);
             // 参加メッセージの追加
             this.addMessage(null, data.content.handlename + 'が入室しました！');
@@ -645,7 +640,7 @@ export default {
           this.screenSharing.stream = null;
         } else {
           // 参加者の退出
-          this.leaveSpeaker(peerId);
+          this.leaveUser(peerId);
         }
       });
     },
@@ -665,9 +660,9 @@ export default {
     },
 
     /**
-     * 参加者の追加
+     * 登壇者の追加
      *
-     * @param MediaStream stream  参加したユーザーのストリーム
+     * @param MediaStream stream  参加した登壇者のストリーム
      */
     joinSpeaker: async function (stream) {
       // 参加者がいるか確認
@@ -712,27 +707,10 @@ export default {
     },
 
     /**
-     * 参加者の退出
+     * 視聴者の追加
      *
-     * @param String peerId  退出したユーザーのPeerID
-     */
-    leaveSpeaker: function (peerId) {
-      // 通知音
-      if (this.isNotificationOn) {
-        this.notificationSounds.leave.play();
-      }
-
-      this.participants = this.participants.filter((participant) => {
-        // 退出したユーザーのpeerId以外を残す
-        return participant.peerId !== peerId;
-      });
-    },
-
-    /**
-     * 参加者の追加
-     *
-     * @param String  peerId  参加したユーザーのPeerID
-     * @param Object  user    参加したユーザー
+     * @param String  peerId  参加した視聴者のPeerID
+     * @param Object  user    参加した視聴者のデータ
      */
     joinListener: async function (peerId, user) {
       // 参加者がいるか確認
@@ -760,9 +738,26 @@ export default {
     },
 
     /**
+     * 参加者の退出
+     *
+     * @param String peerId  退出したユーザーのPeerID
+     */
+    leaveUser: function (peerId) {
+      // 通知音
+      if (this.isNotificationOn) {
+        this.notificationSounds.leave.play();
+      }
+
+      this.participants = this.participants.filter((participant) => {
+        // 退出したユーザーのpeerId以外を残す
+        return participant.peerId !== peerId;
+      });
+    },
+
+    /**
      * 音声検知の開始
      *
-     * @param MediaStream stream  音声検知するユーザー（全員）のストリーム
+     * @param MediaStream stream  音声検知するユーザーのストリーム
      */
     startVoiceDetection: function (stream) {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -910,13 +905,8 @@ export default {
 
     // 15秒間接続できなければ終了
     const timeout = () => {
-      // 権限確認中の場合，再度待機
-      if (this.permissionOverlay) {
-        setTimeout(timeout, 15000);
-      } else {
-        if (this.isLoading) {
-          this.errorEvent('エラーが発生しました。再読み込みしてください。');
-        }
+      if (this.isLoading) {
+        this.errorEvent('エラーが発生しました。再読み込みしてください。');
       }
     };
     setTimeout(timeout, 15000);
@@ -987,34 +977,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~/_variables';
-
-.arrow {
-  display: inline-block;
-  height: 80px;
-  width: 40px;
-  background-color: #5bc0de;
-  position: relative;
-  top: 60px;
-  left: -300px;
-}
-
-.arrow:before {
-  position: absolute;
-  content: '';
-  width: 0;
-  height: 0;
-  border: 60px solid transparent;
-  border-bottom: 60px solid #5bc0de;
-  left: -40px;
-  top: -120px;
+.progress-linear {
+  width: 430px;
 }
 
 .listener {
   cursor: pointer;
 }
 
-.normal {
+.normal-container {
   height: 100vh;
 }
 

@@ -16,7 +16,12 @@
     <!-- ローディング画面 -->
     <v-overlay :value="isLoading" z-index="6" class="text-center" opacity="0.9">
       <p class="text-h5 mb-5">接続中</p>
-      <v-progress-linear indeterminate height="10" color="green" class="mb-12"></v-progress-linear>
+      <v-progress-linear
+        indeterminate
+        height="10"
+        color="green"
+        class="progress-linear mb-12"
+      ></v-progress-linear>
 
       <p class="text-body-2 mt-12">カメラランプが10秒ほど点灯する場合があります．．．</p>
     </v-overlay>
@@ -36,7 +41,7 @@
                 class="d-flex justify-center align-center"
                 v-if="isVideoLoading || isVideoOff || localStream === null"
               >
-                <v-avatar size="50" class="aligh-self-center">
+                <v-avatar size="50">
                   <img :src="$storage('icon') + authUser.icon" />
                 </v-avatar>
               </v-sheet>
@@ -87,7 +92,7 @@
                     v-if="participant.isLoading || participant.icon === null"
                   ></v-progress-circular>
 
-                  <v-avatar size="50" class="aligh-self-center" v-else>
+                  <v-avatar size="50" v-else>
                     <img :src="$storage('icon') + participant.icon" />
                   </v-avatar>
 
@@ -158,7 +163,7 @@
                     v-if="pinnedParticipant.isLoading || pinnedParticipant.icon === null"
                   ></v-progress-circular>
 
-                  <v-avatar size="150" class="aligh-self-center" v-else>
+                  <v-avatar size="150" v-else>
                     <img :src="$storage('icon') + pinnedParticipant.icon" />
                   </v-avatar>
 
@@ -213,7 +218,7 @@
           </v-row>
 
           <!--*** 通常時（画面共有OFF） ***-->
-          <v-row justify="center" class="normal" v-if="!screenSharing.stream">
+          <v-row justify="center" class="normal-container" v-if="!screenSharing.stream">
             <!-- 自分のビデオ -->
             <v-col sm="6" md="6" lg="6">
               <v-row justify="center">
@@ -231,7 +236,7 @@
                     class="d-flex justify-center align-center"
                     v-if="isVideoLoading || isVideoOff || localStream === null"
                   >
-                    <v-avatar size="80" class="aligh-self-center">
+                    <v-avatar size="80">
                       <img :src="$storage('icon') + authUser.icon" />
                     </v-avatar>
                   </v-sheet>
@@ -288,7 +293,7 @@
                         v-if="participant.isLoading || participant.icon === null"
                       ></v-progress-circular>
 
-                      <v-avatar size="80" class="aligh-self-center" v-else>
+                      <v-avatar size="80" v-else>
                         <img :src="$storage('icon') + participant.icon" />
                       </v-avatar>
 
@@ -1049,7 +1054,7 @@ export default {
     /**
      * 音声検知の開始
      *
-     * @param MediaStream stream  音声検知するユーザー（全員）のストリーム
+     * @param MediaStream stream  音声検知するユーザーのストリーム
      */
     startVoiceDetection: function (stream) {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1295,8 +1300,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~/_variables';
-
 .arrow {
   display: inline-block;
   height: 80px;
@@ -1318,7 +1321,11 @@ export default {
   top: -120px;
 }
 
-.normal {
+.progress-linear {
+  width: 430px;
+}
+
+.normal-container {
   height: 100vh;
 }
 
