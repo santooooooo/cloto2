@@ -19,15 +19,15 @@
 
     <!-- 視聴者 -->
     <v-layout class="px-2">
-      <v-flex xs1 v-if="listeners.length">
+      <v-flex xs1 v-if="viewers.length">
         <v-avatar
           size="40"
-          class="listener ma-2"
-          v-for="listener in listeners"
-          :key="listener.peerId"
-          @click="showProfile(listener.username)"
+          class="viewer ma-2"
+          v-for="viewer in viewers"
+          :key="viewer.peerId"
+          @click="showProfile(viewer.username)"
         >
-          <img :src="$storage('icon') + listener.icon" />
+          <img :src="$storage('icon') + viewer.icon" />
         </v-avatar>
       </v-flex>
 
@@ -36,17 +36,13 @@
           <!--*** 画面共有ON ***-->
           <v-row justify="center" v-if="screenSharing.stream">
             <!-- 参加者のビデオ -->
-            <v-hover
-              v-slot="{ hover }"
-              v-for="participant in notPinnedSpeakers"
-              :key="participant.peerId"
-            >
+            <v-hover v-slot="{ hover }" v-for="speaker in notPinnedSpeakers" :key="speaker.peerId">
               <v-sheet
                 color="rgba(0, 0, 0, 1)"
                 width="208"
                 height="117"
-                :class="['video', 'ma-2', speakerId === participant.peerId ? 'speaker' : '']"
-                v-if="participant.stream"
+                :class="['video', 'ma-2', speakerId === speaker.peerId ? 'speaker' : '']"
+                v-if="speaker.stream"
               >
                 <!-- オフ -->
                 <v-sheet
@@ -54,7 +50,7 @@
                   width="208"
                   height="117"
                   class="d-flex justify-center align-center"
-                  v-if="participant.isLoading || participant.isVideoOff"
+                  v-if="speaker.isLoading || speaker.isVideoOff"
                 >
                   <!-- ローディング中 -->
                   <v-progress-circular
@@ -62,14 +58,14 @@
                     width="4"
                     color="green"
                     indeterminate
-                    v-if="participant.isLoading || participant.icon === null"
+                    v-if="speaker.isLoading || speaker.icon === null"
                   ></v-progress-circular>
 
                   <v-avatar size="50" v-else>
-                    <img :src="$storage('icon') + participant.icon" />
+                    <img :src="$storage('icon') + speaker.icon" />
                   </v-avatar>
 
-                  <audio autoplay :srcObject.prop="participant.stream"></audio>
+                  <audio autoplay :srcObject.prop="speaker.stream"></audio>
                 </v-sheet>
 
                 <!-- オン -->
@@ -77,13 +73,13 @@
                   width="208"
                   height="117"
                   autoplay
-                  :srcObject.prop="participant.stream"
+                  :srcObject.prop="speaker.stream"
                   v-else
                 ></video>
 
-                <p class="handlename" style="font-size: 0.8em">{{ participant.handlename }}</p>
+                <p class="handlename" style="font-size: 0.8em">{{ speaker.handlename }}</p>
 
-                <p class="is-mute" v-if="participant.isMute">
+                <p class="is-mute" v-if="speaker.isMute">
                   <v-icon color="red">mdi-microphone-off</v-icon>
                 </p>
 
@@ -91,7 +87,7 @@
                 <v-fade-transition>
                   <v-overlay absolute opacity="0.7" v-if="hover">
                     <v-sheet color="rgba(0, 0, 0, 0)" width="208" height="117">
-                      <v-btn icon x-large class="pin-button" @click="pin(participant)">
+                      <v-btn icon x-large class="pin-button" @click="pin(speaker)">
                         <v-icon> mdi-pin </v-icon>
                       </v-btn>
 
@@ -99,7 +95,7 @@
                         icon
                         x-large
                         class="account-button"
-                        @click="showProfile(participant.username)"
+                        @click="showProfile(speaker.username)"
                       >
                         <v-icon> mdi-account </v-icon>
                       </v-btn>
@@ -193,21 +189,15 @@
           <!--*** 通常時（画面共有OFF） ***-->
           <v-row justify="center" class="normal-container" v-if="!screenSharing.stream">
             <!-- 参加者のビデオ -->
-            <v-col
-              sm="6"
-              md="6"
-              lg="6"
-              v-for="participant in notPinnedSpeakers"
-              :key="participant.peerId"
-            >
+            <v-col sm="6" md="6" lg="6" v-for="speaker in notPinnedSpeakers" :key="speaker.peerId">
               <v-row justify="center">
                 <v-hover v-slot="{ hover }">
                   <v-sheet
                     color="rgba(0, 0, 0, 1)"
                     :width="videoShowWidth"
                     :height="videoShowHeight"
-                    :class="['video', 'ma-2', speakerId === participant.peerId ? 'speaker' : '']"
-                    v-if="participant.stream"
+                    :class="['video', 'ma-2', speakerId === speaker.peerId ? 'speaker' : '']"
+                    v-if="speaker.stream"
                   >
                     <!-- オフ -->
                     <v-sheet
@@ -215,7 +205,7 @@
                       :width="videoShowWidth"
                       :height="videoShowHeight"
                       class="d-flex justify-center align-center"
-                      v-if="participant.isLoading || participant.isVideoOff"
+                      v-if="speaker.isLoading || speaker.isVideoOff"
                     >
                       <!-- ローディング中 -->
                       <v-progress-circular
@@ -223,14 +213,14 @@
                         width="4"
                         color="green"
                         indeterminate
-                        v-if="participant.isLoading || participant.icon === null"
+                        v-if="speaker.isLoading || speaker.icon === null"
                       ></v-progress-circular>
 
                       <v-avatar size="80" v-else>
-                        <img :src="$storage('icon') + participant.icon" />
+                        <img :src="$storage('icon') + speaker.icon" />
                       </v-avatar>
 
-                      <audio autoplay :srcObject.prop="participant.stream"></audio>
+                      <audio autoplay :srcObject.prop="speaker.stream"></audio>
                     </v-sheet>
 
                     <!-- オン -->
@@ -238,13 +228,13 @@
                       :width="videoShowWidth"
                       :height="videoShowHeight"
                       autoplay
-                      :srcObject.prop="participant.stream"
+                      :srcObject.prop="speaker.stream"
                       v-else
                     ></video>
 
-                    <p class="handlename">{{ participant.handlename }}</p>
+                    <p class="handlename">{{ speaker.handlename }}</p>
 
-                    <p class="is-mute" v-if="participant.isMute">
+                    <p class="is-mute" v-if="speaker.isMute">
                       <v-icon color="red">mdi-microphone-off</v-icon>
                     </p>
 
@@ -256,7 +246,7 @@
                           :width="videoShowWidth"
                           :height="videoShowHeight"
                         >
-                          <v-btn icon x-large class="pin-button" @click="pin(participant)">
+                          <v-btn icon x-large class="pin-button" @click="pin(speaker)">
                             <v-icon> mdi-pin </v-icon>
                           </v-btn>
 
@@ -264,7 +254,7 @@
                             icon
                             x-large
                             class="account-button"
-                            @click="showProfile(participant.username)"
+                            @click="showProfile(speaker.username)"
                           >
                             <v-icon> mdi-account </v-icon>
                           </v-btn>
@@ -516,7 +506,7 @@ export default {
         return typeof participant.stream !== 'undefined' && participant.isPinned === false;
       });
     },
-    listeners() {
+    viewers() {
       // 視聴者
       return this.participants.filter((participant) => {
         return typeof participant.stream === 'undefined';
@@ -600,9 +590,9 @@ export default {
             this.addMessage(null, sender.handlename + 'が入室しました！');
             break;
 
-          case 'joinListenerData':
+          case 'joinViewerData':
             // 参加した視聴者のデータの受信
-            this.joinListener(src, data.content);
+            this.joinViewer(src, data.content);
             // 参加メッセージの追加
             this.addMessage(null, data.content.handlename + 'が入室しました！');
             break;
@@ -686,7 +676,7 @@ export default {
         // ユーザーが参加した場合
         if (stream.getAudioTracks().length > 0) {
           // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
-          this.call.send({ type: 'joinListenerData', content: this.authUser });
+          this.call.send({ type: 'joinViewerData', content: this.authUser });
 
           // 通知音
           if (this.isNotificationOn) {
@@ -721,7 +711,7 @@ export default {
      * @param String  peerId  参加した視聴者のPeerID
      * @param Object  user    参加した視聴者のデータ
      */
-    joinListener: async function (peerId, user) {
+    joinViewer: async function (peerId, user) {
       // 参加者がいるか確認
       // ミュートやビデオの切替時にもストリームが置き換わるため発火する場合がある
       // 同一のPeerIDが存在しないことを確認する
@@ -729,7 +719,7 @@ export default {
 
       if (isJoin) {
         // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
-        this.call.send({ type: 'joinListenerData', content: this.authUser });
+        this.call.send({ type: 'joinViewerData', content: this.authUser });
 
         // 通知音
         if (this.isNotificationOn) {
@@ -953,7 +943,7 @@ export default {
       this.isLoading = false;
 
       // 自分の情報を送信
-      this.call.send({ type: 'joinListenerData', content: this.authUser });
+      this.call.send({ type: 'joinViewerData', content: this.authUser });
     }
   },
 
@@ -992,7 +982,7 @@ export default {
   width: 430px;
 }
 
-.listener {
+.viewer {
   cursor: pointer;
 }
 
