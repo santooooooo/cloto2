@@ -33,4 +33,8 @@
     font-family: $font-family !important;
     letter-spacing: 3px !important;
   }
+
+  .container--fluid {
+    max-width: 100%;
+  }
 }
