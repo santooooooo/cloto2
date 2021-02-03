@@ -25,9 +25,9 @@ const getters = {
 };
 
 const mutations = {
-  setAlert(state, option) {
-    state.type = option.type;
-    state.message = option.message;
+  setAlert(state, data) {
+    state.type = data.type;
+    state.message = data.message;
     state.show = true;
     state.timeout = setTimeout(() => {
       state.show = false;
@@ -41,9 +41,9 @@ const mutations = {
     }
     state.timeout = null;
   },
-  setOverlay(state, option) {
-    state.overlay.color = option.color;
-    state.overlay.message = option.message;
+  setOverlay(state, data) {
+    state.overlay.color = data.color;
+    state.overlay.message = data.message;
     state.overlay.show = true;
     state.overlay.timeout = setTimeout(() => {
       state.overlay.show = false;
@@ -57,8 +57,8 @@ const mutations = {
     }
     state.overlay.timeout = null;
   },
-  switchSound(state, option) {
-    if (option === null) {
+  switchSound(state, data) {
+    if (data === null) {
       if (state.isSoundOn) {
         state.isSoundOn = false;
         offSound.play();
@@ -68,43 +68,43 @@ const mutations = {
       }
     } else {
       // 強制的に状態変更する場合（ログイン時など）
-      state.isSoundOn = option.isOn;
-      option.sound.play();
+      state.isSoundOn = data.isOn;
+      data.sound.play();
     }
   },
 };
 
 const actions = {
-  success(context, option) {
+  success(context, message) {
     context.commit('clearAlert');
     context.commit('setAlert', {
       type: 'success',
-      message: option || '処理が正常に終了しました。',
+      message: message || '処理が正常に終了しました。',
     });
   },
-  error(context, option) {
+  error(context, message) {
     context.commit('clearAlert');
     context.commit('setAlert', {
       type: 'error',
-      message: option || 'エラーが発生しました。再読み込みしてください。',
+      message: message || 'エラーが発生しました。再読み込みしてください。',
     });
   },
-  show(context, option) {
+  show(context, data) {
     context.commit('clearAlert');
-    context.commit('setAlert', option);
+    context.commit('setAlert', data);
   },
   hide(context) {
     context.commit('clearAlert');
   },
-  showOverlay(context, option) {
+  showOverlay(context, data) {
     context.commit('clearOverlay');
-    context.commit('setOverlay', option);
+    context.commit('setOverlay', data);
   },
   hideOverlay(context) {
     context.commit('clearOverlay');
   },
-  switchSound(context, option) {
-    context.commit('switchSound', option || null);
+  switchSound(context, data) {
+    context.commit('switchSound', data || null);
   },
 };
 
