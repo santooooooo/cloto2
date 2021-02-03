@@ -28,15 +28,15 @@
 
     <!-- 視聴者 -->
     <v-layout class="px-2">
-      <v-flex xs1>
+      <v-flex xs1 v-if="listeners.length">
         <v-avatar
-          size="50"
+          size="40"
           class="listener ma-2"
-          v-for="participant in participants"
-          :key="participant.peerId"
-          @click="showProfile(participant.username)"
+          v-for="listener in listeners"
+          :key="listener.peerId"
+          @click="showProfile(listener.username)"
         >
-          <img :src="$storage('icon') + participant.icon" />
+          <img :src="$storage('icon') + listener.icon" />
         </v-avatar>
       </v-flex>
 
@@ -45,7 +45,7 @@
           <!--*** 画面共有ON ***-->
           <v-row justify="center" v-if="screenSharing.stream">
             <!-- 自分のビデオ -->
-            <v-sheet color="rgba(0, 0, 0, 1)" width="208" height="117" class="video ma-1">
+            <v-sheet color="rgba(0, 0, 0, 1)" width="208" height="117" class="video ma-2">
               <!-- オフ -->
               <v-sheet
                 color="black"
@@ -79,14 +79,14 @@
             <!-- 参加者のビデオ -->
             <v-hover
               v-slot="{ hover }"
-              v-for="participant in notPinnedParticipants"
+              v-for="participant in notPinnedSpeakers"
               :key="participant.peerId"
             >
               <v-sheet
                 color="rgba(0, 0, 0, 1)"
                 width="208"
                 height="117"
-                :class="['video', 'ma-1', speakerId === participant.peerId ? 'speaker' : '']"
+                :class="['video', 'ma-2', speakerId === participant.peerId ? 'speaker' : '']"
               >
                 <!-- オフ -->
                 <v-sheet
@@ -151,13 +151,13 @@
           </v-row>
 
           <!--*** ピン留め時 ***-->
-          <v-row justify="center" class="mt-3" v-if="pinnedParticipant">
+          <v-row justify="center" class="mt-3" v-if="pinnedSpeaker">
             <v-hover v-slot="{ hover }">
               <v-sheet
                 color="rgba(0, 0, 0, 1)"
                 :width="videoSize.width"
                 :height="videoSize.height"
-                :class="['video', 'mx-1', speakerId === pinnedParticipant.peerId ? 'speaker' : '']"
+                :class="['video', 'mx-1', speakerId === pinnedSpeaker.peerId ? 'speaker' : '']"
               >
                 <!-- オフ -->
                 <v-sheet
@@ -165,7 +165,7 @@
                   :width="videoSize.width"
                   :height="videoSize.height"
                   class="d-flex justify-center align-center"
-                  v-if="pinnedParticipant.isLoading || pinnedParticipant.isVideoOff"
+                  v-if="pinnedSpeaker.isLoading || pinnedSpeaker.isVideoOff"
                 >
                   <!-- ローディング中 -->
                   <v-progress-circular
@@ -173,14 +173,14 @@
                     width="4"
                     color="green"
                     indeterminate
-                    v-if="pinnedParticipant.isLoading || pinnedParticipant.icon === null"
+                    v-if="pinnedSpeaker.isLoading || pinnedSpeaker.icon === null"
                   ></v-progress-circular>
 
                   <v-avatar size="150" v-else>
-                    <img :src="$storage('icon') + pinnedParticipant.icon" />
+                    <img :src="$storage('icon') + pinnedSpeaker.icon" />
                   </v-avatar>
 
-                  <audio autoplay :srcObject.prop="pinnedParticipant.stream"></audio>
+                  <audio autoplay :srcObject.prop="pinnedSpeaker.stream"></audio>
                 </v-sheet>
 
                 <!-- オン -->
@@ -188,13 +188,13 @@
                   :width="videoSize.width"
                   :height="videoSize.height"
                   autoplay
-                  :srcObject.prop="pinnedParticipant.stream"
+                  :srcObject.prop="pinnedSpeaker.stream"
                   v-else
                 ></video>
 
-                <p class="handlename">{{ pinnedParticipant.handlename }}</p>
+                <p class="handlename">{{ pinnedSpeaker.handlename }}</p>
 
-                <p class="is-mute" v-if="pinnedParticipant.isMute">
+                <p class="is-mute" v-if="pinnedSpeaker.isMute">
                   <v-icon color="red">mdi-microphone-off</v-icon>
                 </p>
 
@@ -210,7 +210,7 @@
                         icon
                         x-large
                         class="pin-button"
-                        @click="pinnedParticipant.isPinned = false"
+                        @click="pinnedSpeaker.isPinned = false"
                       >
                         <v-icon> mdi-pin-off </v-icon>
                       </v-btn>
@@ -219,7 +219,7 @@
                         icon
                         x-large
                         class="account-button"
-                        @click="showProfile(pinnedParticipant.username)"
+                        @click="showProfile(pinnedSpeaker.username)"
                       >
                         <v-icon> mdi-account </v-icon>
                       </v-btn>
@@ -239,7 +239,7 @@
                   color="rgba(0, 0, 0, 1)"
                   :width="videoShowWidth"
                   :height="videoShowHeight"
-                  class="video ma-1"
+                  class="video ma-2"
                 >
                   <!-- オフ -->
                   <v-sheet
@@ -278,7 +278,7 @@
               sm="6"
               md="6"
               lg="6"
-              v-for="participant in notPinnedParticipants"
+              v-for="participant in notPinnedSpeakers"
               :key="participant.peerId"
             >
               <v-row justify="center">
@@ -287,7 +287,7 @@
                     color="rgba(0, 0, 0, 1)"
                     :width="videoShowWidth"
                     :height="videoShowHeight"
-                    :class="['video', 'ma-1', speakerId === participant.peerId ? 'speaker' : '']"
+                    :class="['video', 'ma-2', speakerId === participant.peerId ? 'speaker' : '']"
                   >
                     <!-- オフ -->
                     <v-sheet
@@ -633,16 +633,22 @@ export default {
     videoShowHeight() {
       return (this.videoShowWidth / 16) * 9;
     },
-    pinnedParticipant() {
-      // ピン留めされている参加者（一人）
+    pinnedSpeaker() {
+      // ピン留めされている登壇者（一人）
       return this.participants.filter((participant) => {
-        return participant.isPinned === true;
+        return typeof participant.stream !== 'undefined' && participant.isPinned === true;
       })[0];
     },
-    notPinnedParticipants() {
-      // ピン留めされていない参加者
+    notPinnedSpeakers() {
+      // ピン留めされていない登壇者
       return this.participants.filter((participant) => {
-        return participant.isPinned === false;
+        return typeof participant.stream !== 'undefined' && participant.isPinned === false;
+      });
+    },
+    listeners() {
+      // 視聴者
+      return this.participants.filter((participant) => {
+        return typeof participant.stream === 'undefined';
       });
     },
   },
@@ -1208,8 +1214,8 @@ export default {
      */
     pin: function (participant) {
       // 既にピン留めされているユーザーを解除
-      if (this.pinnedParticipant) {
-        this.pinnedParticipant.isPinned = false;
+      if (this.pinnedSpeaker) {
+        this.pinnedSpeaker.isPinned = false;
       }
 
       participant.isPinned = true;
@@ -1371,6 +1377,10 @@ export default {
 
 .progress-linear {
   width: 430px;
+}
+
+.listener {
+  cursor: pointer;
 }
 
 .normal-container {

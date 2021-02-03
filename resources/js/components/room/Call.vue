@@ -32,7 +32,7 @@
           <!--*** 画面共有ON ***-->
           <v-row justify="center" v-if="screenSharing.stream">
             <!-- 自分のビデオ -->
-            <v-sheet color="rgba(0, 0, 0, 1)" width="208" height="117" class="video ma-1">
+            <v-sheet color="rgba(0, 0, 0, 1)" width="208" height="117" class="video ma-2">
               <!-- オフ -->
               <v-sheet
                 color="black"
@@ -73,7 +73,7 @@
                 color="rgba(0, 0, 0, 1)"
                 width="208"
                 height="117"
-                :class="['video', 'ma-1', speakerId === participant.peerId ? 'speaker' : '']"
+                :class="['video', 'ma-2', speakerId === participant.peerId ? 'speaker' : '']"
               >
                 <!-- オフ -->
                 <v-sheet
@@ -226,7 +226,7 @@
                   color="rgba(0, 0, 0, 1)"
                   :width="videoShowWidth"
                   :height="videoShowHeight"
-                  class="video ma-1"
+                  class="video ma-2"
                 >
                   <!-- オフ -->
                   <v-sheet
@@ -274,7 +274,7 @@
                     color="rgba(0, 0, 0, 1)"
                     :width="videoShowWidth"
                     :height="videoShowHeight"
-                    :class="['video', 'ma-1', speakerId === participant.peerId ? 'speaker' : '']"
+                    :class="['video', 'ma-2', speakerId === participant.peerId ? 'speaker' : '']"
                   >
                     <!-- オフ -->
                     <v-sheet
