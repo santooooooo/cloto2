@@ -674,10 +674,7 @@ export default {
         // ユーザーが参加した場合
         if (stream.getAudioTracks().length > 0) {
           // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
-          this.call.send({ type: 'joinSpeakerData', content: this.authUser });
-          this.call.send({ type: 'loadingEvent', content: this.isLoading });
-          this.call.send({ type: 'audioEvent', content: this.isMute });
-          this.call.send({ type: 'videoEvent', content: this.isVideoOff });
+          this.call.send({ type: 'joinListenerData', content: this.authUser });
 
           // 通知音
           if (this.isNotificationOn) {

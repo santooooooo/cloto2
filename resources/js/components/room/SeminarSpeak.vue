@@ -26,7 +26,20 @@
       <p class="text-body-2 mt-12">カメラランプが10秒ほど点灯する場合があります．．．</p>
     </v-overlay>
 
+    <!-- 視聴者 -->
     <v-layout class="px-2">
+      <v-flex xs1>
+        <v-avatar
+          size="50"
+          class="listener ma-2"
+          v-for="participant in participants"
+          :key="participant.peerId"
+          @click="showProfile(participant.username)"
+        >
+          <img :src="$storage('icon') + participant.icon" />
+        </v-avatar>
+      </v-flex>
+
       <v-flex>
         <v-container fluid py-0>
           <!--*** 画面共有ON ***-->
@@ -666,7 +679,7 @@ export default {
 
       // 他ユーザー参加イベント
       this.call.on('stream', (stream) => {
-        this.joinUser(stream);
+        this.joinSpeaker(stream);
       });
 
       // データ到着イベント
@@ -702,13 +715,20 @@ export default {
         }
 
         switch (data.type) {
-          case 'joinUserData':
-            // 参加したユーザーのデータの受信
+          case 'joinSpeakerData':
+            // 参加した登壇者のデータの受信
             sender.username = data.content.username;
             sender.handlename = data.content.handlename;
             sender.icon = data.content.icon;
             // 参加メッセージの追加
             this.addMessage(null, sender.handlename + 'が入室しました！');
+            break;
+
+          case 'joinListenerData':
+            // 参加した視聴者のデータの受信
+            this.joinListener(src, data.content);
+            // 参加メッセージの追加
+            this.addMessage(null, data.content.handlename + 'が入室しました！');
             break;
 
           case 'loadingEvent':
@@ -788,11 +808,11 @@ export default {
     },
 
     /**
-     * 参加者の追加
+     * 登壇者の追加
      *
-     * @param MediaStream stream  参加したユーザーのストリーム
+     * @param MediaStream stream  参加した登壇者のストリーム
      */
-    joinUser: async function (stream) {
+    joinSpeaker: async function (stream) {
       // 参加者がいるか確認
       // ミュートやビデオの切替時にもストリームが置き換わるため発火する場合がある
       // 同一のPeerIDが存在しないことを確認する
@@ -802,7 +822,7 @@ export default {
         // ユーザーが参加した場合
         if (stream.getAudioTracks().length > 0) {
           // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
-          this.call.send({ type: 'joinUserData', content: this.authUser });
+          this.call.send({ type: 'joinSpeakerData', content: this.authUser });
           this.call.send({ type: 'loadingEvent', content: this.isLoading });
           this.call.send({ type: 'audioEvent', content: this.isMute });
           this.call.send({ type: 'videoEvent', content: this.isVideoOff });
@@ -834,6 +854,40 @@ export default {
             this.screenSharing.stream = stream;
           }
         }
+      }
+    },
+
+    /**
+     * 視聴者の追加
+     *
+     * @param String  peerId  参加した視聴者のPeerID
+     * @param Object  user    参加した視聴者のデータ
+     */
+    joinListener: async function (peerId, user) {
+      // 参加者がいるか確認
+      // ミュートやビデオの切替時にもストリームが置き換わるため発火する場合がある
+      // 同一のPeerIDが存在しないことを確認する
+      var isJoin = !this.participants.some((participant) => participant.peerId === peerId);
+
+      if (isJoin) {
+        // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
+        this.call.send({ type: 'joinSpeakerData', content: this.authUser });
+        this.call.send({ type: 'loadingEvent', content: this.isLoading });
+        this.call.send({ type: 'audioEvent', content: this.isMute });
+        this.call.send({ type: 'videoEvent', content: this.isVideoOff });
+
+        // 通知音
+        if (this.isNotificationOn) {
+          this.notificationSounds.join.play();
+        }
+
+        // 参加者の追加
+        this.participants.push({
+          username: user.username, // ユーザー名
+          handlename: user.handlename, // 表示名
+          icon: user.icon, // アイコン
+          peerId: peerId,
+        });
       }
     },
 
