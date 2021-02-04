@@ -31,6 +31,7 @@
           depressed
           block
           color="#f6bf00"
+          dark
           :to="{ name: 'room', params: { roomId: $route.params.roomId } }"
           :disabled="authUser.seat !== null"
         >
