@@ -10,7 +10,7 @@
     <v-overlay :value="permissionOverlay" z-index="7" class="text-center" opacity="0.9">
       <p class="text-h5 mb-5">ここは視聴席です。発言はできません。</p>
       <v-row justify="center">
-        <v-btn depressed color="primary" @click="permissionOverlay = false">閉じる</v-btn>
+        <v-btn depressed color="primary" @click="permissionOverlay = false">OK</v-btn>
       </v-row>
     </v-overlay>
 
@@ -45,7 +45,18 @@
 
     <v-layout class="px-2">
       <!-- 視聴者一覧 -->
-      <v-flex xs1 class="viewer-container" v-if="viewers.length">
+      <v-flex xs1 class="viewer-container">
+        <!-- 自分 -->
+        <v-avatar
+          size="40"
+          class="viewer ma-1"
+          @click="showProfile(authUser.username)"
+          v-if="!isLoading"
+        >
+          <img :src="$storage('icon') + authUser.icon" />
+        </v-avatar>
+
+        <!-- 他の視聴者 -->
         <v-avatar
           size="40"
           class="viewer ma-1"
