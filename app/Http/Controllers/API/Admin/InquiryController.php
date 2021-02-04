@@ -29,23 +29,31 @@ class InquiryController extends Controller
 
 
     /**
-     * 問い合わせのあるユーザー一覧を取得
+     * ユーザー一覧を取得
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        // 新しい順で取得
-        $inquiry_groups = $this->inquiry->all()->sortByDesc('created_at')->groupBy('user_id');
-
         $users = [];
+
+        // 問い合わせを新しい順で取得
+        $inquiry_groups = $this->inquiry->all()->sortByDesc('created_at')->groupBy('user_id');
+        // 問い合わせのあるユーザーを追加
         foreach ($inquiry_groups as $inquiries) {
-            // データの整形
             $inquiry = $inquiries->first();
             $user = $inquiry->user;
             $user['replied'] = $inquiry->author == 'support' ? true : false;
             $user['last_date'] = (new Carbon($inquiry->created_at))->format('Y年m月d日 H時i分');
             array_push($users, $user);
+        }
+
+        // 問い合わせ未投稿のユーザーを追加
+        foreach ($this->user->all() as $user) {
+            if (count($user->inquiries) == 0) {
+                $user['replied'] = true;
+                array_push($users, $user);
+            }
         }
 
         return response()->json($users);
