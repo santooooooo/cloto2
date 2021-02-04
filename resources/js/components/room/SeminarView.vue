@@ -319,7 +319,7 @@
       </v-flex>
 
       <!-- チャットエリア -->
-      <v-flex xs3 v-show="chat.isOpen">
+      <v-flex xs2 v-show="chat.isOpen">
         <v-card color="grey lighten-2" class="mx-auto" id="chat">
           <div class="overflow-y-auto" ref="chatScrollArea">
             <v-card-text v-for="(message, index) in chat.messages" :key="index">
@@ -1077,6 +1077,11 @@ export default {
 
 .video {
   position: relative;
+
+  // v-hover
+  .v-overlay {
+    z-index: 0 !important;
+  }
 
   .handlename {
     position: absolute;

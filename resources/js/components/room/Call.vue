@@ -1335,6 +1335,11 @@ export default {
 .video {
   position: relative;
 
+  // v-hover
+  .v-overlay {
+    z-index: 0 !important;
+  }
+
   .handlename {
     position: absolute;
     background-color: black;
