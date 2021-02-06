@@ -1,7 +1,7 @@
 <template>
-  <v-container fluid pa-0 class="index" v-if="!isSmartphone">
-    <v-container fluid class="concept">
-      <v-row>
+  <v-container fluid pa-0 v-if="!isSmartphone">
+    <div id="top">
+      <v-row class="pt-6 pb-12">
         <v-spacer></v-spacer>
 
         <v-col cols="5" justify="center" align-self="center">
@@ -39,7 +39,7 @@
         <v-col cols="5" align-self="center">
           <v-img
             eager
-            :src="$storage('system') + 'top.svg'"
+            :src="$storage('system') + 'index.svg'"
             max-width="500"
             contain
             class="mx-auto"
@@ -48,160 +48,176 @@
 
         <v-spacer></v-spacer>
       </v-row>
-    </v-container>
 
-    <div class="scroll">
-      <span></span>
+      <v-divider></v-divider>
+
+      <v-row class="pb-4">
+        <v-col sm="4">
+          <p class="text-h4 text-right">News</p>
+        </v-col>
+
+        <v-col sm="8">
+          <v-list color="#f6bf00" width="70%">
+            <v-list-item href="https://spark.adobe.com/page/JwVbQbzQtbSkB" target="_blank">
+              <v-list-item-icon>
+                <v-icon class="white--text">mdi-alpha</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title class="white--text">
+                  α版をリリースしました。<small>（2020/02/11）</small>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item
+              href="https://www.innovation-osaka.jp/ja/service/pitch/mirainno"
+              target="_blank"
+            >
+              <v-list-item-icon>
+                <v-icon class="white--text">mdi-trophy</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title class="white--text">
+                  ミライノピッチ2020にてNICT賞を受賞しました。<small>（2020/02/11）</small>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item
+              href="http://www.ritsumei.ac.jp/research/vc/pastcontest/2020/team.html"
+              target="_blank"
+            >
+              <v-list-item-icon>
+                <v-icon class="white--text">mdi-trophy</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title class="white--text">
+                  第17回立命館大学学生ベンチャーコンテストにて<br />アクロホールディングス賞・NVCC賞・ASTER賞を受賞しました。
+                  <small>（2020/02/11）</small>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item href="https://u25.billage.space/archive/20200817" target="_blank">
+              <v-list-item-icon>
+                <v-icon class="white--text">mdi-trophy</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title class="white--text">
+                  U-25 kansai pitch contest vol.4にて<br />りそなグループ賞を受賞しました。
+                  <small>（2020/02/11）</small>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-col>
+      </v-row>
     </div>
 
-    <v-container fluid class="bottom">
-      <v-row class="mx-12">
-        <v-col class="mt-n12">
-          <v-card width="400" class="mx-auto">
-            <v-img
-              eager
-              class="mx-auto"
-              width="400"
-              :src="$storage('system') + 'study.svg'"
-            ></v-img>
+    <v-row class="mx-12 my-12">
+      <v-col sm="6">
+        <v-img :src="$storage('system') + 'toC.png'"></v-img>
+      </v-col>
 
-            <v-card-title>
-              <span class="title mx-auto text-h4 font-weight-bold">&nbsp;自習&nbsp;</span>
-            </v-card-title>
+      <v-col sm="6">
+        <p class="text-h4 text-center font-weight-bold">
+          to <span class="green--text">C</span> 事業
+        </p>
+        <p class="text-body-1 text-center">
+          がんば<br />
+          がんば<br />
+          がんば<br />
+          がんば<br />
+          がんば<br />
+          がんば<br />
+          がんば<br />
+          がんば<br />
+          がんば
+        </p>
+      </v-col>
+    </v-row>
 
-            <v-card-text class="text-center text-h6 font-weight-bold">
-              自宅にいながら、まるで本物の自習室！そんな体験に拘りました。
-            </v-card-text>
-          </v-card>
-        </v-col>
+    <v-divider></v-divider>
 
-        <v-col>
-          <v-card width="400" class="mx-auto">
-            <v-img
-              eager
-              class="mx-auto"
-              width="400"
-              :src="$storage('system') + 'break.svg'"
-            ></v-img>
+    <v-row class="mx-12 my-12">
+      <v-col sm="6">
+        <v-img :src="$storage('system') + 'toB.png'"></v-img>
+      </v-col>
 
-            <v-card-title>
-              <span class="title mx-auto text-h4 font-weight-bold">&nbsp;休憩&nbsp;</span>
-            </v-card-title>
+      <v-col sm="6">
+        <p class="text-h4 text-center font-weight-bold">
+          to <span class="green--text">B</span> 事業
+        </p>
+        <p class="text-body-1 text-center">
+          がんば<br />
+          がんば<br />
+          がんば<br />
+          がんば<br />
+          がんば<br />
+          がんば<br />
+          がんば<br />
+          がんば<br />
+          がんば
+        </p>
+      </v-col>
+    </v-row>
 
-            <v-card-text class="text-center text-h6 font-weight-bold">
-              休憩時間も有意義に。日々頑張る仲間たちと交流しましょう。
-            </v-card-text>
-          </v-card>
-        </v-col>
+    <p class="text-h4 text-center font-weight-bold">納品先</p>
 
-        <v-col class="mt-12">
-          <v-card width="400" class="mx-auto">
-            <v-img
-              eager
-              class="mx-auto"
-              width="400"
-              :src="$storage('system') + 'record.svg'"
-            ></v-img>
+    <v-row class="mx-12 my-12">
+      <v-col sm="6">
+        <v-img :src="$storage('system') + 'toB.png'"></v-img>
+      </v-col>
 
-            <v-card-title>
-              <span class="title mx-auto text-h4 font-weight-bold">&nbsp;記録&nbsp;</span>
-            </v-card-title>
+      <v-col sm="6">
+        <p class="text-h5 text-center font-weight-bold">株式会社LearnMore様</p>
+        <p class="text-body-1 text-center">
+          あああ<br />
+          あああ<br />
+          あああ
+        </p>
+      </v-col>
+    </v-row>
 
-            <v-card-text class="text-center text-h6 font-weight-bold">
-              日々の活動や取り組みは記録され、あなたを支えます。
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
+    <v-card max-width="600" class="mx-auto my-12 px-12 py-8">
+      <h5 class="text-center text-h5">お問い合わせ</h5>
 
-      <v-row class="content">
-        <v-spacer></v-spacer>
+      <v-form ref="contactForm" v-model="contactForm.validation.valid" lazy-validation>
+        <v-text-field
+          v-model="contactForm.name"
+          :rules="contactForm.validation.nameRules"
+          :disabled="contactForm.loading"
+          label="お名前"
+          maxlength="16"
+          counter
+        ></v-text-field>
 
-        <v-col cols="4">
-          <div class="mx-auto">
-            <v-row justify="center">
-              <v-icon class="icon">mdi-cloud-circle</v-icon>
-            </v-row>
-            <h2 class="mt-5 text-center text-h4 font-weight-bold">いつでもどこでも</h2>
-            <p class="mt-5 text-center text-body-1">
-              CLOTOはプログラミングで「創る」を<br />
-              より直感的に、創造的で楽しいものにします。<br />
-              これら全ての体験がPC一台で、一つのアカウントで。
-            </p>
-            <v-img
-              eager
-              class="mx-auto mt-12"
-              width="500"
-              :src="$storage('system') + 'everywhere.svg'"
-            ></v-img>
-          </div>
-        </v-col>
+        <v-text-field
+          v-model="contactForm.email"
+          :rules="contactForm.validation.emailRules"
+          :disabled="contactForm.loading"
+          label="メールアドレス"
+        ></v-text-field>
 
-        <v-col cols="4">
-          <div class="mx-auto">
-            <v-row justify="center">
-              <v-icon class="icon">mdi-account-multiple</v-icon>
-            </v-row>
-            <h2 class="mt-5 text-center text-h4 font-weight-bold">みんなが創ってる</h2>
-            <p class="mt-5 text-center text-body-1">
-              仲間の存在ほど心強いものはありません。<br />
-              「創る」楽しみを仲間と共有し、もっと好きになる。<br />
-              そんな空間を創りたい。それがCLOTOの存在理由。
-            </p>
-            <v-img
-              eager
-              class="mx-auto mt-12"
-              width="500"
-              :src="$storage('system') + 'everyone.svg'"
-            ></v-img>
-          </div>
-        </v-col>
+        <v-textarea
+          v-model="contactForm.body"
+          :rules="contactForm.validation.bodyRules"
+          :disabled="contactForm.loading"
+          label="お問い合わせ内容"
+        ></v-textarea>
 
-        <v-spacer></v-spacer>
-      </v-row>
-
-      <v-card max-width="600" class="mx-auto my-12 pa-6">
-        <v-container>
-          <h5 class="text-center text-h5">お問い合わせ</h5>
-
-          <v-form ref="contactForm" v-model="contactForm.validation.valid" lazy-validation>
-            <v-text-field
-              v-model="contactForm.name"
-              :rules="contactForm.validation.nameRules"
-              :disabled="contactForm.loading"
-              label="お名前"
-              maxlength="16"
-              counter
-            ></v-text-field>
-
-            <v-text-field
-              v-model="contactForm.email"
-              :rules="contactForm.validation.emailRules"
-              :disabled="contactForm.loading"
-              label="メールアドレス"
-            ></v-text-field>
-
-            <v-textarea
-              v-model="contactForm.body"
-              :rules="contactForm.validation.bodyRules"
-              :disabled="contactForm.loading"
-              label="お問い合わせ内容"
-            ></v-textarea>
-
-            <v-btn
-              :loading="contactForm.loading"
-              :disabled="!contactForm.validation.valid"
-              @click="submit()"
-              block
-              large
-              color="primary"
-              class="mt-4 font-weight-bold"
-              >送信
-            </v-btn>
-          </v-form>
-        </v-container>
-      </v-card>
-    </v-container>
+        <v-btn
+          :loading="contactForm.loading"
+          :disabled="!contactForm.validation.valid"
+          @click="submit()"
+          block
+          large
+          color="primary"
+          class="mt-4 font-weight-bold"
+          >送信
+        </v-btn>
+      </v-form>
+    </v-card>
   </v-container>
 
   <v-container v-else>
@@ -278,101 +294,16 @@ export default {
 <style lang="scss" scoped>
 @import '~/_variables';
 
-.index {
-  max-width: 100%;
+.container {
   background-color: $light-gray;
+
+  #top {
+    background-color: $primary;
+    color: $white;
+  }
 
   a:hover {
     text-decoration: none;
-  }
-
-  .concept {
-    max-width: 100%;
-    height: 1500px;
-    padding-top: 10vh;
-    background-color: $primary;
-    color: $white;
-    position: relative;
-
-    &:before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 0px 100vw 180px 0;
-      border-color: transparent transparent $light-gray transparent;
-    }
-  }
-
-  // 下矢印
-  .scroll span {
-    position: absolute;
-    top: 800px;
-    left: 50%;
-    width: 24px;
-    height: 24px;
-    margin-left: -12px;
-    border-left: 1px solid #ffffff;
-    border-bottom: 1px solid #ffffff;
-    -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-    -webkit-animation: sdb 2s infinite;
-    animation: sdb 2s infinite;
-    box-sizing: border-box;
-  }
-  @-webkit-keyframes sdb {
-    0% {
-      -webkit-transform: rotate(-45deg) translate(0, 0);
-    }
-    20% {
-      -webkit-transform: rotate(-45deg) translate(-10px, 10px);
-    }
-    40% {
-      -webkit-transform: rotate(-45deg) translate(0, 0);
-    }
-  }
-  @keyframes sdb {
-    0% {
-      transform: rotate(-45deg) translate(0, 0);
-    }
-    20% {
-      transform: rotate(-45deg) translate(-10px, 10px);
-    }
-    40% {
-      transform: rotate(-45deg) translate(0, 0);
-    }
-  }
-
-  .bottom {
-    max-width: 100%;
-    background-color: $light-gray;
-    margin-top: -300px;
-
-    .title {
-      background: linear-gradient(transparent 70%, #cae6ff 70%);
-    }
-
-    .content {
-      margin-top: 200px;
-    }
-
-    .icon {
-      color: $primary;
-      font-size: 5em;
-    }
-
-    .arrow-bottom {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      margin: 100px auto;
-      border-bottom: 4px solid $black;
-      border-right: 4px solid $black;
-      transform: rotate(45deg);
-    }
   }
 }
 </style>

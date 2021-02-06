@@ -6,6 +6,9 @@
   <meta name="robots" content="noindex">
 @endif
 
+{{-- Description --}}
+<meta name="description" content="プログラミングに取り組むみなさん、こんにちは。プログラミングを楽しみながら継続できる環境がここに生まれました！">
+
 {{-- Favicon --}}
 <link rel="shortcut icon" href="/storage/system/favicon.ico">
 
