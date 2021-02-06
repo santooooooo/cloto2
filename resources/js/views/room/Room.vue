@@ -340,7 +340,7 @@ export default {
           if (this.authUser.seat === null) {
             // 着席前
             if (this.authUser.role === 'mentor') {
-              // 自習室または講師室のみ着席可能
+              // 自習室またはスタッフルームのみ着席可能
               if (target.role === 'study') {
                 this.setColor(target, '#0000FF');
               } else if (target.role === 'staff') {
@@ -354,7 +354,7 @@ export default {
             }
           } else {
             // 着席中
-            // 自習室，講師室での移動は禁止
+            // 自習室，スタッフルームでの移動は禁止
             if (target.role !== 'study' && target.role !== 'staff') {
               if (target.role === 'lounge') {
                 // 休憩室は休憩時間のみ開放
@@ -362,7 +362,7 @@ export default {
                   this.setColor(target, '#0000FF');
                 }
               } else if (target.role === 'mentor') {
-                // メンタリングルーム（メンター）は講師室にいるメンターのみ着席可能
+                // メンタリングルーム（メンター）はスタッフルームにいるメンターのみ着席可能
                 if (this.authUser.role === 'mentor' && this.authUser.seat.role === 'staff') {
                   this.setColor(target, '#00FF00');
                 }
@@ -420,14 +420,14 @@ export default {
                 this.startStudy();
                 break;
 
-              case 'staff': // 講師室
+              case 'staff': // スタッフルーム
                 if (this.authUser.role === 'mentor') {
                   // 状態変更処理
                   await this.userAction('sitting', target);
                   // 勤務開始
                   this.startWork();
                 } else if (this.authUser.role === 'user') {
-                  this.$store.dispatch('alert/error', '講師室には入れません！');
+                  this.$store.dispatch('alert/error', 'スタッフルームには入れません！');
                 }
                 break;
 
@@ -444,7 +444,7 @@ export default {
               case 'mentor': // メンタリングルーム（メンター）
                 // どこにも着席していない状態でメンタリングルームをクリックした場合
                 if (this.authUser.role === 'mentor') {
-                  this.$store.dispatch('alert/error', '講師室に荷物を置きましょう！');
+                  this.$store.dispatch('alert/error', 'スタッフルームに荷物を置きましょう！');
                 } else if (this.authUser.role === 'user') {
                   this.$store.dispatch('alert/error', '自習室に荷物を置きましょう！');
                 }
@@ -477,11 +477,11 @@ export default {
                 this.$store.dispatch('alert/error', '自習室内での移動はできません！');
                 break;
 
-              case 'staff': // 講師室
+              case 'staff': // スタッフルーム
                 if (this.authUser.role === 'mentor') {
-                  this.$store.dispatch('alert/error', '講師室内での移動はできません！');
+                  this.$store.dispatch('alert/error', 'スタッフルーム内での移動はできません！');
                 } else if (this.authUser.role === 'user') {
-                  this.$store.dispatch('alert/error', '講師室には入れません！');
+                  this.$store.dispatch('alert/error', 'スタッフルームには入れません！');
                 }
                 break;
 
@@ -501,17 +501,17 @@ export default {
                 break;
 
               case 'mentor': // メンタリングルーム（メンター）
-                // 講師室にいるメンター
+                // スタッフルームにいるメンター
                 if (this.authUser.role === 'mentor' && this.authUser.seat.role === 'staff') {
                   // 状態変更処理
                   await this.userAction('enterCall', target);
                 } else {
-                  this.$store.dispatch('alert/error', '講師用の座席です！');
+                  this.$store.dispatch('alert/error', 'スタッフ用の座席です！');
                 }
                 break;
 
               case 'user': // メンタリングルーム（利用者）
-                // 講師室にいるメンター
+                // スタッフルームにいるメンター
                 if (this.authUser.role === 'mentor' && this.authUser.seat.role === 'staff') {
                   this.$store.dispatch('alert/error', '受講者用の座席です！');
                 } else {
@@ -631,7 +631,7 @@ export default {
     },
 
     /**
-     * 自習開始
+     * 自習開始（自習室）
      */
     startStudy: async function () {
       this.$store.dispatch('alert/showOverlay', { color: '#228b22', message: '自習開始！' });
@@ -646,10 +646,14 @@ export default {
     },
 
     /**
-     * 勤務開始
+     * 自習開始（スタッフルーム）
      */
     startWork: async function () {
-      this.$store.dispatch('alert/showOverlay', { color: '#8a2be2', message: '勤務開始！' });
+      this.$store.dispatch('alert/showOverlay', {
+        color: '#8a2be2',
+        message: '自習開始！',
+        description: 'ここはスタッフ用の座席です。',
+      });
 
       // チャイム
       if (this.$store.getters['alert/isSoundOn']) {
@@ -811,7 +815,7 @@ export default {
 
       // オブジェクトのクリック時にのみ実行
       if (event.target) {
-        // 入室前または自習室，講師室に着席している場合はクリックを受け付ける
+        // 入室前または自習室，スタッフルームに着席している場合はクリックを受け付ける
         if (
           this.authUser.seat === null ||
           this.authUser.seat.role === 'study' ||
