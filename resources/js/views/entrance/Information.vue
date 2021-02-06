@@ -1,20 +1,14 @@
 <template>
-  <v-layout id="information">
-    <!-- ローディング画面 -->
-    <v-overlay :value="isLoading">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
-    </v-overlay>
-
-    <v-img :src="$storage('system') + 'information.png'" @load="isLoading = false"></v-img>
+  <v-layout ref="information" id="information">
+    <img :src="$storage('system') + 'events.png'" />
   </v-layout>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      isLoading: true, // ロードの制御
-    };
+  mounted() {
+    this.$refs.information.style.backgroundImage =
+      'url("' + this.$storage('system') + 'information.png")';
   },
 };
 </script>
@@ -22,6 +16,16 @@ export default {
 <style lang="scss" scoped>
 #information {
   height: calc(100vh - 64px);
-  background-color: white;
+  background-size: cover;
+  position: relative;
+
+  img {
+    max-width: 60%;
+    max-height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 </style>
