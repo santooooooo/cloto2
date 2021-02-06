@@ -22,7 +22,7 @@
       <SeminarView
         :call-id="call.id"
         @leave-call="leaveCall()"
-        v-else-if="authUser.seat.role === 'listen'"
+        v-else-if="authUser.seat.role === 'view'"
       />
       <Call
         :call-id="call.id"
@@ -465,7 +465,7 @@ export default {
                 this.$store.dispatch('alert/error', '自習室に荷物を置きましょう！');
                 break;
 
-              case 'listen': // ホール（視聴者）
+              case 'view': // ホール（視聴者）
                 // どこにも着席していない状態でホール（視聴者）をクリックした場合
                 this.$store.dispatch('alert/error', '自習室に荷物を置きましょう！');
                 break;
@@ -530,7 +530,7 @@ export default {
                 await this.userAction('enterCall', target);
                 break;
 
-              case 'listen': // ホール（視聴者）
+              case 'view': // ホール（視聴者）
                 // 状態変更処理
                 await this.userAction('enterCall', target);
                 break;
@@ -781,7 +781,7 @@ export default {
           // ログインユーザーが座っており，座席が通話席の場合
           if (
             seat.id === this.authUser.seat_id &&
-            (this.call.roles.includes(seat.role) || seat.role === 'speak' || seat.role === 'listen')
+            (this.call.roles.includes(seat.role) || seat.role === 'speak' || seat.role === 'view')
           ) {
             this.enterCall(section.id, section.seats.length);
           }
