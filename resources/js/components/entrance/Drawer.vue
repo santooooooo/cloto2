@@ -12,14 +12,14 @@
       <v-list nav dense>
         <v-list-item-group color="success">
           <v-list-item
-            v-for="(floor, index) in floors.slice().reverse()"
+            v-for="floor in floors.slice().reverse()"
             :key="floor.id"
             class="mb-4"
             :to="{ name: 'floor', params: { roomId: floor.id } }"
           >
             <v-list-item-content>
               <v-list-item-title class="text-body-1 font-weight-bold">
-                {{ floors.length - index }}F {{ floor.name }}
+                {{ floor.name }}
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
