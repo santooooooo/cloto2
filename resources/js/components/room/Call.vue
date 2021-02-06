@@ -10,7 +10,7 @@
     <v-overlay :value="permissionOverlay" z-index="7" class="text-center" opacity="1">
       <div class="arrow"></div>
       <p class="text-h4">権限を許可してください。</p>
-      <p class="text-body-2 mt-12 mr-8">（一度許可した方は必要ありません。）</p>
+      <p class="text-body-2 mb-0 mt-12 mr-8">（一度許可した方は必要ありません。）</p>
     </v-overlay>
 
     <!-- ローディング画面 -->
@@ -23,7 +23,7 @@
         class="progress-linear mb-12"
       ></v-progress-linear>
 
-      <p class="text-body-2 mt-12">カメラランプが10秒ほど点灯する場合があります．．．</p>
+      <p class="text-body-2 mb-0 mt-12">カメラランプが10秒ほど点灯する場合があります．．．</p>
     </v-overlay>
 
     <v-layout class="px-2">

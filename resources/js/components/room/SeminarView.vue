@@ -26,7 +26,7 @@
         indeterminate
         height="10"
         color="green"
-        class="progress-linear mb-12"
+        class="progress-linear"
       ></v-progress-linear>
     </v-overlay>
 
