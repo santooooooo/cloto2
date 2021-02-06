@@ -22,12 +22,7 @@
       opacity="0.9"
     >
       <p class="text-h5 mb-5">接続中</p>
-      <v-progress-linear
-        indeterminate
-        height="10"
-        color="green"
-        class="progress-linear"
-      ></v-progress-linear>
+      <v-progress-linear indeterminate height="10" color="green"></v-progress-linear>
     </v-overlay>
 
     <!-- トピック -->
@@ -1063,7 +1058,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.progress-linear {
+.v-progress-linear {
   width: 430px;
 }
 

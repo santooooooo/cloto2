@@ -6,6 +6,16 @@
       <img :src="$storage('system') + 'header_logo.svg'" />
     </router-link>
 
+    <v-btn
+      text
+      x-large
+      class="font-weight-bold"
+      href="https://spark.adobe.com/page/JwVbQbzQtbSkB"
+      target="_blank"
+    >
+      使い方とQ&A
+    </v-btn>
+
     <v-spacer></v-spacer>
 
     <v-btn
