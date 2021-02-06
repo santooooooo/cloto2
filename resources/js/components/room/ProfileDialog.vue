@@ -3,7 +3,7 @@
     <!-- ローディングバー -->
     <v-progress-linear indeterminate color="white" class="mb-0" v-if="!user"></v-progress-linear>
 
-    <v-card color="grey darken-1" dark v-else>
+    <v-card :color="color" dark v-else>
       <v-container>
         <v-row justify="end">
           <v-btn fab x-small depressed color="error" class="mr-4" @click="$emit('close', false)">
@@ -76,6 +76,18 @@ export default {
       dialog: true,
       user: null,
     };
+  },
+  computed: {
+    color() {
+      var color;
+      if (this.user.type === 'pro') {
+        color = 'green darken-2';
+      } else {
+        color = 'gray darken-1';
+      }
+
+      return color;
+    },
   },
   async mounted() {
     /**

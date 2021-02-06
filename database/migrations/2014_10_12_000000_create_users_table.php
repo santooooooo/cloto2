@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->json('sns')->nullable();                    // SNS
             $table->string('web')->nullable();                  // Webページ
             $table->text('introduction')->nullable();           // 自己紹介
+            $table->string('type')->default('free');            // アカウントタイプ
             $table->string('role')->default('user');            // 役割
             // foreignId('seat_id')                             // 着席している座席ID
             $table->string('in_progress')->nullable();          // 取り組み中のタスク

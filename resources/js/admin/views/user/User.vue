@@ -52,6 +52,20 @@
                       class="pa-2"
                     ></v-text-field>
 
+                    <!-- アカウントタイプ -->
+                    <v-card-text class="pa-1 white--text">アカウントタイプ</v-card-text>
+                    <v-select
+                      v-model="editUserForm.data.type"
+                      :items="types"
+                      item-text="text"
+                      item-value="value"
+                      :rules="editUserForm.validation.typeRules"
+                      label="アカウントタイプ"
+                      solo
+                      rounded
+                      class="pa-2"
+                    ></v-select>
+
                     <!-- 役割 -->
                     <v-card-text class="pa-1 white--text">役割</v-card-text>
                     <v-select
@@ -154,6 +168,10 @@ export default {
         { text: 'メールアドレス', value: 'email' },
         { text: '編集', value: 'actions', sortable: false, align: 'center' },
       ],
+      types: [
+        { text: '無料アカウント', value: 'free' },
+        { text: 'プロアカウント', value: 'pro' },
+      ], // アカウントタイプ一覧
       roles: [
         { text: '通常', value: 'user' },
         { text: 'メンター', value: 'mentor' },
@@ -174,6 +192,7 @@ export default {
               return pattern.test(v) || 'メールアドレスが無効です。';
             },
           ],
+          typeRules: [(v) => !!v || 'アカウントタイプは必須項目です。'],
           roleRules: [(v) => !!v || '役割は必須項目です。'],
         },
       },
@@ -231,6 +250,7 @@ export default {
         if (this.editUserForm.password !== '') {
           input.append('password', this.editUserForm.password);
         }
+        input.append('type', this.editUserForm.data.type);
         input.append('role', this.editUserForm.data.role);
 
         // ユーザーデータ保存処理
