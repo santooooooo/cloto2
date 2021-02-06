@@ -44,6 +44,7 @@ const mutations = {
   setOverlay(state, data) {
     state.overlay.color = data.color;
     state.overlay.message = data.message;
+    state.overlay.description = data.description || '';
     state.overlay.show = true;
     state.overlay.timeout = setTimeout(() => {
       state.overlay.show = false;

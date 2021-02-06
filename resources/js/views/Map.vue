@@ -8,7 +8,7 @@
 
     <!-- 建物名吹き出し -->
     <div id="popup" ref="popup" v-show="popup.isShow">
-      <p class="text-h3">{{ popup.text }}</p>
+      <p class="text-h5">{{ popup.text }}</p>
     </div>
 
     <!-- ログイン，新規登録ダイアログ -->
@@ -45,7 +45,7 @@ export default {
       mapHeight: 1200, // マップサイズ
       buildings: [
         {
-          name: 'CLOTO',
+          name: 'クリックしてみよう！',
           position: {
             x: 700,
             y: 200,
@@ -160,17 +160,17 @@ export default {
      * @param target イベントの対象
      */
     canvasMouseDown: function (target) {
-      if (target.name === process.env.MIX_APP_NAME) {
-        // ログイン処理
-        if (!this.authCheck) {
-          this.isOpenLoginDialog = true;
-        } else {
-          this.$router.push({ name: 'entrance' });
-        }
+      // if (target.name === process.env.MIX_APP_NAME) {
+      // ログイン処理
+      if (!this.authCheck) {
+        this.isOpenLoginDialog = true;
       } else {
-        // リダイレクト
-        window.location.href = target.url;
+        this.$router.push({ name: 'entrance' });
       }
+      // } else {
+      //   // リダイレクト
+      //   window.location.href = target.url;
+      // }
     },
 
     /**

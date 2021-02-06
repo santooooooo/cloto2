@@ -28,13 +28,16 @@
       :color="alert.overlay.color"
       dark
     >
-      <p class="text-h1">{{ alert.overlay.message }}</p>
+      <p class="text-h1 text-center mb-0">{{ alert.overlay.message }}</p>
+      <p class="text-h5 text-center mb-0 mt-12" v-if="alert.overlay.description">
+        {{ alert.overlay.description }}
+      </p>
     </v-overlay>
 
     <!-- アナウンスオーバーレイ-->
     <v-overlay z-index="9996" opacity="0.9" :value="announce.message !== ''" color="primary">
       <v-container>
-        <p class="text-h4 mb-12">{{ announce.message }}</p>
+        <p class="text-h4 text-center mb-12">{{ announce.message }}</p>
         <v-row justify="center">
           <v-btn @click="announce.message = ''">閉じる</v-btn>
         </v-row>
@@ -144,6 +147,7 @@ export default {
               this.$store.dispatch('alert/showOverlay', {
                 color: '#ff4500',
                 message: '自習時間です！',
+                description: '自習室に戻りましょう。',
               });
               // チャイム
               if (this.$store.getters['alert/isSoundOn']) {
@@ -154,6 +158,7 @@ export default {
               this.$store.dispatch('alert/showOverlay', {
                 color: '#4169e1',
                 message: '休憩時間です！',
+                description: '休憩室に移動しましょう。',
               });
               // チャイム
               if (this.$store.getters['alert/isSoundOn']) {
