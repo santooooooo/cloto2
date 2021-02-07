@@ -579,6 +579,7 @@ export default {
   },
   props: {
     callId: Number,
+    capacity: Number,
   },
   data() {
     return {
@@ -1342,6 +1343,11 @@ export default {
     window.addEventListener('unhandledrejection', (error) => {
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
+
+    // 定員が30人より多い場合はSFU方式を利用
+    if (this.capacity > 30) {
+      this.roomMode = 'sfu';
+    }
 
     // Peerの作成
     this.peer = new Peer({ key: API_KEY });

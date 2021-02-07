@@ -465,6 +465,7 @@ export default {
   },
   props: {
     callId: Number,
+    capacity: Number,
   },
   data() {
     return {
@@ -1003,6 +1004,11 @@ export default {
         // 再処理
         continue;
       }
+    }
+
+    // 定員が30人より多い場合はSFU方式を利用
+    if (this.capacity > 30) {
+      this.roomMode = 'sfu';
     }
 
     // Peerの作成
