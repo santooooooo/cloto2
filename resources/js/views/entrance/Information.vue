@@ -1,6 +1,6 @@
 <template>
   <v-layout ref="information" id="information">
-    <img :src="$storage('system') + 'events.png'" />
+    <img :src="$storage('system') + 'event.png'" />
   </v-layout>
 </template>
 
@@ -21,7 +21,7 @@ export default {
 
   img {
     max-width: 60%;
-    max-height: 80%;
+    max-height: 70%;
     position: absolute;
     top: 50%;
     left: 50%;
