@@ -83,8 +83,8 @@ export default {
     };
   },
   watch: {
-    karte: function (val) {
-      if (val) {
+    karte: function (data) {
+      if (data) {
         this.dialog = true;
       } else {
         this.dialog = false;

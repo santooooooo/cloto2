@@ -28,10 +28,10 @@ export default {
   },
 
   watch: {
-    $windowWidth: function (val) {
+    $windowWidth: function (windowWidth) {
       // ウィンドウリサイズ時に拡大率を変更
       if (this.canvas) {
-        var zoom = (val - 260) / this.roomWidth;
+        var zoom = (windowWidth - 260) / this.roomWidth;
         this.setZoom(zoom);
       }
     },

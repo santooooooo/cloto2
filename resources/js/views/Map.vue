@@ -81,10 +81,10 @@ export default {
   },
 
   watch: {
-    $windowWidth: function (val) {
+    $windowWidth: function (windowWidth) {
       // ウィンドウリサイズ時に拡大率を変更
       if (this.canvas) {
-        var zoom = val / this.mapWidth;
+        var zoom = windowWidth / this.mapWidth;
         this.setZoom(zoom);
       }
     },

@@ -104,8 +104,8 @@ export default {
     },
   },
   watch: {
-    authCheck: function (val) {
-      if (val === true) {
+    authCheck: function (check) {
+      if (check === true) {
         // ログアウトの検知
         axios.interceptors.response.use((error) => {
           if (error.status === 401) {
@@ -123,12 +123,12 @@ export default {
         }, 300000);
       }
     },
-    'authUser.seat': async function (val, oldVal) {
-      if (val != null && oldVal == null) {
+    'authUser.seat': async function (newSeat, oldSeat) {
+      if (newSeat != null && oldSeat == null) {
         /**
          * 着席時
          */
-        Echo.channel('room.' + val.roomId)
+        Echo.channel('room.' + newSeat.roomId)
           .listen('Announced', (event) => {
             // アナウンスイベントの受信開始
             if (this.$store.getters['alert/isSoundOn']) {
@@ -162,12 +162,12 @@ export default {
               }
             }
           });
-      } else if (val == null && oldVal != null) {
+      } else if (newSeat == null && oldSeat != null) {
         /**
          * 退席時
          */
         // 部屋イベントの受信終了
-        Echo.leave('room.' + oldVal.roomId);
+        Echo.leave('room.' + oldSeat.roomId);
       }
     },
   },

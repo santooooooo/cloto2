@@ -148,54 +148,54 @@ export default {
      * 座席データの更新時
      */
     'roomData.sections': {
-      handler: function (val, oldVal) {
+      handler: function (newSections, oldSections) {
         // 初回取得時は除く
-        if (typeof oldVal !== 'undefined') {
-          val.forEach((section, sectionIndex) => {
+        if (typeof oldSections !== 'undefined') {
+          newSections.forEach((newSection, sectionIndex) => {
             // 座席のループ
-            section.seats.forEach((seat, seatIndex) => {
+            newSection.seats.forEach((newSeat, seatIndex) => {
               // 座席の元の値
-              var oldSeatData = oldVal[sectionIndex].seats[seatIndex];
+              var oldSeat = oldSections[sectionIndex].seats[seatIndex];
 
-              if (seat.status !== oldSeatData.status) {
+              if (newSeat.status !== oldSeat.status) {
                 // 状態の変化があった座席は再描画
-                switch (seat.status) {
+                switch (newSeat.status) {
                   case 'sitting':
                     // 着席された場合
-                    this.setUser(seat);
+                    this.setUser(newSeat);
 
                     // その座席の予約解除処理
-                    if (oldSeatData.reservation_user_id !== null) {
-                      var object = this.getCanvasObject('seat', 'seatId', seat.id);
+                    if (oldSeat.reservation_user_id !== null) {
+                      var object = this.getCanvasObject('seat', 'seatId', newSeat.id);
                       this.resetColor(object);
                     }
                     break;
 
                   case 'break':
                     // 座席を赤色に変更
-                    var object = this.getCanvasObject('seat', 'seatId', seat.id);
+                    var object = this.getCanvasObject('seat', 'seatId', newSeat.id);
                     this.setColor(object, '#FF0000');
 
                     // アイコンを削除
-                    var object = this.getCanvasObject('user', 'seatId', seat.id);
+                    var object = this.getCanvasObject('user', 'seatId', newSeat.id);
                     this.removeIcon(object);
                     break;
 
                   default:
                     // 退席された場合
-                    if (oldSeatData.user !== null) {
+                    if (oldSeat.user !== null) {
                       // アイコンを削除
-                      var object = this.getCanvasObject('user', 'seatId', seat.id);
+                      var object = this.getCanvasObject('user', 'seatId', newSeat.id);
                       this.removeIcon(object);
                     }
                     break;
                 }
               } else {
                 // 状態の変化がない場合は取り組み中のタスクのみ更新
-                if (seat.user) {
+                if (newSeat.user) {
                   // 座席に着席中のユーザーがいる場合
-                  var object = this.getCanvasObject('user', 'seatId', seat.id);
-                  object.set({ inProgress: seat.user.in_progress });
+                  var object = this.getCanvasObject('user', 'seatId', newSeat.id);
+                  object.set({ inProgress: newSeat.user.in_progress });
                   this.canvas.requestRenderAll();
                 }
               }
@@ -205,10 +205,10 @@ export default {
       },
     },
 
-    $windowWidth: function (val) {
+    $windowWidth: function (windowWidth) {
       // ウィンドウリサイズ時に拡大率を変更
       if (this.canvas) {
-        var zoom = (val - 260) / this.roomWidth;
+        var zoom = (windowWidth - 260) / this.roomWidth;
         this.setZoom(zoom);
       }
     },

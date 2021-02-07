@@ -108,8 +108,8 @@ export default {
     },
   },
   watch: {
-    isOpen: function (val) {
-      if (val) {
+    isOpen: function (open) {
+      if (open) {
         this.dialog = true;
       } else {
         this.dialog = false;
