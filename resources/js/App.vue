@@ -128,7 +128,7 @@ export default {
         /**
          * 着席時
          */
-        Echo.channel('room.' + newSeat.roomId)
+        Echo.channel('room.' + newSeat.room_id)
           .listen('Announced', (event) => {
             // アナウンスイベントの受信開始
             if (this.$store.getters['alert/isSoundOn']) {
@@ -167,7 +167,7 @@ export default {
          * 退席時
          */
         // 部屋イベントの受信終了
-        Echo.leave('room.' + oldSeat.roomId);
+        Echo.leave('room.' + oldSeat.room_id);
       }
     },
   },
