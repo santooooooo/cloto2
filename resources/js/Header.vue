@@ -31,8 +31,8 @@
     <v-btn
       depressed
       color="primary"
-      :to="{ name: 'room', params: { roomId: sitRoom } }"
-      v-if="authCheck && sitRoom && $route.name !== 'room'"
+      :to="{ name: 'room', params: { roomId: authUser.seat.roomId } }"
+      v-if="authCheck && authUser.seat && $route.name !== 'room'"
     >
       教室へ戻る
     </v-btn>
@@ -58,9 +58,6 @@
 
 <script>
 export default {
-  props: {
-    sitRoom: Number, // 着席中の部屋
-  },
   computed: {
     isSmartphone() {
       if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
@@ -71,6 +68,9 @@ export default {
     },
     authCheck() {
       return this.$store.getters['auth/check'];
+    },
+    authUser() {
+      return this.$store.getters['auth/user'];
     },
   },
 };

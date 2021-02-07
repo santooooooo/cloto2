@@ -45,7 +45,7 @@
     </v-overlay>
 
     <!-- ヘッダー -->
-    <Header :sit-room="sitRoom" @open-drawer="isOpenDrawer = true" />
+    <Header @open-drawer="isOpenDrawer = true" />
 
     <!-- ドロワーメニュー -->
     <Drawer v-model="isOpenDrawer" @logout="logout" />
@@ -83,7 +83,6 @@ export default {
       isOffline: false, // オフライン状態
       setOnlineTimer: null, // オンライン状態の通知制御
       isOpenDrawer: false, // ドロワーメニューの表示制御
-      sitRoom: null, // 着席中の部屋
       announce: {
         notification: new Audio(this.$storage('system') + 'announce.mp3'), // 通知音
         message: '', // アナウンス内容
@@ -129,10 +128,7 @@ export default {
         /**
          * 着席時
          */
-        var response = await axios.get('/api/auth_sit');
-        this.sitRoom = response.data;
-
-        Echo.channel('room.' + this.sitRoom)
+        Echo.channel('room.' + val.roomId)
           .listen('Announced', (event) => {
             // アナウンスイベントの受信開始
             if (this.$store.getters['alert/isSoundOn']) {
@@ -171,9 +167,7 @@ export default {
          * 退席時
          */
         // 部屋イベントの受信終了
-        Echo.leave('room.' + this.sitRoom);
-
-        this.sitRoom = null;
+        Echo.leave('room.' + oldVal.roomId);
       }
     },
   },

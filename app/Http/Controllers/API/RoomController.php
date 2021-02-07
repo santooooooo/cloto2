@@ -46,23 +46,6 @@ class RoomController extends Controller
     }
 
     /**
-     * ログインユーザーの着席中の部屋
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function auth_sit()
-    {
-        $user = Auth::user();
-
-        if (empty($user) || empty($user->seat)) {
-            return response()->json();
-        }
-
-        $room_id = $user->seat->section->room_id;
-        return response()->json($room_id);
-    }
-
-    /**
      * アナウンス
      *
      * @param  \Illuminate\Http\Request  $request
