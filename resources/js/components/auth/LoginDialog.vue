@@ -7,7 +7,7 @@
             <v-col>
               <!-- エラーメッセージ -->
               <v-alert type="error" v-if="loginErrors">
-                <span v-for="(message, index) in loginErrors.loginField" :key="index">
+                <span v-for="(message, index) in loginErrors.userParam" :key="index">
                   {{ message }}
                 </span>
               </v-alert>
@@ -27,8 +27,8 @@
               <!-- フォーム -->
               <v-form ref="loginForm" v-model="loginForm.validation.valid" lazy-validation>
                 <v-text-field
-                  v-model="loginForm.loginField"
-                  :rules="loginForm.validation.loginFieldRules"
+                  v-model="loginForm.userParam"
+                  :rules="loginForm.validation.userParamRules"
                   label="ユーザー名 または メールアドレス"
                   @keydown.enter="login()"
                 ></v-text-field>
@@ -84,13 +84,13 @@ export default {
     return {
       dialog: false,
       loginForm: {
-        loginField: '',
+        userParam: '',
         password: '',
         showPassword: false,
         loading: false,
         validation: {
           valid: false,
-          loginFieldRules: [(v) => !!v || '必須項目です。'],
+          userParamRules: [(v) => !!v || '必須項目です。'],
           passwordRules: [(v) => !!v || 'パスワードは必須項目です。'],
         },
       },
@@ -123,7 +123,7 @@ export default {
 
         // ログイン処理
         await this.$store.dispatch('auth/login', {
-          loginField: this.loginForm.loginField,
+          userParam: this.loginForm.userParam,
           password: this.loginForm.password,
         });
 
