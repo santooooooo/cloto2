@@ -603,7 +603,7 @@ export default {
 
         case 'enterCall':
           // 通話室入室処理
-          var response = await axios.post('/api/seats/move_seat/' + seatObject.seatId, {
+          var response = await axios.post('/api/seats/move/' + seatObject.seatId, {
             _method: 'patch',
           });
           if (response.status === OK) {
@@ -613,14 +613,14 @@ export default {
 
         case 'enterMedia':
           // メディア視聴ブース入室処理
-          var response = await axios.post('/api/seats/move_seat/' + seatObject.seatId, {
+          var response = await axios.post('/api/seats/move/' + seatObject.seatId, {
             _method: 'patch',
           });
           break;
 
         case 'returnSeat':
           // 元の座席に戻る処理
-          var response = await axios.post('/api/seats/return_seat', {
+          var response = await axios.post('/api/seats/back', {
             _method: 'patch',
           });
           break;

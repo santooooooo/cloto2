@@ -29,7 +29,7 @@ class UserController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->auth_user = Auth::user();
-            $this->set_online();
+            $this->online();
             return $next($request);
         });
 
@@ -42,7 +42,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function set_online()
+    public function online()
     {
         if (empty($this->auth_user)) {
             return response()->json();

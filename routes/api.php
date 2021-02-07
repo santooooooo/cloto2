@@ -31,7 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
     |--------------------------------------------------------------------------
     */
     Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
-    Route::post('/online', 'API\UserController@set_online');
+    Route::post('/online', 'API\UserController@online');
     Route::get('/auth', 'API\UserController@auth');
 
 
@@ -55,8 +55,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::patch('/seats/sit/{seat}', 'SeatController@sit')->where('seat', '[0-9]+');
         Route::patch('/seats/leave', 'SeatController@leave');
-        Route::patch('/seats/move_seat/{seat}', 'SeatController@move_seat')->where('seat', '[0-9]+');
-        Route::patch('/seats/return_seat', 'SeatController@return_seat');
+        Route::patch('/seats/move/{seat}', 'SeatController@move')->where('seat', '[0-9]+');
+        Route::patch('/seats/back', 'SeatController@back');
 
 
         /*

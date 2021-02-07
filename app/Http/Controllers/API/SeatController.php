@@ -88,7 +88,7 @@ class SeatController extends Controller
      * @param  \App\Models\Seat  $seat  移動先の座席
      * @return \Illuminate\Http\Response
      */
-    public function move_seat(Seat $seat)
+    public function move(Seat $seat)
     {
         $room = $seat->section->room;
 
@@ -117,7 +117,7 @@ class SeatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function return_seat()
+    public function back()
     {
         // 戻り先の座席を検索
         $seat = $this->seat->where('reservation_user_id', $this->user->id)->first();
