@@ -26,9 +26,9 @@
         ログアウト
       </v-btn>
 
-      <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'terms' }">
+      <!-- <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'terms' }">
         利用規約
-      </v-btn>
+      </v-btn> -->
 
       <v-btn
         color="white"
