@@ -75,23 +75,23 @@ class InquiryController extends Controller
         // 投稿したデータを送信
         broadcast(new InquiryPosted($this->user, $result));
 
-        // 管理者全員にメール通知
-        foreach (Admin::all() as $admin) {
-            try {
-                Mail::send(new InquiryMail([
-                    'to' => $admin->email,
-                    'to_name' => $admin->handlename,
-                    'from' => config('mail.system.address'),
-                    'from_name' => config('mail.system.name'),
-                    'subject' => '【お問い合わせ】- ' . config('app.name'),
-                    'handlename' => $this->user->handlename,
-                    'body' => $data['data']['text']
-                ]));
-            } catch (Exception $e) {
-                // メール送信時のエラーを無視，処理を続行する
-                continue;
-            }
-        }
+        // // 管理者全員にメール通知
+        // foreach (Admin::all() as $admin) {
+        //     try {
+        //         Mail::send(new InquiryMail([
+        //             'to' => $admin->email,
+        //             'to_name' => $admin->handlename,
+        //             'from' => config('mail.system.address'),
+        //             'from_name' => config('mail.system.name'),
+        //             'subject' => '【お問い合わせ】- ' . config('app.name'),
+        //             'handlename' => $this->user->handlename,
+        //             'body' => $data['data']['text']
+        //         ]));
+        //     } catch (Exception $e) {
+        //         // メール送信時のエラーを無視，処理を続行する
+        //         continue;
+        //     }
+        // }
 
         return response()->json();
     }

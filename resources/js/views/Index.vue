@@ -461,6 +461,13 @@ export default {
 
         if (response.status === OK) {
           this.$refs.contactForm.reset();
+
+          // Slack通知
+          this.$slack(
+            '問い合わせメールBot',
+            ':incoming_envelope:',
+            '問い合わせメールが送信されました。'
+          );
         }
 
         this.contactForm.loading = false;

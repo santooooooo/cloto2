@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { OK } from '@/consts/status';
+
 export default {
   data() {
     return {
@@ -91,11 +93,20 @@ export default {
         this.loading = true;
 
         // 問い合わせの送信
-        await axios.post('/api/inquiries', {
+        var response = await axios.post('/api/inquiries', {
           author: 'user',
           type: 'text',
           data: { text: message.data.text },
         });
+
+        if (response.status === OK) {
+          // Slack通知
+          this.$slack(
+            '問い合わせチャットBot',
+            ':speech_balloon:',
+            '問い合わせチャットが送信されました。'
+          );
+        }
 
         this.loading = false;
       }

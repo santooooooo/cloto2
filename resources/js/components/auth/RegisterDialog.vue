@@ -188,6 +188,9 @@ export default {
         });
 
         if (this.apiStatus) {
+          // Slack通知
+          this.$slack('新規登録Bot', ':tada:', '新規登録がありました！');
+
           // ページ遷移
           window.location.pathname = '/email/verify';
         } else {

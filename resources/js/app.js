@@ -6,11 +6,13 @@ window.Vue = require('vue');
 window.Storage = require('./consts/storage');
 require('fabric');
 window.Peer = require('skyway-js');
+window.Slack = require('./plugins/slack');
 
 /**
  * Vueプロトタイプの設定
  */
 Vue.prototype.$storage = window.Storage.getStoragePath;
+Vue.prototype.$slack = window.Slack.post;
 
 /**
  * Vueコンポーネントの読み込み

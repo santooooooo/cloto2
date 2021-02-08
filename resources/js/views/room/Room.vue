@@ -594,6 +594,11 @@ export default {
           var response = await axios.post('/api/seats/sit/' + seatObject.seatId, {
             _method: 'patch',
           });
+
+          if (response.status === OK) {
+            // Slack通知
+            this.$slack('着席Bot', ':fire:', this.roomData.name + 'にユーザーが着席しました。');
+          }
           break;
 
         case 'leave':
@@ -601,6 +606,11 @@ export default {
           var response = await axios.post('/api/seats/leave', {
             _method: 'patch',
           });
+
+          if (response.status === OK) {
+            // Slack通知
+            this.$slack('退席Bot', ':feet:', this.roomData.name + 'からユーザーが退席しました。');
+          }
           break;
 
         case 'enterCall':
