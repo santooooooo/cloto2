@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       isOpen: false, // 表示制御
-      isLoading: false, // ローディング制御
+      loading: false, // ローディング制御
       messages: [], // メッセージ一覧
       notification: new Audio(this.$storage('system') + 'inquiry_receive.mp3'), // 通知音
       colors: {
@@ -87,8 +87,8 @@ export default {
      * @param Object message 送信データ
      */
     submit: async function (message) {
-      if (!this.isLoading) {
-        this.isLoading = true;
+      if (!this.loading) {
+        this.loading = true;
 
         // 問い合わせの送信
         await axios.post('/api/inquiries', {
@@ -97,7 +97,7 @@ export default {
           data: { text: message.data.text },
         });
 
-        this.isLoading = false;
+        this.loading = false;
       }
     },
 

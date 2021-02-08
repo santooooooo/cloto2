@@ -14,7 +14,7 @@
     </v-overlay>
 
     <!-- ローディング画面 -->
-    <v-overlay :value="isLoading" z-index="6" class="text-center" opacity="0.9">
+    <v-overlay :value="loading" z-index="6" class="text-center" opacity="0.9">
       <p class="text-h5 mb-5">接続中</p>
       <v-progress-linear
         indeterminate
@@ -118,7 +118,7 @@
                   width="208"
                   height="117"
                   class="d-flex justify-center align-center"
-                  v-if="speaker.isLoading || speaker.isVideoOff"
+                  v-if="speaker.loading || speaker.isVideoOff"
                 >
                   <!-- ローディング中 -->
                   <v-progress-circular
@@ -126,7 +126,7 @@
                     width="4"
                     color="green"
                     indeterminate
-                    v-if="speaker.isLoading || speaker.icon === null"
+                    v-if="speaker.loading || speaker.icon === null"
                   ></v-progress-circular>
 
                   <v-avatar size="50" v-else>
@@ -194,7 +194,7 @@
                   :width="videoSize.width"
                   :height="videoSize.height"
                   class="d-flex justify-center align-center"
-                  v-if="pinnedSpeaker.isLoading || pinnedSpeaker.isVideoOff"
+                  v-if="pinnedSpeaker.loading || pinnedSpeaker.isVideoOff"
                 >
                   <!-- ローディング中 -->
                   <v-progress-circular
@@ -202,7 +202,7 @@
                     width="4"
                     color="green"
                     indeterminate
-                    v-if="pinnedSpeaker.isLoading || pinnedSpeaker.icon === null"
+                    v-if="pinnedSpeaker.loading || pinnedSpeaker.icon === null"
                   ></v-progress-circular>
 
                   <v-avatar size="150" v-else>
@@ -318,7 +318,7 @@
                       :width="videoShowWidth"
                       :height="videoShowHeight"
                       class="d-flex justify-center align-center"
-                      v-if="speaker.isLoading || speaker.isVideoOff"
+                      v-if="speaker.loading || speaker.isVideoOff"
                     >
                       <!-- ローディング中 -->
                       <v-progress-circular
@@ -326,7 +326,7 @@
                         width="4"
                         color="green"
                         indeterminate
-                        v-if="speaker.isLoading || speaker.icon === null"
+                        v-if="speaker.loading || speaker.icon === null"
                       ></v-progress-circular>
 
                       <v-avatar size="80" v-else>
@@ -585,7 +585,7 @@ export default {
     return {
       dialog: true, // 入室制御
       permissionOverlay: false, // 権限確認画面
-      isLoading: false, // ローディング制御
+      loading: false, // ローディング制御
       appBar: {
         timer: null, // ツールバー表示タイマー
         isShow: false, // ツールバー表示制御
@@ -763,7 +763,7 @@ export default {
 
           case 'loadingEvent':
             // ローディングイベント
-            sender.isLoading = data.content;
+            sender.loading = data.content;
             break;
 
           case 'audioEvent':
@@ -860,7 +860,7 @@ export default {
         if (stream.getAudioTracks().length > 0) {
           // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
           this.call.send({ type: 'joinSpeakerData', content: this.authUser });
-          this.call.send({ type: 'loadingEvent', content: this.isLoading });
+          this.call.send({ type: 'loadingEvent', content: this.loading });
           this.call.send({ type: 'audioEvent', content: this.isMute });
           this.call.send({ type: 'videoEvent', content: this.isVideoOff });
 
@@ -875,7 +875,7 @@ export default {
             username: '', // ユーザー名
             handlename: '', // 表示名
             icon: null, // アイコン
-            isLoading: true, // 接続待ち状態
+            loading: true, // 接続待ち状態
             isMute: true, // ミュート状態
             isVideoOff: true, // ビデオオフ状態
             peerId: stream.peerId,
@@ -909,7 +909,7 @@ export default {
       if (isJoin) {
         // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
         this.call.send({ type: 'joinSpeakerData', content: this.authUser });
-        this.call.send({ type: 'loadingEvent', content: this.isLoading });
+        this.call.send({ type: 'loadingEvent', content: this.loading });
         this.call.send({ type: 'audioEvent', content: this.isMute });
         this.call.send({ type: 'videoEvent', content: this.isVideoOff });
         // 現在のトピックを送信
@@ -1077,7 +1077,7 @@ export default {
         this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
 
         // 起動時はすぐにカメラを停止する
-        if (this.isLoading) {
+        if (this.loading) {
           // 接続時にはenabledで停止
           // デバイスを停止すると，相手にvideoストリームが届かない
           this.localStream.getVideoTracks()[0].enabled = false;
@@ -1309,7 +1309,7 @@ export default {
   },
 
   async created() {
-    this.isLoading = true;
+    this.loading = true;
 
     // 15秒間接続できなければ終了
     const timeout = () => {
@@ -1317,7 +1317,7 @@ export default {
       if (this.permissionOverlay) {
         setTimeout(timeout, 15000);
       } else {
-        if (this.isLoading) {
+        if (this.loading) {
           this.errorEvent('エラーが発生しました。再読み込みしてください。');
         }
       }
@@ -1375,7 +1375,7 @@ export default {
           sound: this.notificationSounds.join,
         });
 
-        this.isLoading = false;
+        this.loading = false;
         this.call.send({ type: 'loadingEvent', content: false });
       }, 5000);
     }

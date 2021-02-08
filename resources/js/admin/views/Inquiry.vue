@@ -73,7 +73,7 @@ export default {
       ],
 
       isOpen: false, // 表示制御
-      isLoading: false, // ローディング制御
+      loading: false, // ローディング制御
       user: {}, // 問い合わせ相手
       messages: [], // メッセージ一覧
       colors: {
@@ -163,8 +163,8 @@ export default {
      * @param Object message 送信データ
      */
     submit: async function (message) {
-      if (!this.isLoading) {
-        this.isLoading = true;
+      if (!this.loading) {
+        this.loading = true;
 
         // 問い合わせの送信
         await axios.post('/api/admin/inquiries', {
@@ -174,7 +174,7 @@ export default {
           data: { text: message.data.text },
         });
 
-        this.isLoading = false;
+        this.loading = false;
 
         // データの更新
         this.getUsers();

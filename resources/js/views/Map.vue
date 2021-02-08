@@ -39,7 +39,7 @@ export default {
   },
   data() {
     return {
-      isLoading: false, // ローディング制御
+      loading: false, // ローディング制御
       canvas: null, // キャンバスエリア
       mapWidth: 2600, // マップサイズ
       mapHeight: 1200, // マップサイズ
@@ -209,7 +209,7 @@ export default {
 
   mounted() {
     // ロード開始
-    this.isLoading = true;
+    this.loading = true;
 
     /**
      * キャンバスの設定
@@ -283,7 +283,7 @@ export default {
     this.canvas.on('mouse:wheel', this.canvasScroll);
 
     // ロード終了
-    this.isLoading = false;
+    this.loading = false;
   },
 };
 </script>

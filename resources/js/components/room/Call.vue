@@ -14,7 +14,7 @@
     </v-overlay>
 
     <!-- ローディング画面 -->
-    <v-overlay :value="isLoading" z-index="6" class="text-center" opacity="0.9">
+    <v-overlay :value="loading" z-index="6" class="text-center" opacity="0.9">
       <p class="text-h5 mb-5">接続中</p>
       <v-progress-linear
         indeterminate
@@ -81,7 +81,7 @@
                   width="208"
                   height="117"
                   class="d-flex justify-center align-center"
-                  v-if="participant.isLoading || participant.isVideoOff"
+                  v-if="participant.loading || participant.isVideoOff"
                 >
                   <!-- ローディング中 -->
                   <v-progress-circular
@@ -89,7 +89,7 @@
                     width="4"
                     color="green"
                     indeterminate
-                    v-if="participant.isLoading || participant.icon === null"
+                    v-if="participant.loading || participant.icon === null"
                   ></v-progress-circular>
 
                   <v-avatar size="50" v-else>
@@ -157,7 +157,7 @@
                   :width="videoSize.width"
                   :height="videoSize.height"
                   class="d-flex justify-center align-center"
-                  v-if="pinnedParticipant.isLoading || pinnedParticipant.isVideoOff"
+                  v-if="pinnedParticipant.loading || pinnedParticipant.isVideoOff"
                 >
                   <!-- ローディング中 -->
                   <v-progress-circular
@@ -165,7 +165,7 @@
                     width="4"
                     color="green"
                     indeterminate
-                    v-if="pinnedParticipant.isLoading || pinnedParticipant.icon === null"
+                    v-if="pinnedParticipant.loading || pinnedParticipant.icon === null"
                   ></v-progress-circular>
 
                   <v-avatar size="150" v-else>
@@ -287,7 +287,7 @@
                       :width="videoShowWidth"
                       :height="videoShowHeight"
                       class="d-flex justify-center align-center"
-                      v-if="participant.isLoading || participant.isVideoOff"
+                      v-if="participant.loading || participant.isVideoOff"
                     >
                       <!-- ローディング中 -->
                       <v-progress-circular
@@ -295,7 +295,7 @@
                         width="4"
                         color="green"
                         indeterminate
-                        v-if="participant.isLoading || participant.icon === null"
+                        v-if="participant.loading || participant.icon === null"
                       ></v-progress-circular>
 
                       <v-avatar size="80" v-else>
@@ -555,7 +555,7 @@ export default {
     return {
       dialog: true, // 入室制御
       permissionOverlay: false, // 権限確認画面
-      isLoading: false, // ローディング制御
+      loading: false, // ローディング制御
       appBar: {
         timer: null, // ツールバー表示タイマー
         isShow: false, // ツールバー表示制御
@@ -719,7 +719,7 @@ export default {
 
           case 'loadingEvent':
             // ローディングイベント
-            sender.isLoading = data.content;
+            sender.loading = data.content;
             break;
 
           case 'audioEvent':
@@ -810,7 +810,7 @@ export default {
         if (stream.getAudioTracks().length > 0) {
           // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
           this.call.send({ type: 'joinUserData', content: this.authUser });
-          this.call.send({ type: 'loadingEvent', content: this.isLoading });
+          this.call.send({ type: 'loadingEvent', content: this.loading });
           this.call.send({ type: 'audioEvent', content: this.isMute });
           this.call.send({ type: 'videoEvent', content: this.isVideoOff });
 
@@ -825,7 +825,7 @@ export default {
             username: '', // ユーザー名
             handlename: '', // 表示名
             icon: null, // アイコン
-            isLoading: true, // 接続待ち状態
+            loading: true, // 接続待ち状態
             isMute: true, // ミュート状態
             isVideoOff: true, // ビデオオフ状態
             peerId: stream.peerId,
@@ -991,7 +991,7 @@ export default {
         this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
 
         // 起動時はすぐにカメラを停止する
-        if (this.isLoading) {
+        if (this.loading) {
           // 接続時にはenabledで停止
           // デバイスを停止すると，相手にvideoストリームが届かない
           this.localStream.getVideoTracks()[0].enabled = false;
@@ -1204,7 +1204,7 @@ export default {
   },
 
   async created() {
-    this.isLoading = true;
+    this.loading = true;
 
     // 15秒間接続できなければ終了
     const timeout = () => {
@@ -1212,7 +1212,7 @@ export default {
       if (this.permissionOverlay) {
         setTimeout(timeout, 15000);
       } else {
-        if (this.isLoading) {
+        if (this.loading) {
           this.errorEvent('エラーが発生しました。再読み込みしてください。');
         }
       }
@@ -1270,7 +1270,7 @@ export default {
           sound: this.notificationSounds.join,
         });
 
-        this.isLoading = false;
+        this.loading = false;
         this.call.send({ type: 'loadingEvent', content: false });
       }, 5000);
     }

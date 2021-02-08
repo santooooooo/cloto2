@@ -1,7 +1,7 @@
 <template>
   <v-layout id="room">
     <!-- ローディング画面 -->
-    <v-overlay :value="isLoading">
+    <v-overlay :value="loading">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
 
@@ -104,7 +104,7 @@ export default {
   data() {
     return {
       chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
-      isLoading: false, // ローディング制御
+      loading: false, // ローディング制御
       canvas: null, // キャンバスエリア
       roomStatus: null, // 教室の状態
       roomData: {}, // 教室データ
@@ -410,7 +410,7 @@ export default {
         // クリックした座席に誰も座っていないかつ，予約済みでない場合
         if (target.seatId !== null && target.fill !== '#FF0000') {
           // ロード開始
-          this.isLoading = true;
+          this.loading = true;
 
           if (this.authUser.seat === null) {
             // 着席前
@@ -540,7 +540,7 @@ export default {
           }
 
           // ロード終了
-          this.isLoading = false;
+          this.loading = false;
         }
       } else if (target.type === 'user') {
         this.profile.dialog = true;
@@ -673,7 +673,7 @@ export default {
       this.karte.dialog = false;
 
       // ロード開始
-      this.isLoading = true;
+      this.loading = true;
 
       // 状態変更処理
       await this.userAction('leave');
@@ -699,7 +699,7 @@ export default {
      */
     leaveCall: async function () {
       // ロード開始
-      this.isLoading = true;
+      this.loading = true;
 
       // 通話室の初期化
       this.call.isEnter = false;
@@ -709,7 +709,7 @@ export default {
       await this.userAction('returnSeat');
 
       // ロード終了
-      this.isLoading = false;
+      this.loading = false;
     },
 
     /**
@@ -728,7 +728,7 @@ export default {
     this.chime.volume = 0.4;
 
     // ロード開始
-    this.isLoading = true;
+    this.loading = true;
 
     // 部屋データの取得
     await this.getRoom();
@@ -910,7 +910,7 @@ export default {
       });
 
     // ロード終了
-    this.isLoading = false;
+    this.loading = false;
   },
 };
 </script>

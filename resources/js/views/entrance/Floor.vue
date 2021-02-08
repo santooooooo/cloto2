@@ -2,7 +2,7 @@
   <v-layout id="floor">
     <v-flex>
       <!-- ローディング画面 -->
-      <v-overlay :value="isLoading">
+      <v-overlay :value="loading">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
 
@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       canvas: null, // キャンバスエリア
-      isLoading: false, // ローディング制御
+      loading: false, // ローディング制御
       roomData: {}, // 教室データ
       roomWidth: 2160, // 教室サイズ
       roomHeight: 1200, // 教室サイズ
@@ -42,7 +42,7 @@ export default {
      * 教室の設定
      */
     setRoom: async function () {
-      this.isLoading = true;
+      this.loading = true;
 
       // 教室データの取得
       var response = await axios.get('/api/rooms/' + this.$route.params.roomId);
@@ -94,7 +94,7 @@ export default {
         });
       });
 
-      this.isLoading = false;
+      this.loading = false;
     },
 
     /**
