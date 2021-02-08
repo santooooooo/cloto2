@@ -2,10 +2,10 @@
  * 必要なライブラリの読み込み
  */
 require('./bootstrap');
-window.Vue = require('vue');
-window.Storage = require('./consts/storage');
 require('fabric');
+window.Vue = require('vue');
 window.Peer = require('skyway-js');
+window.Storage = require('./consts/storage');
 window.Slack = require('./plugins/slack');
 
 /**
