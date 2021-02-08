@@ -2,4 +2,4 @@
 !.gitignore
 !*.example
 !DatabaseSeeder.php
-!RoomsTableSeeder.php
+!rooms/

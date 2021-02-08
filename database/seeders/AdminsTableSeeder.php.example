@@ -18,7 +18,7 @@ class AdminsTableSeeder extends Seeder
         $usernames = ['admin', 'admin2', 'admin3'];
         foreach ($usernames as $username) {
             Admin::create([
-                'email' => $username . '@cloto.jp',
+                'email' => $username . '@admin.com',
                 'password' => Hash::make('password'),
                 'handlename' => $username,
             ]);
