@@ -294,8 +294,8 @@ class Room2Seeder extends Seeder
 
 
 
-        // 区画7作成-2人雑談スペース1
-        $created_section = Section::create(['room_id' => $created_room->id, 'name' => '2人雑談スペース1']);
+        // 区画7作成-2人雑談スペース上
+        $created_section = Section::create(['room_id' => $created_room->id, 'name' => '2人雑談スペース上']);
 
 
         //*** 座席33データ ***//
@@ -314,8 +314,8 @@ class Room2Seeder extends Seeder
 
 
 
-        // 区画8作成-2人雑談スペース2
-        $created_section = Section::create(['room_id' => $created_room->id, 'name' => '2人雑談スペース2']);
+        // 区画8作成-2人雑談スペース中央
+        $created_section = Section::create(['room_id' => $created_room->id, 'name' => '2人雑談スペース中央']);
 
 
         //*** 座席35データ ***//
@@ -334,8 +334,8 @@ class Room2Seeder extends Seeder
 
 
 
-        // 区画9作成-2人雑談スペース3
-        $created_section = Section::create(['room_id' => $created_room->id, 'name' => '2人雑談スペース3']);
+        // 区画9作成-2人雑談スペース下
+        $created_section = Section::create(['room_id' => $created_room->id, 'name' => '2人雑談スペース下']);
 
 
         //*** 座席37データ ***//
