@@ -6,6 +6,8 @@
       <img :src="$storage('system') + 'header_logo.svg'" />
     </router-link>
 
+    <span class="mt-3 mr-3 text-h4 font-weight-bold">α1.0</span>
+
     <v-btn
       text
       x-large

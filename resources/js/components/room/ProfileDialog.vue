@@ -83,7 +83,7 @@ export default {
       if (this.user.type === 'pro') {
         color = 'green darken-2';
       } else {
-        color = 'gray darken-1';
+        color = 'grey darken-1';
       }
 
       return color;
