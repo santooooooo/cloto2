@@ -171,25 +171,25 @@ class Room1Seeder extends Seeder
 
 
         //*** 座席17データ ***//
-        $seat = ['name' => 'Staff談話席', 'size' => 30, 'position' => ['x' => 1177, 'y' => 881], 'role' => 'staff'];
+        $seat = ['name' => 'Staff談話席', 'size' => 30, 'position' => ['x' => 1177, 'y' => 881], 'role' => 'mentor'];
 
         // 座席17作成
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
 
         //*** 座席18データ ***//
-        $seat = ['name' => 'Staff談話席', 'size' => 30, 'position' => ['x' => 1178, 'y' => 913], 'role' => 'staff'];
+        $seat = ['name' => 'Staff談話席', 'size' => 30, 'position' => ['x' => 1178, 'y' => 913], 'role' => 'mentor'];
 
         // 座席18作成
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
 
         //*** 座席19データ ***//
-        $seat = ['name' => 'Staff談話席', 'size' => 30, 'position' => ['x' => 1139, 'y' => 954], 'role' => 'staff'];
+        $seat = ['name' => 'Staff談話席', 'size' => 30, 'position' => ['x' => 1139, 'y' => 954], 'role' => 'mentor'];
 
         // 座席19作成
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
 
         //*** 座席20データ ***//
-        $seat = ['name' => 'Staff談話席', 'size' => 30, 'position' => ['x' => 1106, 'y' => 955], 'role' => 'staff'];
+        $seat = ['name' => 'Staff談話席', 'size' => 30, 'position' => ['x' => 1106, 'y' => 955], 'role' => 'mentor'];
 
         // 座席20作成
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
@@ -600,7 +600,7 @@ class Room1Seeder extends Seeder
         $created_section = Section::create(['room_id' => $created_room->id, 'name' => 'その他']);
 
         //*** 座席65データ ***//
-        $seat = ['name' => '右下角', 'size' => 30, 'position' => ['x' => 1401, 'y' => 781], 'role' => 'media'];
+        $seat = ['name' => '右下角', 'size' => 30, 'position' => ['x' => 1401, 'y' => 751], 'role' => 'media'];
 
         // 座席65作成
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
