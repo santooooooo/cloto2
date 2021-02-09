@@ -1417,25 +1417,25 @@ class Room5Seeder extends Seeder
 
 
         //*** 座席182データ ***//
-        $seat = ['name' => '中央左上', 'size' => 30, 'position' => ['x' => 1000, 'y' => 240], 'role' => 'media'];
+        $seat = ['name' => '階段左上', 'size' => 30, 'position' => ['x' => 1000, 'y' => 240], 'role' => 'media'];
 
         // 座席182作成
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
 
         //*** 座席183データ ***//
-        $seat = ['name' => '中央左下', 'size' => 30, 'position' => ['x' => 998, 'y' => 357], 'role' => 'media'];
+        $seat = ['name' => '階段左下', 'size' => 30, 'position' => ['x' => 998, 'y' => 357], 'role' => 'media'];
 
         // 座席183作成
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
 
         //*** 座席184データ ***//
-        $seat = ['name' => '中央右上', 'size' => 30, 'position' => ['x' => 1155, 'y' => 244], 'role' => 'media'];
+        $seat = ['name' => '階段右上', 'size' => 30, 'position' => ['x' => 1155, 'y' => 244], 'role' => 'media'];
 
         // 座席184作成
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
 
         //*** 座席185データ ***//
-        $seat = ['name' => '中央右下', 'size' => 30, 'position' => ['x' => 1147, 'y' => 354], 'role' => 'media'];
+        $seat = ['name' => '階段前', 'size' => 30, 'position' => ['x' => 1147, 'y' => 354], 'role' => 'media'];
 
         // 座席185作成
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
