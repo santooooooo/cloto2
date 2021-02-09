@@ -628,6 +628,7 @@ class Room4Seeder extends Seeder
         // 区画14作成-カウンター
         $created_section = Section::create(['room_id' => $created_room->id, 'name' => 'カウンター']);
 
+
         //*** 座席79データ ***//
         $seat = ['name' => 'カウンター席左', 'size' => 30, 'position' => ['x' => 998, 'y' => 189], 'role' => 'media'];
 
@@ -683,8 +684,8 @@ class Room4Seeder extends Seeder
 
 
 
-        // 区画18作成-掲示板エリア
-        $created_section = Section::create(['room_id' => $created_room->id, 'name' => '掲示板エリア']);
+        // 区画18作成-掲示板2
+        $created_section = Section::create(['room_id' => $created_room->id, 'name' => '掲示板2']);
 
 
         //*** 座席84データ ***//
@@ -793,8 +794,8 @@ class Room4Seeder extends Seeder
 
 
 
-        // 区画24作成-掲示板エリア
-        $created_section = Section::create(['room_id' => $created_room->id, 'name' => '掲示板エリア']);
+        // 区画24作成-掲示板1
+        $created_section = Section::create(['room_id' => $created_room->id, 'name' => '掲示板1']);
 
 
         //*** 座席95データ ***//
