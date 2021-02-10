@@ -23,9 +23,8 @@ export default {
     max-width: 60%;
     max-height: 70%;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 10px;
+    right: 10px;
   }
 }
 </style>

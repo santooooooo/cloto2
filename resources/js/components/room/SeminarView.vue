@@ -8,7 +8,10 @@
   >
     <!-- 権限確認画面 -->
     <v-overlay :value="permissionOverlay" z-index="7" class="text-center" opacity="0.9">
-      <p class="text-h5 mb-5">ここは視聴席です。発言はできません。</p>
+      <p class="text-h5 mb-5">ここは視聴席です。</p>
+      <p class="text-body-1 mb-10">
+        ビデオでの発言はできません。テキストチャットをご利用ください。
+      </p>
       <v-row justify="center">
         <v-btn depressed color="primary" @click="permissionOverlay = false">OK</v-btn>
       </v-row>
