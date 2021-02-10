@@ -503,7 +503,7 @@ class Room2Seeder extends Seeder
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
 
         //*** 座席59データ ***//
-        $seat = ['name' => '視聴席', 'size' => 30, 'position' => ['x' => 1456, 'y' => 145], 'role' => 'view'];
+        $seat = ['name' => '視聴席', 'size' => 30, 'position' => ['x' => 1456, 'y' => 175], 'role' => 'view'];
 
         // 座席59作成
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);

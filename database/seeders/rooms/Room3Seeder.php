@@ -295,7 +295,7 @@ class Room3Seeder extends Seeder
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
 
         //*** 座席35データ ***//
-        $seat = ['name' => '休憩席', 'size' => 30, 'position' => ['x' => 694, 'y' => 180], 'role' => 'lounge'];
+        $seat = ['name' => '休憩席', 'size' => 30, 'position' => ['x' => 644, 'y' => 180], 'role' => 'lounge'];
 
         // 座席35作成
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
@@ -385,7 +385,7 @@ class Room3Seeder extends Seeder
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
 
         //*** 座席46データ ***//
-        $seat = ['name' => '休憩席', 'size' => 30, 'position' => ['x' => 591, 'y' => 690], 'role' => 'lounge'];
+        $seat = ['name' => '休憩席', 'size' => 30, 'position' => ['x' => 596, 'y' => 690], 'role' => 'lounge'];
 
         // 座席46作成
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
