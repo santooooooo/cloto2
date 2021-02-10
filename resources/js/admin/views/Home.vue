@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <h1>
-      管理画面
-      <span class="text-h6 ml-12">{{ authUser.handlename }}様 ご利用ありがとうございます。</span>
+      <span class="text-h4 ml-2 mr-10">管理画面</span>
+      <span class="text-h6 ml-10">{{ authUser.handlename }}様 ご利用ありがとうございます。</span>
     </h1>
 
     <v-container mt-10>

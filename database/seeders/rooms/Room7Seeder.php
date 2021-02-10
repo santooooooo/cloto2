@@ -18,7 +18,7 @@ class Room7Seeder extends Seeder
     {
         //*** 部屋データ ***//
         $room = [
-            'name' => '屋上',
+            'name' => '屋外',
             'timetable' =>
             [
                 '00:00' => 'study', '00:50' => 'break',
