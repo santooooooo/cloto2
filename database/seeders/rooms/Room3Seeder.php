@@ -657,7 +657,7 @@ class Room3Seeder extends Seeder
         $created_section = Section::create(['room_id' => $created_room->id, 'name' => 'その他']);
 
         //*** 座席76データ ***//
-        $seat = ['name' => '自習室下', 'size' => 30, 'position' => ['x' => 878, 'y' => 788], 'role' => 'media'];
+        $seat = ['name' => '自習室下', 'size' => 30, 'position' => ['x' => 750, 'y' => 1118], 'role' => 'media'];
 
         // 座席76作成
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);

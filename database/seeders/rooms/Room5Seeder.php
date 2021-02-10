@@ -1544,5 +1544,24 @@ class Room5Seeder extends Seeder
 
         // 座席196作成
         Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
+
+
+
+
+
+        // 区画41作成-その他
+        $created_section = Section::create(['room_id' => $created_room->id, 'name' => 'その他']);
+
+        //*** 座席197データ ***//
+        $seat = ['name' => '自習室上', 'size' => 30, 'position' => ['x' => 352, 'y' => 729], 'role' => 'media'];
+
+        // 座席197作成
+        Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
+
+        //*** 座席198データ ***//
+        $seat = ['name' => '自習室下', 'size' => 30, 'position' => ['x' => 344, 'y' => 1035], 'role' => 'media'];
+
+        // 座席198作成
+        Seat::create(['section_id' => $created_section->id, 'name' => $seat['name'], 'size' => $seat['size'], 'position' => $seat['position'], 'role' => $seat['role']]);
     }
 }
