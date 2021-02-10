@@ -174,7 +174,7 @@
       </v-col>
     </v-row>
 
-    <p class="text-h4 text-center font-weight-bold">
+    <!-- <p class="text-h4 text-center font-weight-bold">
       <span style="background: linear-gradient(transparent 70%, #ff99ab 70%)">導入事例</span>
     </p>
 
@@ -190,11 +190,13 @@
           </a>
         </p>
 
-        <p class="text-h6 text-center">学習塾としてご利用</p>
+        <p class="text-h6 text-center">学習塾の運営</p>
         <p class="text-body-1 text-center mb-8">
-          学習塾として利用されています．ここ未定．ここ未定．ここ未定．ここ未定．ここ未定．ここ未定．<br />
-          ここ未定．ここ未定．ここ未定．ここ未定．ここ未定．ここ未定．ここ未定．ここ未定．<br />
-          ここ未定．ここ未定．ここ未定．ここ未定．ここ未定．ここ未定．ここ未定．
+          オンラインで受けられる個人・少人数授業で、講師は全員教育大学を卒業しておりネットがつながる場所であれば学習塾に通わずに授業が受けられることが特徴の<a
+            href="https://sub-juku.com"
+            target="_blank"
+            >サブ塾</a
+          >の運営にご利用されています。一人ひとりに合ったコンテンツを作成しアニメーションやPowerPointを用いて授業を行うため、分かりやすいだけでなく面白いと感じながら学べるのが強みです。1対1や友達と一緒にも授業に参加できます。
         </p>
 
         <p class="text-body-1 text-center">カスタム例</p>
@@ -208,7 +210,7 @@
         </v-row>
         <p class="text-body-1 text-center">など．．．．</p>
       </v-col>
-    </v-row>
+    </v-row> -->
 
     <v-divider></v-divider>
 
