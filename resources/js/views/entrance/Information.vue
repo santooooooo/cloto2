@@ -1,6 +1,6 @@
 <template>
   <v-layout ref="information" id="information">
-    <img :src="$storage('system') + 'event.png'" />
+    <img :src="$storage('system') + 'event.png?' + Math.random().toString(32).substring(2)" />
   </v-layout>
 </template>
 
