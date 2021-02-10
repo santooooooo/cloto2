@@ -174,7 +174,7 @@
       </v-col>
     </v-row>
 
-    <!-- <p class="text-h4 text-center font-weight-bold">
+    <p class="text-h4 text-center font-weight-bold">
       <span style="background: linear-gradient(transparent 70%, #ff99ab 70%)">導入事例</span>
     </p>
 
@@ -210,7 +210,7 @@
         </v-row>
         <p class="text-body-1 text-center">など．．．．</p>
       </v-col>
-    </v-row> -->
+    </v-row>
 
     <v-divider></v-divider>
 
