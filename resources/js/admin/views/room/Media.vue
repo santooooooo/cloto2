@@ -31,7 +31,7 @@
                   <v-list-item-group>
                     <v-list-item v-for="seat in seats.data" :key="seat.id">
                       <v-card-text class="pa-1 white--text" @click="editMedia(seat.id)">
-                        {{ seat.name }}
+                        {{ seat.sectionName + ' - ' + seat.name }}
                       </v-card-text>
                     </v-list-item>
                   </v-list-item-group>
@@ -171,6 +171,7 @@ export default {
       room.sections.forEach((section) => {
         section.seats.forEach((seat) => {
           if (seat.role === 'media') {
+            seat.sectionName = section.name;
             this.seats.data.push(seat);
           }
         });
