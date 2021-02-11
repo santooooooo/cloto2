@@ -25,7 +25,7 @@ echo -e "\nデータのバックアップを終了しました。"
 # 更新の取得
 echo -e "\n\n--------------------------------------------------\n\n"
 git reset --hard
-git fetch origin master
+git pull origin master
 git log -1
 
 
