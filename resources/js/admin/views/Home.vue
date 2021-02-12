@@ -20,6 +20,15 @@
       <!-- ファイル -->
       <h3>イベント一覧のアップロード</h3>
       <input type="file" @change="submitEvent" accept="image/png" ref="input" />
+
+      <p class="text-body-1 mt-5">
+        カレンダーは<a
+          href="https://m136363.freecalend.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          >こちら</a
+        >（ID：cloto / PW：cloto_no_calendar）
+      </p>
     </v-container>
   </v-container>
 </template>

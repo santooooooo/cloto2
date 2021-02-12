@@ -1,6 +1,16 @@
 <template>
   <v-layout ref="information" id="information">
-    <img :src="$storage('system') + 'event.png?' + Math.random().toString(32).substring(2)" />
+    <v-sheet color="white">
+      <img :src="$storage('system') + 'event.png?' + Math.random().toString(32).substring(2)" />
+      <p class="text-h5 ma-2">
+        今月のイベント一覧は<a
+          href="https://freecalend.com/open/mem136363_nopopon"
+          target="_blank"
+          rel="noopener noreferrer"
+          >こちら</a
+        >
+      </p>
+    </v-sheet>
   </v-layout>
 </template>
 
@@ -19,12 +29,16 @@ export default {
   background-size: cover;
   position: relative;
 
-  img {
-    max-width: 60%;
-    max-height: 70%;
+  .v-sheet {
+    max-width: 50%;
+    max-height: 60%;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 0px;
+    left: 0px;
+
+    img {
+      max-width: 100%;
+    }
   }
 }
 </style>
