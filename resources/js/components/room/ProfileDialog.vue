@@ -44,9 +44,9 @@
                 target="_blank"
                 v-if="user.sns.qiita"
               >
-                <v-avatar size="20" color="white"
-                  ><v-img :src="$storage('system') + 'qiita.png'"></v-img
-                ></v-avatar>
+                <v-avatar size="20" color="white">
+                  <v-img :src="$storage('system') + 'qiita.png'"></v-img>
+                </v-avatar>
               </v-btn>
 
               <v-btn icon color="#ffffff" :href="user.web" target="_blank" v-if="user.web">
@@ -56,7 +56,7 @@
           </v-col>
 
           <v-col class="pl-0">
-            <v-card light flat class="mr-2 pa-2" height="240">
+            <v-card light flat class="mr-2 pa-2 overflow-y-auto" height="240">
               {{ user.introduction ? user.introduction : '自己紹介が未記入です' }}
             </v-card>
           </v-col>
