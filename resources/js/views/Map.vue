@@ -47,23 +47,13 @@ export default {
         {
           name: 'クリックしてみよう！',
           position: {
-            x: 700,
-            y: 200,
-            width: 1300,
-            height: 900,
+            x: 1050,
+            y: 430,
+            width: 490,
+            height: 500,
           },
           url: 'https://cloto.jp',
         },
-        // {
-        //   name: 'サブ塾',
-        //   position: {
-        //     x: 1450,
-        //     y: 550,
-        //     width: 300,
-        //     height: 300,
-        //   },
-        //   url: 'https://sub-juku.cloto.jp',
-        // },
       ],
       popup: {
         isShow: false, // 吹き出し制御
