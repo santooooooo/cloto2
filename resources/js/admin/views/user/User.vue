@@ -135,6 +135,10 @@
         </v-toolbar>
       </template>
 
+      <template v-slot:[`item.verified`]="{ item }">
+        <v-icon small>{{ item.email_verified_at ? 'mdi-check' : 'mdi-close' }}</v-icon>
+      </template>
+
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="editUser(item)">mdi-pencil</v-icon>
         <v-icon small class="ml-2" @click="deleteUser(item)">mdi-delete</v-icon>
@@ -166,6 +170,7 @@ export default {
         { text: 'ユーザー名', value: 'username' },
         { text: '表示名', value: 'handlename' },
         { text: 'メールアドレス', value: 'email' },
+        { text: '認証済', value: 'verified', sortable: false, align: 'center' },
         { text: '編集', value: 'actions', sortable: false, align: 'center' },
       ],
       types: [
