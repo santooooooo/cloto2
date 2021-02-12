@@ -1404,12 +1404,13 @@ export default {
 }
 
 .app-bar {
-  opacity: 0;
   transition: 0.8s;
+  opacity: 0;
+  pointer-events: none;
 
   &.show {
-    display: block;
     opacity: 1;
+    pointer-events: auto;
   }
 
   // 通知
