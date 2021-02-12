@@ -56,10 +56,19 @@
           </v-col>
 
           <v-col class="pl-0">
-            <v-card light flat class="mr-2 pa-2 overflow-y-auto" height="240">
-              {{ user.introduction ? user.introduction : '自己紹介が未記入です' }}
+            <v-card light flat class="mr-2 overflow-y-auto" min-height="240" max-height="400">
+              <pre class="ma-3 text-body-1"
+                >{{ user.introduction ? user.introduction : '自己紹介が未記入です' }}
+              </pre>
             </v-card>
           </v-col>
+        </v-row>
+
+        <v-row justify="center" v-if="user.in_progress">
+          <v-card light flat class="mx-6">
+            <v-card-text class="pt-3 pl-3 pb-0">いまやっていること</v-card-text>
+            <pre class="ma-3 text-body-1">{{ user.in_progress }}</pre>
+          </v-card>
         </v-row>
       </v-container>
     </v-card>
@@ -102,5 +111,9 @@ export default {
 <style lang="scss" scoped>
 a:hover {
   text-decoration: none;
+}
+
+pre {
+  white-space: pre-wrap;
 }
 </style>
