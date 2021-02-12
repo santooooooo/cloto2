@@ -19,7 +19,6 @@
 
       <!-- ファイル -->
       <h3>イベント一覧のアップロード</h3>
-      <p class="red--text">*PNG型式で900px × 600pxを想定して設計しています。</p>
       <input type="file" @change="submitEvent" accept="image/png" ref="input" />
     </v-container>
   </v-container>
