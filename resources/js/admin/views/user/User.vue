@@ -135,8 +135,11 @@
         </v-toolbar>
       </template>
 
-      <template v-slot:[`item.verified`]="{ item }">
-        <v-icon small>{{ item.email_verified_at ? 'mdi-check' : 'mdi-close' }}</v-icon>
+      <template v-slot:[`item.email_verified_at`]="{ item }">
+        <span v-if="item.email_verified_at">
+          {{ new Date(item.email_verified_at).toLocaleDateString() }}
+        </span>
+        <v-icon small v-else>mdi-close</v-icon>
       </template>
 
       <template v-slot:[`item.actions`]="{ item }">
@@ -170,7 +173,7 @@ export default {
         { text: 'ユーザー名', value: 'username' },
         { text: '表示名', value: 'handlename' },
         { text: 'メールアドレス', value: 'email' },
-        { text: '認証済', value: 'verified', sortable: false, align: 'center' },
+        { text: '認証済', value: 'email_verified_at', align: 'center' },
         { text: '編集', value: 'actions', sortable: false, align: 'center' },
       ],
       types: [
