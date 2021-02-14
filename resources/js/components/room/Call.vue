@@ -26,7 +26,7 @@
       <p class="text-body-2 mb-0 mt-12">カメラランプが10秒ほど点灯する場合があります．．．</p>
     </v-overlay>
 
-    <v-layout class="px-2">
+    <v-layout class="px-2" ref="container">
       <v-flex>
         <v-container fluid py-0>
           <!--*** 画面共有ON ***-->
@@ -396,7 +396,7 @@
       color="yellow darken-4"
       fixed
       bottom
-      height="100px"
+      height="100"
       :class="['app-bar', appBar.isShow ? 'show' : '']"
     >
       <v-row>
@@ -519,6 +519,18 @@
               </v-btn>
             </v-badge>
 
+            <!-- 部屋閲覧ボタン -->
+            <v-btn
+              color="white"
+              icon
+              class="mr-6"
+              @mousedown="toggleShowRoom(true)"
+              @mouseup="toggleShowRoom(false)"
+              @mouseleave="toggleShowRoom(false)"
+            >
+              <v-icon large>mdi-chevron-down</v-icon>
+            </v-btn>
+
             <!-- 通話終了ボタン -->
             <v-btn
               color="error"
@@ -554,6 +566,7 @@ export default {
   data() {
     return {
       dialog: true, // 入室制御
+      dialogElement: null, // ダイアログ要素
       permissionOverlay: false, // 権限確認画面
       loading: false, // ローディング制御
       appBar: {
@@ -1180,16 +1193,43 @@ export default {
 
     /**
      * ツールバーの表示制御
+     *
+     * @param event マウス移動イベント
      */
-    showAppBar: function () {
+    showAppBar: function (event = null) {
       // マウスが動作すると表示
       this.appBar.isShow = true;
       clearTimeout(this.appBar.timer);
 
-      this.appBar.timer = setTimeout(() => {
-        // 停止2秒後に隠す
-        this.appBar.isShow = false;
-      }, 2000);
+      var hide = true;
+      if (event !== null) {
+        // マウスがツールバー上にある場合，非表示にしない
+        var cursorFromBottom = this.$windowHeight - event.clientY;
+        if (cursorFromBottom <= 100) {
+          hide = false;
+        }
+      }
+
+      if (hide) {
+        this.appBar.timer = setTimeout(() => {
+          // 停止1秒後に隠す
+          this.appBar.isShow = false;
+        }, 1000);
+      }
+    },
+
+    /**
+     * 部屋の表示切り替え
+     */
+    toggleShowRoom: function (show) {
+      if (show) {
+        this.$refs.container.style.opacity = 0;
+        this.dialogElement.style.backgroundImage = null;
+      } else {
+        this.$refs.container.style.opacity = 1;
+        this.dialogElement.style.backgroundImage =
+          'url("' + this.$storage('seat') + 'seat_' + this.authUser.seat.id + '.png")';
+      }
     },
 
     /**
@@ -1281,15 +1321,9 @@ export default {
     await this.$store.dispatch('auth/syncAuthUser');
 
     // 背景の設定
-    const dialog = document.getElementsByClassName('v-dialog')[0];
-    if (this.authUser.seat.role === 'mentor') {
-      // 透過
-      dialog.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    } else {
-      // 画像
-      dialog.style.backgroundImage =
-        'url("' + this.$storage('seat') + 'seat_' + this.authUser.seat.id + '.png")';
-    }
+    this.dialogElement = document.getElementsByClassName('v-dialog')[0];
+    this.dialogElement.style.backgroundImage =
+      'url("' + this.$storage('seat') + 'seat_' + this.authUser.seat.id + '.png")';
 
     // ツールバー表示制御の設定
     window.addEventListener('mousemove', this.showAppBar);
