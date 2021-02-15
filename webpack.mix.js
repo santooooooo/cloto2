@@ -33,3 +33,7 @@ mix
   .copy('node_modules/please-wait/build/please-wait.css', 'public/css')
   .copy('node_modules/spinkit/spinkit.min.css', 'public/css')
   .sourceMaps();
+
+if (mix.inProduction()) {
+  mix.version();
+}
