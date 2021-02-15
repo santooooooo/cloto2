@@ -184,11 +184,14 @@ export default {
                     break;
 
                   default:
-                    // 退席された場合
-                    if (oldSeat.user !== null) {
-                      // アイコンを削除
+                    if (oldSeat.status === 'sitting') {
+                      // 退席された場合
                       var object = this.getCanvasObject('user', 'seatId', newSeat.id);
                       this.removeIcon(object);
+                    } else if (oldSeat.status === 'break') {
+                      // 休憩室から直接退席した場合の予約解除処理（オフライン時の強制退席）
+                      var object = this.getCanvasObject('seat', 'seatId', newSeat.id);
+                      this.resetColor(object);
                     }
                     break;
                 }

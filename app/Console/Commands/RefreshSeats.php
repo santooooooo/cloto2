@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Seat;
 use App\Models\User;
+use App\Events\SeatStatusUpdated;
 
 class RefreshSeats extends Command
 {
@@ -51,6 +52,8 @@ class RefreshSeats extends Command
                     $seat->fill(['status' => null, 'reservation_user_id' => null])->save();
                     // ユーザーの退席処理
                     $seat->user->fill(['seat_id' => null, 'in_progress' => null])->save();
+
+                    broadcast(new SeatStatusUpdated($seat->section->room));
                 }
             }
 
@@ -61,6 +64,8 @@ class RefreshSeats extends Command
                 if (!$reservation_user->isOnline()) {
                     // シートの予約解除
                     $seat->fill(['status' => null, 'reservation_user_id' => null])->save();
+
+                    broadcast(new SeatStatusUpdated($seat->section->room));
                 }
             }
         }
