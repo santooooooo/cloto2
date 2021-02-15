@@ -69,6 +69,8 @@
 </template>
 
 <script>
+import { LOGIN_SOUND } from '@/consts/sound';
+
 export default {
   head: {
     title() {
@@ -133,9 +135,7 @@ export default {
             window.location.pathname = '/email/verify';
           } else {
             // 通知音の有効化
-            const loginSound = new Audio(this.$storage('system') + 'login.mp3');
-            loginSound.volume = 0.6;
-            this.$store.dispatch('alert/switchSound', { isOn: true, sound: loginSound });
+            this.$store.dispatch('alert/switchSound', { isOn: true, sound: LOGIN_SOUND });
 
             // ページ遷移
             this.$router.push({ name: 'entrance' });

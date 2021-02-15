@@ -35,11 +35,11 @@
     </v-overlay>
 
     <!-- アナウンスオーバーレイ-->
-    <v-overlay z-index="9996" opacity="0.9" :value="announce.message !== ''" color="primary">
+    <v-overlay z-index="9996" opacity="0.9" :value="announce !== ''" color="primary">
       <v-container>
-        <p class="text-h4 text-center mb-12">{{ announce.message }}</p>
+        <p class="text-h4 text-center mb-12">{{ announce }}</p>
         <v-row justify="center">
-          <v-btn @click="announce.message = ''">閉じる</v-btn>
+          <v-btn @click="announce = ''">閉じる</v-btn>
         </v-row>
       </v-container>
     </v-overlay>
@@ -69,6 +69,7 @@ import Drawer from './Drawer';
 import Footer from './Footer';
 import Inquiry from './Inquiry';
 import { OK, NOT_FOUND, UNPROCESSABLE_ENTITY, INTERNAL_SERVER_ERROR } from '@/consts/status';
+import { CHIME_SOUND, ANNOUNCE_SOUND } from '@/consts/sound';
 
 export default {
   components: {
@@ -79,15 +80,11 @@ export default {
   },
   data() {
     return {
-      chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
       issuedTabId: false, // 複数タブ制御フラグ
       isOffline: false, // オフライン状態
       setOnlineTimer: null, // オンライン状態の通知制御
       isOpenDrawer: false, // ドロワーメニューの表示制御
-      announce: {
-        notification: new Audio(this.$storage('system') + 'announce.mp3'), // 通知音
-        message: '', // アナウンス内容
-      },
+      announce: '', // アナウンス内容
     };
   },
   computed: {
@@ -133,9 +130,9 @@ export default {
           .listen('Announced', (event) => {
             // アナウンスイベントの受信開始
             if (this.$store.getters['alert/isSoundOn']) {
-              this.announce.notification.play();
+              ANNOUNCE_SOUND.play();
             }
-            this.announce.message = event.message;
+            this.announce = event.message;
           })
           .listen('RoomStatusChanged', (event) => {
             // 時間割イベントの受信開始
@@ -148,7 +145,7 @@ export default {
               });
               // チャイム
               if (this.$store.getters['alert/isSoundOn']) {
-                this.chime.play();
+                CHIME_SOUND.play();
               }
             } else if (event.status === 'break') {
               // 休憩時間
@@ -159,7 +156,7 @@ export default {
               });
               // チャイム
               if (this.$store.getters['alert/isSoundOn']) {
-                this.chime.play();
+                CHIME_SOUND.play();
               }
             }
           });
@@ -327,10 +324,6 @@ export default {
     });
   },
   mounted() {
-    // ボリュームの調整
-    this.chime.volume = 0.4;
-    this.announce.notification.volume = 0.4;
-
     // イベントの設定
     if (!this.isDebug) {
       this.setupEvents();

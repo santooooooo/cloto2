@@ -80,6 +80,7 @@ import Media from '@/components/room/Media';
 import KarteDialog from '@/components/room/KarteDialog';
 import ProfileDialog from '@/components/room/ProfileDialog';
 import { OK } from '@/consts/status';
+import { CHIME_SOUND } from '@/consts/sound';
 
 export default {
   head: {
@@ -103,7 +104,6 @@ export default {
   },
   data() {
     return {
-      chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
       loading: false, // ローディング制御
       canvas: null, // キャンバスエリア
       roomStatus: null, // 教室の状態
@@ -650,7 +650,7 @@ export default {
 
       // チャイム
       if (this.$store.getters['alert/isSoundOn']) {
-        this.chime.play();
+        CHIME_SOUND.play();
       }
 
       // ユーザーデータの同期
@@ -669,7 +669,7 @@ export default {
 
       // チャイム
       if (this.$store.getters['alert/isSoundOn']) {
-        this.chime.play();
+        CHIME_SOUND.play();
       }
 
       // ユーザーデータの同期
@@ -734,9 +734,6 @@ export default {
   },
 
   async mounted() {
-    // ボリュームの調整
-    this.chime.volume = 0.4;
-
     // ロード開始
     this.loading = true;
 

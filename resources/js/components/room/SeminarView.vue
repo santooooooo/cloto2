@@ -466,6 +466,7 @@
 <script>
 import voiceDetection from 'voice-activity-detection';
 import ProfileDialog from '@/components/room/ProfileDialog';
+import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND, RECEIVE_MESSAGE_SOUND } from '@/consts/sound';
 
 const API_KEY = process.env.MIX_SKYWAY_API_KEY;
 
@@ -515,13 +516,6 @@ export default {
         notification: false, // 通知制御
         localText: '', // 送信するメッセージ
         messages: [], // メッセージ一覧
-      },
-
-      //*** 通知音 ***//
-      notificationSounds: {
-        join: new Audio(this.$storage('system') + 'join_lounge.mp3'),
-        leave: new Audio(this.$storage('system') + 'leave_lounge.mp3'),
-        receiveMessage: new Audio(this.$storage('system') + 'message_receive.mp3'),
       },
 
       //*** プロフィール ***//
@@ -675,7 +669,7 @@ export default {
             if (!this.chat.isOpen) {
               // 通知音
               if (this.isNotificationOn) {
-                this.notificationSounds.receiveMessage.play();
+                RECEIVE_MESSAGE_SOUND.play();
               }
 
               // 通知の表示
@@ -739,7 +733,7 @@ export default {
 
           // 通知音
           if (this.isNotificationOn) {
-            this.notificationSounds.join.play();
+            JOIN_CALL_SOUND.play();
           }
 
           // 参加者の追加
@@ -782,7 +776,7 @@ export default {
 
         // 通知音
         if (this.isNotificationOn) {
-          this.notificationSounds.join.play();
+          JOIN_CALL_SOUND.play();
         }
 
         // 参加者の追加
@@ -803,7 +797,7 @@ export default {
     leaveUser: function (peerId) {
       // 通知音
       if (this.isNotificationOn) {
-        this.notificationSounds.leave.play();
+        LEAVE_CALL_SOUND.play();
       }
 
       this.participants = this.participants.filter((participant) => {
@@ -1001,11 +995,6 @@ export default {
     };
     setTimeout(timeout, 15000);
 
-    // ボリュームの調整
-    this.notificationSounds.join.volume = 0.6;
-    this.notificationSounds.leave.volume = 0.6;
-    this.notificationSounds.receiveMessage.volume = 0.6;
-
     // エラー発生時のイベント
     Vue.config.errorHandler = (error) => {
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
@@ -1062,7 +1051,7 @@ export default {
       // 通知音の有効化
       this.$store.dispatch('alert/switchSound', {
         isOn: true,
-        sound: this.notificationSounds.join,
+        sound: JOIN_CALL_SOUND,
       });
 
       this.loading = false;

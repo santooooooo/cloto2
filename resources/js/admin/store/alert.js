@@ -1,10 +1,4 @@
-const Storage = require('@/consts/storage').getStoragePath;
-
-// 通知音
-const onSound = new Audio(Storage('system') + 'notification_sound_on.mp3');
-const offSound = new Audio(Storage('system') + 'notification_sound_off.mp3');
-onSound.volume = 0.6;
-offSound.volume = 0.6;
+import { ON_SOUND, OFF_SOUND } from '@/consts/sound';
 
 const state = {
   show: false,
@@ -59,10 +53,10 @@ const mutations = {
   },
   switchSound(state) {
     if (state.isSoundOn) {
-      offSound.play();
+      OFF_SOUND.play();
       state.isSoundOn = false;
     } else {
-      onSound.play();
+      ON_SOUND.play();
       state.isSoundOn = true;
     }
   },

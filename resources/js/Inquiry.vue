@@ -28,6 +28,7 @@
 
 <script>
 import { OK } from '@/consts/status';
+import { RECEIVE_INQUIRY_SOUND } from '@/consts/sound';
 
 export default {
   data() {
@@ -35,7 +36,6 @@ export default {
       isOpen: false, // 表示制御
       loading: false, // ローディング制御
       messages: [], // メッセージ一覧
-      notification: new Audio(this.$storage('system') + 'inquiry_receive.mp3'), // 通知音
       colors: {
         // 色設定
         messageList: {
@@ -201,7 +201,7 @@ export default {
       // 通知
       if (!this.isOpen) {
         if (this.$store.getters['alert/isSoundOn']) {
-          this.notification.play();
+          RECEIVE_INQUIRY_SOUND.play();
         }
         const inquiry = document.getElementsByClassName('sc-launcher')[0];
         inquiry.classList.add('notification');

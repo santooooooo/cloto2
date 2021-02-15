@@ -1,10 +1,4 @@
-const Storage = require('@/consts/storage').getStoragePath;
-
-// 通知音
-const onSound = new Audio(Storage('system') + 'sound_on.mp3');
-const offSound = new Audio(Storage('system') + 'sound_off.mp3');
-onSound.volume = 0.6;
-offSound.volume = 0.6;
+import { ON_SOUND, OFF_SOUND } from '@/consts/sound';
 
 const state = {
   show: false,
@@ -62,10 +56,10 @@ const mutations = {
     if (data === null) {
       if (state.isSoundOn) {
         state.isSoundOn = false;
-        offSound.play();
+        OFF_SOUND.play();
       } else {
         state.isSoundOn = true;
-        onSound.play();
+        ON_SOUND.play();
       }
     } else {
       // 強制的に状態変更する場合（ログイン時など）
