@@ -80,6 +80,7 @@ export default {
   data() {
     return {
       chime: new Audio(this.$storage('system') + 'chime.mp3'), // チャイム音
+      issuedTabId: false, // 複数タブ制御フラグ
       isOffline: false, // オフライン状態
       setOnlineTimer: null, // オンライン状態の通知制御
       isOpenDrawer: false, // ドロワーメニューの表示制御
@@ -279,16 +280,17 @@ export default {
     // 複数タブ操作の禁止
     setInterval(() => {
       // タブ単位での記憶
-      var sessionTabID = sessionStorage.getItem('tabID');
+      var sessionTabId = sessionStorage.getItem('tabID');
       // ブラウザ単位での記憶
-      var localTabID = localStorage.getItem('tabID');
+      var localTabId = localStorage.getItem('tabID');
 
-      if (sessionTabID === null) {
-        // 新規タブのオープン時にIDを発行
-        var tabID = new Date().getTime();
-        sessionStorage.setItem('tabID', tabID);
-        localStorage.setItem('tabID', tabID);
-      } else if (sessionTabID !== localTabID) {
+      if (sessionTabId === null || (sessionTabId !== null && !this.issuedTabId)) {
+        // 新規タブのオープン，タブ複製時にIDを発行
+        var tabId = new Date().getTime();
+        sessionStorage.setItem('tabID', tabId);
+        localStorage.setItem('tabID', tabId);
+        this.issuedTabId = true;
+      } else if (sessionTabId !== localTabId) {
         // タブを無効化
         window.open('about:blank', '_self').close();
       }
