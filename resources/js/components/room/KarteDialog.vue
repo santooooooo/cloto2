@@ -267,6 +267,13 @@ export default {
         var response = await axios.post('/api/kartes', input);
 
         if (response.status === OK) {
+          // ツイート
+          var tweet =
+            'https://twitter.com/intent/tweet?text=' +
+            this.substr(this.karteForm.body, 243) +
+            '&url=https://cloto.jp&hashtags=CLOTO&via=cloto_jp';
+          window.open(tweet, '_blank');
+
           this.dialog = false;
 
           // 自習継続の確認
@@ -279,6 +286,37 @@ export default {
           this.karteForm.loading = false;
         }
       }
+    },
+
+    /**
+     * 文字列のバイト切り出し
+     *
+     * @param String  text  切り出すテキスト
+     * @param Number  byte  バイト数
+     * @returns String  切り出し後のテキスト
+     */
+    substr: function (text, byte) {
+      var text_array = text.split('');
+      var count = 0;
+      var str = '';
+
+      for (var i = 0; i < text_array.length; i++) {
+        // バイト数の加算
+        var n = escape(text_array[i]);
+        if (n.length < 4) {
+          count += 1;
+        } else {
+          count += 2;
+        }
+
+        if (count > byte) {
+          return str + '...';
+        } else {
+          str += text.charAt(i);
+        }
+      }
+
+      return text;
     },
   },
 };
