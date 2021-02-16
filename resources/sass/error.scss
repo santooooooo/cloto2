@@ -217,7 +217,7 @@ html {
     }
 
     .bg-white {
-      background-color: #fff;
+      background-color: #ffffff;
     }
 
     .bg-teal-light {
@@ -238,6 +238,10 @@ html {
 
     .bg-primary {
       background-color: $primary;
+    }
+
+    .bg-gray-light {
+      background-color: $light-gray;
     }
 
     .bg-gray-100 {
@@ -355,6 +359,10 @@ html {
 
     .mr-3 {
       margin-right: 0.75rem;
+    }
+
+    .pb-3 {
+      padding-bottom: 0.75rem;
     }
 
     .py-3 {
@@ -490,6 +498,20 @@ html {
       font-family: Nunito, sans-serif;
     }
 
+    .button {
+      display: inline-block;
+      padding: 1em 1.5em;
+      background-color: #ffffff;
+      border: solid 2px #dae1e7;
+      border-radius: 0.5rem;
+      color: #3d4852;
+      font-weight: 700;
+
+      &:hover {
+        border-color: #b8c2cc;
+      }
+    }
+
     table {
       width: 100%;
       border-spacing: 0;
@@ -508,6 +530,7 @@ html {
 
     #twitter-timeline {
       width: 70%;
+      margin: 0 auto;
       padding: 5px;
       border: solid 5px #ffffff;
       border-radius: 15px;

@@ -270,7 +270,7 @@ export default {
           // ツイート
           var tweet =
             'https://twitter.com/intent/tweet?text=' +
-            this.substr(this.karteForm.body, 243) +
+            this.substr(this.karteForm.body, 232) +
             '&url=https://cloto.jp&hashtags=CLOTO&via=cloto_jp';
           window.open(tweet, '_blank');
 
