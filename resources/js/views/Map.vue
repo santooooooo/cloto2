@@ -74,7 +74,7 @@ export default {
     $windowWidth: function (windowWidth) {
       // ウィンドウリサイズ時に拡大率を変更
       if (this.canvas) {
-        var zoom = windowWidth / this.mapWidth;
+        var zoom = (windowWidth - 10) / this.mapWidth;
         this.setZoom(zoom);
       }
     },
@@ -164,28 +164,6 @@ export default {
     },
 
     /**
-     * キャンバススクロールイベント
-     *
-     * @param event マウスイベント
-     */
-    canvasScroll: function (event) {
-      // 拡大率の計算
-      var delta = event.e.deltaY;
-      var defaultZoom = this.$windowWidth / this.mapWidth;
-      var zoom = this.canvas.getZoom();
-      zoom *= 0.999 ** delta;
-      if (zoom > 1.3) zoom = 1.3;
-      if (zoom < defaultZoom) zoom = defaultZoom;
-
-      // 拡大の適用
-      this.setZoom(zoom);
-
-      // スクロールによる移動の無効化
-      event.e.preventDefault();
-      event.e.stopPropagation();
-    },
-
-    /**
      * 拡大の適用
      *
      * @param Number  zoom  拡大率
@@ -215,7 +193,7 @@ export default {
     this.canvas.defaultCursor = 'grab';
 
     // 初期サイズの設定（横幅MAX）
-    var zoom = this.$windowWidth / this.mapWidth;
+    var zoom = (this.$windowWidth - 10) / this.mapWidth;
     this.setZoom(zoom);
 
     // クリックエリアの設定
@@ -268,9 +246,6 @@ export default {
     this.canvas.on('mouse:up', () => {
       this.canvas.defaultCursor = 'grab';
     });
-
-    // スクロールイベントの設定
-    this.canvas.on('mouse:wheel', this.canvasScroll);
 
     // ロード終了
     this.loading = false;
