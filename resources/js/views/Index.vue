@@ -1,7 +1,7 @@
 <template>
-  <v-container fluid pa-0 v-if="!isSmartphone">
+  <v-container fluid pa-0>
     <div id="top">
-      <v-row class="pt-6 pb-12">
+      <v-row no-gutters class="pt-6 pb-12" v-if="!isSmartphone">
         <v-spacer></v-spacer>
 
         <v-col cols="5" justify="center" align-self="center">
@@ -15,7 +15,7 @@
               プログラミングを楽しみながら継続できる環境がここに生まれました！
             </p>
 
-            <v-row justify="center" class="mt-12">
+            <v-row no-gutters justify="center" class="mt-12">
               <v-btn
                 x-large
                 text
@@ -28,7 +28,7 @@
               </v-btn>
             </v-row>
 
-            <v-row justify="center" class="mt-12">
+            <v-row no-gutters justify="center" class="mt-12">
               <v-btn x-large color="primary" class="font-weight-bold" :to="{ name: 'map' }">
                 入場
               </v-btn>
@@ -38,7 +38,6 @@
 
         <v-col cols="5" align-self="center">
           <v-img
-            eager
             :src="$storage('system') + 'index.svg'"
             max-width="500"
             contain
@@ -49,15 +48,55 @@
         <v-spacer></v-spacer>
       </v-row>
 
+      <div class="pt-6 pb-12 px-6" v-else>
+        <v-img
+          :src="$storage('system') + 'index.svg'"
+          max-width="500"
+          contain
+          class="mx-auto"
+        ></v-img>
+
+        <div class="mt-8">
+          <h1 class="text-center font-weight-bold text-h5">創る、繋がる、好きになる</h1>
+          <p class="text-center text-subtitle-1 font-weight-bold">
+            プログラミングに取り組むみなさん、こんにちは。<br />
+            「実際のプログラミングって大変. . . 」<br />
+            「何からしたらいいんだろう」<br />
+            そんな悩みとは今日でさようなら。<br />
+            プログラミングを楽しみながら継続できる環境がここに生まれました！
+          </p>
+
+          <v-row no-gutters justify="center" class="mt-12">
+            <v-btn
+              x-large
+              color="primary"
+              class="font-weight-bold"
+              href="https://spark.adobe.com/page/JwVbQbzQtbSkB"
+              target="_blank"
+            >
+              詳しく見る
+            </v-btn>
+          </v-row>
+
+          <v-row
+            no-gutters
+            justify="center"
+            class="mt-12 text-center text-subtitle-1 font-weight-bold"
+          >
+            本製品は現在スマートフォンには対応しておりません。PCからご利用ください。
+          </v-row>
+        </div>
+      </div>
+
       <v-divider></v-divider>
 
-      <v-row class="pb-4">
+      <v-row no-gutters class="pb-4">
         <v-col sm="4">
-          <p class="text-h4 text-right">News</p>
+          <p :class="['text-h4', isSmartphone ? 'text-center' : 'text-right']">News</p>
         </v-col>
 
         <v-col sm="8">
-          <v-list color="#f6bf00" width="70%">
+          <v-list color="#f6bf00" :width="isSmartphone ? '100%' : '70%'">
             <v-list-item href="https://spark.adobe.com/page/JwVbQbzQtbSkB" target="_blank">
               <v-list-item-icon>
                 <v-icon class="white--text">mdi-alpha</v-icon>
@@ -114,12 +153,12 @@
       </v-row>
     </div>
 
-    <v-row justify="center" class="mx-12 my-12 py-12">
-      <v-col sm="6" class="mr-4">
+    <v-row no-gutters justify="center" class="mx-12 py-12">
+      <v-col sm="6" class="mr-4 my-12">
         <v-img :src="$storage('system') + 'toC.png'"></v-img>
       </v-col>
 
-      <v-col sm="4" class="ml-4">
+      <v-col sm="4" class="ml-4 my-12">
         <p class="text-h4 text-center font-weight-bold">
           to <span class="green--text">C</span> 事業
         </p>
@@ -136,12 +175,12 @@
 
     <v-divider></v-divider>
 
-    <v-row justify="center" class="mx-12 my-12 py-12">
-      <v-col sm="6" class="mr-4">
+    <v-row no-gutters justify="center" class="mx-12 py-12">
+      <v-col sm="6" class="mr-4 my-12">
         <v-img :src="$storage('system') + 'toB.png'"></v-img>
       </v-col>
 
-      <v-col sm="4" class="ml-4">
+      <v-col sm="4" class="ml-4 my-12">
         <p class="text-h4 text-center font-weight-bold">
           to <span style="color: #ff99ab">B</span> 事業
         </p>
@@ -153,7 +192,7 @@
         </p>
 
         <p class="text-body-1 text-center">以下のような機能を搭載可能です。</p>
-        <v-row justify="center">
+        <v-row no-gutters justify="center">
           <ul>
             <li>個人デスク</li>
             <li>会議室</li>
@@ -178,12 +217,12 @@
       <span style="background: linear-gradient(transparent 70%, #ff99ab 70%)">導入事例</span>
     </p>
 
-    <v-row justify="center" class="mx-12 my-12">
-      <v-col sm="6" class="mr-4">
+    <v-row no-gutters justify="center" class="mx-12">
+      <v-col sm="6" class="mr-4 my-12">
         <v-img :src="$storage('system') + 'learnmore.png'"></v-img>
       </v-col>
 
-      <v-col sm="4" class="ml-4">
+      <v-col sm="4" class="ml-4 my-12">
         <p class="text-h5 text-center font-weight-bold">
           <a href="https://www.learn-more.co.jp" target="_blank" class="black--text">
             株式会社LearnMore様 <v-icon class="text-body-1">mdi-open-in-new</v-icon>
@@ -201,7 +240,7 @@
         </p>
 
         <p class="text-body-1 text-center">カスタム例</p>
-        <v-row justify="center">
+        <v-row no-gutters justify="center">
           <ul>
             <li>グループ学習室</li>
             <li>カルテ内容の変更</li>
@@ -219,13 +258,12 @@
       <p class="text-h4 text-center font-weight-bold">メンバー</p>
       <p class="text-body-2 text-center font-weight-bold">一緒に創る仲間、募集中です！</p>
 
-      <v-row justify="center" class="mx-12 my-12">
+      <v-row no-gutters justify="center" class="mx-12 my-8">
         <v-col sm="4">
-          <v-card max-height="600" width="400" class="mx-auto">
+          <v-card max-height="600" width="400" class="mx-auto my-4">
             <v-img
               contain
               :src="$storage('system') + 'tachibana.jpg'"
-              height="400"
               class="white--text align-end"
             >
               <v-card-title class="text-h5" style="background-color: #000000">
@@ -234,7 +272,7 @@
             </v-img>
 
             <v-card-actions>
-              <v-row justify="center">
+              <v-row no-gutters justify="center">
                 <v-btn
                   icon
                   x-large
@@ -273,20 +311,15 @@
         </v-col>
 
         <v-col sm="4">
-          <v-card max-height="600" width="400" class="mx-auto">
-            <v-img
-              contain
-              :src="$storage('system') + 'fujii.jpg'"
-              height="400"
-              class="white--text align-end"
-            >
+          <v-card max-height="600" width="400" class="mx-auto my-4">
+            <v-img contain :src="$storage('system') + 'fujii.jpg'" class="white--text align-end">
               <v-card-title class="text-h5" style="background-color: #000000">
                 藤井 敦寛
               </v-card-title>
             </v-img>
 
             <v-card-actions>
-              <v-row justify="center">
+              <v-row no-gutters justify="center">
                 <v-btn
                   icon
                   x-large
@@ -331,7 +364,7 @@
     <div class="py-12">
       <p class="text-h4 text-center font-weight-bold">公式SNS</p>
 
-      <v-row justify="center">
+      <v-row no-gutters justify="center">
         <v-btn
           icon
           x-large
@@ -355,7 +388,7 @@
         </v-btn>
       </v-row>
 
-      <div class="my-12" ref="contact">
+      <div class="mx-2 my-12" ref="contact">
         <v-card max-width="600" class="mx-auto px-12 py-8">
           <h5 class="text-center text-h5">お問い合わせ</h5>
 
@@ -397,10 +430,6 @@
         </v-card>
       </div>
     </div>
-  </v-container>
-
-  <v-container v-else>
-    <p class="font-weight-bold">現在スマートフォンには対応しておりません．．．</p>
   </v-container>
 </template>
 
