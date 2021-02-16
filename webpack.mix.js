@@ -30,6 +30,7 @@ mix
   .js('resources/js/admin/app.js', 'public/js/admin')
   .copy('node_modules/please-wait/build/please-wait.min.js', 'public/js')
   .sass('resources/sass/app.scss', 'public/css')
+  .sass('resources/sass/error.scss', 'public/css')
   .copy('node_modules/please-wait/build/please-wait.css', 'public/css')
   .copy('node_modules/spinkit/spinkit.min.css', 'public/css')
   .sourceMaps();
