@@ -51,6 +51,44 @@ class Kernel extends ConsoleKernel
         $schedule->command('check:timetable')->everyFiveMinutes();
         // 10分毎に座席を初期化
         $schedule->command('refresh:seats')->everyTenMinutes();
+
+
+        /**
+         * オープン時間の制限（月~金）
+         */
+        // 0:00にシステムを停止
+        $schedule->command('system:down')->weekdays()->at('0:00');
+
+        // システムイベントにより4:50にシステムが復旧
+
+        // 4:50にシステムを停止
+        $schedule->command('system:down')->weekdays()->at('4:50');
+        // 5:40に全員退席処理
+        $schedule->command('refresh:seats')->weekdays()->at('5:40')->evenInMaintenanceMode();
+        // 6:00にシステムを復旧
+        $schedule->command('up')->weekdays()->at('6:00')->evenInMaintenanceMode();
+
+        // 9:00にシステムを停止
+        $schedule->command('system:down')->weekdays()->at('9:00');
+        // 18:40に全員退席処理
+        $schedule->command('refresh:seats')->weekdays()->at('18:40')->evenInMaintenanceMode();
+        // 19:00にシステムを復旧
+        $schedule->command('up')->weekdays()->at('19:00')->evenInMaintenanceMode();
+
+        /**
+         * オープン時間の制限（土日）
+         */
+        // 0:00にシステムを停止
+        $schedule->command('system:down')->weekends()->at('0:00');
+
+        // システムイベントにより4:50にシステムが復旧
+
+        // 4:50にシステムを停止
+        $schedule->command('system:down')->weekends()->at('4:50');
+        // 11:40に全員退席処理
+        $schedule->command('refresh:seats')->weekends()->at('11:40')->evenInMaintenanceMode();
+        // 12:00にシステムを復旧
+        $schedule->command('up')->weekends()->at('12:00')->evenInMaintenanceMode();
     }
 
     /**

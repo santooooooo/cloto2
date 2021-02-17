@@ -44,8 +44,8 @@
                         <thead>
                             <tr>
                                 <th>スケジュール</th>
-                                <th>平日</th>
-                                <th>土日</th>
+                                <th>月 ~ 金</th>
+                                <th>土 日</th>
                             </tr>
                         </thead>
 
