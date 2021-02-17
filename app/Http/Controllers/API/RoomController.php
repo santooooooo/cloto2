@@ -7,6 +7,7 @@ use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\Announced;
+use App\Events\PopupPosted;
 
 class RoomController extends Controller
 {
@@ -60,6 +61,24 @@ class RoomController extends Controller
         }
 
         broadcast(new Announced($user->seat->section->room, $request->message));
+        return response()->json();
+    }
+
+    /**
+     * 吹き出しメッセージの投稿
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function postPopup(Request $request)
+    {
+        $user = Auth::user();
+
+        if (empty($user) || empty($user->seat)) {
+            return response()->json(['message' => 'メッセージの送信に失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        broadcast(new PopupPosted($user->seat->section->room, $request->message));
         return response()->json();
     }
 }

@@ -47,7 +47,7 @@
           <canvas :width="roomWidth" :height="roomHeight" id="canvas"></canvas>
         </div>
 
-        <!-- メッセージ吹き出し -->
+        <!-- 吹き出しメッセージ -->
         <div
           v-for="popup in popups"
           :key="popup.id"
@@ -56,13 +56,11 @@
         >
           <p>
             <v-row justify="end">
-              <v-icon class="mr-4" @click="removePopup(popup.id)">mdi-close</v-icon>
+              <v-icon class="mr-3" @click="removePopup(popup.id)">mdi-close</v-icon>
             </v-row>
             <span>{{ popup.message }}</span>
           </p>
         </div>
-
-        <button @click="addPopup(Math.random())">aaa</button>
       </v-row>
 
       <!-- いまやっていること吹き出し -->
@@ -85,6 +83,30 @@
         v-if="karte.dialog"
       />
     </v-flex>
+
+    <!-- 吹き出しメッセージ入力フォーム -->
+    <v-app-bar
+      dense
+      fixed
+      bottom
+      max-width="500"
+      class="ma-6"
+      id="popup-input"
+      v-if="authUser.seat"
+    >
+      <v-text-field
+        hide-details
+        single-line
+        label="吹き出しメッセージ"
+        v-model="popup.message"
+        :loading="popup.loading"
+        @keydown.enter="sendPopup"
+      ></v-text-field>
+
+      <v-btn icon :loading="popup.loading" @click="sendPopup">
+        <v-icon>mdi-send</v-icon>
+      </v-btn>
+    </v-app-bar>
   </v-layout>
 </template>
 
@@ -97,7 +119,7 @@ import Media from '@/components/room/Media';
 import KarteDialog from '@/components/room/KarteDialog';
 import ProfileDialog from '@/components/room/ProfileDialog';
 import { OK } from '@/consts/status';
-import { CHIME_SOUND } from '@/consts/sound';
+import { CHIME_SOUND, RECEIVE_POPUP_SOUND } from '@/consts/sound';
 
 export default {
   head: {
@@ -133,7 +155,11 @@ export default {
         id: '', // 入室する通話室のID
         capacity: '', // 通話室の定員
       },
-      popups: [], // メッセージ吹き出し
+      popups: [], // 吹き出しメッセージ
+      popup: {
+        loading: false, // ローディング制御
+        message: '', // 吹き出しメッセージ入力
+      },
       inProgress: {
         isShow: false, // いまやっていること吹き出し制御
         text: '', // 吹き出しに表示するテキスト
@@ -754,7 +780,7 @@ export default {
     },
 
     /**
-     * メッセージ吹き出しの追加
+     * 吹き出しメッセージの追加
      *
      * @param String  message メッセージ
      */
@@ -771,14 +797,19 @@ export default {
       // 追加
       this.popups.push({ id: id, left: left, top: top, message: message });
 
+      // 通知音
+      if (this.$store.getters['alert/isSoundOn']) {
+        RECEIVE_POPUP_SOUND.play();
+      }
+
+      // 30秒で削除
       setInterval(() => {
-        // 20秒で削除
         this.removePopup(id);
-      }, 20000);
+      }, 30000);
     },
 
     /**
-     * メッセージ吹き出しの削除
+     * 吹き出しメッセージの削除
      *
      * @param Number  id  削除する吹き出しID
      */
@@ -786,6 +817,29 @@ export default {
       this.popups = this.popups.filter((popup) => {
         return popup.id !== id;
       });
+    },
+
+    /**
+     * 吹き出しメッセージの送信処理
+     *
+     * @param event クリック or キーボードイベント
+     */
+    sendPopup: async function (event) {
+      // クリックまたは日本語変換以外のEnter押下時に発火
+      if (event.type === 'click' || (event.type === 'keydown' && event.keyCode === 13)) {
+        if (this.popup.message !== '') {
+          // メッセージの送信
+          this.popup.loading = true;
+
+          var response = await axios.post('/api/post-popup', { message: this.popup.message });
+
+          if (response.status === OK) {
+            this.popup.message = '';
+          }
+
+          this.popup.loading = false;
+        }
+      }
     },
   },
 
@@ -963,13 +1017,17 @@ export default {
         // 管理画面から部屋データが更新された場合はリロード
         this.$router.go();
       })
+      .listen('RoomStatusChanged', (event) => {
+        // 部屋状態の更新
+        this.roomStatus = event.status;
+      })
       .listen('SeatStatusUpdated', (event) => {
         // 座席情報の更新
         this.roomData = event;
       })
-      .listen('RoomStatusChanged', (event) => {
-        // 部屋状態の更新
-        this.roomStatus = event.status;
+      .listen('PopupPosted', (event) => {
+        // 吹き出しメッセージの追加
+        this.addPopup(event.message);
       });
 
     // ロード終了
@@ -999,23 +1057,10 @@ export default {
     max-width: 500px;
 
     p {
-      display: inline-block;
-      position: relative;
       padding: 5px 10px;
       background: rgba(255, 255, 255, 0.7);
       border-radius: 12px;
       font-weight: bold;
-
-      &:before {
-        content: '';
-        position: absolute;
-        top: 100%;
-        left: 25px;
-        border: 15px solid transparent;
-        border-top-width: 15px;
-        border-top-style: solid;
-        border-top-color: rgba(255, 255, 255, 0.7);
-      }
 
       .v-icon {
         font-size: 15px;
@@ -1026,6 +1071,10 @@ export default {
         }
       }
     }
+  }
+
+  #popup-input {
+    z-index: 1;
   }
 
   #in-progress {

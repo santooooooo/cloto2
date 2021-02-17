@@ -18,6 +18,9 @@ receiveInquirySound.volume = 1.0;
 // ログイン
 const loginSound = new Audio(Storage('system') + 'login.mp3');
 loginSound.volume = 0.6;
+// メッセージの受信
+const receivePopupSound = new Audio(Storage('system') + 'receive_popup.mp3');
+receivePopupSound.volume = 0.6;
 // 通話の参加
 const joinCallSound = new Audio(Storage('system') + 'join_call.mp3');
 joinCallSound.volume = 0.6;
@@ -34,6 +37,7 @@ export const CHIME_SOUND = chimeSound;
 export const ANNOUNCE_SOUND = announceSound;
 export const RECEIVE_INQUIRY_SOUND = receiveInquirySound;
 export const LOGIN_SOUND = loginSound;
+export const RECEIVE_POPUP_SOUND = receivePopupSound;
 export const JOIN_CALL_SOUND = joinCallSound;
 export const LEAVE_CALL_SOUND = leaveCallSound;
 export const RECEIVE_MESSAGE_SOUND = receiveMessageSound;

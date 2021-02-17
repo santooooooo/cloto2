@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
         */
         Route::resource('rooms', 'RoomController', ['only' => ['index', 'show']]);
         Route::post('/announce', 'RoomController@announce');
+        Route::post('/post-popup', 'RoomController@postPopup');
 
         Route::patch('/seats/sit/{seat}', 'SeatController@sit')->where('seat', '[0-9]+');
         Route::patch('/seats/leave', 'SeatController@leave');
