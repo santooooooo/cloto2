@@ -792,7 +792,7 @@ export default {
 
       // 位置をランダムに設定
       var left = Math.random() * (this.$refs.canvasContainer.clientWidth - 200) + 250 + 'px';
-      var top = Math.random() * this.canvas.height + 115 + 'px';
+      var top = Math.random() * (this.canvas.height - 64) + 115 + 'px';
 
       // 追加
       this.popups.push({ id: id, left: left, top: top, message: message });
@@ -1060,6 +1060,7 @@ export default {
       padding: 5px 10px;
       background: rgba(255, 255, 255, 0.7);
       border-radius: 12px;
+      font-size: 20px;
       font-weight: bold;
 
       .v-icon {
