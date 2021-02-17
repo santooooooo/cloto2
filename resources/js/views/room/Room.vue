@@ -43,14 +43,31 @@
     <v-flex>
       <!-- 教室 -->
       <v-row no-gutters justify="center">
-        <div id="canvas-container" v-dragscroll>
+        <div id="canvas-container" ref="canvasContainer" v-dragscroll>
           <canvas :width="roomWidth" :height="roomHeight" id="canvas"></canvas>
         </div>
+
+        <!-- メッセージ吹き出し -->
+        <div
+          v-for="popup in popups"
+          :key="popup.id"
+          class="popup"
+          :style="{ left: popup.left, top: popup.top }"
+        >
+          <p>
+            <v-row justify="end">
+              <v-icon class="mr-4" @click="removePopup(popup.id)">mdi-close</v-icon>
+            </v-row>
+            <span>{{ popup.message }}</span>
+          </p>
+        </div>
+
+        <button @click="addPopup(Math.random())">aaa</button>
       </v-row>
 
-      <!-- プロフィール吹き出し -->
-      <div id="popup" ref="popup" v-show="popup.isShow">
-        <p>{{ popup.text }}</p>
+      <!-- いまやっていること吹き出し -->
+      <div id="in-progress" ref="inProgress" v-show="inProgress.isShow">
+        <p>{{ inProgress.text }}</p>
       </div>
 
       <!-- プロフィールダイアログ -->
@@ -116,8 +133,9 @@ export default {
         id: '', // 入室する通話室のID
         capacity: '', // 通話室の定員
       },
-      popup: {
-        isShow: false, // 吹き出し制御
+      popups: [], // メッセージ吹き出し
+      inProgress: {
+        isShow: false, // いまやっていること吹き出し制御
         text: '', // 吹き出しに表示するテキスト
       },
       profile: {
@@ -316,22 +334,22 @@ export default {
      *
      * @param Object  userObject  表示するユーザーオブジェクト
      */
-    showPopup: function (userObject) {
+    showInProgress: function (userObject) {
       // 吹き出しの位置を設定
       var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      this.$refs.popup.style.left = window.event.clientX + 'px';
-      this.$refs.popup.style.top = window.event.clientY + scrollTop - 50 + 'px';
+      this.$refs.inProgress.style.left = window.event.clientX + 'px';
+      this.$refs.inProgress.style.top = window.event.clientY + scrollTop - 50 + 'px';
       // 表示
-      this.popup.text = userObject.inProgress || '集中しています！';
-      this.popup.isShow = true;
+      this.inProgress.text = userObject.inProgress || '集中しています！';
+      this.inProgress.isShow = true;
     },
 
     /**
      * 吹き出しの非表示
      */
-    hidePopup: function () {
-      this.popup.isShow = false;
-      this.popup.text = '';
+    hideInProgress: function () {
+      this.inProgress.isShow = false;
+      this.inProgress.text = '';
     },
 
     /**
@@ -384,7 +402,7 @@ export default {
           }
         }
       } else if (target.type === 'user') {
-        this.showPopup(target);
+        this.showInProgress(target);
       }
     },
 
@@ -399,7 +417,7 @@ export default {
           this.resetColor(target);
         }
       } else if (target.type === 'user') {
-        this.hidePopup();
+        this.hideInProgress();
       }
     },
 
@@ -734,6 +752,41 @@ export default {
       this.karte.confirm = confirm;
       this.karte.dialog = true;
     },
+
+    /**
+     * メッセージ吹き出しの追加
+     *
+     * @param String  message メッセージ
+     */
+    addPopup: function (message) {
+      var id = 1;
+      if (this.popups.length) {
+        id = this.popups[this.popups.length - 1].id + 1;
+      }
+
+      // 位置をランダムに設定
+      var left = Math.random() * (this.$refs.canvasContainer.clientWidth - 200) + 250 + 'px';
+      var top = Math.random() * this.canvas.height + 115 + 'px';
+
+      // 追加
+      this.popups.push({ id: id, left: left, top: top, message: message });
+
+      setInterval(() => {
+        // 20秒で削除
+        this.removePopup(id);
+      }, 20000);
+    },
+
+    /**
+     * メッセージ吹き出しの削除
+     *
+     * @param Number  id  削除する吹き出しID
+     */
+    removePopup: function (id) {
+      this.popups = this.popups.filter((popup) => {
+        return popup.id !== id;
+      });
+    },
   },
 
   async mounted() {
@@ -941,7 +994,41 @@ export default {
     }
   }
 
-  #popup {
+  .popup {
+    position: absolute;
+    max-width: 500px;
+
+    p {
+      display: inline-block;
+      position: relative;
+      padding: 5px 10px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 12px;
+      font-weight: bold;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 25px;
+        border: 15px solid transparent;
+        border-top-width: 15px;
+        border-top-style: solid;
+        border-top-color: rgba(255, 255, 255, 0.7);
+      }
+
+      .v-icon {
+        font-size: 15px;
+        cursor: pointer;
+
+        &:after {
+          background-color: initial;
+        }
+      }
+    }
+  }
+
+  #in-progress {
     position: absolute;
     max-width: 300px;
 
