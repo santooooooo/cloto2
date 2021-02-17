@@ -17,17 +17,19 @@
                         </div>
                     @endif
 
-                    本登録完了後にサービスをご利用いただけます！
-                    
-                    <br><br>
+                    <p>{{ $user->email }} に認証メールを送信しました。</p>
+                    <p>本登録完了後にサービスをご利用いただけます！</p>
 
                     <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
                         @csrf
                         メールを再送する場合は<button type="submit" class="btn btn-link p-0 m-0 align-baseline">こちら</button>をクリックしてください。
                     </form>
 
-                    <br><br>
+                    <br />
+                    <br />
                     
+                    <p>メールアドレスを間違えた場合は、一度ログアウトしてからトップページ下部のフォームよりお問い合わせください。</p>
+
                     <form class="d-inline" method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="btn btn-link p-0 m-0 align-baseline">ログアウト</button>
