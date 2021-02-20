@@ -818,7 +818,7 @@ export default {
      * @param Number  index 削除するメッセージのインデックス
      */
     removePopup: function (index = null) {
-      if (index) {
+      if (index !== null) {
         this.popups.splice(index, 1);
       } else {
         // 全削除
