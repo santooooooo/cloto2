@@ -795,8 +795,8 @@ export default {
      */
     addPopup: function (event) {
       // 位置をランダムに設定
-      var left = Math.random() * (this.$refs.canvasContainer.clientWidth - 200) + 250 + 'px';
-      var top = Math.random() * (this.canvas.height - 64) + 115 + 'px';
+      var left = 250 + Math.random() * (this.$refs.canvasContainer.clientWidth - 500) + 'px';
+      var top = 10 + Math.random() * (this.$windowHeight - 230) + 'px';
 
       // 追加
       this.popups.push({
