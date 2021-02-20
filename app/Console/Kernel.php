@@ -61,8 +61,8 @@ class Kernel extends ConsoleKernel
 
         // システムイベントにより4:50にシステムが復旧
 
-        // 4:50にシステムを停止
-        $schedule->command('system:down')->weekdays()->at('4:50');
+        // 4:50にシステムを停止（即停止するためメンテナンス中と認識される）
+        $schedule->command('system:down')->weekdays()->at('4:50')->evenInMaintenanceMode();
         // 5:40に全員退席処理
         $schedule->command('refresh:seats')->weekdays()->at('5:40')->evenInMaintenanceMode();
         // 6:00にシステムを復旧
@@ -83,8 +83,8 @@ class Kernel extends ConsoleKernel
 
         // システムイベントにより4:50にシステムが復旧
 
-        // 4:50にシステムを停止
-        $schedule->command('system:down')->weekends()->at('4:50');
+        // 4:50にシステムを停止（即停止するためメンテナンス中と認識される）
+        $schedule->command('system:down')->weekends()->at('4:50')->evenInMaintenanceMode();
         // 11:40に全員退席処理
         $schedule->command('refresh:seats')->weekends()->at('11:40')->evenInMaintenanceMode();
         // 12:00にシステムを復旧
