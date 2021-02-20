@@ -49,14 +49,14 @@
 
         <!-- 吹き出しメッセージ -->
         <div
-          v-for="popup in popups"
-          :key="popup.id"
+          v-for="(popup, index) in popups"
+          :key="index"
           class="popup"
           :style="{ left: popup.left, top: popup.top }"
         >
           <p>
             <v-row justify="end">
-              <v-icon class="mr-3" @click="removePopup(popup.id)">mdi-close</v-icon>
+              <v-icon class="mr-3" @click="removePopup(index)">mdi-close</v-icon>
             </v-row>
             <span>{{ popup.message }}</span>
             <v-row justify="end">
@@ -108,6 +108,10 @@
 
       <v-btn icon :loading="popup.loading" @click="sendPopup">
         <v-icon>mdi-send</v-icon>
+      </v-btn>
+
+      <v-btn icon @click="removePopup()">
+        <v-icon>mdi-delete</v-icon>
       </v-btn>
     </v-app-bar>
   </v-layout>
@@ -788,18 +792,12 @@ export default {
      * @param event 受信データ
      */
     addPopup: function (event) {
-      var id = 1;
-      if (this.popups.length) {
-        id = this.popups[this.popups.length - 1].id + 1;
-      }
-
       // 位置をランダムに設定
       var left = Math.random() * (this.$refs.canvasContainer.clientWidth - 200) + 250 + 'px';
       var top = Math.random() * (this.canvas.height - 64) + 115 + 'px';
 
       // 追加
       this.popups.push({
-        id: id,
         left: left,
         top: top,
         user: event.handlename,
@@ -810,22 +808,20 @@ export default {
       if (this.$store.getters['alert/isSoundOn']) {
         RECEIVE_POPUP_SOUND.play();
       }
-
-      // 30秒で削除
-      setInterval(() => {
-        this.removePopup(id);
-      }, 30000);
     },
 
     /**
      * 吹き出しメッセージの削除
      *
-     * @param Number  id  削除する吹き出しID
+     * @param Number  index 削除するメッセージのインデックス
      */
-    removePopup: function (id) {
-      this.popups = this.popups.filter((popup) => {
-        return popup.id !== id;
-      });
+    removePopup: function (index = null) {
+      if (index) {
+        this.popups.splice(index, 1);
+      } else {
+        // 全削除
+        this.popups = [];
+      }
     },
 
     /**
@@ -1084,7 +1080,7 @@ export default {
       font-weight: bold;
 
       .v-icon {
-        font-size: 15px;
+        font-size: 18px;
         cursor: pointer;
 
         &:after {
