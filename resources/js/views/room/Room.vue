@@ -98,10 +98,11 @@
       v-if="authUser.seat"
     >
       <v-text-field
+        v-model="popup.message"
+        :maxlength="popup.max"
         hide-details
         single-line
         label="吹き出しメッセージ"
-        v-model="popup.message"
         :loading="popup.loading"
         @keydown.enter="sendPopup"
       ></v-text-field>
@@ -164,6 +165,7 @@ export default {
       },
       popups: [], // 吹き出しメッセージ
       popup: {
+        max: 72, // 入力最大長
         loading: false, // ローディング制御
         message: '', // 吹き出しメッセージ入力
       },

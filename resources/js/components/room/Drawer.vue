@@ -50,6 +50,7 @@
               :placeholder="authUser.in_progress"
               :disabled="inProgress.loading"
               :counter="inProgress.max"
+              :maxlength="inProgress.max"
               rows="2"
               solo
               class="pt-2 px-2"
@@ -69,7 +70,7 @@
               color="primary"
               class="mx-1"
               :loading="inProgress.loading"
-              :disabled="inProgress.body === '' || inProgress.body.length > inProgress.max"
+              :disabled="inProgress.body === ''"
               @click="submit(false)"
             >
               公開
@@ -115,9 +116,9 @@ export default {
   data() {
     return {
       inProgress: {
+        max: 200, // 入力最大長
         loading: false, // ローディング制御
         body: '', // 取り組み中のタスク
-        max: 200, // 文字数の最大
       },
       announcement: {
         loading: false, // ローディング制御
