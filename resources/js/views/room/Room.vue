@@ -1033,6 +1033,17 @@ export default {
     // ロード終了
     this.loading = false;
   },
+
+  beforeDestroy() {
+    /**
+     * データの同期終了
+     */
+    Echo.channel('room.' + this.roomData.id)
+      .stopListening('RoomUpdated')
+      .stopListening('RoomStatusChanged')
+      .stopListening('SeatStatusUpdated')
+      .stopListening('PopupPosted');
+  },
 };
 </script>
 
