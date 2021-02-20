@@ -7,14 +7,14 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Room;
+use App\Models\User;
 
 class PopupPosted implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /** @var Room */
-    protected $room;
+    /** @var User */
+    protected $user;
     /** @var String */
     protected $message;
 
@@ -23,9 +23,9 @@ class PopupPosted implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Room $room, String $message)
+    public function __construct(User $user, String $message)
     {
-        $this->room = $room;
+        $this->user = $user;
         $this->message = $message;
     }
 
@@ -36,7 +36,7 @@ class PopupPosted implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('room.' . $this->room->id);
+        return new Channel('room.' . $this->user->seat->section->room_id);
     }
 
     /**
@@ -46,6 +46,6 @@ class PopupPosted implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        return ['message' => $this->message];
+        return ['handlename' => $this->user->handlename, 'message' => $this->message];
     }
 }

@@ -59,6 +59,9 @@
               <v-icon class="mr-3" @click="removePopup(popup.id)">mdi-close</v-icon>
             </v-row>
             <span>{{ popup.message }}</span>
+            <v-row justify="end">
+              <small class="mx-4">{{ popup.user }}</small>
+            </v-row>
           </p>
         </div>
       </v-row>
@@ -782,9 +785,9 @@ export default {
     /**
      * 吹き出しメッセージの追加
      *
-     * @param String  message メッセージ
+     * @param event 受信データ
      */
-    addPopup: function (message) {
+    addPopup: function (event) {
       var id = 1;
       if (this.popups.length) {
         id = this.popups[this.popups.length - 1].id + 1;
@@ -795,7 +798,13 @@ export default {
       var top = Math.random() * (this.canvas.height - 64) + 115 + 'px';
 
       // 追加
-      this.popups.push({ id: id, left: left, top: top, message: message });
+      this.popups.push({
+        id: id,
+        left: left,
+        top: top,
+        user: event.handlename,
+        message: event.message,
+      });
 
       // 通知音
       if (this.$store.getters['alert/isSoundOn']) {
@@ -1027,7 +1036,7 @@ export default {
       })
       .listen('PopupPosted', (event) => {
         // 吹き出しメッセージの追加
-        this.addPopup(event.message);
+        this.addPopup(event);
       });
 
     // ロード終了

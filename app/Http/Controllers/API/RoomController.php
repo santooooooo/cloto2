@@ -78,7 +78,7 @@ class RoomController extends Controller
             return response()->json(['message' => 'メッセージの送信に失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        broadcast(new PopupPosted($user->seat->section->room, $request->message));
+        broadcast(new PopupPosted($user, $request->message));
         return response()->json();
     }
 }
