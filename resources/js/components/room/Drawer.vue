@@ -2,11 +2,17 @@
   <v-card class="mx-auto" width="250" flat tile>
     <v-navigation-drawer permanent>
       <v-list>
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title class="text-center text-h5">{{ roomName }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-list-item v-bind="attrs" v-on="on">
+              <v-list-item-content>
+                <v-list-item-title class="text-center text-h5">{{ roomName }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+
+          <span>{{ roomName }}</span>
+        </v-tooltip>
 
         <v-list-item>
           <v-list-item-content>
