@@ -31,7 +31,17 @@ export default {
   async mounted() {
     var response = await axios.get('/api/rooms');
     response.data.forEach((room) => {
-      this.floors.push({ id: room.id, name: room.name });
+      // 着席者数のカウント
+      var userNum = 0;
+      room.sections.forEach((section) => {
+        section.seats.forEach((seat) => {
+          if (seat.user) {
+            userNum += 1;
+          }
+        });
+      });
+
+      this.floors.push({ id: room.id, name: room.name, userNum: userNum });
     });
   },
 };
