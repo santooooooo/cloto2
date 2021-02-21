@@ -1,5 +1,5 @@
 <template>
-  <v-layout id="floor">
+  <v-layout id="floor" :style="!authUser.seat ? 'cursor: pointer' : ''" @click="enterRoom()">
     <v-flex>
       <!-- ローディング画面 -->
       <v-overlay :value="loading">
@@ -25,6 +25,12 @@ export default {
       roomWidth: 2160, // 教室サイズ
       roomHeight: 1200, // 教室サイズ
     };
+  },
+
+  computed: {
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
   },
 
   watch: {
@@ -59,14 +65,17 @@ export default {
         this.$storage('room') + 'room_' + this.roomData.id + '.png',
         this.canvas.renderAll.bind(this.canvas)
       );
+      if (!this.authUser.seat) {
+        this.canvas.defaultCursor = 'pointer';
+      }
 
       // サイズの設定（横幅MAX）
       var zoom = (this.$windowWidth - 260) / this.roomWidth;
       this.setZoom(zoom);
 
       // 座席の設定
-      this.roomData.sections.forEach((section, sectionIndex) => {
-        section.seats.forEach((seat, seatIndex) => {
+      this.roomData.sections.forEach((section) => {
+        section.seats.forEach((seat) => {
           if (seat.status == 'break') {
             this.canvas.add(
               new fabric.Circle({
@@ -139,6 +148,15 @@ export default {
       this.canvas.setZoom(zoom);
       this.canvas.setWidth(this.roomWidth * zoom);
       this.canvas.setHeight(this.roomHeight * zoom);
+    },
+
+    /**
+     * 入室
+     */
+    enterRoom: function () {
+      if (!this.authUser.seat) {
+        this.$router.push({ name: 'room', params: { roomId: this.$route.params.roomId } });
+      }
     },
   },
 
