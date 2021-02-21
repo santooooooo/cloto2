@@ -10,7 +10,9 @@
     <v-overlay :value="permissionOverlay" z-index="7" class="text-center" opacity="1">
       <div class="arrow"></div>
       <p class="text-h4">権限を許可してください。</p>
-      <p class="text-body-2 mb-0 mt-12 mr-8">（一度許可した方は必要ありません。）</p>
+      <p class="text-body-2 mt-6 mr-8">（一度許可した方は必要ありません。）</p>
+      <p class="text-h5 mt-12">通話を伴いますのでマイクとカメラを使用します。</p>
+      <p class="text-h6 mb-0 mt-6 mr-8">（ミュート、カメラオフで接続されます。）</p>
     </v-overlay>
 
     <!-- ローディング画面 -->

@@ -38,6 +38,8 @@
         <v-btn block depressed color="success" @click="$router.push({ name: 'entrance' })">
           退室
         </v-btn>
+
+        <p class="text-center text-body-1 font-weight-bold mt-12">自習室にご着席ください</p>
       </div>
 
       <!-- 着席後 -->
