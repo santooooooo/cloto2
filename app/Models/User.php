@@ -45,6 +45,13 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['status'];
+
+    /**
      * Send the email verification notification.
      *
      * @return void
@@ -91,6 +98,26 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isOnline()
     {
-        return Cache::has('user-is-online-' . $this->id);
+        return Cache::has('user-' . $this->id);
+    }
+
+    /**
+     * 状態の取得
+     *
+     * @return \Illuminate\Support\Facades\Cache
+     */
+    public function status()
+    {
+        return Cache::get('user-' . $this->id);
+    }
+
+    /**
+     * 状態データの追加
+     *
+     * @return \Illuminate\Support\Facades\Cache
+     */
+    public function getStatusAttribute()
+    {
+        return $this->status();
     }
 }

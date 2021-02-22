@@ -50,7 +50,7 @@ class UserController extends Controller
 
         // 10分で期限切れ
         $expires_at = Carbon::now()->addMinutes(10);
-        Cache::put('user-is-online-' . $this->auth_user->id, true, $expires_at);
+        Cache::put('user-' . $this->auth_user->id, 'online', $expires_at);
 
         return response()->json();
     }
