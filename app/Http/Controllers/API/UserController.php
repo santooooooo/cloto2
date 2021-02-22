@@ -49,14 +49,20 @@ class UserController extends Controller
             return response()->json();
         }
 
-        // 現在のステータスで更新する
-        if ($status == null) {
-            $status = $this->auth_user->status;
-        }
-
         // 10分で期限切れ
         $expires_at = Carbon::now()->addMinutes(10);
-        Cache::put('user-' . $this->auth_user->id, $status, $expires_at);
+
+        if ($status != null) {
+            // ステータスの変更
+            Cache::put('user-' . $this->auth_user->id, $status, $expires_at);
+
+            if (!empty($this->auth_user->seat)) {
+                broadcast(new SeatStatusUpdated($this->auth_user->seat->section->room));
+            }
+        } else {
+            // 現在のステータスで更新する
+            Cache::put('user-' . $this->auth_user->id, $this->auth_user->status, $expires_at);
+        }
 
         return response()->json();
     }

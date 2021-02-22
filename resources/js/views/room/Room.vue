@@ -233,14 +233,14 @@ export default {
 
                     // アイコンを削除
                     var object = this.getCanvasObject('user', 'seatId', newSeat.id);
-                    this.removeIcon(object);
+                    this.removeUser(object);
                     break;
 
                   default:
                     if (oldSeat.user !== null) {
                       // 退席された場合
                       var object = this.getCanvasObject('user', 'seatId', newSeat.id);
-                      this.removeIcon(object);
+                      this.removeUser(object);
                     } else if (oldSeat.reservation_user_id !== null) {
                       // 休憩室から直接退席した場合の予約解除処理（オフライン時の強制退席）
                       var object = this.getCanvasObject('seat', 'seatId', newSeat.id);
@@ -249,12 +249,12 @@ export default {
                     break;
                 }
               } else {
-                // 状態の変化がない場合は取り組み中のタスクのみ更新
+                // 状態の変化がない場合はユーザーデータのみ更新
                 if (newSeat.user) {
                   // 座席に着席中のユーザーがいる場合
                   var object = this.getCanvasObject('user', 'seatId', newSeat.id);
                   object.set({ inProgress: newSeat.user.in_progress });
-                  this.canvas.requestRenderAll();
+                  this.setStatus(object, newSeat.user.status);
                 }
               }
             });
@@ -318,15 +318,38 @@ export default {
     },
 
     /**
-     * アイコンの設置
+     * ユーザーの設置
      *
      * @param Object  seat  着席する座席
      */
     setUser: function (seat) {
       // 念の為ユーザーの存在確認
       if (seat.user) {
-        fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (icon) => {
-          icon.set({
+        fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (img) => {
+          var status = new fabric.Circle({
+            originX: 'center',
+            originY: 'center',
+            width: 10,
+            height: 10,
+            radius: seat.size / 2,
+            strokeWidth: 10,
+          });
+
+          var icon = img.set({
+            originX: 'center',
+            originY: 'center',
+            scaleX: seat.size / img.width,
+            scaleY: seat.size / img.height,
+            clipPath: new fabric.Circle({
+              originX: 'center',
+              originY: 'center',
+              scaleX: img.width / seat.size,
+              scaleY: img.height / seat.size,
+              radius: seat.size / 2,
+            }),
+          });
+
+          var userObject = new fabric.Group([status, icon], {
             type: 'user',
             seatId: seat.id,
             username: seat.user.username,
@@ -335,32 +358,50 @@ export default {
             top: seat.position.y,
             originX: 'center',
             originY: 'center',
-            scaleX: seat.size / icon.width,
-            scaleY: seat.size / icon.height,
-            clipPath: new fabric.Circle({
-              scaleX: icon.width / seat.size,
-              scaleY: icon.height / seat.size,
-              radius: seat.size / 2,
-              originX: 'center',
-              originY: 'center',
-            }),
             hoverCursor: 'pointer',
             selectable: false, // 図形の選択を禁止
           });
 
           // 描画
-          this.canvas.add(icon);
+          this.canvas.add(userObject);
+          this.setStatus(userObject, seat.user.status);
         });
       }
     },
 
     /**
-     * アイコンの削除
+     * ユーザーの削除
      *
-     * @param Object  removeObject  削除するアイコン
+     * @param Object  userObject  削除するユーザーオブジェクト
      */
-    removeIcon: function (removeObject) {
-      this.canvas.remove(removeObject);
+    removeUser: function (userObject) {
+      this.canvas.remove(userObject);
+      this.canvas.requestRenderAll();
+    },
+
+    /**
+     * ステータスの設定
+     *
+     * @param Object  userObject  設定するユーザーオブジェクト
+     * @param String  status      ステータス
+     */
+    setStatus: function (userObject, status) {
+      var color;
+      switch (status) {
+        case 'free':
+          color = 'green';
+          break;
+
+        case 'busy':
+          color = 'red';
+          break;
+
+        case 'away':
+          color = 'grey';
+          break;
+      }
+
+      userObject._objects[0].set({ stroke: color });
       this.canvas.requestRenderAll();
     },
 

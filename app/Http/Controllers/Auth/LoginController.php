@@ -81,6 +81,9 @@ class LoginController extends Controller
         // 別端末のログアウト処理
         auth()->logoutOtherDevices($request->input('password'));
 
+        // ステータスの設定
+        $user->updateStatus('free');
+
         return $user;
     }
 
