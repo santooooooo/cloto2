@@ -31,7 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
     |--------------------------------------------------------------------------
     */
     Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
-    Route::post('/online', 'API\UserController@online');
+    Route::post('/status/{status?}', 'API\UserController@updateStatus');
     Route::get('/auth', 'API\UserController@auth');
 
 

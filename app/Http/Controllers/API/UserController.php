@@ -29,7 +29,7 @@ class UserController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->auth_user = Auth::user();
-            $this->online();
+            $this->updateStatus();
             return $next($request);
         });
 
@@ -38,19 +38,25 @@ class UserController extends Controller
 
 
     /**
-     * オンライン状態の更新
+     * ステータスの更新
      *
+     * @param  String  $status  更新するステータス
      * @return \Illuminate\Http\Response
      */
-    public function online()
+    public function updateStatus(String $status = null)
     {
         if (empty($this->auth_user)) {
             return response()->json();
         }
 
+        // 現在のステータスで更新する
+        if ($status == null) {
+            $status = $this->auth_user->status;
+        }
+
         // 10分で期限切れ
         $expires_at = Carbon::now()->addMinutes(10);
-        Cache::put('user-' . $this->auth_user->id, 'online', $expires_at);
+        Cache::put('user-' . $this->auth_user->id, $status, $expires_at);
 
         return response()->json();
     }

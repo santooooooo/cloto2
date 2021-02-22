@@ -46,6 +46,7 @@
       :color="color"
       :item-color="color"
       class="ml-9 mt-5"
+      @change="updateStatus()"
     >
       <template v-slot:selection="{ item }">
         <span :class="color + '--text'">{{ item.text }}</span>
@@ -115,6 +116,15 @@ export default {
       }
 
       return color;
+    },
+  },
+  methods: {
+    /**
+     * ステータス更新処理
+     */
+    updateStatus: async function () {
+      await axios.post('/api/status/' + this.status);
+      this.$store.dispatch('auth/syncAuthUser');
     },
   },
 };
