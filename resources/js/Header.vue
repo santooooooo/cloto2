@@ -47,6 +47,7 @@
       :item-color="color"
       class="ml-9 mt-5"
       @change="updateStatus()"
+      v-if="authCheck"
     >
       <template v-slot:selection="{ item }">
         <span :class="color + '--text'">{{ item.text }}</span>
