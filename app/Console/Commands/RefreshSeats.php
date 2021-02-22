@@ -51,7 +51,7 @@ class RefreshSeats extends Command
                     // シートの初期化
                     $seat->fill(['status' => null, 'reservation_user_id' => null])->save();
                     // ユーザーの退席処理
-                    $seat->user->fill(['seat_id' => null, 'in_progress' => null])->save();
+                    $seat->user->fill(['seat_id' => null])->save();
 
                     broadcast(new SeatStatusUpdated($seat->section->room));
                 }

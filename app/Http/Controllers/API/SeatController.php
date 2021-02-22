@@ -69,8 +69,6 @@ class SeatController extends Controller
 
         // ユーザーと座席を紐付け解除
         $this->user->seat()->dissociate();
-        // 取り組み中のタスクを初期化
-        $this->user->fill(['in_progress' => null])->save();
 
         // 予約中の座席の状態を初期化（念の為）
         $seat = $this->seat->where('reservation_user_id', $this->user->id)->first();
