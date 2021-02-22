@@ -46,7 +46,7 @@
       :color="color"
       :item-color="color"
       class="ml-9 mt-5"
-      @change="updateStatus()"
+      @change="updateStatus(status)"
       v-if="authCheck"
     >
       <template v-slot:selection="{ item }">
@@ -77,7 +77,7 @@
 export default {
   data() {
     return {
-      status: 'free', // 現在のステータス
+      status: null, // 現在のステータス
       statuses: [
         // ステータス一覧
         { text: '雑談OK', value: 'free' },
@@ -119,13 +119,28 @@ export default {
       return color;
     },
   },
+  watch: {
+    authCheck: async function (check, oldCheck) {
+      // ログインまたはリロード時
+      if (check && !oldCheck) {
+        // 初期値の設定
+        if (this.authUser.status === null) {
+          await this.updateStatus('free');
+        }
+
+        this.status = this.authUser.status;
+      }
+    },
+  },
   methods: {
     /**
      * ステータス更新処理
+     *
+     * @param String  status  ステータス
      */
-    updateStatus: async function () {
-      await axios.post('/api/status/' + this.status);
-      this.$store.dispatch('auth/syncAuthUser');
+    updateStatus: async function (status) {
+      await axios.post('/api/status/' + status);
+      await this.$store.dispatch('auth/syncAuthUser');
     },
   },
 };
