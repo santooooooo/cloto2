@@ -39,6 +39,19 @@
       教室へ戻る
     </v-btn>
 
+    <!-- ステータス -->
+    <v-select
+      v-model="status"
+      :items="statuses"
+      :color="color"
+      :item-color="color"
+      class="ml-9 mt-5"
+    >
+      <template v-slot:selection="{ item }">
+        <span :class="color + '--text'">{{ item.text }}</span>
+      </template>
+    </v-select>
+
     <!-- 通知音ボタン -->
     <v-btn
       color="white"
@@ -60,6 +73,17 @@
 
 <script>
 export default {
+  data() {
+    return {
+      status: 'free', // 現在のステータス
+      statuses: [
+        // ステータス一覧
+        { text: '雑談OK', value: 'free' },
+        { text: '自習中', value: 'busy' },
+        { text: '離席中', value: 'away' },
+      ],
+    };
+  },
   computed: {
     isSmartphone() {
       if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
@@ -74,6 +98,24 @@ export default {
     authUser() {
       return this.$store.getters['auth/user'];
     },
+    color() {
+      var color;
+      switch (this.status) {
+        case 'free':
+          color = 'green';
+          break;
+
+        case 'busy':
+          color = 'red';
+          break;
+
+        case 'away':
+          color = 'grey';
+          break;
+      }
+
+      return color;
+    },
   },
 };
 </script>
@@ -86,5 +128,15 @@ img {
 
 a:hover {
   text-decoration: none;
+}
+
+.v-select {
+  max-width: 120px;
+
+  span {
+    margin-left: 10px;
+    font-size: 20px;
+    font-weight: bold;
+  }
 }
 </style>
