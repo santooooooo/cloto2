@@ -409,8 +409,8 @@
               <v-select
                 v-model="selectedAudio"
                 :items="audioDevices"
-                item-value="deviceId"
                 item-text="label"
+                item-value="deviceId"
                 @change="changeDevice()"
                 label="マイク"
                 v-else
@@ -423,8 +423,8 @@
               <v-select
                 v-model="selectedVideo"
                 :items="videoDevices"
-                item-value="deviceId"
                 item-text="label"
+                item-value="deviceId"
                 @change="changeDevice()"
                 label="ビデオ"
                 v-else

@@ -109,7 +109,7 @@ export default {
     /**
      * ユーザーの設置
      *
-     * @param Object  seat  着席する座席
+     * @param Object  seat  着席している座席
      */
     setUser: function (seat) {
       // 念の為ユーザーの存在確認
