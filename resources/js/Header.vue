@@ -157,7 +157,7 @@ a:hover {
 }
 
 .v-select {
-  max-width: 120px;
+  max-width: 150px;
 
   span {
     margin-left: 10px;
