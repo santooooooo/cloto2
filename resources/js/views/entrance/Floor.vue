@@ -107,34 +107,64 @@ export default {
     },
 
     /**
-     * アイコンの設置
+     * ユーザーの設置
      *
      * @param Object  seat  着席する座席
      */
     setUser: function (seat) {
       // 念の為ユーザーの存在確認
       if (seat.user) {
-        fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (icon) => {
-          icon.set({
+        var color;
+        switch (seat.user.status) {
+          case 'free':
+            color = 'green';
+            break;
+
+          case 'busy':
+            color = 'red';
+            break;
+
+          case 'away':
+            color = 'grey';
+            break;
+        }
+
+        fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (img) => {
+          var status = new fabric.Circle({
+            originX: 'center',
+            originY: 'center',
+            width: 10,
+            height: 10,
+            radius: seat.size / 2,
+            strokeWidth: 10,
+            stroke: color,
+          });
+
+          var icon = img.set({
+            originX: 'center',
+            originY: 'center',
+            scaleX: seat.size / img.width,
+            scaleY: seat.size / img.height,
+            clipPath: new fabric.Circle({
+              originX: 'center',
+              originY: 'center',
+              scaleX: img.width / seat.size,
+              scaleY: img.height / seat.size,
+              radius: seat.size / 2,
+            }),
+          });
+
+          var userObject = new fabric.Group([status, icon], {
             left: seat.position.x,
             top: seat.position.y,
             originX: 'center',
             originY: 'center',
-            scaleX: seat.size / icon.width,
-            scaleY: seat.size / icon.height,
-            clipPath: new fabric.Circle({
-              scaleX: icon.width / seat.size,
-              scaleY: icon.height / seat.size,
-              radius: seat.size / 2,
-              originX: 'center',
-              originY: 'center',
-            }),
+            hoverCursor: !this.authUser.seat ? 'pointer' : 'cursor',
             selectable: false, // 図形の選択を禁止
-            hoverCursor: 'default', // カーソルの変更を禁止
           });
 
           // 描画
-          this.canvas.add(icon);
+          this.canvas.add(userObject);
         });
       }
     },
