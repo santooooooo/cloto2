@@ -120,4 +120,46 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->status();
     }
+
+    /**
+     * Followers のリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function follows()
+    {
+        return $this->belongsToMany(self::class, 'followers', 'following_id', 'followed_id');
+    }
+
+    /**
+     * Followers のリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function followers()
+    {
+        return $this->belongsToMany(self::class, 'followers', 'followed_id', 'following_id');
+    }
+
+    /**
+     * フォローしているか
+     *
+     * @param  Int $user_id フォロー先のユーザー
+     * @return Boolean
+     */
+    public function isFollowing(Int $user_id)
+    {
+        return $this->follows()->where('followed_id', $user_id)->exists();
+    }
+
+    /**
+     * フォローされているか
+     *
+     * @param  Int $user_id フォロー元のユーザー
+     * @return Boolean
+     */
+    public function isFollowed(Int $user_id)
+    {
+        return $this->followers()->where('following_id', $user_id)->exists();
+    }
 }
