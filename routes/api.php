@@ -43,7 +43,8 @@ Route::group(['middleware' => 'auth'], function () {
         */
         Route::get('/users/{user_param}', 'UserController@show');
         Route::patch('/users', 'UserController@update');
-
+        Route::post('/users/{user}/follow', 'UserController@follow')->where('user', '[0-9]+');
+        Route::get('/users/{user}/follow', 'UserController@follow_check')->where('user', '[0-9]+');
 
         /*
         |--------------------------------------------------------------------------

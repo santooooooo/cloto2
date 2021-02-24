@@ -53,6 +53,20 @@
                 <v-icon>mdi-home</v-icon>
               </v-btn>
             </v-row>
+
+            <v-row class="mt-3" justify="center" v-if="followStatus">
+              <v-btn
+                :color="!followStatus.following ? 'primary' : 'error'"
+                :loading="loading"
+                @click="follow()"
+              >
+                {{ !followStatus.following ? 'フォロー' : 'フォロー解除' }}
+              </v-btn>
+            </v-row>
+
+            <p class="mt-3 mb-0" v-if="followStatus && followStatus.followed">
+              フォローされています
+            </p>
           </v-col>
 
           <v-col class="pl-0">
@@ -83,10 +97,15 @@ export default {
   data() {
     return {
       dialog: true,
+      loading: false,
       user: null,
+      followStatus: null,
     };
   },
   computed: {
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
     color() {
       var color;
       if (this.user.type === 'pro') {
@@ -98,12 +117,33 @@ export default {
       return color;
     },
   },
-  async mounted() {
+  methods: {
+    /**
+     * フォロー処理
+     */
+    follow: async function () {
+      this.loading = true;
+
+      var response = await axios.post('/api/users/' + this.user.id + '/follow');
+      this.followStatus = response.data;
+
+      this.loading = false;
+    },
+  },
+  async created() {
     /**
      * ユーザーデータの取得
      */
     var response = await axios.get('/api/users/' + this.username);
     this.user = response.data;
+
+    /**
+     * フォローデータの取得
+     */
+    if (this.username !== this.authUser.username) {
+      var response = await axios.get('/api/users/' + this.user.id + '/follow');
+      this.followStatus = response.data;
+    }
   },
 };
 </script>
