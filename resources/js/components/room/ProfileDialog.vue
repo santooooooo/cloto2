@@ -124,7 +124,7 @@ export default {
     follow: async function () {
       this.loading = true;
 
-      var response = await axios.post('/api/users/' + this.user.id + '/follow');
+      var response = await axios.post('/api/followers/' + this.user.id + '/follow');
       this.followStatus = response.data;
 
       this.loading = false;
@@ -141,7 +141,7 @@ export default {
      * フォローデータの取得
      */
     if (this.username !== this.authUser.username) {
-      var response = await axios.get('/api/users/' + this.user.id + '/follow');
+      var response = await axios.get('/api/followers/' + this.user.id + '/follow');
       this.followStatus = response.data;
     }
   },
