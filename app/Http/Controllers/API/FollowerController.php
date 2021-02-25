@@ -24,13 +24,23 @@ class FollowerController extends Controller
 
 
     /**
-     * Display a listing of the resource.
+     * フォロー一覧の取得
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function follows()
     {
-        //
+        return response()->json($this->auth_user->follows);
+    }
+
+    /**
+     * フォロワー一覧の取得
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function followers()
+    {
+        return response()->json($this->auth_user->followers);
     }
 
     /**

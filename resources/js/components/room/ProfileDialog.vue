@@ -84,6 +84,24 @@
             <pre class="ma-3 text-body-1">{{ user.in_progress }}</pre>
           </v-card>
         </v-row>
+
+        <v-row class="mt-3" justify="center">
+          <v-spacer></v-spacer>
+
+          <v-col md="3" style="background-color: red">
+            <p class="text-center">フォロー</p>
+            <p class="text-center mb-0">{{ follows.length }}</p>
+          </v-col>
+
+          <v-spacer></v-spacer>
+
+          <v-col md="3">
+            <p class="text-center">フォロワー</p>
+            <p class="text-center mb-0">{{ followers.length }}</p>
+          </v-col>
+
+          <v-spacer></v-spacer>
+        </v-row>
       </v-container>
     </v-card>
   </v-dialog>
@@ -100,6 +118,8 @@ export default {
       loading: false,
       user: null,
       followStatus: null,
+      follows: [],
+      followers: [],
     };
   },
   computed: {
@@ -138,12 +158,24 @@ export default {
     this.user = response.data;
 
     /**
-     * フォローデータの取得
+     * フォロー関係の取得
      */
     if (this.username !== this.authUser.username) {
       var response = await axios.get('/api/followers/' + this.user.id + '/follow');
       this.followStatus = response.data;
     }
+
+    /**
+     * フォローの取得
+     */
+    var response = await axios.get('/api/follows');
+    this.follows = response.data;
+
+    /**
+     * フォロワーの取得
+     */
+    var response = await axios.get('/api/followers');
+    this.followers = response.data;
   },
 };
 </script>

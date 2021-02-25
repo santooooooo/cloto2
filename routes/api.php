@@ -84,5 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
         */
         Route::post('/followers/{user}/follow', 'FollowerController@follow')->where('user', '[0-9]+');
         Route::get('/followers/{user}/follow', 'FollowerController@follow_check')->where('user', '[0-9]+');
+        Route::get('/followers', 'FollowerController@followers');
+        Route::get('/follows', 'FollowerController@follows');
     });
 });
