@@ -88,7 +88,7 @@
         <v-row class="mt-3" justify="center">
           <v-spacer></v-spacer>
 
-          <v-col md="3" style="background-color: red">
+          <v-col md="3" @click="show = 'follows'" style="background-color: red">
             <p class="text-center">フォロー</p>
             <p class="text-center mb-0">{{ follows.length }}</p>
           </v-col>
@@ -102,6 +102,21 @@
 
           <v-spacer></v-spacer>
         </v-row>
+
+        <v-list class="grey darken-1">
+          <v-list-item v-for="follow in follows" :key="follow.id">
+            <v-list-item-avatar>
+              <v-img :src="$storage('icon') + follow.icon"></v-img>
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+              <v-list-item-title>{{ follow.handlename }}</v-list-item-title>
+              <v-list-item-subtitle>{{
+                follow.introduction || '自己紹介が入力されていません。'
+              }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
       </v-container>
     </v-card>
   </v-dialog>
@@ -118,6 +133,7 @@ export default {
       loading: false,
       user: null,
       followStatus: null,
+      show: null,
       follows: [],
       followers: [],
     };
