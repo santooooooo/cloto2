@@ -54,19 +54,17 @@
               </v-btn>
             </v-row>
 
-            <v-row class="mt-3" justify="center" v-if="followStatus">
+            <v-row class="mt-3" justify="center">
               <v-btn
-                :color="!followStatus.following ? 'primary' : 'error'"
+                :color="!user.following ? 'primary' : 'error'"
                 :loading="loading"
                 @click="follow()"
               >
-                {{ !followStatus.following ? 'フォロー' : 'フォロー解除' }}
+                {{ !user.following ? 'フォロー' : 'フォロー解除' }}
               </v-btn>
             </v-row>
 
-            <p class="mt-3 mb-0" v-if="followStatus && followStatus.followed">
-              フォローされています
-            </p>
+            <p class="mt-3 mb-0" v-if="user.followed">フォローされています</p>
           </v-col>
 
           <v-col class="pl-0">
@@ -90,14 +88,14 @@
 
           <v-col md="3" @click="show = 'follows'" style="background-color: red">
             <p class="text-center">フォロー</p>
-            <p class="text-center mb-0">{{ follows.length }}</p>
+            <p class="text-center mb-0">{{ user.follows }}</p>
           </v-col>
 
           <v-spacer></v-spacer>
 
           <v-col md="3">
             <p class="text-center">フォロワー</p>
-            <p class="text-center mb-0">{{ followers.length }}</p>
+            <p class="text-center mb-0">{{ user.followers }}</p>
           </v-col>
 
           <v-spacer></v-spacer>
@@ -132,10 +130,6 @@ export default {
       dialog: true,
       loading: false,
       user: null,
-      followStatus: null,
-      show: null,
-      follows: [],
-      followers: [],
     };
   },
   computed: {
@@ -160,8 +154,10 @@ export default {
     follow: async function () {
       this.loading = true;
 
-      var response = await axios.post('/api/followers/' + this.user.id + '/follow');
-      this.followStatus = response.data;
+      var response = await axios.post('/api/users/' + this.user.id + '/follow', {
+        _method: 'patch',
+      });
+      this.user = response.data;
 
       this.loading = false;
     },
@@ -172,26 +168,6 @@ export default {
      */
     var response = await axios.get('/api/users/' + this.username);
     this.user = response.data;
-
-    /**
-     * フォロー関係の取得
-     */
-    if (this.username !== this.authUser.username) {
-      var response = await axios.get('/api/followers/' + this.user.id + '/follow');
-      this.followStatus = response.data;
-    }
-
-    /**
-     * フォローの取得
-     */
-    var response = await axios.get('/api/follows');
-    this.follows = response.data;
-
-    /**
-     * フォロワーの取得
-     */
-    var response = await axios.get('/api/followers');
-    this.followers = response.data;
   },
 };
 </script>

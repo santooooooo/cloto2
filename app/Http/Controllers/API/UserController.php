@@ -114,7 +114,13 @@ class UserController extends Controller
      */
     public function show(String $user_param)
     {
-        return response()->json($this->get_user($user_param));
+        $user = $this->get_user($user_param);
+
+        // フォロー関係の追加
+        $user['following'] = $this->auth_user->isFollowing($user->id);
+        $user['followed'] = $this->auth_user->isFollowed($user->id);
+
+        return response()->json($user);
     }
 
     /**
@@ -160,5 +166,45 @@ class UserController extends Controller
         }
 
         return response()->json(['message' => 'ユーザーデータが更新されました。']);
+    }
+
+    /**
+     * フォロー一覧の取得
+     *
+     * @param  \App\Models\User $user   一覧を取得するユーザー
+     * @return \Illuminate\Http\Response
+     */
+    public function follows(User $user)
+    {
+        return response()->json($user->follows);
+    }
+
+    /**
+     * フォロワー一覧の取得
+     *
+     * @param  \App\Models\User $user   一覧を取得するユーザー
+     * @return \Illuminate\Http\Response
+     */
+    public function followers(User $user)
+    {
+        return response()->json($user->followers);
+    }
+
+    /**
+     * フォロー/フォロー解除
+     *
+     * @param  \App\Models\User $user フォロー（解除）するユーザー
+     * @return \Illuminate\Http\Response
+     */
+    public function follow(User $user)
+    {
+        if ($this->auth_user->id == $user->id) {
+            return response()->json(['message' => '自分はフォローできません。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        // フォロー（解除）処理
+        $this->auth_user->follows()->toggle($user->id);
+
+        return $this->show($user->id);
     }
 }

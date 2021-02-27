@@ -49,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
-    protected $appends = ['status'];
+    protected $appends = ['status', 'follows', 'followers'];
 
     /**
      * Send the email verification notification.
@@ -112,16 +112,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * 状態データの追加
-     *
-     * @return \Illuminate\Support\Facades\Cache
-     */
-    public function getStatusAttribute()
-    {
-        return $this->status();
-    }
-
-    /**
      * Followers のリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -161,5 +151,35 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isFollowed(Int $user_id)
     {
         return $this->followers()->where('following_id', $user_id)->exists();
+    }
+
+    /**
+     * 状態データの追加
+     *
+     * @return \Illuminate\Support\Facades\Cache
+     */
+    public function getStatusAttribute()
+    {
+        return $this->status();
+    }
+
+    /**
+     * フォロー数の追加
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getFollowsAttribute()
+    {
+        return $this->follows()->count();
+    }
+
+    /**
+     * フォロワー数の追加
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getFollowersAttribute()
+    {
+        return $this->followers()->count();
     }
 }
