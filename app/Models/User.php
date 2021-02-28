@@ -49,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
-    protected $appends = ['status', 'follows', 'followers'];
+    protected $appends = ['status', 'follows_count', 'followers_count'];
 
     /**
      * Send the email verification notification.
@@ -168,7 +168,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getFollowsAttribute()
+    public function getFollowsCountAttribute()
     {
         return $this->follows()->count();
     }
@@ -178,7 +178,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getFollowersAttribute()
+    public function getFollowersCountAttribute()
     {
         return $this->followers()->count();
     }
