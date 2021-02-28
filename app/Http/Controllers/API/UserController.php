@@ -38,6 +38,28 @@ class UserController extends Controller
 
 
     /**
+     * ログインユーザーの取得
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function auth()
+    {
+        if (empty($this->auth_user)) {
+            return response()->json();
+        }
+
+        $auth_user = $this->auth_user->load('seat');
+
+        // 着席中の場合，部屋データを追加
+        if (!empty($auth_user->seat)) {
+            $auth_user->seat['section_id'] = $auth_user->seat->section_id;
+            $auth_user->seat['room_id'] = $auth_user->seat->section->room_id;
+        }
+
+        return response()->json($auth_user);
+    }
+
+    /**
      * ステータスの更新
      *
      * @param  String  $status  更新するステータス
@@ -65,28 +87,6 @@ class UserController extends Controller
         }
 
         return response()->json();
-    }
-
-    /**
-     * ログインユーザーの取得
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function auth()
-    {
-        if (empty($this->auth_user)) {
-            return response()->json();
-        }
-
-        $auth_user = $this->auth_user->load('seat');
-
-        // 着席中の場合，部屋データを追加
-        if (!empty($auth_user->seat)) {
-            $auth_user->seat['section_id'] = $auth_user->seat->section_id;
-            $auth_user->seat['room_id'] = $auth_user->seat->section->room_id;
-        }
-
-        return response()->json($auth_user);
     }
 
     /**

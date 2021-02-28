@@ -31,7 +31,6 @@ Route::group(['middleware' => 'auth'], function () {
     |--------------------------------------------------------------------------
     */
     Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
-    Route::post('/status/{status?}', 'API\UserController@updateStatus');
     Route::get('/auth', 'API\UserController@auth');
 
 
@@ -41,6 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
         | ユーザー
         |--------------------------------------------------------------------------
         */
+        Route::post('/status/{status?}', 'UserController@updateStatus');
         Route::get('/users/{user_param}', 'UserController@show');
         Route::patch('/users', 'UserController@update');
         Route::patch('/users/{user}/follow', 'UserController@follow')->where('user', '[0-9]+');
