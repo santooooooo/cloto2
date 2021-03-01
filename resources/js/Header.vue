@@ -123,11 +123,8 @@ export default {
     authCheck: async function (check, oldCheck) {
       // ログインまたはリロード時
       if (check && !oldCheck) {
-        // 初期値の設定
-        if (this.authUser.status === null) {
-          await this.updateStatus('free');
-        }
-
+        // ステータスの更新
+        await this.updateStatus(this.authUser.status || 'free');
         this.status = this.authUser.status;
       }
     },
