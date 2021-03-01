@@ -21,6 +21,7 @@ import entrance from '@/views/entrance/Entrance';
 import information from '@/views/entrance/Information';
 import floor from '@/views/entrance/Floor';
 import room from '@/views/room/Room';
+import timeline from '@/views/timeline/Timeline';
 import notFound from '@/views/errors/NotFound';
 
 const router = new VueRouter({
@@ -80,6 +81,11 @@ const router = new VueRouter({
           component: karte,
         },
       ],
+    },
+    {
+      path: '/timeline',
+      name: 'timeline',
+      component: timeline,
     },
     {
       path: '*',

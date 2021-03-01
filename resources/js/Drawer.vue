@@ -40,6 +40,15 @@
           <v-list-item-title>マイページ</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+
+      <v-list-item exact :to="{ name: 'timeline' }">
+        <v-list-item-icon>
+          <v-icon>mdi-trending-up</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>タイムライン</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
 
     <template v-slot:append>
