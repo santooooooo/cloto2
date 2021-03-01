@@ -1,5 +1,5 @@
 export function post(username, icon, message) {
-  // 本番サーバのみ通知
+  // 本番サーバでのみ通知
   if (window.location.hostname === 'cloto.jp') {
     var data = {
       channel: process.env.MIX_SLACK_CHANNEL,

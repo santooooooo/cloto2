@@ -267,12 +267,14 @@ export default {
         var response = await axios.post('/api/kartes', input);
 
         if (response.status === OK) {
-          // ツイート
-          var tweet =
-            'https://twitter.com/intent/tweet?text=' +
-            this.substr(this.karteForm.body, 232) +
-            '&url=https://cloto.jp&hashtags=CLOTO&via=cloto_jp';
-          window.open(tweet, '_blank');
+          // 本番サーバでのみツイート
+          if (window.location.hostname === 'cloto.jp') {
+            var tweet =
+              'https://twitter.com/intent/tweet?text=' +
+              this.substr(this.karteForm.body, 232) +
+              '&url=https://cloto.jp&hashtags=CLOTO&via=cloto_jp';
+            window.open(tweet, '_blank');
+          }
 
           this.dialog = false;
 
