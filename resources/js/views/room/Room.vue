@@ -694,7 +694,11 @@ export default {
 
           if (response.status === OK) {
             // Slack通知
-            this.$slack('着席Bot', ':fire:', this.roomData.name + 'にユーザーが着席しました。');
+            this.$slack(
+              '着席Bot',
+              ':fire:',
+              this.roomData.name + 'に' + this.authUser.handlename + '様が着席しました。'
+            );
           }
           break;
 
@@ -706,7 +710,11 @@ export default {
 
           if (response.status === OK) {
             // Slack通知
-            this.$slack('退席Bot', ':feet:', this.roomData.name + 'からユーザーが退席しました。');
+            this.$slack(
+              '退席Bot',
+              ':feet:',
+              this.roomData.name + 'から' + this.authUser.handlename + '様が退席しました。'
+            );
           }
           break;
 

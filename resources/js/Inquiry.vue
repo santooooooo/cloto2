@@ -104,7 +104,7 @@ export default {
           this.$slack(
             '問い合わせチャットBot',
             ':speech_balloon:',
-            '問い合わせチャットが送信されました。'
+            this.authUser.handlename + '様が問い合わせチャットを送信しました。'
           );
         }
 

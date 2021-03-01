@@ -189,7 +189,11 @@ export default {
 
         if (this.apiStatus) {
           // Slack通知
-          this.$slack('新規登録Bot', ':tada:', '新規登録がありました！');
+          this.$slack(
+            '新規登録Bot',
+            ':tada:',
+            this.registerForm.handlename + '様が新規登録しました！'
+          );
 
           // ページ遷移
           window.location.pathname = '/email/verify';
