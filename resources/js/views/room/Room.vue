@@ -640,8 +640,8 @@ export default {
           this.loading = false;
         }
       } else if (target.type === 'user') {
-        this.profile.dialog = true;
         this.profile.username = String(target.username);
+        this.profile.dialog = true;
       }
     },
 
