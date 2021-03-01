@@ -71,6 +71,18 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        // 着席中の座席の状態を初期化
+        $seat = $user->seat;
+        if (!empty($seat)) {
+            $seat->fill(['status' => null, 'reservation_user_id' => null])->save();
+
+            // 予約中の座席の状態を初期化
+            $reservation_seat = $seat->where('reservation_user_id', $user->id)->first();
+            if (!empty($reservation_seat)) {
+                $reservation_seat->fill(['status' => null, 'reservation_user_id' => null])->save();
+            }
+        }
+
         // 初期アイコン以外の場合にはアイコンを削除
         if ($user->icon != self::DEFAULT_ICON_FILENAME) {
             Storage::delete(config('consts.storage.icon') . $user->icon);
