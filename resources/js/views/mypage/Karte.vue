@@ -188,7 +188,7 @@ export default {
   async created() {
     this.loading = true;
 
-    var response = await axios.get('/api/kartes');
+    var response = await axios.get('/api/kartes/' + this.authUser.id);
     this.kartes = response.data;
 
     this.loading = false;

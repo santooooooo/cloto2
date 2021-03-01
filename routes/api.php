@@ -67,7 +67,8 @@ Route::group(['middleware' => 'auth'], function () {
         | カルテ，タグ
         |--------------------------------------------------------------------------
         */
-        Route::resource('kartes', 'KarteController', ['only' => ['index', 'store']]);
+        Route::resource('kartes', 'KarteController', ['only' => ['store']]);
+        Route::get('/kartes/{user?}', 'KarteController@index')->where('user', '[0-9]+');
 
         Route::resource('tags', 'TagController', ['only' => ['index']]);
 
