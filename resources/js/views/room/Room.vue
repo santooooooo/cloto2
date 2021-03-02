@@ -41,6 +41,42 @@
     />
 
     <v-flex>
+      <v-card min-width="250" flat tile v-if="test">
+        <v-textarea
+          v-model="popup.message"
+          :maxlength="popup.max"
+          :loading="popup.loading"
+          append-outer-icon="mdi-send"
+          label="いまのきもちは？"
+          rows="2"
+          solo
+          hide-details
+          class="ma-1"
+          @click:append-outer="sendPopup"
+        ></v-textarea>
+        <v-row no-gutters class="my-2" justify="space-around">
+          <v-btn text>😄</v-btn>
+          <v-btn text>😂</v-btn>
+          <v-btn text>🤔</v-btn>
+          <v-btn text>👍</v-btn>
+          <v-btn text>👋</v-btn>
+          <v-btn text>💩</v-btn>
+        </v-row>
+
+        <v-divider class="mt-0"></v-divider>
+
+        <div class="overflow-y-auto" style="height: 80vh">
+          <div v-for="(popup, index) in popups.slice().reverse()" :key="index">
+            <p class="font-weight-bold mb-0 mx-1">
+              {{ popup.handlename }}
+              <small>{{ popup.username }}</small>
+            </p>
+            <p class="mb-0 mx-1">{{ popup.message }}</p>
+            <v-divider></v-divider>
+          </div>
+        </div>
+      </v-card>
+
       <!-- 教室 -->
       <v-row no-gutters justify="center">
         <div id="canvas-container" ref="canvasContainer" v-dragscroll>
@@ -86,35 +122,6 @@
         v-if="karte.dialog"
       />
     </v-flex>
-
-    <!-- 吹き出しメッセージ入力フォーム -->
-    <v-app-bar
-      dense
-      fixed
-      bottom
-      max-width="500"
-      class="ma-6"
-      id="popup-input"
-      v-if="authUser.seat"
-    >
-      <v-text-field
-        v-model="popup.message"
-        :maxlength="popup.max"
-        hide-details
-        single-line
-        label="吹き出しメッセージ"
-        :loading="popup.loading"
-        @keydown.enter="sendPopup"
-      ></v-text-field>
-
-      <v-btn icon :loading="popup.loading" @click="sendPopup">
-        <v-icon>mdi-send</v-icon>
-      </v-btn>
-
-      <v-btn icon @click="removePopup()">
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
-    </v-app-bar>
   </v-layout>
 </template>
 
@@ -151,6 +158,12 @@ export default {
   },
   data() {
     return {
+      announcement: {
+        loading: false, // ローディング制御
+        message: '', // アナウンス内容
+      },
+
+      test: true,
       loading: false, // ローディング制御
       canvas: null, // キャンバスエリア
       roomStatus: null, // 教室の状態
@@ -851,7 +864,8 @@ export default {
       this.popups.push({
         left: left,
         top: top,
-        user: event.handlename,
+        username: event.username,
+        handlename: event.handlename,
         message: event.message,
       });
 
@@ -1119,27 +1133,27 @@ export default {
     }
   }
 
-  .popup {
-    position: absolute;
-    max-width: 500px;
+  // .popup {
+  //   position: absolute;
+  //   max-width: 500px;
 
-    p {
-      padding: 5px 10px;
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 12px;
-      font-size: 20px;
-      font-weight: bold;
+  //   p {
+  //     padding: 5px 10px;
+  //     background: rgba(255, 255, 255, 0.7);
+  //     border-radius: 12px;
+  //     font-size: 20px;
+  //     font-weight: bold;
 
-      .v-icon {
-        font-size: 18px;
-        cursor: pointer;
+  //     .v-icon {
+  //       font-size: 18px;
+  //       cursor: pointer;
 
-        &:after {
-          background-color: initial;
-        }
-      }
-    }
-  }
+  //       &:after {
+  //         background-color: initial;
+  //       }
+  //     }
+  //   }
+  // }
 
   #popup-input {
     z-index: 1;
