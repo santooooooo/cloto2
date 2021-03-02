@@ -183,7 +183,9 @@ export default {
     announce: async function () {
       this.announcement.loading = true;
 
-      var response = await axios.post('/api/announce', { message: this.announcement.message });
+      var response = await axios.post('/api/rooms/announce', {
+        message: this.announcement.message,
+      });
 
       if (response.status === OK) {
         this.announcement.message = '';

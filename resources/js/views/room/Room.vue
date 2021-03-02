@@ -45,22 +45,22 @@
         <v-textarea
           v-model="popup.message"
           :maxlength="popup.max"
-          :loading="popup.loading"
+          :disabled="popup.loading"
           append-outer-icon="mdi-send"
           label="いまのきもちは？"
           rows="2"
           solo
           hide-details
           class="ma-1"
-          @click:append-outer="sendPopup"
+          @click:append-outer="submitChat()"
         ></v-textarea>
         <v-row no-gutters class="my-2" justify="space-around">
-          <v-btn text>😄</v-btn>
-          <v-btn text>😂</v-btn>
-          <v-btn text>🤔</v-btn>
-          <v-btn text>👍</v-btn>
-          <v-btn text>👋</v-btn>
-          <v-btn text>💩</v-btn>
+          <v-btn text :disabled="popup.loading" @click="submitChat('😄')">😄</v-btn>
+          <v-btn text :disabled="popup.loading" @click="submitChat('😂')">😂</v-btn>
+          <v-btn text :disabled="popup.loading" @click="submitChat('🤔')">🤔</v-btn>
+          <v-btn text :disabled="popup.loading" @click="submitChat('👍')">👍</v-btn>
+          <v-btn text :disabled="popup.loading" @click="submitChat('👋')">👋</v-btn>
+          <v-btn text :disabled="popup.loading" @click="submitChat('💩')">💩</v-btn>
         </v-row>
 
         <v-divider class="mt-0"></v-divider>
@@ -856,14 +856,8 @@ export default {
      * @param event 受信データ
      */
     addPopup: function (event) {
-      // 位置をランダムに設定
-      var left = 250 + Math.random() * (this.$refs.canvasContainer.clientWidth - 500) + 'px';
-      var top = 10 + Math.random() * (this.$windowHeight - 230) + 'px';
-
       // 追加
       this.popups.push({
-        left: left,
-        top: top,
         username: event.username,
         handlename: event.handlename,
         message: event.message,
@@ -890,18 +884,28 @@ export default {
     },
 
     /**
-     * 吹き出しメッセージの送信処理
+     * 部屋チャットの送信処理
      *
-     * @param event クリック or キーボードイベント
+     * @param String  emoji 絵文字
      */
-    sendPopup: async function (event) {
-      // クリックまたは日本語変換以外のEnter押下時に発火
-      if (event.type === 'click' || (event.type === 'keydown' && event.keyCode === 13)) {
+    submitChat: async function (emoji = null) {
+      if (emoji !== null) {
+        // 絵文字の送信
+        this.popup.loading = true;
+
+        var response = await axios.post('/api/rooms/chat', {
+          message: emoji,
+        });
+
+        this.popup.loading = false;
+      } else {
         if (this.popup.message !== '') {
           // メッセージの送信
           this.popup.loading = true;
 
-          var response = await axios.post('/api/post-popup', { message: this.popup.message });
+          var response = await axios.post('/api/rooms/chat', {
+            message: this.popup.message,
+          });
 
           if (response.status === OK) {
             this.popup.message = '';
@@ -1095,7 +1099,7 @@ export default {
         // 座席情報の更新
         this.roomData = event;
       })
-      .listen('PopupPosted', (event) => {
+      .listen('RoomChatPosted', (event) => {
         // 吹き出しメッセージの追加
         this.addPopup(event);
       });
@@ -1131,32 +1135,6 @@ export default {
     &::-webkit-scrollbar {
       display: none;
     }
-  }
-
-  // .popup {
-  //   position: absolute;
-  //   max-width: 500px;
-
-  //   p {
-  //     padding: 5px 10px;
-  //     background: rgba(255, 255, 255, 0.7);
-  //     border-radius: 12px;
-  //     font-size: 20px;
-  //     font-weight: bold;
-
-  //     .v-icon {
-  //       font-size: 18px;
-  //       cursor: pointer;
-
-  //       &:after {
-  //         background-color: initial;
-  //       }
-  //     }
-  //   }
-  // }
-
-  #popup-input {
-    z-index: 1;
   }
 
   #in-progress {
