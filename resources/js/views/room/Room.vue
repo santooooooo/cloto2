@@ -43,9 +43,9 @@
     <v-flex>
       <v-card min-width="250" flat tile v-if="test">
         <v-textarea
-          v-model="popup.message"
-          :maxlength="popup.max"
-          :disabled="popup.loading"
+          v-model="chat.message"
+          :maxlength="chat.max"
+          :disabled="chat.loading"
           append-outer-icon="mdi-send"
           label="いまのきもちは？"
           rows="2"
@@ -55,23 +55,23 @@
           @click:append-outer="submitChat()"
         ></v-textarea>
         <v-row no-gutters class="my-2" justify="space-around">
-          <v-btn text :disabled="popup.loading" @click="submitChat('😄')">😄</v-btn>
-          <v-btn text :disabled="popup.loading" @click="submitChat('😂')">😂</v-btn>
-          <v-btn text :disabled="popup.loading" @click="submitChat('🤔')">🤔</v-btn>
-          <v-btn text :disabled="popup.loading" @click="submitChat('👍')">👍</v-btn>
-          <v-btn text :disabled="popup.loading" @click="submitChat('👋')">👋</v-btn>
-          <v-btn text :disabled="popup.loading" @click="submitChat('💩')">💩</v-btn>
+          <v-btn text :disabled="chat.loading" @click="submitChat('😄')">😄</v-btn>
+          <v-btn text :disabled="chat.loading" @click="submitChat('😂')">😂</v-btn>
+          <v-btn text :disabled="chat.loading" @click="submitChat('🤔')">🤔</v-btn>
+          <v-btn text :disabled="chat.loading" @click="submitChat('👍')">👍</v-btn>
+          <v-btn text :disabled="chat.loading" @click="submitChat('👋')">👋</v-btn>
+          <v-btn text :disabled="chat.loading" @click="submitChat('💩')">💩</v-btn>
         </v-row>
 
         <v-divider class="mt-0"></v-divider>
 
         <div class="overflow-y-auto" style="height: 80vh">
-          <div v-for="(popup, index) in popups.slice().reverse()" :key="index">
+          <div v-for="(message, index) in messages.slice().reverse()" :key="index">
             <p class="font-weight-bold mb-0 mx-1">
-              {{ popup.handlename }}
-              <small>{{ popup.username }}</small>
+              {{ message.handlename }}
+              <small>{{ message.username }}</small>
             </p>
-            <p class="mb-0 mx-1">{{ popup.message }}</p>
+            <p class="mb-0 mx-1">{{ message.body }}</p>
             <v-divider></v-divider>
           </div>
         </div>
@@ -81,24 +81,6 @@
       <v-row no-gutters justify="center">
         <div id="canvas-container" ref="canvasContainer" v-dragscroll>
           <canvas :width="roomWidth" :height="roomHeight" id="canvas"></canvas>
-        </div>
-
-        <!-- 吹き出しメッセージ -->
-        <div
-          v-for="(popup, index) in popups"
-          :key="index"
-          class="popup"
-          :style="{ left: popup.left, top: popup.top }"
-        >
-          <p>
-            <v-row justify="end">
-              <v-icon class="mr-3" @click="removePopup(index)">mdi-close</v-icon>
-            </v-row>
-            <span>{{ popup.message }}</span>
-            <v-row justify="end">
-              <small class="mx-4">{{ popup.user }}</small>
-            </v-row>
-          </p>
         </div>
       </v-row>
 
@@ -134,7 +116,7 @@ import Media from '@/components/room/Media';
 import KarteDialog from '@/components/room/KarteDialog';
 import ProfileDialog from '@/components/room/ProfileDialog';
 import { OK } from '@/consts/status';
-import { CHIME_SOUND, RECEIVE_POPUP_SOUND } from '@/consts/sound';
+import { CHIME_SOUND } from '@/consts/sound';
 
 export default {
   head: {
@@ -176,11 +158,11 @@ export default {
         id: '', // 入室する通話室のID
         capacity: '', // 通話室の定員
       },
-      popups: [], // 吹き出しメッセージ
-      popup: {
+      messages: [], // チャットメッセージ一覧
+      chat: {
         max: 72, // 入力最大長
         loading: false, // ローディング制御
-        message: '', // 吹き出しメッセージ入力
+        message: '', // チャット入力
       },
       inProgress: {
         isShow: false, // いまやっていること吹き出し制御
@@ -851,39 +833,6 @@ export default {
     },
 
     /**
-     * 吹き出しメッセージの追加
-     *
-     * @param event 受信データ
-     */
-    addPopup: function (event) {
-      // 追加
-      this.popups.push({
-        username: event.username,
-        handlename: event.handlename,
-        message: event.message,
-      });
-
-      // 通知音
-      if (this.$store.getters['alert/isSoundOn']) {
-        RECEIVE_POPUP_SOUND.play();
-      }
-    },
-
-    /**
-     * 吹き出しメッセージの削除
-     *
-     * @param Number  index 削除するメッセージのインデックス
-     */
-    removePopup: function (index = null) {
-      if (index !== null) {
-        this.popups.splice(index, 1);
-      } else {
-        // 全削除
-        this.popups = [];
-      }
-    },
-
-    /**
      * 部屋チャットの送信処理
      *
      * @param String  emoji 絵文字
@@ -891,27 +840,27 @@ export default {
     submitChat: async function (emoji = null) {
       if (emoji !== null) {
         // 絵文字の送信
-        this.popup.loading = true;
+        this.chat.loading = true;
 
         var response = await axios.post('/api/rooms/chat', {
           message: emoji,
         });
 
-        this.popup.loading = false;
+        this.chat.loading = false;
       } else {
-        if (this.popup.message !== '') {
-          // メッセージの送信
-          this.popup.loading = true;
+        // メッセージの送信
+        if (this.chat.message !== '') {
+          this.chat.loading = true;
 
           var response = await axios.post('/api/rooms/chat', {
-            message: this.popup.message,
+            message: this.chat.message,
           });
 
           if (response.status === OK) {
-            this.popup.message = '';
+            this.chat.message = '';
           }
 
-          this.popup.loading = false;
+          this.chat.loading = false;
         }
       }
     },
@@ -1100,8 +1049,12 @@ export default {
         this.roomData = event;
       })
       .listen('RoomChatPosted', (event) => {
-        // 吹き出しメッセージの追加
-        this.addPopup(event);
+        // チャットメッセージの追加
+        this.messages.push({
+          username: event.username,
+          handlename: event.handlename,
+          body: event.message,
+        });
       });
 
     // ロード終了
