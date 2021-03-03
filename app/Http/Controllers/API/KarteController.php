@@ -44,17 +44,6 @@ class KarteController extends Controller
     }
 
     /**
-     * カルテの詳細を取得
-     *
-     * @param  \App\Models\Karte  $karte
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Karte $karte)
-    {
-        return response()->json($karte);
-    }
-
-    /**
      * カルテの作成
      *
      * @param  \Illuminate\Http\Request  $request

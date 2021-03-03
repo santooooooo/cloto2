@@ -46,6 +46,10 @@ class RoomChatPosted implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        return ['username' => $this->user->username, 'handlename' => $this->user->handlename, 'message' => $this->message];
+        return [
+            'username' => $this->user->username,
+            'handlename' => $this->user->handlename,
+            'message' => htmlspecialchars($this->message, ENT_QUOTES)
+        ];
     }
 }
