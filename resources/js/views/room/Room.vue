@@ -51,8 +51,9 @@
             :disabled="chat.loading || !authUser.seat"
             append-outer-icon="mdi-send"
             label="いまのきもちは？"
-            rows="2"
+            rows="5"
             solo
+            no-resize
             hide-details
             class="pa-1"
             @click:append-outer="submitChat()"
@@ -212,7 +213,7 @@ export default {
     },
     messageContainerHeight() {
       return {
-        height: this.$windowHeight - 243 + 'px',
+        height: this.$windowHeight - 327 + 'px',
       };
     },
   },
