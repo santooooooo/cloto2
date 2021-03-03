@@ -37,7 +37,12 @@
 
             <v-col>
               <v-card-text class="pa-2 white--text title font-weight-bold"> 画像 </v-card-text>
-              <v-img contain :src="getImagePath(karte)" class="mx-auto" v-if="karte.image"></v-img>
+              <v-img
+                contain
+                :src="$karte(karte, username) + karte.image"
+                class="mx-auto"
+                v-if="karte.image"
+              ></v-img>
               <v-sheet
                 color="grey lighten-2"
                 width="450"
@@ -89,43 +94,6 @@ export default {
       } else {
         this.dialog = false;
       }
-    },
-  },
-  methods: {
-    /**
-     * 画像パスの取得
-     *
-     * @param Object  karte カルテ
-     * @returns String  画像パス
-     */
-    getImagePath(karte) {
-      // 日時の取得
-      var dateTime = new Date(karte.created_at);
-
-      var year = String(dateTime.getFullYear());
-      // 2桁で月を取得
-      var month = String(dateTime.getMonth() + 1);
-      if (month.length === 1) {
-        month = '0' + month;
-      }
-      var day = String(dateTime.getDate());
-
-      // 2桁で時間を取得
-      var hour = String(dateTime.getHours());
-      if (hour.length === 1) {
-        hour = '0' + hour;
-      }
-      // 2桁で分数を取得
-      var minute = String(dateTime.getMinutes());
-      if (minute.length === 1) {
-        minute = '0' + minute;
-      }
-
-      var date = year + '_' + month + day;
-      var time = hour + minute;
-
-      var dir = this.$storage('karte') + this.username + '/' + date + '_' + time + '/';
-      return dir + karte.image;
     },
   },
 };

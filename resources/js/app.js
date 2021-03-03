@@ -12,6 +12,7 @@ window.Functions = require('./plugins/functions');
  * Vueプロトタイプの設定
  */
 Vue.prototype.$storage = window.Storage.getStoragePath;
+Vue.prototype.$karte = window.Storage.getKartePath;
 Vue.prototype.$formatStr = window.Functions.formatStr;
 Vue.prototype.$slack = window.Functions.slackPost;
 
