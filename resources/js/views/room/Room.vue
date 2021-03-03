@@ -68,8 +68,10 @@
         <div class="overflow-y-auto" style="height: 80vh">
           <div v-for="(message, index) in messages.slice().reverse()" :key="index">
             <p class="font-weight-bold mb-0 mx-1">
-              {{ message.handlename }}
-              <small>{{ message.username }}</small>
+              <span @click="showProfile(message.username)"
+                >{{ message.handlename }}
+                <small>{{ message.username }}</small>
+              </span>
             </p>
             <p class="mb-0 mx-1">{{ message.body }}</p>
             <v-divider></v-divider>
@@ -635,8 +637,7 @@ export default {
           this.loading = false;
         }
       } else if (target.type === 'user') {
-        this.profile.username = String(target.username);
-        this.profile.dialog = true;
+        this.showProfile(String(target.username));
       }
     },
 
@@ -830,6 +831,16 @@ export default {
     inputKarte: function (confirm) {
       this.karte.confirm = confirm;
       this.karte.dialog = true;
+    },
+
+    /**
+     * プロフィールの表示
+     *
+     * @param String  username  ユーザー名
+     */
+    showProfile: function (username) {
+      this.profile.username = username;
+      this.profile.dialog = true;
     },
 
     /**
