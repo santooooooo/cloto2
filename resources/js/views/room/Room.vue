@@ -778,6 +778,9 @@ export default {
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
+
+      // 入室メッセージの送信
+      this.submitChat('🚀');
     },
 
     /**
@@ -797,6 +800,9 @@ export default {
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
+
+      // 入室メッセージの送信
+      this.submitChat('🚀');
     },
 
     /**
