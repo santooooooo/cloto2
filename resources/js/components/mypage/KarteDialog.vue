@@ -30,7 +30,7 @@
               <v-card rounded="xl" min-height="48" max-width="457" class="mb-4 text-left">
                 <p
                   class="px-6 py-2 text-body-1"
-                  v-html="karte.reference ? setUrl(karte.reference) : ''"
+                  v-html="karte.reference ? $formatStr(karte.reference) : ''"
                 ></p>
               </v-card>
             </v-col>
@@ -130,19 +130,6 @@ export default {
 
       var dir = this.$storage('karte') + this.authUser.username + '/' + date + '_' + time + '/';
       return dir + karte.image;
-    },
-    /**
-     * 参考文献のURL置き換え
-     *
-     * @param   String  reference 参考文献
-     * @returns String  置換後の参考文献
-     */
-    setUrl: function (reference) {
-      const url = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
-      return reference.replace(
-        url,
-        '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
-      );
     },
   },
 };

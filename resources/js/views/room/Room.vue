@@ -89,7 +89,7 @@
                 <small>{{ message.username }}</small>
               </span>
             </p>
-            <pre class="text-body-2 mb-0 mx-1">{{ message.body }}</pre>
+            <pre class="text-body-2 mb-0 mx-1" v-html="$formatStr(message.body)"></pre>
             <v-divider></v-divider>
           </div>
         </div>
