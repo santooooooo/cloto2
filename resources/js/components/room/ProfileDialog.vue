@@ -228,7 +228,7 @@ export default {
     /**
      * 追加ダイアログの表示
      *
-     * @param String  username  表示するユーザー名
+     * @param {String} username - 表示するユーザー名
      */
     showProfile: function (username) {
       this.profile.username = username;

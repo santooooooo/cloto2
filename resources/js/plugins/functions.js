@@ -1,8 +1,8 @@
 /**
  * 文字列の整形（エスケープ処理+URLのセット）
  *
- * @param   String  str 整形する文字列
- * @returns String  整形後の文字列
+ * @param {String} str - 整形する文字列
+ * @return {String} 整形後の文字列
  */
 export function formatStr(str) {
   const url = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
@@ -17,9 +17,9 @@ export function formatStr(str) {
 /**
  * Slack通知
  *
- * @param   String  username 投稿するユーザー名
- * @param   String  icon     投稿時のアイコン
- * @param   String  message  通知の内容
+ * @param {String} username - 投稿するユーザー名
+ * @param {String} icon - 投稿時のアイコン
+ * @param {String} message - 通知の内容
  */
 export function slackPost(username, icon, message) {
   // 本番サーバでのみ通知

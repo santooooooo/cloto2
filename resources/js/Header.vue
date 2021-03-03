@@ -133,7 +133,7 @@ export default {
     /**
      * ステータス更新処理
      *
-     * @param String  status  ステータス
+     * @param {String} status - ステータス
      */
     updateStatus: async function (status) {
       await axios.post('/api/status/' + status);

@@ -224,7 +224,7 @@ export default {
     /**
      * カルテ一覧の取得
      *
-     * @param Object  user  カルテを取得するユーザー
+     * @param {Object} user - カルテを取得するユーザー
      */
     getKartes: async function (user) {
       this.kartes.user = user;

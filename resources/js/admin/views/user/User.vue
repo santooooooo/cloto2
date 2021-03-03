@@ -223,7 +223,7 @@ export default {
     /**
      * ユーザーデータの編集
      *
-     * @param Object  user  編集するユーザー
+     * @param {Object} user - 編集するユーザー
      */
     editUser: function (user) {
       this.editUserForm.index = this.users.indexOf(user);
@@ -281,7 +281,7 @@ export default {
     /**
      * ユーザーの削除
      *
-     * @param Object  user  削除するユーザー
+     * @param {Object} user - 削除するユーザー
      */
     deleteUser: function (user) {
       this.deleteUserForm.data = Object.assign({}, user);

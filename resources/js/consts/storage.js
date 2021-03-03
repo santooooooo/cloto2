@@ -15,7 +15,7 @@ const KARTE = '/storage/user/karte/';
 /**
  * パスの取得
  *
- * @param {String} name 取得するディレクトリ
+ * @param {String} name - 取得するディレクトリ
  * @return {String} ディレクトリのパス
  */
 export function getStoragePath(name) {
@@ -48,8 +48,8 @@ export function getStoragePath(name) {
 /**
  * カルテデータパスの取得
  *
- * @param {Object} karte 取得するカルテ
- * @param {String} username ユーザー名
+ * @param {Object} karte - 取得するカルテ
+ * @param {String} username - ユーザー名
  * @return {String} ディレクトリのパス
  */
 export function getKartePath(karte, username) {

@@ -56,7 +56,7 @@ export default {
     /**
      * イベント一覧画像の送信
      *
-     * @param event 入力イベント
+     * @param {Event} event - 入力イベント
      */
     submitEvent: async function (event) {
       if (event.target.files[0]) {

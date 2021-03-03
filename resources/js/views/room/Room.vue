@@ -303,10 +303,10 @@ export default {
     /**
      * キャンバス上のオブジェクトの取得
      *
-     * @param   String  type  検索するタイプ
-     * @param   String  key   要素
-     * @param   Number  value 値
-     * @returns Object  取得したオブジェクト
+     * @param {String} type - 検索するタイプ
+     * @param {String} key - 要素
+     * @param {Number} value - 値
+     * @return {Object} 取得したオブジェクト
      */
     getCanvasObject: function (type, key, value) {
       var object = this.canvas.getObjects().filter((object) => {
@@ -319,8 +319,8 @@ export default {
     /**
      * 座席色の設定
      *
-     * @param Object  seatObject  設定する座席オブジェクト
-     * @param String  color       設定する色
+     * @param {Object} seatObject - 設定する座席オブジェクト
+     * @param {String} color - 設定する色
      */
     setColor: function (seatObject, color) {
       seatObject.set({ fill: color });
@@ -330,7 +330,7 @@ export default {
     /**
      * 座席色の初期化
      *
-     * @param Object  seatObject  初期化する座席オブジェクト
+     * @param {Object} seatObject - 初期化する座席オブジェクト
      */
     resetColor: function (seatObject) {
       this.setColor(seatObject, '');
@@ -339,7 +339,7 @@ export default {
     /**
      * ユーザーの設置
      *
-     * @param Object  seat  着席している座席
+     * @param {Object} seat - 着席している座席
      */
     setUser: function (seat) {
       // 念の為ユーザーの存在確認
@@ -391,7 +391,7 @@ export default {
     /**
      * ユーザーの削除
      *
-     * @param Object  userObject  削除するユーザーオブジェクト
+     * @param {Object} userObject - 削除するユーザーオブジェクト
      */
     removeUser: function (userObject) {
       this.canvas.remove(userObject);
@@ -401,8 +401,8 @@ export default {
     /**
      * ステータスの設定
      *
-     * @param Object  userObject  設定するユーザーオブジェクト
-     * @param String  status      ステータス
+     * @param {Object} userObject - 設定するユーザーオブジェクト
+     * @param {String} status - ステータス
      */
     setStatus: function (userObject, status) {
       var color;
@@ -427,7 +427,7 @@ export default {
     /**
      * 吹き出しの表示
      *
-     * @param Object  userObject  表示するユーザーオブジェクト
+     * @param {Object} userObject - 表示するユーザーオブジェクト
      */
     showInProgress: function (userObject) {
       // 吹き出しの位置を設定
@@ -450,7 +450,7 @@ export default {
     /**
      * キャンバスマウスオーバーイベント
      *
-     * @param target イベントの対象
+     * @param {Object} target - イベントの対象
      */
     canvasMouseOver: function (target) {
       if (target.type === 'seat') {
@@ -504,7 +504,7 @@ export default {
     /**
      * キャンバスマウスオーバー解除イベント
      *
-     * @param target イベントの対象
+     * @param {Object} target - イベントの対象
      */
     canvasMouseOut: function (target) {
       if (target.type === 'seat') {
@@ -519,7 +519,7 @@ export default {
     /**
      * キャンバスクリックイベント
      *
-     * @param target イベントの対象
+     * @param {Object} target - イベントの対象
      */
     canvasMouseDown: async function (target) {
       if (target.type === 'seat') {
@@ -666,7 +666,7 @@ export default {
     /**
      * キャンバススクロールイベント
      *
-     * @param event マウスイベント
+     * @param {Event} event - マウスイベント
      */
     canvasScroll: function (event) {
       // 拡大率の計算
@@ -688,7 +688,7 @@ export default {
     /**
      * 拡大の適用
      *
-     * @param Number  zoom  拡大率
+     * @param {Number} zoom - 拡大率
      */
     setZoom: function (zoom) {
       this.canvas.setZoom(zoom);
@@ -699,8 +699,8 @@ export default {
     /**
      * ユーザーの行動の反映
      *
-     * @param String  action  行動
-     * @param Object  seatObject 状態を変更する座席
+     * @param {String} action - 行動
+     * @param {Object} seatObject - 状態を変更する座席
      */
     userAction: async function (action, seatObject = null) {
       switch (action) {
@@ -824,8 +824,8 @@ export default {
     /**
      * 通話室への入室
      *
-     * @param String  callId    入室する通話室ID
-     * @param Number  capacity  通話室の定員
+     * @param {String} callId - 入室する通話室ID
+     * @param {Number} capacity - 通話室の定員
      */
     enterCall: function (callId, capacity) {
       this.call.id = callId;
@@ -854,7 +854,7 @@ export default {
     /**
      * カルテの記入
      *
-     * @param Boolean confirm 自習継続の確認をするか
+     * @param {Boolean} confirm - 自習継続の確認をするか
      */
     inputKarte: function (confirm) {
       this.karte.confirm = confirm;
@@ -864,7 +864,7 @@ export default {
     /**
      * プロフィールの表示
      *
-     * @param String  username  ユーザー名
+     * @param {String} username - ユーザー名
      */
     showProfile: function (username) {
       this.profile.username = username;
@@ -874,7 +874,7 @@ export default {
     /**
      * 部屋チャットの送信処理
      *
-     * @param String  emoji 絵文字
+     * @param {String} emoji - 絵文字
      */
     submitChat: async function (emoji = null) {
       if (emoji !== null) {

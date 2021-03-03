@@ -203,7 +203,7 @@ export default {
     /**
      * 管理者データの編集
      *
-     * @param Object  admin  編集する管理者
+     * @param {Object} admin - 編集する管理者
      */
     editAdmin: function (admin) {
       this.editAdminForm.index = this.admins.indexOf(admin);
@@ -270,7 +270,7 @@ export default {
     /**
      * 管理者の削除
      *
-     * @param Object  admin  削除する管理者
+     * @param {Object} admin - 削除する管理者
      */
     deleteAdmin: function (admin) {
       this.deleteAdminForm.data = Object.assign({}, admin);

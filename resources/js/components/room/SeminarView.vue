@@ -715,7 +715,7 @@ export default {
     /**
      * 登壇者の追加
      *
-     * @param MediaStream stream  参加した登壇者のストリーム
+     * @param {MediaStream} stream - 参加した登壇者のストリーム
      */
     joinSpeaker: async function (stream) {
       // 参加者がいるか確認
@@ -761,8 +761,8 @@ export default {
     /**
      * 視聴者の追加
      *
-     * @param String  peerId  参加した視聴者のPeerID
-     * @param Object  user    参加した視聴者のデータ
+     * @param {String} peerId - 参加した視聴者のPeerID
+     * @param {Object} user - 参加した視聴者のデータ
      */
     joinViewer: async function (peerId, user) {
       // 参加者がいるか確認
@@ -792,7 +792,7 @@ export default {
     /**
      * 参加者の退出
      *
-     * @param String peerId  退出したユーザーのPeerID
+     * @param {String} peerId - 退出したユーザーのPeerID
      */
     leaveUser: function (peerId) {
       // 通知音
@@ -809,7 +809,7 @@ export default {
     /**
      * 音声検知の開始
      *
-     * @param MediaStream stream  音声検知するユーザーのストリーム
+     * @param {MediaStream} stream - 音声検知するユーザーのストリーム
      */
     startVoiceDetection: function (stream) {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -837,7 +837,7 @@ export default {
     /**
      * 発言者の更新
      *
-     * @param String peerId  発言中のユーザーのPeerID
+     * @param {String} peerId - 発言中のユーザーのPeerID
      */
     speakerUpdate(peerId) {
       this.speakerId = peerId;
@@ -864,7 +864,7 @@ export default {
     /**
      * メッセージの送信処理
      *
-     * @param event クリック or キーボードイベント
+     * @param {Event} event - クリック or キーボードイベント
      */
     sendMessage: function (event) {
       // クリックまたは日本語変換以外のEnter押下時に発火
@@ -883,8 +883,8 @@ export default {
     /**
      * メッセージの追加処理
      *
-     * @param String handlename 表示名
-     * @param String text 内容
+     * @param {String} handlename - 表示名
+     * @param {String} text - 内容
      */
     addMessage: function (handlename, text) {
       // メッセージの追加
@@ -904,7 +904,7 @@ export default {
     /**
      * ピン留め
      *
-     * @param Object  participant ピン留めする参加者
+     * @param {Object} participant - ピン留めする参加者
      */
     pin: function (participant) {
       // 既にピン留めされているユーザーを解除
@@ -918,7 +918,7 @@ export default {
     /**
      * プロフィールの表示
      *
-     * @param String  username  プロフィールを表示するユーザー名
+     * @param {String} username - プロフィールを表示するユーザー名
      */
     showProfile: function (username) {
       this.profile.username = username;
@@ -928,7 +928,7 @@ export default {
     /**
      * ツールバーの表示制御
      *
-     * @param event マウス移動イベント
+     * @param {Event} event - マウス移動イベント
      */
     showAppBar: function (event = null) {
       // マウスが動作すると表示
@@ -969,7 +969,7 @@ export default {
     /**
      * エラー発生時のイベント
      *
-     * @param String  message エラーメッセージ
+     * @param {String} message - エラーメッセージ
      */
     errorEvent: function (message) {
       this.$store.dispatch('alert/error', message);
