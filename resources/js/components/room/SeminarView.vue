@@ -887,12 +887,10 @@ export default {
      * @param String text 内容
      */
     addMessage: function (handlename, text) {
-      const url = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
-
       // メッセージの追加
       this.chat.messages.push({
         handlename: handlename,
-        text: text.replace(url, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'),
+        text: this.$formatStr(text),
       });
 
       // 最下部へスクロール（メッセージのDOM挿入後に実行）
