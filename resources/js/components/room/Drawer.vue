@@ -2,6 +2,19 @@
   <v-card class="mx-auto" width="250" flat tile>
     <v-navigation-drawer permanent>
       <v-list>
+        <v-row no-gutters justify="end">
+          <v-btn
+            small
+            depressed
+            color="primary"
+            class="mr-2"
+            @click="$emit('toggle-chat', !chatIsShow)"
+          >
+            <v-icon>mdi-message-text-outline</v-icon>
+            <v-icon>{{ chatIsShow ? 'mdi-arrow-left' : 'mdi-arrow-right' }}</v-icon>
+          </v-btn>
+        </v-row>
+
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-list-item v-bind="attrs" v-on="on">
@@ -120,6 +133,7 @@ export default {
   props: {
     roomName: String,
     roomStatus: String,
+    chatIsShow: Boolean,
   },
   data() {
     return {

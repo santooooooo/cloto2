@@ -8,6 +8,8 @@
     <Drawer
       :room-name="roomData.name"
       :room-status="roomStatus"
+      :chat-is-show="chat.isShow"
+      @toggle-chat="chat.isShow = $event"
       @input-karte="inputKarte(true)"
       @leave-room="leaveRoom()"
     />
@@ -41,31 +43,45 @@
     />
 
     <v-flex>
-      <v-card min-width="250" flat tile v-if="test">
-        <v-textarea
-          v-model="chat.message"
-          :maxlength="chat.max"
-          :disabled="chat.loading"
-          append-outer-icon="mdi-send"
-          label="いまのきもちは？"
-          rows="2"
-          solo
-          hide-details
-          class="ma-1"
-          @click:append-outer="submitChat()"
-        ></v-textarea>
-        <v-row no-gutters class="my-2" justify="space-around">
-          <v-btn text :disabled="chat.loading" @click="submitChat('😄')">😄</v-btn>
-          <v-btn text :disabled="chat.loading" @click="submitChat('😂')">😂</v-btn>
-          <v-btn text :disabled="chat.loading" @click="submitChat('🤔')">🤔</v-btn>
-          <v-btn text :disabled="chat.loading" @click="submitChat('👍')">👍</v-btn>
-          <v-btn text :disabled="chat.loading" @click="submitChat('👋')">👋</v-btn>
-          <v-btn text :disabled="chat.loading" @click="submitChat('💩')">💩</v-btn>
-        </v-row>
+      <v-card width="250" tile color="rgba(255, 255, 255, 0.8)" id="chat" v-if="chat.isShow">
+        <div id="input">
+          <v-textarea
+            v-model="chat.message"
+            :maxlength="chat.max"
+            :disabled="chat.loading || !authUser.seat"
+            append-outer-icon="mdi-send"
+            label="いまのきもちは？"
+            rows="2"
+            solo
+            hide-details
+            class="pa-1"
+            @click:append-outer="submitChat()"
+          ></v-textarea>
+          <v-row no-gutters class="py-2" justify="space-around">
+            <v-btn text :disabled="chat.loading || !authUser.seat" @click="submitChat('😄')">
+              😄
+            </v-btn>
+            <v-btn text :disabled="chat.loading || !authUser.seat" @click="submitChat('😂')">
+              😂
+            </v-btn>
+            <v-btn text :disabled="chat.loading || !authUser.seat" @click="submitChat('🤔')">
+              🤔
+            </v-btn>
+            <v-btn text :disabled="chat.loading || !authUser.seat" @click="submitChat('👍')">
+              👍
+            </v-btn>
+            <v-btn text :disabled="chat.loading || !authUser.seat" @click="submitChat('👋')">
+              👋
+            </v-btn>
+            <v-btn text :disabled="chat.loading || !authUser.seat" @click="submitChat('💩')">
+              💩
+            </v-btn>
+          </v-row>
+        </div>
 
         <v-divider class="mt-0"></v-divider>
 
-        <div class="overflow-y-auto" style="height: 80vh">
+        <div class="overflow-y-auto" :style="messageContainerHeight">
           <div v-for="(message, index) in messages.slice().reverse()" :key="index">
             <p class="font-weight-bold mb-0 mx-1">
               <span @click="showProfile(message.username)"
@@ -73,7 +89,7 @@
                 <small>{{ message.username }}</small>
               </span>
             </p>
-            <p class="mb-0 mx-1">{{ message.body }}</p>
+            <pre class="text-body-2 mb-0 mx-1">{{ message.body }}</pre>
             <v-divider></v-divider>
           </div>
         </div>
@@ -162,7 +178,8 @@ export default {
       },
       messages: [], // チャットメッセージ一覧
       chat: {
-        max: 72, // 入力最大長
+        isShow: true, // チャット欄表示制御
+        max: 200, // 入力最大長
         loading: false, // ローディング制御
         message: '', // チャット入力
       },
@@ -192,6 +209,11 @@ export default {
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
+    },
+    messageContainerHeight() {
+      return {
+        height: this.$windowHeight - 243 + 'px',
+      };
     },
   },
 
@@ -637,7 +659,7 @@ export default {
           this.loading = false;
         }
       } else if (target.type === 'user') {
-        this.showProfile(String(target.username));
+        this.showProfile(target.username);
       }
     },
 
@@ -1111,6 +1133,24 @@ export default {
       border: 2px solid #000000;
       border-radius: 10px;
       font-weight: bold;
+    }
+  }
+
+  #chat {
+    position: absolute;
+    z-index: 1;
+    border: none;
+
+    #input {
+      background-color: #ffffff;
+    }
+
+    span {
+      cursor: pointer;
+    }
+
+    pre {
+      white-space: pre-wrap;
     }
   }
 }
