@@ -86,7 +86,7 @@ export default {
     /**
      * 問い合わせの送信
      *
-     * @param Object message 送信データ
+     * @param {Object} message - 送信データ
      */
     submit: async function (message) {
       if (!this.loading) {
@@ -115,8 +115,8 @@ export default {
     /**
      * 投稿者の設定
      *
-     * @param   String  author  投稿者
-     * @returns String  show    変換済みの投稿者
+     * @param {String} author - 投稿者
+     * @return {String} 変換済みの投稿者
      */
     setAuthor: function (author) {
       var show;

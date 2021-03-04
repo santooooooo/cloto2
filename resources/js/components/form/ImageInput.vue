@@ -124,7 +124,7 @@ export default {
     /**
      * 画像の入力
      *
-     * @param event 画像入力イベント
+     * @param {Event} event - 画像入力イベント
      */
     input: function (event) {
       this.areaColor = '#ffffff';

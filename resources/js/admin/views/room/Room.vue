@@ -154,7 +154,7 @@ export default {
     /**
      * 部屋データの編集
      *
-     * @param Object  room  編集する部屋
+     * @param {Object} room - 編集する部屋
      */
     editRoom: function (room) {
       this.editRoomForm.index = this.rooms.indexOf(room);
@@ -186,7 +186,7 @@ export default {
     /**
      * 画像の入力
      *
-     * @param event 入力イベント
+     * @param {Event} event - 入力イベント
      */
     inputImage: function (event) {
       this.editRoomForm.background = event.target.files[0];
@@ -195,8 +195,8 @@ export default {
     /**
      * 時刻データの編集
      *
-     * @param Number  index 時間割に対する時刻のインデックス（表示データの更新で使用）
-     * @param String  time  時刻
+     * @param {Number} index - 時間割に対する時刻のインデックス（表示データの更新で使用）
+     * @param {String} time - 時刻
      */
     editTimetable: function (index, time) {
       this.timePicker.index = index;

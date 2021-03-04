@@ -9,7 +9,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User;
 
-class PopupPosted implements ShouldBroadcast
+class RoomChatPosted implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -46,6 +46,10 @@ class PopupPosted implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        return ['handlename' => $this->user->handlename, 'message' => $this->message];
+        return [
+            'username' => $this->user->username,
+            'handlename' => $this->user->handlename,
+            'message' => htmlspecialchars($this->message, ENT_QUOTES)
+        ];
     }
 }

@@ -228,7 +228,7 @@ export default {
     /**
      * タグの入力決定
      *
-     * @param Array tagIds 入力されたタグのID
+     * @param {Array} tagIds - 入力されたタグのID
      */
     inputTag: function (tagIds) {
       this.karteForm.tag = tagIds;
@@ -238,8 +238,8 @@ export default {
     /**
      * 選択済みタグの表示
      *
-     * @param   Number  tagId 入力されたタグのID
-     * @returns String  タグ名
+     * @param {Number} tagId - 入力されたタグのID
+     * @return {String} タグ名
      */
     getSelectedTagName: function (tagId) {
       return this.tag.data.filter((item) => {
@@ -267,12 +267,14 @@ export default {
         var response = await axios.post('/api/kartes', input);
 
         if (response.status === OK) {
-          // ツイート
-          var tweet =
-            'https://twitter.com/intent/tweet?text=' +
-            this.substr(this.karteForm.body, 232) +
-            '&url=https://cloto.jp&hashtags=CLOTO&via=cloto_jp';
-          window.open(tweet, '_blank');
+          // 本番サーバでのみツイート
+          if (window.location.hostname === 'cloto.jp') {
+            var tweet =
+              'https://twitter.com/intent/tweet?text=' +
+              this.substr(this.karteForm.body, 232) +
+              '&url=https://cloto.jp&hashtags=CLOTO&via=cloto_jp';
+            window.open(tweet, '_blank');
+          }
 
           this.dialog = false;
 
@@ -291,9 +293,9 @@ export default {
     /**
      * 文字列のバイト切り出し
      *
-     * @param String  text  切り出すテキスト
-     * @param Number  byte  バイト数
-     * @returns String  切り出し後のテキスト
+     * @param {String} text - 切り出すテキスト
+     * @param {Number} byte - バイト数
+     * @return {String} 切り出し後のテキスト
      */
     substr: function (text, byte) {
       var text_array = text.split('');

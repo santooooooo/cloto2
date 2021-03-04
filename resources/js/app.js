@@ -6,13 +6,15 @@ require('fabric');
 window.Vue = require('vue');
 window.Peer = require('skyway-js');
 window.Storage = require('./consts/storage');
-window.Slack = require('./plugins/slack');
+window.Functions = require('./plugins/functions');
 
 /**
  * Vueプロトタイプの設定
  */
 Vue.prototype.$storage = window.Storage.getStoragePath;
-Vue.prototype.$slack = window.Slack.post;
+Vue.prototype.$karte = window.Storage.getKartePath;
+Vue.prototype.$formatStr = window.Functions.formatStr;
+Vue.prototype.$slack = window.Functions.slackPost;
 
 /**
  * Vueコンポーネントの読み込み

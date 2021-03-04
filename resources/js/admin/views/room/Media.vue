@@ -163,7 +163,7 @@ export default {
     /**
      * 座席の選択
      *
-     * @param Object  room  選択した部屋
+     * @param {Object} room - 選択した部屋
      */
     selectSeat: function (room) {
       // メディア視聴席のみ取り出し
@@ -183,7 +183,7 @@ export default {
     /**
      * 座席のメディアデータの編集
      *
-     * @param Object  seatId  編集する座席ID
+     * @param {Object} seatId - 編集する座席ID
      */
     editMedia: function (seatId) {
       // 入力値の初期化
@@ -198,7 +198,7 @@ export default {
     /**
      * ファイルの入力
      *
-     * @param event 入力イベント
+     * @param {Event} event - 入力イベント
      */
     inputFile: function (event) {
       this.editMediaForm.file = event.target.files[0];

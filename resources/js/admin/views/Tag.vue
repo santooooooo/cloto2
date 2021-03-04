@@ -147,7 +147,7 @@ export default {
     /**
      * タグの編集
      *
-     * @param Object  tag  編集するタグ
+     * @param {Object} tag - 編集するタグ
      */
     editTag: function (tag) {
       this.editTagForm.index = this.tags.indexOf(tag);
@@ -206,7 +206,7 @@ export default {
     /**
      * タグの削除
      *
-     * @param Object  tag  削除するタグ
+     * @param {Object} tag - 削除するタグ
      */
     deleteTag: function (tag) {
       this.deleteTagForm.data = Object.assign({}, tag);

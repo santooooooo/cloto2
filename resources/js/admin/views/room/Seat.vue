@@ -199,7 +199,7 @@ export default {
     /**
      * 座席データの編集
      *
-     * @param Object  room  編集する部屋
+     * @param {Object} room - 編集する部屋
      */
     editSeat: async function (room) {
       this.editSeatForm.data = Object.assign({}, room);
@@ -223,10 +223,10 @@ export default {
     /**
      * 編集データの保存
      *
-     * @param Number  seatId    更新する座席ID
-     * @param String  name      座席名
-     * @param Number  size      サイズ
-     * @param Object  position  座標
+     * @param {Number} seatId - 更新する座席ID
+     * @param {String} name - 座席名
+     * @param {Number} size - サイズ
+     * @param {Object} position - 座標
      */
     submit: async function (seatId, name, size, position) {
       if (this.$refs.editSeatForm.validate()) {

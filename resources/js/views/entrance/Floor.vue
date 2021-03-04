@@ -109,7 +109,7 @@ export default {
     /**
      * ユーザーの設置
      *
-     * @param Object  seat  着席している座席
+     * @param {Object} seat - 着席している座席
      */
     setUser: function (seat) {
       // 念の為ユーザーの存在確認
@@ -172,7 +172,7 @@ export default {
     /**
      * 拡大の適用
      *
-     * @param Number  zoom  拡大率
+     * @param {Number} zoom - 拡大率
      */
     setZoom: function (zoom) {
       this.canvas.setZoom(zoom);

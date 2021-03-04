@@ -7,7 +7,7 @@ use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\Announced;
-use App\Events\PopupPosted;
+use App\Events\RoomChatPosted;
 
 class RoomController extends Controller
 {
@@ -65,20 +65,20 @@ class RoomController extends Controller
     }
 
     /**
-     * 吹き出しメッセージの投稿
+     * 部屋チャットの投稿
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function postPopup(Request $request)
+    public function postChat(Request $request)
     {
         $user = Auth::user();
 
         if (empty($user) || empty($user->seat)) {
-            return response()->json(['message' => 'メッセージの送信に失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'チャットの送信に失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        broadcast(new PopupPosted($user, $request->message));
+        broadcast(new RoomChatPosted($user, $request->message));
         return response()->json();
     }
 }

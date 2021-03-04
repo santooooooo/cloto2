@@ -84,8 +84,8 @@ export default {
     /**
      * 建物色の設定
      *
-     * @param Object  buildingObject  設定する建物オブジェクト
-     * @param String  color           設定する色
+     * @param {Object} buildingObject - 設定する建物オブジェクト
+     * @param {String} color - 設定する色
      */
     setColor: function (buildingObject, color) {
       buildingObject.set({ fill: color });
@@ -95,7 +95,7 @@ export default {
     /**
      * 建物色の初期化
      *
-     * @param Object  buildingObject  初期化する建物オブジェクト
+     * @param {Object} buildingObject - 初期化する建物オブジェクト
      */
     resetColor: function (buildingObject) {
       this.setColor(buildingObject, '');
@@ -104,7 +104,7 @@ export default {
     /**
      * 吹き出しの表示
      *
-     * @param Object  buildingObject  表示する建物オブジェクト
+     * @param {Object} buildingObject - 表示する建物オブジェクト
      */
     showPopup: function (buildingObject) {
       // 吹き出しの位置を設定
@@ -127,7 +127,7 @@ export default {
     /**
      * キャンバスマウスオーバーイベント
      *
-     * @param target イベントの対象
+     * @param {Object} target - イベントの対象
      */
     canvasMouseOver: function (target) {
       this.setColor(target, '#0000FF');
@@ -137,7 +137,7 @@ export default {
     /**
      * キャンバスマウスオーバー解除イベント
      *
-     * @param target イベントの対象
+     * @param {Object} target - イベントの対象
      */
     canvasMouseOut: function (target) {
       this.resetColor(target);
@@ -147,7 +147,7 @@ export default {
     /**
      * キャンバスクリックイベント
      *
-     * @param target イベントの対象
+     * @param {Object} target - イベントの対象
      */
     canvasMouseDown: function (target) {
       // if (target.name === process.env.MIX_APP_NAME) {
@@ -166,7 +166,7 @@ export default {
     /**
      * 拡大の適用
      *
-     * @param Number  zoom  拡大率
+     * @param {Number} zoom - 拡大率
      */
     setZoom: function (zoom) {
       this.canvas.setZoom(zoom);

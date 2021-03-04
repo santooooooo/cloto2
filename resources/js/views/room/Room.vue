@@ -8,6 +8,8 @@
     <Drawer
       :room-name="roomData.name"
       :room-status="roomStatus"
+      :chat-is-show="chat.isShow"
+      @toggle-chat="chat.isShow = $event"
       @input-karte="inputKarte(true)"
       @leave-room="leaveRoom()"
     />
@@ -41,28 +43,63 @@
     />
 
     <v-flex>
+      <v-card width="250" tile color="rgba(255, 255, 255, 0.8)" id="chat" v-if="chat.isShow">
+        <div id="input">
+          <v-textarea
+            v-model="chat.message"
+            :maxlength="chat.max"
+            :disabled="chat.loading || !authUser.seat"
+            append-outer-icon="mdi-send"
+            label="いまのきもちは？"
+            rows="5"
+            solo
+            no-resize
+            hide-details
+            class="pa-1"
+            @click:append-outer="submitChat()"
+          ></v-textarea>
+          <v-row no-gutters class="py-2" justify="space-around">
+            <v-btn text :disabled="chat.loading || !authUser.seat" @click="submitChat('😄')">
+              😄
+            </v-btn>
+            <v-btn text :disabled="chat.loading || !authUser.seat" @click="submitChat('😂')">
+              😂
+            </v-btn>
+            <v-btn text :disabled="chat.loading || !authUser.seat" @click="submitChat('🤔')">
+              🤔
+            </v-btn>
+            <v-btn text :disabled="chat.loading || !authUser.seat" @click="submitChat('👍')">
+              👍
+            </v-btn>
+            <v-btn text :disabled="chat.loading || !authUser.seat" @click="submitChat('👋')">
+              👋
+            </v-btn>
+            <v-btn text :disabled="chat.loading || !authUser.seat" @click="submitChat('💩')">
+              💩
+            </v-btn>
+          </v-row>
+        </div>
+
+        <v-divider class="mt-0"></v-divider>
+
+        <div class="overflow-y-auto" :style="messageContainerHeight">
+          <div v-for="(message, index) in messages.slice().reverse()" :key="index">
+            <p class="font-weight-bold mb-0 mx-1">
+              <span @click="showProfile(message.username)"
+                >{{ message.handlename }}
+                <small>{{ message.username }}</small>
+              </span>
+            </p>
+            <pre class="text-body-2 mb-0 mx-1" v-html="$formatStr(message.body)"></pre>
+            <v-divider></v-divider>
+          </div>
+        </div>
+      </v-card>
+
       <!-- 教室 -->
       <v-row no-gutters justify="center">
         <div id="canvas-container" ref="canvasContainer" v-dragscroll>
           <canvas :width="roomWidth" :height="roomHeight" id="canvas"></canvas>
-        </div>
-
-        <!-- 吹き出しメッセージ -->
-        <div
-          v-for="(popup, index) in popups"
-          :key="index"
-          class="popup"
-          :style="{ left: popup.left, top: popup.top }"
-        >
-          <p>
-            <v-row justify="end">
-              <v-icon class="mr-3" @click="removePopup(index)">mdi-close</v-icon>
-            </v-row>
-            <span>{{ popup.message }}</span>
-            <v-row justify="end">
-              <small class="mx-4">{{ popup.user }}</small>
-            </v-row>
-          </p>
         </div>
       </v-row>
 
@@ -86,35 +123,6 @@
         v-if="karte.dialog"
       />
     </v-flex>
-
-    <!-- 吹き出しメッセージ入力フォーム -->
-    <v-app-bar
-      dense
-      fixed
-      bottom
-      max-width="500"
-      class="ma-6"
-      id="popup-input"
-      v-if="authUser.seat"
-    >
-      <v-text-field
-        v-model="popup.message"
-        :maxlength="popup.max"
-        hide-details
-        single-line
-        label="吹き出しメッセージ"
-        :loading="popup.loading"
-        @keydown.enter="sendPopup"
-      ></v-text-field>
-
-      <v-btn icon :loading="popup.loading" @click="sendPopup">
-        <v-icon>mdi-send</v-icon>
-      </v-btn>
-
-      <v-btn icon @click="removePopup()">
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
-    </v-app-bar>
   </v-layout>
 </template>
 
@@ -127,7 +135,7 @@ import Media from '@/components/room/Media';
 import KarteDialog from '@/components/room/KarteDialog';
 import ProfileDialog from '@/components/room/ProfileDialog';
 import { OK } from '@/consts/status';
-import { CHIME_SOUND, RECEIVE_POPUP_SOUND } from '@/consts/sound';
+import { CHIME_SOUND } from '@/consts/sound';
 
 export default {
   head: {
@@ -151,6 +159,12 @@ export default {
   },
   data() {
     return {
+      announcement: {
+        loading: false, // ローディング制御
+        message: '', // アナウンス内容
+      },
+
+      test: true,
       loading: false, // ローディング制御
       canvas: null, // キャンバスエリア
       roomStatus: null, // 教室の状態
@@ -163,11 +177,12 @@ export default {
         id: '', // 入室する通話室のID
         capacity: '', // 通話室の定員
       },
-      popups: [], // 吹き出しメッセージ
-      popup: {
-        max: 72, // 入力最大長
+      messages: [], // チャットメッセージ一覧
+      chat: {
+        isShow: true, // チャット欄表示制御
+        max: 200, // 入力最大長
         loading: false, // ローディング制御
-        message: '', // 吹き出しメッセージ入力
+        message: '', // チャット入力
       },
       inProgress: {
         isShow: false, // いまやっていること吹き出し制御
@@ -195,6 +210,11 @@ export default {
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
+    },
+    messageContainerHeight() {
+      return {
+        height: this.$windowHeight - 327 + 'px',
+      };
     },
   },
 
@@ -284,10 +304,10 @@ export default {
     /**
      * キャンバス上のオブジェクトの取得
      *
-     * @param   String  type  検索するタイプ
-     * @param   String  key   要素
-     * @param   Number  value 値
-     * @returns Object  取得したオブジェクト
+     * @param {String} type - 検索するタイプ
+     * @param {String} key - 要素
+     * @param {Number} value - 値
+     * @return {Object} 取得したオブジェクト
      */
     getCanvasObject: function (type, key, value) {
       var object = this.canvas.getObjects().filter((object) => {
@@ -300,8 +320,8 @@ export default {
     /**
      * 座席色の設定
      *
-     * @param Object  seatObject  設定する座席オブジェクト
-     * @param String  color       設定する色
+     * @param {Object} seatObject - 設定する座席オブジェクト
+     * @param {String} color - 設定する色
      */
     setColor: function (seatObject, color) {
       seatObject.set({ fill: color });
@@ -311,7 +331,7 @@ export default {
     /**
      * 座席色の初期化
      *
-     * @param Object  seatObject  初期化する座席オブジェクト
+     * @param {Object} seatObject - 初期化する座席オブジェクト
      */
     resetColor: function (seatObject) {
       this.setColor(seatObject, '');
@@ -320,7 +340,7 @@ export default {
     /**
      * ユーザーの設置
      *
-     * @param Object  seat  着席している座席
+     * @param {Object} seat - 着席している座席
      */
     setUser: function (seat) {
       // 念の為ユーザーの存在確認
@@ -372,7 +392,7 @@ export default {
     /**
      * ユーザーの削除
      *
-     * @param Object  userObject  削除するユーザーオブジェクト
+     * @param {Object} userObject - 削除するユーザーオブジェクト
      */
     removeUser: function (userObject) {
       this.canvas.remove(userObject);
@@ -382,8 +402,8 @@ export default {
     /**
      * ステータスの設定
      *
-     * @param Object  userObject  設定するユーザーオブジェクト
-     * @param String  status      ステータス
+     * @param {Object} userObject - 設定するユーザーオブジェクト
+     * @param {String} status - ステータス
      */
     setStatus: function (userObject, status) {
       var color;
@@ -408,7 +428,7 @@ export default {
     /**
      * 吹き出しの表示
      *
-     * @param Object  userObject  表示するユーザーオブジェクト
+     * @param {Object} userObject - 表示するユーザーオブジェクト
      */
     showInProgress: function (userObject) {
       // 吹き出しの位置を設定
@@ -431,7 +451,7 @@ export default {
     /**
      * キャンバスマウスオーバーイベント
      *
-     * @param target イベントの対象
+     * @param {Object} target - イベントの対象
      */
     canvasMouseOver: function (target) {
       if (target.type === 'seat') {
@@ -485,7 +505,7 @@ export default {
     /**
      * キャンバスマウスオーバー解除イベント
      *
-     * @param target イベントの対象
+     * @param {Object} target - イベントの対象
      */
     canvasMouseOut: function (target) {
       if (target.type === 'seat') {
@@ -500,7 +520,7 @@ export default {
     /**
      * キャンバスクリックイベント
      *
-     * @param target イベントの対象
+     * @param {Object} target - イベントの対象
      */
     canvasMouseDown: async function (target) {
       if (target.type === 'seat') {
@@ -640,15 +660,14 @@ export default {
           this.loading = false;
         }
       } else if (target.type === 'user') {
-        this.profile.dialog = true;
-        this.profile.username = String(target.username);
+        this.showProfile(target.username);
       }
     },
 
     /**
      * キャンバススクロールイベント
      *
-     * @param event マウスイベント
+     * @param {Event} event - マウスイベント
      */
     canvasScroll: function (event) {
       // 拡大率の計算
@@ -670,7 +689,7 @@ export default {
     /**
      * 拡大の適用
      *
-     * @param Number  zoom  拡大率
+     * @param {Number} zoom - 拡大率
      */
     setZoom: function (zoom) {
       this.canvas.setZoom(zoom);
@@ -681,8 +700,8 @@ export default {
     /**
      * ユーザーの行動の反映
      *
-     * @param String  action  行動
-     * @param Object  seatObject 状態を変更する座席
+     * @param {String} action - 行動
+     * @param {Object} seatObject - 状態を変更する座席
      */
     userAction: async function (action, seatObject = null) {
       switch (action) {
@@ -760,6 +779,9 @@ export default {
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
+
+      // 入室メッセージの送信
+      this.submitChat('🚀');
     },
 
     /**
@@ -779,6 +801,9 @@ export default {
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
+
+      // 入室メッセージの送信
+      this.submitChat('🚀');
     },
 
     /**
@@ -800,8 +825,8 @@ export default {
     /**
      * 通話室への入室
      *
-     * @param String  callId    入室する通話室ID
-     * @param Number  capacity  通話室の定員
+     * @param {String} callId - 入室する通話室ID
+     * @param {Number} capacity - 通話室の定員
      */
     enterCall: function (callId, capacity) {
       this.call.id = callId;
@@ -830,7 +855,7 @@ export default {
     /**
      * カルテの記入
      *
-     * @param Boolean confirm 自習継続の確認をするか
+     * @param {Boolean} confirm - 自習継続の確認をするか
      */
     inputKarte: function (confirm) {
       this.karte.confirm = confirm;
@@ -838,62 +863,44 @@ export default {
     },
 
     /**
-     * 吹き出しメッセージの追加
+     * プロフィールの表示
      *
-     * @param event 受信データ
+     * @param {String} username - ユーザー名
      */
-    addPopup: function (event) {
-      // 位置をランダムに設定
-      var left = 250 + Math.random() * (this.$refs.canvasContainer.clientWidth - 500) + 'px';
-      var top = 10 + Math.random() * (this.$windowHeight - 230) + 'px';
-
-      // 追加
-      this.popups.push({
-        left: left,
-        top: top,
-        user: event.handlename,
-        message: event.message,
-      });
-
-      // 通知音
-      if (this.$store.getters['alert/isSoundOn']) {
-        RECEIVE_POPUP_SOUND.play();
-      }
+    showProfile: function (username) {
+      this.profile.username = username;
+      this.profile.dialog = true;
     },
 
     /**
-     * 吹き出しメッセージの削除
+     * 部屋チャットの送信処理
      *
-     * @param Number  index 削除するメッセージのインデックス
+     * @param {String} emoji - 絵文字
      */
-    removePopup: function (index = null) {
-      if (index !== null) {
-        this.popups.splice(index, 1);
+    submitChat: async function (emoji = null) {
+      if (emoji !== null) {
+        // 絵文字の送信
+        this.chat.loading = true;
+
+        var response = await axios.post('/api/rooms/chat', {
+          message: emoji,
+        });
+
+        this.chat.loading = false;
       } else {
-        // 全削除
-        this.popups = [];
-      }
-    },
+        // メッセージの送信
+        if (this.chat.message !== '') {
+          this.chat.loading = true;
 
-    /**
-     * 吹き出しメッセージの送信処理
-     *
-     * @param event クリック or キーボードイベント
-     */
-    sendPopup: async function (event) {
-      // クリックまたは日本語変換以外のEnter押下時に発火
-      if (event.type === 'click' || (event.type === 'keydown' && event.keyCode === 13)) {
-        if (this.popup.message !== '') {
-          // メッセージの送信
-          this.popup.loading = true;
-
-          var response = await axios.post('/api/post-popup', { message: this.popup.message });
+          var response = await axios.post('/api/rooms/chat', {
+            message: this.chat.message,
+          });
 
           if (response.status === OK) {
-            this.popup.message = '';
+            this.chat.message = '';
           }
 
-          this.popup.loading = false;
+          this.chat.loading = false;
         }
       }
     },
@@ -1081,9 +1088,13 @@ export default {
         // 座席情報の更新
         this.roomData = event;
       })
-      .listen('PopupPosted', (event) => {
-        // 吹き出しメッセージの追加
-        this.addPopup(event);
+      .listen('RoomChatPosted', (event) => {
+        // チャットメッセージの追加
+        this.messages.push({
+          username: event.username,
+          handlename: event.handlename,
+          body: event.message,
+        });
       });
 
     // ロード終了
@@ -1119,32 +1130,6 @@ export default {
     }
   }
 
-  .popup {
-    position: absolute;
-    max-width: 500px;
-
-    p {
-      padding: 5px 10px;
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 12px;
-      font-size: 20px;
-      font-weight: bold;
-
-      .v-icon {
-        font-size: 18px;
-        cursor: pointer;
-
-        &:after {
-          background-color: initial;
-        }
-      }
-    }
-  }
-
-  #popup-input {
-    z-index: 1;
-  }
-
   #in-progress {
     position: absolute;
     max-width: 300px;
@@ -1155,6 +1140,24 @@ export default {
       border: 2px solid #000000;
       border-radius: 10px;
       font-weight: bold;
+    }
+  }
+
+  #chat {
+    position: absolute;
+    z-index: 1;
+    border: none;
+
+    #input {
+      background-color: #ffffff;
+    }
+
+    span {
+      cursor: pointer;
+    }
+
+    pre {
+      white-space: pre-wrap;
     }
   }
 }

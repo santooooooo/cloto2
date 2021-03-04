@@ -4,11 +4,14 @@
 require('@/bootstrap');
 window.Vue = require('vue');
 window.Storage = require('@/consts/storage');
+window.Functions = require('@/plugins/functions');
 
 /**
  * Vueプロトタイプの設定
  */
 Vue.prototype.$storage = window.Storage.getStoragePath;
+Vue.prototype.$karte = window.Storage.getKartePath;
+Vue.prototype.$formatStr = window.Functions.formatStr;
 
 /**
  * Vueの定義

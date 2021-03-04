@@ -249,7 +249,7 @@ export default {
     /**
      * 戻るボタンでページに復帰した時のイベント
      *
-     * @param event
+     * @param {Event} event
      */
     pageBackEvent: function (event) {
       var historyTraversal =
