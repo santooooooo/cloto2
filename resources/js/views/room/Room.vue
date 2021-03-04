@@ -87,7 +87,7 @@
             <p class="font-weight-bold mb-0 mx-1">
               <span @click="showProfile(message.username)"
                 >{{ message.handlename }}
-                <small>{{ message.username }}</small>
+                <small>@{{ message.username }}</small>
               </span>
             </p>
             <pre class="text-body-2 mb-0 mx-1" v-html="$formatStr(message.body)"></pre>
@@ -180,7 +180,7 @@ export default {
       messages: [], // チャットメッセージ一覧
       chat: {
         isShow: true, // チャット欄表示制御
-        max: 200, // 入力最大長
+        max: 250, // 入力最大長
         loading: false, // ローディング制御
         message: '', // チャット入力
       },

@@ -70,11 +70,11 @@
               v-model="inProgress.body"
               :placeholder="authUser.in_progress"
               :disabled="inProgress.loading"
-              :counter="inProgress.max"
               :maxlength="inProgress.max"
               rows="2"
               solo
-              class="pt-2 px-2"
+              hide-details
+              class="pt-2 pb-4 px-2"
             ></v-textarea>
 
             <v-btn
@@ -107,7 +107,8 @@
               :disabled="announcement.loading"
               rows="2"
               solo
-              class="pt-2 px-2"
+              hide-details
+              class="pt-2 pb-4 px-2"
             ></v-textarea>
 
             <v-btn
@@ -180,6 +181,11 @@ export default {
           if (remove) {
             this.$store.dispatch('alert/success', '取り組み中のタスクが削除されました！');
           } else {
+            // チャットの送信
+            axios.post('/api/rooms/chat', {
+              message: '「' + this.inProgress.body + '」なう！',
+            });
+
             this.$store.dispatch('alert/success', '取り組み中のタスクが公開されました！');
             this.inProgress.body = '';
           }
