@@ -83,7 +83,11 @@
         <v-divider class="mt-0"></v-divider>
 
         <div class="overflow-y-auto" :style="messageContainerHeight">
-          <div v-for="(message, index) in messages.slice().reverse()" :key="index">
+          <div
+            v-for="(message, index) in messages.slice().reverse()"
+            :key="index"
+            @click="chat.message = '>> ' + message.handlename + 'さん\n' + chat.message"
+          >
             <p class="font-weight-bold mb-0 mx-1">
               <span @click="showProfile(message.username)"
                 >{{ message.handlename }}
