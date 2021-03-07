@@ -271,9 +271,10 @@ export default {
           if (window.location.hostname === 'cloto.jp') {
             var tweet =
               'https://twitter.com/intent/tweet?text=' +
-              this.substr(this.karteForm.body, 232) +
-              '&url=https://cloto.jp&hashtags=CLOTO&via=cloto_jp';
-            window.open(tweet, '_blank');
+              encodeURIComponent(
+                this.substr(this.karteForm.body, 232) + '\n\n#CLOTO\n@cloto_jp\ncloto.jp'
+              );
+            window.open(tweet, 'Tweet', 'width=650, height=470');
           }
 
           this.dialog = false;
