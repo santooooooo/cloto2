@@ -43,7 +43,7 @@ class KarteController extends Controller
     {
         if (empty($user)) {
             // 全ユーザーのカルテ一覧
-            $kartes = $this->karte->with('tags')->get();
+            $kartes = $this->karte->with(['tags', 'user'])->get();
         } else {
             // 指定したユーザーのカルテ一覧
             $kartes = $user->kartes()->with('tags')->get();
