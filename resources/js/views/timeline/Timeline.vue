@@ -29,10 +29,10 @@
                   <v-img :src="$storage('icon') + authUser.icon" contain max-width="50"> </v-img>
                 </v-avatar>
                 <!-- ユーザー名 -->
-                <v-tooltip max-width="300" top class="fixed-bottom">
+                <v-tooltip max-width="300" top>
                   <template v-slot:activator="{ on, attrs }">
                     <div v-bind="attrs" v-on="on">
-                      <p class="content m-3">{{ karte.user.username }}</p>
+                      <p class="content m-3 text-truncate">{{ karte.user.username }}</p>
                     </div>
                   </template>
                   <span>{{ karte.user.username }}</span>
