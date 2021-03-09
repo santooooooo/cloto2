@@ -321,17 +321,22 @@
             </v-card-text>
           </div>
 
-          <v-card-actions>
-            <v-text-field
-              v-model="chat.localText"
-              class="px-2"
-              label="入力"
-              @keydown.enter="sendMessage"
-            ></v-text-field>
-            <v-btn icon @click="sendMessage">
-              <v-icon>mdi-send</v-icon>
-            </v-btn>
-          </v-card-actions>
+          <v-row no-gutters class="my-2" justify="space-around" v-if="$windowHeight > 800">
+            <v-btn text @click="sendEmoji('😄')">😄</v-btn>
+            <v-btn text @click="sendEmoji('🤣')">🤣</v-btn>
+            <v-btn text @click="sendEmoji('🤔')">🤔</v-btn>
+            <v-btn text @click="sendEmoji('🥳')">🥳</v-btn>
+            <v-btn text @click="sendEmoji('👏')">👏</v-btn>
+            <v-btn text @click="sendEmoji('💩')">💩</v-btn>
+          </v-row>
+
+          <v-text-field
+            v-model="chat.localText"
+            class="mx-4"
+            append-outer-icon="mdi-send"
+            @keydown.enter="sendMessage"
+            @click:append-outer="sendMessage"
+          ></v-text-field>
         </v-card>
       </v-flex>
     </v-layout>
@@ -504,6 +509,7 @@ export default {
 
       //*** チャット ***//
       chat: {
+        nico: null, // チャットクラス
         isOpen: false, // チャットエリア表示制御
         notification: false, // 通知制御
         localText: '', // 送信するメッセージ
@@ -547,6 +553,16 @@ export default {
       return this.participants.filter((participant) => {
         return typeof participant.stream === 'undefined';
       });
+    },
+  },
+  watch: {
+    $windowWidth: function () {
+      // チャットクラスの更新
+      this.setupChatClass();
+    },
+    $windowHeight: function () {
+      // チャットクラスの更新
+      this.setupChatClass();
     },
   },
   methods: {
@@ -845,6 +861,33 @@ export default {
     },
 
     /**
+     * チャットクラスの設定
+     */
+    setupChatClass: function () {
+      this.chat.nico = new Nico({
+        app: this.$refs.container,
+        width: this.$windowWidth - 10,
+        height: this.$windowHeight - 50,
+      });
+
+      // チャットの待機
+      this.chat.nico.listen();
+    },
+
+    /**
+     * 絵文字の送信処理
+     *
+     * @param {String} emoji - 絵文字
+     */
+    sendEmoji: function (emoji) {
+      // 絵文字の送信
+      this.call.send({ type: 'message', content: emoji });
+
+      // 自分の画面を更新
+      this.addMessage(this.authUser.handlename, emoji);
+    },
+
+    /**
      * メッセージの送信処理
      *
      * @param {Event} event - クリック or キーボードイベント
@@ -867,13 +910,18 @@ export default {
      * メッセージの追加処理
      *
      * @param {String} handlename - 表示名
-     * @param {String} text - 内容
+     * @param {String} message - 内容
      */
-    addMessage: function (handlename, text) {
+    addMessage: function (handlename, message) {
+      let text = this.$formatStr(message);
+
+      // メッセージを流す
+      this.chat.nico.send(text, '#ffffff', 50);
+
       // メッセージの追加
       this.chat.messages.push({
         handlename: handlename,
-        text: this.$formatStr(text),
+        text: text,
       });
 
       // 最下部へスクロール（メッセージのDOM挿入後に実行）
@@ -1052,6 +1100,9 @@ export default {
 
     // ツールバー表示制御の設定
     window.addEventListener('mousemove', this.showAppBar);
+
+    // チャットクラスの設定
+    this.setupChatClass();
   },
 
   beforeDestroy() {
