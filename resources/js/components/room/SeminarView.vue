@@ -326,7 +326,9 @@
             <v-btn text @click="sendEmoji('🤣')">🤣</v-btn>
             <v-btn text @click="sendEmoji('🤔')">🤔</v-btn>
             <v-btn text @click="sendEmoji('🥳')">🥳</v-btn>
+            <v-btn text @click="sendEmoji('👍')">👍</v-btn>
             <v-btn text @click="sendEmoji('👏')">👏</v-btn>
+            <v-btn text @click="sendEmoji('💥')">💥</v-btn>
             <v-btn text @click="sendEmoji('💩')">💩</v-btn>
           </v-row>
 
