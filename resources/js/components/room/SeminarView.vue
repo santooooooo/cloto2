@@ -316,16 +316,8 @@
         <v-card color="grey lighten-2" class="mx-auto" id="chat">
           <div class="overflow-y-auto" ref="chatScrollArea">
             <v-card-text v-for="(message, index) in chat.messages" :key="index">
-              <!-- ユーザーメッセージ -->
-              <p v-if="message.handlename">
-                <span class="text-caption">{{ message.handlename }}</span>
-                <span class="text-body-1 font-weight-bold" v-html="message.text"></span>
-              </p>
-
-              <!-- システムメッセージ -->
-              <p class="text-center" style="color: red" v-else>
-                {{ message.text }}
-              </p>
+              <span class="text-caption">{{ message.handlename }}</span>
+              <span class="text-body-1 font-weight-bold" v-html="message.text"></span>
             </v-card-text>
           </div>
 
@@ -582,11 +574,6 @@ export default {
      * 通話のイベント
      */
     setupCallEvents: function () {
-      // 自身の参加イベント
-      this.call.once('open', () => {
-        this.addMessage(null, '入室しました！');
-      });
-
       // 他ユーザー参加イベント
       this.call.on('stream', (stream) => {
         this.joinSpeaker(stream);
@@ -630,15 +617,11 @@ export default {
             sender.username = data.content.username;
             sender.handlename = data.content.handlename;
             sender.icon = data.content.icon;
-            // 参加メッセージの追加
-            this.addMessage(null, sender.handlename + 'が入室しました！');
             break;
 
           case 'joinViewerData':
             // 参加した視聴者のデータの受信
             this.joinViewer(src, data.content);
-            // 参加メッセージの追加
-            this.addMessage(null, data.content.handlename + 'が入室しました！');
             break;
 
           case 'loadingEvent':
