@@ -314,19 +314,21 @@
       <!-- チャットエリア -->
       <v-flex xs2 v-show="chat.isOpen">
         <v-card color="grey lighten-2" class="mx-auto" id="chat">
-          <div class="overflow-y-auto" ref="chatScrollArea">
+          <div
+            class="overflow-y-auto"
+            :style="{ height: $windowHeight - 300 + 'px' }"
+            ref="chatScrollArea"
+          >
             <v-card-text v-for="(message, index) in chat.messages" :key="index">
               <span class="text-caption">{{ message.handlename }}</span>
               <span class="text-body-1 font-weight-bold" v-html="message.text"></span>
             </v-card-text>
           </div>
 
-          <v-row no-gutters class="my-2" justify="space-around" v-if="$windowHeight > 800">
+          <v-row no-gutters class="mt-2" justify="space-around">
             <v-btn text @click="sendEmoji('😄')">😄</v-btn>
             <v-btn text @click="sendEmoji('🤣')">🤣</v-btn>
             <v-btn text @click="sendEmoji('🤔')">🤔</v-btn>
-            <v-btn text @click="sendEmoji('🥳')">🥳</v-btn>
-            <v-btn text @click="sendEmoji('👍')">👍</v-btn>
             <v-btn text @click="sendEmoji('👏')">👏</v-btn>
             <v-btn text @click="sendEmoji('💥')">💥</v-btn>
             <v-btn text @click="sendEmoji('💩')">💩</v-btn>
@@ -1197,7 +1199,6 @@ export default {
   top: 8px;
 
   .overflow-y-auto {
-    height: 500px;
     background-color: white;
   }
 }
