@@ -637,7 +637,7 @@ export default {
 
       //*** チャット ***//
       chat: {
-        nico: null, // チャットクラス
+        flow: null, // チャットクラス
         isOpen: false, // チャットエリア表示制御
         notification: false, // 通知制御
         localText: '', // 送信するメッセージ
@@ -1229,14 +1229,14 @@ export default {
      * チャットクラスの設定
      */
     setupChatClass: function () {
-      this.chat.nico = new Nico({
+      this.chat.flow = new FlowChat({
         app: this.$refs.container,
         width: this.$windowWidth - 10,
         height: this.$windowHeight - 50,
       });
 
       // チャットの待機
-      this.chat.nico.listen();
+      this.chat.flow.listen();
     },
 
     /**
@@ -1281,7 +1281,7 @@ export default {
       let text = this.$formatStr(message);
 
       // メッセージを流す
-      this.chat.nico.send(text, '#ffffff', 50);
+      this.chat.flow.send(text, '#ffffff', 50);
 
       // メッセージの追加
       this.chat.messages.push({

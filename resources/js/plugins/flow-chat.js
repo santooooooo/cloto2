@@ -1,7 +1,7 @@
-let e, nicoJS;
+let e, flowChat;
 
-nicoJS = (function () {
-  function nicoJS(params) {
+flowChat = (function () {
+  function flowChat(params) {
     this.timer = null;
     this.interval = null;
     this.fps = 1000 / 30;
@@ -20,7 +20,7 @@ nicoJS = (function () {
   /**
    * 描画
    */
-  nicoJS.prototype.render = function () {
+  flowChat.prototype.render = function () {
     this.app.style.whiteSpace = 'nowrap';
     this.app.style.overflow = 'hidden';
     this.app.style.position = 'relative';
@@ -34,7 +34,7 @@ nicoJS = (function () {
    * @param {Number} width - 幅
    * @param {Number} height - 高さ
    */
-  nicoJS.prototype.resize = function (width, height) {
+  flowChat.prototype.resize = function (width, height) {
     this.width = width;
     this.height = height;
     this.app.style.width = this.width + 'px';
@@ -48,7 +48,7 @@ nicoJS = (function () {
    * @param {String} color - 色[option]
    * @param {String} fontSize - フォントサイズ[option]
    */
-  nicoJS.prototype.send = function (text, color, fontSize) {
+  flowChat.prototype.send = function (text, color, fontSize) {
     let ele, x, y;
     fontSize = fontSize || this.fontSize;
     color = color || this.color;
@@ -74,7 +74,7 @@ nicoJS = (function () {
   /**
    * コメントを流す
    */
-  nicoJS.prototype.flow = function () {
+  flowChat.prototype.flow = function () {
     let end, i, j, len, ref, results;
     len = this.comments.length;
     results = [];
@@ -93,7 +93,7 @@ nicoJS = (function () {
   /**
    * コメントを待機
    */
-  nicoJS.prototype.listen = function () {
+  flowChat.prototype.listen = function () {
     this.stop();
     return (this.timer = setInterval(
       (function (_this) {
@@ -110,7 +110,7 @@ nicoJS = (function () {
    *
    * @param {Array} comments - コメントが入った配列
    */
-  nicoJS.prototype.loop = function (comments) {
+  flowChat.prototype.loop = function (comments) {
     let i, len;
     i = 0;
     len = comments.length;
@@ -132,16 +132,16 @@ nicoJS = (function () {
   /**
    * アニメーション停止
    */
-  nicoJS.prototype.stop = function () {
+  flowChat.prototype.stop = function () {
     clearInterval(this.timer);
     return clearInterval(this.interval);
   };
 
-  return nicoJS;
+  return flowChat;
 })();
 
 try {
-  module.exports = nicoJS;
+  module.exports = flowChat;
 } catch (_error) {
   e = _error;
 }
