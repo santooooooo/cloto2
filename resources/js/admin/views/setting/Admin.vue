@@ -196,7 +196,7 @@ export default {
      * 管理者データの取得
      */
     getAdmins: async function () {
-      var response = await axios.get('/api/admin/admins');
+      let response = await axios.get('/api/admin/admins');
       this.admins = response.data;
     },
 
@@ -232,7 +232,7 @@ export default {
         this.editAdminForm.loading = true;
 
         if (this.editAdminForm.index > -1) {
-          var input = new FormData();
+          let input = new FormData();
           input.append('_method', 'patch');
           input.append('handlename', this.editAdminForm.data.handlename);
           input.append('email', this.editAdminForm.data.email);
@@ -241,7 +241,7 @@ export default {
           }
 
           // 管理者データ更新処理
-          var response = await axios.post('/api/admin/admins/' + this.editAdminForm.data.id, input);
+          let response = await axios.post('/api/admin/admins/' + this.editAdminForm.data.id, input);
 
           if (response.status === OK) {
             Object.assign(this.admins[this.editAdminForm.index], this.editAdminForm.data);
@@ -251,7 +251,7 @@ export default {
           }
         } else {
           // 管理者データ作成処理
-          var response = await axios.post('/api/admin/admins', {
+          let response = await axios.post('/api/admin/admins', {
             handlename: this.editAdminForm.data.handlename,
             email: this.editAdminForm.data.email,
             password: this.editAdminForm.password,
@@ -284,7 +284,7 @@ export default {
       this.deleteAdminForm.loading = true;
 
       // 管理者削除処理
-      var response = await axios.delete('/api/admin/admins/' + this.deleteAdminForm.data.id);
+      let response = await axios.delete('/api/admin/admins/' + this.deleteAdminForm.data.id);
 
       if (response.status === OK) {
         this.getAdmins();

@@ -602,14 +602,15 @@ export default {
       // データ到着イベント
       this.call.on('data', async ({ data, src }) => {
         // 送信者が取得されるまで待機
-        for (var i = 0; i < 50; i++) {
+        let sender;
+        for (let i = 0; i < 50; i++) {
           // 参加直後，this.participantsへの追加前に検索されるので回避
           // 新規ユーザーのstreamよりも先にdataが届く
           // 存在しない場合の対策として上限を5秒に設定
           try {
-            var sender = await new Promise((resolve, reject) => {
+            sender = await new Promise((resolve, reject) => {
               // 送信者を検索（参加者のPeerIDを確認）
-              var participant = this.participants.filter((participant) => {
+              let participant = this.participants.filter((participant) => {
                 return src === participant.peerId;
               })[0];
 
@@ -724,7 +725,7 @@ export default {
       // 参加者がいるか確認
       // ミュートやビデオの切替時にもストリームが置き換わるため発火する場合がある
       // 同一のPeerIDが存在しないことを確認する
-      var isJoin = !this.participants.some((participant) => participant.peerId === stream.peerId);
+      let isJoin = !this.participants.some((participant) => participant.peerId === stream.peerId);
 
       if (isJoin) {
         // ユーザーが参加した場合
@@ -773,7 +774,7 @@ export default {
       // 参加者がいるか確認
       // ミュートやビデオの切替時にもストリームが置き換わるため発火する場合がある
       // 同一のPeerIDが存在しないことを確認する
-      var isJoin = !this.participants.some((participant) => participant.peerId === peerId);
+      let isJoin = !this.participants.some((participant) => participant.peerId === peerId);
 
       if (isJoin) {
         // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
@@ -976,10 +977,10 @@ export default {
       this.appBar.isShow = true;
       clearTimeout(this.appBar.timer);
 
-      var hide = true;
+      let hide = true;
       if (event !== null) {
         // マウスがツールバー上にある場合，非表示にしない
-        var cursorFromBottom = this.$windowHeight - event.clientY;
+        let cursorFromBottom = this.$windowHeight - event.clientY;
         if (cursorFromBottom <= 100) {
           hide = false;
         }

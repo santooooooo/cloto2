@@ -156,7 +156,7 @@ export default {
      * 部屋データの取得
      */
     getRooms: async function () {
-      var response = await axios.get('/api/admin/rooms');
+      let response = await axios.get('/api/admin/rooms');
       this.rooms = response.data;
     },
 
@@ -220,7 +220,7 @@ export default {
       if (this.$refs.editMediaForm.validate()) {
         this.editMediaForm.loading = true;
 
-        var input = new FormData();
+        let input = new FormData();
         input.append('_method', 'patch');
         input.append('remove_media', this.editMediaForm.removeMedia);
         if (!this.editMediaForm.removeMedia) {
@@ -236,7 +236,7 @@ export default {
         }
 
         // 座席データ保存処理
-        var response = await axios.post('/api/admin/seats/' + this.editMediaForm.seatId, input);
+        let response = await axios.post('/api/admin/seats/' + this.editMediaForm.seatId, input);
 
         if (response.status === OK) {
           this.close();

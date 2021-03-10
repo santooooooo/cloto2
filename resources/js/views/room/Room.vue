@@ -234,8 +234,9 @@ export default {
             // 座席のループ
             newSection.seats.forEach((newSeat, seatIndex) => {
               // 座席の元の値
-              var oldSeat = oldSections[sectionIndex].seats[seatIndex];
+              let oldSeat = oldSections[sectionIndex].seats[seatIndex];
 
+              let object;
               if (newSeat.status !== oldSeat.status) {
                 // 状態の変化があった座席は再描画
                 switch (newSeat.status) {
@@ -245,29 +246,29 @@ export default {
 
                     // その座席の予約解除処理
                     if (oldSeat.reservation_user_id !== null) {
-                      var object = this.getCanvasObject('seat', 'seatId', newSeat.id);
+                      object = this.getCanvasObject('seat', 'seatId', newSeat.id);
                       this.resetColor(object);
                     }
                     break;
 
                   case 'break':
                     // 座席を赤色に変更
-                    var object = this.getCanvasObject('seat', 'seatId', newSeat.id);
+                    object = this.getCanvasObject('seat', 'seatId', newSeat.id);
                     this.setColor(object, '#FF0000');
 
                     // アイコンを削除
-                    var object = this.getCanvasObject('user', 'seatId', newSeat.id);
+                    object = this.getCanvasObject('user', 'seatId', newSeat.id);
                     this.removeUser(object);
                     break;
 
                   default:
                     if (oldSeat.user !== null) {
                       // 退席された場合
-                      var object = this.getCanvasObject('user', 'seatId', newSeat.id);
+                      object = this.getCanvasObject('user', 'seatId', newSeat.id);
                       this.removeUser(object);
                     } else if (oldSeat.reservation_user_id !== null) {
                       // 休憩室から直接退席した場合の予約解除処理（オフライン時の強制退席）
-                      var object = this.getCanvasObject('seat', 'seatId', newSeat.id);
+                      object = this.getCanvasObject('seat', 'seatId', newSeat.id);
                       this.resetColor(object);
                     }
                     break;
@@ -276,7 +277,7 @@ export default {
                 // 状態の変化がない場合はユーザーデータのみ更新
                 if (newSeat.user) {
                   // 座席に着席中のユーザーがいる場合
-                  var object = this.getCanvasObject('user', 'seatId', newSeat.id);
+                  object = this.getCanvasObject('user', 'seatId', newSeat.id);
                   object.set({ inProgress: newSeat.user.in_progress });
                   this.setStatus(object, newSeat.user.status);
                 }
@@ -290,7 +291,7 @@ export default {
     $windowWidth: function (windowWidth) {
       // ウィンドウリサイズ時に拡大率を変更
       if (this.canvas) {
-        var zoom = (windowWidth - 260) / this.roomWidth;
+        let zoom = (windowWidth - 260) / this.roomWidth;
         this.setZoom(zoom);
       }
     },
@@ -301,7 +302,7 @@ export default {
      * 教室データの取得
      */
     getRoom: async function () {
-      var response = await axios.get('/api/rooms/' + this.$route.params.roomId);
+      let response = await axios.get('/api/rooms/' + this.$route.params.roomId);
       this.roomData = response.data;
     },
 
@@ -314,7 +315,7 @@ export default {
      * @return {Object} 取得したオブジェクト
      */
     getCanvasObject: function (type, key, value) {
-      var object = this.canvas.getObjects().filter((object) => {
+      let object = this.canvas.getObjects().filter((object) => {
         return object.type === type && object[key] === value;
       })[0];
 
@@ -350,7 +351,7 @@ export default {
       // 念の為ユーザーの存在確認
       if (seat.user) {
         fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (img) => {
-          var status = new fabric.Circle({
+          let status = new fabric.Circle({
             originX: 'center',
             originY: 'center',
             width: 10,
@@ -359,7 +360,7 @@ export default {
             strokeWidth: 10,
           });
 
-          var icon = img.set({
+          let icon = img.set({
             originX: 'center',
             originY: 'center',
             scaleX: seat.size / img.width,
@@ -373,7 +374,7 @@ export default {
             }),
           });
 
-          var userObject = new fabric.Group([status, icon], {
+          let userObject = new fabric.Group([status, icon], {
             type: 'user',
             seatId: seat.id,
             username: seat.user.username,
@@ -410,7 +411,7 @@ export default {
      * @param {String} status - ステータス
      */
     setStatus: function (userObject, status) {
-      var color;
+      let color;
       switch (status) {
         case 'free':
           color = 'green';
@@ -436,7 +437,7 @@ export default {
      */
     showInProgress: function (userObject) {
       // 吹き出しの位置を設定
-      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       this.$refs.inProgress.style.left = window.event.clientX + 'px';
       this.$refs.inProgress.style.top = window.event.clientY + scrollTop - 50 + 'px';
       // 表示
@@ -675,9 +676,9 @@ export default {
      */
     canvasScroll: function (event) {
       // 拡大率の計算
-      var delta = event.e.deltaY;
-      var defaultZoom = (this.$windowWidth - 260) / this.roomWidth;
-      var zoom = this.canvas.getZoom();
+      let delta = event.e.deltaY;
+      let defaultZoom = (this.$windowWidth - 260) / this.roomWidth;
+      let zoom = this.canvas.getZoom();
       zoom *= 0.999 ** delta;
       if (zoom > 1.3) zoom = 1.3;
       if (zoom < defaultZoom) zoom = defaultZoom;
@@ -708,10 +709,11 @@ export default {
      * @param {Object} seatObject - 状態を変更する座席
      */
     userAction: async function (action, seatObject = null) {
+      let response;
       switch (action) {
         case 'sitting':
           // 着席処理
-          var response = await axios.post('/api/seats/sit/' + seatObject.seatId, {
+          response = await axios.post('/api/seats/sit/' + seatObject.seatId, {
             _method: 'patch',
           });
 
@@ -727,7 +729,7 @@ export default {
 
         case 'leave':
           // 退席処理
-          var response = await axios.post('/api/seats/leave', {
+          response = await axios.post('/api/seats/leave', {
             _method: 'patch',
           });
 
@@ -743,7 +745,7 @@ export default {
 
         case 'enterCall':
           // 通話室入室処理
-          var response = await axios.post('/api/seats/move/' + seatObject.seatId, {
+          response = await axios.post('/api/seats/move/' + seatObject.seatId, {
             _method: 'patch',
           });
           if (response.status === OK) {
@@ -753,14 +755,14 @@ export default {
 
         case 'enterMedia':
           // メディア視聴ブース入室処理
-          var response = await axios.post('/api/seats/move/' + seatObject.seatId, {
+          await axios.post('/api/seats/move/' + seatObject.seatId, {
             _method: 'patch',
           });
           break;
 
         case 'returnSeat':
           // 元の座席に戻る処理
-          var response = await axios.post('/api/seats/back', {
+          await axios.post('/api/seats/back', {
             _method: 'patch',
           });
           break;
@@ -886,7 +888,7 @@ export default {
         // 絵文字の送信
         this.chat.loading = true;
 
-        var response = await axios.post('/api/rooms/chat', {
+        await axios.post('/api/rooms/chat', {
           message: emoji,
         });
 
@@ -896,7 +898,7 @@ export default {
         if (this.chat.message !== '') {
           this.chat.loading = true;
 
-          var response = await axios.post('/api/rooms/chat', {
+          let response = await axios.post('/api/rooms/chat', {
             message: this.chat.message,
           });
 
@@ -934,13 +936,13 @@ export default {
     this.canvas.defaultCursor = 'grab';
 
     // 初期サイズの設定（横幅MAX）
-    var zoom = (this.$windowWidth - 260) / this.roomWidth;
+    let zoom = (this.$windowWidth - 260) / this.roomWidth;
     this.setZoom(zoom);
 
     // クリックエリアの設定
     this.roomData.sections.forEach((section) => {
       section.seats.forEach((seat) => {
-        var color = '';
+        let color = '';
         if (seat.status == 'break') {
           color = '#FF0000';
         }
@@ -1023,25 +1025,25 @@ export default {
     /**
      * 入室時には現在の部屋の状態を確認
      */
-    var date = new Date();
+    let date = new Date();
 
     // 2桁で時間を取得
-    var hour = String(date.getHours());
+    let hour = String(date.getHours());
     if (hour.length === 1) {
       hour = '0' + hour;
     }
 
     // 2桁で分数を取得
-    var minute = String(date.getMinutes());
+    let minute = String(date.getMinutes());
     if (minute.length === 1) {
       minute = '0' + minute;
     }
 
     // 現在時刻
-    var now = hour + ':' + minute;
+    let now = hour + ':' + minute;
 
     // オブジェクトを配列化
-    var timetable = [];
+    let timetable = [];
     Object.keys(this.roomData.timetable).forEach((key) => {
       timetable.push({ separate: key, status: this.roomData.timetable[key] });
     });

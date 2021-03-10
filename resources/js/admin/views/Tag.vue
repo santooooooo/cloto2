@@ -140,7 +140,7 @@ export default {
      * タグの取得
      */
     getTags: async function () {
-      var response = await axios.get('/api/admin/tags');
+      let response = await axios.get('/api/admin/tags');
       this.tags = response.data;
     },
 
@@ -176,7 +176,7 @@ export default {
 
         if (this.editTagForm.index > -1) {
           // タグ更新処理
-          var response = await axios.post('/api/admin/tags/' + this.editTagForm.data.id, {
+          let response = await axios.post('/api/admin/tags/' + this.editTagForm.data.id, {
             _method: 'patch',
             name: this.editTagForm.data.name,
           });
@@ -189,7 +189,7 @@ export default {
           }
         } else {
           // タグ作成処理
-          var response = await axios.post('/api/admin/tags', {
+          let response = await axios.post('/api/admin/tags', {
             name: this.editTagForm.data.name,
           });
 
@@ -220,7 +220,7 @@ export default {
       this.deleteTagForm.loading = true;
 
       // タグ削除処理
-      var response = await axios.delete('/api/admin/tags/' + this.deleteTagForm.data.id);
+      let response = await axios.delete('/api/admin/tags/' + this.deleteTagForm.data.id);
 
       if (response.status === OK) {
         this.getTags();

@@ -19,7 +19,7 @@ const KARTE = '/storage/user/karte/';
  * @return {String} ディレクトリのパス
  */
 export function getStoragePath(name) {
-  var path = '';
+  let path;
   switch (name) {
     case 'system':
       path = SYSTEM;
@@ -54,37 +54,37 @@ export function getStoragePath(name) {
  */
 export function getKartePath(karte, username) {
   // 日時を取得
-  var dateTime = new Date(karte.created_at);
+  let dateTime = new Date(karte.created_at);
 
   // 年を取得
-  var year = String(dateTime.getFullYear());
+  let year = String(dateTime.getFullYear());
 
   // 2桁で月を取得
-  var month = String(dateTime.getMonth() + 1);
+  let month = String(dateTime.getMonth() + 1);
   if (month.length === 1) {
     month = '0' + month;
   }
 
   // 2桁で日にちを取得
-  var day = String(dateTime.getDate());
+  let day = String(dateTime.getDate());
   if (day.length === 1) {
     day = '0' + day;
   }
 
   // 2桁で時間を取得
-  var hour = String(dateTime.getHours());
+  let hour = String(dateTime.getHours());
   if (hour.length === 1) {
     hour = '0' + hour;
   }
 
   // 2桁で分数を取得
-  var minute = String(dateTime.getMinutes());
+  let minute = String(dateTime.getMinutes());
   if (minute.length === 1) {
     minute = '0' + minute;
   }
 
-  var date = year + '_' + month + day;
-  var time = hour + minute;
+  let date = year + '_' + month + day;
+  let time = hour + minute;
 
   return KARTE + username + '/' + date + '_' + time + '/';
 }

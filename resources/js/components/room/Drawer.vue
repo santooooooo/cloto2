@@ -169,7 +169,7 @@ export default {
       if (this.inProgress.body !== (this.authUser.in_progress || '')) {
         this.inProgress.loading = true;
 
-        var response = await axios.post('/api/users', {
+        let response = await axios.post('/api/users', {
           _method: 'patch',
           in_progress: this.inProgress.body,
         });
@@ -203,7 +203,7 @@ export default {
     announce: async function () {
       this.announcement.loading = true;
 
-      var response = await axios.post('/api/rooms/announce', {
+      let response = await axios.post('/api/rooms/announce', {
         message: this.announcement.message,
       });
 

@@ -108,7 +108,7 @@ export default {
      * 問い合わせたユーザーの取得
      */
     getUsers: async function () {
-      var response = await axios.get('/api/admin/inquiries');
+      let response = await axios.get('/api/admin/inquiries');
       this.users = response.data;
     },
 
@@ -120,7 +120,7 @@ export default {
     open: async function (user) {
       this.user = user;
       // 問い合わせの取得
-      var response = await axios.get('/api/admin/inquiries/' + this.user.id);
+      let response = await axios.get('/api/admin/inquiries/' + this.user.id);
       this.messages = response.data;
 
       // 投稿者の変換
@@ -188,7 +188,7 @@ export default {
      * @return {String} 変換済みの投稿者
      */
     setAuthor: function (author) {
-      var show;
+      let show;
       switch (author) {
         case 'user':
           show = 'user';

@@ -146,7 +146,7 @@ export default {
      * @param {Event} event
      */
     pageBackEvent: function (event) {
-      var historyTraversal =
+      let historyTraversal =
         event.persisted ||
         (typeof window.performance !== 'undefined' && window.performance.navigation.type === 2);
       if (historyTraversal) {

@@ -101,7 +101,7 @@ export default {
       return this.$store.getters['auth/user'];
     },
     color() {
-      var color;
+      let color;
       switch (this.status) {
         case 'free':
           color = 'green';

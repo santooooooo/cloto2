@@ -489,7 +489,7 @@ export default {
         this.contactForm.loading = true;
 
         // 問い合わせ送信処理
-        var response = await axios.post('/api/contact', {
+        let response = await axios.post('/api/contact', {
           name: this.contactForm.name,
           email: this.contactForm.email,
           body: this.contactForm.body,

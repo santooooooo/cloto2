@@ -24,7 +24,7 @@ export function formatStr(str) {
 export function slackPost(username, icon, message) {
   // 本番サーバでのみ通知
   if (window.location.hostname === 'cloto.jp') {
-    var data = {
+    let data = {
       channel: process.env.MIX_SLACK_CHANNEL,
       username: username,
       icon_emoji: icon,

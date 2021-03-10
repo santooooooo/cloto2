@@ -37,7 +37,7 @@ export default {
     $windowWidth: function (windowWidth) {
       // ウィンドウリサイズ時に拡大率を変更
       if (this.canvas) {
-        var zoom = (windowWidth - 260) / this.roomWidth;
+        let zoom = (windowWidth - 260) / this.roomWidth;
         this.setZoom(zoom);
       }
     },
@@ -51,7 +51,7 @@ export default {
       this.loading = true;
 
       // 教室データの取得
-      var response = await axios.get('/api/rooms/' + this.$route.params.roomId);
+      let response = await axios.get('/api/rooms/' + this.$route.params.roomId);
       this.roomData = response.data;
 
       /**
@@ -70,7 +70,7 @@ export default {
       }
 
       // サイズの設定（横幅MAX）
-      var zoom = (this.$windowWidth - 260) / this.roomWidth;
+      let zoom = (this.$windowWidth - 260) / this.roomWidth;
       this.setZoom(zoom);
 
       // 座席の設定
@@ -114,7 +114,7 @@ export default {
     setUser: function (seat) {
       // 念の為ユーザーの存在確認
       if (seat.user) {
-        var color;
+        let color;
         switch (seat.user.status) {
           case 'free':
             color = 'green';
@@ -130,7 +130,7 @@ export default {
         }
 
         fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (img) => {
-          var status = new fabric.Circle({
+          let status = new fabric.Circle({
             originX: 'center',
             originY: 'center',
             width: 10,
@@ -140,7 +140,7 @@ export default {
             stroke: color,
           });
 
-          var icon = img.set({
+          let icon = img.set({
             originX: 'center',
             originY: 'center',
             scaleX: seat.size / img.width,
@@ -154,7 +154,7 @@ export default {
             }),
           });
 
-          var userObject = new fabric.Group([status, icon], {
+          let userObject = new fabric.Group([status, icon], {
             left: seat.position.x,
             top: seat.position.y,
             originX: 'center',
