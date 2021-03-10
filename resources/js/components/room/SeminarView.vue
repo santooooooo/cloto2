@@ -1194,8 +1194,8 @@ export default {
 }
 
 #chat {
-  position: -webkit-sticky;
   position: sticky;
+  z-index: 1;
   top: 8px;
 
   .overflow-y-auto {
