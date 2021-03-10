@@ -585,7 +585,7 @@
 <script>
 import voiceDetection from 'voice-activity-detection';
 import ProfileDialog from '@/components/room/ProfileDialog';
-import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND, RECEIVE_MESSAGE_SOUND } from '@/consts/sound';
+import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND } from '@/consts/sound';
 
 const API_KEY = process.env.MIX_SKYWAY_API_KEY;
 
@@ -799,13 +799,8 @@ export default {
             // メッセージの受信
             this.addMessage(sender.handlename, data.content);
 
+            // 通知の表示
             if (!this.chat.isOpen) {
-              // 通知音
-              if (this.isNotificationOn) {
-                RECEIVE_MESSAGE_SOUND.play();
-              }
-
-              // 通知の表示
               this.chat.notification = true;
               this.showAppBar();
             }
