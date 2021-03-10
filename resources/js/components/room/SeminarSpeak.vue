@@ -607,7 +607,7 @@ export default {
         timer: null, // ツールバー表示タイマー
         isShow: false, // ツールバー表示制御
       },
-      topic: '', // トピック
+      topic: null, // トピック
 
       //*** 通話 ***//
       participants: [], // 参加者
@@ -875,6 +875,10 @@ export default {
           this.call.send({ type: 'loadingEvent', content: this.loading });
           this.call.send({ type: 'audioEvent', content: this.isMute });
           this.call.send({ type: 'videoEvent', content: this.isVideoOff });
+          // 現在のトピックを送信
+          if (this.topic !== null) {
+            this.call.send({ type: 'topic', content: this.topic });
+          }
 
           // 通知音
           if (this.isNotificationOn) {
@@ -925,7 +929,9 @@ export default {
         this.call.send({ type: 'audioEvent', content: this.isMute });
         this.call.send({ type: 'videoEvent', content: this.isVideoOff });
         // 現在のトピックを送信
-        this.call.send({ type: 'topic', content: this.topic });
+        if (this.topic !== null) {
+          this.call.send({ type: 'topic', content: this.topic });
+        }
 
         // 通知音
         if (this.isNotificationOn) {

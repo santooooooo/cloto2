@@ -489,7 +489,7 @@ export default {
         timer: null, // ツールバー表示タイマー
         isShow: false, // ツールバー表示制御
       },
-      topic: '', // トピック
+      topic: null, // トピック
 
       //*** 通話 ***//
       participants: [], // 参加者
@@ -732,7 +732,9 @@ export default {
           // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
           this.call.send({ type: 'joinViewerData', content: this.authUser });
           // 現在のトピックを送信
-          this.call.send({ type: 'topic', content: this.topic });
+          if (this.topic !== null) {
+            this.call.send({ type: 'topic', content: this.topic });
+          }
 
           // 通知音
           if (this.isNotificationOn) {
@@ -776,6 +778,10 @@ export default {
       if (isJoin) {
         // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
         this.call.send({ type: 'joinViewerData', content: this.authUser });
+        // 現在のトピックを送信
+        if (this.topic !== null) {
+          this.call.send({ type: 'topic', content: this.topic });
+        }
 
         // 通知音
         if (this.isNotificationOn) {
