@@ -363,7 +363,11 @@
       <!-- チャットエリア -->
       <v-flex xs3 v-show="chat.isOpen">
         <v-card color="grey lighten-2" class="mx-auto" id="chat">
-          <div class="overflow-y-auto" ref="chatScrollArea">
+          <div
+            class="overflow-y-auto"
+            :style="{ height: $windowHeight - 200 + 'px' }"
+            ref="chatScrollArea"
+          >
             <v-card-text v-for="(message, index) in chat.messages" :key="index">
               <span class="text-caption">{{ message.handlename }}</span>
               <span class="text-body-1 font-weight-bold" v-html="message.text"></span>
