@@ -4,7 +4,7 @@
 
     <v-row>
       <v-col v-for="karte in kartes.slice().reverse()" :key="karte.id" sm="6" md="4">
-        <v-card width="400" class="pa-3">
+        <v-card width="400" class="mx-auto pa-3">
           <v-card-actions class="d-block" @click="showKarte = karte">
             <v-img
               width="300"
@@ -15,7 +15,7 @@
               v-if="karte.image"
             ></v-img>
             <v-sheet
-              width="300"
+              max-width="300"
               height="200"
               class="mx-auto my-2 rounded-xl"
               color="grey lighten-2"
