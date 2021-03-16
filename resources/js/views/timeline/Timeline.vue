@@ -3,81 +3,68 @@
     <h1 class="text-h4">タイムライン</h1>
 
     <v-row>
-      <v-spacer></v-spacer>
-      <v-col
-        v-for="karte in kartes"
-        :key="karte.id"
-        cols="12"
-        sm="6"
-        md="4"
-        @click="showData(karte)"
-      >
-        <v-card :ripple="true" class="btn text-left">
-          <v-card-actions class="white justify-center d-block">
+      <v-col v-for="karte in kartes.slice().reverse()" :key="karte.id" sm="6" md="4">
+        <v-card width="400" class="pa-3">
+          <v-card-actions class="d-block" @click="showKarte = karte">
             <v-img
-              max-width="300"
+              width="300"
+              height="200"
               class="mx-auto my-2 rounded-xl"
               contain
-              :src="$karte(karte, authUser.username) + karte.image"
+              :src="$karte(karte, karte.user.username) + karte.image"
               v-if="karte.image"
             ></v-img>
-
-            <v-row align="center">
-              <v-col
-                class="d-flex"
-                cols="4"
-                sm="2"
-                md="10"
-                @click="showProfile(karte.user.username)"
-              >
-                <!-- ユーザーアイコン -->
-                <v-avatar>
-                  <v-img
-                    :src="$storage('icon') + authUser.icon"
-                    contain
-                    max-width="50"
-                    max-height="50"
-                  >
-                  </v-img>
-                </v-avatar>
-                <!-- ユーザー名 -->
-                <div class="ml-3">
-                  <p class="content m-0 p-0 text-truncate">{{ karte.user.username }}</p>
-                  <p class="content m-0 p-0 text-truncate text-secondary">
-                    @{{ karte.user.username }}
-                  </p>
-                </div>
-              </v-col>
-            </v-row>
+            <v-sheet
+              width="300"
+              height="200"
+              class="mx-auto my-2 rounded-xl"
+              color="grey lighten-2"
+              v-else
+            ></v-sheet>
 
             <!-- タグ -->
-            <v-chip class="ml-0" v-for="tag in karte.tags" :key="tag.id" :value="tag.id">
+            <v-chip class="ma-1" v-for="tag in karte.tags" :key="tag.id" :value="tag.id">
               {{ tag.name }}
             </v-chip>
 
             <!-- 活動時間 -->
-            <p class="content">{{ karte.activity_time.slice(0, 5) }}</p>
+            <p class="mt-6 text-body-2 font-weight-bold">{{ karte.activity_time.slice(0, 5) }}</p>
 
             <!-- 活動内容 -->
             <v-tooltip max-width="300" top>
               <template v-slot:activator="{ on, attrs }">
                 <div v-bind="attrs" v-on="on">
-                  <p class="content text-truncate">{{ karte.body }}</p>
+                  <p class="mb-0 text-body-2 text-truncate">{{ karte.body }}</p>
                 </div>
               </template>
               <span>{{ karte.body }}</span>
             </v-tooltip>
           </v-card-actions>
+
+          <v-divider></v-divider>
+
+          <v-row no-gutters align="end" class="mt-3" @click="showProfile(karte.user.username)">
+            <!-- ユーザーアイコン -->
+            <v-avatar size="50">
+              <img :src="$storage('icon') + karte.user.icon" />
+            </v-avatar>
+
+            <!-- ユーザー名 -->
+            <div class="ml-3">
+              <p class="mb-0 text-body-1">{{ karte.user.username }}</p>
+              <p class="mb-0 text-body-2">@{{ karte.user.username }}</p>
+            </div>
+          </v-row>
         </v-card>
       </v-col>
     </v-row>
 
+    <KarteDialog :karte="showKarte" @close="showKarte = null" />
     <ProfileDialog
       :username="profile.username"
       @close="profile.dialog = $event"
       v-if="profile.dialog"
     />
-    <KarteDialog :karte="karte" @close="karte = null" />
   </v-container>
 </template>
 
@@ -88,43 +75,32 @@ import ProfileDialog from '@/components/timeline/ProfileDialog';
 export default {
   data() {
     return {
-      kartes: null, //カルテ一覧
-      karte: null, // 詳細を表示するカルテ
+      kartes: [], // カルテ一覧
+      showKarte: null, // 詳細を表示するカルテ
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
       },
-      isKarte: true, //カルテとユーザープロフィールの表示の制御
     };
   },
   components: {
     KarteDialog,
     ProfileDialog,
   },
-  async created() {
-    var response = await axios.get('/api/kartes');
-    this.kartes = response.data;
-  },
-  computed: {
-    authUser() {
-      return this.$store.getters['auth/user'];
-    },
-  },
   methods: {
-    showData: function (info) {
-      setTimeout(this.showKarte(info, this.isKarte), 10);
-      this.isKarte = true;
-    },
-    showKarte: function (info, isKarte) {
-      if (isKarte) {
-        this.karte = info;
-      }
-    },
+    /**
+     * プロフィールの表示
+     *
+     * @param {String} username - プロフィールを表示するユーザー名
+     */
     showProfile: function (username) {
-      this.isKarte = false;
-      this.profile.dialog = true;
       this.profile.username = username;
+      this.profile.dialog = true;
     },
+  },
+  async created() {
+    let response = await axios.get('/api/kartes');
+    this.kartes = response.data;
   },
 };
 </script>
@@ -133,7 +109,7 @@ export default {
 h1 {
   position: relative;
   padding: 1rem 2rem;
-  border-bottom: 6px solid #094;
+  border-bottom: 6px solid #ca9f01;
 
   &:before {
     position: absolute;
@@ -142,21 +118,11 @@ h1 {
     width: 20%;
     height: 6px;
     content: '';
-    background: #00cc5b;
+    background: #f6bf00;
   }
 }
 
-tbody {
-  tr {
-    cursor: pointer;
-
-    .content {
-      width: 100px;
-      margin: 0;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-  }
+.v-card {
+  cursor: pointer;
 }
 </style>
