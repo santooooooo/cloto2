@@ -185,6 +185,10 @@
           to <span style="color: #ff99ab">B</span> 事業
         </p>
 
+        <p class="text-body-1 text-center font-weight-bold red--text">
+          ※量産体制が整っていないため、新規受注を休止しています。
+        </p>
+
         <p class="text-h6 text-center">DX化に興味はあるけど、どこが便利になるの？</p>
         <p class="text-body-1 text-center mb-8">
           CLOTOは貴社が必要とする機能を盛り込むことのできる<br />
@@ -232,7 +236,7 @@
         <p class="text-h6 text-center">学習塾の運営</p>
         <p class="text-body-1 text-center mb-8">
           オンラインで受けられる個人・少人数授業で、講師は全員教育大学を卒業しておりネットがつながる場所であれば学習塾に通わずに授業が受けられることが特徴の<a
-            href="https://sub-juku.com"
+            href="https://subjuku.wixsite.com/subjuku"
             target="_blank"
             rel="noopener noreferrer"
             >サブ塾</a
@@ -485,7 +489,7 @@ export default {
         this.contactForm.loading = true;
 
         // 問い合わせ送信処理
-        var response = await axios.post('/api/contact', {
+        let response = await axios.post('/api/contact', {
           name: this.contactForm.name,
           email: this.contactForm.email,
           body: this.contactForm.body,

@@ -93,7 +93,7 @@ export default {
         this.loading = true;
 
         // 問い合わせの送信
-        var response = await axios.post('/api/inquiries', {
+        let response = await axios.post('/api/inquiries', {
           author: 'user',
           type: 'text',
           data: { text: message.data.text },
@@ -119,7 +119,7 @@ export default {
      * @return {String} 変換済みの投稿者
      */
     setAuthor: function (author) {
-      var show;
+      let show;
       switch (author) {
         case 'user':
           show = 'me';
@@ -136,7 +136,7 @@ export default {
 
   async created() {
     // 問い合わせの取得
-    var response = await axios.get('/api/inquiries');
+    let response = await axios.get('/api/inquiries');
     this.messages = response.data;
 
     // 投稿者の変換
@@ -145,22 +145,22 @@ export default {
     });
 
     // 現在時刻の取得
-    var date = new Date();
+    let date = new Date();
 
     // 2桁で時間を取得
-    var hour = String(date.getHours());
+    let hour = String(date.getHours());
     if (hour.length === 1) {
       hour = '0' + hour;
     }
 
     // 2桁で分数を取得
-    var minute = String(date.getMinutes());
+    let minute = String(date.getMinutes());
     if (minute.length === 1) {
       minute = '0' + minute;
     }
 
     // 現在時刻
-    var now = hour + '時' + minute + '分';
+    let now = hour + '時' + minute + '分';
 
     // 挨拶メッセージの追加
     this.messages.unshift(

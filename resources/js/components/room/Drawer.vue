@@ -70,11 +70,11 @@
               v-model="inProgress.body"
               :placeholder="authUser.in_progress"
               :disabled="inProgress.loading"
-              :counter="inProgress.max"
               :maxlength="inProgress.max"
               rows="2"
               solo
-              class="pt-2 px-2"
+              hide-details
+              class="pt-2 pb-4 px-2"
             ></v-textarea>
 
             <v-btn
@@ -107,7 +107,8 @@
               :disabled="announcement.loading"
               rows="2"
               solo
-              class="pt-2 px-2"
+              hide-details
+              class="pt-2 pb-4 px-2"
             ></v-textarea>
 
             <v-btn
@@ -168,7 +169,7 @@ export default {
       if (this.inProgress.body !== (this.authUser.in_progress || '')) {
         this.inProgress.loading = true;
 
-        var response = await axios.post('/api/users', {
+        let response = await axios.post('/api/users', {
           _method: 'patch',
           in_progress: this.inProgress.body,
         });
@@ -180,6 +181,11 @@ export default {
           if (remove) {
             this.$store.dispatch('alert/success', '取り組み中のタスクが削除されました！');
           } else {
+            // チャットの送信
+            axios.post('/api/rooms/chat', {
+              message: '「' + this.inProgress.body + '」なう！',
+            });
+
             this.$store.dispatch('alert/success', '取り組み中のタスクが公開されました！');
             this.inProgress.body = '';
           }
@@ -197,7 +203,7 @@ export default {
     announce: async function () {
       this.announcement.loading = true;
 
-      var response = await axios.post('/api/rooms/announce', {
+      let response = await axios.post('/api/rooms/announce', {
         message: this.announcement.message,
       });
 

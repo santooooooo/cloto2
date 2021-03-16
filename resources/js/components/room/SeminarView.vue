@@ -314,32 +314,33 @@
       <!-- チャットエリア -->
       <v-flex xs2 v-show="chat.isOpen">
         <v-card color="grey lighten-2" class="mx-auto" id="chat">
-          <div class="overflow-y-auto" ref="chatScrollArea">
+          <div
+            class="overflow-y-auto"
+            :style="{ height: $windowHeight - 300 + 'px' }"
+            ref="chatScrollArea"
+          >
             <v-card-text v-for="(message, index) in chat.messages" :key="index">
-              <!-- ユーザーメッセージ -->
-              <p v-if="message.handlename">
-                <span class="text-caption">{{ message.handlename }}</span>
-                <span class="text-body-1 font-weight-bold" v-html="message.text"></span>
-              </p>
-
-              <!-- システムメッセージ -->
-              <p class="text-center" style="color: red" v-else>
-                {{ message.text }}
-              </p>
+              <span class="text-caption">{{ message.handlename }}</span>
+              <span class="text-body-1 font-weight-bold" v-html="message.text"></span>
             </v-card-text>
           </div>
 
-          <v-card-actions>
-            <v-text-field
-              v-model="chat.localText"
-              class="px-2"
-              label="入力"
-              @keydown.enter="sendMessage"
-            ></v-text-field>
-            <v-btn icon @click="sendMessage">
-              <v-icon>mdi-send</v-icon>
-            </v-btn>
-          </v-card-actions>
+          <v-row no-gutters class="mt-2" justify="space-around">
+            <v-btn text @click="sendEmoji('😄')">😄</v-btn>
+            <v-btn text @click="sendEmoji('🤣')">🤣</v-btn>
+            <v-btn text @click="sendEmoji('🤔')">🤔</v-btn>
+            <v-btn text @click="sendEmoji('👏')">👏</v-btn>
+            <v-btn text @click="sendEmoji('💥')">💥</v-btn>
+            <v-btn text @click="sendEmoji('💩')">💩</v-btn>
+          </v-row>
+
+          <v-text-field
+            v-model="chat.localText"
+            class="mx-4"
+            append-outer-icon="mdi-send"
+            @keydown.enter="sendMessage"
+            @click:append-outer="sendMessage"
+          ></v-text-field>
         </v-card>
       </v-flex>
     </v-layout>
@@ -466,7 +467,7 @@
 <script>
 import voiceDetection from 'voice-activity-detection';
 import ProfileDialog from '@/components/room/ProfileDialog';
-import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND, RECEIVE_MESSAGE_SOUND } from '@/consts/sound';
+import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND } from '@/consts/sound';
 
 const API_KEY = process.env.MIX_SKYWAY_API_KEY;
 
@@ -488,7 +489,7 @@ export default {
         timer: null, // ツールバー表示タイマー
         isShow: false, // ツールバー表示制御
       },
-      topic: '', // トピック
+      topic: null, // トピック
 
       //*** 通話 ***//
       participants: [], // 参加者
@@ -512,6 +513,7 @@ export default {
 
       //*** チャット ***//
       chat: {
+        flow: null, // チャットクラス
         isOpen: false, // チャットエリア表示制御
         notification: false, // 通知制御
         localText: '', // 送信するメッセージ
@@ -557,6 +559,16 @@ export default {
       });
     },
   },
+  watch: {
+    $windowWidth: function () {
+      // チャットクラスの更新
+      this.setupChatClass();
+    },
+    $windowHeight: function () {
+      // チャットクラスの更新
+      this.setupChatClass();
+    },
+  },
   methods: {
     /**
      * 通話室から退室
@@ -582,11 +594,6 @@ export default {
      * 通話のイベント
      */
     setupCallEvents: function () {
-      // 自身の参加イベント
-      this.call.once('open', () => {
-        this.addMessage(null, '入室しました！');
-      });
-
       // 他ユーザー参加イベント
       this.call.on('stream', (stream) => {
         this.joinSpeaker(stream);
@@ -595,14 +602,15 @@ export default {
       // データ到着イベント
       this.call.on('data', async ({ data, src }) => {
         // 送信者が取得されるまで待機
-        for (var i = 0; i < 50; i++) {
+        let sender;
+        for (let i = 0; i < 50; i++) {
           // 参加直後，this.participantsへの追加前に検索されるので回避
           // 新規ユーザーのstreamよりも先にdataが届く
           // 存在しない場合の対策として上限を5秒に設定
           try {
-            var sender = await new Promise((resolve, reject) => {
+            sender = await new Promise((resolve, reject) => {
               // 送信者を検索（参加者のPeerIDを確認）
-              var participant = this.participants.filter((participant) => {
+              let participant = this.participants.filter((participant) => {
                 return src === participant.peerId;
               })[0];
 
@@ -630,15 +638,11 @@ export default {
             sender.username = data.content.username;
             sender.handlename = data.content.handlename;
             sender.icon = data.content.icon;
-            // 参加メッセージの追加
-            this.addMessage(null, sender.handlename + 'が入室しました！');
             break;
 
           case 'joinViewerData':
             // 参加した視聴者のデータの受信
             this.joinViewer(src, data.content);
-            // 参加メッセージの追加
-            this.addMessage(null, data.content.handlename + 'が入室しました！');
             break;
 
           case 'loadingEvent':
@@ -666,13 +670,8 @@ export default {
             // メッセージの受信
             this.addMessage(sender.handlename, data.content);
 
+            // 通知の表示
             if (!this.chat.isOpen) {
-              // 通知音
-              if (this.isNotificationOn) {
-                RECEIVE_MESSAGE_SOUND.play();
-              }
-
-              // 通知の表示
               this.chat.notification = true;
               this.showAppBar();
             }
@@ -721,7 +720,7 @@ export default {
       // 参加者がいるか確認
       // ミュートやビデオの切替時にもストリームが置き換わるため発火する場合がある
       // 同一のPeerIDが存在しないことを確認する
-      var isJoin = !this.participants.some((participant) => participant.peerId === stream.peerId);
+      let isJoin = !this.participants.some((participant) => participant.peerId === stream.peerId);
 
       if (isJoin) {
         // ユーザーが参加した場合
@@ -729,7 +728,9 @@ export default {
           // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
           this.call.send({ type: 'joinViewerData', content: this.authUser });
           // 現在のトピックを送信
-          this.call.send({ type: 'topic', content: this.topic });
+          if (this.topic !== null) {
+            this.call.send({ type: 'topic', content: this.topic });
+          }
 
           // 通知音
           if (this.isNotificationOn) {
@@ -768,11 +769,15 @@ export default {
       // 参加者がいるか確認
       // ミュートやビデオの切替時にもストリームが置き換わるため発火する場合がある
       // 同一のPeerIDが存在しないことを確認する
-      var isJoin = !this.participants.some((participant) => participant.peerId === peerId);
+      let isJoin = !this.participants.some((participant) => participant.peerId === peerId);
 
       if (isJoin) {
         // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
         this.call.send({ type: 'joinViewerData', content: this.authUser });
+        // 現在のトピックを送信
+        if (this.topic !== null) {
+          this.call.send({ type: 'topic', content: this.topic });
+        }
 
         // 通知音
         if (this.isNotificationOn) {
@@ -862,6 +867,33 @@ export default {
     },
 
     /**
+     * チャットクラスの設定
+     */
+    setupChatClass: function () {
+      this.chat.flow = new FlowChat({
+        app: this.$refs.container,
+        width: this.$windowWidth - 10,
+        height: this.$windowHeight - 50,
+      });
+
+      // チャットの待機
+      this.chat.flow.listen();
+    },
+
+    /**
+     * 絵文字の送信処理
+     *
+     * @param {String} emoji - 絵文字
+     */
+    sendEmoji: function (emoji) {
+      // 絵文字の送信
+      this.call.send({ type: 'message', content: emoji });
+
+      // 自分の画面を更新
+      this.addMessage(this.authUser.handlename, emoji);
+    },
+
+    /**
      * メッセージの送信処理
      *
      * @param {Event} event - クリック or キーボードイベント
@@ -884,13 +916,18 @@ export default {
      * メッセージの追加処理
      *
      * @param {String} handlename - 表示名
-     * @param {String} text - 内容
+     * @param {String} message - 内容
      */
-    addMessage: function (handlename, text) {
+    addMessage: function (handlename, message) {
+      let text = this.$formatStr(message);
+
+      // メッセージを流す
+      this.chat.flow.send(text, '#ffffff', 50);
+
       // メッセージの追加
       this.chat.messages.push({
         handlename: handlename,
-        text: this.$formatStr(text),
+        text: text,
       });
 
       // 最下部へスクロール（メッセージのDOM挿入後に実行）
@@ -935,10 +972,10 @@ export default {
       this.appBar.isShow = true;
       clearTimeout(this.appBar.timer);
 
-      var hide = true;
+      let hide = true;
       if (event !== null) {
         // マウスがツールバー上にある場合，非表示にしない
-        var cursorFromBottom = this.$windowHeight - event.clientY;
+        let cursorFromBottom = this.$windowHeight - event.clientY;
         if (cursorFromBottom <= 100) {
           hide = false;
         }
@@ -1069,6 +1106,9 @@ export default {
 
     // ツールバー表示制御の設定
     window.addEventListener('mousemove', this.showAppBar);
+
+    // チャットクラスの設定
+    this.setupChatClass();
   },
 
   beforeDestroy() {
@@ -1156,12 +1196,11 @@ export default {
 }
 
 #chat {
-  position: -webkit-sticky;
   position: sticky;
+  z-index: 1;
   top: 8px;
 
   .overflow-y-auto {
-    height: 500px;
     background-color: white;
   }
 }

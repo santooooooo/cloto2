@@ -252,7 +252,7 @@ export default {
      * @param {Event} event
      */
     pageBackEvent: function (event) {
-      var historyTraversal =
+      let historyTraversal =
         event.persisted ||
         (typeof window.performance !== 'undefined' && window.performance.navigation.type === 2);
       if (historyTraversal) {
@@ -277,13 +277,13 @@ export default {
     // 複数タブ操作の禁止
     setInterval(() => {
       // タブ単位での記憶
-      var sessionTabId = sessionStorage.getItem('tabID');
+      let sessionTabId = sessionStorage.getItem('tabID');
       // ブラウザ単位での記憶
-      var localTabId = localStorage.getItem('tabID');
+      let localTabId = localStorage.getItem('tabID');
 
       if (sessionTabId === null || (sessionTabId !== null && !this.issuedTabId)) {
         // 新規タブのオープン，タブ複製時にIDを発行
-        var tabId = new Date().getTime();
+        let tabId = new Date().getTime();
         sessionStorage.setItem('tabID', tabId);
         localStorage.setItem('tabID', tabId);
         this.issuedTabId = true;

@@ -7,6 +7,7 @@ window.Vue = require('vue');
 window.Peer = require('skyway-js');
 window.Storage = require('./consts/storage');
 window.Functions = require('./plugins/functions');
+window.FlowChat = require('./plugins/flow-chat');
 
 /**
  * Vueプロトタイプの設定

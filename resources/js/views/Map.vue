@@ -74,7 +74,7 @@ export default {
     $windowWidth: function (windowWidth) {
       // ウィンドウリサイズ時に拡大率を変更
       if (this.canvas) {
-        var zoom = (windowWidth - 10) / this.mapWidth;
+        let zoom = (windowWidth - 10) / this.mapWidth;
         this.setZoom(zoom);
       }
     },
@@ -108,7 +108,7 @@ export default {
      */
     showPopup: function (buildingObject) {
       // 吹き出しの位置を設定
-      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       this.$refs.popup.style.left = window.event.clientX + 'px';
       this.$refs.popup.style.top = window.event.clientY + scrollTop - 50 + 'px';
       // 表示
@@ -190,10 +190,9 @@ export default {
       this.$storage('system') + 'map.png',
       this.canvas.renderAll.bind(this.canvas)
     );
-    this.canvas.defaultCursor = 'grab';
 
     // 初期サイズの設定（横幅MAX）
-    var zoom = (this.$windowWidth - 10) / this.mapWidth;
+    let zoom = (this.$windowWidth - 10) / this.mapWidth;
     this.setZoom(zoom);
 
     // クリックエリアの設定
@@ -234,17 +233,10 @@ export default {
 
     // クリックイベントの設定
     this.canvas.on('mouse:down', (event) => {
-      this.canvas.defaultCursor = 'grabbing';
-
       // オブジェクトのクリック時にのみ実行
       if (event.target) {
         this.canvasMouseDown(event.target);
       }
-    });
-
-    // クリック終了イベントの設定
-    this.canvas.on('mouse:up', () => {
-      this.canvas.defaultCursor = 'grab';
     });
 
     // ロード終了

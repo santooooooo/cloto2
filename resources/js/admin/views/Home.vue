@@ -62,7 +62,7 @@ export default {
       if (event.target.files[0]) {
         this.loading = true;
 
-        var input = new FormData();
+        let input = new FormData();
         input.append('event', event.target.files[0]);
 
         await axios.post('/api/admin/events', input);

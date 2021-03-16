@@ -29,10 +29,10 @@ export default {
     };
   },
   async mounted() {
-    var response = await axios.get('/api/rooms');
+    let response = await axios.get('/api/rooms');
     response.data.forEach((room) => {
       // 着席者数のカウント
-      var userNum = 0;
+      let userNum = 0;
       room.sections.forEach((section) => {
         section.seats.forEach((seat) => {
           if (seat.user) {

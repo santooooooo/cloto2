@@ -219,7 +219,7 @@ export default {
       this.tag.loading = true;
       this.tag.dialog = true;
 
-      var response = await axios.get('/api/tags');
+      let response = await axios.get('/api/tags');
       this.tag.data = response.data;
 
       this.tag.loading = false;
@@ -254,7 +254,7 @@ export default {
       if (this.$refs.karteForm.validate()) {
         this.karteForm.loading = true;
 
-        var input = new FormData();
+        let input = new FormData();
         input.append('activity_time', this.karteForm.activityTime);
         input.append('tags', this.tag.inputIds);
         input.append('body', this.karteForm.body);
@@ -264,16 +264,17 @@ export default {
         input.append('image', this.karteForm.image);
 
         // カルテ保存処理
-        var response = await axios.post('/api/kartes', input);
+        let response = await axios.post('/api/kartes', input);
 
         if (response.status === OK) {
           // 本番サーバでのみツイート
           if (window.location.hostname === 'cloto.jp') {
-            var tweet =
+            let tweet =
               'https://twitter.com/intent/tweet?text=' +
-              this.substr(this.karteForm.body, 232) +
-              '&url=https://cloto.jp&hashtags=CLOTO&via=cloto_jp';
-            window.open(tweet, '_blank');
+              encodeURIComponent(
+                this.substr(this.karteForm.body, 232) + '\n\n#CLOTO\n@cloto_jp\ncloto.jp'
+              );
+            window.open(tweet, 'Tweet', 'width=650, height=470');
           }
 
           this.dialog = false;
@@ -298,14 +299,14 @@ export default {
      * @return {String} 切り出し後のテキスト
      */
     substr: function (text, byte) {
-      var text_array = text.split('');
-      var count = 0;
-      var str = '';
+      let texts = text.split('');
+      let count = 0;
+      let str = '';
 
-      for (var i = 0; i < text_array.length; i++) {
+      for (let i = 0; i < texts.length; i++) {
         // バイト数の加算
-        var n = escape(text_array[i]);
-        if (n.length < 4) {
+        let char = escape(texts[i]);
+        if (char.length < 4) {
           count += 1;
         } else {
           count += 2;

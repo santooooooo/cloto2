@@ -191,7 +191,7 @@ export default {
       if (this.$refs.editProfileForm.validate()) {
         this.editProfileForm.loading = true;
 
-        var sns = {};
+        let sns = {};
         if (this.editProfileForm.data.sns.twitter) {
           sns.twitter = this.editProfileForm.data.sns.twitter;
         }
@@ -202,7 +202,7 @@ export default {
           sns.qiita = this.editProfileForm.data.sns.qiita;
         }
 
-        var input = new FormData();
+        let input = new FormData();
         input.append('_method', 'patch');
         input.append('username', this.editProfileForm.data.username);
         input.append('email', this.editProfileForm.data.email);
@@ -216,7 +216,7 @@ export default {
         );
 
         // ユーザーデータ保存処理
-        var response = await axios.post('/api/users', input);
+        let response = await axios.post('/api/users', input);
 
         if (response.status === OK) {
           // ユーザーデータの同期

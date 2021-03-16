@@ -147,7 +147,7 @@ export default {
      * 部屋データの取得
      */
     getRooms: async function () {
-      var response = await axios.get('/api/admin/rooms');
+      let response = await axios.get('/api/admin/rooms');
       this.rooms = response.data;
     },
 
@@ -162,7 +162,7 @@ export default {
 
       // 時間割データの最適化
       // オブジェクトを配列化
-      var sortedTimetable = [];
+      let sortedTimetable = [];
       Object.keys(this.editRoomForm.data.timetable).forEach((key) => {
         sortedTimetable.push({ separate: key, status: this.editRoomForm.data.timetable[key] });
       });
@@ -244,12 +244,12 @@ export default {
           return comparison;
         });
 
-        var timetable = {};
+        let timetable = {};
         this.editRoomForm.data.timetable.forEach((data) => {
           timetable[data.separate] = data.status;
         });
 
-        var input = new FormData();
+        let input = new FormData();
         input.append('_method', 'patch');
         input.append('name', this.editRoomForm.data.name);
         input.append('timetable', JSON.stringify(timetable));
@@ -258,7 +258,7 @@ export default {
         }
 
         // 部屋データ保存処理
-        var response = await axios.post('/api/admin/rooms/' + this.editRoomForm.data.id, input);
+        let response = await axios.post('/api/admin/rooms/' + this.editRoomForm.data.id, input);
 
         if (response.status === OK) {
           if (this.editRoomForm.index > -1) {

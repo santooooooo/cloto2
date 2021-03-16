@@ -217,7 +217,7 @@ export default {
      * ユーザーデータの取得
      */
     getUsers: async function () {
-      var response = await axios.get('/api/admin/users');
+      let response = await axios.get('/api/admin/users');
       this.users = response.data;
     },
 
@@ -228,7 +228,7 @@ export default {
      */
     getKartes: async function (user) {
       this.kartes.user = user;
-      var response = await axios.get('/api/admin/kartes/' + this.kartes.user.id);
+      let response = await axios.get('/api/admin/kartes/' + this.kartes.user.id);
       this.kartes.data = response.data;
       this.kartes.dialog = true;
     },

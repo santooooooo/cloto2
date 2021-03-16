@@ -137,7 +137,7 @@ export default {
         alert('jpgまたはpng形式の画像をアップロードしてください。');
       } else {
         // 正しい形式
-        var reader = new FileReader();
+        let reader = new FileReader();
         reader.onload = (readerEvent) => {
           this.image = window.URL.createObjectURL(new Blob([readerEvent.target.result]));
         };

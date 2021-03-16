@@ -192,7 +192,7 @@ export default {
      * 部屋データの取得
      */
     getRooms: async function () {
-      var response = await axios.get('/api/admin/rooms');
+      let response = await axios.get('/api/admin/rooms');
       this.rooms = response.data;
     },
 

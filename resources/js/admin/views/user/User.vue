@@ -216,7 +216,7 @@ export default {
      * ユーザーデータの取得
      */
     getUsers: async function () {
-      var response = await axios.get('/api/admin/users');
+      let response = await axios.get('/api/admin/users');
       this.users = response.data;
     },
 
@@ -251,7 +251,7 @@ export default {
       if (this.$refs.editUserForm.validate()) {
         this.editUserForm.loading = true;
 
-        var input = new FormData();
+        let input = new FormData();
         input.append('_method', 'patch');
         input.append('email', this.editUserForm.data.email);
         input.append('handlename', this.editUserForm.data.handlename);
@@ -262,7 +262,7 @@ export default {
         input.append('role', this.editUserForm.data.role);
 
         // ユーザーデータ保存処理
-        var response = await axios.post('/api/admin/users/' + this.editUserForm.data.id, input);
+        let response = await axios.post('/api/admin/users/' + this.editUserForm.data.id, input);
 
         if (response.status === OK) {
           if (this.editUserForm.index > -1) {
@@ -295,7 +295,7 @@ export default {
       this.deleteUserForm.loading = true;
 
       // ユーザー削除処理
-      var response = await axios.delete('/api/admin/users/' + this.deleteUserForm.data.id);
+      let response = await axios.delete('/api/admin/users/' + this.deleteUserForm.data.id);
 
       if (response.status === OK) {
         this.getUsers();

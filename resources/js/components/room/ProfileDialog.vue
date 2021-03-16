@@ -181,7 +181,7 @@ export default {
     },
 
     color() {
-      var color;
+      let color;
       if (this.user.type === 'pro') {
         color = 'green darken-2';
       } else {
@@ -199,7 +199,7 @@ export default {
     follow: async function () {
       this.loading = true;
 
-      var response = await axios.post('/api/users/' + this.user.id + '/follow', {
+      let response = await axios.post('/api/users/' + this.user.id + '/follow', {
         _method: 'patch',
       });
       this.user = response.data;
@@ -211,7 +211,7 @@ export default {
      * フォロー一覧の表示
      */
     showFollows: async function () {
-      var response = await axios.get('/api/users/' + this.user.id + '/follows');
+      let response = await axios.get('/api/users/' + this.user.id + '/follows');
       this.followers = response.data;
       this.show = 'follows';
     },
@@ -220,7 +220,7 @@ export default {
      * フォロワー一覧の表示
      */
     showFollowers: async function () {
-      var response = await axios.get('/api/users/' + this.user.id + '/followers');
+      let response = await axios.get('/api/users/' + this.user.id + '/followers');
       this.followers = response.data;
       this.show = 'followers';
     },
@@ -237,10 +237,8 @@ export default {
   },
 
   async created() {
-    /**
-     * ユーザーデータの取得
-     */
-    var response = await axios.get('/api/users/' + this.username);
+    // ユーザーデータの取得
+    let response = await axios.get('/api/users/' + this.username);
     this.user = response.data;
   },
 };
