@@ -34,13 +34,22 @@ class KarteController extends Controller
 
 
     /**
-     * ログインユーザーが持つカルテの一覧を取得
+     * カルテの一覧を取得
      *
+     * @param  \App\Models\User $user   カルテを取得するユーザー
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user = null)
     {
-        return response()->json($this->user->kartes()->with('tags')->get());
+        if (empty($user)) {
+            // 全ユーザーのカルテ一覧
+            $kartes = $this->karte->with(['tags', 'user'])->get();
+        } else {
+            // 指定したユーザーのカルテ一覧
+            $kartes = $user->kartes()->with('tags')->get();
+        }
+
+        return response()->json($kartes);
     }
 
     /**
