@@ -97,6 +97,45 @@
 
         <v-col sm="8">
           <v-list color="#f6bf00" :width="isSmartphone ? '100%' : '70%'">
+            <v-list-item href="https://spark.adobe.com/page/2c4jjsCRpBaLJ" target="_blank">
+              <v-list-item-icon>
+                <v-icon class="white--text">mdi-information</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title class="white--text">
+                  メール誤送信による個人情報漏洩についてのお詫び<small>（2020/03/19）</small>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item
+              href="https://kansai-students-pitch-grand-prix-2021.peatix.com"
+              target="_blank"
+            >
+              <v-list-item-icon>
+                <v-icon class="white--text">mdi-sword</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title class="white--text">
+                  KANSAI STUDENTS PITCH Grand Prix 2021に出場しました。<small>（2020/03/06）</small>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item
+              href="https://waseda-edge.jp/event_detail_2020?id=20210217"
+              target="_blank"
+            >
+              <v-list-item-icon>
+                <v-icon class="white--text">mdi-trophy</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title class="white--text">
+                  第3回 WASEDA Demo DayにてSAP賞を受賞しました。<small>（2020/02/17）</small>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
             <v-list-item href="https://spark.adobe.com/page/JwVbQbzQtbSkB" target="_blank">
               <v-list-item-icon>
                 <v-icon class="white--text">mdi-alpha</v-icon>
