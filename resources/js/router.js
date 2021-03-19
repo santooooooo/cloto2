@@ -16,6 +16,8 @@ import terms from '@/views/service/Terms';
 import map from '@/views/Map';
 import mypage from '@/views/mypage/Mypage';
 import profile from '@/views/mypage/Profile';
+import follow from '@/views/mypage/Follow';
+import follower from '@/views/mypage/Follower';
 import karte from '@/views/mypage/Karte';
 import entrance from '@/views/entrance/Entrance';
 import information from '@/views/entrance/Information';
@@ -74,6 +76,16 @@ const router = new VueRouter({
           path: 'profile',
           name: 'mypage',
           component: profile,
+        },
+        {
+          path: 'follow',
+          name: 'follow',
+          component: follow,
+        },
+        {
+          path: 'follower',
+          name: 'follower',
+          component: follower,
         },
         {
           path: 'karte',
