@@ -23,7 +23,7 @@
                   max-width="120"
                   class="mx-auto my-2"
                   contain
-                  :src="$karte(karte, authUser.username) + karte.image"
+                  :src="karte.path + karte.image"
                   v-if="karte.image"
                 />
 

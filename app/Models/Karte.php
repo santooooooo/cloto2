@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Karte extends Model
 {
@@ -26,6 +27,13 @@ class Karte extends Model
     protected $casts = ['image' => 'json'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['path', 'user', 'tags'];
+
+    /**
      * User モデルのリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -43,5 +51,38 @@ class Karte extends Model
     public function tags()
     {
         return $this->belongsToMany('App\Models\Tag');
+    }
+
+    /**
+     * 保存パスの追加
+     *
+     * @return String
+     */
+    public function getPathAttribute()
+    {
+        $karte_dir = '/storage/user/karte';
+
+        return $karte_dir . '/' . $this->user()->first()->username . '/'
+            . (new Carbon($this->created_at))->format('Y_md_Hi') . '/';
+    }
+
+    /**
+     * ユーザーデータの追加
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getUserAttribute()
+    {
+        return $this->user()->first();
+    }
+
+    /**
+     * タグデータの追加
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getTagsAttribute()
+    {
+        return $this->tags()->get();
     }
 }

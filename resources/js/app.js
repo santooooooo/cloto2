@@ -13,7 +13,6 @@ window.FlowChat = require('./plugins/flow-chat');
  * Vueプロトタイプの設定
  */
 Vue.prototype.$storage = window.Storage.getStoragePath;
-Vue.prototype.$karte = window.Storage.getKartePath;
 Vue.prototype.$formatStr = window.Functions.formatStr;
 Vue.prototype.$slack = window.Functions.slackPost;
 

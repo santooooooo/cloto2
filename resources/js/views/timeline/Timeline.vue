@@ -11,7 +11,7 @@
               height="200"
               class="mx-auto my-2 rounded-xl"
               contain
-              :src="$karte(karte, karte.user.username) + karte.image"
+              :src="karte.path + karte.image"
               v-if="karte.image"
             ></v-img>
             <v-sheet

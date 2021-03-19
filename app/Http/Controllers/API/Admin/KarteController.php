@@ -30,6 +30,6 @@ class KarteController extends Controller
      */
     public function show(User $user)
     {
-        return response()->json($user->kartes()->with('tags')->get());
+        return response()->json($user->kartes);
     }
 }

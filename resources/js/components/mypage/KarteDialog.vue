@@ -39,7 +39,7 @@
               <v-card-text class="pa-2 white--text title font-weight-bold"> 画像 </v-card-text>
               <v-img
                 contain
-                :src="$karte(karte, authUser.username) + karte.image"
+                :src="karte.path + karte.image"
                 class="mx-auto"
                 v-if="karte.image"
               ></v-img>

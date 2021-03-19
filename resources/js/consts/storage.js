@@ -10,7 +10,6 @@ const ROOM = '/storage/system/room/';
 const SEAT = '/storage/system/room/seat/';
 const MEDIA = '/storage/system/room/media/';
 const ICON = '/storage/user/icon/';
-const KARTE = '/storage/user/karte/';
 
 /**
  * パスの取得
@@ -43,48 +42,4 @@ export function getStoragePath(name) {
   }
 
   return path;
-}
-
-/**
- * カルテデータパスの取得
- *
- * @param {Object} karte - 取得するカルテ
- * @param {String} username - ユーザー名
- * @return {String} ディレクトリのパス
- */
-export function getKartePath(karte, username) {
-  // 日時を取得
-  let dateTime = new Date(karte.created_at);
-
-  // 年を取得
-  let year = String(dateTime.getFullYear());
-
-  // 2桁で月を取得
-  let month = String(dateTime.getMonth() + 1);
-  if (month.length === 1) {
-    month = '0' + month;
-  }
-
-  // 2桁で日にちを取得
-  let day = String(dateTime.getDate());
-  if (day.length === 1) {
-    day = '0' + day;
-  }
-
-  // 2桁で時間を取得
-  let hour = String(dateTime.getHours());
-  if (hour.length === 1) {
-    hour = '0' + hour;
-  }
-
-  // 2桁で分数を取得
-  let minute = String(dateTime.getMinutes());
-  if (minute.length === 1) {
-    minute = '0' + minute;
-  }
-
-  let date = year + '_' + month + day;
-  let time = hour + minute;
-
-  return KARTE + username + '/' + date + '_' + time + '/';
 }

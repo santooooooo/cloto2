@@ -17,7 +17,7 @@
             transition="dialog-bottom-transition"
           >
             <v-toolbar dark height="64px">
-              <v-toolbar-title>{{ kartes.user.handlename }} のカルテ</v-toolbar-title>
+              <v-toolbar-title>{{ kartes.handlename }} のカルテ</v-toolbar-title>
               <v-spacer></v-spacer>
               <v-btn
                 fab
@@ -59,7 +59,7 @@
                             max-width="120"
                             class="mx-auto my-2"
                             contain
-                            :src="$karte(karte, kartes.user.username) + karte.image"
+                            :src="karte.path + karte.image"
                             v-if="karte.image"
                           />
 
@@ -160,11 +160,7 @@
             </v-container>
 
             <!-- カルテ表示ダイアログ -->
-            <KarteDialog
-              :karte="kartes.showKarte"
-              :username="kartes.user.username"
-              @close="kartes.showKarte = $event"
-            />
+            <KarteDialog :karte="kartes.showKarte" @close="kartes.showKarte = $event" />
           </v-dialog>
         </v-toolbar>
       </template>
@@ -206,8 +202,8 @@ export default {
       ],
       kartes: {
         dialog: false,
-        user: {},
-        data: {},
+        handlename: '', // 表示しているユーザー
+        data: {}, // カルテ一覧
         showKarte: null, // 詳細を表示するカルテ
       },
     };
@@ -227,8 +223,8 @@ export default {
      * @param {Object} user - カルテを取得するユーザー
      */
     getKartes: async function (user) {
-      this.kartes.user = user;
-      let response = await axios.get('/api/admin/kartes/' + this.kartes.user.id);
+      this.kartes.handlename = user.handlename;
+      let response = await axios.get('/api/admin/kartes/' + user.id);
       this.kartes.data = response.data;
       this.kartes.dialog = true;
     },
