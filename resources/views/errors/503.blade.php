@@ -36,11 +36,11 @@
             <td class="bg-gray-light" rowspan="2">クローズ</td>
         </tr>
         <tr>
-            <th>12:00 ~ 19:00</th>
+            <th>12:00 ~ 20:00</th>
             <td class="bg-primary" rowspan="2">オープン</td>
         </tr>
         <tr>
-            <th>19:00 ~ 24:00</th>
+            <th>20:00 ~ 24:00</th>
             <td class="bg-primary">オープン</td>
         </tr>
     </tbody>

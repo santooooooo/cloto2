@@ -70,10 +70,10 @@ class Kernel extends ConsoleKernel
 
         // 9:00にシステムを停止
         $schedule->command('system:down')->weekdays()->at('9:00');
-        // 18:40に全員退席処理
-        $schedule->command('refresh:seats')->weekdays()->at('18:40')->evenInMaintenanceMode();
-        // 19:00にシステムを復旧
-        $schedule->command('up')->weekdays()->at('19:00')->evenInMaintenanceMode();
+        // 19:40に全員退席処理
+        $schedule->command('refresh:seats')->weekdays()->at('19:40')->evenInMaintenanceMode();
+        // 20:00にシステムを復旧
+        $schedule->command('up')->weekdays()->at('20:00')->evenInMaintenanceMode();
 
         /**
          * オープン時間の制限（土日）
