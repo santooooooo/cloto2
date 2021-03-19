@@ -250,12 +250,10 @@ html {
       background-color: rgba(247, 250, 252, var(--bg-opacity));
     }
 
-    @media (prefers-color-scheme: dark) {
-      .dark\:bg-gray-900 {
-        --bg-opacity: 1;
-        background-color: #1a202c;
-        background-color: rgba(26, 32, 44, var(--bg-opacity));
-      }
+    .bg-gray-900 {
+      --bg-opacity: 1;
+      background-color: #1a202c;
+      background-color: rgba(26, 32, 44, var(--bg-opacity));
     }
 
     .bg-no-repeat {

@@ -19,7 +19,7 @@
     </head>
 
     <body class="antialiased font-sans">
-        <div class="md:flex min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="md:flex min-h-screen bg-gray-900">
             <div class="w-full md:w-1/2 flex items-center justify-center">
                 <div class="max-w-sm m-8">
                     <div class="text-white text-5xl md:text-15xl font-black" id="code">
