@@ -48,6 +48,7 @@
             label="メールアドレス"
             solo
             rounded
+            disabled
             class="pa-2"
           ></v-text-field>
 
