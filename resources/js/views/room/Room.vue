@@ -120,7 +120,7 @@
       />
 
       <!-- カルテダイアログ -->
-      <KarteDialog
+      <KartePostDialog
         :confirm="karte.confirm"
         @close="karte.dialog = $event"
         @leave-room="leaveRoom()"
@@ -136,7 +136,7 @@ import Call from '@/components/room/Call';
 import SeminarSpeak from '@/components/room/SeminarSpeak';
 import SeminarView from '@/components/room/SeminarView';
 import Media from '@/components/room/Media';
-import KarteDialog from '@/components/room/KarteDialog';
+import KartePostDialog from '@/components/room/KartePostDialog';
 import ProfileDialog from '@/components/user/ProfileDialog';
 import { OK } from '@/consts/status';
 import { CHIME_SOUND } from '@/consts/sound';
@@ -158,7 +158,7 @@ export default {
     SeminarSpeak,
     SeminarView,
     Media,
-    KarteDialog,
+    KartePostDialog,
     ProfileDialog,
   },
   data() {
