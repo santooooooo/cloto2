@@ -83,13 +83,14 @@
           </v-card>
         </v-row>
 
-        <v-row class="mt-3" justify="center">
+        <v-row class="my-3" justify="center">
           <v-spacer></v-spacer>
 
           <v-col
             md="3"
+            class="select"
             @click="showFollows()"
-            :style="{ 'background-color': show === 'follows' ? '#909090' : '#808080' }"
+            :style="{ 'background-color': show === 'follow' ? '#909090' : '#808080' }"
           >
             <p class="text-center">フォロー</p>
             <p class="text-center mb-0">{{ user.follows_count }}</p>
@@ -99,17 +100,34 @@
 
           <v-col
             md="3"
+            class="select"
             @click="showFollowers()"
-            :style="{ 'background-color': show === 'followers' ? '#909090' : '#808080' }"
+            :style="{ 'background-color': show === 'follower' ? '#909090' : '#808080' }"
           >
             <p class="text-center">フォロワー</p>
             <p class="text-center mb-0">{{ user.followers_count }}</p>
           </v-col>
 
           <v-spacer></v-spacer>
+
+          <v-col
+            md="3"
+            class="select"
+            @click="showKartes()"
+            :style="{ 'background-color': show === 'karte' ? '#909090' : '#808080' }"
+          >
+            <p class="text-center">カルテ</p>
+            <p class="text-center mb-0"><v-icon>mdi-chevron-down</v-icon></p>
+          </v-col>
+
+          <v-spacer></v-spacer>
         </v-row>
 
-        <v-list class="grey darken-1" v-if="show && followers.length">
+        <!-- フォロー/フォロワー一覧 -->
+        <v-list
+          :class="color"
+          v-if="(show === 'follow' || show === 'follower') && followers.length"
+        >
           <v-list-item
             v-for="follower in followers"
             :key="follower.id"
@@ -131,9 +149,43 @@
           </v-list-item>
         </v-list>
 
-        <v-list class="grey darken-1" v-if="show && !followers.length">
+        <v-list
+          :class="color"
+          v-if="(show === 'follow' || show === 'follower') && !followers.length"
+        >
           <v-list-item>
-            <span class="mt-6 mx-auto">誰よりも早くフォローしよう！</span>
+            <span class="mx-auto">誰よりも早くフォローしよう！</span>
+          </v-list-item>
+        </v-list>
+
+        <!-- カルテ一覧 -->
+        <v-list :class="color" v-if="show === 'karte' && kartes.length">
+          <v-list-item v-for="karte in kartes" :key="karte.id" @click="showKarte = karte">
+            <v-img
+              max-width="80"
+              height="40"
+              contain
+              class="mr-4 my-2"
+              :src="karte.path + karte.image"
+              v-if="karte.image"
+            ></v-img>
+            <v-sheet
+              color="grey lighten-2"
+              width="80"
+              height="40"
+              class="mr-4 my-2"
+              v-else
+            ></v-sheet>
+
+            <v-list-item-content class="text-truncate">
+              {{ karte.body }}
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+
+        <v-list :class="color" v-if="show === 'karte' && !kartes.length">
+          <v-list-item>
+            <span class="mx-auto">まだカルテがないようです．．．</span>
           </v-list-item>
         </v-list>
       </v-container>
@@ -145,16 +197,20 @@
       @close="profile.dialog = $event"
       v-if="profile.dialog"
     />
+    <!-- カルテ詳細ダイアログ -->
+    <KarteDialog :karte="showKarte" @close="showKarte = null" />
   </v-dialog>
 </template>
 
 <script>
 import ProfileDialog from '@/components/room/ProfileDialog';
+import KarteDialog from '@/components/mypage/KarteDialog';
 
 export default {
   name: 'ProfileDialog',
   components: {
     ProfileDialog,
+    KarteDialog,
   },
 
   props: {
@@ -168,6 +224,8 @@ export default {
       user: null, // 表示するプロフィール
       show: null, // フォロー/フォロワーどちらを表示するか
       followers: [], // フォロー/フォロワー一覧
+      kartes: [], // カルテ一覧
+      showKarte: null, // 詳細を表示するカルテ
       profile: {
         dialog: false, // 追加ダイアログ制御
         username: null, // 表示するユーザー名
@@ -213,7 +271,7 @@ export default {
     showFollows: async function () {
       let response = await axios.get('/api/users/' + this.user.id + '/follows');
       this.followers = response.data;
-      this.show = 'follows';
+      this.show = 'follow';
     },
 
     /**
@@ -222,7 +280,16 @@ export default {
     showFollowers: async function () {
       let response = await axios.get('/api/users/' + this.user.id + '/followers');
       this.followers = response.data;
-      this.show = 'followers';
+      this.show = 'follower';
+    },
+
+    /**
+     * カルテ一覧の表示
+     */
+    showKartes: async function () {
+      let response = await axios.get('/api/kartes/' + this.user.id);
+      this.kartes = response.data;
+      this.show = 'karte';
     },
 
     /**
@@ -251,5 +318,9 @@ a:hover {
 
 pre {
   white-space: pre-wrap;
+}
+
+.select {
+  cursor: pointer;
 }
 </style>
