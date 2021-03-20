@@ -549,7 +549,7 @@
 
 <script>
 import voiceDetection from 'voice-activity-detection';
-import ProfileDialog from '@/components/room/ProfileDialog';
+import ProfileDialog from '@/components/user/ProfileDialog';
 import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND, RECEIVE_MESSAGE_SOUND } from '@/consts/sound';
 
 const API_KEY = process.env.MIX_SKYWAY_API_KEY;

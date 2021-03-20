@@ -197,14 +197,15 @@
       @close="profile.dialog = $event"
       v-if="profile.dialog"
     />
+
     <!-- カルテ詳細ダイアログ -->
     <KarteDialog :karte="showKarte" @close="showKarte = null" />
   </v-dialog>
 </template>
 
 <script>
-import ProfileDialog from '@/components/room/ProfileDialog';
-import KarteDialog from '@/components/mypage/KarteDialog';
+import ProfileDialog from '@/components/user/ProfileDialog';
+import KarteDialog from '@/components/user/KarteDialog';
 
 export default {
   name: 'ProfileDialog',

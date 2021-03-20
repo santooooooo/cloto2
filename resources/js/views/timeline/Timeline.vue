@@ -72,8 +72,8 @@
 </template>
 
 <script>
-import KarteDialog from '@/components/mypage/KarteDialog';
-import ProfileDialog from '@/components/timeline/ProfileDialog';
+import KarteDialog from '@/components/user/KarteDialog';
+import ProfileDialog from '@/components/user/ProfileDialog';
 
 export default {
   data() {

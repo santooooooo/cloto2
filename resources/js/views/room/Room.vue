@@ -137,7 +137,7 @@ import SeminarSpeak from '@/components/room/SeminarSpeak';
 import SeminarView from '@/components/room/SeminarView';
 import Media from '@/components/room/Media';
 import KarteDialog from '@/components/room/KarteDialog';
-import ProfileDialog from '@/components/room/ProfileDialog';
+import ProfileDialog from '@/components/user/ProfileDialog';
 import { OK } from '@/consts/status';
 import { CHIME_SOUND } from '@/consts/sound';
 
