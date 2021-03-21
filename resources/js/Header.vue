@@ -33,7 +33,7 @@
     <v-btn
       depressed
       color="primary"
-      :to="{ name: 'room', params: { roomId: authUser.seat.room_id } }"
+      :to="{ name: 'room', params: { roomId: authUser.room.id } }"
       v-if="authCheck && authUser.seat && $route.name !== 'room'"
     >
       教室へ戻る

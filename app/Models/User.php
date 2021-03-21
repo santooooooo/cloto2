@@ -49,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
-    protected $appends = ['status', 'follows_count', 'followers_count'];
+    protected $appends = ['status', 'follows_count', 'followers_count', 'seat', 'room'];
 
     /**
      * Send the email verification notification.
@@ -181,5 +181,33 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getFollowersCountAttribute()
     {
         return $this->followers()->count();
+    }
+
+    /**
+     * 座席データの追加
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getSeatAttribute()
+    {
+        return $this->seat()->first();
+    }
+
+    /**
+     * 部屋データの追加
+     *
+     * @return Array
+     */
+    public function getRoomAttribute()
+    {
+        $seat = $this->seat()->first();
+
+        // 着席前
+        if (empty($seat)) {
+            return null;
+        }
+
+        $room = $seat->section()->first()->room;
+        return ['id' => $room->id, 'name' => $room->name];
     }
 }
