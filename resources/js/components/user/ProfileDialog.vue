@@ -76,10 +76,15 @@
           </v-col>
         </v-row>
 
-        <v-row justify="center" v-if="user.in_progress">
-          <v-card light flat class="mx-6">
-            <v-card-text class="pt-3 pl-3 pb-0">いまやっていること</v-card-text>
-            <pre class="ma-3 text-body-1">{{ user.in_progress }}</pre>
+        <v-row justify="center">
+          <v-card light flat width="80%" class="mx-6 text-center">
+            <v-card-text class="pt-3 pl-3 pb-0 black--text"
+              >いまやっていること
+              <small v-if="user.seat">in {{ user.room.name }}</small>
+              <small v-else>未着席</small>
+            </v-card-text>
+
+            <pre class="ma-3 text-body-1">{{ user.in_progress || '集中しています！' }}</pre>
           </v-card>
         </v-row>
 
