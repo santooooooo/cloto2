@@ -84,7 +84,7 @@
 
         <div class="overflow-y-auto" :style="messageContainerHeight">
           <div
-            v-for="(message, index) in messages.slice().reverse()"
+            v-for="(message, index) in messages"
             :key="index"
             @click="chat.message = '>> ' + message.handlename + 'さん\n' + chat.message"
           >
@@ -1096,7 +1096,7 @@ export default {
       })
       .listen('RoomChatPosted', (event) => {
         // チャットメッセージの追加
-        this.messages.push({
+        this.messages.unshift({
           username: event.username,
           handlename: event.handlename,
           body: event.message,
