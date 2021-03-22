@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Karte;
+use App\Models\User;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,10 +44,10 @@ class KarteController extends Controller
     {
         if (empty($user)) {
             // 全ユーザーのカルテ一覧
-            $kartes = $this->karte->get();
+            $kartes = $this->karte->orderBy('created_at', 'desc')->get();
         } else {
             // 指定したユーザーのカルテ一覧
-            $kartes = $user->kartes;
+            $kartes = $user->kartes->sortByDesc('created_at')->values();
         }
 
         return response()->json($kartes);

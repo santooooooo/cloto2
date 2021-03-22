@@ -3,7 +3,7 @@
     <h1 class="text-h4">タイムライン</h1>
 
     <v-row>
-      <v-col v-for="karte in kartes.slice().reverse()" :key="karte.id" sm="6" md="4">
+      <v-col v-for="karte in kartes" :key="karte.id" sm="6" md="4">
         <v-card width="400" class="mx-auto pa-3">
           <v-card-actions class="d-block" @click="showKarte = karte">
             <v-img
