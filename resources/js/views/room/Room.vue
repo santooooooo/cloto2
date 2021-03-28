@@ -84,7 +84,7 @@
 
         <div class="overflow-y-auto" :style="messageContainerHeight">
           <div
-            v-for="(message, index) in messages.slice().reverse()"
+            v-for="(message, index) in messages"
             :key="index"
             @click="chat.message = '>> ' + message.handlename + 'さん\n' + chat.message"
           >
@@ -120,7 +120,7 @@
       />
 
       <!-- カルテダイアログ -->
-      <KarteDialog
+      <KartePostDialog
         :confirm="karte.confirm"
         @close="karte.dialog = $event"
         @leave-room="leaveRoom()"
@@ -136,8 +136,8 @@ import Call from '@/components/room/Call';
 import SeminarSpeak from '@/components/room/SeminarSpeak';
 import SeminarView from '@/components/room/SeminarView';
 import Media from '@/components/room/Media';
-import KarteDialog from '@/components/room/KarteDialog';
-import ProfileDialog from '@/components/room/ProfileDialog';
+import KartePostDialog from '@/components/room/KartePostDialog';
+import ProfileDialog from '@/components/user/ProfileDialog';
 import { OK } from '@/consts/status';
 import { CHIME_SOUND } from '@/consts/sound';
 
@@ -158,7 +158,7 @@ export default {
     SeminarSpeak,
     SeminarView,
     Media,
-    KarteDialog,
+    KartePostDialog,
     ProfileDialog,
   },
   data() {
@@ -1096,7 +1096,7 @@ export default {
       })
       .listen('RoomChatPosted', (event) => {
         // チャットメッセージの追加
-        this.messages.push({
+        this.messages.unshift({
           username: event.username,
           handlename: event.handlename,
           body: event.message,

@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import KarteDialog from '@/components/mypage/KarteDialog';
+import KarteDialog from '@/components/user/KarteDialog';
 
 export default {
   head: {
