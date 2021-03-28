@@ -121,12 +121,12 @@ export default {
         }, 300000);
       }
     },
-    'authUser.seat': async function (newSeat, oldSeat) {
-      if (newSeat != null && oldSeat == null) {
+    'authUser.room': async function (newRoom, oldRoom) {
+      if (newRoom != null && oldRoom == null) {
         /**
          * 着席時
          */
-        Echo.channel('room.' + newSeat.room_id)
+        Echo.channel('room.' + newRoom.id)
           .listen('Announced', (event) => {
             // アナウンスイベントの受信開始
             if (this.$store.getters['alert/isSoundOn']) {
@@ -160,12 +160,12 @@ export default {
               }
             }
           });
-      } else if (newSeat == null && oldSeat != null) {
+      } else if (newRoom == null && oldRoom != null) {
         /**
          * 退席時
          */
         // 部屋イベントの受信終了
-        Echo.leave('room.' + oldSeat.room_id);
+        Echo.leave('room.' + oldRoom.id);
       }
     },
   },
