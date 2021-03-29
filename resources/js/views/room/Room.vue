@@ -1045,22 +1045,7 @@ export default {
     /**
      * 入室時には現在の部屋の状態を確認
      */
-    let date = new Date();
-
-    // 2桁で時間を取得
-    let hour = String(date.getHours());
-    if (hour.length === 1) {
-      hour = '0' + hour;
-    }
-
-    // 2桁で分数を取得
-    let minute = String(date.getMinutes());
-    if (minute.length === 1) {
-      minute = '0' + minute;
-    }
-
-    // 現在時刻
-    let now = hour + ':' + minute;
+    let now = this.$moment().format('HH:mm');
 
     // オブジェクトを配列化
     let timetable = [];

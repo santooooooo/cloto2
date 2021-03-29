@@ -137,7 +137,7 @@
 
       <template v-slot:[`item.email_verified_at`]="{ item }">
         <span v-if="item.email_verified_at">
-          {{ new Date(item.email_verified_at).toLocaleDateString() }}
+          {{ $moment(item.email_verified_at).format('YYYY/MM/DD') }}
         </span>
         <v-icon small v-else>mdi-close</v-icon>
       </template>

@@ -286,7 +286,7 @@ export default {
 
       if (sessionTabId === null || (sessionTabId !== null && !this.issuedTabId)) {
         // 新規タブのオープン，タブ複製時にIDを発行
-        let tabId = Moment().format('HHmmssSSS');
+        let tabId = this.$moment().format('HHmmssSSS');
         sessionStorage.setItem('tabID', tabId);
         localStorage.setItem('tabID', tabId);
         this.issuedTabId = true;

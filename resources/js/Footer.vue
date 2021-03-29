@@ -43,7 +43,7 @@
       </v-btn>
 
       <v-col class="py-4 text-center white--text" cols="12">
-        {{ Moment().format('YYYY') }} — <strong>© CLOTO Team</strong>
+        {{ $moment().format('YYYY') }} — <strong>© CLOTO Team</strong>
       </v-col>
     </v-row>
   </v-footer>
@@ -63,7 +63,7 @@
       </v-btn>
 
       <v-col class="py-4 text-center white--text" cols="12">
-        {{ Moment().format('YYYY') }} — <strong>© CLOTO Team</strong>
+        {{ $moment().format('YYYY') }} — <strong>© CLOTO Team</strong>
       </v-col>
     </v-row>
   </v-footer>

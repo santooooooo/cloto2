@@ -4,7 +4,6 @@
 require('./bootstrap');
 require('fabric');
 window.Vue = require('vue');
-window.Moment = require('moment');
 window.Peer = require('skyway-js');
 window.Storage = require('./consts/storage');
 window.Functions = require('./plugins/functions');
@@ -13,6 +12,7 @@ window.FlowChat = require('./plugins/flow-chat');
 /**
  * Vueプロトタイプの設定
  */
+Vue.prototype.$moment = require('moment');
 Vue.prototype.$storage = window.Storage.getStoragePath;
 Vue.prototype.$formatStr = window.Functions.formatStr;
 Vue.prototype.$slack = window.Functions.slackPost;

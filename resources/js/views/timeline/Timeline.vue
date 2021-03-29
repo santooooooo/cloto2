@@ -28,7 +28,9 @@
             </v-chip>
 
             <!-- 投稿日時 -->
-            <p class="mt-6 mb-0 text-right small">{{ formatDateTime(karte.created_at) }}</p>
+            <p class="mt-6 mb-0 text-right small">
+              {{ $moment(karte.created_at).format('MM/DD HH:mm') }}
+            </p>
 
             <!-- 活動時間 -->
             <p class="text-body-2 font-weight-bold">{{ karte.activity_time.slice(0, 5) }}</p>
@@ -99,32 +101,6 @@ export default {
     showProfile: function (username) {
       this.profile.username = username;
       this.profile.dialog = true;
-    },
-
-    /**
-     * 日時のフォーマット
-     *
-     * @param {String} timestamp - フォーマットする日時
-     * @return {String} フォーマット後の日時
-     */
-    formatDateTime: function (timestamp) {
-      let dateTime = new Date(timestamp);
-
-      let month = String(dateTime.getMonth() + 1);
-      let day = String(dateTime.getDate());
-
-      // 2桁で時間を取得
-      let hour = String(dateTime.getHours());
-      if (hour.length === 1) {
-        hour = '0' + hour;
-      }
-      // 2桁で分数を取得
-      let minute = String(dateTime.getMinutes());
-      if (minute.length === 1) {
-        minute = '0' + minute;
-      }
-
-      return month + '/' + day + ' ' + hour + ':' + minute;
     },
   },
   async created() {
