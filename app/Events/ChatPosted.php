@@ -9,24 +9,24 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User;
 
-class RoomChatPosted implements ShouldBroadcast
+class ChatPosted implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /** @var User */
     protected $user;
     /** @var String */
-    protected $message;
+    protected $body;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user, String $message)
+    public function __construct(User $user, String $body)
     {
         $this->user = $user;
-        $this->message = $message;
+        $this->body = $body;
     }
 
     /**
@@ -48,7 +48,7 @@ class RoomChatPosted implements ShouldBroadcast
     {
         return [
             'user' => $this->user,
-            'message' => htmlspecialchars($this->message, ENT_QUOTES)
+            'body' => htmlspecialchars($this->body, ENT_QUOTES)
         ];
     }
 }

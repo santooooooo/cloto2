@@ -1114,12 +1114,9 @@ export default {
         // 座席情報の更新
         this.roomData = event;
       })
-      .listen('RoomChatPosted', (event) => {
+      .listen('ChatPosted', (event) => {
         // チャットメッセージの追加
-        this.messages.unshift({
-          user: event.user,
-          body: event.message,
-        });
+        this.messages.unshift(event);
       });
 
     // ロード終了
