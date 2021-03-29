@@ -17,6 +17,13 @@ class Chat extends Model
     protected $fillable = ['user_id', 'room_id', 'body'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['user'];
+
+    /**
      * User モデルのリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -34,5 +41,15 @@ class Chat extends Model
     public function room()
     {
         return $this->belongsTo('App\Models\Room');
+    }
+
+    /**
+     * ユーザーデータの追加
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getUserAttribute()
+    {
+        return $this->user()->first();
     }
 }

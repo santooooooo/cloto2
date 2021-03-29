@@ -33,7 +33,8 @@ class ChatController extends Controller
      */
     public function index()
     {
-        return response()->json($this->user->seat->section->room->chats);
+        $room = $this->user->seat->section->room;
+        return response()->json($room->chats->sortByDesc('created_at')->values());
     }
 
     /**

@@ -86,12 +86,15 @@
           <div
             v-for="(message, index) in messages"
             :key="index"
-            @click="chat.message = '>> ' + message.handlename + 'さん\n' + chat.message"
+            @click="chat.message = '>> ' + message.user.handlename + 'さん\n' + chat.message"
           >
+            <!-- <p class="text-right small mb-0 mx-1">
+              {{ message.created_at }}
+            </p> -->
             <p class="font-weight-bold mb-0 mx-1">
-              <span @click="showProfile(message.username)"
-                >{{ message.handlename }}
-                <small>@{{ message.username }}</small>
+              <span @click="showProfile(message.user.username)"
+                >{{ message.user.handlename }}
+                <small>@{{ message.user.username }}</small>
               </span>
             </p>
             <pre class="text-body-2 mb-0 mx-1" v-html="$formatStr(message.body)"></pre>
@@ -304,6 +307,14 @@ export default {
     getRoom: async function () {
       let response = await axios.get('/api/rooms/' + this.$route.params.roomId);
       this.roomData = response.data;
+    },
+
+    /**
+     * チャットデータの取得
+     */
+    getChats: async function () {
+      let response = await axios.get('/api/chats');
+      this.messages = response.data;
     },
 
     /**
@@ -718,6 +729,9 @@ export default {
           });
 
           if (response.status === OK) {
+            // チャットデータの取得
+            this.getChats();
+
             // Slack通知
             this.$slack(
               '着席Bot',
@@ -919,6 +933,12 @@ export default {
     // 部屋データの取得
     await this.getRoom();
 
+    // 着席中
+    if (this.authUser.seat) {
+      // チャットデータの取得
+      this.getChats();
+    }
+
     // データ取得後にタブタイトルを更新
     this.$emit('updateHead');
 
@@ -1097,8 +1117,7 @@ export default {
       .listen('RoomChatPosted', (event) => {
         // チャットメッセージの追加
         this.messages.unshift({
-          username: event.username,
-          handlename: event.handlename,
+          user: event.user,
           body: event.message,
         });
       });
