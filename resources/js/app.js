@@ -2,6 +2,7 @@
  * 必要なライブラリの読み込み
  */
 require('./bootstrap');
+require('moment');
 require('fabric');
 window.Vue = require('vue');
 window.Peer = require('skyway-js');

@@ -32,6 +32,7 @@
     "laravel-echo": "^1.10.0",
     "laravel-echo-server": "^1.6.2",
     "laravel-mix-alias": "^1.0.2",
+    "moment": "^2.29.1",
     "please-wait": "0.0.5",
     "prettier": "^2.2.1",
     "skyway-js": "^3.1.0",
