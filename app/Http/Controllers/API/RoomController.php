@@ -59,7 +59,7 @@ class RoomController extends Controller
             return response()->json(['message' => 'アナウンスに失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        broadcast(new Announced($user->seat->section->room, $request->message));
+        broadcast(new Announced($user->room['id'], $request->message));
         return response()->json();
     }
 }

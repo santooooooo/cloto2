@@ -71,7 +71,7 @@ class UserController extends Controller
             Cache::put('user-' . $this->auth_user->id, $status, $expires_at);
 
             if (!empty($this->auth_user->seat)) {
-                broadcast(new SeatStatusUpdated($this->auth_user->seat->section->room));
+                broadcast(new SeatStatusUpdated($this->auth_user->room['id']));
             }
         } else {
             // 現在のステータスで更新する
@@ -153,7 +153,7 @@ class UserController extends Controller
 
         // 取り組み中のタスクが更新された場合
         if (array_key_exists('in_progress', $data)) {
-            broadcast(new SeatStatusUpdated($this->auth_user->seat->section->room));
+            broadcast(new SeatStatusUpdated($this->auth_user->room['id']));
             return response()->json();
         }
 

@@ -21,9 +21,9 @@ class SeatStatusUpdated implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Room $room)
+    public function __construct(Int $room_id)
     {
-        $this->room = $room;
+        $this->room = Room::find($room_id);
     }
 
     /**

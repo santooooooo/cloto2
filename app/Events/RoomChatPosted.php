@@ -36,7 +36,7 @@ class RoomChatPosted implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('room.' . $this->user->seat->section->room_id);
+        return new Channel('room.' . $this->user->room['id']);
     }
 
     /**

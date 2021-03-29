@@ -53,7 +53,7 @@ class RefreshSeats extends Command
                     // ユーザーの退席処理
                     $seat->user->fill(['seat_id' => null])->save();
 
-                    broadcast(new SeatStatusUpdated($seat->section->room));
+                    broadcast(new SeatStatusUpdated($seat->section->room_id));
                 }
             }
 
@@ -65,7 +65,7 @@ class RefreshSeats extends Command
                     // シートの予約解除
                     $seat->fill(['status' => null, 'reservation_user_id' => null])->save();
 
-                    broadcast(new SeatStatusUpdated($seat->section->room));
+                    broadcast(new SeatStatusUpdated($seat->section->room_id));
                 }
             }
         }
