@@ -38,6 +38,8 @@ class Kernel extends ConsoleKernel
         // 3:20にSSL証明書を更新（2回目）
         // 3:30にバックアップ開始
 
+        // 4:30にチャットデータ削除処理
+        $schedule->command('refresh:chats')->dailyAt('4:30')->evenInMaintenanceMode();
         // 4:40に全員退席処理
         $schedule->command('refresh:seats')->dailyAt('4:40')->evenInMaintenanceMode();
         // 4:50にシステムを復旧
