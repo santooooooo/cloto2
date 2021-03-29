@@ -47,19 +47,21 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/users/{user}/follows', 'UserController@follows')->where('user', '[0-9]+');
         Route::get('/users/{user}/followers', 'UserController@followers')->where('user', '[0-9]+');
 
+
         /*
         |--------------------------------------------------------------------------
-        | 部屋
+        | 部屋，チャット
         |--------------------------------------------------------------------------
         */
         Route::resource('rooms', 'RoomController', ['only' => ['index', 'show']]);
         Route::post('/rooms/announce', 'RoomController@announce');
-        Route::post('/rooms/chat', 'RoomController@postChat');
 
         Route::patch('/seats/sit/{seat}', 'SeatController@sit')->where('seat', '[0-9]+');
         Route::patch('/seats/leave', 'SeatController@leave');
         Route::patch('/seats/move/{seat}', 'SeatController@move')->where('seat', '[0-9]+');
         Route::patch('/seats/back', 'SeatController@back');
+
+        Route::resource('chats', 'ChatController', ['only' => ['index', 'store']]);
 
 
         /*

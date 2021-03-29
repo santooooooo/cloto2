@@ -182,8 +182,8 @@ export default {
             this.$store.dispatch('alert/success', '取り組み中のタスクが削除されました！');
           } else {
             // チャットの送信
-            axios.post('/api/rooms/chat', {
-              message: '「' + this.inProgress.body + '」なう！',
+            axios.post('/api/chats', {
+              body: '「' + this.inProgress.body + '」なう！',
             });
 
             this.$store.dispatch('alert/success', '取り組み中のタスクが公開されました！');

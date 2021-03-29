@@ -888,8 +888,8 @@ export default {
         // 絵文字の送信
         this.chat.loading = true;
 
-        await axios.post('/api/rooms/chat', {
-          message: emoji,
+        await axios.post('/api/chats', {
+          body: emoji,
         });
 
         this.chat.loading = false;
@@ -898,8 +898,8 @@ export default {
         if (this.chat.message !== '') {
           this.chat.loading = true;
 
-          let response = await axios.post('/api/rooms/chat', {
-            message: this.chat.message,
+          let response = await axios.post('/api/chats', {
+            body: this.chat.message,
           });
 
           if (response.status === OK) {
