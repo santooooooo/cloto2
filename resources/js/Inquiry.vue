@@ -144,31 +144,12 @@ export default {
       message.author = this.setAuthor(message.author);
     });
 
-    // 現在時刻の取得
-    let date = new Date();
-
-    // 2桁で時間を取得
-    let hour = String(date.getHours());
-    if (hour.length === 1) {
-      hour = '0' + hour;
-    }
-
-    // 2桁で分数を取得
-    let minute = String(date.getMinutes());
-    if (minute.length === 1) {
-      minute = '0' + minute;
-    }
-
-    // 現在時刻
-    let now = hour + '時' + minute + '分';
-
     // 挨拶メッセージの追加
     this.messages.unshift(
       {
         author: 'support',
         type: 'text',
         data: {
-          meta: now,
           text: process.env.MIX_APP_NAME + 'をご利用いただきありがとうございます！',
         },
       },
@@ -176,7 +157,6 @@ export default {
         author: 'support',
         type: 'text',
         data: {
-          meta: now,
           text: '何かお困りのことがございましたら、このチャットからお気軽にお申し付けください！',
         },
       },
@@ -184,7 +164,6 @@ export default {
         author: 'support',
         type: 'text',
         data: {
-          meta: now,
           text: '１営業日以内にお返事致します。',
         },
       }
