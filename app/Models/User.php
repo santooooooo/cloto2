@@ -72,6 +72,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Chat モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function chats()
+    {
+        return $this->hasMany('App\Models\Chat');
+    }
+
+    /**
      * Karte モデルのリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
