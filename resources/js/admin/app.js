@@ -3,15 +3,14 @@
  */
 require('@/bootstrap');
 window.Vue = require('vue');
-window.Storage = require('@/consts/storage');
-window.Functions = require('@/plugins/functions');
 
 /**
  * Vueプロトタイプの設定
  */
 Vue.prototype.$moment = require('moment');
-Vue.prototype.$storage = window.Storage.getStoragePath;
-Vue.prototype.$formatStr = window.Functions.formatStr;
+Vue.prototype.$storage = require('@/consts/storage').getStoragePath;
+const functions = require('@/plugins/functions');
+Vue.prototype.$formatStr = functions.formatStr;
 
 /**
  * Vueの定義
