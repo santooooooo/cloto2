@@ -88,16 +88,18 @@
             :key="index"
             @click="chat.message = '>> ' + message.user.handlename + 'さん\n' + chat.message"
           >
-            <!-- <p class="text-right small mb-0 mx-1">
-              {{ message.created_at }}
-            </p> -->
             <p class="font-weight-bold mb-0 mx-1">
               <span @click="showProfile(message.user.username)"
                 >{{ message.user.handlename }}
                 <small>@{{ message.user.username }}</small>
               </span>
             </p>
+
             <pre class="text-body-2 mb-0 mx-1" v-html="$formatStr(message.body)"></pre>
+
+            <p class="text-right small mb-0 mx-1">
+              {{ $moment(message.created_at).format('HH:mm') }}
+            </p>
             <v-divider></v-divider>
           </div>
         </div>
@@ -171,7 +173,6 @@ export default {
         message: '', // アナウンス内容
       },
 
-      test: true,
       loading: false, // ローディング制御
       canvas: null, // キャンバスエリア
       roomStatus: null, // 教室の状態
