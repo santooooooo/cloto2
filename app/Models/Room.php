@@ -42,6 +42,16 @@ class Room extends Model
     }
 
     /**
+     * Chat モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function chats()
+    {
+        return $this->hasMany('App\Models\Chat');
+    }
+
+    /**
      * 座席データの追加
      *
      * @return \Illuminate\Database\Eloquent\Model

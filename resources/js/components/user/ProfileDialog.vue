@@ -1,5 +1,5 @@
 <template>
-  <v-dialog persistent v-model="dialog" width="600">
+  <v-dialog v-model="dialog" @click:outside="$emit('close', false)" width="600">
     <!-- ローディングバー -->
     <v-progress-linear indeterminate color="white" class="mb-0" v-if="!user"></v-progress-linear>
 

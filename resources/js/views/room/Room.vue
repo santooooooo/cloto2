@@ -86,15 +86,20 @@
           <div
             v-for="(message, index) in messages"
             :key="index"
-            @click="chat.message = '>> ' + message.handlename + 'さん\n' + chat.message"
+            @click="chat.message = '>> ' + message.user.handlename + 'さん\n' + chat.message"
           >
             <p class="font-weight-bold mb-0 mx-1">
-              <span @click="showProfile(message.username)"
-                >{{ message.handlename }}
-                <small>@{{ message.username }}</small>
+              <span @click="showProfile(message.user.username)"
+                >{{ message.user.handlename }}
+                <small>@{{ message.user.username }}</small>
               </span>
             </p>
+
             <pre class="text-body-2 mb-0 mx-1" v-html="$formatStr(message.body)"></pre>
+
+            <p class="text-right small mb-0 mx-1">
+              {{ $moment(message.created_at).format('HH:mm') }}
+            </p>
             <v-divider></v-divider>
           </div>
         </div>
@@ -168,7 +173,6 @@ export default {
         message: '', // アナウンス内容
       },
 
-      test: true,
       loading: false, // ローディング制御
       canvas: null, // キャンバスエリア
       roomStatus: null, // 教室の状態
@@ -304,6 +308,14 @@ export default {
     getRoom: async function () {
       let response = await axios.get('/api/rooms/' + this.$route.params.roomId);
       this.roomData = response.data;
+    },
+
+    /**
+     * チャットデータの取得
+     */
+    getChats: async function () {
+      let response = await axios.get('/api/chats');
+      this.messages = response.data;
     },
 
     /**
@@ -718,6 +730,9 @@ export default {
           });
 
           if (response.status === OK) {
+            // チャットデータの取得
+            this.getChats();
+
             // Slack通知
             this.$slack(
               '着席Bot',
@@ -888,8 +903,8 @@ export default {
         // 絵文字の送信
         this.chat.loading = true;
 
-        await axios.post('/api/rooms/chat', {
-          message: emoji,
+        await axios.post('/api/chats', {
+          body: emoji,
         });
 
         this.chat.loading = false;
@@ -898,8 +913,8 @@ export default {
         if (this.chat.message !== '') {
           this.chat.loading = true;
 
-          let response = await axios.post('/api/rooms/chat', {
-            message: this.chat.message,
+          let response = await axios.post('/api/chats', {
+            body: this.chat.message,
           });
 
           if (response.status === OK) {
@@ -918,6 +933,12 @@ export default {
 
     // 部屋データの取得
     await this.getRoom();
+
+    // 着席中
+    if (this.authUser.seat) {
+      // チャットデータの取得
+      this.getChats();
+    }
 
     // データ取得後にタブタイトルを更新
     this.$emit('updateHead');
@@ -1025,22 +1046,7 @@ export default {
     /**
      * 入室時には現在の部屋の状態を確認
      */
-    let date = new Date();
-
-    // 2桁で時間を取得
-    let hour = String(date.getHours());
-    if (hour.length === 1) {
-      hour = '0' + hour;
-    }
-
-    // 2桁で分数を取得
-    let minute = String(date.getMinutes());
-    if (minute.length === 1) {
-      minute = '0' + minute;
-    }
-
-    // 現在時刻
-    let now = hour + ':' + minute;
+    let now = this.$moment().format('HH:mm');
 
     // オブジェクトを配列化
     let timetable = [];
@@ -1094,13 +1100,9 @@ export default {
         // 座席情報の更新
         this.roomData = event;
       })
-      .listen('RoomChatPosted', (event) => {
+      .listen('ChatPosted', (event) => {
         // チャットメッセージの追加
-        this.messages.unshift({
-          username: event.username,
-          handlename: event.handlename,
-          body: event.message,
-        });
+        this.messages.unshift(event);
       });
 
     // ロード終了

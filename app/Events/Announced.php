@@ -7,14 +7,13 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Room;
 
 class Announced implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /** @var Room */
-    protected $room;
+    /** @var Int */
+    protected $room_id;
     /** @var String */
     protected $message;
 
@@ -23,9 +22,9 @@ class Announced implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Room $room, String $message)
+    public function __construct(Int $room_id, String $message)
     {
-        $this->room = $room;
+        $this->room_id = $room_id;
         $this->message = $message;
     }
 
@@ -36,7 +35,7 @@ class Announced implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('room.' . $this->room->id);
+        return new Channel('room.' . $this->room_id);
     }
 
     /**
