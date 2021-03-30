@@ -1569,9 +1569,11 @@ export default {
 }
 
 #chat {
-  position: sticky;
-  z-index: 1;
-  top: 8px;
+  position: absolute;
+  z-index: 2;
+  top: 3rem;
+  right: 1rem;
+  width: 15%;
 
   .overflow-y-auto {
     background-color: white;
