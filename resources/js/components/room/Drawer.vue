@@ -19,7 +19,9 @@
           <template v-slot:activator="{ on, attrs }">
             <v-list-item v-bind="attrs" v-on="on">
               <v-list-item-content>
-                <v-list-item-title class="text-center text-h5">{{ roomName }}</v-list-item-title>
+                <v-list-item-title class="text-center text-h5 font-weight-bold">
+                  {{ roomName }}
+                </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </template>
@@ -27,7 +29,7 @@
           <span>{{ roomName }}</span>
         </v-tooltip>
 
-        <v-list-item>
+        <!-- <v-list-item>
           <v-list-item-content>
             <v-list-item-title
               class="text-center text-h6 font-weight-bold"
@@ -43,7 +45,7 @@
               休憩時間
             </v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
       </v-list>
 
       <!-- 着席前 -->
