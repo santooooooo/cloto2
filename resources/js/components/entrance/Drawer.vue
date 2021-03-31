@@ -11,23 +11,42 @@
 
       <v-list nav dense>
         <v-list-item-group color="success">
-          <v-tooltip bottom v-for="floor in floors.slice().reverse()" :key="floor.id">
+          <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item
                 class="mb-4"
                 v-bind="attrs"
                 v-on="on"
-                :to="{ name: 'floor', params: { roomId: floor.id } }"
+                :to="{ name: 'floor', params: { roomId: floors[4].id } }"
               >
                 <v-list-item-content>
                   <v-list-item-title class="text-body-1 font-weight-bold">
-                    {{ floor.name }}
+                    {{ floors[4].name }}
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </template>
 
-            <span>{{ floor.userNum }}人在室中</span>
+            <span>{{ floors[4].userNum }}人在室中</span>
+          </v-tooltip>
+
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-list-item
+                class="mb-4"
+                v-bind="attrs"
+                v-on="on"
+                :to="{ name: 'floor', params: { roomId: floors[3].id } }"
+              >
+                <v-list-item-content>
+                  <v-list-item-title class="text-body-1 font-weight-bold">
+                    {{ floors[3].name }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+
+            <span>{{ floors[3].userNum }}人在室中</span>
           </v-tooltip>
         </v-list-item-group>
       </v-list>
