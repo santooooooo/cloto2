@@ -138,7 +138,7 @@ export default {
             this.$store.dispatch('alert/switchSound', { isOn: true, sound: LOGIN_SOUND });
 
             // ページ遷移
-            this.$router.push({ name: 'entrance' });
+            this.$router.push({ name: 'timeline' });
           }
         } else {
           this.loginForm.loading = false;
