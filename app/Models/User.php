@@ -92,6 +92,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Post モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function posts()
+    {
+        return $this->hasMany('App\Models\Post');
+    }
+
+    /**
      * Inquiry モデルのリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
