@@ -202,8 +202,8 @@
           to <span class="green--text">C</span> 事業
         </p>
 
-        <p class="text-h6 text-center">プログラミング学習って、思ってたより大変、、、</p>
-        <p class="text-body-1 text-center">
+        <p class="text-h6 text-left">プログラミング学習って、思ってたより大変、、、</p>
+        <p class="text-body-1 text-left">
           そう思って挫折したことはありませんか？<br />学習を諦めてしまったことはありませんか？<br /><br />
           その経験、あなただけのものではないのです。実はエンジニアを志すほとんど全ての人が、その経験を経て、なんとかして乗り越えて実力を身につけています。<br /><br />
           CLOTOはこの困難を乗り越えるためのエッセンスをサービスに落とし込んでいます。<br /><br />
@@ -224,18 +224,18 @@
           to <span style="color: #ff99ab">B</span> 事業
         </p>
 
-        <p class="text-body-1 text-center font-weight-bold red--text">
+        <p class="text-body-1 text-left font-weight-bold red--text">
           ※量産体制が整っていないため、新規受注を休止しています。
         </p>
 
-        <p class="text-h6 text-center">DX化に興味はあるけど、どこが便利になるの？</p>
-        <p class="text-body-1 text-center mb-8">
-          CLOTOは貴社が必要とする機能を盛り込むことのできる<br />
+        <p class="text-h6 text-left">DX化に興味はあるけど、どこが便利になるの？</p>
+        <p class="text-body-1 text-left mb-8">
+          CLOTOは貴社が必要とする機能を盛り込むことができる
           <span class="font-weight-bold red--text">バーチャルテナント</span>です。
         </p>
 
-        <p class="text-body-1 text-center">以下のような機能を搭載可能です。</p>
-        <v-row no-gutters justify="center">
+        <p class="text-body-1 text-left">以下のような機能を搭載可能です。</p>
+        <v-row no-gutters justify="left">
           <ul>
             <li>個人デスク</li>
             <li>会議室</li>
@@ -244,9 +244,9 @@
             <li>日報</li>
           </ul>
         </v-row>
-        <p class="text-body-1 text-center">など．．．．</p>
+        <p class="text-body-1 text-left">など．．．．</p>
 
-        <p class="text-body-1 text-center">
+        <p class="text-body-1 text-left">
           必要な機能がございましたら、一度
           <a class="font-weight-bold blue--text" @click="scrollToAnchorPoint('contact')"
             >お問い合わせ</a
@@ -273,7 +273,7 @@
         </p>
 
         <p class="text-h6 text-center">学習塾の運営</p>
-        <p class="text-body-1 text-center mb-8">
+        <p class="text-body-1 text-left mb-8">
           オンラインで受けられる個人・少人数授業で、講師は全員教育大学を卒業しておりネットがつながる場所であれば学習塾に通わずに授業が受けられることが特徴の<a
             href="https://subjuku.wixsite.com/subjuku"
             target="_blank"
@@ -282,8 +282,8 @@
           >の運営にご利用されています。一人ひとりに合ったコンテンツを作成しアニメーションやPowerPointを用いて授業を行うため、分かりやすいだけでなく面白いと感じながら学べるのが強みです。1対1や友達と一緒にも授業に参加できます。
         </p>
 
-        <p class="text-body-1 text-center">カスタム例</p>
-        <v-row no-gutters justify="center">
+        <p class="text-body-1 text-left">カスタム例</p>
+        <v-row no-gutters justify="left">
           <ul>
             <li>グループ学習室</li>
             <li>カルテ内容の変更</li>
@@ -291,7 +291,7 @@
             <li>入退室時のメール通知</li>
           </ul>
         </v-row>
-        <p class="text-body-1 text-center">など．．．．</p>
+        <p class="text-body-1 text-left">など．．．．</p>
       </v-col>
     </v-row>
 
