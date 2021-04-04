@@ -1,6 +1,19 @@
 <template>
   <v-container>
-    <h1 class="text-h4">タイムライン</h1>
+    <v-form ref="postForm" v-model="postForm.validation.valid" lazy-validation>
+      <v-textarea
+        v-model="postForm.body"
+        :rules="postForm.validation.bodyRules"
+        :maxlength="postForm.max"
+        :disabled="postForm.loading"
+        placeholder="作業内容を投稿しよう！"
+        counter
+        outlined
+        auto-grow
+        rows="1"
+      ></v-textarea>
+      <v-btn color="primary" @click="submitPost()">投稿する</v-btn>
+    </v-form>
 
     <v-row>
       <v-col v-for="karte in kartes" :key="karte.id" sm="6" md="4">
@@ -76,23 +89,52 @@
 <script>
 import KarteDialog from '@/components/user/KarteDialog';
 import ProfileDialog from '@/components/user/ProfileDialog';
+import { OK } from '@/consts/status';
 
 export default {
   data() {
     return {
       kartes: [], // カルテ一覧
+      posts: [], // 投稿一覧
       showKarte: null, // 詳細を表示するカルテ
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
       },
+      postForm: {
+        body: '', // 内容
+        max: 200, // 最大長
+        loading: false,
+        validation: {
+          valid: false,
+          bodyRules: [(v) => !!v || '内容が無いようです。'],
+        },
+      },
     };
   },
+
   components: {
     KarteDialog,
     ProfileDialog,
   },
+
   methods: {
+    /**
+     * カルテデータの取得
+     */
+    getKartes: async function () {
+      let response = await axios.get('/api/kartes');
+      this.kartes = response.data;
+    },
+
+    /**
+     * 投稿データの取得
+     */
+    getPosts: async function () {
+      let response = await axios.get('/api/posts');
+      this.posts = response.data;
+    },
+
     /**
      * プロフィールの表示
      *
@@ -102,31 +144,33 @@ export default {
       this.profile.username = username;
       this.profile.dialog = true;
     },
+
+    /**
+     * 投稿
+     */
+    submitPost: async function () {
+      if (this.$refs.postForm.validate()) {
+        this.postForm.loading = true;
+
+        let response = await axios.post('/api/posts', { body: this.postForm.body });
+
+        if (response.status === OK) {
+          this.$refs.postForm.reset();
+        }
+
+        this.postForm.loading = false;
+      }
+    },
   },
+
   async created() {
-    let response = await axios.get('/api/kartes');
-    this.kartes = response.data;
+    this.getKartes();
+    this.getPosts();
   },
 };
 </script>
 
 <style lang="scss" scoped>
-h1 {
-  position: relative;
-  padding: 1rem 2rem;
-  border-bottom: 6px solid #ca9f01;
-
-  &:before {
-    position: absolute;
-    bottom: -6px;
-    left: 0;
-    width: 20%;
-    height: 6px;
-    content: '';
-    background: #f6bf00;
-  }
-}
-
 .v-card {
   cursor: pointer;
 }
