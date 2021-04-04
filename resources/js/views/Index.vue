@@ -520,9 +520,18 @@ export default {
     },
   },
   methods: {
-    scrollToAnchorPoint(ref) {
+    /**
+     * スムーズスクロール
+     *
+     * @param {String} ref - スクロール先
+     */
+    scrollToAnchorPoint: function (ref) {
       this.$refs[ref].scrollIntoView({ behavior: 'smooth' });
     },
+
+    /**
+     * 問い合わせメールの送信
+     */
     submit: async function () {
       if (this.$refs.contactForm.validate()) {
         this.contactForm.loading = true;

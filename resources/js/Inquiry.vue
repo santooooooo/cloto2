@@ -84,7 +84,7 @@ export default {
     },
 
     /**
-     * 問い合わせの送信
+     * 問い合わせチャットの送信
      *
      * @param {Object} message - 送信データ
      */
