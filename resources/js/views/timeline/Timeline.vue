@@ -19,7 +19,11 @@
       <v-col v-for="(item, index) in data" :key="index" sm="6" md="4">
         <v-card width="400" class="mx-auto pa-3">
           <!-- カルテ -->
-          <v-card-actions class="d-block" @click="showKarte = item" v-if="item.activity_time">
+          <v-card-actions
+            class="d-block pointer"
+            @click="showKarte = item"
+            v-if="item.activity_time"
+          >
             <v-img
               width="300"
               height="200"
@@ -61,7 +65,7 @@
           </v-card-actions>
 
           <!-- 投稿 -->
-          <v-card-actions class="d-block post" v-else>
+          <v-card-actions class="d-block" v-else>
             <v-row no-gutters justify="end" v-if="item.user.id === authUser.id">
               <v-btn icon x-small @click="deletePost(item)">
                 <v-icon>mdi-close</v-icon>
@@ -79,7 +83,12 @@
 
           <v-divider></v-divider>
 
-          <v-row no-gutters align="end" class="mt-3" @click="showProfile(item.user.username)">
+          <v-row
+            no-gutters
+            align="end"
+            class="mt-3 pointer"
+            @click="showProfile(item.user.username)"
+          >
             <!-- ユーザーアイコン -->
             <v-avatar size="50">
               <img :src="$storage('icon') + item.user.icon" />
@@ -292,14 +301,12 @@ export default {
 
 <style lang="scss" scoped>
 .v-card {
-  cursor: pointer;
+  .pointer {
+    cursor: pointer;
+  }
 
-  .post {
-    cursor: default;
-
-    pre {
-      white-space: pre-wrap;
-    }
+  pre {
+    white-space: pre-wrap;
   }
 }
 </style>
