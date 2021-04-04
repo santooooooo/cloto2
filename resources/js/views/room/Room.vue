@@ -144,7 +144,6 @@ import Media from '@/components/room/Media';
 import KartePostDialog from '@/components/room/KartePostDialog';
 import ProfileDialog from '@/components/user/ProfileDialog';
 import { OK } from '@/consts/status';
-import { CHIME_SOUND } from '@/consts/sound';
 
 export default {
   head: {
@@ -793,11 +792,6 @@ export default {
     startStudy: async function () {
       this.$store.dispatch('alert/showOverlay', { color: '#228b22', message: '自習開始！' });
 
-      // チャイム
-      if (this.$store.getters['alert/isSoundOn']) {
-        CHIME_SOUND.play();
-      }
-
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');
 
@@ -814,11 +808,6 @@ export default {
         message: '自習開始！',
         description: 'ここはスタッフ用の座席です。',
       });
-
-      // チャイム
-      if (this.$store.getters['alert/isSoundOn']) {
-        CHIME_SOUND.play();
-      }
 
       // ユーザーデータの同期
       await this.$store.dispatch('auth/syncAuthUser');

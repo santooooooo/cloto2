@@ -6,9 +6,6 @@ onSound.volume = 0.6;
 // 通知音オフ
 const offSound = new Audio(Storage('system') + 'sound_off.mp3');
 offSound.volume = 0.6;
-// チャイム
-const chimeSound = new Audio(Storage('system') + 'chime.mp3');
-chimeSound.volume = 0.6;
 // アナウンス
 const announceSound = new Audio(Storage('system') + 'announce.mp3');
 announceSound.volume = 0.6;
@@ -30,7 +27,6 @@ receiveMessageSound.volume = 0.6;
 
 export const ON_SOUND = onSound;
 export const OFF_SOUND = offSound;
-export const CHIME_SOUND = chimeSound;
 export const ANNOUNCE_SOUND = announceSound;
 export const RECEIVE_INQUIRY_SOUND = receiveInquirySound;
 export const LOGIN_SOUND = loginSound;

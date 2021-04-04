@@ -44,12 +44,6 @@
           入室
         </v-btn>
       </div>
-
-      <template v-slot:append>
-        <div class="pa-2">
-          <v-btn depressed block color="error" :to="{ name: 'map' }">施設一覧に戻る</v-btn>
-        </div>
-      </template>
     </v-navigation-drawer>
   </v-card>
 </template>

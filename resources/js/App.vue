@@ -69,7 +69,7 @@ import Drawer from './Drawer';
 import Footer from './Footer';
 import Inquiry from './Inquiry';
 import { OK, NOT_FOUND, UNPROCESSABLE_ENTITY, INTERNAL_SERVER_ERROR } from '@/consts/status';
-import { CHIME_SOUND, ANNOUNCE_SOUND } from '@/consts/sound';
+import { ANNOUNCE_SOUND } from '@/consts/sound';
 
 export default {
   components: {
@@ -143,10 +143,6 @@ export default {
                 message: '自習時間です！',
                 description: '自習室に戻りましょう。',
               });
-              // チャイム
-              if (this.$store.getters['alert/isSoundOn']) {
-                CHIME_SOUND.play();
-              }
             } else if (event.status === 'break') {
               // 休憩時間
               this.$store.dispatch('alert/showOverlay', {
@@ -154,10 +150,6 @@ export default {
                 message: '休憩時間です！',
                 description: '休憩室に移動しましょう。',
               });
-              // チャイム
-              if (this.$store.getters['alert/isSoundOn']) {
-                CHIME_SOUND.play();
-              }
             }
           });
       } else if (newRoom == null && oldRoom != null) {

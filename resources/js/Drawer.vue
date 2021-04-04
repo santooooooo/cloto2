@@ -14,21 +14,12 @@
     <v-divider></v-divider>
 
     <v-list nav>
-      <v-list-item exact :to="{ name: 'map' }">
+      <v-list-item exact :to="{ name: 'timeline' }">
         <v-list-item-icon>
-          <v-icon>mdi-home-city</v-icon>
+          <v-icon>mdi-trending-up</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title>施設一覧</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-list-item exact :to="{ name: 'entrance' }">
-        <v-list-item-icon>
-          <v-icon>mdi-information</v-icon>
-        </v-list-item-icon>
-        <v-list-item-content>
-          <v-list-item-title>フロア案内</v-list-item-title>
+          <v-list-item-title>タイムライン</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -41,12 +32,12 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item exact :to="{ name: 'timeline' }">
+      <v-list-item exact :to="{ name: 'entrance' }">
         <v-list-item-icon>
-          <v-icon>mdi-trending-up</v-icon>
+          <v-icon>mdi-rss</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title>タイムライン</v-list-item-title>
+          <v-list-item-title>コミュニティ</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>

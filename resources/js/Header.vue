@@ -36,7 +36,7 @@
       :to="{ name: 'room', params: { roomId: authUser.room.id } }"
       v-if="authCheck && authUser.seat && $route.name !== 'room'"
     >
-      教室へ戻る
+      ルームへ戻る
     </v-btn>
 
     <!-- ステータス -->
@@ -63,7 +63,7 @@
       v-if="authCheck"
     >
       <v-icon large>
-        {{ $store.getters['alert/isSoundOn'] ? 'mdi-volume-high' : 'mdi-volume-off' }}
+        {{ $store.getters['alert/isSoundOn'] ? 'mdi-bell' : 'mdi-bell-off' }}
       </v-icon>
     </v-btn>
   </v-app-bar>
