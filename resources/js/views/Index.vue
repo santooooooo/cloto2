@@ -6,8 +6,8 @@
 
         <v-col cols="5" justify="center" align-self="center">
           <div class="mt-8">
-            <h1 class="text-center text-h4 font-weight-bold">創る、繋がる、好きになる</h1>
-            <p class="text-center text-subtitle-1 font-weight-bold">
+            <h1 class="text-left text-h4 font-weight-bold">創る、繋がる、好きになる</h1>
+            <p class="text-left text-subtitle-1 font-weight-bold">
               プログラミングに取り組むみなさん、こんにちは。<br />
               「実際のプログラミングって大変. . . 」<br />
               「何からしたらいいんだろう」<br />
