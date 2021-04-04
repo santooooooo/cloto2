@@ -35,7 +35,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        return response()->json($this->post->all());
+        // サニタイジング
+        $posts = [];
+        foreach ($this->post->all() as $post) {
+            $post->body = htmlspecialchars($post->body, ENT_QUOTES);
+            array_push($posts, $post);
+        }
+
+        return response()->json($posts);
     }
 
     /**
