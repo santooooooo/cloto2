@@ -189,6 +189,20 @@ export default {
         return -1;
       }
     });
+
+    /**
+     * データの同期開始
+     */
+    Echo.channel('timeline').listen('TimelineUpdated', (event) => {
+      this.data.unshift(event);
+    });
+  },
+
+  beforeDestroy() {
+    /**
+     * データの同期終了
+     */
+    Echo.leave('timeline');
   },
 };
 </script>

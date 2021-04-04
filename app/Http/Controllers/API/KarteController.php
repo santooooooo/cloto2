@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Karte;
 use App\Models\User;
 use App\Models\Tag;
+use App\Events\TimelineUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
@@ -88,6 +89,7 @@ class KarteController extends Controller
             $result->tags()->sync(explode(',', $data['tags']));
         }
 
+        broadcast(new TimelineUpdated($result));
         return response()->json(['message' => 'カルテが保存されました。']);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Events\TimelineUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -62,6 +63,7 @@ class PostController extends Controller
             return response()->json(['message' => '投稿に失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
+        broadcast(new TimelineUpdated($result));
         return response()->json();
     }
 
