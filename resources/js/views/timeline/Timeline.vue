@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-form ref="postForm" v-model="postForm.validation.valid" lazy-validation>
+    <v-form ref="postForm" v-model="postForm.validation.valid" lazy-validation class="mt-6 mb-9">
       <v-textarea
         v-model="postForm.body"
         :rules="postForm.validation.bodyRules"
@@ -12,20 +12,21 @@
         auto-grow
         rows="1"
       ></v-textarea>
-      <v-btn color="primary" @click="submitPost()">投稿する</v-btn>
+      <v-btn color="primary" :loading="postForm.loading" @click="submitPost()">投稿する</v-btn>
     </v-form>
 
     <v-row>
-      <v-col v-for="karte in kartes" :key="karte.id" sm="6" md="4">
+      <v-col v-for="(item, index) in data" :key="index" sm="6" md="4">
         <v-card width="400" class="mx-auto pa-3">
-          <v-card-actions class="d-block" @click="showKarte = karte">
+          <!-- カルテ -->
+          <v-card-actions class="d-block" @click="showKarte = item" v-if="item.activity_time">
             <v-img
               width="300"
               height="200"
               class="mx-auto my-2 rounded-xl"
               contain
-              :src="karte.path + karte.image"
-              v-if="karte.image"
+              :src="item.path + item.image"
+              v-if="item.image"
             ></v-img>
             <v-sheet
               max-width="300"
@@ -36,41 +37,52 @@
             ></v-sheet>
 
             <!-- タグ -->
-            <v-chip class="ma-1" v-for="tag in karte.tags" :key="tag.id" :value="tag.id">
+            <v-chip class="ma-1" v-for="tag in item.tags" :key="tag.id" :value="tag.id">
               {{ tag.name }}
             </v-chip>
 
             <!-- 投稿日時 -->
             <p class="mt-6 mb-0 text-right small">
-              {{ $moment(karte.created_at).format('MM/DD HH:mm') }}
+              {{ $moment(item.created_at).format('MM/DD HH:mm') }}
             </p>
 
             <!-- 活動時間 -->
-            <p class="text-body-2 font-weight-bold">{{ karte.activity_time.slice(0, 5) }}</p>
+            <p class="text-body-2 font-weight-bold">{{ item.activity_time.slice(0, 5) }}</p>
 
             <!-- 活動内容 -->
             <v-tooltip max-width="300" top>
               <template v-slot:activator="{ on, attrs }">
                 <div v-bind="attrs" v-on="on">
-                  <p class="mb-0 text-body-2 text-truncate">{{ karte.body }}</p>
+                  <p class="mb-0 text-body-2 text-truncate">{{ item.body }}</p>
                 </div>
               </template>
-              <span>{{ karte.body }}</span>
+              <span>{{ item.body }}</span>
             </v-tooltip>
+          </v-card-actions>
+
+          <!-- 投稿 -->
+          <v-card-actions class="d-block" @click="showProfile(item.user.username)" v-else>
+            <!-- 内容 -->
+            <pre class="mb-0 text-body-2">{{ item.body }}</pre>
+
+            <!-- 投稿日時 -->
+            <p class="mt-6 mb-0 text-right small">
+              {{ $moment(item.created_at).format('MM/DD HH:mm') }}
+            </p>
           </v-card-actions>
 
           <v-divider></v-divider>
 
-          <v-row no-gutters align="end" class="mt-3" @click="showProfile(karte.user.username)">
+          <v-row no-gutters align="end" class="mt-3" @click="showProfile(item.user.username)">
             <!-- ユーザーアイコン -->
             <v-avatar size="50">
-              <img :src="$storage('icon') + karte.user.icon" />
+              <img :src="$storage('icon') + item.user.icon" />
             </v-avatar>
 
             <!-- ユーザー名 -->
             <div class="ml-3">
-              <p class="mb-0 text-body-1">{{ karte.user.username }}</p>
-              <p class="mb-0 text-body-2">@{{ karte.user.username }}</p>
+              <p class="mb-0 text-body-1">{{ item.user.username }}</p>
+              <p class="mb-0 text-body-2">@{{ item.user.username }}</p>
             </div>
           </v-row>
         </v-card>
@@ -94,6 +106,7 @@ import { OK } from '@/consts/status';
 export default {
   data() {
     return {
+      data: [], // 表示データ
       kartes: [], // カルテ一覧
       posts: [], // 投稿一覧
       showKarte: null, // 詳細を表示するカルテ
@@ -164,8 +177,18 @@ export default {
   },
 
   async created() {
-    this.getKartes();
-    this.getPosts();
+    await this.getKartes();
+    await this.getPosts();
+
+    // 表示データの作成
+    this.data = this.kartes.concat(this.posts);
+    this.data.sort(function (a, b) {
+      if (a.created_at < b.created_at) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
   },
 };
 </script>
@@ -173,5 +196,9 @@ export default {
 <style lang="scss" scoped>
 .v-card {
   cursor: pointer;
+
+  pre {
+    white-space: pre-wrap;
+  }
 }
 </style>
