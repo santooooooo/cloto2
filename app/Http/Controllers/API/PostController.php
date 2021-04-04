@@ -68,13 +68,19 @@ class PostController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 投稿の削除
      *
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Post  $post  削除する投稿
      * @return \Illuminate\Http\Response
      */
     public function destroy(Post $post)
     {
-        //
+        $result = $post->delete();
+
+        if (empty($result)) {
+            return response()->json(['message' => '投稿の削除に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        return response()->json(['message' => '投稿が削除されました。']);
     }
 }

@@ -61,7 +61,13 @@
           </v-card-actions>
 
           <!-- 投稿 -->
-          <v-card-actions class="d-block" @click="showProfile(item.user.username)" v-else>
+          <v-card-actions class="d-block post" v-else>
+            <v-row no-gutters justify="end" v-if="item.user.id === authUser.id">
+              <v-btn icon x-small @click="deletePost(item)">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-row>
+
             <!-- 内容 -->
             <pre class="mb-0 text-body-2">{{ item.body }}</pre>
 
@@ -88,6 +94,37 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- 投稿削除確認ダイアログ -->
+    <v-dialog v-model="deletePostForm.dialog" max-width="500px" persistent>
+      <v-card class="headline grey darken-2 text-center pa-2">
+        <v-card-title>
+          <span class="headline white--text">削除しますか？</span>
+        </v-card-title>
+
+        <v-card-text>
+          <v-container>
+            <v-card-text class="pa-1 white--text">
+              {{ deletePostForm.data.body }}
+            </v-card-text>
+          </v-container>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="error"
+            :loading="deletePostForm.loading"
+            @click="deletePostForm.dialog = false"
+          >
+            キャンセル
+          </v-btn>
+          <v-btn color="success" :loading="deletePostForm.loading" @click="deleteSubmit()">
+            削除
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <KarteDialog :karte="showKarte" @close="showKarte = null" />
     <ProfileDialog
@@ -123,6 +160,11 @@ export default {
           bodyRules: [(v) => !!v || '内容が無いようです。'],
         },
       },
+      deletePostForm: {
+        dialog: false,
+        loading: false,
+        data: {},
+      },
     };
   },
 
@@ -131,7 +173,31 @@ export default {
     ProfileDialog,
   },
 
+  computed: {
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
+  },
+
   methods: {
+    /**
+     * データの更新
+     */
+    update: async function () {
+      await this.getKartes();
+      await this.getPosts();
+
+      // 表示データの作成
+      this.data = this.kartes.concat(this.posts);
+      this.data.sort(function (a, b) {
+        if (a.created_at < b.created_at) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+    },
+
     /**
      * カルテデータの取得
      */
@@ -174,21 +240,38 @@ export default {
         this.postForm.loading = false;
       }
     },
+
+    /**
+     * 投稿の削除
+     *
+     * @param {Object} post - 削除する投稿
+     */
+    deletePost: function (post) {
+      this.deletePostForm.data = post;
+      this.deletePostForm.dialog = true;
+    },
+
+    /**
+     * 削除データの送信
+     */
+    deleteSubmit: async function () {
+      this.deletePostForm.loading = true;
+
+      // 投稿削除処理
+      let response = await axios.delete('/api/posts/' + this.deletePostForm.data.id);
+
+      if (response.status === OK) {
+        await this.update();
+        this.deletePostForm.dialog = false;
+        this.deletePostForm.loading = false;
+      } else {
+        this.deletePostForm.loading = false;
+      }
+    },
   },
 
   async created() {
-    await this.getKartes();
-    await this.getPosts();
-
-    // 表示データの作成
-    this.data = this.kartes.concat(this.posts);
-    this.data.sort(function (a, b) {
-      if (a.created_at < b.created_at) {
-        return 1;
-      } else {
-        return -1;
-      }
-    });
+    await this.update();
 
     /**
      * データの同期開始
@@ -211,8 +294,12 @@ export default {
 .v-card {
   cursor: pointer;
 
-  pre {
-    white-space: pre-wrap;
+  .post {
+    cursor: default;
+
+    pre {
+      white-space: pre-wrap;
+    }
   }
 }
 </style>
