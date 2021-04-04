@@ -283,7 +283,7 @@
         </p>
 
         <p class="text-body-1 text-left">カスタム例</p>
-        <v-row no-gutters justify="left">
+        <v-row no-gutters justify="start">
           <ul>
             <li>グループ学習室</li>
             <li>カルテ内容の変更</li>
