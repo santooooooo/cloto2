@@ -235,7 +235,7 @@
         </p>
 
         <p class="text-body-1 text-left">以下のような機能を搭載可能です。</p>
-        <v-row no-gutters justify="left">
+        <v-row no-gutters justify="start">
           <ul>
             <li>個人デスク</li>
             <li>会議室</li>
