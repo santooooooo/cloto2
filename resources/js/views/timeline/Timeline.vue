@@ -38,6 +38,7 @@
               max-height="300"
               class="mx-auto my-2 rounded-xl"
               contain
+              eager
               :src="item.path + item.image"
               @load="$redrawVueMasonry('timeline')"
               v-if="item.image"
@@ -162,6 +163,14 @@ import ProfileDialog from '@/components/user/ProfileDialog';
 import { OK } from '@/consts/status';
 
 export default {
+  head: {
+    title() {
+      return {
+        inner: 'タイムライン',
+      };
+    },
+  },
+
   data() {
     return {
       data: [], // 表示データ
@@ -325,10 +334,6 @@ export default {
     Echo.channel('timeline').listen('TimelineUpdated', (event) => {
       this.data.unshift(event);
     });
-  },
-
-  mounted() {
-    this.$redrawVueMasonry('timeline');
   },
 
   beforeDestroy() {
