@@ -84,8 +84,8 @@ class UserController extends Controller
     /**
      * ユーザーの取得
      *
-     * @param   String  $user_param ユーザーIDまたはユーザー名
-     * @return  \App\Models\User    ユーザーデータ
+     * @param  String  $user_param  ユーザーIDまたはユーザー名
+     * @return \App\Models\User  ユーザーデータ
      */
     public function get_user(String $user_param)
     {
@@ -101,7 +101,7 @@ class UserController extends Controller
     /**
      * ユーザーデータの表示
      *
-     * @param  String $user_param ユーザーIDまたはユーザー名
+     * @param  String  $user_param  ユーザーIDまたはユーザー名
      * @return \Illuminate\Http\Response
      */
     public function show(String $user_param)
@@ -163,7 +163,7 @@ class UserController extends Controller
     /**
      * フォロー一覧の取得
      *
-     * @param  \App\Models\User $user   一覧を取得するユーザー
+     * @param  \App\Models\User  $user  一覧を取得するユーザー
      * @return \Illuminate\Http\Response
      */
     public function follows(User $user)
@@ -174,7 +174,7 @@ class UserController extends Controller
     /**
      * フォロワー一覧の取得
      *
-     * @param  \App\Models\User $user   一覧を取得するユーザー
+     * @param  \App\Models\User  $user  一覧を取得するユーザー
      * @return \Illuminate\Http\Response
      */
     public function followers(User $user)
@@ -185,7 +185,7 @@ class UserController extends Controller
     /**
      * フォロー/フォロー解除
      *
-     * @param  \App\Models\User $user フォロー（解除）するユーザー
+     * @param  \App\Models\User  $user  フォロー（解除）するユーザー
      * @return \Illuminate\Http\Response
      */
     public function follow(User $user)

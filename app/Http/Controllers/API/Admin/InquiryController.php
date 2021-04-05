@@ -62,7 +62,7 @@ class InquiryController extends Controller
     /**
      * 問い合わせ一覧を取得
      *
-     * @param  \App\Models\User $user   問い合わせを表示するユーザー
+     * @param  \App\Models\User  $user  問い合わせを表示するユーザー
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)

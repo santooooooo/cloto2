@@ -42,7 +42,7 @@ class UserController extends Controller
      * ユーザーの更新
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User $user   更新するユーザー
+     * @param  \App\Models\User  $user  更新するユーザー
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)

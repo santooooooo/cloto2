@@ -31,7 +31,7 @@ class SeatController extends Controller
     /**
      * 着席
      *
-     * @param  \App\Models\Seat  $seat
+     * @param  \App\Models\Seat  $seat  着席する座席
      * @return \Illuminate\Http\Response
      */
     public function sit(Seat $seat)

@@ -55,7 +55,7 @@ class TagController extends Controller
      * タグの更新
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Tag $tag   更新するタグ
+     * @param  \App\Models\Tag  $tag  更新するタグ
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Tag $tag)

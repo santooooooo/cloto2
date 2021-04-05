@@ -27,7 +27,7 @@ class SeatController extends Controller
      * 座席データの更新
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Seat $seat   更新する座席
+     * @param  \App\Models\Seat  $seat  更新する座席
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Seat $seat)

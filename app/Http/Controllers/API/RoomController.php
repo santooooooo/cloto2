@@ -37,7 +37,7 @@ class RoomController extends Controller
     /**
      * 部屋の区画と座席の一覧を取得
      *
-     * @param  \App\Models\Room $room   取得する部屋
+     * @param  \App\Models\Room  $room  取得する部屋
      * @return \Illuminate\Http\Response
      */
     public function show(Room $room)

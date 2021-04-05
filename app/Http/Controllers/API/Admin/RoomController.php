@@ -41,7 +41,7 @@ class RoomController extends Controller
      * 部屋データの更新
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Room $room   更新する部屋
+     * @param  \App\Models\Room  $room  更新する部屋
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Room $room)

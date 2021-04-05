@@ -38,7 +38,7 @@ class KarteController extends Controller
     /**
      * カルテの一覧を取得
      *
-     * @param  \App\Models\User $user   カルテを取得するユーザー
+     * @param  \App\Models\User  $user  カルテを取得するユーザー
      * @return \Illuminate\Http\Response
      */
     public function index(User $user = null)

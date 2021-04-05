@@ -23,7 +23,7 @@ class TagController extends Controller
 
 
     /**
-     * Display a listing of the resource.
+     * タグの一覧を取得
      *
      * @return \Illuminate\Http\Response
      */

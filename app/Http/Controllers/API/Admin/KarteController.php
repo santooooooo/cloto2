@@ -25,7 +25,7 @@ class KarteController extends Controller
     /**
      * ユーザーのカルテ一覧の表示
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $user  カルテを表示するユーザー
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)

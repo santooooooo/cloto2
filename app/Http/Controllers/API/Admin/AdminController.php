@@ -85,7 +85,7 @@ class AdminController extends Controller
      * 管理者の更新
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Admin $admin  更新する管理者
+     * @param  \App\Models\Admin  $admin  更新する管理者
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Admin $admin)
