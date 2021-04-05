@@ -34,14 +34,14 @@ import VueDragscroll from 'vue-dragscroll';
 import Chat from 'vue-beautiful-chat';
 import { VueMasonryPlugin } from 'vue-masonry';
 
-Vue.use(VueWindowSizePlugin);
-Vue.use(VueHead, {
-  separator: '/',
-  complement: process.env.MIX_APP_NAME,
-});
-Vue.use(VueDragscroll);
-Vue.use(Chat);
-Vue.use(VueMasonryPlugin);
+Vue.use(VueWindowSizePlugin)
+  .use(VueHead, {
+    separator: '/',
+    complement: process.env.MIX_APP_NAME,
+  })
+  .use(VueDragscroll)
+  .use(Chat)
+  .use(VueMasonryPlugin);
 
 new Vue({
   router,

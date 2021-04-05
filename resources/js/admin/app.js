@@ -25,9 +25,7 @@ import Chat from 'vue-beautiful-chat';
 Vue.use(VueHead, {
   separator: '|',
   complement: '管理画面',
-});
-
-Vue.use(Chat);
+}).use(Chat);
 
 new Vue({
   router,
