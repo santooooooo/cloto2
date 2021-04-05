@@ -73,7 +73,7 @@
             </v-row>
 
             <!-- 内容 -->
-            <pre class="mb-0 text-body-2">{{ item.body }}</pre>
+            <pre class="mb-0 text-body-2" v-html="$formatStr(item.body)"></pre>
 
             <!-- 投稿日時 -->
             <p class="mt-6 mb-0 text-right small">
@@ -90,13 +90,16 @@
             @click="showProfile(item.user.username)"
           >
             <!-- ユーザーアイコン -->
-            <v-avatar size="50">
+            <v-avatar
+              size="50"
+              :style="{ 'box-shadow': '0 0 0 5px ' + getColor(item.user.status) }"
+            >
               <img :src="$storage('icon') + item.user.icon" />
             </v-avatar>
 
             <!-- ユーザー名 -->
-            <div class="ml-3">
-              <p class="mb-0 text-body-1">{{ item.user.username }}</p>
+            <div class="ml-5">
+              <p class="mb-0 text-body-1">{{ item.user.handlename }}</p>
               <p class="mb-0 text-body-2">@{{ item.user.username }}</p>
             </div>
           </v-row>
@@ -221,6 +224,31 @@ export default {
     getPosts: async function () {
       let response = await axios.get('/api/posts');
       this.posts = response.data;
+    },
+
+    /**
+     * ステータス色の取得
+     *
+     * @param {String} status - ステータス
+     * @return {String} 色
+     */
+    getColor: function (status) {
+      let color;
+      switch (status) {
+        case 'free':
+          color = 'green';
+          break;
+
+        case 'busy':
+          color = 'red';
+          break;
+
+        case 'away':
+          color = 'grey';
+          break;
+      }
+
+      return color;
     },
 
     /**
