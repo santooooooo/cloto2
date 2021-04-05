@@ -6,7 +6,7 @@
         :rules="postForm.validation.bodyRules"
         :maxlength="postForm.max"
         :disabled="postForm.loading"
-        placeholder="作業内容を投稿しよう！"
+        placeholder="つぶやき"
         counter
         solo
         auto-grow

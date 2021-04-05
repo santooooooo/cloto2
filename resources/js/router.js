@@ -17,6 +17,7 @@ import map from '@/views/Map';
 import mypage from '@/views/mypage/Mypage';
 import profile from '@/views/mypage/Profile';
 import karte from '@/views/mypage/Karte';
+import post from '@/views/mypage/Post';
 import entrance from '@/views/entrance/Entrance';
 import information from '@/views/entrance/Information';
 import floor from '@/views/entrance/Floor';
@@ -79,6 +80,11 @@ const router = new VueRouter({
           path: 'karte',
           name: 'karte',
           component: karte,
+        },
+        {
+          path: 'post',
+          name: 'post',
+          component: post,
         },
       ],
     },

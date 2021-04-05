@@ -80,7 +80,8 @@ Route::group(['middleware' => 'auth'], function () {
         | 投稿
         |--------------------------------------------------------------------------
         */
-        Route::resource('posts', 'PostController', ['only' => ['index', 'store', 'destroy']]);
+        Route::resource('posts', 'PostController', ['only' => ['store', 'destroy']]);
+        Route::get('/posts/{user?}', 'PostController@index')->where('user', '[0-9]+');
 
 
         /*

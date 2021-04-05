@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\User;
 use App\Events\TimelineUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,13 +33,22 @@ class PostController extends Controller
     /**
      * 投稿の一覧を取得
      *
+     * @param  \App\Models\User  $user  投稿を取得するユーザー
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user = null)
     {
+        if (empty($user)) {
+            // 全ユーザーの投稿一覧
+            $data = $this->post->orderBy('created_at', 'desc')->get();
+        } else {
+            // 指定したユーザーの投稿一覧
+            $data = $user->posts->sortByDesc('created_at')->values();
+        }
+
         // サニタイジング
         $posts = [];
-        foreach ($this->post->all() as $post) {
+        foreach ($data as $post) {
             $post->body = htmlspecialchars($post->body, ENT_QUOTES);
             array_push($posts, $post);
         }
