@@ -169,6 +169,9 @@ export default {
       }
     );
 
+    // ログイン時に自動展開
+    this.open();
+
     // 問い合わせイベントの受信開始
     Echo.channel('user.' + this.authUser.id).listen('InquiryPosted', (event) => {
       this.messages.push({
