@@ -15,6 +15,15 @@
       <v-btn color="primary" :loading="postForm.loading" @click="submitPost()">投稿する</v-btn>
     </v-form>
 
+    <!-- ローディング -->
+    <v-progress-circular
+      size="70"
+      width="7"
+      indeterminate
+      class="ma-5"
+      v-if="loading"
+    ></v-progress-circular>
+
     <v-row v-masonry="'timeline'" item-selector=".item">
       <v-col
         v-masonry-tile
@@ -173,6 +182,7 @@ export default {
 
   data() {
     return {
+      loading: true, // ローディング制御
       data: [], // 表示データ
       kartes: [], // カルテ一覧
       posts: [], // 投稿一覧
@@ -334,6 +344,8 @@ export default {
     Echo.channel('timeline').listen('TimelineUpdated', (event) => {
       this.data.unshift(event);
     });
+
+    this.loading = false;
   },
 
   beforeDestroy() {

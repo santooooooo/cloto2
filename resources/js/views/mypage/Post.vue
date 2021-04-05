@@ -1,6 +1,15 @@
 <template>
   <v-container>
-    <v-row v-masonry="'post'" item-selector=".item">
+    <!-- ローディング -->
+    <v-progress-circular
+      size="70"
+      width="7"
+      indeterminate
+      class="ma-5"
+      v-if="loading"
+    ></v-progress-circular>
+
+    <v-row v-masonry="'post'" item-selector=".item" v-if="posts.length">
       <v-col
         v-masonry-tile
         class="item"
@@ -31,6 +40,8 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <p class="mt-4 text-h5" v-else>つぶやきがありません。</p>
 
     <!-- 投稿削除確認ダイアログ -->
     <v-dialog v-model="deletePostForm.dialog" max-width="500px" persistent>
@@ -79,6 +90,7 @@ export default {
 
   data() {
     return {
+      loading: true, // ローディング制御
       posts: [], // 投稿一覧
       deletePostForm: {
         dialog: false,
@@ -139,6 +151,7 @@ export default {
   updated() {
     // DOMへ適用後に整列
     this.$redrawVueMasonry('post');
+    this.loading = false;
   },
 };
 </script>
