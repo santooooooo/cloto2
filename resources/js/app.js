@@ -32,6 +32,7 @@ import { VueWindowSizePlugin } from 'vue-window-size/option-api';
 import VueHead from 'vue-head';
 import VueDragscroll from 'vue-dragscroll';
 import Chat from 'vue-beautiful-chat';
+import { VueMasonryPlugin } from 'vue-masonry';
 
 Vue.use(VueWindowSizePlugin);
 Vue.use(VueHead, {
@@ -40,6 +41,7 @@ Vue.use(VueHead, {
 });
 Vue.use(VueDragscroll);
 Vue.use(Chat);
+Vue.use(VueMasonryPlugin);
 
 new Vue({
   router,

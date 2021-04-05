@@ -8,16 +8,26 @@
         :disabled="postForm.loading"
         placeholder="作業内容を投稿しよう！"
         counter
-        outlined
+        solo
         auto-grow
         rows="1"
       ></v-textarea>
       <v-btn color="primary" :loading="postForm.loading" @click="submitPost()">投稿する</v-btn>
     </v-form>
 
-    <v-row>
-      <v-col v-for="(item, index) in data" :key="index" sm="6" md="4">
-        <v-card width="400" class="mx-auto pa-3">
+    <v-row v-masonry="'timeline'" item-selector=".item">
+      <v-col
+        v-masonry-tile
+        class="item"
+        v-for="(item, index) in data"
+        :key="index"
+        xs="6"
+        sm="6"
+        md="4"
+        lg="3"
+        xl="3"
+      >
+        <v-card class="pa-3">
           <!-- カルテ -->
           <v-card-actions
             class="d-block pointer"
@@ -25,16 +35,15 @@
             v-if="item.activity_time"
           >
             <v-img
-              width="300"
-              height="200"
+              max-height="300"
               class="mx-auto my-2 rounded-xl"
               contain
               :src="item.path + item.image"
+              @load="$redrawVueMasonry('timeline')"
               v-if="item.image"
             ></v-img>
             <v-sheet
-              max-width="300"
-              height="200"
+              height="150"
               class="mx-auto my-2 rounded-xl"
               color="grey lighten-2"
               v-else
@@ -316,6 +325,10 @@ export default {
     Echo.channel('timeline').listen('TimelineUpdated', (event) => {
       this.data.unshift(event);
     });
+  },
+
+  mounted() {
+    this.$redrawVueMasonry('timeline');
   },
 
   beforeDestroy() {
