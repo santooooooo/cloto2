@@ -33,8 +33,8 @@
         xs="6"
         sm="6"
         md="4"
-        lg="3"
-        xl="3"
+        lg="4"
+        xl="4"
       >
         <v-card class="pa-3">
           <!-- カルテ -->
@@ -117,9 +117,9 @@
             </v-avatar>
 
             <!-- ユーザー名 -->
-            <div class="ml-5">
-              <p class="mb-0 text-body-1">{{ item.user.handlename }}</p>
-              <p class="mb-0 text-body-2">@{{ item.user.username }}</p>
+            <div class="username ml-5">
+              <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
+              <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
             </div>
           </v-row>
         </v-card>
@@ -365,6 +365,10 @@ export default {
 
   pre {
     white-space: pre-wrap;
+  }
+
+  .username {
+    width: calc(100% - 80px);
   }
 }
 </style>
