@@ -12,8 +12,6 @@
         ホーム
       </v-btn>
 
-      <v-btn color="white" text rounded exact class="my-2" :to="{ name: 'map' }">施設一覧 </v-btn>
-
       <v-btn
         color="white"
         text

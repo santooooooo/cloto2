@@ -24,10 +24,10 @@
       text
       x-large
       class="font-weight-bold"
-      :to="{ name: 'map' }"
-      v-if="!authCheck && $route.name !== 'map'"
+      :to="{ name: 'login' }"
+      v-if="!authCheck && $route.name !== 'login'"
     >
-      入場
+      ログイン
     </v-btn>
 
     <v-btn

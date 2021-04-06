@@ -29,8 +29,8 @@
             </v-row>
 
             <v-row no-gutters justify="center" class="mt-12">
-              <v-btn x-large color="primary" class="font-weight-bold" :to="{ name: 'map' }">
-                入場
+              <v-btn x-large color="primary" class="font-weight-bold" :to="{ name: 'login' }">
+                ログイン
               </v-btn>
             </v-row>
           </div>

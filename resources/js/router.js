@@ -13,7 +13,7 @@ import store from './store';
 
 import index from '@/views/Index';
 import terms from '@/views/service/Terms';
-import map from '@/views/Map';
+import login from '@/views/Login';
 import mypage from '@/views/mypage/Mypage';
 import profile from '@/views/mypage/Profile';
 import karte from '@/views/mypage/Karte';
@@ -41,9 +41,9 @@ const router = new VueRouter({
       meta: { isPublic: true },
     },
     {
-      path: '/map',
-      name: 'map',
-      component: map,
+      path: '/login',
+      name: 'login',
+      component: login,
       meta: { isPublic: true },
     },
     {
@@ -108,7 +108,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (!store.getters['auth/check'] && to.matched.some((record) => !record.meta.isPublic)) {
     // 未ログイン時のリダイレクト
-    next({ name: 'map' });
+    next({ name: 'login' });
   }
 
   if (store.getters['auth/check'] && store.getters['auth/user'].email_verified_at === null) {
@@ -116,9 +116,9 @@ router.beforeEach(async (to, from, next) => {
     window.location.pathname = '/email/verify';
   }
 
-  if (store.getters['auth/check'] && (to.name === 'register' || to.name === 'login')) {
+  if (store.getters['auth/check'] && to.name === 'login') {
     // ログイン時のリダイレクト
-    next({ name: 'entrance' });
+    next({ name: 'timeline' });
   }
 
   next();

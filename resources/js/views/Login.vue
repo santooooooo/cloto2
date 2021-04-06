@@ -1,12 +1,12 @@
 <template>
-  <div id="map">
+  <div id="login">
     <v-row no-gutters justify="center">
-      <div id="canvas-container" v-dragscroll>
-        <canvas :width="mapWidth" :height="mapHeight" id="canvas"></canvas>
+      <div id="canvas-container">
+        <canvas :width="imgWidth" :height="imgHeight" id="canvas"></canvas>
       </div>
     </v-row>
 
-    <!-- 建物名吹き出し -->
+    <!-- 吹き出し -->
     <div id="popup" ref="popup" v-show="popup.isShow">
       <p class="text-h5">{{ popup.text }}</p>
     </div>
@@ -39,25 +39,12 @@ export default {
   },
   data() {
     return {
-      loading: false, // ローディング制御
       canvas: null, // キャンバスエリア
-      mapWidth: 2600, // マップサイズ
-      mapHeight: 1200, // マップサイズ
-      buildings: [
-        {
-          name: 'クリックしてみよう！',
-          position: {
-            x: 1050,
-            y: 430,
-            width: 490,
-            height: 500,
-          },
-          url: 'https://cloto.jp',
-        },
-      ],
+      imgWidth: 2600, // 画像サイズ
+      imgHeight: 1200, // 画像サイズ
       popup: {
         isShow: false, // 吹き出し制御
-        text: '', // 吹き出しに表示するテキスト
+        text: 'クリックしてみよう！', // 吹き出しに表示するテキスト
       },
       isOpenLoginDialog: false, // ログインダイアログ表示制御
       isOpenRegisterDialog: false, // 新規登録ダイアログ表示制御
@@ -74,7 +61,7 @@ export default {
     $windowWidth: function (windowWidth) {
       // ウィンドウリサイズ時に拡大率を変更
       if (this.canvas) {
-        let zoom = (windowWidth - 10) / this.mapWidth;
+        let zoom = (windowWidth - 10) / this.imgWidth;
         this.setZoom(zoom);
       }
     },
@@ -82,37 +69,34 @@ export default {
 
   methods: {
     /**
-     * 建物色の設定
+     * オブジェクト色の設定
      *
-     * @param {Object} buildingObject - 設定する建物オブジェクト
+     * @param {Object} object - 設定するオブジェクト
      * @param {String} color - 設定する色
      */
-    setColor: function (buildingObject, color) {
-      buildingObject.set({ fill: color });
+    setColor: function (object, color) {
+      object.set({ fill: color });
       this.canvas.requestRenderAll();
     },
 
     /**
-     * 建物色の初期化
+     * オブジェクト色の初期化
      *
-     * @param {Object} buildingObject - 初期化する建物オブジェクト
+     * @param {Object} object - 初期化するオブジェクト
      */
-    resetColor: function (buildingObject) {
-      this.setColor(buildingObject, '');
+    resetColor: function (object) {
+      this.setColor(object, '');
     },
 
     /**
      * 吹き出しの表示
-     *
-     * @param {Object} buildingObject - 表示する建物オブジェクト
      */
-    showPopup: function (buildingObject) {
+    showPopup: function () {
       // 吹き出しの位置を設定
       let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       this.$refs.popup.style.left = window.event.clientX + 'px';
       this.$refs.popup.style.top = window.event.clientY + scrollTop - 50 + 'px';
       // 表示
-      this.popup.text = buildingObject.name;
       this.popup.isShow = true;
     },
 
@@ -121,7 +105,6 @@ export default {
      */
     hidePopup: function () {
       this.popup.isShow = false;
-      this.popup.text = '';
     },
 
     /**
@@ -146,21 +129,9 @@ export default {
 
     /**
      * キャンバスクリックイベント
-     *
-     * @param {Object} target - イベントの対象
      */
-    canvasMouseDown: function (target) {
-      // if (target.name === process.env.MIX_APP_NAME) {
-      // ログイン処理
-      if (!this.authCheck) {
-        this.isOpenLoginDialog = true;
-      } else {
-        this.$router.push({ name: 'entrance' });
-      }
-      // } else {
-      //   // リダイレクト
-      //   window.location.href = target.url;
-      // }
+    canvasMouseDown: function () {
+      this.isOpenLoginDialog = true;
     },
 
     /**
@@ -170,15 +141,12 @@ export default {
      */
     setZoom: function (zoom) {
       this.canvas.setZoom(zoom);
-      this.canvas.setWidth(this.mapWidth * zoom);
-      this.canvas.setHeight(this.mapHeight * zoom);
+      this.canvas.setWidth(this.imgWidth * zoom);
+      this.canvas.setHeight(this.imgHeight * zoom);
     },
   },
 
   mounted() {
-    // ロード開始
-    this.loading = true;
-
     /**
      * キャンバスの設定
      */
@@ -187,33 +155,29 @@ export default {
     });
     this.canvas.selection = false; // エリア選択の無効化
     this.canvas.setBackgroundImage(
-      this.$storage('system') + 'map.png',
+      this.$storage('system') + 'login.png',
       this.canvas.renderAll.bind(this.canvas)
     );
 
     // 初期サイズの設定（横幅MAX）
-    let zoom = (this.$windowWidth - 10) / this.mapWidth;
+    let zoom = (this.$windowWidth - 10) / this.imgWidth;
     this.setZoom(zoom);
 
     // クリックエリアの設定
-    this.buildings.forEach((building) => {
-      this.canvas.add(
-        new fabric.Rect({
-          name: building.name,
-          url: building.url,
-          fill: '',
-          opacity: 0.1,
-          left: building.position.x,
-          top: building.position.y,
-          width: building.position.width,
-          height: building.position.height,
-          originX: 'left',
-          originY: 'top',
-          hoverCursor: 'pointer',
-          selectable: false, // 図形の選択を禁止
-        })
-      );
-    });
+    this.canvas.add(
+      new fabric.Rect({
+        fill: '',
+        opacity: 0.1,
+        left: 1050,
+        top: 430,
+        width: 490,
+        height: 500,
+        originX: 'left',
+        originY: 'top',
+        hoverCursor: 'pointer',
+        selectable: false, // 図形の選択を禁止
+      })
+    );
 
     // マウスオーバーイベントの設定
     this.canvas.on('mouse:over', (event) => {
@@ -238,25 +202,16 @@ export default {
         this.canvasMouseDown(event.target);
       }
     });
-
-    // ロード終了
-    this.loading = false;
   },
 };
 </script>
 
 <style lang="scss" scoped>
-#map {
+#login {
   background-color: #000000;
 
   #canvas-container {
     height: calc(100vh - 64px);
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
   }
 
   #popup {
