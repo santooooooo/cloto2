@@ -52,35 +52,30 @@
               @load="$redrawVueMasonry('timeline')"
               v-if="item.image"
             ></v-img>
-            <v-sheet
-              height="150"
-              class="mx-auto my-2 rounded-xl"
-              color="grey lighten-2"
-              v-else
-            ></v-sheet>
 
             <!-- タグ -->
             <v-chip class="ma-1" v-for="tag in item.tags" :key="tag.id" :value="tag.id">
               {{ tag.name }}
             </v-chip>
 
+            <!-- 活動時間 -->
+            <p
+              :class="[
+                'text-body-2',
+                'font-weight-bold',
+                item.image || item.tags.length ? 'mt-6' : '',
+              ]"
+            >
+              活動時間：{{ item.activity_time.slice(0, 5) }}
+            </p>
+
+            <!-- 活動内容 -->
+            <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
+
             <!-- 投稿日時 -->
             <p class="mt-6 mb-0 text-right small">
               {{ $moment(item.created_at).format('MM/DD HH:mm') }}
             </p>
-
-            <!-- 活動時間 -->
-            <p class="text-body-2 font-weight-bold">{{ item.activity_time.slice(0, 5) }}</p>
-
-            <!-- 活動内容 -->
-            <v-tooltip max-width="300" top>
-              <template v-slot:activator="{ on, attrs }">
-                <div v-bind="attrs" v-on="on">
-                  <p class="mb-0 text-body-2 text-truncate">{{ item.body }}</p>
-                </div>
-              </template>
-              <span>{{ item.body }}</span>
-            </v-tooltip>
           </v-card-actions>
 
           <!-- 投稿 -->
@@ -92,7 +87,7 @@
             </v-row>
 
             <!-- 内容 -->
-            <pre class="mb-0 text-body-2" v-html="$formatStr(item.body)"></pre>
+            <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
 
             <!-- 投稿日時 -->
             <p class="mt-6 mb-0 text-right small">
