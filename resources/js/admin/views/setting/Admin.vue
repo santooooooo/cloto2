@@ -150,8 +150,7 @@ export default {
   },
   data() {
     return {
-      admins: [],
-      search: '',
+      admins: [], // 管理者一覧
       headers: [
         { text: '管理者名', value: 'handlename' },
         { text: 'メールアドレス', value: 'email' },

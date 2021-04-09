@@ -107,8 +107,7 @@ export default {
   },
   data() {
     return {
-      tags: [],
-      search: '',
+      tags: [], // タグ一覧
       headers: [
         { text: '内容', value: 'name' },
         { text: '編集', value: 'actions', sortable: false, align: 'center' },

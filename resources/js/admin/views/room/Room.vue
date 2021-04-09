@@ -114,7 +114,7 @@ export default {
   },
   data() {
     return {
-      rooms: [],
+      rooms: [], // 部屋一覧
       status: [
         { text: '自習時間', value: 'study' },
         { text: '休憩時間', value: 'break' },
@@ -124,7 +124,6 @@ export default {
         index: null,
         time: null,
       },
-      search: '',
       headers: [
         { text: '部屋名', value: 'name' },
         { text: '編集', value: 'actions', sortable: false, align: 'center' },

@@ -192,8 +192,7 @@ export default {
   },
   data() {
     return {
-      users: [],
-      search: '',
+      users: [], // ユーザー一覧
       headers: [
         { text: 'ユーザー名', value: 'username' },
         { text: '表示名', value: 'handlename' },
