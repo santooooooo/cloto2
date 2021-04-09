@@ -22,14 +22,24 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
+    
+        <!-- 追加プロフィールダイアログ -->
+    <ProfileDialog
+      :username="profile.username"
+      @close="profile.dialog = $event"
+      v-if="profile.dialog"
+    />
   </div>
 </template>
 
 <script>
+import ProfileDialog from '@/components/user/ProfileDialog';
+
 export default {
-  props: {
-    username: String, // 表示するユーザー名
+  components: {
+    ProfileDialog,
   },
+
   data() {
     return {
       user: null,
@@ -41,21 +51,35 @@ export default {
       },
     };
   },
+
+  computed: {
+    authUser() {
+      return this.$store.getters['auth/user'];
+    },
+  },
+
   mounted() {
+    //マウントしてフォローした人を表示する
     this.showFollows();
   },
+
   methods: {
     showFollows: async function () {
+      // computedで取得したユーザーデータをuser dataに入れる
+      this.user = this.authUser;
+
       //ユーザーデータの取得
-      // usernameが取れれば勝ち
-      let response = await axios.get('/api/users/' + this.username);
+      let response = await axios.get('/api/users/' + this.user.username);
       this.user = response.data;
-      console.log(this.user);
 
       // フォロー一覧の表示
       let responseFollow = await axios.get('/api/users/' + this.user.id + '/follows');
       this.followers = responseFollow.data;
       this.show = 'follow';
+    },
+    showProfile: function (username) {
+      this.profile.username = username;
+      this.profile.dialog = true;
     },
   },
 };
