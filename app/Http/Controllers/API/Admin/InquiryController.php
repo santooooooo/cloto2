@@ -91,15 +91,33 @@ class InquiryController extends Controller
     {
         $data = $request->all();
 
-        $result = $this->inquiry->create($data);
+        if (!empty($data['user_id'])) {
+            // 個別送信
+            $result = $this->inquiry->create($data);
 
-        if (empty($result)) {
-            return response()->json(['message' => 'お問い合わせの送信に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+            if (empty($result)) {
+                return response()->json(['message' => 'お問い合わせの送信に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+            }
+
+            // 投稿したデータを送信
+            broadcast(new InquiryPosted($result->user, $result));
+
+            return response()->json();
+        } else {
+            // 全体一斉送信
+            foreach ($this->user->all() as $user) {
+                $data['user_id'] = $user->id;
+                $result = $this->inquiry->create($data);
+
+                if (empty($result)) {
+                    return response()->json(['message' => 'お問い合わせの送信に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+                }
+
+                // 投稿したデータを送信
+                broadcast(new InquiryPosted($result->user, $result));
+            }
+
+            return response()->json(['message' => 'お問い合わせを一斉送信しました。']);
         }
-
-        // 投稿したデータを送信
-        broadcast(new InquiryPosted($result->user, $result));
-
-        return response()->json();
     }
 }
