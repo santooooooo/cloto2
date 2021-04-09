@@ -150,7 +150,21 @@ export default {
         author: 'support',
         type: 'text',
         data: {
-          text: process.env.MIX_APP_NAME + 'をご利用いただきありがとうございます！',
+          text: process.env.MIX_APP_NAME + 'へようこそ！',
+        },
+      },
+      {
+        author: 'support',
+        type: 'text',
+        data: {
+          text: '皆さまへの適切な学習方法をご提案するために、1分程度のアンケートにお答えください！',
+        },
+      },
+      {
+        author: 'support',
+        type: 'text',
+        data: {
+          text: 'https://forms.gle/Lt714ek8fGBAmZzT9',
         },
       },
       {
@@ -158,13 +172,6 @@ export default {
         type: 'text',
         data: {
           text: '何かお困りのことがございましたら、このチャットからお気軽にお申し付けください！',
-        },
-      },
-      {
-        author: 'support',
-        type: 'text',
-        data: {
-          text: '１営業日以内にお返事致します。',
         },
       }
     );
