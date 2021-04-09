@@ -202,11 +202,19 @@
           to <span class="green--text">C</span> 事業
         </p>
 
-        <p class="text-h6 text-left">プログラミング学習って、思ってたより大変、、、</p>
+        <p class="text-h6 text-left font-weight-bolder">
+          プログラミング学習って、<br />思ってたより大変、、、
+        </p>
+        <p class="text-body-1 text-left mb-6">
+          そう思って挫折したことはありませんか？<br />学習を諦めてしまったことはありませんか？
+        </p>
+        <p class="text-body-1 text-left mb-6">
+          その経験、あなただけのものではないのです。<br />実はエンジニアを志すほとんど全ての人が、その経験を経て、なんとかして乗り越えて実力を身につけています。
+        </p>
+        <p class="text-body-1 text-left mb-6">
+          CLOTOはこの困難を乗り越えるためのエッセンスをサービスに落とし込んでいます。
+        </p>
         <p class="text-body-1 text-left">
-          そう思って挫折したことはありませんか？<br />学習を諦めてしまったことはありませんか？<br /><br />
-          その経験、あなただけのものではないのです。実はエンジニアを志すほとんど全ての人が、その経験を経て、なんとかして乗り越えて実力を身につけています。<br /><br />
-          CLOTOはこの困難を乗り越えるためのエッセンスをサービスに落とし込んでいます。<br /><br />
           CLOTOを利用することで、「集中できる学習環境」と「切磋琢磨できる学習仲間」を得ることができ、それが「楽しく学習を継続できる環境」となり、あなたの学習を支えます。
         </p>
       </v-col>
@@ -228,8 +236,8 @@
           ※量産体制が整っていないため、新規受注を休止しています。
         </p>
 
-        <p class="text-h6 text-left">DX化に興味はあるけど、どこが便利になるの？</p>
-        <p class="text-body-1 text-left mb-8">
+        <p class="text-h6 text-left font-weight-bolder">DX化に興味はあるけど、<br />どこが便利になるの？</p>
+        <p class="text-body-1 text-left mb-6">
           CLOTOは貴社が必要とする機能を盛り込むことができる
           <span class="font-weight-bold red--text">バーチャルテナント</span>です。
         </p>
@@ -244,10 +252,10 @@
             <li>日報</li>
           </ul>
         </v-row>
-        <p class="text-body-1 text-left">など．．．．</p>
+        <p class="text-body-1 text-left mb-6">など．．．．</p>
 
-        <p class="text-body-1 text-left">
-          必要な機能がございましたら、一度
+        <p class="text-body-1 text-left mb-6">
+          必要な機能がございましたら、<br />一度
           <a class="font-weight-bold blue--text" @click="scrollToAnchorPoint('contact')"
             >お問い合わせ</a
           >
@@ -273,13 +281,16 @@
         </p>
 
         <p class="text-h6 text-center">学習塾の運営</p>
-        <p class="text-body-1 text-left mb-8">
+        <p class="text-body-1 text-left mb-6">
           オンラインで受けられる個人・少人数授業で、講師は全員教育大学を卒業しておりネットがつながる場所であれば学習塾に通わずに授業が受けられることが特徴の<a
             href="https://subjuku.wixsite.com/subjuku"
             target="_blank"
             rel="noopener noreferrer"
             >サブ塾</a
-          >の運営にご利用されています。一人ひとりに合ったコンテンツを作成しアニメーションやPowerPointを用いて授業を行うため、分かりやすいだけでなく面白いと感じながら学べるのが強みです。1対1や友達と一緒にも授業に参加できます。
+          >の運営にご利用されています。
+        </p>
+        <p class="text-body-1 text-left mb-6">
+          一人ひとりに合ったコンテンツを作成しアニメーションやPowerPointを用いて授業を行うため、分かりやすいだけでなく面白いと感じながら学べるのが強みです。1対1や友達と一緒にも授業に参加できます。
         </p>
 
         <p class="text-body-1 text-left">カスタム例</p>
