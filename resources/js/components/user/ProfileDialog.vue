@@ -16,6 +16,9 @@
             <v-avatar size="100"><img :src="$storage('icon') + user.icon" /></v-avatar>
             <v-row class="text-h5 mt-2" justify="center">{{ user.handlename }}</v-row>
             <v-row class="text-body-2" justify="center">{{ '@' + user.username }}</v-row>
+            <v-row class="mt-2 text-body-2" justify="center">
+              登録日：{{ $moment(user.created_at).format('YYYY年MM月DD日') }}
+            </v-row>
 
             <v-row class="mt-3" justify="center" v-if="user.sns || user.web">
               <v-btn
