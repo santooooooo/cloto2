@@ -153,20 +153,20 @@ export default {
           text: process.env.MIX_APP_NAME + 'へようこそ！',
         },
       },
-      {
-        author: 'support',
-        type: 'text',
-        data: {
-          text: '皆さまへの適切な学習方法をご提案するために、1分程度のアンケートにお答えください！',
-        },
-      },
-      {
-        author: 'support',
-        type: 'text',
-        data: {
-          text: 'https://forms.gle/Lt714ek8fGBAmZzT9',
-        },
-      },
+      // {
+      //   author: 'support',
+      //   type: 'text',
+      //   data: {
+      //     text: '皆さまへの適切な学習方法をご提案するために、1分程度のアンケートにお答えください！',
+      //   },
+      // },
+      // {
+      //   author: 'support',
+      //   type: 'text',
+      //   data: {
+      //     text: 'https://forms.gle/Lt714ek8fGBAmZzT9',
+      //   },
+      // },
       {
         author: 'support',
         type: 'text',
