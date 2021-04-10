@@ -19,13 +19,13 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item class="mb-4" :to="{ name: 'follow' }">
+          <v-list-item class="mb-4" :to="{ name: 'follows' }">
             <v-list-item-content>
               <v-list-item-title class="text-body-1 font-weight-bold">フォロー</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item class="mb-4" :to="{ name: 'follower' }">
+          <v-list-item class="mb-4" :to="{ name: 'followers' }">
             <v-list-item-content>
               <v-list-item-title class="text-body-1 font-weight-bold">フォロワー</v-list-item-title>
             </v-list-item-content>

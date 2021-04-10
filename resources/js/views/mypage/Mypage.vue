@@ -3,7 +3,8 @@
     <Drawer />
 
     <v-flex>
-      <router-view />
+      <!-- 強制的にコンポーネントを初期化（変数の初期化） -->
+      <router-view :key="$route.name" />
     </v-flex>
   </v-layout>
 </template>

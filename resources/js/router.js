@@ -16,7 +16,6 @@ import terms from '@/views/service/Terms';
 import login from '@/views/Login';
 import mypage from '@/views/mypage/Mypage';
 import profile from '@/views/mypage/Profile';
-import follow from '@/views/mypage/Follow';
 import follower from '@/views/mypage/Follower';
 import karte from '@/views/mypage/Karte';
 import post from '@/views/mypage/Post';
@@ -79,13 +78,13 @@ const router = new VueRouter({
           component: profile,
         },
         {
-          path: 'follow',
-          name: 'follow',
-          component: follow,
+          path: 'follows',
+          name: 'follows',
+          component: follower,
         },
         {
-          path: 'follower',
-          name: 'follower',
+          path: 'followers',
+          name: 'followers',
           component: follower,
         },
         {
