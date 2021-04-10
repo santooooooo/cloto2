@@ -29,7 +29,7 @@ export default {
   head: {
     title() {
       return {
-        inner: 'マップ',
+        inner: 'ログイン',
       };
     },
   },
