@@ -236,7 +236,9 @@
           ※量産体制が整っていないため、新規受注を休止しています。
         </p>
 
-        <p class="text-h6 text-left font-weight-bolder">DX化に興味はあるけど、<br />どこが便利になるの？</p>
+        <p class="text-h6 text-left font-weight-bolder">
+          DX化に興味はあるけど、<br />どこが便利になるの？
+        </p>
         <p class="text-body-1 text-left mb-6">
           CLOTOは貴社が必要とする機能を盛り込むことができる
           <span class="font-weight-bold red--text">バーチャルテナント</span>です。
@@ -256,9 +258,9 @@
 
         <p class="text-body-1 text-left mb-6">
           必要な機能がございましたら、<br />一度
-          <a class="font-weight-bold blue--text" @click="scrollToAnchorPoint('contact')"
-            >お問い合わせ</a
-          >
+          <a class="font-weight-bold blue--text" @click="scrollToAnchorPoint('contact')">
+            お問い合わせ
+          </a>
           ください。
         </p>
       </v-col>
