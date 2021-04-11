@@ -272,7 +272,8 @@ export default {
             let tweet =
               'https://twitter.com/intent/tweet?text=' +
               encodeURIComponent(
-                this.substr(this.karteForm.body, 232) + '\n\n#CLOTO\n@cloto_jp\ncloto.jp'
+                this.substr(this.karteForm.body, 216) +
+                  '\n\n#今日の積み上げ\n#CLOTO\n@cloto_jp\ncloto.jp'
               );
             window.open(tweet, 'Tweet', 'width=650, height=470');
           }
