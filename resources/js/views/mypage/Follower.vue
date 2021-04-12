@@ -61,7 +61,7 @@ export default {
     };
   },
   mounted() {
-    this.showFollows()// ページ開いた際には、フォロー欄を表示
+    this.showFollows(); // ページ開いた際には、フォロー欄を表示
   },
   computed: {
     authUser() {
@@ -79,12 +79,12 @@ export default {
       this.profile.dialog = true;
     },
     showFollows: async function () {
-          let response = await axios.get('/api/users/' + this.authUser.id + '/' + 'follows'); //フォロー一覧の取得
-          this.followers = response.data;
-      },
+      let response = await axios.get('/api/users/' + this.authUser.id + '/' + 'follows'); //フォロー一覧の取得
+      this.followers = response.data;
+    },
     showFollowers: async function () {
-          let response = await axios.get('/api/users/' + this.authUser.id + '/' + 'followers');//フォロワー一覧の取得
-          this.followers = response.data;
+      let response = await axios.get('/api/users/' + this.authUser.id + '/' + 'followers'); //フォロワー一覧の取得
+      this.followers = response.data;
     },
   },
 };
