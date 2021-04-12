@@ -1,5 +1,10 @@
 <template>
   <v-container>
+    <v-tabs align-with-title>
+      <v-tab @click="showFollows()">フォロー</v-tab>
+      <v-tab @click="showFollowers()">フォロワー</v-tab>
+    </v-tabs>
+
     <v-list v-if="followers.length">
       <v-list-item
         v-for="follower in followers"
@@ -55,6 +60,9 @@ export default {
       },
     };
   },
+  mounted() {
+    this.showFollows()// ページ開いた際には、フォロー欄を表示
+  },
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
@@ -70,10 +78,14 @@ export default {
       this.profile.username = username;
       this.profile.dialog = true;
     },
-  },
-  async created() {
-    let response = await axios.get('/api/users/' + this.authUser.id + '/' + this.$route.name);
-    this.followers = response.data;
+    showFollows: async function () {
+          let response = await axios.get('/api/users/' + this.authUser.id + '/' + 'follows'); //フォロー一覧の取得
+          this.followers = response.data;
+      },
+    showFollowers: async function () {
+          let response = await axios.get('/api/users/' + this.authUser.id + '/' + 'followers');//フォロワー一覧の取得
+          this.followers = response.data;
+    },
   },
 };
 </script>
