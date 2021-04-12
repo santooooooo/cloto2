@@ -78,11 +78,6 @@ const router = new VueRouter({
           component: profile,
         },
         {
-          path: 'follows',
-          name: 'follows',
-          component: follower,
-        },
-        {
           path: 'followers',
           name: 'followers',
           component: follower,
