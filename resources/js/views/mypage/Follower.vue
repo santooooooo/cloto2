@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <v-tabs slider-color="yellow" color="yellow">
-      <v-tab @click="showFollows()">フォロー</v-tab>
-      <v-tab @click="showFollowers()">フォロワー</v-tab>
+    <v-tabs color="#f6bf00">
+      <v-tab class="font-weight-bold" @click="showFollows()">フォロー</v-tab>
+      <v-tab class="font-weight-bold" @click="showFollowers()">フォロワー</v-tab>
     </v-tabs>
 
     <v-list v-if="followers.length">
@@ -44,7 +44,7 @@ export default {
   head: {
     title() {
       return {
-        inner: this.$route.name === 'follows' ? 'フォロー一覧' : 'フォロワー一覧',
+        inner: 'フォロー&フォロワー',
       };
     },
   },
@@ -60,15 +60,28 @@ export default {
       },
     };
   },
-  mounted() {
-    this.showFollows(); // ページ開いた際には、フォロー欄を表示
-  },
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
     },
   },
   methods: {
+    /**
+     * フォロー一覧の表示
+     */
+    showFollows: async function () {
+      let response = await axios.get('/api/users/' + this.authUser.id + '/follows');
+      this.followers = response.data;
+    },
+
+    /**
+     * フォロワー一覧の表示
+     */
+    showFollowers: async function () {
+      let response = await axios.get('/api/users/' + this.authUser.id + '/followers');
+      this.followers = response.data;
+    },
+
     /**
      * プロフィールの表示
      *
@@ -78,14 +91,9 @@ export default {
       this.profile.username = username;
       this.profile.dialog = true;
     },
-    showFollows: async function () {
-      let response = await axios.get('/api/users/' + this.authUser.id + '/' + 'follows'); //フォロー一覧の取得
-      this.followers = response.data;
-    },
-    showFollowers: async function () {
-      let response = await axios.get('/api/users/' + this.authUser.id + '/' + 'followers'); //フォロワー一覧の取得
-      this.followers = response.data;
-    },
+  },
+  created() {
+    this.showFollows();
   },
 };
 </script>
