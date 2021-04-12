@@ -1,5 +1,10 @@
 <template>
   <v-container>
+    <v-tabs color="#f6bf00">
+      <v-tab class="font-weight-bold" @click="showFollows()">フォロー</v-tab>
+      <v-tab class="font-weight-bold" @click="showFollowers()">フォロワー</v-tab>
+    </v-tabs>
+
     <v-list v-if="followers.length">
       <v-list-item
         v-for="follower in followers"
@@ -39,7 +44,7 @@ export default {
   head: {
     title() {
       return {
-        inner: this.$route.name === 'follows' ? 'フォロー一覧' : 'フォロワー一覧',
+        inner: 'フォロー&フォロワー',
       };
     },
   },
@@ -62,6 +67,22 @@ export default {
   },
   methods: {
     /**
+     * フォロー一覧の表示
+     */
+    showFollows: async function () {
+      let response = await axios.get('/api/users/' + this.authUser.id + '/follows');
+      this.followers = response.data;
+    },
+
+    /**
+     * フォロワー一覧の表示
+     */
+    showFollowers: async function () {
+      let response = await axios.get('/api/users/' + this.authUser.id + '/followers');
+      this.followers = response.data;
+    },
+
+    /**
      * プロフィールの表示
      *
      * @param {String} username - プロフィールを表示するユーザー名
@@ -71,9 +92,8 @@ export default {
       this.profile.dialog = true;
     },
   },
-  async created() {
-    let response = await axios.get('/api/users/' + this.authUser.id + '/' + this.$route.name);
-    this.followers = response.data;
+  created() {
+    this.showFollows();
   },
 };
 </script>
