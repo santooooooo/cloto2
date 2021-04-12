@@ -80,7 +80,7 @@
 
                 <v-col cols="12">
                   当サービスを利用する前に、<br />
-                  必ず<a class="light-blue-text" href="https://docs.google.com/forms/d/e/1FAIpQLSeooGhv_NRkGoZVPNakYTny3JOSHOka6rFjLfvp8Pcp62thow/viewform">アンケート</a>にご回答ください。
+                  必ず<a class="light-blue-text" href="https://docs.google.com/forms/d/e/1FAIpQLSeooGhv_NRkGoZVPNakYTny3JOSHOka6rFjLfvp8Pcp62thow/viewform" target="_blank">アンケート</a>にご回答ください。
                 </v-col>
 
                 <v-checkbox
