@@ -80,7 +80,7 @@
 
                 <v-col cols="12">
                   当サービスを利用する前に、<br />
-                  <a class="light-blue-text" href="">アンケート</a>にご回答ください。
+                  必ず<a class="light-blue-text" href="">アンケート</a>にご回答ください。
                 </v-col>
 
                 <v-checkbox
