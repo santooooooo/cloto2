@@ -78,6 +78,17 @@
                   counter
                 ></v-text-field>
 
+                <v-col cols="12">
+                  当サービスを利用する前に、<br />
+                  <a class="light-blue-text" href="">アンケート</a>にご回答ください。
+                </v-col>
+
+                <v-checkbox
+                  label="回答しました"
+                  v-model="registerForm.checkbox"
+                  :rules="registerForm.validation.answerRules"
+                ></v-checkbox>
+
                 <v-row justify="center" class="mt-4">
                   <v-btn
                     :loading="registerForm.loading"
@@ -125,6 +136,7 @@ export default {
         passwordConfirmation: '',
         handlename: '',
         showPassword: false,
+        checkbox: false,
         loading: false,
         validation: {
           valid: false,
