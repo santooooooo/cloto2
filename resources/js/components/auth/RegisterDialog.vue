@@ -78,7 +78,7 @@
                   counter
                 ></v-text-field>
 
-                <v-col cols="12">
+                <!-- <v-col cols="12">
                   当サービスを利用する前に、<br />
                   必ず<a class="light-blue-text" href="https://docs.google.com/forms/d/e/1FAIpQLSeooGhv_NRkGoZVPNakYTny3JOSHOka6rFjLfvp8Pcp62thow/viewform" target="_blank">アンケート</a>にご回答ください。
                 </v-col>
@@ -87,7 +87,7 @@
                   label="回答しました"
                   v-model="registerForm.checkbox"
                   :rules="registerForm.validation.answerRules"
-                ></v-checkbox>
+                ></v-checkbox> -->
 
                 <v-row justify="center" class="mt-4">
                   <v-btn
@@ -136,7 +136,7 @@ export default {
         passwordConfirmation: '',
         handlename: '',
         showPassword: false,
-        checkbox: false,
+        // checkbox: false,
         loading: false,
         validation: {
           valid: false,
@@ -164,11 +164,11 @@ export default {
             (v) => (v && v === this.registerForm.password) || 'パスワードが一致しません。',
           ],
           handlenameRules: [(v) => !!v || '表示名は必須項目です。'],
-          answerRules: [
-            (v) =>
-              !!v ||
-              'アンケートにご回答いただかないと、当サービスのご利用ができません。また、記入漏れなどの不備があった際には、運営より連絡を差し上げる場合がございます。',
-          ],
+          // answerRules: [
+          //   (v) =>
+          //     !!v ||
+          //     'アンケートにご回答いただかないと、当サービスのご利用ができません。また、記入漏れなどの不備があった際には、運営より連絡を差し上げる場合がございます。',
+          // ],
         },
       },
     };
