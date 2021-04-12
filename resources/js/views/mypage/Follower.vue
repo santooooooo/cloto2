@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-tabs align-with-title>
+    <v-tabs slider-color="yellow" color="yellow">
       <v-tab @click="showFollows()">フォロー</v-tab>
       <v-tab @click="showFollowers()">フォロワー</v-tab>
     </v-tabs>
