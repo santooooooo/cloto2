@@ -80,7 +80,7 @@
 
                 <v-col cols="12">
                   当サービスを利用する前に、<br />
-                  必ず<a class="light-blue-text" href="">アンケート</a>にご回答ください。
+                  必ず<a class="light-blue-text" href="https://cloto-jp.slack.com/archives/C01FZ1C5U3E/p1617939903003300">アンケート</a>にご回答ください。
                 </v-col>
 
                 <v-checkbox
