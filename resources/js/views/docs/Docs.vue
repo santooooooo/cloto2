@@ -1,6 +1,6 @@
 <template>
   <v-container id="docs">
-    <router-view @scrollToAnchorPoint="scrollToAnchorPoint($event)" ref="docs" />
+    <router-view @scroll-to-anchor-point="scrollToAnchorPoint($event)" ref="docs" />
   </v-container>
 </template>
 
@@ -24,13 +24,13 @@ export default {
 
 #docs {
   background-color: $white;
+
+  &::v-deep .container {
+    scroll-margin: 80px;
+
+    .text-left-border {
+      border-left: 6px solid $dark-blue;
+    }
+  }
 }
-
-// /deep/ .container {
-//   scroll-margin: 80px;
-
-//   .text-left-border {
-//     border-left: 6px solid $dark-blue;
-//   }
-// }
 </style>

@@ -11,15 +11,15 @@
         <v-col cols="4">
           <!-- 目次 -->
           <p>
-            <a class="grey--text" @click="$emit('scrollToAnchorPoint', 'buy')">食材を買う</a>
+            <a class="grey--text" @click="$emit('scroll-to-anchor-point', 'buy')">食材を買う</a>
           </p>
           <p>
-            <a class="grey--text" @click="$emit('scrollToAnchorPoint', 'suggest')">
+            <a class="grey--text" @click="$emit('scroll-to-anchor-point', 'suggest')">
               おすすめの食材
             </a>
           </p>
           <p>
-            <a class="grey--text" @click="$emit('scrollToAnchorPoint', 'cut')">食材を切る</a>
+            <a class="grey--text" @click="$emit('scroll-to-anchor-point', 'cut')">食材を切る</a>
           </p>
         </v-col>
 
@@ -88,7 +88,7 @@ export default {
   },
   data() {
     return {
-      title: '野菜炒めを作るよ',
+      title: '野菜炒めを作るよ', // コンテンツタイトル
     };
   },
 };
