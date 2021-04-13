@@ -1,0 +1,524 @@
+@charset "UTF-8";
+html {
+  line-height: 1.15;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  font-family: "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro", "Yu Gothic Medium", "游ゴシック Medium", YuGothic, "游ゴシック体", "メイリオ", sans-serif !important;
+}
+
+html body {
+  margin: 0;
+}
+
+html body header,
+html body nav,
+html body section {
+  display: block;
+}
+
+html body figcaption,
+html body main {
+  display: block;
+}
+
+html body a {
+  background-color: transparent;
+  -webkit-text-decoration-skip: objects;
+  text-decoration: none;
+}
+
+html body strong {
+  font-weight: inherit;
+}
+
+html body strong {
+  font-weight: bolder;
+}
+
+html body code {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+html body dfn {
+  font-style: italic;
+}
+
+html body svg:not(:root) {
+  overflow: hidden;
+}
+
+html body button,
+html body input {
+  font-family: sans-serif;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+html body button,
+html body input {
+  overflow: visible;
+}
+
+html body button {
+  text-transform: none;
+}
+
+html body button,
+html body html [type='button'],
+html body [type='reset'],
+html body [type='submit'] {
+  -webkit-appearance: button;
+}
+
+html body button::-moz-focus-inner,
+html body [type='button']::-moz-focus-inner,
+html body [type='reset']::-moz-focus-inner,
+html body [type='submit']::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+html body button:-moz-focusring,
+html body [type='button']:-moz-focusring,
+html body [type='reset']:-moz-focusring,
+html body [type='submit']:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+html body legend {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: inherit;
+  display: table;
+  max-width: 100%;
+  padding: 0;
+  white-space: normal;
+}
+
+html body [type='checkbox'],
+html body [type='radio'] {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+html body [type='number']::-webkit-inner-spin-button,
+html body [type='number']::-webkit-outer-spin-button {
+  height: auto;
+}
+
+html body [type='search'] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+html body [type='search']::-webkit-search-cancel-button,
+html body [type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+html body ::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+html body menu {
+  display: block;
+}
+
+html body canvas {
+  display: inline-block;
+}
+
+html body template {
+  display: none;
+}
+
+html body [hidden] {
+  display: none;
+}
+
+html body html {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+html body *,
+html body *::before,
+html body *::after {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+html body p {
+  margin: 0;
+}
+
+html body button {
+  background: transparent;
+  padding: 0;
+}
+
+html body button:focus {
+  outline: 1px dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+}
+
+html body *,
+html body *::before,
+html body *::after {
+  border-width: 0;
+  border-style: solid;
+  border-color: #dae1e7;
+}
+
+html body button,
+html body [type='button'],
+html body [type='reset'],
+html body [type='submit'] {
+  border-radius: 0;
+}
+
+html body button,
+html body input {
+  font-family: inherit;
+}
+
+html body input::-webkit-input-placeholder {
+  color: inherit;
+  opacity: 0.5;
+}
+
+html body input:-ms-input-placeholder {
+  color: inherit;
+  opacity: 0.5;
+}
+
+html body input::-ms-input-placeholder {
+  color: inherit;
+  opacity: 0.5;
+}
+
+html body input::placeholder {
+  color: inherit;
+  opacity: 0.5;
+}
+
+html body button,
+html body [role='button'] {
+  cursor: pointer;
+}
+
+html body .bg-transparent {
+  background-color: transparent;
+}
+
+html body .bg-white {
+  background-color: #ffffff;
+}
+
+html body .bg-teal-light {
+  background-color: #64d5ca;
+}
+
+html body .bg-blue-dark {
+  background-color: #2779bd;
+}
+
+html body .bg-indigo-light {
+  background-color: #7886d7;
+}
+
+html body .bg-purple-light {
+  background-color: #a779e9;
+}
+
+html body .bg-primary {
+  background-color: #f6bf00;
+}
+
+html body .bg-gray-light {
+  background-color: #f4f4f4;
+}
+
+html body .bg-gray-100 {
+  --bg-opacity: 1;
+  background-color: #f7fafc;
+  background-color: rgba(247, 250, 252, var(--bg-opacity));
+}
+
+html body .bg-gray-900 {
+  --bg-opacity: 1;
+  background-color: #1a202c;
+  background-color: rgba(26, 32, 44, var(--bg-opacity));
+}
+
+html body .bg-no-repeat {
+  background-repeat: no-repeat;
+}
+
+html body .bg-cover {
+  background-size: cover;
+}
+
+html body .border-grey-light {
+  border-color: #dae1e7;
+}
+
+html body .hover\:border-grey:hover {
+  border-color: #b8c2cc;
+}
+
+html body .rounded-lg {
+  border-radius: 0.5rem;
+}
+
+html body .border-2 {
+  border-width: 2px;
+}
+
+html body .hidden {
+  display: none;
+}
+
+html body .flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+html body .items-center {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+html body .justify-center {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+html body .font-sans {
+  font-family: Nunito, sans-serif;
+}
+
+html body .font-light {
+  font-weight: 300;
+}
+
+html body .font-bold {
+  font-weight: 700;
+}
+
+html body .font-black {
+  font-weight: 900;
+}
+
+html body .h-1 {
+  height: 0.25rem;
+}
+
+html body .leading-normal {
+  line-height: 1.5;
+}
+
+html body .m-8 {
+  margin: 2rem;
+}
+
+html body .my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+html body .mb-8 {
+  margin-bottom: 2rem;
+}
+
+html body .max-w-sm {
+  max-width: 30rem;
+}
+
+html body .min-h-screen {
+  min-height: 100vh;
+}
+
+html body .ml-3 {
+  margin-left: 0.75rem;
+}
+
+html body .mr-3 {
+  margin-right: 0.75rem;
+}
+
+html body .pb-3 {
+  padding-bottom: 0.75rem;
+}
+
+html body .py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+html body .px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+html body .pb-full {
+  padding-bottom: 100%;
+}
+
+html body .absolute {
+  position: absolute;
+}
+
+html body .relative {
+  position: relative;
+}
+
+html body .pin {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+html body .text-black {
+  color: #22292f;
+}
+
+html body .text-grey-darkest {
+  color: #3d4852;
+}
+
+html body .text-grey-darker {
+  color: #606f7b;
+}
+
+html body .text-white {
+  color: #ffffff;
+}
+
+html body .text-red {
+  color: #ca3e3e;
+}
+
+html body .text-xl {
+  font-size: 1.3rem;
+}
+
+html body .text-2xl {
+  font-size: 1.5rem;
+}
+
+html body .text-5xl {
+  font-size: 3rem;
+}
+
+html body .uppercase {
+  text-transform: uppercase;
+}
+
+html body .antialiased {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html body .tracking-wide {
+  letter-spacing: 0.05em;
+}
+
+html body .w-16 {
+  width: 4rem;
+}
+
+html body .w-full {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  html body .md\:bg-left {
+    background-position: left;
+  }
+  html body .md\:bg-right {
+    background-position: right;
+  }
+  html body .md\:flex {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  html body .md\:my-6 {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  html body .md\:min-h-screen {
+    min-height: 100vh;
+  }
+  html body .md\:pb-0 {
+    padding-bottom: 0;
+  }
+  html body .md\:text-3xl {
+    font-size: 1.875rem;
+  }
+  html body .md\:text-15xl {
+    font-size: 9rem;
+  }
+  html body .md\:w-1\/2 {
+    width: 50%;
+  }
+}
+
+@media (min-width: 992px) {
+  html body .lg\:bg-center {
+    background-position: center;
+  }
+}
+
+html body #code {
+  font-family: Nunito, sans-serif;
+}
+
+html body .button {
+  display: inline-block;
+  padding: 1em 1.5em;
+  background-color: #ffffff;
+  border: solid 2px #dae1e7;
+  border-radius: 0.5rem;
+  color: #3d4852;
+  font-weight: 700;
+}
+
+html body .button:hover {
+  border-color: #b8c2cc;
+}
+
+html body table {
+  width: 100%;
+  border-spacing: 0;
+}
+
+html body table th {
+  border-bottom: solid 2px #fb5144;
+  padding: 10px 0;
+}
+
+html body table td {
+  border-bottom: solid 2px #ddd;
+  text-align: center;
+  padding: 10px 0;
+}
+
+html body #twitter-timeline {
+  width: 70%;
+  margin: 0 auto;
+  padding: 5px;
+  border: solid 5px #ffffff;
+  border-radius: 15px;
+}
+/*# sourceMappingURL=error.css.map */
