@@ -1,61 +1,75 @@
 <template>
   <v-container>
-    <!-- コンテンツタイトル -->
-    <v-col class="grey lighten-2 my-8">
-      <h1 class="mb-0 font-weight-bold">野菜炒めを作るよ</h1>
-      <v-subheader>塩コショウが効いた本格派</v-subheader>
-    </v-col>
+    <!-- タイトル -->
+    <div class="grey lighten-2 my-8 pa-4">
+      <h1 class="text-h4 font-weight-bold">{{ title }}</h1>
+      <p class="text-body-2 mx-6 mt-6 mb-0">塩コショウが効いた本格派</p>
+    </div>
 
-    <!-- コンテンツの内容 -->
     <v-container>
       <v-row>
-        <!-- 左レイアウト -->
         <v-col cols="4">
-          <!-- パンくずリスト -->
-          <v-breadcrumbs :items="items" class="pl-0"></v-breadcrumbs>
-
-          <!-- 目次、全体概要 -->
+          <!-- 目次 -->
           <p>
-            <a href="" class="grey--text">食材を買う</a>
+            <a class="grey--text" @click="$emit('scrollToAnchorPoint', 'buy')">食材を買う</a>
           </p>
           <p>
-            <a href="" class="grey--text">食材を買う</a>
+            <a class="grey--text" @click="$emit('scrollToAnchorPoint', 'suggest')">
+              おすすめの食材
+            </a>
           </p>
           <p>
-            <a href="" class="grey--text">食材を買う</a>
-          </p>
-          <p>
-            <a href="" class="grey--text">食材を買う</a>
+            <a class="grey--text" @click="$emit('scrollToAnchorPoint', 'cut')">食材を切る</a>
           </p>
         </v-col>
 
-        <!-- 右レイアウト -->
         <v-col cols="8">
-          <!-- コンテンツ　画像なし -->
-          <v-container fluid class="mb-12">
-            <h3 class="text-h4 font-weight-bold text-left-border mb-10">
+          <!-- コンテンツ1 -->
+          <v-container fluid class="mb-12" ref="buy">
+            <h4 class="text-h4 font-weight-bold text-left-border mb-10">
               <span class="pl-3 grey lighten-3">食材を買う</span>
-            </h3>
+            </h4>
+
             <p class="mb-8">何を買おうかな</p>
             <p class="mb-8">
               人参、キャベツ、人参、キャベツ、人参、キャベツ、人参、キャベツ、人参、キャベツ、人参、キャベツ、人参、キャベツ、人参、キャベツ、人参、キャベツ、人参、キャベツ、人参、キャベツ、人参、キャベツ、
             </p>
-            <p class="mb-8">こんなもんかな</p>
+            <p>こんなもんかな</p>
           </v-container>
 
-          <!-- コンテンツ　画像あり -->
-          <v-container fluid class="mb-12">
-            <h3 class="text-h4 font-weight-bold text-left-border mb-10">
+          <!-- コンテンツ2 -->
+          <v-container fluid class="mb-12" ref="suggest">
+            <h4 class="text-h4 font-weight-bold text-left-border mb-10">
               <span class="pl-3 grey lighten-3">おすすめの食材</span>
-            </h3>
-            <h4 class="mb-8 font-weight-bold">1.岩塩</h4>
+            </h4>
+
+            <h5 class="text-h5 font-weight-bold mb-8">1.岩塩</h5>
             <p class="mb-8">普通の塩には戻れない</p>
-            <!-- Vuetifyのサンプル画像を使ってます　サイズ調整はmax-〇〇で -->
             <v-img
               max-height="300"
               max-width="400"
               src="https://picsum.photos/id/11/500/300"
+              class="mb-10"
             ></v-img>
+
+            <h5 class="text-h5 font-weight-bold mb-8">2.おいしい水</h5>
+            <p class="mb-8">普通の水には戻れない</p>
+            <v-img
+              max-height="400"
+              max-width="500"
+              src="https://picsum.photos/id/11/500/300"
+            ></v-img>
+          </v-container>
+
+          <!-- コンテンツ3 -->
+          <v-container fluid class="mb-12" ref="cut">
+            <h4 class="text-h4 font-weight-bold text-left-border mb-10">
+              <span class="pl-3 grey lighten-3">食材を切る</span>
+            </h4>
+
+            <p class="mb-8">何から切る？</p>
+            <p class="mb-8">人参、と見せかけてキャベツ</p>
+            <p>どっちゃでもええ</p>
           </v-container>
         </v-col>
       </v-row>
@@ -68,29 +82,14 @@ export default {
   head: {
     title() {
       return {
-        inner: 'さんぷる',
+        inner: this.title,
       };
     },
   },
   data() {
     return {
-        //パンくずリストのアイテム
-      items: [
-        // hrefプロパティを追加すれば、リンクが足せる　https://vuetifyjs.com/ja/components/breadcrumbs/#slots
-        { text: '目次' },
-        { text: '料理' },
-        { text: '野菜炒め' },
-      ],
+      title: '野菜炒めを作るよ',
     };
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import '~/_variables';
-
-// コンテンツタイトル左の線
-.text-left-border {
-  border-left: 6px solid $dark-blue;
-}
-</style>
