@@ -45,44 +45,42 @@
       >
         <v-card class="pa-3">
           <!-- カルテ -->
-          <v-card-actions
-            class="d-block pointer"
-            @click="showKarte = item"
-            v-if="item.activity_time"
-          >
-            <v-img
-              max-height="300"
-              class="mx-auto my-2 rounded-xl"
-              contain
-              eager
-              :src="item.path + item.image"
-              @load="$redrawVueMasonry('timeline')"
-              v-if="item.image"
-            ></v-img>
+          <v-card-actions class="d-block" v-if="item.activity_time">
+            <div class="pointer" @click="showKarte = item">
+              <v-img
+                max-height="300"
+                class="mx-auto my-2 rounded-xl"
+                contain
+                eager
+                :src="item.path + item.image"
+                @load="$redrawVueMasonry('timeline')"
+                v-if="item.image"
+              ></v-img>
 
-            <!-- タグ -->
-            <v-chip class="ma-1" v-for="tag in item.tags" :key="tag.id" :value="tag.id">
-              {{ tag.name }}
-            </v-chip>
+              <!-- タグ -->
+              <v-chip class="ma-1" v-for="tag in item.tags" :key="tag.id" :value="tag.id">
+                {{ tag.name }}
+              </v-chip>
 
-            <!-- 活動時間 -->
-            <p
-              :class="[
-                'text-body-2',
-                'font-weight-bold',
-                item.image || item.tags.length ? 'mt-6' : '',
-              ]"
-            >
-              活動時間：{{ item.activity_time.slice(0, 5) }}
-            </p>
+              <!-- 活動時間 -->
+              <p
+                :class="[
+                  'text-body-2',
+                  'font-weight-bold',
+                  item.image || item.tags.length ? 'mt-6' : '',
+                ]"
+              >
+                活動時間：{{ item.activity_time.slice(0, 5) }}
+              </p>
 
-            <!-- 活動内容 -->
-            <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
+              <!-- 活動内容 -->
+              <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
 
-            <!-- 投稿日時 -->
-            <p class="mt-6 mb-0 text-right small">
-              {{ $moment(item.created_at).format('MM/DD HH:mm') }}
-            </p>
+              <!-- 投稿日時 -->
+              <p class="mt-6 mb-0 text-right small">
+                {{ $moment(item.created_at).format('MM/DD HH:mm') }}
+              </p>
+            </div>
           </v-card-actions>
 
           <!-- 投稿 -->
@@ -93,13 +91,15 @@
               </v-btn>
             </v-row>
 
-            <!-- 内容 -->
-            <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
+            <div class="pointer" @click="showPost = item">
+              <!-- 内容 -->
+              <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
 
-            <!-- 投稿日時 -->
-            <p class="mt-6 mb-0 text-right small">
-              {{ $moment(item.created_at).format('MM/DD HH:mm') }}
-            </p>
+              <!-- 投稿日時 -->
+              <p class="mt-6 mb-0 text-right small">
+                {{ $moment(item.created_at).format('MM/DD HH:mm') }}
+              </p>
+            </div>
           </v-card-actions>
 
           <v-divider></v-divider>
@@ -160,6 +160,7 @@
     </v-dialog>
 
     <KarteDialog :karte="showKarte" @close="showKarte = null" />
+    <PostDialog :post="showPost" @close="showPost = null" />
     <ProfileDialog
       :username="profile.username"
       @close="profile.dialog = $event"
@@ -170,6 +171,7 @@
 
 <script>
 import KarteDialog from '@/components/user/KarteDialog';
+import PostDialog from '@/components/user/PostDialog';
 import ProfileDialog from '@/components/user/ProfileDialog';
 import { OK } from '@/consts/status';
 
@@ -189,6 +191,7 @@ export default {
       kartes: [], // カルテ一覧
       posts: [], // 投稿一覧
       showKarte: null, // 詳細を表示するカルテ
+      showPost: null, // 詳細を表示する投稿
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
@@ -212,6 +215,7 @@ export default {
 
   components: {
     KarteDialog,
+    PostDialog,
     ProfileDialog,
   },
 
