@@ -14,7 +14,7 @@
     <v-divider></v-divider>
 
     <v-list nav>
-      <v-list-item exact :to="{ name: 'timeline' }">
+      <v-list-item exact :to="{ name: 'entrance' }">
         <v-list-item-icon>
           <v-icon>mdi-trending-up</v-icon>
         </v-list-item-icon>

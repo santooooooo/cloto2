@@ -23,7 +23,6 @@ import entrance from '@/views/entrance/Entrance';
 import information from '@/views/entrance/Information';
 import floor from '@/views/entrance/Floor';
 import room from '@/views/room/Room';
-import timeline from '@/views/timeline/Timeline';
 // import docs from '@/views/docs/Docs';
 // import sample from '@/views/docs/Sample';
 import notFound from '@/views/errors/NotFound';
@@ -96,11 +95,6 @@ const router = new VueRouter({
         },
       ],
     },
-    {
-      path: '/timeline',
-      name: 'timeline',
-      component: timeline,
-    },
     // {
     //   path: '/docs',
     //   component: docs,
@@ -137,7 +131,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (store.getters['auth/check'] && to.name === 'login') {
     // ログイン時のリダイレクト
-    next({ name: 'timeline' });
+    next({ name: 'entrance' });
   }
 
   next();
