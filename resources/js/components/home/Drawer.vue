@@ -2,9 +2,9 @@
   <v-card class="mx-auto" width="250" flat tile>
     <v-navigation-drawer permanent>
       <v-list>
-        <v-list-item color="success" :to="{ name: 'entrance' }">
+        <v-list-item color="success" :to="{ name: 'home' }">
           <v-list-item-content>
-            <v-list-item-title class="text-h5 font-weight-bold">施設案内</v-list-item-title>
+            <v-list-item-title class="text-h5 font-weight-bold">ホーム</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>

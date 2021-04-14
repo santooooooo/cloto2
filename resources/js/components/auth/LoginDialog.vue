@@ -133,7 +133,7 @@ export default {
             window.location.pathname = '/email/verify';
           } else {
             // ページ遷移
-            this.$router.push({ name: 'entrance' });
+            this.$router.push({ name: 'home' });
           }
         } else {
           this.loginForm.loading = false;

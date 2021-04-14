@@ -1,8 +1,12 @@
 <template>
   <v-layout class="overflow-y-auto" id="information" ref="information">
     <v-container fluid>
+      <!-- イベント案内 -->
       <v-sheet color="white" width="100%" max-height="40%">
-        <img :src="$storage('system') + 'event.png?' + Math.random().toString(32).substring(2)" />
+        <img
+          :src="$storage('system') + 'event.png?' + Math.random().toString(32).substring(2)"
+          id="event"
+        />
         <p class="text-h5 ma-2">
           今月のイベント一覧は<a
             href="https://freecalend.com/open/mem136363_nopopon"
@@ -13,13 +17,14 @@
         </p>
       </v-sheet>
 
+      <!-- タイムライン -->
       <Timeline />
     </v-container>
   </v-layout>
 </template>
 
 <script>
-import Timeline from '@/components/entrance/Timeline';
+import Timeline from '@/components/home/Timeline';
 
 export default {
   components: {
@@ -37,10 +42,8 @@ export default {
   height: calc(100vh - 64px);
   background-size: cover;
 
-  .v-sheet {
-    img {
-      max-width: 100%;
-    }
+  #event {
+    max-width: 100%;
   }
 }
 </style>
