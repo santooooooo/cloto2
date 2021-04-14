@@ -24,8 +24,8 @@ import information from '@/views/entrance/Information';
 import floor from '@/views/entrance/Floor';
 import room from '@/views/room/Room';
 import timeline from '@/views/timeline/Timeline';
-import docs from '@/views/docs/Docs';
-import sample from '@/views/docs/Sample';
+// import docs from '@/views/docs/Docs';
+// import sample from '@/views/docs/Sample';
 import notFound from '@/views/errors/NotFound';
 
 const router = new VueRouter({
@@ -101,17 +101,17 @@ const router = new VueRouter({
       name: 'timeline',
       component: timeline,
     },
-    {
-      path: '/docs',
-      component: docs,
-      children: [
-        {
-          path: 'sample',
-          name: 'sample',
-          component: sample,
-        },
-      ],
-    },
+    // {
+    //   path: '/docs',
+    //   component: docs,
+    //   children: [
+    //     {
+    //       path: 'sample',
+    //       name: 'sample',
+    //       component: sample,
+    //     },
+    //   ],
+    // },
     {
       path: '*',
       name: notFound,
