@@ -1,8 +1,8 @@
 <template>
-  <v-layout class="overflow-y-auto" id="information" ref="information">
+  <v-layout class="overflow-y-auto" id="information">
     <v-container fluid>
       <!-- イベント案内 -->
-      <v-sheet color="white" width="100%" max-height="40%">
+      <v-card color="white" width="100%" max-height="40%">
         <img
           :src="$storage('system') + 'event.png?' + Math.random().toString(32).substring(2)"
           id="event"
@@ -15,7 +15,7 @@
             >こちら</a
           >
         </p>
-      </v-sheet>
+      </v-card>
 
       <!-- タイムライン -->
       <Timeline />
@@ -29,10 +29,6 @@ import Timeline from '@/components/home/Timeline';
 export default {
   components: {
     Timeline,
-  },
-  mounted() {
-    this.$refs.information.style.backgroundImage =
-      'url("' + this.$storage('system') + 'information.png")';
   },
 };
 </script>

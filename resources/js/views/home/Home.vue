@@ -16,7 +16,7 @@ export default {
   head: {
     title() {
       return {
-        inner: 'フロア案内',
+        inner: 'ホーム',
       };
     },
   },

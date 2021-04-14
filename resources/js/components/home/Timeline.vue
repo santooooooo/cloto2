@@ -1,18 +1,25 @@
 <template>
   <v-container fluid>
-    <v-form ref="postForm" v-model="postForm.validation.valid" lazy-validation class="mt-6 mb-9">
+    <v-form
+      ref="postForm"
+      v-model="postForm.validation.valid"
+      lazy-validation
+      id="post-form"
+      class="mx-auto my-6"
+    >
       <v-textarea
         v-model="postForm.body"
         :rules="postForm.validation.bodyRules"
         :maxlength="postForm.max"
         :disabled="postForm.loading"
+        append-icon="mdi-send"
         placeholder="つぶやき"
         counter
         solo
         auto-grow
         rows="1"
+        @click:append="submitPost()"
       ></v-textarea>
-      <v-btn color="primary" :loading="postForm.loading" @click="submitPost()">投稿する</v-btn>
     </v-form>
 
     <!-- ローディング -->
@@ -353,6 +360,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#post-form {
+  width: 60%;
+}
+
 .v-card {
   .pointer {
     cursor: pointer;
