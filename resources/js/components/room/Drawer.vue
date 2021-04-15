@@ -50,7 +50,7 @@
 
       <!-- 着席前 -->
       <div class="pa-2" v-if="!authUser.seat">
-        <v-btn block depressed color="success" @click="$router.push({ name: 'entrance' })">
+        <v-btn block depressed color="success" @click="$router.push({ name: 'home' })">
           退室
         </v-btn>
 

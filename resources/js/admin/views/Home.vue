@@ -18,7 +18,8 @@
       </v-overlay>
 
       <!-- ファイル -->
-      <h3>イベント一覧のアップロード</h3>
+      <h3>イベント情報のアップロード</h3>
+      <p class="red--text">*推奨サイズ：11667 × 2000px（PNG）</p>
       <input type="file" @change="submitEvent" accept="image/png" ref="input" />
 
       <p class="text-body-1 mt-5">

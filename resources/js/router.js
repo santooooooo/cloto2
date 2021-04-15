@@ -14,16 +14,17 @@ import store from './store';
 import index from '@/views/Index';
 import terms from '@/views/service/Terms';
 import login from '@/views/Login';
+import home from '@/views/home/Home';
+import information from '@/views/home/Information';
+import floor from '@/views/home/Floor';
+import room from '@/views/room/Room';
 import mypage from '@/views/mypage/Mypage';
 import profile from '@/views/mypage/Profile';
 import follower from '@/views/mypage/Follower';
 import karte from '@/views/mypage/Karte';
 import post from '@/views/mypage/Post';
-import entrance from '@/views/entrance/Entrance';
-import information from '@/views/entrance/Information';
-import floor from '@/views/entrance/Floor';
-import room from '@/views/room/Room';
-import timeline from '@/views/timeline/Timeline';
+// import docs from '@/views/docs/Docs';
+// import sample from '@/views/docs/Sample';
 import notFound from '@/views/errors/NotFound';
 
 const router = new VueRouter({
@@ -48,12 +49,12 @@ const router = new VueRouter({
       meta: { isPublic: true },
     },
     {
-      path: '/entrance',
-      component: entrance,
+      path: '/home',
+      component: home,
       children: [
         {
           path: 'information',
-          name: 'entrance',
+          name: 'home',
           component: information,
         },
         {
@@ -78,11 +79,6 @@ const router = new VueRouter({
           component: profile,
         },
         {
-          path: 'follows',
-          name: 'follows',
-          component: follower,
-        },
-        {
           path: 'followers',
           name: 'followers',
           component: follower,
@@ -99,11 +95,17 @@ const router = new VueRouter({
         },
       ],
     },
-    {
-      path: '/timeline',
-      name: 'timeline',
-      component: timeline,
-    },
+    // {
+    //   path: '/docs',
+    //   component: docs,
+    //   children: [
+    //     {
+    //       path: 'sample',
+    //       name: 'sample',
+    //       component: sample,
+    //     },
+    //   ],
+    // },
     {
       path: '*',
       name: notFound,
@@ -129,7 +131,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (store.getters['auth/check'] && to.name === 'login') {
     // ログイン時のリダイレクト
-    next({ name: 'timeline' });
+    next({ name: 'home' });
   }
 
   next();

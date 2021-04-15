@@ -10,13 +10,13 @@
 </template>
 
 <script>
-import Drawer from '@/components/entrance/Drawer';
+import Drawer from '@/components/home/Drawer';
 
 export default {
   head: {
     title() {
       return {
-        inner: 'フロア案内',
+        inner: 'ホーム',
       };
     },
   },

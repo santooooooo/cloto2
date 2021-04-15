@@ -277,7 +277,12 @@
 
       <v-col sm="4" class="ml-4 my-12">
         <p class="text-h5 text-center font-weight-bold">
-          <a href="https://www.learn-more.co.jp" target="_blank" class="black--text">
+          <a
+            href="https://www.learn-more.co.jp"
+            target="_blank"
+            class="black--text"
+            rel="noopener noreferrer"
+          >
             株式会社LearnMore様 <v-icon class="text-body-1">mdi-open-in-new</v-icon>
           </a>
         </p>

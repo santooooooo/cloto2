@@ -13,21 +13,17 @@
         <v-list-item-group color="#f6bf00">
           <v-list-item class="mb-4" :to="{ name: 'mypage' }">
             <v-list-item-content>
-              <v-list-item-title class="text-body-1 font-weight-bold"
-                >プロフィール</v-list-item-title
-              >
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item class="mb-4" :to="{ name: 'follows' }">
-            <v-list-item-content>
-              <v-list-item-title class="text-body-1 font-weight-bold">フォロー</v-list-item-title>
+              <v-list-item-title class="text-body-1 font-weight-bold">
+                プロフィール
+              </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
           <v-list-item class="mb-4" :to="{ name: 'followers' }">
             <v-list-item-content>
-              <v-list-item-title class="text-body-1 font-weight-bold">フォロワー</v-list-item-title>
+              <v-list-item-title class="text-body-1 font-weight-bold">
+                フォロー/フォロワー
+              </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 

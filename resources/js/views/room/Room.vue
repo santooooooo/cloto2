@@ -829,7 +829,7 @@ export default {
       await this.userAction('leave');
 
       // フロア一覧へ
-      this.$router.push({ name: 'entrance' });
+      this.$router.push({ name: 'home' });
     },
 
     /**

@@ -7,7 +7,7 @@
         rounded
         exact
         class="my-2"
-        :to="authCheck ? { name: 'entrance' } : { name: 'index' }"
+        :to="authCheck ? { name: 'home' } : { name: 'index' }"
       >
         ホーム
       </v-btn>

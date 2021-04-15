@@ -246,12 +246,12 @@ export default {
 </script>
 
 <style lang="scss">
+.sc-chat-window {
+  z-index: 5;
+}
+
 // オープンボタンの非表示化
 .sc-launcher {
   display: none;
-}
-
-.sc-chat-window {
-  z-index: 4;
 }
 </style>

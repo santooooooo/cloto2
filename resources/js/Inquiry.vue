@@ -201,6 +201,10 @@ export default {
 </script>
 
 <style lang="scss">
+.sc-chat-window {
+  z-index: 5;
+}
+
 // 通知
 .notification {
   animation: scaleChange 3s infinite ease-out;
