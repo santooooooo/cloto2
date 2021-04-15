@@ -31,31 +31,6 @@
       height="60"
       :class="['app-bar', appBar.isShow ? 'show' : '']"
     >
-      <!-- 視聴者一覧 -->
-      <v-flex xs1 class="viewer-container">
-        <!-- 自分 -->
-        <v-avatar
-          size="40"
-          class="viewer ma-1"
-          @click="showProfile(authUser.username)"
-          v-if="!loading"
-        >
-          <img :src="$storage('icon') + authUser.icon" />
-        </v-avatar>
-
-        <!-- 他の視聴者 -->
-        <v-avatar
-          size="40"
-          class="viewer ma-1"
-          v-for="viewer in viewers"
-          :key="viewer.peerId"
-          @click="showProfile(viewer.username)"
-        >
-          <img :src="$storage('icon') + viewer.icon" />
-        </v-avatar>
-      </v-flex>
-
-
       <v-row dense justify="center">
         <span class="text-h4">{{ topic || 'トピック未設定' }}</span>
       </v-row>
