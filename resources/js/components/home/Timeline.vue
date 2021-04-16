@@ -104,14 +104,9 @@
 
           <v-divider></v-divider>
 
-          <v-row
-            no-gutters
-            align="end"
-            class="mt-3 pointer"
-            @click="showProfile(item.user.username)"
-          >
+          <v-row no-gutters align="end" class="mt-3 pointer">
             <!-- ユーザーアイコン -->
-            <v-col cols="3">
+            <v-col cols="3" @click="showProfile(item.user.username)">
               <v-avatar
                 size="50"
                 :style="{ 'box-shadow': '0 0 0 5px ' + getColor(item.user.status) }"
@@ -120,7 +115,7 @@
               </v-avatar>
             </v-col>
 
-            <v-col cols="6">
+            <v-col cols="6" @click="showProfile(item.user.username)">
               <!-- ユーザー名 -->
               <div class="username ml-5">
                 <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
@@ -130,7 +125,9 @@
 
             <!-- いいねボタン -->
             <v-col cols="3" class="my-auto">
-              <v-icon @click="favoriteEvent()" class="favorite-btn">mdi-heart</v-icon>
+              <v-btn icon @click="favorite">
+                <v-icon>mdi-heart</v-icon>
+              </v-btn>
               <span>{{ favoriteCount }}</span>
             </v-col>
           </v-row>
@@ -352,11 +349,20 @@ export default {
     },
 
     /**
-     * いいね機能
+     * いいね処理
+     *
+     * @param {Event} event - クリックイベント
      */
-    favoriteEvent:  function () {
-      document.querySelector('.favorite-btn').classList.add('favorite-btn-color')
-      return this.favoriteCount += 1
+    favorite: function (event) {
+      if (!event.target.classList.contains('red--text')) {
+        // いいね処理
+        event.target.classList.add('red--text');
+        return (this.favoriteCount += 1);
+      } else {
+        // いいね解除処理
+        event.target.classList.remove('red--text');
+        return (this.favoriteCount -= 1);
+      }
     },
   },
 
@@ -398,10 +404,6 @@ export default {
 
   .username {
     width: calc(100% - 80px);
-  }
-
-  .favorite-btn-color {
-    color: red;
   }
 }
 </style>
