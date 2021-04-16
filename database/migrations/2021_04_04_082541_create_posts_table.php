@@ -17,8 +17,9 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->foreignId('user_id')
                 ->constrained()
-                ->cascadeOnDelete();    // ユーザーID
-            $table->text('body');       // 内容
+                ->cascadeOnDelete();            // ユーザーID
+            $table->text('body');               // 内容
+            $table->json('media')->nullable();  // メディア
             $table->dateTimes();
         });
     }
