@@ -111,18 +111,28 @@
             @click="showProfile(item.user.username)"
           >
             <!-- ユーザーアイコン -->
-            <v-avatar
-              size="50"
-              :style="{ 'box-shadow': '0 0 0 5px ' + getColor(item.user.status) }"
-            >
-              <img :src="$storage('icon') + item.user.icon" />
-            </v-avatar>
+            <v-col cols="3">
+              <v-avatar
+                size="50"
+                :style="{ 'box-shadow': '0 0 0 5px ' + getColor(item.user.status) }"
+              >
+                <img :src="$storage('icon') + item.user.icon" />
+              </v-avatar>
+            </v-col>
 
-            <!-- ユーザー名 -->
-            <div class="username ml-5">
-              <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
-              <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
-            </div>
+            <v-col cols="6">
+              <!-- ユーザー名 -->
+              <div class="username ml-5">
+                <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
+                <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
+              </div>
+            </v-col>
+
+            <!-- いいねボタン -->
+            <v-col cols="3" class="my-auto">
+              <v-icon id="favorite-btn">mdi-heart</v-icon>
+              <span>{{ favoriteCount }}</span>
+            </v-col>
           </v-row>
         </v-card>
       </v-col>
@@ -192,6 +202,7 @@ export default {
       posts: [], // 投稿一覧
       showKarte: null, // 詳細を表示するカルテ
       showPost: null, // 詳細を表示する投稿
+      favoriteCount: 0, //いいね数の表示
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
