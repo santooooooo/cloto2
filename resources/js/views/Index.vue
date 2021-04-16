@@ -230,9 +230,11 @@
       </v-col>
 
       <v-col sm="4" class="ml-4 my-12">
-        <p class="text-h4 text-center font-weight-bold">
+        <p class="text-h4 text-center font-weight-bold" id="to-b">
           to <span style="color: #ff99ab">B</span> 事業
         </p>
+
+<div id="to-b-text">
 
         <p class="text-body-1 text-left font-weight-bold red--text">
           ※量産体制が整っていないため、新規受注を休止しています。
@@ -265,6 +267,7 @@
           </a>
           ください。
         </p>
+</div>
       </v-col>
     </v-row>
 
@@ -277,7 +280,7 @@
         <v-img :src="$storage('system') + 'learnmore.png'"></v-img>
       </v-col>
 
-      <v-col sm="4" class="ml-4 my-12">
+      <v-col sm="4" class="ml-4 my-12" id="company-example">
         <p class="text-h5 text-center font-weight-bold">
           <a href="https://www.learn-more.co.jp" target="_blank" class="black--text">
             株式会社LearnMore様 <v-icon class="text-body-1">mdi-open-in-new</v-icon>
@@ -546,6 +549,13 @@ export default {
         document.getElementById('to-c').classList.add('fade-down')
         document.getElementById('to-c-text').classList.add('fade-up')
       }
+      if(this.scrollIndex >= 1500){
+        document.getElementById('to-b').classList.add('fade-down')
+        document.getElementById('to-b-text').classList.add('fade-up')
+      }
+      if(this.scrollIndex >= 1700){
+        document.getElementById('company-example').classList.add('fade-in-right')
+      }
     },
     /**
      * スムーズスクロール
@@ -620,11 +630,16 @@ export default {
   animation: fadeInLeft 2s ease 2s normal 1 forwards;
 }
 
+.fade-in-right {
+  opacity: 0;
+  animation: fadeInRight 2s ease 2s normal 1 forwards;
+}
+
 #login-btn:hover {
   animation: scale 1s ease 0s normal 1 forwards;
 }
 
-#to-c, #to-c-text{
+#to-c, #to-c-text, #to-b, #to-b-text, #company-example{
   opacity: 0;
 }
 </style>
