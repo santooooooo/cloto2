@@ -6,8 +6,8 @@
 
         <v-col cols="5" justify="center" align-self="center">
           <div class="mt-8">
-            <h1 class="text-left text-h4 font-weight-bold cloto-title">創る、繋がる、好きになる</h1>
-            <p class="text-left text-subtitle-1 font-weight-bold main-text">
+            <h1 class="text-left text-h4 font-weight-bold fade-down">創る、繋がる、好きになる</h1>
+            <p class="text-left text-subtitle-1 font-weight-bold fade-in-left">
               プログラミングに取り組むみなさん、こんにちは。<br />
               「実際のプログラミングって大変. . . 」<br />
               「何からしたらいいんだろう」<br />
@@ -57,8 +57,8 @@
         ></v-img>
 
         <div class="mt-8">
-          <h1 class="text-center font-weight-bold text-h5 cloto-title">創る、繋がる、好きになる</h1>
-          <p class="text-center text-subtitle-1 font-weight-bold main-text">
+          <h1 class="text-center font-weight-bold text-h5 fade-down">創る、繋がる、好きになる</h1>
+          <p class="text-center text-subtitle-1 font-weight-bold fade-in-left">
             プログラミングに取り組むみなさん、こんにちは。<br />
             「実際のプログラミングって大変. . . 」<br />
             「何からしたらいいんだろう」<br />
@@ -198,10 +198,11 @@
       </v-col>
 
       <v-col sm="4" class="ml-4 my-12">
-        <p class="text-h4 text-center font-weight-bold">
+        <p class="text-h4 text-center font-weight-bold" id="to-c">
           to <span class="green--text">C</span> 事業
         </p>
 
+  <div id="to-c-text">
         <p class="text-h6 text-left font-weight-bolder">
           プログラミング学習って、<br />思ってたより大変、、、
         </p>
@@ -217,6 +218,7 @@
         <p class="text-body-1 text-left">
           CLOTOを利用することで、「集中できる学習環境」と「切磋琢磨できる学習仲間」を得ることができ、それが「楽しく学習を継続できる環境」となり、あなたの学習を支えます。
         </p>
+  </div>
       </v-col>
     </v-row>
 
@@ -507,6 +509,7 @@ export default {
         name: '',
         email: '',
         body: '',
+        scrollIndex:0,
         loading: false,
         validation: {
           valid: false,
@@ -523,6 +526,9 @@ export default {
       },
     };
   },
+  created(){
+    window.addEventListener('scroll', this.setAnimation)
+  },
   computed: {
     isSmartphone() {
       if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
@@ -533,6 +539,14 @@ export default {
     },
   },
   methods: {
+    setAnimation(){
+      this.scrollIndex = window.scrollY
+      console.log(this.scrollIndex);
+      if(this.scrollIndex >= 800){
+        document.getElementById('to-c').classList.add('fade-down')
+        document.getElementById('to-c-text').classList.add('fade-up')
+      }
+    },
     /**
      * スムーズスクロール
      *
@@ -591,17 +605,26 @@ export default {
   }
 }
 
-.cloto-title {
+.fade-down {
   opacity: 0;
   animation: fadeDown 2s ease 0.5s normal 1 forwards;
 }
 
-.main-text {
+.fade-up {
   opacity: 0;
-  animation: fadeIn 2s ease 2s normal 1 forwards;
+  animation: fadeUp 2s ease 0.5s normal 1 forwards;
+}
+
+.fade-in-left {
+  opacity: 0;
+  animation: fadeInLeft 2s ease 2s normal 1 forwards;
 }
 
 #login-btn:hover {
   animation: scale 1s ease 0s normal 1 forwards;
+}
+
+#to-c, #to-c-text{
+  opacity: 0;
 }
 </style>
