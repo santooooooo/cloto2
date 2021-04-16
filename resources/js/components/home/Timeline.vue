@@ -130,7 +130,7 @@
 
             <!-- いいねボタン -->
             <v-col cols="3" class="my-auto">
-              <v-icon id="favorite-btn">mdi-heart</v-icon>
+              <v-icon @click="favoriteEvent()" class="favorite-btn">mdi-heart</v-icon>
               <span>{{ favoriteCount }}</span>
             </v-col>
           </v-row>
@@ -350,6 +350,14 @@ export default {
         this.deletePostForm.loading = false;
       }
     },
+
+    /**
+     * いいね機能
+     */
+    favoriteEvent:  function () {
+      document.querySelector('.favorite-btn').classList.add('favorite-btn-color')
+      return this.favoriteCount += 1
+    },
   },
 
   async created() {
@@ -390,6 +398,10 @@ export default {
 
   .username {
     width: calc(100% - 80px);
+  }
+
+  .favorite-btn-color {
+    color: red;
   }
 }
 </style>
