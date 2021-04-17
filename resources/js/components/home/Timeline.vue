@@ -125,7 +125,11 @@
 
             <!-- いいねボタン -->
             <v-col cols="3" class="my-auto">
-              <v-btn icon @click="favorite">
+              <v-btn
+                icon
+                :color="item.favoriteIdByAuthUser ? 'red' : 'gray'"
+                @click="favorite(item)"
+              >
                 <v-icon>mdi-heart</v-icon>
               </v-btn>
               <span>{{ favoriteCount }}</span>
@@ -351,17 +355,35 @@ export default {
     /**
      * いいね処理
      *
-     * @param {Event} event - クリックイベント
+     * @param {Object} item - いいねするアイテム
      */
-    favorite: function (event) {
-      if (!event.target.classList.contains('red--text')) {
+    favorite: async function (item) {
+      if (!item.favoriteIdByAuthUser) {
         // いいね処理
-        event.target.classList.add('red--text');
-        return (this.favoriteCount += 1);
+        let response;
+        if ('activity_time' in item) {
+          // カルテにいいねする
+          response = await axios.post('/api/favorites', {
+            karte_id: item.id,
+          });
+        } else if ('media' in item) {
+          // 投稿にいいねする
+          response = await axios.post('/api/favorites', {
+            post_id: item.id,
+          });
+        }
+
+        if (response.status == OK) {
+          // いいね数も返してカウントアップする
+          item.favoriteIdByAuthUser = response.data;
+        }
       } else {
         // いいね解除処理
-        event.target.classList.remove('red--text');
-        return (this.favoriteCount -= 1);
+        let response = await axios.delete('/api/favorites/' + item.favoriteIdByAuthUser);
+
+        if (response.status == OK) {
+          item.favoriteIdByAuthUser = null;
+        }
       }
     },
   },

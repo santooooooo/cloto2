@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class Karte extends Model
 {
@@ -31,7 +32,7 @@ class Karte extends Model
      *
      * @var array
      */
-    protected $appends = ['path', 'user', 'tags'];
+    protected $appends = ['path', 'user', 'tags', 'favoriteIdByAuthUser'];
 
     /**
      * User モデルのリレーション
@@ -104,5 +105,16 @@ class Karte extends Model
     public function getTagsAttribute()
     {
         return $this->tags()->get();
+    }
+
+    /**
+     * ログインユーザーによるいいねIDの追加
+     *
+     * @return Int|Null
+     */
+    public function getFavoriteIdByAuthUserAttribute()
+    {
+        $favorite = $this->favorites()->select('id')->where('user_id', Auth::id())->first();
+        return $favorite ? $favorite->id : null;
     }
 }

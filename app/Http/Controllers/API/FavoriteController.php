@@ -60,7 +60,7 @@ class FavoriteController extends Controller
             return response()->json(['message' => 'いいねに失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response()->json();
+        return response()->json($result->id);
     }
 
     /**

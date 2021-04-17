@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
@@ -30,7 +31,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $appends = ['user'];
+    protected $appends = ['user', 'favoriteIdByAuthUser'];
 
     /**
      * User モデルのリレーション
@@ -70,5 +71,16 @@ class Post extends Model
     public function getUserAttribute()
     {
         return $this->user()->first();
+    }
+
+    /**
+     * ログインユーザーによるいいねIDの追加
+     *
+     * @return Int|Null
+     */
+    public function getFavoriteIdByAuthUserAttribute()
+    {
+        $favorite = $this->favorites()->select('id')->where('user_id', Auth::id())->first();
+        return $favorite ? $favorite->id : null;
     }
 }
