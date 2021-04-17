@@ -17,19 +17,19 @@ class CreateFavoritesTable extends Migration
             $table->id();
             $table->foreignId('user_id')
                 ->constrained()
-                ->cascadeOnDelete();        // ユーザーID
+                ->cascadeOnDelete();            // ユーザーID
             $table->foreignId('karte_id')
+                ->nullable()
                 ->constrained()
-                ->cascadeOnDelete()
-                ->nullable();               // カルテID
+                ->cascadeOnDelete();            // カルテID
             $table->foreignId('post_id')
+                ->nullable()
                 ->constrained()
-                ->cascadeOnDelete()
-                ->nullable();               // 投稿ID
+                ->cascadeOnDelete();            // 投稿ID
             $table->foreignId('comment_id')
+                ->nullable()
                 ->constrained()
-                ->cascadeOnDelete()
-                ->nullable();               // コメントID
+                ->cascadeOnDelete();            // コメントID
         });
     }
 

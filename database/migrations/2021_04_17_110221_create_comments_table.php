@@ -19,13 +19,13 @@ class CreateCommentsTable extends Migration
                 ->constrained()
                 ->cascadeOnDelete();            // ユーザーID
             $table->foreignId('karte_id')
+                ->nullable()
                 ->constrained()
-                ->cascadeOnDelete()
-                ->nullable();                   // カルテID
+                ->cascadeOnDelete();            // カルテID
             $table->foreignId('post_id')
+                ->nullable()
                 ->constrained()
-                ->cascadeOnDelete()
-                ->nullable();                   // 投稿ID
+                ->cascadeOnDelete();            // 投稿ID
             $table->text('body');               // 内容
             $table->json('media')->nullable();  // メディア
             $table->dateTimes();
