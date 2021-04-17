@@ -392,7 +392,7 @@ export default {
           response = await axios.post('/api/favorites', { post_id: item.id });
         }
 
-        if (response.status == OK) {
+        if (response.status === OK) {
           // IDの追加とカウントアップ
           item.favorite_id_by_auth_user = response.data;
           item.favorites_count += 1;
@@ -401,7 +401,7 @@ export default {
         // いいね解除処理
         let response = await axios.delete('/api/favorites/' + item.favorite_id_by_auth_user);
 
-        if (response.status == OK) {
+        if (response.status === OK) {
           // IDの削除とカウントダウン
           item.favorite_id_by_auth_user = null;
           item.favorites_count -= 1;

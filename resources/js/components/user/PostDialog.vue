@@ -199,7 +199,7 @@ export default {
         // いいね処理
         let response = await axios.post('/api/favorites', { comment_id: comment.id });
 
-        if (response.status == OK) {
+        if (response.status === OK) {
           // IDの追加とカウントアップ
           comment.favorite_id_by_auth_user = response.data;
           comment.favorites_count += 1;
@@ -208,7 +208,7 @@ export default {
         // いいね解除処理
         let response = await axios.delete('/api/favorites/' + comment.favorite_id_by_auth_user);
 
-        if (response.status == OK) {
+        if (response.status === OK) {
           // IDの削除とカウントダウン
           comment.favorite_id_by_auth_user = null;
           comment.favorites_count -= 1;
