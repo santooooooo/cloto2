@@ -91,7 +91,7 @@
               </v-btn>
             </v-row>
 
-            <div class="pointer" @click="showPost = item">
+            <div class="pointer" @click="showPostId = item.id">
               <!-- 内容 -->
               <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
 
@@ -177,7 +177,7 @@
     </v-dialog>
 
     <KarteDialog :karte="showKarte" @close="showKarte = null" />
-    <PostDialog :post="showPost" @close="showPost = null" />
+    <PostDialog :postId="showPostId" @close="showPostId = null" />
     <ProfileDialog
       :username="profile.username"
       @close="profile.dialog = $event"
@@ -208,7 +208,7 @@ export default {
       kartes: [], // カルテ一覧
       posts: [], // 投稿一覧
       showKarte: null, // 詳細を表示するカルテ
-      showPost: null, // 詳細を表示する投稿
+      showPostId: null, // 詳細を表示する投稿ID
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
@@ -368,14 +368,10 @@ export default {
         let response;
         if ('activity_time' in item) {
           // カルテにいいねする
-          response = await axios.post('/api/favorites', {
-            karte_id: item.id,
-          });
+          response = await axios.post('/api/favorites', { karte_id: item.id });
         } else if ('media' in item) {
           // 投稿にいいねする
-          response = await axios.post('/api/favorites', {
-            post_id: item.id,
-          });
+          response = await axios.post('/api/favorites', { post_id: item.id });
         }
 
         if (response.status == OK) {

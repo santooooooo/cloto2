@@ -51,7 +51,7 @@ class CommentController extends Controller
             return response()->json(['message' => 'コメントの投稿に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        broadcast(new CommentPosted($result));
+        // broadcast(new CommentPosted($result));
         return response()->json();
     }
 

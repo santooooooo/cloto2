@@ -78,6 +78,17 @@ class PostController extends Controller
     }
 
     /**
+     * 投稿とコメント一覧の取得
+     *
+     * @param  \App\Models\Post  $post  取得する投稿
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Post $post)
+    {
+        return response()->json($post->load('comments'));
+    }
+
+    /**
      * 投稿の削除
      *
      * @param  \App\Models\Post  $post  削除する投稿
