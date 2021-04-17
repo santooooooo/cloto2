@@ -16,7 +16,7 @@
 
         <v-row v-for="comment in post.comments" :key="comment.id">
           <span>{{ comment.body }}</span>
-          <v-btn @click="deleteComment(comment)">
+          <v-btn @click="deleteComment(comment)" v-if="comment.user.id === authUser.id">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
@@ -83,12 +83,12 @@ import { OK } from '@/consts/status';
 
 export default {
   props: {
-    postId: Number, // 表示する投稿
+    postId: Number, // 表示する投稿ID
   },
   data() {
     return {
       dialog: false,
-      post: null, // 表示するデータ
+      post: null, // 表示する投稿
       commentForm: {
         body: '', // 内容
         max: 200, // 最大長

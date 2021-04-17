@@ -46,7 +46,7 @@
         <v-card class="pa-3">
           <!-- カルテ -->
           <v-card-actions class="d-block" v-if="item.activity_time">
-            <div class="pointer" @click="showKarte = item">
+            <div class="pointer" @click="showKarteId = item.id">
               <v-img
                 max-height="300"
                 class="mx-auto my-2 rounded-xl"
@@ -176,7 +176,7 @@
       </v-card>
     </v-dialog>
 
-    <KarteDialog :karte="showKarte" @close="showKarte = null" />
+    <KarteDialog :karteId="showKarteId" @close="showKarteId = null" />
     <PostDialog :postId="showPostId" @close="showPostId = null" />
     <ProfileDialog
       :username="profile.username"
@@ -207,7 +207,7 @@ export default {
       data: [], // 表示データ
       kartes: [], // カルテ一覧
       posts: [], // 投稿一覧
-      showKarte: null, // 詳細を表示するカルテ
+      showKarteId: null, // 詳細を表示するカルテID
       showPostId: null, // 詳細を表示する投稿ID
       profile: {
         dialog: false, // プロフィールのダイアログ制御
