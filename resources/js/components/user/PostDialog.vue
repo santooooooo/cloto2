@@ -111,13 +111,15 @@ export default {
     },
   },
   watch: {
-    postId: function (data) {
-      if (data) {
+    postId: function (postId) {
+      if (postId) {
         // データの取得
         this.getPost();
         this.dialog = true;
       } else {
+        // データの初期化
         this.dialog = false;
+        this.post = null;
       }
     },
   },

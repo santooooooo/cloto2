@@ -46,7 +46,7 @@
         <v-card class="pa-3">
           <!-- カルテ -->
           <v-card-actions class="d-block" v-if="item.activity_time">
-            <div class="pointer" @click="showKarteId = item.id">
+            <div class="pointer" @click="showKarte(item.id)">
               <v-img
                 max-height="300"
                 class="mx-auto my-2 rounded-xl"
@@ -91,7 +91,7 @@
               </v-btn>
             </v-row>
 
-            <div class="pointer" @click="showPostId = item.id">
+            <div class="pointer" @click="showPost(item.id)">
               <!-- 内容 -->
               <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
 
@@ -125,7 +125,7 @@
 
             <v-col cols="3" class="my-auto">
               <!-- コメントボタン -->
-              <v-btn icon>
+              <v-btn icon @click="'activity_time' in item ? showKarte(item.id) : showPost(item.id)">
                 <v-icon>mdi-message-text</v-icon>
               </v-btn>
               <span>{{ item.comments_count }}</span>
@@ -176,8 +176,8 @@
       </v-card>
     </v-dialog>
 
-    <KarteDialog :karteId="showKarteId" @close="showKarteId = null" />
-    <PostDialog :postId="showPostId" @close="showPostId = null" />
+    <KarteDialog :karteId="showKarteId" @close="showKarteId = $event" />
+    <PostDialog :postId="showPostId" @close="showPostId = $event" />
     <ProfileDialog
       :username="profile.username"
       @close="profile.dialog = $event"
@@ -303,6 +303,24 @@ export default {
     },
 
     /**
+     * カルテの詳細表示
+     *
+     * @param {Number} karteId - 詳細を表示するカルテID
+     */
+    showKarte: function (karteId) {
+      this.showKarteId = karteId;
+    },
+
+    /**
+     * 投稿の詳細表示
+     *
+     * @param {Number} postId - 詳細を表示する投稿ID
+     */
+    showPost: function (postId) {
+      this.showPostId = postId;
+    },
+
+    /**
      * プロフィールの表示
      *
      * @param {String} username - プロフィールを表示するユーザー名
@@ -369,7 +387,7 @@ export default {
         if ('activity_time' in item) {
           // カルテにいいねする
           response = await axios.post('/api/favorites', { karte_id: item.id });
-        } else if ('media' in item) {
+        } else {
           // 投稿にいいねする
           response = await axios.post('/api/favorites', { post_id: item.id });
         }

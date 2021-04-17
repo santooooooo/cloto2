@@ -167,13 +167,15 @@ export default {
     },
   },
   watch: {
-    karteId: function (data) {
-      if (data) {
+    karteId: function (karteId) {
+      if (karteId) {
         // データの取得
         this.getKarte();
         this.dialog = true;
       } else {
+        // データの初期化
         this.dialog = false;
+        this.karte = null;
       }
     },
   },
