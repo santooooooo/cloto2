@@ -42,13 +42,13 @@ class CommentController extends Controller
 
         // コメントはカルテか投稿のどちらかにのみ紐づく
         if (!empty($data['karte_id']) && !empty($data['post_id'])) {
-            return response()->json(['message' => 'コメントの投稿に失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'コメントの投稿に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
         $result = $this->comment->create($data);
 
         if (empty($result)) {
-            return response()->json(['message' => 'コメントの投稿に失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'コメントの投稿に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
         broadcast(new CommentPosted($result));

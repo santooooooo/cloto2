@@ -70,7 +70,7 @@ class PostController extends Controller
         $result = $this->post->create($data);
 
         if (empty($result)) {
-            return response()->json(['message' => 'つぶやきの投稿に失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'つぶやきの投稿に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
         broadcast(new TimelineUpdated($result));

@@ -42,22 +42,22 @@ class FavoriteController extends Controller
         // いいねはカルテか投稿かコメントのどれかにのみ紐づく
         if (!empty($data['karte_id'])) {
             if (!empty($data['post_id']) || !empty($data['comment_id'])) {
-                return response()->json(['message' => 'いいねに失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
+                return response()->json(['message' => 'いいねに失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
             }
         } else if (!empty($data['post_id'])) {
             if (!empty($data['karte_id']) || !empty($data['comment_id'])) {
-                return response()->json(['message' => 'いいねに失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
+                return response()->json(['message' => 'いいねに失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
             }
         } else if (!empty($data['comment_id'])) {
             if (!empty($data['karte_id']) || !empty($data['post_id'])) {
-                return response()->json(['message' => 'いいねに失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
+                return response()->json(['message' => 'いいねに失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
             }
         }
 
         $result = $this->favorite->create($data);
 
         if (empty($result)) {
-            return response()->json(['message' => 'いいねに失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'いいねに失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
         return response()->json();
