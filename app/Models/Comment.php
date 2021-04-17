@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Comment extends Model
 {
     protected $primaryKey = 'id';
     protected $dates = ['created_at', 'updated_at'];
@@ -14,7 +14,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'body', 'media'];
+    protected $fillable = ['user_id', 'karte_id', 'post_id', 'body', 'media'];
 
     /**
      * The attributes that should be cast to native types.
@@ -41,13 +41,23 @@ class Post extends Model
     }
 
     /**
-     * Comment モデルのリレーション
+     * Karte モデルのリレーション
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function comments()
+    public function karte()
     {
-        return $this->hasMany('App\Models\Comment');
+        return $this->belongsTo('App\Models\Karte');
+    }
+
+    /**
+     * Post モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function post()
+    {
+        return $this->belongsTo('App\Models\Post');
     }
 
     /**

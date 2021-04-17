@@ -54,6 +54,16 @@ class Karte extends Model
     }
 
     /**
+     * Comment モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
+    /**
      * 保存パスの追加
      *
      * @return String
