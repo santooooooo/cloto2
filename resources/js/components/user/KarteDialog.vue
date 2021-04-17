@@ -75,6 +75,15 @@
           <v-btn @click="deleteComment(comment)" v-if="comment.user.id === authUser.id">
             <v-icon>mdi-close</v-icon>
           </v-btn>
+
+          <v-btn
+            icon
+            :color="comment.favorite_id_by_auth_user ? 'red' : 'gray'"
+            @click="favorite(comment)"
+          >
+            <v-icon>mdi-heart</v-icon>
+          </v-btn>
+          <span>{{ comment.favorites_count }}</span>
         </v-row>
       </v-container>
     </v-card>
@@ -233,6 +242,33 @@ export default {
         this.deleteCommentForm.loading = false;
       } else {
         this.deleteCommentForm.loading = false;
+      }
+    },
+
+    /**
+     * いいね処理
+     *
+     * @param {Object} comment - いいねするコメント
+     */
+    favorite: async function (comment) {
+      if (!comment.favorite_id_by_auth_user) {
+        // いいね処理
+        let response = await axios.post('/api/favorites', { comment_id: comment.id });
+
+        if (response.status == OK) {
+          // IDの追加とカウントアップ
+          comment.favorite_id_by_auth_user = response.data;
+          comment.favorites_count += 1;
+        }
+      } else {
+        // いいね解除処理
+        let response = await axios.delete('/api/favorites/' + comment.favorite_id_by_auth_user);
+
+        if (response.status == OK) {
+          // IDの削除とカウントダウン
+          comment.favorite_id_by_auth_user = null;
+          comment.favorites_count -= 1;
+        }
       }
     },
   },
