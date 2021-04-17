@@ -123,8 +123,14 @@
               </div>
             </v-col>
 
-            <!-- いいねボタン -->
             <v-col cols="3" class="my-auto">
+              <!-- コメントボタン -->
+              <v-btn icon>
+                <v-icon>mdi-message-text</v-icon>
+              </v-btn>
+              <span>{{ item.comments_count }}</span>
+
+              <!-- いいねボタン -->
               <v-btn
                 icon
                 :color="item.favorite_id_by_auth_user ? 'red' : 'gray'"

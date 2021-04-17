@@ -31,7 +31,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $appends = ['user', 'favorites_count', 'favorite_id_by_auth_user'];
+    protected $appends = ['user', 'comments_count', 'favorites_count', 'favorite_id_by_auth_user'];
 
     /**
      * User モデルのリレーション
@@ -71,6 +71,16 @@ class Post extends Model
     public function getUserAttribute()
     {
         return $this->user()->first();
+    }
+
+    /**
+     * コメント数の追加
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getCommentsCountAttribute()
+    {
+        return $this->comments()->count();
     }
 
     /**
