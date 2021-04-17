@@ -127,12 +127,12 @@
             <v-col cols="3" class="my-auto">
               <v-btn
                 icon
-                :color="item.favoriteIdByAuthUser ? 'red' : 'gray'"
+                :color="item.favorite_id_by_auth_user ? 'red' : 'gray'"
                 @click="favorite(item)"
               >
                 <v-icon>mdi-heart</v-icon>
               </v-btn>
-              <span>{{ favoriteCount }}</span>
+              <span>{{ item.favorites_count }}</span>
             </v-col>
           </v-row>
         </v-card>
@@ -203,7 +203,6 @@ export default {
       posts: [], // 投稿一覧
       showKarte: null, // 詳細を表示するカルテ
       showPost: null, // 詳細を表示する投稿
-      favoriteCount: 0, //いいね数の表示
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
@@ -358,7 +357,7 @@ export default {
      * @param {Object} item - いいねするアイテム
      */
     favorite: async function (item) {
-      if (!item.favoriteIdByAuthUser) {
+      if (!item.favorite_id_by_auth_user) {
         // いいね処理
         let response;
         if ('activity_time' in item) {
@@ -374,15 +373,18 @@ export default {
         }
 
         if (response.status == OK) {
-          // いいね数も返してカウントアップする
-          item.favoriteIdByAuthUser = response.data;
+          // IDの追加とカウントアップ
+          item.favorite_id_by_auth_user = response.data;
+          item.favorites_count += 1;
         }
       } else {
         // いいね解除処理
-        let response = await axios.delete('/api/favorites/' + item.favoriteIdByAuthUser);
+        let response = await axios.delete('/api/favorites/' + item.favorite_id_by_auth_user);
 
         if (response.status == OK) {
-          item.favoriteIdByAuthUser = null;
+          // IDの削除とカウントダウン
+          item.favorite_id_by_auth_user = null;
+          item.favorites_count -= 1;
         }
       }
     },

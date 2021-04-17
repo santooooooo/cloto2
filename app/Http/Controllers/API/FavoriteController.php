@@ -32,7 +32,7 @@ class FavoriteController extends Controller
      * いいねする
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response  作成したいいねのID
      */
     public function store(Request $request)
     {

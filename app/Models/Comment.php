@@ -30,7 +30,7 @@ class Comment extends Model
      *
      * @var array
      */
-    protected $appends = ['user', 'favoriteIdByAuthUser'];
+    protected $appends = ['user', 'favorites_count', 'favorite_id_by_auth_user'];
 
     /**
      * User モデルのリレーション
@@ -80,6 +80,16 @@ class Comment extends Model
     public function getUserAttribute()
     {
         return $this->user()->first();
+    }
+
+    /**
+     * いいね数の追加
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getFavoritesCountAttribute()
+    {
+        return $this->favorites()->count();
     }
 
     /**
