@@ -266,9 +266,7 @@ export default {
     follow: async function () {
       this.loading = true;
 
-      let response = await axios.post('/api/users/' + this.user.id + '/follow', {
-        _method: 'patch',
-      });
+      let response = await axios.post('/api/users/' + this.user.id + '/follow');
       this.user = response.data;
 
       this.loading = false;
