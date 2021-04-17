@@ -14,7 +14,9 @@ class Comment extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'karte_id', 'post_id', 'body', 'media'];
+    protected $fillable = [
+        'user_id', 'karte_id', 'post_id', 'body', 'media'
+    ];
 
     /**
      * The attributes that should be cast to native types.

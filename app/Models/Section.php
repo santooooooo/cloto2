@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Section extends Model
 {
     protected $primaryKey = 'id';
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -16,8 +17,6 @@ class Section extends Model
     protected $fillable = [
         'room_id', 'name'
     ];
-
-    public $timestamps = false;
 
     /**
      * Room モデルのリレーション

@@ -7,13 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Favorite extends Model
 {
     protected $primaryKey = 'id';
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'karte_id', 'post_id', 'comment_id'];
+    protected $fillable = [
+        'user_id', 'karte_id', 'post_id', 'comment_id'
+    ];
 
     /**
      * The accessors to append to the model's array form.
@@ -21,8 +24,6 @@ class Favorite extends Model
      * @var array
      */
     protected $appends = ['user'];
-
-    public $timestamps = false;
 
     /**
      * User モデルのリレーション

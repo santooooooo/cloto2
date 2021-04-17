@@ -7,13 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Room extends Model
 {
     protected $primaryKey = 'id';
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name', 'timetable'];
+    protected $fillable = [
+        'name', 'timetable'
+    ];
 
     /**
      * The attributes that should be cast to native types.
@@ -28,8 +31,6 @@ class Room extends Model
      * @var array
      */
     protected $appends = ['sections'];
-
-    public $timestamps = false;
 
     /**
      * Section モデルのリレーション
