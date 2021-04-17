@@ -70,7 +70,7 @@ class PostController extends Controller
         $result = $this->post->create($data);
 
         if (empty($result)) {
-            return response()->json(['message' => '投稿に失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'つぶやきの投稿に失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
         broadcast(new TimelineUpdated($result));
@@ -88,9 +88,9 @@ class PostController extends Controller
         $result = $post->delete();
 
         if (empty($result)) {
-            return response()->json(['message' => '投稿の削除に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'つぶやきの削除に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response()->json(['message' => '投稿が削除されました。']);
+        return response()->json(['message' => 'つぶやきが削除されました。']);
     }
 }
