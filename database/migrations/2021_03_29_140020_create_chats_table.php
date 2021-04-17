@@ -17,11 +17,11 @@ class CreateChatsTable extends Migration
             $table->id();
             $table->foreignId('user_id')
                 ->constrained()
-                ->cascadeOnDelete();    // ユーザーID
+                ->cascadeOnDelete();        // ユーザーID
             $table->foreignId('room_id')
                 ->constrained()
-                ->cascadeOnDelete();    // 部屋ID
-            $table->text('body');       // 内容
+                ->cascadeOnDelete();        // 部屋ID
+            $table->text('body');           // 内容
             $table->dateTimes();
         });
     }

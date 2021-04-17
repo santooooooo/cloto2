@@ -14,7 +14,14 @@ class Post extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'body'];
+    protected $fillable = ['user_id', 'body', 'media'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = ['media' => 'json'];
 
     /**
      * The accessors to append to the model's array form.
