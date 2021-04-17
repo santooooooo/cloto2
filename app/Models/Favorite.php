@@ -4,24 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class Favorite extends Model
 {
     protected $primaryKey = 'id';
-    protected $dates = ['created_at', 'updated_at'];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'karte_id', 'post_id', 'body', 'media'];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = ['media' => 'json'];
+    protected $fillable = ['user_id', 'karte_id', 'post_id', 'comment_id'];
 
     /**
      * The accessors to append to the model's array form.
@@ -29,6 +21,8 @@ class Comment extends Model
      * @var array
      */
     protected $appends = ['user'];
+
+    public $timestamps = false;
 
     /**
      * User モデルのリレーション
@@ -61,13 +55,13 @@ class Comment extends Model
     }
 
     /**
-     * Favorite モデルのリレーション
+     * Comment モデルのリレーション
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function favorites()
+    public function comment()
     {
-        return $this->hasMany('App\Models\Favorite');
+        return $this->belongsTo('App\Models\Comment');
     }
 
     /**

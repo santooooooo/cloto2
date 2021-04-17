@@ -64,6 +64,16 @@ class Karte extends Model
     }
 
     /**
+     * Favorite モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function favorites()
+    {
+        return $this->hasMany('App\Models\Favorite');
+    }
+
+    /**
      * 保存パスの追加
      *
      * @return String

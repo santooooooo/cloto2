@@ -51,6 +51,16 @@ class Post extends Model
     }
 
     /**
+     * Favorite モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function favorites()
+    {
+        return $this->hasMany('App\Models\Favorite');
+    }
+
+    /**
      * ユーザーデータの追加
      *
      * @return \Illuminate\Database\Eloquent\Model
