@@ -136,15 +136,15 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="grey" :loading="deleteCommentForm.loading" @click="deleteSubmit()">
+            削除
+          </v-btn>
           <v-btn
             color="error"
             :loading="deleteCommentForm.loading"
             @click="deleteCommentForm.dialog = false"
           >
             キャンセル
-          </v-btn>
-          <v-btn color="success" :loading="deleteCommentForm.loading" @click="deleteSubmit()">
-            削除
           </v-btn>
         </v-card-actions>
       </v-card>
