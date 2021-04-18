@@ -162,15 +162,15 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="grey" class="white--text" :loading="deletePostForm.loading" @click="deleteSubmit()">
+            削除
+          </v-btn>
           <v-btn
             color="error"
             :loading="deletePostForm.loading"
             @click="deletePostForm.dialog = false"
           >
             キャンセル
-          </v-btn>
-          <v-btn color="success" :loading="deletePostForm.loading" @click="deleteSubmit()">
-            削除
           </v-btn>
         </v-card-actions>
       </v-card>
