@@ -137,8 +137,8 @@
                 @click="favorite(item)"
               >
                 <v-icon>mdi-heart</v-icon>
-              </v-btn>
               <span>{{ item.favorites_count }}</span>
+              </v-btn>
             </v-col>
           </v-row>
         </v-card>
