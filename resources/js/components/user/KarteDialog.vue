@@ -105,7 +105,8 @@
             >
               <v-icon>mdi-heart</v-icon>
             </v-btn>
-            <span>{{ comment.favorites_count }}</span>
+            <span id="favorite-count">{{ comment.favorites_count }}</span>
+
             <v-btn
               @click="deleteComment(comment)"
               v-if="comment.user.id === authUser.id"
@@ -290,5 +291,9 @@ pre {
 
 #comment-form {
   width: 60%;
+}
+
+#favorite-count {
+  font-size: 0.8rem;
 }
 </style>
