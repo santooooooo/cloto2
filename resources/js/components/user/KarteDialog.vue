@@ -70,45 +70,53 @@
           </v-col>
         </v-row>
 
-        <v-row v-for="comment in karte.comments" :key="comment.id">
-          <span>{{ comment.body }}</span>
-          <v-btn @click="deleteComment(comment)" v-if="comment.user.id === authUser.id">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
+        <v-form
+          ref="commentForm"
+          v-model="commentForm.validation.valid"
+          lazy-validation
+          id="comment-form"
+          class="mx-auto my-6"
+        >
+          <v-textarea
+            v-model="commentForm.body"
+            :rules="commentForm.validation.bodyRules"
+            :maxlength="commentForm.max"
+            :disabled="commentForm.loading"
+            append-icon="mdi-send"
+            placeholder="コメント"
+            counter
+            solo
+            auto-grow
+            rows="1"
+            @click:append="submit()"
+          ></v-textarea>
+        </v-form>
 
-          <v-btn
-            icon
-            :color="comment.favorite_id_by_auth_user ? 'red' : 'gray'"
-            @click="favorite(comment)"
-          >
-            <v-icon>mdi-heart</v-icon>
-          </v-btn>
-          <span>{{ comment.favorites_count }}</span>
-        </v-row>
+        <v-container class="grey lighten-1">
+          <h1 class="white--text text-left border-bottom">コメント一覧</h1>
+
+          <v-row v-for="comment in karte.comments" :key="comment.id">
+            <span class="pl-4">{{ comment.body }}</span>
+
+            <v-btn
+              icon
+              :color="comment.favorite_id_by_auth_user ? 'red' : 'gray'"
+              @click="favorite(comment)"
+            >
+              <v-icon>mdi-heart</v-icon>
+            </v-btn>
+            <span>{{ comment.favorites_count }}</span>
+            <v-btn
+              @click="deleteComment(comment)"
+              v-if="comment.user.id === authUser.id"
+              class="ml-auto mr-2 red white--text mb-2"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-row>
+        </v-container>
       </v-container>
     </v-card>
-
-    <v-form
-      ref="commentForm"
-      v-model="commentForm.validation.valid"
-      lazy-validation
-      id="comment-form"
-      class="mx-auto my-6"
-    >
-      <v-textarea
-        v-model="commentForm.body"
-        :rules="commentForm.validation.bodyRules"
-        :maxlength="commentForm.max"
-        :disabled="commentForm.loading"
-        append-icon="mdi-send"
-        placeholder="コメント"
-        counter
-        solo
-        auto-grow
-        rows="1"
-        @click:append="submit()"
-      ></v-textarea>
-    </v-form>
 
     <!-- 投稿削除確認ダイアログ -->
     <v-dialog v-model="deleteCommentForm.dialog" max-width="500px" persistent>
