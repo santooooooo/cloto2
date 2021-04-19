@@ -14,6 +14,7 @@
           </v-card>
         </v-row>
 
+        <!-- コンポーネントできそう　やったら消す -->
         <v-form
           ref="commentForm"
           v-model="commentForm.validation.valid"
@@ -36,47 +37,74 @@
           ></v-textarea>
         </v-form>
 
-        <v-container class="grey lighten-1">
+        <v-container class="grey lighten-1" v-if="post.comments.length">
           <h1 class="white--text text-left border-bottom">コメント一覧</h1>
+          <!-- post karte問題 -->
           <v-row v-for="comment in post.comments" :key="comment.id">
-            <span class="pl-4">{{ comment.body }}</span>
+            <span class="pl-4 pt-1">{{ comment.body }}</span>
 
-            <v-btn
-              icon
-              :color="comment.favorite_id_by_auth_user ? 'red' : 'gray'"
-              @click="favorite(comment)"
-            >
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
-            <span id="favorite-count">{{ comment.favorites_count }}</span>
+            <div class="mb-2 ml-auto">
+              <v-btn
+                icon
+                :color="comment.favorite_id_by_auth_user ? 'red' : 'gray'"
+                @click="favorite(comment)"
+              >
+                <v-icon>mdi-heart</v-icon>
+                <span id="favorite-count">{{ comment.favorites_count }}</span>
+              </v-btn>
 
-            <v-btn
-              @click="deleteComment(comment)"
-              v-if="comment.user.id === authUser.id"
-              class="ml-auto mr-2 red white--text mb-2"
-            >
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
+              <v-btn
+                @click="deleteComment(comment)"
+                v-if="comment.user.id === authUser.id"
+                class="mr-2 red white--text"
+              >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </div>
           </v-row>
         </v-container>
       </v-container>
     </v-card>
 
     <!-- 投稿削除確認ダイアログ -->
-    <DeleteCommentForm :deleteCommentForm="deleteCommentForm" />
+    <v-dialog v-model="deleteCommentForm.dialog" max-width="500px" persistent>
+      <v-card class="headline grey darken-2 text-center pa-2">
+        <v-card-title>
+          <span class="headline white--text">削除しますか？</span>
+        </v-card-title>
+
+        <v-card-text>
+          <v-container>
+            <v-card-text class="pa-1 white--text">
+              {{ deleteCommentForm.data.body }}
+            </v-card-text>
+          </v-container>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="grey" :loading="deleteCommentForm.loading" @click="deleteSubmit()">
+            削除
+          </v-btn>
+          <v-btn
+            color="error"
+            :loading="deleteCommentForm.loading"
+            @click="deleteCommentForm.dialog = false"
+          >
+            キャンセル
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-dialog>
 </template>
 
 <script>
 import { OK } from '@/consts/status';
-import DeleteCommentForm from '@/components/user/DeleteConfirmDialog';
 
 export default {
   props: {
     postId: Number, // 表示する投稿ID
-  },
-  components: {
-    DeleteCommentForm,
   },
   data() {
     return {
@@ -154,6 +182,23 @@ export default {
     deleteComment: function (comment) {
       this.deleteCommentForm.data = comment;
       this.deleteCommentForm.dialog = true;
+    },
+
+    /**
+     * 削除データの送信
+     */
+    deleteSubmit: async function () {
+      this.deleteCommentForm.loading = true;
+
+      let response = await axios.delete('/api/comments/' + this.deleteCommentForm.data.id);
+
+      if (response.status === OK) {
+        await this.getPost();
+        this.deleteCommentForm.dialog = false;
+        this.deleteCommentForm.loading = false;
+      } else {
+        this.deleteCommentForm.loading = false;
+      }
     },
 
     /**

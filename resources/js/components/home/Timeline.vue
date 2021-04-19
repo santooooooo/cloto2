@@ -124,11 +124,12 @@
             </v-col>
 
             <v-col cols="3" class="my-auto">
+              
               <!-- コメントボタン -->
               <v-btn icon @click="'activity_time' in item ? showKarte(item.id) : showPost(item.id)">
                 <v-icon>mdi-message-text</v-icon>
-              </v-btn>
               <span>{{ item.comments_count }}</span>
+              </v-btn>
 
               <!-- いいねボタン -->
               <v-btn
