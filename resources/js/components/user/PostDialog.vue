@@ -14,7 +14,6 @@
           </v-card>
         </v-row>
 
-        <!-- コンポーネントできそう　やったら消す -->
         <v-form
           ref="commentForm"
           v-model="commentForm.validation.valid"
