@@ -698,6 +698,7 @@ export default {
                 resolve(participant);
               }
             });
+		  console.log(sender);
 
             break;
           } catch (error) {
@@ -957,7 +958,7 @@ export default {
         })
         .catch(async (error) => {
           //マイクのみが許可またはマイクのみしか使用できない場合
-          await navigator.mediaDevices
+          const stream = await navigator.mediaDevices
             .getUserMedia({
               audio: true,
               video: false,
@@ -966,7 +967,8 @@ export default {
               //デバイスが存在しない場合
               this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
             });
-
+          // デバイスの停止
+          stream.getTracks().forEach((track) => track.stop());
           //** デバイスの一覧を取得 */
           const devices = await navigator.mediaDevices.enumerateDevices();
           // マイクデバイスの一覧を取得
@@ -1012,11 +1014,11 @@ export default {
         // デバイスの接続
         this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
 
-        // 起動時はすぐにカメラを停止する
-        if (this.loading) {
+        // 起動時はすぐにカメラを停止する(デバイスのビデオが使用できる場合)
+        if (this.loading && constraints.video !== false) {
           // 接続時にはenabledで停止
           // デバイスを停止すると，相手にvideoストリームが届かない
-          //this.localStream.getVideoTracks()[0].enabled = false;
+          this.localStream.getVideoTracks()[0].enabled = false;
         }
 
         // ストリーム再作成時にミュートが解除される（ビデオ切り替え時など）
