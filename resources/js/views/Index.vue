@@ -618,7 +618,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/_variables';
-@import '~/_animation'; //animation(@keyframes)ファイルのインポート
+@import '~/_animations';
 
 .container {
   background-color: $white;
