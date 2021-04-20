@@ -509,13 +509,13 @@ export default {
       };
     },
   },
+
   data() {
     return {
       contactForm: {
         name: '',
         email: '',
         body: '',
-        scrollIndex: 0,
         loading: false,
         validation: {
           valid: false,
@@ -532,9 +532,7 @@ export default {
       },
     };
   },
-  created() {
-    window.addEventListener('scroll', this.setAnimation);
-  },
+
   computed: {
     isSmartphone() {
       if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
@@ -544,37 +542,35 @@ export default {
       }
     },
   },
+
   methods: {
     /**
      * スクロールで発火するアニメーションの設定
-     *
-     *
      */
-    setAnimation() {
-      //スクロールした際の縦座標を取得
-      this.scrollIndex = window.scrollY;
-      const scrollIndex = this.scrollIndex;
+    setAnimations: function () {
+      // スクロールした際の縦座標を取得
+      const scrollY = window.scrollY;
 
-      // html内のidを取得して、アニメーションのクラスを付与
-      if (scrollIndex >= 800) {
+      if (scrollY >= 800) {
         document.getElementById('to-c').classList.add('fade-down');
         document.getElementById('to-c-text').classList.add('fade-up');
       }
-      if (scrollIndex >= 1500) {
+      if (scrollY >= 1500) {
         document.getElementById('to-b').classList.add('fade-down');
         document.getElementById('to-b-text').classList.add('fade-up');
       }
-      if (scrollIndex >= 1850) {
+      if (scrollY >= 1850) {
         document.getElementById('company-example').classList.add('fade-in-right');
       }
-      if (scrollIndex >= 2800) {
+      if (scrollY >= 2800) {
         document.getElementById('profile-1').classList.add('fade-up');
         document.getElementById('profile-2').classList.add('ex-fade-up');
       }
-      if (scrollIndex >= 3800) {
+      if (scrollY >= 3800) {
         document.getElementById('inquiry').classList.add('open-width');
       }
     },
+
     /**
      * スムーズスクロール
      *
@@ -613,6 +609,14 @@ export default {
       }
     },
   },
+
+  created() {
+    window.addEventListener('scroll', this.setAnimations);
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.setAnimations);
+  },
 };
 </script>
 
@@ -631,45 +635,44 @@ export default {
   a:hover {
     text-decoration: none;
   }
-}
 
-//animationのクラス（一括指定）
-// animation: name duration timing-function delay directon iteration-count fill-mode
-.fade-down {
-  animation: fadeDown 2s ease-out 0.5s normal 1 forwards;
-}
+  // animation動作前の表示を隠す
+  #cloto-title,
+  #cloto-text,
+  #to-c,
+  #to-c-text,
+  #to-b,
+  #to-b-text,
+  #company-example,
+  #profile-1,
+  #profile-2,
+  #inquiry {
+    opacity: 0;
+  }
 
-.fade-up {
-  animation: fadeUp 2s ease-out 0.5s normal 1 forwards;
-}
+  // animation: name duration timing-function delay directon iteration-count fill-mode
+  .fade-down {
+    animation: fadeDown 2s ease-out 0.5s normal 1 forwards;
+  }
 
-.ex-fade-up {
-  animation: fadeUp 2s ease 1.5s normal 1 forwards;
-}
+  .fade-up {
+    animation: fadeUp 2s ease-out 0.5s normal 1 forwards;
+  }
 
-.fade-in-left {
-  animation: fadeInLeft 2s ease-in-out 2s normal 1 forwards;
-}
+  .ex-fade-up {
+    animation: fadeUp 2s ease 1.5s normal 1 forwards;
+  }
 
-.fade-in-right {
-  animation: fadeInRight 2s linear 0s normal 1 forwards;
-}
+  .fade-in-left {
+    animation: fadeInLeft 2s ease-in-out 2s normal 1 forwards;
+  }
 
-.open-width {
-  animation: openWidth 2s ease-in-out 0s normal 1 forwards;
-}
+  .fade-in-right {
+    animation: fadeInRight 2s linear 0s normal 1 forwards;
+  }
 
-//animation動作前の表示を隠す
-#cloto-title,
-#cloto-text,
-#to-c,
-#to-c-text,
-#to-b,
-#to-b-text,
-#company-example,
-#profile-1,
-#profile-2,
-#inquiry {
-  opacity: 0;
+  .open-width {
+    animation: openWidth 2s ease-in-out 0s normal 1 forwards;
+  }
 }
 </style>
