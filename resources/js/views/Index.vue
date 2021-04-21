@@ -6,8 +6,10 @@
 
         <v-col cols="5" justify="center" align-self="center">
           <div class="mt-8">
-            <h1 class="text-left text-h4 font-weight-bold">創る、繋がる、好きになる</h1>
-            <p class="text-left text-subtitle-1 font-weight-bold">
+            <h1 class="text-left text-h4 font-weight-bold fade-down" id="cloto-title">
+              創る、繋がる、好きになる
+            </h1>
+            <p class="text-left text-subtitle-1 font-weight-bold fade-in-left" id="cloto-text">
               プログラミングに取り組むみなさん、こんにちは。<br />
               「実際のプログラミングって大変. . . 」<br />
               「何からしたらいいんだろう」<br />
@@ -57,8 +59,10 @@
         ></v-img>
 
         <div class="mt-8">
-          <h1 class="text-center font-weight-bold text-h5">創る、繋がる、好きになる</h1>
-          <p class="text-center text-subtitle-1 font-weight-bold">
+          <h1 class="text-center font-weight-bold text-h5 fade-down" id="cloto-title">
+            創る、繋がる、好きになる
+          </h1>
+          <p class="text-center text-subtitle-1 font-weight-bold fade-in-left" id="cloto-text">
             プログラミングに取り組むみなさん、こんにちは。<br />
             「実際のプログラミングって大変. . . 」<br />
             「何からしたらいいんだろう」<br />
@@ -198,25 +202,27 @@
       </v-col>
 
       <v-col sm="4" class="ml-4 my-12">
-        <p class="text-h4 text-center font-weight-bold">
+        <p class="text-h4 text-center font-weight-bold" id="to-c">
           to <span class="green--text">C</span> 事業
         </p>
 
-        <p class="text-h6 text-left font-weight-bolder">
-          プログラミング学習って、<br />思ってたより大変、、、
-        </p>
-        <p class="text-body-1 text-left mb-6">
-          そう思って挫折したことはありませんか？<br />学習を諦めてしまったことはありませんか？
-        </p>
-        <p class="text-body-1 text-left mb-6">
-          その経験、あなただけのものではないのです。<br />実はエンジニアを志すほとんど全ての人が、その経験を経て、なんとかして乗り越えて実力を身につけています。
-        </p>
-        <p class="text-body-1 text-left mb-6">
-          CLOTOはこの困難を乗り越えるためのエッセンスをサービスに落とし込んでいます。
-        </p>
-        <p class="text-body-1 text-left">
-          CLOTOを利用することで、「集中できる学習環境」と「切磋琢磨できる学習仲間」を得ることができ、それが「楽しく学習を継続できる環境」となり、あなたの学習を支えます。
-        </p>
+        <div id="to-c-text">
+          <p class="text-h6 text-left font-weight-bolder">
+            プログラミング学習って、<br />思ってたより大変、、、
+          </p>
+          <p class="text-body-1 text-left mb-6">
+            そう思って挫折したことはありませんか？<br />学習を諦めてしまったことはありませんか？
+          </p>
+          <p class="text-body-1 text-left mb-6">
+            その経験、あなただけのものではないのです。<br />実はエンジニアを志すほとんど全ての人が、その経験を経て、なんとかして乗り越えて実力を身につけています。
+          </p>
+          <p class="text-body-1 text-left mb-6">
+            CLOTOはこの困難を乗り越えるためのエッセンスをサービスに落とし込んでいます。
+          </p>
+          <p class="text-body-1 text-left">
+            CLOTOを利用することで、「集中できる学習環境」と「切磋琢磨できる学習仲間」を得ることができ、それが「楽しく学習を継続できる環境」となり、あなたの学習を支えます。
+          </p>
+        </div>
       </v-col>
     </v-row>
 
@@ -228,41 +234,43 @@
       </v-col>
 
       <v-col sm="4" class="ml-4 my-12">
-        <p class="text-h4 text-center font-weight-bold">
+        <p class="text-h4 text-center font-weight-bold" id="to-b">
           to <span style="color: #ff99ab">B</span> 事業
         </p>
 
-        <p class="text-body-1 text-left font-weight-bold red--text">
-          ※量産体制が整っていないため、新規受注を休止しています。
-        </p>
+        <div id="to-b-text">
+          <p class="text-body-1 text-left font-weight-bold red--text">
+            ※量産体制が整っていないため、新規受注を休止しています。
+          </p>
 
-        <p class="text-h6 text-left font-weight-bolder">
-          DX化に興味はあるけど、<br />どこが便利になるの？
-        </p>
-        <p class="text-body-1 text-left mb-6">
-          CLOTOは貴社が必要とする機能を盛り込むことができる
-          <span class="font-weight-bold red--text">バーチャルテナント</span>です。
-        </p>
+          <p class="text-h6 text-left font-weight-bolder">
+            DX化に興味はあるけど、<br />どこが便利になるの？
+          </p>
+          <p class="text-body-1 text-left mb-6">
+            CLOTOは貴社が必要とする機能を盛り込むことができる
+            <span class="font-weight-bold red--text">バーチャルテナント</span>です。
+          </p>
 
-        <p class="text-body-1 text-left">以下のような機能を搭載可能です。</p>
-        <v-row no-gutters justify="start">
-          <ul>
-            <li>個人デスク</li>
-            <li>会議室</li>
-            <li>休憩室</li>
-            <li>イベントホール</li>
-            <li>日報</li>
-          </ul>
-        </v-row>
-        <p class="text-body-1 text-left mb-6">など．．．．</p>
+          <p class="text-body-1 text-left">以下のような機能を搭載可能です。</p>
+          <v-row no-gutters justify="start">
+            <ul>
+              <li>個人デスク</li>
+              <li>会議室</li>
+              <li>休憩室</li>
+              <li>イベントホール</li>
+              <li>日報</li>
+            </ul>
+          </v-row>
+          <p class="text-body-1 text-left mb-6">など．．．．</p>
 
-        <p class="text-body-1 text-left mb-6">
-          必要な機能がございましたら、<br />一度
-          <a class="font-weight-bold blue--text" @click="scrollToAnchorPoint('contact')">
-            お問い合わせ
-          </a>
-          ください。
-        </p>
+          <p class="text-body-1 text-left mb-6">
+            必要な機能がございましたら、<br />一度
+            <a class="font-weight-bold blue--text" @click="scrollToAnchorPoint('contact')">
+              お問い合わせ
+            </a>
+            ください。
+          </p>
+        </div>
       </v-col>
     </v-row>
 
@@ -275,7 +283,7 @@
         <v-img :src="$storage('system') + 'learnmore.png'"></v-img>
       </v-col>
 
-      <v-col sm="4" class="ml-4 my-12">
+      <v-col sm="4" class="ml-4 my-12" id="company-example">
         <p class="text-h5 text-center font-weight-bold">
           <a
             href="https://www.learn-more.co.jp"
@@ -321,7 +329,7 @@
 
       <v-row no-gutters justify="center" class="mx-12 my-8">
         <v-col sm="4">
-          <v-card max-height="600" width="400" class="mx-auto my-4">
+          <v-card max-height="600" width="400" class="mx-auto my-4" id="profile-1">
             <v-img
               contain
               :src="$storage('system') + 'tachibana.jpg'"
@@ -372,7 +380,7 @@
         </v-col>
 
         <v-col sm="4">
-          <v-card max-height="600" width="400" class="mx-auto my-4">
+          <v-card max-height="600" width="400" class="mx-auto my-4" id="profile-2">
             <v-img contain :src="$storage('system') + 'fujii.jpg'" class="white--text align-end">
               <v-card-title class="text-h5" style="background-color: #000000">
                 藤井 敦寛
@@ -449,8 +457,8 @@
         </v-btn>
       </v-row>
 
-      <div class="mx-2 my-12" ref="contact">
-        <v-card max-width="600" class="mx-auto px-12 py-8">
+      <div class="mx-2 my-12 mx-auto" ref="contact">
+        <v-card max-width="600" class="mx-auto px-12 py-8" id="contact">
           <h5 class="text-center text-h5">お問い合わせ</h5>
 
           <v-form ref="contactForm" v-model="contactForm.validation.valid" lazy-validation>
@@ -506,6 +514,7 @@ export default {
       };
     },
   },
+
   data() {
     return {
       contactForm: {
@@ -528,6 +537,7 @@ export default {
       },
     };
   },
+
   computed: {
     isSmartphone() {
       if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
@@ -537,7 +547,35 @@ export default {
       }
     },
   },
+
   methods: {
+    /**
+     * アニメーションの設定
+     */
+    setupAnimations: function () {
+      // スクロールした際の縦座標を取得
+      const scrollY = window.scrollY;
+
+      if (scrollY >= 800) {
+        document.getElementById('to-c').classList.add('fade-down');
+        document.getElementById('to-c-text').classList.add('fade-up');
+      }
+      if (scrollY >= 1500) {
+        document.getElementById('to-b').classList.add('fade-down');
+        document.getElementById('to-b-text').classList.add('fade-up');
+      }
+      if (scrollY >= 1850) {
+        document.getElementById('company-example').classList.add('fade-in-right');
+      }
+      if (scrollY >= 2800) {
+        document.getElementById('profile-1').classList.add('fade-up');
+        document.getElementById('profile-2').classList.add('ex-fade-up');
+      }
+      if (scrollY >= 3800) {
+        document.getElementById('contact').classList.add('open-width');
+      }
+    },
+
     /**
      * スムーズスクロール
      *
@@ -576,11 +614,20 @@ export default {
       }
     },
   },
+
+  created() {
+    window.addEventListener('scroll', this.setupAnimations);
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.setupAnimations);
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '~/_variables';
+@import '~/_animations';
 
 .container {
   background-color: $white;
@@ -592,6 +639,45 @@ export default {
 
   a:hover {
     text-decoration: none;
+  }
+
+  // animation動作前の表示を隠す
+  #cloto-title,
+  #cloto-text,
+  #to-c,
+  #to-c-text,
+  #to-b,
+  #to-b-text,
+  #company-example,
+  #profile-1,
+  #profile-2,
+  #contact {
+    opacity: 0;
+  }
+
+  // animation: name duration timing-function delay directon iteration-count fill-mode
+  .fade-down {
+    animation: fadeDown 2s ease-out 0.5s normal 1 forwards;
+  }
+
+  .fade-up {
+    animation: fadeUp 2s ease-out 0.5s normal 1 forwards;
+  }
+
+  .ex-fade-up {
+    animation: fadeUp 2s ease 1.5s normal 1 forwards;
+  }
+
+  .fade-in-left {
+    animation: fadeInLeft 2s ease-in-out 2s normal 1 forwards;
+  }
+
+  .fade-in-right {
+    animation: fadeInRight 2s linear 0s normal 1 forwards;
+  }
+
+  .open-width {
+    animation: openWidth 2s ease-in-out 0s normal 1 forwards;
   }
 }
 </style>

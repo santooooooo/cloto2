@@ -1,0 +1,54 @@
+// 上から下にフェードイン
+@keyframes fadeDown {
+  0% {
+    transform: translateY(-200px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+// 下から上にフェードイン
+@keyframes fadeUp {
+  0% {
+    transform: translateY(200px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+// 左から右にフェードイン
+@keyframes fadeInLeft {
+  0% {
+    transform: translateX(-200px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+
+// 右から左にフェードイン
+@keyframes fadeInRight {
+  0% {
+    transform: translateX(200px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+
+// 中央から広がるフェードイン
+@keyframes openWidth {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+    opacity: 1;
+  }
+}
