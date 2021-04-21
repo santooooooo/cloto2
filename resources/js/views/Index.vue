@@ -453,7 +453,7 @@
       </v-row>
 
       <div class="mx-2 my-12 mx-auto" ref="contact">
-        <v-card max-width="600" class="mx-auto px-12 py-8" id="inquiry">
+        <v-card max-width="600" class="mx-auto px-12 py-8" id="contact">
           <h5 class="text-center text-h5">お問い合わせ</h5>
 
           <v-form ref="contactForm" v-model="contactForm.validation.valid" lazy-validation>
@@ -545,9 +545,9 @@ export default {
 
   methods: {
     /**
-     * スクロールで発火するアニメーションの設定
+     * アニメーションの設定
      */
-    setAnimations: function () {
+    setupAnimations: function () {
       // スクロールした際の縦座標を取得
       const scrollY = window.scrollY;
 
@@ -567,7 +567,7 @@ export default {
         document.getElementById('profile-2').classList.add('ex-fade-up');
       }
       if (scrollY >= 3800) {
-        document.getElementById('inquiry').classList.add('open-width');
+        document.getElementById('contact').classList.add('open-width');
       }
     },
 
@@ -611,11 +611,11 @@ export default {
   },
 
   created() {
-    window.addEventListener('scroll', this.setAnimations);
+    window.addEventListener('scroll', this.setupAnimations);
   },
 
   beforeDestroy() {
-    window.removeEventListener('scroll', this.setAnimations);
+    window.removeEventListener('scroll', this.setupAnimations);
   },
 };
 </script>
@@ -646,7 +646,7 @@ export default {
   #company-example,
   #profile-1,
   #profile-2,
-  #inquiry {
+  #contact {
     opacity: 0;
   }
 
