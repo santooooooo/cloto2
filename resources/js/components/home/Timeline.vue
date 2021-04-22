@@ -104,9 +104,9 @@
 
           <v-divider></v-divider>
 
-          <v-row no-gutters align="end" class="mt-3 pointer">
+          <v-row no-gutters class="mt-3 pointer">
             <!-- ユーザーアイコン -->
-            <v-col cols="3" @click="showProfile(item.user.username)">
+            <v-col cols="3" class="my-auto text-center" @click="showProfile(item.user.username)">
               <v-avatar
                 size="50"
                 :style="{ 'box-shadow': '0 0 0 5px ' + getColor(item.user.status) }"
@@ -115,30 +115,34 @@
               </v-avatar>
             </v-col>
 
-            <v-col cols="6" @click="showProfile(item.user.username)">
+            <v-col cols="5" class="my-auto text-start" @click="showProfile(item.user.username)">
               <!-- ユーザー名 -->
-              <div class="username ml-5">
-                <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
-                <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
-              </div>
+              <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
+              <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
             </v-col>
 
-            <v-col cols="3" class="my-auto">
-              
+            <v-spacer></v-spacer>
+
+            <v-col cols="3" class="my-auto text-center">
               <!-- コメントボタン -->
-              <v-btn icon @click="'activity_time' in item ? showKarte(item.id) : showPost(item.id)">
+              <v-btn
+                icon
+                class="mx-1"
+                @click="'activity_time' in item ? showKarte(item.id) : showPost(item.id)"
+              >
                 <v-icon>mdi-message-text</v-icon>
-              <span>{{ item.comments_count }}</span>
+                <span>{{ item.comments_count }}</span>
               </v-btn>
 
               <!-- いいねボタン -->
               <v-btn
                 icon
+                class="mx-1"
                 :color="item.favorite_id_by_auth_user ? 'red' : 'gray'"
                 @click="favorite(item)"
               >
                 <v-icon>mdi-heart</v-icon>
-              <span>{{ item.favorites_count }}</span>
+                <span>{{ item.favorites_count }}</span>
               </v-btn>
             </v-col>
           </v-row>
@@ -163,7 +167,12 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="grey" class="white--text" :loading="deletePostForm.loading" @click="deleteSubmit()">
+          <v-btn
+            color="grey"
+            class="white--text"
+            :loading="deletePostForm.loading"
+            @click="deleteSubmit()"
+          >
             削除
           </v-btn>
           <v-btn
@@ -445,10 +454,6 @@ export default {
 
   pre {
     white-space: pre-wrap;
-  }
-
-  .username {
-    width: calc(100% - 80px);
   }
 }
 </style>
