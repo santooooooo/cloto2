@@ -197,9 +197,9 @@
 </template>
 
 <script>
-import KarteDialog from '@/components/user/KarteDialog';
-import PostDialog from '@/components/user/PostDialog';
-import ProfileDialog from '@/components/user/ProfileDialog';
+import KarteDialog from '@/components/commons/KarteDialog';
+import PostDialog from '@/components/commons/PostDialog';
+import ProfileDialog from '@/components/commons/ProfileDialog';
 import { OK } from '@/consts/status';
 
 export default {

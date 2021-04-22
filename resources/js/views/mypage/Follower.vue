@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import ProfileDialog from '@/components/user/ProfileDialog';
+import ProfileDialog from '@/components/commons/ProfileDialog';
 
 export default {
   head: {

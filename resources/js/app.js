@@ -19,7 +19,7 @@ Vue.prototype.$slack = functions.slackPost;
 /**
  * Vueコンポーネントの読み込み
  */
-Vue.component('ImageInput', require('./components/form/ImageInput').default);
+Vue.component('ImageInput', require('./components/commons/form/ImageInput').default);
 
 /**
  * Vueの定義
