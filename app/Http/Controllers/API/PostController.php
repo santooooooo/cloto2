@@ -40,7 +40,7 @@ class PostController extends Controller
     {
         if (empty($user)) {
             // 全ユーザーの投稿一覧
-            $data = $this->post->orderBy('created_at', 'desc')->get();
+            $data = $this->post->latest()->get();
         } else {
             // 指定したユーザーの投稿一覧
             $data = $user->posts->sortByDesc('created_at')->values();
@@ -86,7 +86,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         return response()->json($post->load(['comments' => function ($query) {
-            $query->orderBy('created_at', 'desc');
+            $query->latest();
         }]));
     }
 

@@ -45,7 +45,7 @@ class KarteController extends Controller
     {
         if (empty($user)) {
             // 全ユーザーのカルテ一覧
-            $kartes = $this->karte->orderBy('created_at', 'desc')->get();
+            $kartes = $this->karte->latest()->get();
         } else {
             // 指定したユーザーのカルテ一覧
             $kartes = $user->kartes->sortByDesc('created_at')->values();
@@ -102,7 +102,7 @@ class KarteController extends Controller
     public function show(Karte $karte)
     {
         return response()->json($karte->load(['comments' => function ($query) {
-            $query->orderBy('created_at', 'desc');
+            $query->latest();
         }]));
     }
 }
