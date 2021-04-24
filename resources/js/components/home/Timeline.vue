@@ -377,12 +377,11 @@ export default {
       let response = await axios.delete('/api/posts/' + this.deletePostForm.data.id);
 
       if (response.status === OK) {
-        await this.update();
+        this.update();
         this.deletePostForm.dialog = false;
-        this.deletePostForm.loading = false;
-      } else {
-        this.deletePostForm.loading = false;
       }
+
+      this.deletePostForm.loading = false;
     },
 
     /**

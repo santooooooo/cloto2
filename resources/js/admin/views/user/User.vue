@@ -299,10 +299,9 @@ export default {
       if (response.status === OK) {
         this.getUsers();
         this.deleteUserForm.dialog = false;
-        this.deleteUserForm.loading = false;
-      } else {
-        this.deleteUserForm.loading = false;
       }
+
+      this.deleteUserForm.loading = false;
     },
   },
   created() {

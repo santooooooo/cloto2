@@ -184,11 +184,11 @@ export default {
         }
 
         if (response.status === OK) {
+          // コメントデータの更新
+          this.$emit('update');
           this.$refs.commentForm.reset();
         }
 
-        // コメントデータの更新
-        this.$emit('update');
         this.commentForm.loading = false;
       }
     },
@@ -212,11 +212,11 @@ export default {
       let response = await axios.delete('/api/comments/' + this.deleteCommentForm.data.id);
 
       if (response.status === OK) {
+        // コメントデータの更新
+        this.$emit('update');
         this.deleteCommentForm.dialog = false;
       }
 
-      // コメントデータの更新
-      this.$emit('update');
       this.deleteCommentForm.loading = false;
     },
 

@@ -288,10 +288,9 @@ export default {
       if (response.status === OK) {
         this.getAdmins();
         this.deleteAdminForm.dialog = false;
-        this.deleteAdminForm.loading = false;
-      } else {
-        this.deleteAdminForm.loading = false;
       }
+
+      this.deleteAdminForm.loading = false;
     },
   },
   created() {
