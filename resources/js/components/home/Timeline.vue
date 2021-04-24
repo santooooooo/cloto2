@@ -109,7 +109,7 @@
             <v-col cols="3" class="my-auto text-center" @click="showProfile(item.user.username)">
               <v-avatar
                 size="50"
-                :style="{ 'box-shadow': '0 0 0 5px ' + getColor(item.user.status) }"
+                :style="{ 'box-shadow': '0 0 0 5px ' + $statusColor(item.user.status) }"
               >
                 <img :src="$storage('icon') + item.user.icon" />
               </v-avatar>
@@ -285,31 +285,6 @@ export default {
     getPosts: async function () {
       let response = await axios.get('/api/posts');
       this.posts = response.data;
-    },
-
-    /**
-     * ステータス色の取得
-     *
-     * @param {String} status - ステータス
-     * @return {String} 色
-     */
-    getColor: function (status) {
-      let color;
-      switch (status) {
-        case 'free':
-          color = 'green';
-          break;
-
-        case 'busy':
-          color = 'red';
-          break;
-
-        case 'away':
-          color = 'grey';
-          break;
-      }
-
-      return color;
     },
 
     /**

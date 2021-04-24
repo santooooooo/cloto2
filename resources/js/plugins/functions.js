@@ -15,6 +15,31 @@ export function formatStr(str) {
 }
 
 /**
+ * ステータス色の取得
+ *
+ * @param {String} status - ステータス
+ * @return {String} 色
+ */
+export function statusColor(status) {
+  let color;
+  switch (status) {
+    case 'free':
+      color = 'green';
+      break;
+
+    case 'busy':
+      color = 'red';
+      break;
+
+    case 'away':
+      color = 'grey';
+      break;
+  }
+
+  return color;
+}
+
+/**
  * Slack通知
  *
  * @param {String} username - 投稿するユーザー名

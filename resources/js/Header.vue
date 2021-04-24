@@ -43,25 +43,19 @@
     <v-select
       v-model="status"
       :items="statuses"
-      :color="color"
-      :item-color="color"
+      :color="$statusColor(status)"
+      :item-color="$statusColor(status)"
       class="ml-9 mt-5"
       @change="updateStatus(status)"
       v-if="authCheck"
     >
       <template v-slot:selection="{ item }">
-        <span :class="color + '--text'">{{ item.text }}</span>
+        <span :class="$statusColor(status) + '--text'">{{ item.text }}</span>
       </template>
     </v-select>
 
     <!-- 通知音ボタン -->
-    <v-btn
-      color="white"
-      icon
-      class="mx-6"
-      @click="$store.dispatch('alert/switchSound')"
-      v-if="authCheck"
-    >
+    <v-btn icon class="mx-6" @click="$store.dispatch('alert/switchSound')" v-if="authCheck">
       <v-icon large>
         {{ $store.getters['alert/isSoundOn'] ? 'mdi-bell' : 'mdi-bell-off' }}
       </v-icon>
@@ -99,24 +93,6 @@ export default {
     },
     authUser() {
       return this.$store.getters['auth/user'];
-    },
-    color() {
-      let color;
-      switch (this.status) {
-        case 'free':
-          color = 'green';
-          break;
-
-        case 'busy':
-          color = 'red';
-          break;
-
-        case 'away':
-          color = 'grey';
-          break;
-      }
-
-      return color;
     },
   },
   watch: {

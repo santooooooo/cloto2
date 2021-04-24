@@ -40,7 +40,7 @@
           <v-col cols="2" class="my-auto text-center" @click="showProfile(comment.user.username)">
             <v-avatar
               size="40"
-              :style="{ 'box-shadow': '0 0 0 3px ' + getColor(comment.user.status) }"
+              :style="{ 'box-shadow': '0 0 0 3px ' + $statusColor(comment.user.status) }"
             >
               <img :src="$storage('icon') + comment.user.icon" />
             </v-avatar>
@@ -138,31 +138,6 @@ export default {
   },
 
   methods: {
-    /**
-     * ステータス色の取得
-     *
-     * @param {String} status - ステータス
-     * @return {String} 色
-     */
-    getColor: function (status) {
-      let color;
-      switch (status) {
-        case 'free':
-          color = 'green';
-          break;
-
-        case 'busy':
-          color = 'red';
-          break;
-
-        case 'away':
-          color = 'grey';
-          break;
-      }
-
-      return color;
-    },
-
     /**
      * コメントの投稿
      */

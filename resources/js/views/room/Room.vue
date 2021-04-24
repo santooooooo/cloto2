@@ -422,22 +422,7 @@ export default {
      * @param {String} status - ステータス
      */
     setStatus: function (userObject, status) {
-      let color;
-      switch (status) {
-        case 'free':
-          color = 'green';
-          break;
-
-        case 'busy':
-          color = 'red';
-          break;
-
-        case 'away':
-          color = 'grey';
-          break;
-      }
-
-      userObject._objects[0].set({ stroke: color });
+      userObject._objects[0].set({ stroke: this.$statusColor(status) });
       this.canvas.requestRenderAll();
     },
 

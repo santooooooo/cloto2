@@ -14,6 +14,7 @@ Vue.prototype.$moment = require('moment');
 Vue.prototype.$storage = require('./consts/storage').getStoragePath;
 const functions = require('./plugins/functions');
 Vue.prototype.$formatStr = functions.formatStr;
+Vue.prototype.$statusColor = functions.statusColor;
 Vue.prototype.$slack = functions.slackPost;
 
 /**
