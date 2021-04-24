@@ -64,6 +64,9 @@ export default {
     };
   },
   computed: {
+    isDebug() {
+      return process.env.MIX_APP_DEBUG === 'true' ? true : false;
+    },
     authUser() {
       return this.$store.getters['auth/user'];
     },
@@ -177,7 +180,9 @@ export default {
     );
 
     // ログイン時に自動展開
-    this.open();
+    if (!this.isDebug) {
+      this.open();
+    }
 
     // 問い合わせイベントの受信開始
     Echo.channel('user.' + this.authUser.id).listen('InquiryPosted', (event) => {

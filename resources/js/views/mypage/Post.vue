@@ -60,15 +60,15 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="grey" :loading="deletePostForm.loading" @click="deleteSubmit()">
+            削除
+          </v-btn>
           <v-btn
             color="error"
             :loading="deletePostForm.loading"
             @click="deletePostForm.dialog = false"
           >
             キャンセル
-          </v-btn>
-          <v-btn color="success" :loading="deletePostForm.loading" @click="deleteSubmit()">
-            削除
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -111,7 +111,7 @@ export default {
      * 投稿データの取得
      */
     getPosts: async function () {
-      let response = await axios.get('/api/posts/' + this.authUser.id);
+      let response = await axios.get('/api/posts/user/' + this.authUser.id);
       this.posts = response.data;
     },
 
@@ -135,12 +135,11 @@ export default {
       let response = await axios.delete('/api/posts/' + this.deletePostForm.data.id);
 
       if (response.status === OK) {
-        await this.getPosts();
+        this.getPosts();
         this.deletePostForm.dialog = false;
-        this.deletePostForm.loading = false;
-      } else {
-        this.deletePostForm.loading = false;
       }
+
+      this.deletePostForm.loading = false;
     },
   },
 

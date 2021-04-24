@@ -70,18 +70,32 @@
           </v-col>
         </v-row>
       </v-container>
+
+      <!-- コメント欄 -->
+      <CommentContainer
+        item-type="karte"
+        :item-id="karte.id"
+        :comments="karte.comments"
+        @update="getKarte()"
+      />
     </v-card>
   </v-dialog>
 </template>
 
 <script>
+import CommentContainer from '@/components/commons/CommentContainer';
+
 export default {
+  components: {
+    CommentContainer,
+  },
   props: {
-    karte: Object, // 表示するカルテ
+    karteId: Number, // 表示するカルテID
   },
   data() {
     return {
       dialog: false,
+      karte: null, // 表示するカルテ
     };
   },
   computed: {
@@ -90,12 +104,25 @@ export default {
     },
   },
   watch: {
-    karte: function (data) {
-      if (data) {
+    karteId: function (karteId) {
+      if (karteId) {
+        // データの取得
+        this.getKarte();
         this.dialog = true;
       } else {
+        // データの初期化
         this.dialog = false;
+        this.karte = null;
       }
+    },
+  },
+  methods: {
+    /**
+     * カルテデータの取得
+     */
+    getKarte: async function () {
+      let response = await axios.get('/api/kartes/' + this.karteId);
+      this.karte = response.data;
     },
   },
 };
@@ -104,5 +131,13 @@ export default {
 <style lang="scss" scoped>
 pre {
   white-space: pre-wrap;
+}
+
+#comment-form {
+  width: 60%;
+}
+
+#favorite-count {
+  font-size: 0.8rem;
 }
 </style>

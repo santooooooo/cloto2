@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Chat extends Model
+class Favorite extends Model
 {
     protected $primaryKey = 'id';
-    protected $dates = ['created_at', 'updated_at'];
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +15,7 @@ class Chat extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'room_id', 'body'
+        'user_id', 'karte_id', 'post_id', 'comment_id'
     ];
 
     /**
@@ -36,13 +36,33 @@ class Chat extends Model
     }
 
     /**
-     * Room モデルのリレーション
+     * Karte モデルのリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function room()
+    public function karte()
     {
-        return $this->belongsTo('App\Models\Room');
+        return $this->belongsTo('App\Models\Karte');
+    }
+
+    /**
+     * Post モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function post()
+    {
+        return $this->belongsTo('App\Models\Post');
+    }
+
+    /**
+     * Comment モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function comment()
+    {
+        return $this->belongsTo('App\Models\Comment');
     }
 
     /**

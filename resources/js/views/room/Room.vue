@@ -142,7 +142,7 @@ import SeminarSpeak from '@/components/room/SeminarSpeak';
 import SeminarView from '@/components/room/SeminarView';
 import Media from '@/components/room/Media';
 import KartePostDialog from '@/components/room/KartePostDialog';
-import ProfileDialog from '@/components/user/ProfileDialog';
+import ProfileDialog from '@/components/commons/ProfileDialog';
 import { OK } from '@/consts/status';
 
 export default {
@@ -422,22 +422,7 @@ export default {
      * @param {String} status - ステータス
      */
     setStatus: function (userObject, status) {
-      let color;
-      switch (status) {
-        case 'free':
-          color = 'green';
-          break;
-
-        case 'busy':
-          color = 'red';
-          break;
-
-        case 'away':
-          color = 'grey';
-          break;
-      }
-
-      userObject._objects[0].set({ stroke: color });
+      userObject._objects[0].set({ stroke: this.$statusColor(status) });
       this.canvas.requestRenderAll();
     },
 

@@ -40,7 +40,7 @@ class PostController extends Controller
     {
         if (empty($user)) {
             // 全ユーザーの投稿一覧
-            $data = $this->post->orderBy('created_at', 'desc')->get();
+            $data = $this->post->latest()->get();
         } else {
             // 指定したユーザーの投稿一覧
             $data = $user->posts->sortByDesc('created_at')->values();
@@ -70,11 +70,24 @@ class PostController extends Controller
         $result = $this->post->create($data);
 
         if (empty($result)) {
-            return response()->json(['message' => '投稿に失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'つぶやきの投稿に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
         broadcast(new TimelineUpdated($result));
         return response()->json();
+    }
+
+    /**
+     * 投稿とコメント一覧の取得
+     *
+     * @param  \App\Models\Post  $post  取得する投稿
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Post $post)
+    {
+        return response()->json($post->load(['comments' => function ($query) {
+            $query->latest();
+        }]));
     }
 
     /**
@@ -88,9 +101,9 @@ class PostController extends Controller
         $result = $post->delete();
 
         if (empty($result)) {
-            return response()->json(['message' => '投稿の削除に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'つぶやきの削除に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response()->json(['message' => '投稿が削除されました。']);
+        return response()->json(['message' => 'つぶやきが削除されました。']);
     }
 }

@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/status/{status?}', 'UserController@updateStatus');
         Route::get('/users/{user_param}', 'UserController@show');
         Route::patch('/users', 'UserController@update');
-        Route::patch('/users/{user}/follow', 'UserController@follow')->where('user', '[0-9]+');
+        Route::post('/users/{user}/follow', 'UserController@follow')->where('user', '[0-9]+');
         Route::get('/users/{user}/follows', 'UserController@follows')->where('user', '[0-9]+');
         Route::get('/users/{user}/followers', 'UserController@followers')->where('user', '[0-9]+');
 
@@ -69,8 +69,9 @@ Route::group(['middleware' => 'auth'], function () {
         | カルテ，タグ
         |--------------------------------------------------------------------------
         */
-        Route::resource('kartes', 'KarteController', ['only' => ['store']]);
-        Route::get('/kartes/{user?}', 'KarteController@index')->where('user', '[0-9]+');
+        Route::resource('kartes', 'KarteController', ['only' => ['index', 'store', 'show']]);
+        // ユーザーのカルテ一覧
+        Route::get('/kartes/user/{user}', 'KarteController@index')->where('user', '[0-9]+');
 
         Route::resource('tags', 'TagController', ['only' => ['index']]);
 
@@ -80,8 +81,25 @@ Route::group(['middleware' => 'auth'], function () {
         | 投稿
         |--------------------------------------------------------------------------
         */
-        Route::resource('posts', 'PostController', ['only' => ['store', 'destroy']]);
-        Route::get('/posts/{user?}', 'PostController@index')->where('user', '[0-9]+');
+        Route::resource('posts', 'PostController', ['only' => ['index', 'store', 'show', 'destroy']]);
+        // ユーザーの投稿一覧
+        Route::get('/posts/user/{user}', 'PostController@index')->where('user', '[0-9]+');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | コメント
+        |--------------------------------------------------------------------------
+        */
+        Route::resource('comments', 'CommentController', ['only' => ['store', 'destroy']]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | いいね
+        |--------------------------------------------------------------------------
+        */
+        Route::resource('favorites', 'FavoriteController', ['only' => ['store', 'destroy']]);
 
 
         /*

@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class Karte extends Model
+class Comment extends Model
 {
     protected $primaryKey = 'id';
     protected $dates = ['created_at', 'updated_at'];
@@ -17,7 +16,7 @@ class Karte extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'body', 'achieve', 'challenge', 'reference', 'image', 'activity_time'
+        'user_id', 'karte_id', 'post_id', 'body', 'media'
     ];
 
     /**
@@ -25,14 +24,14 @@ class Karte extends Model
      *
      * @var array
      */
-    protected $casts = ['image' => 'json'];
+    protected $casts = ['media' => 'json'];
 
     /**
      * The accessors to append to the model's array form.
      *
      * @var array
      */
-    protected $appends = ['path', 'user', 'tags', 'comments_count', 'favorites_count', 'favorite_id_by_auth_user'];
+    protected $appends = ['user', 'favorites_count', 'favorite_id_by_auth_user'];
 
     /**
      * User モデルのリレーション
@@ -45,23 +44,23 @@ class Karte extends Model
     }
 
     /**
-     * Tag モデルのリレーション
+     * Karte モデルのリレーション
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function tags()
+    public function karte()
     {
-        return $this->belongsToMany('App\Models\Tag');
+        return $this->belongsTo('App\Models\Karte');
     }
 
     /**
-     * Comment モデルのリレーション
+     * Post モデルのリレーション
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function comments()
+    public function post()
     {
-        return $this->hasMany('App\Models\Comment');
+        return $this->belongsTo('App\Models\Post');
     }
 
     /**
@@ -75,19 +74,6 @@ class Karte extends Model
     }
 
     /**
-     * 保存パスの追加
-     *
-     * @return String
-     */
-    public function getPathAttribute()
-    {
-        $karte_dir = '/storage/user/karte';
-
-        return $karte_dir . '/' . $this->user()->first()->username . '/'
-            . (new Carbon($this->created_at))->format('Y_md_Hi') . '/';
-    }
-
-    /**
      * ユーザーデータの追加
      *
      * @return \Illuminate\Database\Eloquent\Model
@@ -95,26 +81,6 @@ class Karte extends Model
     public function getUserAttribute()
     {
         return $this->user()->first();
-    }
-
-    /**
-     * タグデータの追加
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    public function getTagsAttribute()
-    {
-        return $this->tags()->get();
-    }
-
-    /**
-     * コメント数の追加
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getCommentsCountAttribute()
-    {
-        return $this->comments()->count();
     }
 
     /**

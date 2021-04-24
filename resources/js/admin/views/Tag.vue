@@ -224,10 +224,9 @@ export default {
       if (response.status === OK) {
         this.getTags();
         this.deleteTagForm.dialog = false;
-        this.deleteTagForm.loading = false;
-      } else {
-        this.deleteTagForm.loading = false;
       }
+
+      this.deleteTagForm.loading = false;
     },
   },
   created() {

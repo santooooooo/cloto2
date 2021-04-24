@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Seat extends Model
 {
     protected $primaryKey = 'id';
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -23,8 +24,6 @@ class Seat extends Model
      * @var array
      */
     protected $casts = ['position' => 'json', 'media' => 'json'];
-
-    public $timestamps = false;
 
     /**
      * Section モデルのリレーション

@@ -16,7 +16,7 @@
           </thead>
 
           <tbody>
-            <tr v-for="karte in kartes" :key="karte.id" @click="showKarte = karte">
+            <tr v-for="karte in kartes" :key="karte.id" @click="showKarteId = karte.id">
               <!-- 画像 -->
               <td>
                 <v-img
@@ -118,12 +118,12 @@
     </v-card>
 
     <!-- カルテ表示ダイアログ -->
-    <KarteDialog :karte="showKarte" @close="showKarte = $event" />
+    <KarteDialog :karteId="showKarteId" @close="showKarteId = $event" />
   </v-container>
 </template>
 
 <script>
-import KarteDialog from '@/components/user/KarteDialog';
+import KarteDialog from '@/components/commons/KarteDialog';
 
 export default {
   head: {
@@ -140,7 +140,7 @@ export default {
     return {
       loading: false, // ローディング制御
       kartes: null, // カルテ一覧
-      showKarte: null, // 詳細を表示するカルテ
+      showKarteId: null, // 詳細を表示するカルテID
     };
   },
   computed: {
@@ -151,7 +151,7 @@ export default {
   async created() {
     this.loading = true;
 
-    let response = await axios.get('/api/kartes/' + this.authUser.id);
+    let response = await axios.get('/api/kartes/user/' + this.authUser.id);
     this.kartes = response.data;
 
     this.loading = false;

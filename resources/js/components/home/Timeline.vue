@@ -45,44 +45,42 @@
       >
         <v-card class="pa-3">
           <!-- カルテ -->
-          <v-card-actions
-            class="d-block pointer"
-            @click="showKarte = item"
-            v-if="item.activity_time"
-          >
-            <v-img
-              max-height="300"
-              class="mx-auto my-2 rounded-xl"
-              contain
-              eager
-              :src="item.path + item.image"
-              @load="$redrawVueMasonry('timeline')"
-              v-if="item.image"
-            ></v-img>
+          <v-card-actions class="d-block" v-if="item.activity_time">
+            <div class="pointer" @click="showKarte(item.id)">
+              <v-img
+                max-height="300"
+                class="mx-auto my-2 rounded-xl"
+                contain
+                eager
+                :src="item.path + item.image"
+                @load="$redrawVueMasonry('timeline')"
+                v-if="item.image"
+              ></v-img>
 
-            <!-- タグ -->
-            <v-chip class="ma-1" v-for="tag in item.tags" :key="tag.id" :value="tag.id">
-              {{ tag.name }}
-            </v-chip>
+              <!-- タグ -->
+              <v-chip class="ma-1" v-for="tag in item.tags" :key="tag.id" :value="tag.id">
+                {{ tag.name }}
+              </v-chip>
 
-            <!-- 活動時間 -->
-            <p
-              :class="[
-                'text-body-2',
-                'font-weight-bold',
-                item.image || item.tags.length ? 'mt-6' : '',
-              ]"
-            >
-              活動時間：{{ item.activity_time.slice(0, 5) }}
-            </p>
+              <!-- 活動時間 -->
+              <p
+                :class="[
+                  'text-body-2',
+                  'font-weight-bold',
+                  item.image || item.tags.length ? 'mt-6' : '',
+                ]"
+              >
+                活動時間：{{ item.activity_time.slice(0, 5) }}
+              </p>
 
-            <!-- 活動内容 -->
-            <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
+              <!-- 活動内容 -->
+              <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
 
-            <!-- 投稿日時 -->
-            <p class="mt-6 mb-0 text-right small">
-              {{ $moment(item.created_at).format('MM/DD HH:mm') }}
-            </p>
+              <!-- 投稿日時 -->
+              <p class="mt-6 mb-0 text-right small">
+                {{ $moment(item.created_at).format('MM/DD HH:mm') }}
+              </p>
+            </div>
           </v-card-actions>
 
           <!-- 投稿 -->
@@ -93,36 +91,60 @@
               </v-btn>
             </v-row>
 
-            <!-- 内容 -->
-            <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
+            <div class="pointer" @click="showPost(item.id)">
+              <!-- 内容 -->
+              <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
 
-            <!-- 投稿日時 -->
-            <p class="mt-6 mb-0 text-right small">
-              {{ $moment(item.created_at).format('MM/DD HH:mm') }}
-            </p>
+              <!-- 投稿日時 -->
+              <p class="mt-6 mb-0 text-right small">
+                {{ $moment(item.created_at).format('MM/DD HH:mm') }}
+              </p>
+            </div>
           </v-card-actions>
 
           <v-divider></v-divider>
 
-          <v-row
-            no-gutters
-            align="end"
-            class="mt-3 pointer"
-            @click="showProfile(item.user.username)"
-          >
+          <v-row no-gutters class="mt-3 pointer">
             <!-- ユーザーアイコン -->
-            <v-avatar
-              size="50"
-              :style="{ 'box-shadow': '0 0 0 5px ' + getColor(item.user.status) }"
-            >
-              <img :src="$storage('icon') + item.user.icon" />
-            </v-avatar>
+            <v-col cols="3" class="my-auto text-center" @click="showProfile(item.user.username)">
+              <v-avatar
+                size="50"
+                :style="{ 'box-shadow': '0 0 0 5px ' + $statusColor(item.user.status) }"
+              >
+                <img :src="$storage('icon') + item.user.icon" />
+              </v-avatar>
+            </v-col>
 
-            <!-- ユーザー名 -->
-            <div class="username ml-5">
+            <v-col cols="5" class="my-auto text-start" @click="showProfile(item.user.username)">
+              <!-- ユーザー名 -->
               <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
               <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
-            </div>
+            </v-col>
+
+            <v-spacer></v-spacer>
+
+            <v-col cols="3" class="my-auto text-center">
+              <!-- コメントボタン -->
+              <v-btn
+                icon
+                class="mx-1"
+                @click="'activity_time' in item ? showKarte(item.id) : showPost(item.id)"
+              >
+                <v-icon>mdi-message-text</v-icon>
+                <span>{{ item.comments_count }}</span>
+              </v-btn>
+
+              <!-- いいねボタン -->
+              <v-btn
+                icon
+                class="mx-1"
+                :color="item.favorite_id_by_auth_user ? 'red' : 'gray'"
+                @click="favorite(item)"
+              >
+                <v-icon>mdi-heart</v-icon>
+                <span>{{ item.favorites_count }}</span>
+              </v-btn>
+            </v-col>
           </v-row>
         </v-card>
       </v-col>
@@ -146,20 +168,26 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
+            color="grey"
+            class="white--text"
+            :loading="deletePostForm.loading"
+            @click="deleteSubmit()"
+          >
+            削除
+          </v-btn>
+          <v-btn
             color="error"
             :loading="deletePostForm.loading"
             @click="deletePostForm.dialog = false"
           >
             キャンセル
           </v-btn>
-          <v-btn color="success" :loading="deletePostForm.loading" @click="deleteSubmit()">
-            削除
-          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <KarteDialog :karte="showKarte" @close="showKarte = null" />
+    <KarteDialog :karteId="showKarteId" @close="showKarteId = $event" />
+    <PostDialog :postId="showPostId" @close="showPostId = $event" />
     <ProfileDialog
       :username="profile.username"
       @close="profile.dialog = $event"
@@ -169,8 +197,9 @@
 </template>
 
 <script>
-import KarteDialog from '@/components/user/KarteDialog';
-import ProfileDialog from '@/components/user/ProfileDialog';
+import KarteDialog from '@/components/commons/KarteDialog';
+import PostDialog from '@/components/commons/PostDialog';
+import ProfileDialog from '@/components/commons/ProfileDialog';
 import { OK } from '@/consts/status';
 
 export default {
@@ -188,14 +217,15 @@ export default {
       data: [], // 表示データ
       kartes: [], // カルテ一覧
       posts: [], // 投稿一覧
-      showKarte: null, // 詳細を表示するカルテ
+      showKarteId: null, // 詳細を表示するカルテID
+      showPostId: null, // 詳細を表示する投稿ID
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
       },
       postForm: {
         body: '', // 内容
-        max: 200, // 最大長
+        max: 1000, // 最大長
         loading: false,
         validation: {
           valid: false,
@@ -212,6 +242,7 @@ export default {
 
   components: {
     KarteDialog,
+    PostDialog,
     ProfileDialog,
   },
 
@@ -257,28 +288,21 @@ export default {
     },
 
     /**
-     * ステータス色の取得
+     * カルテの詳細表示
      *
-     * @param {String} status - ステータス
-     * @return {String} 色
+     * @param {Number} karteId - 詳細を表示するカルテID
      */
-    getColor: function (status) {
-      let color;
-      switch (status) {
-        case 'free':
-          color = 'green';
-          break;
+    showKarte: function (karteId) {
+      this.showKarteId = karteId;
+    },
 
-        case 'busy':
-          color = 'red';
-          break;
-
-        case 'away':
-          color = 'grey';
-          break;
-      }
-
-      return color;
+    /**
+     * 投稿の詳細表示
+     *
+     * @param {Number} postId - 詳細を表示する投稿ID
+     */
+    showPost: function (postId) {
+      this.showPostId = postId;
     },
 
     /**
@@ -328,11 +352,44 @@ export default {
       let response = await axios.delete('/api/posts/' + this.deletePostForm.data.id);
 
       if (response.status === OK) {
-        await this.update();
+        this.update();
         this.deletePostForm.dialog = false;
-        this.deletePostForm.loading = false;
+      }
+
+      this.deletePostForm.loading = false;
+    },
+
+    /**
+     * いいね処理
+     *
+     * @param {Object} item - いいねするアイテム
+     */
+    favorite: async function (item) {
+      if (!item.favorite_id_by_auth_user) {
+        // いいね処理
+        let response;
+        if ('activity_time' in item) {
+          // カルテにいいねする
+          response = await axios.post('/api/favorites', { karte_id: item.id });
+        } else {
+          // 投稿にいいねする
+          response = await axios.post('/api/favorites', { post_id: item.id });
+        }
+
+        if (response.status === OK) {
+          // IDの追加とカウントアップ
+          item.favorite_id_by_auth_user = response.data;
+          item.favorites_count += 1;
+        }
       } else {
-        this.deletePostForm.loading = false;
+        // いいね解除処理
+        let response = await axios.delete('/api/favorites/' + item.favorite_id_by_auth_user);
+
+        if (response.status === OK) {
+          // IDの削除とカウントダウン
+          item.favorite_id_by_auth_user = null;
+          item.favorites_count -= 1;
+        }
       }
     },
   },
@@ -371,10 +428,6 @@ export default {
 
   pre {
     white-space: pre-wrap;
-  }
-
-  .username {
-    width: calc(100% - 80px);
   }
 }
 </style>

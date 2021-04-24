@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
@@ -14,7 +15,9 @@ class Post extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'body', 'media'];
+    protected $fillable = [
+        'user_id', 'body', 'media'
+    ];
 
     /**
      * The attributes that should be cast to native types.
@@ -28,7 +31,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $appends = ['user'];
+    protected $appends = ['user', 'comments_count', 'favorites_count', 'favorite_id_by_auth_user'];
 
     /**
      * User モデルのリレーション
@@ -41,6 +44,26 @@ class Post extends Model
     }
 
     /**
+     * Comment モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
+    /**
+     * Favorite モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function favorites()
+    {
+        return $this->hasMany('App\Models\Favorite');
+    }
+
+    /**
      * ユーザーデータの追加
      *
      * @return \Illuminate\Database\Eloquent\Model
@@ -48,5 +71,36 @@ class Post extends Model
     public function getUserAttribute()
     {
         return $this->user()->first();
+    }
+
+    /**
+     * コメント数の追加
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getCommentsCountAttribute()
+    {
+        return $this->comments()->count();
+    }
+
+    /**
+     * いいね数の追加
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getFavoritesCountAttribute()
+    {
+        return $this->favorites()->count();
+    }
+
+    /**
+     * ログインユーザーによるいいねIDの追加
+     *
+     * @return Int|Null
+     */
+    public function getFavoriteIdByAuthUserAttribute()
+    {
+        $favorite = $this->favorites()->select('id')->where('user_id', Auth::id())->first();
+        return $favorite ? $favorite->id : null;
     }
 }

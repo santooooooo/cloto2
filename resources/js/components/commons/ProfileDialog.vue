@@ -168,7 +168,7 @@
 
         <!-- カルテ一覧 -->
         <v-list :class="color" v-if="show === 'karte' && kartes.length">
-          <v-list-item v-for="karte in kartes" :key="karte.id" @click="showKarte = karte">
+          <v-list-item v-for="karte in kartes" :key="karte.id" @click="showKarteId = karte.id">
             <v-img
               max-width="80"
               height="40"
@@ -207,13 +207,13 @@
     />
 
     <!-- カルテ詳細ダイアログ -->
-    <KarteDialog :karte="showKarte" @close="showKarte = null" />
+    <KarteDialog :karteId="showKarteId" @close="showKarteId = null" />
   </v-dialog>
 </template>
 
 <script>
-import ProfileDialog from '@/components/user/ProfileDialog';
-import KarteDialog from '@/components/user/KarteDialog';
+import ProfileDialog from '@/components/commons/ProfileDialog';
+import KarteDialog from '@/components/commons/KarteDialog';
 
 export default {
   name: 'ProfileDialog',
@@ -234,7 +234,7 @@ export default {
       show: null, // フォロー/フォロワーどちらを表示するか
       followers: [], // フォロー/フォロワー一覧
       kartes: [], // カルテ一覧
-      showKarte: null, // 詳細を表示するカルテ
+      showKarteId: null, // 詳細を表示するカルテID
       profile: {
         dialog: false, // 追加ダイアログ制御
         username: null, // 表示するユーザー名
@@ -266,9 +266,7 @@ export default {
     follow: async function () {
       this.loading = true;
 
-      let response = await axios.post('/api/users/' + this.user.id + '/follow', {
-        _method: 'patch',
-      });
+      let response = await axios.post('/api/users/' + this.user.id + '/follow');
       this.user = response.data;
 
       this.loading = false;
@@ -296,7 +294,7 @@ export default {
      * カルテ一覧の表示
      */
     showKartes: async function () {
-      let response = await axios.get('/api/kartes/' + this.user.id);
+      let response = await axios.get('/api/kartes/user/' + this.user.id);
       this.kartes = response.data;
       this.show = 'karte';
     },
