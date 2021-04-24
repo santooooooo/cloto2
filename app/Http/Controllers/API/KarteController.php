@@ -101,6 +101,8 @@ class KarteController extends Controller
      */
     public function show(Karte $karte)
     {
-        return response()->json($karte->load('comments'));
+        return response()->json($karte->load(['comments' => function ($query) {
+            $query->orderBy('created_at', 'desc');
+        }]));
     }
 }

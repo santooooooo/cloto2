@@ -85,7 +85,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return response()->json($post->load('comments'));
+        return response()->json($post->load(['comments' => function ($query) {
+            $query->orderBy('created_at', 'desc');
+        }]));
     }
 
     /**
