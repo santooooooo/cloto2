@@ -225,7 +225,7 @@ export default {
       },
       postForm: {
         body: '', // 内容
-        max: 200, // 最大長
+        max: 1000, // 最大長
         loading: false,
         validation: {
           valid: false,
