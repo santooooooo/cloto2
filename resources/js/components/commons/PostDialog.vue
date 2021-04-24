@@ -8,100 +8,31 @@
           </v-btn>
         </v-row>
 
-        <v-row justify="center">
-          <v-card rounded="xl" min-height="154" max-width="457" class="mb-4 text-left">
+        <v-row justify="center" class="mt-2">
+          <v-card rounded="xl" min-height="154" width="800" class="mb-4 text-left">
             <pre class="px-6 py-2 text-body-1" v-html="$formatStr(post.body)"></pre>
           </v-card>
         </v-row>
-
-        <v-form
-          ref="commentForm"
-          v-model="commentForm.validation.valid"
-          lazy-validation
-          id="comment-form"
-          class="mx-auto my-6"
-        >
-          <v-textarea
-            v-model="commentForm.body"
-            :rules="commentForm.validation.bodyRules"
-            :maxlength="commentForm.max"
-            :disabled="commentForm.loading"
-            append-icon="mdi-send"
-            placeholder="コメント"
-            counter
-            solo
-            auto-grow
-            rows="1"
-            @click:append="submit()"
-          ></v-textarea>
-        </v-form>
-
-        <v-container class="grey lighten-1" v-if="post.comments.length">
-          <h1 class="white--text text-left border-bottom">コメント一覧</h1>
-          <!-- post karte問題 -->
-          <v-row v-for="comment in post.comments" :key="comment.id">
-            <span class="pl-4 pt-1">{{ comment.body }}</span>
-
-            <div class="mb-2 ml-auto">
-              <v-btn
-                icon
-                :color="comment.favorite_id_by_auth_user ? 'red' : 'gray'"
-                @click="favorite(comment)"
-              >
-                <v-icon>mdi-heart</v-icon>
-                <span id="favorite-count">{{ comment.favorites_count }}</span>
-              </v-btn>
-
-              <v-btn
-                @click="deleteComment(comment)"
-                v-if="comment.user.id === authUser.id"
-                class="mr-2 red white--text"
-              >
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </div>
-          </v-row>
-        </v-container>
       </v-container>
+
+      <!-- コメント欄 -->
+      <CommentContainer
+        item-type="post"
+        :item-id="post.id"
+        :comments="post.comments"
+        @update="getPost()"
+      />
     </v-card>
-
-    <!-- 投稿削除確認ダイアログ -->
-    <v-dialog v-model="deleteCommentForm.dialog" max-width="500px" persistent>
-      <v-card class="headline grey darken-2 text-center pa-2">
-        <v-card-title>
-          <span class="headline white--text">削除しますか？</span>
-        </v-card-title>
-
-        <v-card-text>
-          <v-container>
-            <v-card-text class="pa-1 white--text">
-              {{ deleteCommentForm.data.body }}
-            </v-card-text>
-          </v-container>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="grey" :loading="deleteCommentForm.loading" @click="deleteSubmit()">
-            削除
-          </v-btn>
-          <v-btn
-            color="error"
-            :loading="deleteCommentForm.loading"
-            @click="deleteCommentForm.dialog = false"
-          >
-            キャンセル
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-dialog>
 </template>
 
 <script>
-import { OK } from '@/consts/status';
+import CommentContainer from '@/components/commons/CommentContainer';
 
 export default {
+  components: {
+    CommentContainer,
+  },
   props: {
     postId: Number, // 表示する投稿ID
   },
@@ -109,20 +40,6 @@ export default {
     return {
       dialog: false,
       post: null, // 表示する投稿
-      commentForm: {
-        body: '', // 内容
-        max: 200, // 最大長
-        loading: false,
-        validation: {
-          valid: false,
-          bodyRules: [(v) => !!v || '内容が無いようです。'],
-        },
-      },
-      deleteCommentForm: {
-        dialog: false,
-        loading: false,
-        data: {},
-      },
     };
   },
   computed: {
@@ -150,81 +67,6 @@ export default {
     getPost: async function () {
       let response = await axios.get('/api/posts/' + this.postId);
       this.post = response.data;
-    },
-
-    /**
-     * コメントの投稿
-     */
-    submit: async function () {
-      if (this.$refs.commentForm.validate()) {
-        this.commentForm.loading = true;
-
-        let response = await axios.post('/api/comments', {
-          post_id: this.postId,
-          body: this.commentForm.body,
-        });
-
-        if (response.status === OK) {
-          await this.getPost();
-          this.$refs.commentForm.reset();
-        }
-
-        this.commentForm.loading = false;
-      }
-    },
-
-    /**
-     * コメントの削除
-     *
-     * @param {Object} comment - 削除するコメント
-     */
-    deleteComment: function (comment) {
-      this.deleteCommentForm.data = comment;
-      this.deleteCommentForm.dialog = true;
-    },
-
-    /**
-     * 削除データの送信
-     */
-    deleteSubmit: async function () {
-      this.deleteCommentForm.loading = true;
-
-      let response = await axios.delete('/api/comments/' + this.deleteCommentForm.data.id);
-
-      if (response.status === OK) {
-        await this.getPost();
-        this.deleteCommentForm.dialog = false;
-        this.deleteCommentForm.loading = false;
-      } else {
-        this.deleteCommentForm.loading = false;
-      }
-    },
-
-    /**
-     * いいね処理
-     *
-     * @param {Object} comment - いいねするコメント
-     */
-    favorite: async function (comment) {
-      if (!comment.favorite_id_by_auth_user) {
-        // いいね処理
-        let response = await axios.post('/api/favorites', { comment_id: comment.id });
-
-        if (response.status === OK) {
-          // IDの追加とカウントアップ
-          comment.favorite_id_by_auth_user = response.data;
-          comment.favorites_count += 1;
-        }
-      } else {
-        // いいね解除処理
-        let response = await axios.delete('/api/favorites/' + comment.favorite_id_by_auth_user);
-
-        if (response.status === OK) {
-          // IDの削除とカウントダウン
-          comment.favorite_id_by_auth_user = null;
-          comment.favorites_count -= 1;
-        }
-      }
     },
   },
 };
