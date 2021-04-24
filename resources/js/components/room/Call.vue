@@ -659,7 +659,8 @@ export default {
      */
     makeCall: async function () {
       this.call = this.peer.joinRoom(this.callId, {
-        mode: this.roomMode,
+        //mode: this.roomMode,
+        mode: 'sfu',
         stream: this.localStream,
       });
 
@@ -698,7 +699,6 @@ export default {
                 resolve(participant);
               }
             });
-		  console.log(sender);
 
             break;
           } catch (error) {
@@ -789,7 +789,8 @@ export default {
         }
 
         // 通話の接続を終了
-        await this.peer.disconnect();
+        //await this.peer.disconnect();
+        await this.peer.destroy(); //disconnectは非推奨のためこちらの方がよいのでは？
         this.peer = null;
       }
     },
@@ -876,6 +877,7 @@ export default {
 
           this.screenSharing.peer.joinRoom(this.callId, {
             mode: this.roomMode,
+            mode: 'sfu',
             stream: this.screenSharing.stream,
           });
 
@@ -967,6 +969,7 @@ export default {
               //デバイスが存在しない場合
               this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
             });
+
           // デバイスの停止
           stream.getTracks().forEach((track) => track.stop());
           //** デバイスの一覧を取得 */
