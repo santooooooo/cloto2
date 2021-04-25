@@ -33,6 +33,11 @@
 
           <!-- 内容 -->
           <pre class="ml-3 text-body-1 text-left" v-html="$formatStr(comment.body)"></pre>
+
+          <!-- 投稿日時 -->
+          <p class="mt-6 mb-0 mr-4 text-right text-body-2">
+            {{ $moment(comment.created_at).format('MM/DD HH:mm') }}
+          </p>
         </v-card-actions>
 
         <v-row class="mt-3 pointer">

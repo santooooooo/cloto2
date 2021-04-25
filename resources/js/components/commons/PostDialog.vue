@@ -7,6 +7,19 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
+        <v-row justify="center">
+          <!-- コメント数 -->
+          <span class="mx-3 small">
+            <v-icon>mdi-message-text</v-icon>
+            {{ post.comments_count }}
+          </span>
+
+          <!-- いいね数 -->
+          <span class="mx-3 small">
+            <v-icon>mdi-heart</v-icon>
+            {{ post.favorites_count }}
+          </span>
+        </v-row>
 
         <v-row justify="center" class="mt-2">
           <v-card rounded="xl" min-height="154" width="800" class="mb-4 text-left">

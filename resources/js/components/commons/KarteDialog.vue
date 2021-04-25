@@ -7,6 +7,19 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
+        <v-row justify="center">
+          <!-- コメント数 -->
+          <span class="mx-3 small">
+            <v-icon>mdi-message-text</v-icon>
+            {{ karte.comments_count }}
+          </span>
+
+          <!-- いいね数 -->
+          <span class="mx-3 small">
+            <v-icon>mdi-heart</v-icon>
+            {{ karte.favorites_count }}
+          </span>
+        </v-row>
 
         <v-row justify="center" align="center" class="mt-2">
           {{ karte.activity_time.slice(0, 5) }}
