@@ -15,7 +15,7 @@ import index from '@/views/Index';
 import terms from '@/views/service/Terms';
 import login from '@/views/Login';
 import home from '@/views/home/Home';
-import information from '@/views/home/Information';
+import timeline from '@/views/home/Timeline';
 import floor from '@/views/home/Floor';
 import room from '@/views/room/Room';
 import mypage from '@/views/mypage/Mypage';
@@ -53,9 +53,9 @@ const router = new VueRouter({
       component: home,
       children: [
         {
-          path: 'information',
+          path: 'timeline',
           name: 'home',
-          component: information,
+          component: timeline,
         },
         {
           path: 'floor/:roomId',
