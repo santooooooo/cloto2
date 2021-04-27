@@ -33,7 +33,6 @@ import { VueWindowSizePlugin } from 'vue-window-size/option-api';
 import VueHead from 'vue-head';
 import VueDragscroll from 'vue-dragscroll';
 import Chat from 'vue-beautiful-chat';
-import { VueMasonryPlugin } from 'vue-masonry';
 import VueMasonryWall from 'vue-masonry-wall';
 
 Vue.use(VueWindowSizePlugin)
@@ -43,7 +42,6 @@ Vue.use(VueWindowSizePlugin)
   })
   .use(VueDragscroll)
   .use(Chat)
-  .use(VueMasonryPlugin)
   .use(VueMasonryWall);
 
 new Vue({
