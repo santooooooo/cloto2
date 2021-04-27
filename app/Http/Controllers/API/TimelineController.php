@@ -33,7 +33,8 @@ class TimelineController extends Controller
      */
     public function index(Request $request)
     {
-        $data = $this->karte->all()->concat($this->post->all())
+        $data = $this->karte->all()
+            ->concat($this->post->all())
             ->sortByDesc('created_at')
             ->forPage($request->page ?? 1, 20)
             ->values()
@@ -43,6 +44,13 @@ class TimelineController extends Controller
             return response()->json(null, config('consts.status.NOT_FOUND'));
         }
 
-        return response()->json($data);
+        // サニタイジング
+        $items = [];
+        foreach ($data as $item) {
+            $item['body'] = htmlspecialchars($item['body'], ENT_QUOTES);
+            array_push($items, $item);
+        }
+
+        return response()->json($items);
     }
 }
