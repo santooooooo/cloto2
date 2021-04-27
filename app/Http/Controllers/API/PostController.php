@@ -36,15 +36,9 @@ class PostController extends Controller
      * @param  \App\Models\User  $user  投稿を取得するユーザー
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user = null)
+    public function index(User $user)
     {
-        if (empty($user)) {
-            // 全ユーザーの投稿一覧
-            $data = $this->post->latest()->get();
-        } else {
-            // 指定したユーザーの投稿一覧
-            $data = $user->posts->sortByDesc('created_at')->values();
-        }
+        $data = $user->posts->sortByDesc('created_at')->values();
 
         // サニタイジング
         $posts = [];

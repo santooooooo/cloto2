@@ -41,15 +41,9 @@ class KarteController extends Controller
      * @param  \App\Models\User  $user  カルテを取得するユーザー
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user = null)
+    public function index(User $user)
     {
-        if (empty($user)) {
-            // 全ユーザーのカルテ一覧
-            $kartes = $this->karte->latest()->get();
-        } else {
-            // 指定したユーザーのカルテ一覧
-            $kartes = $user->kartes->sortByDesc('created_at')->values();
-        }
+        $kartes = $user->kartes->sortByDesc('created_at')->values();
 
         return response()->json($kartes);
     }

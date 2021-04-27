@@ -69,7 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
         | カルテ，タグ
         |--------------------------------------------------------------------------
         */
-        Route::resource('kartes', 'KarteController', ['only' => ['index', 'store', 'show']]);
+        Route::resource('kartes', 'KarteController', ['only' => ['store', 'show']]);
         // ユーザーのカルテ一覧
         Route::get('/kartes/user/{user}', 'KarteController@index')->where('user', '[0-9]+');
 
@@ -81,7 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
         | 投稿
         |--------------------------------------------------------------------------
         */
-        Route::resource('posts', 'PostController', ['only' => ['index', 'store', 'show', 'destroy']]);
+        Route::resource('posts', 'PostController', ['only' => ['store', 'show', 'destroy']]);
         // ユーザーの投稿一覧
         Route::get('/posts/user/{user}', 'PostController@index')->where('user', '[0-9]+');
 
@@ -100,6 +100,14 @@ Route::group(['middleware' => 'auth'], function () {
         |--------------------------------------------------------------------------
         */
         Route::resource('favorites', 'FavoriteController', ['only' => ['store', 'destroy']]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | タイムライン
+        |--------------------------------------------------------------------------
+        */
+        Route::get('/timeline', 'TimelineController@index');
 
 
         /*
