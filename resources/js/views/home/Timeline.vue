@@ -1,6 +1,9 @@
 <template>
   <v-layout class="overflow-y-auto" id="information">
     <v-container fluid>
+      <!-- ローディング -->
+      <v-progress-linear indeterminate absolute height="10" v-if="loading"></v-progress-linear>
+
       <!-- イベント案内 -->
       <v-card color="white" width="100%" max-height="40%">
         <img
@@ -41,28 +44,9 @@
           ></v-textarea>
         </v-form>
 
-        <!-- ローディング -->
-        <v-progress-circular
-          size="70"
-          width="7"
-          indeterminate
-          class="ma-5"
-          v-if="loading"
-        ></v-progress-circular>
-
-        <v-row v-masonry="'timeline'" item-selector=".item">
-          <v-col
-            v-masonry-tile
-            class="item"
-            v-for="(item, index) in data"
-            :key="index"
-            xs="6"
-            sm="6"
-            md="4"
-            lg="4"
-            xl="4"
-          >
-            <v-card class="pa-3">
+        <vue-masonry-wall :items="items" :options="{ width: width, padding: 8 }" @append="getData">
+          <template v-slot:default="{ item }">
+            <v-card :width="width - 50" class="mx-auto pa-3">
               <!-- カルテ -->
               <v-card-actions class="d-block" v-if="item.activity_time">
                 <div class="pointer" @click="showKarte(item.id)">
@@ -72,7 +56,6 @@
                     contain
                     eager
                     :src="item.path + item.image"
-                    @load="$redrawVueMasonry('timeline')"
                     v-if="item.image"
                   ></v-img>
 
@@ -170,7 +153,10 @@
                 </v-col>
               </v-row>
             </v-card>
-          </v-col>
+          </template>
+        </vue-masonry-wall>
+        <v-row justify="center">
+          <p class="text-h5 my-12" v-if="stopGetting">これ以上データはありません。</p>
         </v-row>
 
         <!-- 投稿削除確認ダイアログ -->
@@ -225,7 +211,7 @@
 import KarteDialog from '@/components/commons/KarteDialog';
 import PostDialog from '@/components/commons/PostDialog';
 import ProfileDialog from '@/components/commons/ProfileDialog';
-import { OK } from '@/consts/status';
+import { OK, NOT_FOUND } from '@/consts/status';
 
 export default {
   head: {
@@ -239,7 +225,9 @@ export default {
   data() {
     return {
       loading: true, // ローディング制御
-      data: [], // 表示データ
+      page: 1, // ページング制御
+      stopGetting: false, // データ取得の終了制御
+      items: [], // 表示データ
       kartes: [], // カルテ一覧
       posts: [], // 投稿一覧
       showKarteId: null, // 詳細を表示するカルテID
@@ -275,41 +263,40 @@ export default {
     authUser() {
       return this.$store.getters['auth/user'];
     },
+
+    width() {
+      return (this.$windowWidth - 250) / 3;
+    },
   },
 
   methods: {
     /**
-     * データの更新
+     * データの取得
      */
-    update: async function () {
-      await this.getKartes();
-      await this.getPosts();
+    getData: async function () {
+      if (!this.loading && !this.stopGetting) {
+        this.loading = true;
 
-      // 表示データの作成
-      this.data = this.kartes.concat(this.posts);
-      this.data.sort(function (a, b) {
-        if (a.created_at < b.created_at) {
-          return 1;
-        } else {
-          return -1;
+        let response = await axios.get('/api/timeline?page=' + this.page);
+
+        if (response.status === OK) {
+          // 現在配列に含まれていないデータのみを取り出す
+          let data = response.data.filter((item) => {
+            return !this.items.includes(item);
+          });
+
+          // データを追加
+          this.items = this.items.concat(data);
+
+          // ページの更新
+          this.page += 1;
+        } else if (response.status === NOT_FOUND) {
+          // データ取得の終了
+          this.stopGetting = true;
         }
-      });
-    },
 
-    /**
-     * カルテデータの取得
-     */
-    getKartes: async function () {
-      let response = await axios.get('/api/kartes');
-      this.kartes = response.data;
-    },
-
-    /**
-     * 投稿データの取得
-     */
-    getPosts: async function () {
-      let response = await axios.get('/api/posts');
-      this.posts = response.data;
+        this.loading = false;
+      }
     },
 
     /**
@@ -377,7 +364,10 @@ export default {
       let response = await axios.delete('/api/posts/' + this.deletePostForm.data.id);
 
       if (response.status === OK) {
-        this.update();
+        // 表示データから削除
+        this.items = this.items.filter((item) => {
+          return item.id !== this.deletePostForm.data.id;
+        });
         this.deletePostForm.dialog = false;
       }
 
@@ -420,13 +410,13 @@ export default {
   },
 
   async created() {
-    await this.update();
+    await this.getData();
 
     /**
      * データの同期開始
      */
     Echo.channel('timeline').listen('TimelineUpdated', (event) => {
-      this.data.unshift(event);
+      this.items.unshift(event);
     });
 
     this.loading = false;
@@ -443,8 +433,12 @@ export default {
 
 <style lang="scss" scoped>
 #information {
+  max-width: 100%;
   height: calc(100vh - 64px);
-  background-size: cover;
+
+  .v-progress-linear {
+    top: 0;
+  }
 
   #event {
     max-width: 100%;
