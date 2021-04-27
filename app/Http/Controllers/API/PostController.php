@@ -33,17 +33,26 @@ class PostController extends Controller
     /**
      * 投稿の一覧を取得
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user  投稿を取得するユーザー
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user)
+    public function index(Request $request, User $user)
     {
-        $data = $user->posts->sortByDesc('created_at')->values();
+        $data = $user->posts
+            ->sortByDesc('created_at')
+            ->forPage($request->page ?? 1, 30)
+            ->values()
+            ->toArray();
+
+        if (empty($data)) {
+            return response()->json(null, config('consts.status.NOT_FOUND'));
+        }
 
         // サニタイジング
         $posts = [];
         foreach ($data as $post) {
-            $post->body = htmlspecialchars($post->body, ENT_QUOTES);
+            $post['body'] = htmlspecialchars($post['body'], ENT_QUOTES);
             array_push($posts, $post);
         }
 

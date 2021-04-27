@@ -29,6 +29,7 @@ class TimelineController extends Controller
     /**
      * タイムラインの表示データ一覧を取得
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)

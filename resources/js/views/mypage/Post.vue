@@ -1,47 +1,32 @@
 <template>
-  <v-container>
+  <v-container fluid id="post">
     <!-- ローディング -->
-    <v-progress-circular
-      size="70"
-      width="7"
-      indeterminate
-      class="ma-5"
-      v-if="loading"
-    ></v-progress-circular>
+    <v-progress-linear indeterminate absolute height="10" v-if="loading"></v-progress-linear>
 
-    <v-row v-masonry="'post'" item-selector=".item" v-if="posts.length">
-      <v-col
-        v-masonry-tile
-        class="item"
-        v-for="post in posts"
-        :key="post.id"
-        xs="6"
-        sm="6"
-        md="4"
-        lg="3"
-        xl="3"
-      >
-        <v-card class="pa-3">
+    <vue-masonry-wall :items="posts" :options="{ width: width, padding: 8 }" @append="getPosts">
+      <template v-slot:default="{ item }">
+        <v-card :width="width - 50" class="mx-auto pa-3">
           <v-card-actions class="d-block">
-            <v-row no-gutters justify="end">
-              <v-btn icon x-small @click="deletePost(post)">
+            <v-row no-gutters justify="end" v-if="item.user.id === authUser.id">
+              <v-btn icon x-small @click="deletePost(item)">
                 <v-icon>mdi-close</v-icon>
               </v-btn>
             </v-row>
 
             <!-- 内容 -->
-            <pre class="mb-0 text-body-2" v-html="$formatStr(post.body)"></pre>
+            <pre class="mb-0 text-body-2" v-html="$formatStr(item.body)"></pre>
 
             <!-- 投稿日時 -->
             <p class="mt-6 mb-0 text-right small">
-              {{ $moment(post.created_at).format('MM/DD HH:mm') }}
+              {{ $moment(item.created_at).format('MM/DD HH:mm') }}
             </p>
           </v-card-actions>
         </v-card>
-      </v-col>
+      </template>
+    </vue-masonry-wall>
+    <v-row justify="center">
+      <p class="text-h5 my-12" v-if="stopGetting">これ以上データはありません。</p>
     </v-row>
-
-    <p class="mt-4 text-h5" v-else>つぶやきがありません。</p>
 
     <!-- 投稿削除確認ダイアログ -->
     <v-dialog v-model="deletePostForm.dialog" max-width="500px" persistent>
@@ -77,7 +62,7 @@
 </template>
 
 <script>
-import { OK } from '@/consts/status';
+import { OK, NOT_FOUND } from '@/consts/status';
 
 export default {
   head: {
@@ -91,6 +76,8 @@ export default {
   data() {
     return {
       loading: true, // ローディング制御
+      page: 1, // ページング制御
+      stopGetting: false, // データ取得の終了制御
       posts: [], // 投稿一覧
       deletePostForm: {
         dialog: false,
@@ -104,6 +91,10 @@ export default {
     authUser() {
       return this.$store.getters['auth/user'];
     },
+
+    width() {
+      return (this.$windowWidth - 250) / 3;
+    },
   },
 
   methods: {
@@ -111,8 +102,26 @@ export default {
      * 投稿データの取得
      */
     getPosts: async function () {
-      let response = await axios.get('/api/posts/user/' + this.authUser.id);
-      this.posts = response.data;
+      if (!this.loading && !this.stopGetting) {
+        this.loading = true;
+
+        let response = await axios.get(
+          '/api/posts/user/' + this.authUser.id + '?page=' + this.page
+        );
+
+        if (response.status === OK) {
+          // データを追加
+          this.posts = this.posts.concat(response.data);
+
+          // ページの更新
+          this.page += 1;
+        } else if (response.status === NOT_FOUND) {
+          // データ取得の終了
+          this.stopGetting = true;
+        }
+
+        this.loading = false;
+      }
     },
 
     /**
@@ -135,7 +144,13 @@ export default {
       let response = await axios.delete('/api/posts/' + this.deletePostForm.data.id);
 
       if (response.status === OK) {
-        this.getPosts();
+        // 表示データから削除
+        this.posts.forEach((post) => {
+          if (post.id === this.deletePostForm.data.id) {
+            post.user.id = null;
+            post.body = '削除済み';
+          }
+        });
         this.deletePostForm.dialog = false;
       }
 
@@ -143,22 +158,25 @@ export default {
     },
   },
 
-  created() {
-    this.getPosts();
-  },
-
-  updated() {
-    // DOMへ適用後に整列
-    this.$redrawVueMasonry('post');
+  async created() {
+    await this.getPosts();
     this.loading = false;
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.v-card {
-  pre {
-    white-space: pre-wrap;
+#post {
+  max-width: 100%;
+
+  .v-progress-linear {
+    top: 0;
+  }
+
+  .v-card {
+    pre {
+      white-space: pre-wrap;
+    }
   }
 }
 </style>
