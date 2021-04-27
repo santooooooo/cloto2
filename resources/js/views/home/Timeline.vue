@@ -1,15 +1,12 @@
 <template>
-  <v-layout class="overflow-y-auto" id="information">
+  <v-layout class="overflow-y-auto" id="timeline">
     <v-container fluid>
       <!-- ローディング -->
       <v-progress-linear indeterminate absolute height="10" v-if="loading"></v-progress-linear>
 
       <!-- イベント案内 -->
       <v-card color="white" width="100%" max-height="40%">
-        <img
-          :src="$storage('system') + 'event.png?' + Math.random().toString(32).substring(2)"
-          id="event"
-        />
+        <img :src="eventSrc" id="event" />
         <p class="text-h5 ma-2">
           今月のイベント一覧は<a
             href="https://freecalend.com/open/mem136363_nopopon"
@@ -129,7 +126,7 @@
 
                 <v-spacer></v-spacer>
 
-                <v-col cols="3" class="my-auto text-center">
+                <v-col cols="3" class="my-auto text-center" v-if="item.id">
                   <!-- コメントボタン -->
                   <v-btn
                     icon
@@ -224,6 +221,7 @@ export default {
 
   data() {
     return {
+      eventSrc: this.$storage('system') + 'event.png?' + Math.random().toString(32).substring(2), // イベント画像のURL
       loading: true, // ローディング制御
       page: 1, // ページング制御
       stopGetting: false, // データ取得の終了制御
@@ -305,7 +303,9 @@ export default {
      * @param {Number} karteId - 詳細を表示するカルテID
      */
     showKarte: function (karteId) {
-      this.showKarteId = karteId;
+      if (karteId) {
+        this.showKarteId = karteId;
+      }
     },
 
     /**
@@ -314,7 +314,9 @@ export default {
      * @param {Number} postId - 詳細を表示する投稿ID
      */
     showPost: function (postId) {
-      this.showPostId = postId;
+      if (postId) {
+        this.showPostId = postId;
+      }
     },
 
     /**
@@ -365,8 +367,12 @@ export default {
 
       if (response.status === OK) {
         // 表示データから削除
-        this.items = this.items.filter((item) => {
-          return item.id !== this.deletePostForm.data.id;
+        this.items.forEach((item) => {
+          if (item.id === this.deletePostForm.data.id) {
+            item.id = null;
+            item.user.id = null;
+            item.body = '削除済み';
+          }
         });
         this.deletePostForm.dialog = false;
       }
@@ -432,7 +438,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#information {
+#timeline {
   max-width: 100%;
   height: calc(100vh - 64px);
 
