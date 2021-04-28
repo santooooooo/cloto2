@@ -21,10 +21,10 @@ import room from '@/views/room/Room';
 import mypage from '@/views/mypage/Mypage';
 import profile from '@/views/mypage/Profile';
 import follower from '@/views/mypage/Follower';
-import karte from '@/views/mypage/Karte';
 import post from '@/views/mypage/Post';
 import mystudy from '@/views/mystudy/Mystudy';
 import progress from '@/views/mystudy/Progress';
+import karte from '@/views/mystudy/Karte';
 import docs from '@/views/docs/Docs';
 import sample from '@/views/docs/Sample';
 import notFound from '@/views/errors/NotFound';
@@ -86,11 +86,6 @@ const router = new VueRouter({
           component: follower,
         },
         {
-          path: 'karte',
-          name: 'karte',
-          component: karte,
-        },
-        {
           path: 'post',
           name: 'post',
           component: post,
@@ -105,6 +100,11 @@ const router = new VueRouter({
           path: 'progress',
           name: 'mystudy',
           component: progress,
+        },
+        {
+          path: 'karte',
+          name: 'karte',
+          component: karte,
         },
       ],
     },
