@@ -265,7 +265,7 @@
 
           <p class="text-body-1 text-left mb-6">
             必要な機能がございましたら、<br />一度
-            <a class="font-weight-bold blue--text" @click="scrollToAnchorPoint('contact')">
+            <a class="font-weight-bold blue--text" v-scroll-to="{ el: '#contact' }">
               お問い合わせ
             </a>
             ください。
@@ -457,47 +457,45 @@
         </v-btn>
       </v-row>
 
-      <div class="mx-2 my-12 mx-auto" ref="contact">
-        <v-card max-width="600" class="mx-auto px-12 py-8" id="contact">
-          <h5 class="text-center text-h5">お問い合わせ</h5>
+      <v-card max-width="600" class="mx-auto my-12 px-12 py-8" id="contact">
+        <h5 class="text-center text-h5">お問い合わせ</h5>
 
-          <v-form ref="contactForm" v-model="contactForm.validation.valid" lazy-validation>
-            <v-text-field
-              v-model="contactForm.name"
-              :rules="contactForm.validation.nameRules"
-              :disabled="contactForm.loading"
-              label="お名前"
-              maxlength="16"
-              counter
-            ></v-text-field>
+        <v-form ref="contactForm" v-model="contactForm.validation.valid" lazy-validation>
+          <v-text-field
+            v-model="contactForm.name"
+            :rules="contactForm.validation.nameRules"
+            :disabled="contactForm.loading"
+            label="お名前"
+            maxlength="16"
+            counter
+          ></v-text-field>
 
-            <v-text-field
-              v-model="contactForm.email"
-              :rules="contactForm.validation.emailRules"
-              :disabled="contactForm.loading"
-              label="メールアドレス"
-            ></v-text-field>
+          <v-text-field
+            v-model="contactForm.email"
+            :rules="contactForm.validation.emailRules"
+            :disabled="contactForm.loading"
+            label="メールアドレス"
+          ></v-text-field>
 
-            <v-textarea
-              v-model="contactForm.body"
-              :rules="contactForm.validation.bodyRules"
-              :disabled="contactForm.loading"
-              label="お問い合わせ内容"
-            ></v-textarea>
+          <v-textarea
+            v-model="contactForm.body"
+            :rules="contactForm.validation.bodyRules"
+            :disabled="contactForm.loading"
+            label="お問い合わせ内容"
+          ></v-textarea>
 
-            <v-btn
-              :loading="contactForm.loading"
-              :disabled="!contactForm.validation.valid"
-              @click="submit()"
-              block
-              large
-              color="primary"
-              class="mt-4 font-weight-bold"
-              >送信
-            </v-btn>
-          </v-form>
-        </v-card>
-      </div>
+          <v-btn
+            :loading="contactForm.loading"
+            :disabled="!contactForm.validation.valid"
+            @click="submit()"
+            block
+            large
+            color="primary"
+            class="mt-4 font-weight-bold"
+            >送信
+          </v-btn>
+        </v-form>
+      </v-card>
     </div>
   </v-container>
 </template>
@@ -574,15 +572,6 @@ export default {
       if (scrollY >= 3800) {
         document.getElementById('contact').classList.add('open-width');
       }
-    },
-
-    /**
-     * スムーズスクロール
-     *
-     * @param {String} ref - スクロール先
-     */
-    scrollToAnchorPoint: function (ref) {
-      this.$refs[ref].scrollIntoView({ behavior: 'smooth' });
     },
 
     /**

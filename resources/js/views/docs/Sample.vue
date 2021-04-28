@@ -5,15 +5,11 @@
         <div class="mt-8 index">
           <!-- 目次 -->
           <ol>
-            <li class="my-6 grey--text" @click="$emit('scroll-to-anchor-point', 'buy')">
-              食材を買う
-            </li>
-            <li class="my-6 grey--text" @click="$emit('scroll-to-anchor-point', 'suggest')">
+            <li class="my-6 grey--text" v-scroll-to="{ el: '#buy', offset: -80 }">食材を買う</li>
+            <li class="my-6 grey--text" v-scroll-to="{ el: '#suggest', offset: -80 }">
               おすすめの食材
             </li>
-            <li class="my-6 grey--text" @click="$emit('scroll-to-anchor-point', 'cut')">
-              食材を切る
-            </li>
+            <li class="my-6 grey--text" v-scroll-to="{ el: '#cut', offset: -80 }">食材を切る</li>
           </ol>
         </div>
       </v-col>
@@ -26,7 +22,7 @@
         </div>
 
         <!-- コンテンツ1 -->
-        <v-container fluid class="mb-12" ref="buy">
+        <v-container fluid class="mb-12" id="buy">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
             <span class="pl-3 grey lighten-3">食材を買う</span>
           </h4>
@@ -39,7 +35,7 @@
         </v-container>
 
         <!-- コンテンツ2 -->
-        <v-container fluid class="mb-12" ref="suggest">
+        <v-container fluid class="mb-12" id="suggest">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
             <span class="pl-3 grey lighten-3">おすすめの食材</span>
           </h4>
@@ -59,7 +55,7 @@
         </v-container>
 
         <!-- コンテンツ3 -->
-        <v-container fluid class="mb-12" ref="cut">
+        <v-container fluid class="mb-12" id="cut">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
             <span class="pl-3 grey lighten-3">食材を切る</span>
           </h4>

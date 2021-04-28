@@ -32,6 +32,7 @@ import vuetify from './plugins/vuetify';
 import { VueWindowSizePlugin } from 'vue-window-size/option-api';
 import VueHead from 'vue-head';
 import VueDragscroll from 'vue-dragscroll';
+import VueScrollTo from 'vue-scrollto';
 import Chat from 'vue-beautiful-chat';
 import VueMasonryWall from 'vue-masonry-wall';
 
@@ -41,6 +42,7 @@ Vue.use(VueWindowSizePlugin)
     complement: process.env.MIX_APP_NAME,
   })
   .use(VueDragscroll)
+  .use(VueScrollTo)
   .use(Chat)
   .use(VueMasonryWall);
 

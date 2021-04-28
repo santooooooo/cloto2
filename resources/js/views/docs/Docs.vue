@@ -1,23 +1,8 @@
 <template>
   <v-container id="docs">
-    <router-view @scroll-to-anchor-point="scrollToAnchorPoint($event)" ref="content" />
+    <router-view />
   </v-container>
 </template>
-
-<script>
-export default {
-  methods: {
-    /**
-     * スムーズスクロール
-     *
-     * @param {String} ref - スクロール先
-     */
-    scrollToAnchorPoint: function (ref) {
-      this.$refs.content.$refs[ref].scrollIntoView({ behavior: 'smooth' });
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @import '~/_variables';
@@ -26,9 +11,7 @@ export default {
   background-color: $white;
 
   // router-view内の要素のCSS
-  &::v-deep .container {
-    scroll-margin: 80px;
-
+  &::v-deep {
     .index {
       position: fixed;
       margin-left: 3%;
