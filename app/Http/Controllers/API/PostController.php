@@ -41,7 +41,7 @@ class PostController extends Controller
     {
         $data = $user->posts
             ->sortByDesc('created_at')
-            ->forPage($request->page ?? 1, 30)
+            ->forPage($request->page ?? 1, 40)
             ->values()
             ->toArray();
 
