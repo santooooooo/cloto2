@@ -23,8 +23,10 @@ import profile from '@/views/mypage/Profile';
 import follower from '@/views/mypage/Follower';
 import karte from '@/views/mypage/Karte';
 import post from '@/views/mypage/Post';
-// import docs from '@/views/docs/Docs';
-// import sample from '@/views/docs/Sample';
+import mystudy from '@/views/mystudy/Mystudy';
+import progress from '@/views/mystudy/Progress';
+import docs from '@/views/docs/Docs';
+import sample from '@/views/docs/Sample';
 import notFound from '@/views/errors/NotFound';
 
 const router = new VueRouter({
@@ -95,17 +97,28 @@ const router = new VueRouter({
         },
       ],
     },
-    // {
-    //   path: '/docs',
-    //   component: docs,
-    //   children: [
-    //     {
-    //       path: 'sample',
-    //       name: 'sample',
-    //       component: sample,
-    //     },
-    //   ],
-    // },
+    {
+      path: '/mystudy',
+      component: mystudy,
+      children: [
+        {
+          path: 'progress',
+          name: 'mystudy',
+          component: progress,
+        },
+      ],
+    },
+    {
+      path: '/docs',
+      component: docs,
+      children: [
+        {
+          path: 'sample',
+          name: 'sample',
+          component: sample,
+        },
+      ],
+    },
     {
       path: '*',
       name: notFound,
