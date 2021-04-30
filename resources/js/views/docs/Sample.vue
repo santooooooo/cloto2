@@ -1,8 +1,12 @@
 <template>
-  <v-container class="mt-4">
+  <v-container class="mt-4" fluid id="content-container">
+
     <v-row>
-      <v-col cols="4">
-        <div class="mt-8 index">
+      <v-col cols="3">
+    <Drawer />
+      </v-col>
+      <v-col cols="2">
+        <div class="mt-8 index mx-auto">
           <!-- 目次 -->
           <ol>
             <li class="my-6 grey--text" v-scroll-to="{ el: '#buy', offset: -80 }">食材を買う</li>
@@ -14,7 +18,7 @@
         </div>
       </v-col>
 
-      <v-col cols="8">
+      <v-col cols="7">
         <!-- タイトル -->
         <div class="grey lighten-2 mb-8 pa-4">
           <h1 class="text-h4 font-weight-bold">{{ title }}</h1>
@@ -70,6 +74,8 @@
 </template>
 
 <script>
+import Drawer from '@/components/mystudy/Drawer';
+
 export default {
   head: {
     title() {
@@ -78,6 +84,9 @@ export default {
       };
     },
   },
+  components: {
+    Drawer
+  },
   data() {
     return {
       title: '野菜炒めを作るよ', // コンテンツタイトル
@@ -85,3 +94,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+@media (min-width: 768px) {
+.container-md, .container-sm, .container {
+    max-width: 1280px  !important;
+}
+}
+</style>
