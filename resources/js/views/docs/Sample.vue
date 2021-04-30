@@ -7,7 +7,9 @@
     <Status />
       </v-col>
       <v-col cols="2">
-        <div class="mt-8 index mx-auto">
+        <h1 class="font-weight-bold text-h5 mb-2">入門期<v-icon class="pl-4">mdi-chevron-down</v-icon></h1>
+        <h2 class="text-h6 font-weight-bolder">class 0</h2>
+        <div class="pl-2">
           <!-- 目次 -->
           <ol>
             <li class="my-6 grey--text" v-scroll-to="{ el: '#buy', offset: -80 }">食材を買う</li>
