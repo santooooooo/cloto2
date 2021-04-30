@@ -4,6 +4,7 @@
     <v-row>
       <v-col cols="3">
     <Drawer />
+    <Status />
       </v-col>
       <v-col cols="2">
         <div class="mt-8 index mx-auto">
@@ -75,6 +76,7 @@
 
 <script>
 import Drawer from '@/components/mystudy/Drawer';
+import Status from '@/components/mystudy/status-index';
 
 export default {
   head: {
@@ -85,7 +87,8 @@ export default {
     },
   },
   components: {
-    Drawer
+    Drawer,
+    Status
   },
   data() {
     return {
