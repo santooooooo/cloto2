@@ -706,7 +706,9 @@ export default {
         this.stopVoiceDetection();
 
         // 通話の接続を終了
-        await this.peer.disconnect();
+        //await this.peer.disconnect();
+        await this.peer.destroy(); //disconnectは非推奨のため
+
         this.peer = null;
       }
     },

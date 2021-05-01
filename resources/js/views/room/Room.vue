@@ -31,6 +31,7 @@
       <Call
         :call-id="call.id"
         :capacity="call.capacity"
+        :video="true"
         @leave-call="leaveCall()"
         v-else-if="call.roles.includes(authUser.seat.role)"
       />
