@@ -660,8 +660,7 @@ export default {
      */
     makeCall: async function () {
       this.call = this.peer.joinRoom(this.callId, {
-        //mode: this.roomMode,
-        mode: 'sfu',
+        mode: this.roomMode,
         stream: this.localStream,
       });
 
@@ -878,7 +877,6 @@ export default {
 
           this.screenSharing.peer.joinRoom(this.callId, {
             mode: this.roomMode,
-            mode: 'sfu',
             stream: this.screenSharing.stream,
           });
 
