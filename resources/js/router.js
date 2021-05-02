@@ -25,19 +25,19 @@ import post from '@/views/mypage/Post';
 import mystudy from '@/views/mystudy/Mystudy';
 import progress from '@/views/mystudy/Progress';
 import karte from '@/views/mystudy/Karte';
-import docs from '@/views/docs/Docs';
-import sample from '@/views/docs/Sample';
-import javascript0 from '@/views/docs/javascript/Class0';
-import javascript1 from '@/views/docs/javascript/Class1';
-import javascript2 from '@/views/docs/javascript/Class2';
-import javascript3 from '@/views/docs/javascript/Class3';
-import javascript4 from '@/views/docs/javascript/Class4';
-import javascript5 from '@/views/docs/javascript/Class5';
-import javascript6 from '@/views/docs/javascript/Class6';
-import javascript7 from '@/views/docs/javascript/Class7';
-import javascript8 from '@/views/docs/javascript/Class8';
-import javascript9 from '@/views/docs/javascript/Class9';
-import javascript10 from '@/views/docs/javascript/Class10';
+import docs from '@/views/mystudy/docs/Docs';
+import sample from '@/views/mystudy/docs/Sample';
+import javascript0 from '@/views/mystudy/docs/javascript/Class0';
+import javascript1 from '@/views/mystudy/docs/javascript/Class1';
+import javascript2 from '@/views/mystudy/docs/javascript/Class2';
+import javascript3 from '@/views/mystudy/docs/javascript/Class3';
+import javascript4 from '@/views/mystudy/docs/javascript/Class4';
+import javascript5 from '@/views/mystudy/docs/javascript/Class5';
+import javascript6 from '@/views/mystudy/docs/javascript/Class6';
+import javascript7 from '@/views/mystudy/docs/javascript/Class7';
+import javascript8 from '@/views/mystudy/docs/javascript/Class8';
+import javascript9 from '@/views/mystudy/docs/javascript/Class9';
+import javascript10 from '@/views/mystudy/docs/javascript/Class10';
 import notFound from '@/views/errors/NotFound';
 
 const router = new VueRouter({
@@ -117,71 +117,71 @@ const router = new VueRouter({
           name: 'karte',
           component: karte,
         },
-      ],
-    },
-    {
-      path: '/docs',
-      component: docs,
-      children: [
         {
-          path: 'sample',
-          name: 'sample',
-          component: sample,
-        },
-        {
-          path: 'javascript/class-0',
-          name: 'javascript-0',
-          component: javascript0,
-        },
-        {
-          path: 'javascript/class-1',
-          name: 'javascript-1',
-          component: javascript1,
-        },
-        {
-          path: 'javascript/class-2',
-          name: 'javascript-2',
-          component: javascript2,
-        },
-        {
-          path: 'javascript/class-3',
-          name: 'javascript-3',
-          component: javascript3,
-        },
-        {
-          path: 'javascript/class-4',
-          name: 'javascript-4',
-          component: javascript4,
-        },
-        {
-          path: 'javascript/class-5',
-          name: 'javascript-5',
-          component: javascript5,
-        },
-        {
-          path: 'javascript/class-6',
-          name: 'javascript-6',
-          component: javascript6,
-        },
-        {
-          path: 'javascript/class-7',
-          name: 'javascript-7',
-          component: javascript7,
-        },
-        {
-          path: 'javascript/class-8',
-          name: 'javascript-8',
-          component: javascript8,
-        },
-        {
-          path: 'javascript/class-9',
-          name: 'javascript-9',
-          component: javascript9,
-        },
-        {
-          path: 'javascript/class-10',
-          name: 'javascript-10',
-          component: javascript10,
+          path: 'docs',
+          component: docs,
+          children: [
+            {
+              path: 'sample',
+              name: 'sample',
+              component: sample,
+            },
+            {
+              path: 'javascript/class-0',
+              name: 'javascript-0',
+              component: javascript0,
+            },
+            {
+              path: 'javascript/class-1',
+              name: 'javascript-1',
+              component: javascript1,
+            },
+            {
+              path: 'javascript/class-2',
+              name: 'javascript-2',
+              component: javascript2,
+            },
+            {
+              path: 'javascript/class-3',
+              name: 'javascript-3',
+              component: javascript3,
+            },
+            {
+              path: 'javascript/class-4',
+              name: 'javascript-4',
+              component: javascript4,
+            },
+            {
+              path: 'javascript/class-5',
+              name: 'javascript-5',
+              component: javascript5,
+            },
+            {
+              path: 'javascript/class-6',
+              name: 'javascript-6',
+              component: javascript6,
+            },
+            {
+              path: 'javascript/class-7',
+              name: 'javascript-7',
+              component: javascript7,
+            },
+            {
+              path: 'javascript/class-8',
+              name: 'javascript-8',
+              component: javascript8,
+            },
+            {
+              path: 'javascript/class-9',
+              name: 'javascript-9',
+              component: javascript9,
+            },
+            {
+              path: 'javascript/class-10',
+              name: 'javascript-10',
+              component: javascript10,
+            },
+          ],
         },
       ],
     },
