@@ -13,14 +13,14 @@ import { ANNOUNCE_SOUND } from '@/consts/sound'; import Call from '@/components/
           <p>「玄人」を目指しましょう</p>
           <v-container>
             <v-col>
-              <v-btn color="blue" class="white--text mb-2" :to="{ name: 'sample' }"
-                >最初から開始する</v-btn
-              >
+              <v-btn color="blue" class="white--text mb-2" :to="{ name: 'sample' }">
+                最初から開始する
+              </v-btn>
             </v-col>
             <v-col>
-              <v-btn color="blue" class="white--text mb-2" :to="{ name: 'sample' }"
-                >続きから開始する</v-btn
-              >
+              <v-btn color="blue" class="white--text mb-2" :to="{ name: 'sample' }">
+                続きから開始する
+              </v-btn>
             </v-col>
           </v-container>
         </v-col>
