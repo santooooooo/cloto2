@@ -2,10 +2,9 @@
   <v-container class="mt-4" fluid id="content-container">
     <v-row>
       <v-col cols="3">
-        <Drawer />
-        <Status />
+    <Drawer />
       </v-col>
-      <v-col cols="2">
+      <v-col cols="3">
         <h1 class="font-weight-bold text-h5 mb-2">
           入門期<v-icon class="ml-4">mdi-chevron-down</v-icon>
         </h1>
@@ -24,7 +23,7 @@
         </div>
       </v-col>
 
-      <v-col cols="7">
+      <v-col cols="6">
         <!-- タイトル -->
         <div class="grey lighten-2 mb-8 pa-4">
           <h1 class="text-h4 font-weight-bold">{{ title }}</h1>
@@ -104,8 +103,6 @@
 
 <script>
 import Drawer from '@/components/mystudy/Drawer';
-import Status from '@/components/mystudy/status-index';
-
 export default {
   head: {
     title() {
@@ -114,15 +111,14 @@ export default {
       };
     },
   },
-  components: {
-    Drawer,
-    Status,
-  },
   data() {
     return {
       title: '野菜炒めを作るよ', // コンテンツタイトル
     };
   },
+  components: {
+    Drawer
+  }
 };
 </script>
 

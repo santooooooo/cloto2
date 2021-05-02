@@ -1,7 +1,6 @@
 <template>
   <v-layout id="mystudy">
     <Drawer />
-
     <v-flex>
       <!-- 強制的にコンポーネントを初期化（変数の初期化） -->
       <router-view :key="$route.name" />

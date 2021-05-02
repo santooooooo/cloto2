@@ -16,19 +16,19 @@
 
           <v-list-item class="mb-4">
             <v-list-item-content>
-              <v-list-item-title class="text-body-1 font-weight-bold grey--text accent-1">苦労人前期<span class="pl-2" style="font-size: 0.6rem">未開放</span></v-list-item-title>
+              <v-list-item-title class="text-body-1 font-weight-bold grey--text accent-1">苦労人前期<span class="pl-2" style="font-size: 0.6rem">未解放</span></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
           <v-list-item class="mb-4">
             <v-list-item-content>
-              <v-list-item-title class="text-body-1 font-weight-bold grey--text accent-1">苦労人後期<span class="pl-2" style="font-size: 0.6rem">未開放</span></v-list-item-title>
+              <v-list-item-title class="text-body-1 font-weight-bold grey--text accent-1">苦労人後期<span class="pl-2" style="font-size: 0.6rem">未解放</span></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
           <v-list-item class="mb-4">
             <v-list-item-content>
-              <v-list-item-title class="text-body-1 font-weight-bold grey--text accent-1">玄人期<span class="pl-2" style="font-size: 0.6rem">未開放</span></v-list-item-title>
+              <v-list-item-title class="text-body-1 font-weight-bold grey--text accent-1">玄人期<span class="pl-2" style="font-size: 0.6rem">未解放</span></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
