@@ -6,9 +6,9 @@
     <Drawer />
     <Status />
       </v-col>
-      <v-col cols="2">
-        <h1 class="font-weight-bold text-h5 mb-2">入門期<v-icon class="pl-4">mdi-chevron-down</v-icon></h1>
-        <h2 class="text-h6 font-weight-bolder">class 0</h2>
+      <v-col cols="2" class="">
+        <h1 class="font-weight-bold text-h5 mb-2">入門期<v-icon class="ml-4">mdi-chevron-down</v-icon></h1>
+        <h2 class="text-h6 font-weight-bolder">野菜炒めを作るよ<v-icon class="ml-4 content-btn" @click="contentOpen">mdi-chevron-down</v-icon></h2>
         <div class="pl-2">
           <!-- 目次 -->
           <ol>
@@ -71,6 +71,11 @@
           <p class="mb-8">人参、と見せかけてキャベツ</p>
           <p>どっちゃでもええ</p>
         </v-container>
+
+        <!-- 次へ進むボタン -->
+        <v-col class="text-center">
+          <v-btn color="blue" class="text-white" to="">完了（次へ進む）</v-btn>
+        </v-col>
       </v-col>
     </v-row>
   </v-container>
@@ -100,10 +105,12 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+
 @media (min-width: 768px) {
 .container-md, .container-sm, .container {
-    max-width: 1280px  !important;
+    max-width: 1280px !important;
 }
 }
+  
 </style>
