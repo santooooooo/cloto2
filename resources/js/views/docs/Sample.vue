@@ -6,7 +6,7 @@
     <Drawer />
     <Status />
       </v-col>
-      <v-col cols="2" class="">
+      <v-col cols="2">
         <h1 class="font-weight-bold text-h5 mb-2">入門期<v-icon class="ml-4">mdi-chevron-down</v-icon></h1>
         <h2 class="text-h6 font-weight-bolder">野菜炒めを作るよ<v-icon class="ml-4 content-btn">mdi-chevron-down</v-icon></h2>
         <div class="pl-2">
