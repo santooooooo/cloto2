@@ -74,7 +74,8 @@
 
         <!-- 次へ進むボタン -->
         <v-col class="text-center">
-          <v-btn color="blue" class="text-white" to="">完了（次へ進む）</v-btn>
+          <!-- ルーティング箇所 -->
+          <v-btn color="blue" class="text-white" to="/docs/senisaki">完了（次へ進む）</v-btn> 
         </v-col>
       </v-col>
     </v-row>
