@@ -18,7 +18,7 @@
         </div>
       </v-col>
 
-      <v-col cols="6">
+      <v-col cols="9">
         <!-- タイトル -->
         <div class="grey lighten-2 mb-8 pa-4">
           <h1 class="text-h4 font-weight-bold">{{ title }}</h1>
