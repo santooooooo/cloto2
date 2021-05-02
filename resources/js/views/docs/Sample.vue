@@ -1,14 +1,17 @@
 <template>
   <v-container class="mt-4" fluid id="content-container">
-
     <v-row>
       <v-col cols="3">
-    <Drawer />
-    <Status />
+        <Drawer />
+        <Status />
       </v-col>
       <v-col cols="2">
-        <h1 class="font-weight-bold text-h5 mb-2">入門期<v-icon class="ml-4">mdi-chevron-down</v-icon></h1>
-        <h2 class="text-h6 font-weight-bolder">野菜炒めを作るよ<v-icon class="ml-4 content-btn">mdi-chevron-down</v-icon></h2>
+        <h1 class="font-weight-bold text-h5 mb-2">
+          入門期<v-icon class="ml-4">mdi-chevron-down</v-icon>
+        </h1>
+        <h2 class="text-h6 font-weight-bolder">
+          野菜炒めを作るよ<v-icon class="ml-4 content-btn">mdi-chevron-down</v-icon>
+        </h2>
         <div class="pl-2">
           <!-- 目次 -->
           <ol>
@@ -48,17 +51,34 @@
           </h4>
 
           <h5 class="text-h5 font-weight-bold mb-8">1.岩塩</h5>
-          <p class="mb-8">普通の塩には戻れない</p>
-          <v-img
-            max-height="300"
-            max-width="400"
-            src="https://picsum.photos/id/11/500/300"
-            class="mb-10"
-          ></v-img>
+          <v-row>
+            <v-col cols="6">
+              <p class="mb-8">普通の塩には戻れない</p>
+            </v-col>
+            <v-col cols="6">
+              <v-img
+                max-height="300"
+                max-width="400"
+                src="https://picsum.photos/id/11/500/300"
+                class="mb-10"
+              ></v-img>
+            </v-col>
+          </v-row>
 
           <h5 class="text-h5 font-weight-bold mb-8">2.おいしい水</h5>
-          <p class="mb-8">普通の水には戻れない</p>
-          <v-img max-height="400" max-width="500" src="https://picsum.photos/id/11/500/300"></v-img>
+          <v-row>
+            <v-col cols="6">
+              <p class="mb-8">普通の水には戻れない</p>
+            </v-col>
+            <v-col cols="6">
+              <v-img
+                max-height="300"
+                max-width="400"
+                src="https://picsum.photos/id/11/500/300"
+                class="mb-10"
+              ></v-img>
+            </v-col>
+          </v-row>
         </v-container>
 
         <!-- コンテンツ3 -->
@@ -75,7 +95,7 @@
         <!-- 次へ進むボタン -->
         <v-col class="text-center">
           <!-- ルーティング箇所 -->
-          <v-btn color="blue" class="text-white" to="/docs/senisaki">完了（次へ進む）</v-btn> 
+          <v-btn color="blue" class="text-white" to="/docs/senisaki">完了（次へ進む）</v-btn>
         </v-col>
       </v-col>
     </v-row>
@@ -96,7 +116,7 @@ export default {
   },
   components: {
     Drawer,
-    Status
+    Status,
   },
   data() {
     return {
@@ -108,9 +128,10 @@ export default {
 
 <style lang="scss" scoped>
 @media (min-width: 768px) {
-.container-md, .container-sm, .container {
+  .container-md,
+  .container-sm,
+  .container {
     max-width: 1280px !important;
+  }
 }
-}
-  
 </style>
