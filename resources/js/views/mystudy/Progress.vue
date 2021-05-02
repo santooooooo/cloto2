@@ -1,4 +1,3 @@
-import { ANNOUNCE_SOUND } from '@/consts/sound'; import Call from '@/components/room/Call';
 <template>
   <v-container>
     <h1 class="font-weight-bold mt-4">あなたの「独学」を支援するCLOTOの「マイスタディ」</h1>
@@ -13,7 +12,7 @@ import { ANNOUNCE_SOUND } from '@/consts/sound'; import Call from '@/components/
           <p>「玄人」を目指しましょう</p>
           <v-container>
             <v-col>
-              <v-btn color="blue" class="white--text mb-2" :to="{ name: 'sample' }">
+              <v-btn color="blue" class="white--text mb-2" :to="{ name: 'javascript-0' }">
                 最初から開始する
               </v-btn>
             </v-col>

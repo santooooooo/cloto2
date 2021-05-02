@@ -2,9 +2,6 @@
   <v-container class="mt-4" fluid id="content-container">
     <v-row>
       <v-col cols="3">
-    <Drawer />
-      </v-col>
-      <v-col cols="3">
         <h1 class="font-weight-bold text-h5 mb-2">
           入門期<v-icon class="ml-4">mdi-chevron-down</v-icon>
         </h1>
@@ -15,9 +12,7 @@
           <!-- 目次 -->
           <ol>
             <li class="my-6 grey--text" v-scroll-to="{ el: '#buy', offset: -80 }">0-1.</li>
-            <li class="my-6 grey--text" v-scroll-to="{ el: '#suggest', offset: -80 }">
-              0-2.
-            </li>
+            <li class="my-6 grey--text" v-scroll-to="{ el: '#suggest', offset: -80 }">0-2.</li>
             <li class="my-6 grey--text" v-scroll-to="{ el: '#cut', offset: -80 }">0-3</li>
           </ol>
         </div>
@@ -38,7 +33,7 @@
 
           <p class="mb-8">ダミー</p>
           <p class="mb-8">
-ダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミー
+            ダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミー
           </p>
           <p>ダミー</p>
         </v-container>
@@ -93,8 +88,9 @@
 
         <!-- 次へ進むボタン -->
         <v-col class="text-center">
-          <!-- ルーティング箇所 -->
-          <v-btn color="blue" class="text-white" to="/docs/senisaki">完了（次へ進む）</v-btn>
+          <v-btn color="blue" class="text-white" :to="{ name: 'mystudy' }">
+            完了（次へ進む）
+          </v-btn>
         </v-col>
       </v-col>
     </v-row>
@@ -102,7 +98,6 @@
 </template>
 
 <script>
-import Drawer from '@/components/mystudy/Drawer';
 export default {
   head: {
     title() {
@@ -113,12 +108,9 @@ export default {
   },
   data() {
     return {
-      title: '野菜炒めを作るよ', // コンテンツタイトル
+      title: 'Class 10', // コンテンツタイトル
     };
   },
-  components: {
-    Drawer
-  }
 };
 </script>
 
