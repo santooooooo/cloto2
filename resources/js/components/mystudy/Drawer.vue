@@ -26,6 +26,11 @@
       </v-list>
 
       <Periods />
+
+      <v-col class="text-center">
+
+      <v-btn class="white--text w-100" color="yellow">カルテ記入</v-btn>
+      </v-col>
     </v-navigation-drawer>
   </v-card>
 </template>
