@@ -24,15 +24,15 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
-
-      <v-dialog v-model="dialog">
-        <Karte />
-      </v-dialog>
       <Periods />
 
       <v-col class="text-center">
         <v-btn class="white--text w-100" color="yellow" @click="karteDialogOpen">カルテ記入</v-btn>
       </v-col>
+
+      <v-dialog v-model="dialog">
+        <Karte />
+      </v-dialog>
     </v-navigation-drawer>
   </v-card>
 </template>
