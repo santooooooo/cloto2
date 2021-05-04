@@ -25,11 +25,13 @@
         </v-list-item-group>
       </v-list>
 
+      <v-dialog v-model="dialog">
+        <Karte />
+      </v-dialog>
       <Periods />
 
       <v-col class="text-center">
-
-      <v-btn class="white--text w-100" color="yellow">カルテ記入</v-btn>
+        <v-btn class="white--text w-100" color="yellow" @click="karteDialogOpen">カルテ記入</v-btn>
       </v-col>
     </v-navigation-drawer>
   </v-card>
@@ -37,10 +39,22 @@
 
 <script>
 import Periods from '@/components/mystudy/Periods.vue';
+import Karte from '@/components/room/KartePostDialog.vue';
 
 export default {
   components: {
     Periods,
+    Karte,
+  },
+  data() {
+    return {
+      dialog: false,
+    };
+  },
+  methods: {
+    karteDialogOpen: function () {
+      this.dialog = true;
+    },
   },
 };
 </script>
