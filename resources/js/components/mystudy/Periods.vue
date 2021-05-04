@@ -2,7 +2,6 @@
   <v-list nav dense>
     <v-list-item-group color="#f6bf00">
       <v-list-item class="mb-4 green">
-        <!-- drawerでいう"to"以降は削除してあります -->
         <v-list-item-content>
           <v-list-item-title class="text-body-1 font-weight-bold grey--text">
             入門期<span class="pl-2" style="font-size: 0.6rem">解放済み</span>
