@@ -1,7 +1,6 @@
 <template>
   <v-list nav dense>
     <v-list-item-group color="#f6bf00">
-
       <v-list-item class="mb-4">
         <v-list-item-content id="enter" class="pl-1">
           <v-list-item-title class="text-body-1 font-weight-bold accent-1">
@@ -55,110 +54,110 @@
   }
 }
 
-span{
+span {
   font-size: 0.6rem;
 }
 </style>
 
 <script>
 export default {
-  data(){
+  data() {
     return {
       progress: {
-      enter: 2,
-      begin: 1,
-      cloFirst: 0,
-      cloSecond: 0,
-      cloto: 0
-      }
-    }
+        enter: 2,
+        begin: 1,
+        cloFirst: 0,
+        cloSecond: 0,
+        cloto: 0,
+      },
+    };
   },
   mounted() {
-    let enter = document.getElementById('enter')
-    let enterText = document.getElementById('enter-text')
+    let enter = document.getElementById('enter');
+    let enterText = document.getElementById('enter-text');
 
-    let begin = document.getElementById('begin')
-    let beginText = document.getElementById('begin-text')
+    let begin = document.getElementById('begin');
+    let beginText = document.getElementById('begin-text');
 
-    let hardOne = document.getElementById('hard-one')
-    let hardOneText = document.getElementById('hard-one-text')
+    let hardOne = document.getElementById('hard-one');
+    let hardOneText = document.getElementById('hard-one-text');
 
-    let hardTwo = document.getElementById('hard-two')
-    let hardTwoText = document.getElementById('hard-two-text')
+    let hardTwo = document.getElementById('hard-two');
+    let hardTwoText = document.getElementById('hard-two-text');
 
-    let master = document.getElementById('master')
-    let masterText = document.getElementById('master-text')
+    let master = document.getElementById('master');
+    let masterText = document.getElementById('master-text');
 
     switch (this.progress.enter) {
       case 2:
-        enter.classList.add('white--text', 'green')
-        enterText.innerHTML = "解放済み"
+        enter.classList.add('white--text', 'green');
+        enterText.innerHTML = '解放済み';
         break;
       case 1:
-        enter.classList.add('white--text', 'blue')
-        enterText.innerHTML = "取り組み中"
+        enter.classList.add('white--text', 'blue');
+        enterText.innerHTML = '取り組み中';
         break;
       default:
-        enter.classList.add('grey--text')
-        enterText.innerHTML = "未解放"
+        enter.classList.add('grey--text');
+        enterText.innerHTML = '未解放';
         break;
     }
     switch (this.progress.begin) {
       case 2:
-        begin.classList.add('white--text', 'green')
-        beginText.innerHTML = "解放済み"
+        begin.classList.add('white--text', 'green');
+        beginText.innerHTML = '解放済み';
         break;
       case 1:
-        begin.classList.add('white--text', 'blue')
-        beginText.innerHTML = "取り組み中"
+        begin.classList.add('white--text', 'blue');
+        beginText.innerHTML = '取り組み中';
         break;
       default:
-        begin.classList.add('grey--text')
-        beginText.innerHTML = "未解放"
+        begin.classList.add('grey--text');
+        beginText.innerHTML = '未解放';
         break;
     }
     switch (this.progress.hardOne) {
       case 2:
-        hardOne.classList.add('white--text', 'green')
-        hardOneText.innerHTML = "解放済み"
+        hardOne.classList.add('white--text', 'green');
+        hardOneText.innerHTML = '解放済み';
         break;
       case 1:
-        hardOne.classList.add('white--text', 'blue')
-        hardOneText.innerHTML = "取り組み中"
+        hardOne.classList.add('white--text', 'blue');
+        hardOneText.innerHTML = '取り組み中';
         break;
       default:
-        hardOne.classList.add('grey--text')
-        hardOneText.innerHTML = "未解放"
+        hardOne.classList.add('grey--text');
+        hardOneText.innerHTML = '未解放';
         break;
     }
     switch (this.progress.hardTwo) {
       case 2:
-        hardTwo.classList.add('white--text', 'green')
-        hardTwoText.innerHTML = "解放済み"
+        hardTwo.classList.add('white--text', 'green');
+        hardTwoText.innerHTML = '解放済み';
         break;
       case 1:
-        hardTwo.classList.add('white--text', 'blue')
-        hardTwoText.innerHTML = "取り組み中"
+        hardTwo.classList.add('white--text', 'blue');
+        hardTwoText.innerHTML = '取り組み中';
         break;
       default:
-        hardTwo.classList.add('grey--text')
-        hardTwoText.innerHTML = "未解放"
+        hardTwo.classList.add('grey--text');
+        hardTwoText.innerHTML = '未解放';
         break;
     }
     switch (this.progress.master) {
       case 2:
-        master.classList.add('white--text', 'green')
-        masterText.innerHTML = "解放済み"
+        master.classList.add('white--text', 'green');
+        masterText.innerHTML = '解放済み';
         break;
       case 1:
-        master.classList.add('white--text', 'blue')
-        masterText.innerHTML = "取り組み中"
+        master.classList.add('white--text', 'blue');
+        masterText.innerHTML = '取り組み中';
         break;
       default:
-        master.classList.add('grey--text')
-        masterText.innerHTML = "未解放"
+        master.classList.add('grey--text');
+        masterText.innerHTML = '未解放';
         break;
     }
   },
-}
+};
 </script>
