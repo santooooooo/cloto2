@@ -1,24 +1,25 @@
 <template>
   <v-container class="mt-4" fluid id="content-container">
     <v-row>
-      <v-col cols="3">
-        <h1 class="font-weight-bold text-h5 mb-2">
-          入門期<v-icon class="ml-4">mdi-chevron-down</v-icon>
+      <v-col cols="2" class="p-0">
+        <h1 class="font-weight-bold text-h5 mb-2 text-center green">
+          入門期
         </h1>
-        <h2 class="text-h6 font-weight-bolder">
-          Class 0<v-icon class="ml-4 content-btn">mdi-chevron-down</v-icon>
+        <h2 class="text-h6 font-weight-bolder green">
+          Class 0
         </h2>
-        <div class="pl-2">
+        <div>
           <!-- 目次 -->
-          <ol>
-            <li class="my-6 grey--text" v-scroll-to="{ el: '#buy', offset: -80 }">0-1.</li>
-            <li class="my-6 grey--text" v-scroll-to="{ el: '#suggest', offset: -80 }">0-2.</li>
-            <li class="my-6 grey--text" v-scroll-to="{ el: '#cut', offset: -80 }">0-3</li>
-          </ol>
+          <ul class="p-0">
+            <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#buy', offset: -80 }">0-1.</li>
+            <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#suggest', offset: -80 }">0-2.</li>
+            <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#cut', offset: -80 }">0-3</li>
+          </ul>
         </div>
       </v-col>
 
-      <v-col cols="9">
+      <v-col cols="10">
+        <h1 class="mb-12 text-center">クラス2以降、ここにコースタイトル反映</h1>
         <!-- タイトル -->
         <div class="grey lighten-2 mb-8 pa-4">
           <h1 class="text-h4 font-weight-bold">{{ title }}</h1>
@@ -115,6 +116,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+ul{
+  list-style: none;
+}
+
+.content-subtext{
+  font-size: 0.8rem;
+}
+
 @media (min-width: 768px) {
   .container-md,
   .container-sm,
