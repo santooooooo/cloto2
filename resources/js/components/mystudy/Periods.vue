@@ -1,9 +1,10 @@
 <template>
   <v-list nav dense>
     <v-list-item-group color="#f6bf00">
+
       <v-list-item class="mb-4">
-        <v-list-item-content id="enter" class="pl-1">
-          <v-list-item-title class="text-body-1 font-weight-bold accent-1">
+        <v-list-item-content id="enter">
+          <v-list-item-title class="text-body-1 font-weight-bold accent-1 text-center">
             入門期<span class="pl-2" id="enter-text"></span>
           </v-list-item-title>
         </v-list-item-content>
@@ -11,7 +12,7 @@
 
       <v-list-item class="mb-4">
         <v-list-item-content id="begin" class="pl-1">
-          <v-list-item-title class="text-body-1 font-weight-bold accent-1">
+          <v-list-item-title class="text-body-1 font-weight-bold accent-1 text-center">
             素人期<span class="pl-2" id="begin-text"></span>
           </v-list-item-title>
         </v-list-item-content>
@@ -19,7 +20,7 @@
 
       <v-list-item class="mb-4">
         <v-list-item-content id="hard-one" class="pl-1">
-          <v-list-item-title class="text-body-1 font-weight-bold accent-1">
+          <v-list-item-title class="text-body-1 font-weight-bold accent-1 text-center">
             苦労人前期<span class="pl-2" id="hard-one-text"></span>
           </v-list-item-title>
         </v-list-item-content>
@@ -27,7 +28,7 @@
 
       <v-list-item class="mb-4">
         <v-list-item-content id="hard-two" class="pl-1">
-          <v-list-item-title class="text-body-1 font-weight-bold accent-1">
+          <v-list-item-title class="text-body-1 font-weight-bold accent-1 text-center">
             苦労人後期<span class="pl-2" id="hard-two-text"></span>
           </v-list-item-title>
         </v-list-item-content>
@@ -35,7 +36,7 @@
 
       <v-list-item class="mb-4">
         <v-list-item-content id="master" class="pl-1">
-          <v-list-item-title class="text-body-1 font-weight-bold accent-1">
+          <v-list-item-title class="text-body-1 font-weight-bold accent-1 text-center">
             玄人期<span class="pl-2" id="master-text"></span>
           </v-list-item-title>
         </v-list-item-content>
@@ -46,7 +47,7 @@
 
 <style lang="scss" scoped>
 .v-list {
-  width: 180px;
+  width: 100%;
   margin: 0 auto;
 
   a:hover {
