@@ -64,11 +64,11 @@ export default {
   data() {
     return {
       progress: {
-        enter: 2,
-        begin: 1,
-        cloFirst: 0,
-        cloSecond: 0,
-        cloto: 0,
+        enter: '解放済',
+        begin: '取り組み中',
+        cloFirst: '未解放',
+        cloSecond: '未解放',
+        cloto: '未解放',
       },
     };
   },
@@ -89,11 +89,11 @@ export default {
     let masterText = document.getElementById('master-text');
 
     switch (this.progress.enter) {
-      case 2:
+      case '解放済':
         enter.classList.add('white--text', 'green');
         enterText.innerHTML = '解放済み';
         break;
-      case 1:
+      case '取り組み中':
         enter.classList.add('white--text', 'blue');
         enterText.innerHTML = '取り組み中';
         break;
@@ -103,11 +103,11 @@ export default {
         break;
     }
     switch (this.progress.begin) {
-      case 2:
+      case '解放済':
         begin.classList.add('white--text', 'green');
         beginText.innerHTML = '解放済み';
         break;
-      case 1:
+      case '取り組み中':
         begin.classList.add('white--text', 'blue');
         beginText.innerHTML = '取り組み中';
         break;
@@ -117,11 +117,11 @@ export default {
         break;
     }
     switch (this.progress.hardOne) {
-      case 2:
+      case '解放済':
         hardOne.classList.add('white--text', 'green');
         hardOneText.innerHTML = '解放済み';
         break;
-      case 1:
+      case '取り組み中':
         hardOne.classList.add('white--text', 'blue');
         hardOneText.innerHTML = '取り組み中';
         break;
@@ -131,11 +131,11 @@ export default {
         break;
     }
     switch (this.progress.hardTwo) {
-      case 2:
+      case '解放済':
         hardTwo.classList.add('white--text', 'green');
         hardTwoText.innerHTML = '解放済み';
         break;
-      case 1:
+      case '取り組み中':
         hardTwo.classList.add('white--text', 'blue');
         hardTwoText.innerHTML = '取り組み中';
         break;
@@ -145,11 +145,11 @@ export default {
         break;
     }
     switch (this.progress.master) {
-      case 2:
+      case '解放済':
         master.classList.add('white--text', 'green');
         masterText.innerHTML = '解放済み';
         break;
-      case 1:
+      case '取り組み中':
         master.classList.add('white--text', 'blue');
         masterText.innerHTML = '取り組み中';
         break;
