@@ -11,16 +11,9 @@
           <p>利用しながら独学を進め</p>
           <p>「玄人」を目指しましょう</p>
           <v-container>
-            <v-col>
               <v-btn color="blue" class="white--text mb-2" :to="{ name: 'javascript-0' }">
-                最初から開始する
+                独学で学ぶ
               </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn color="blue" class="white--text mb-2" :to="{ name: 'sample' }">
-                続きから開始する
-              </v-btn>
-            </v-col>
           </v-container>
         </v-col>
         <v-col cols="8" class="text-center">
