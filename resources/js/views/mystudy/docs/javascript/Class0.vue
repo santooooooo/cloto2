@@ -11,9 +11,9 @@
         <div>
           <!-- 目次 -->
           <ul class="p-0 pl-2">
-            <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#buy', offset: -80 }">0-1.</li>
-            <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#suggest', offset: -80 }">0-2.</li>
-            <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#cut', offset: -80 }">0-3</li>
+            <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#buy', offset: -80 }">0-1. ダミー1</li>
+            <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#suggest', offset: -80 }">0-2. ダミー2</li>
+            <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#cut', offset: -80 }">0-3. ダミー3</li>
           </ul>
         </div>
       </v-col>
@@ -29,7 +29,7 @@
         <!-- コンテンツ1 -->
         <v-container fluid class="mb-12" id="buy">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
-            <span class="pl-3 grey lighten-3">ダミー</span>
+            <span class="pl-3 grey lighten-3">ダミー1</span>
           </h4>
 
           <p class="mb-8">ダミー</p>
@@ -42,7 +42,7 @@
         <!-- コンテンツ2 -->
         <v-container fluid class="mb-12" id="suggest">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
-            <span class="pl-3 grey lighten-3">ダミー</span>
+            <span class="pl-3 grey lighten-3">ダミー2</span>
           </h4>
 
           <h5 class="text-h5 font-weight-bold mb-8">ダミー</h5>
@@ -79,7 +79,7 @@
         <!-- コンテンツ3 -->
         <v-container fluid class="mb-12" id="cut">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
-            <span class="pl-3 grey lighten-3">ダミー</span>
+            <span class="pl-3 grey lighten-3">ダミー3</span>
           </h4>
 
           <p class="mb-8">ダミー</p>
@@ -118,6 +118,9 @@ export default {
 <style lang="scss" scoped>
 ul{
   list-style: none;
+  & > li {
+    cursor: pointer;
+  }
 }
 
 .content-subtext{
