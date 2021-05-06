@@ -49,10 +49,13 @@
 .v-list {
   width: 100%;
   margin: 0 auto;
-
   a:hover {
     text-decoration: none;
   }
+}
+
+.v-list-item{
+  cursor: default;
 }
 
 span {
