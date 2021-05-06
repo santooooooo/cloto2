@@ -153,24 +153,6 @@
         </v-container>
       </v-card>
     </v-dialog>
-
-    <!-- 継続確認ダイアログ -->
-    <v-dialog v-model="confirmDialog" width="600" persistent>
-      <v-card class="headline grey darken-2 text-center px-2">
-        <v-container>
-          <v-card-text class="pa-2 white--text title font-weight-bold">
-            続けて自習されますか？
-          </v-card-text>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn text color="grey lighten-5" @click="$emit('leave-room')">いいえ</v-btn>
-            <v-btn text color="grey lighten-5" @click="$emit('close', false)">はい</v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-container>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
@@ -178,9 +160,6 @@
 import { OK } from '@/consts/status';
 
 export default {
-  props: {
-    confirm: Boolean, // 自習継続の確認
-  },
   data() {
     return {
       dialog: true,
@@ -203,14 +182,15 @@ export default {
         inputIds: [], // 選択済データ
         loading: false,
       },
-      confirmDialog: false, // 自習継続の確認
     };
   },
+
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
     },
   },
+
   methods: {
     /**
      * タグの取得
@@ -278,14 +258,7 @@ export default {
             window.open(tweet, 'Tweet', 'width=650, height=470');
           }
 
-          this.dialog = false;
-
-          // 自習継続の確認
-          if (this.confirm) {
-            this.confirmDialog = true;
-          } else {
-            this.$emit('leave-room');
-          }
+          this.$emit('close', false);
         } else {
           this.karteForm.loading = false;
         }

@@ -10,7 +10,7 @@
       :room-status="roomStatus"
       :chat-is-show="chat.isShow"
       @toggle-chat="chat.isShow = $event"
-      @input-karte="inputKarte(true)"
+      @input-karte="karteDialog = true"
       @leave-room="leaveRoom()"
     />
 
@@ -125,12 +125,7 @@
       />
 
       <!-- カルテダイアログ -->
-      <KartePostDialog
-        :confirm="karte.confirm"
-        @close="karte.dialog = $event"
-        @leave-room="leaveRoom()"
-        v-if="karte.dialog"
-      />
+      <KartePostDialog @close="karteDialog = $event" v-if="karteDialog" />
     </v-flex>
   </v-layout>
 </template>
@@ -199,10 +194,7 @@ export default {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
       },
-      karte: {
-        dialog: false, // カルテ記入ダイアログの制御
-        confirm: true, // 自習継続の確認
-      },
+      karteDialog: false, // カルテ記入ダイアログの制御
     };
   },
   beforeRouteEnter: async (to, from, next) => {
@@ -845,16 +837,6 @@ export default {
 
       // ロード終了
       this.loading = false;
-    },
-
-    /**
-     * カルテの記入
-     *
-     * @param {Boolean} confirm - 自習継続の確認をするか
-     */
-    inputKarte: function (confirm) {
-      this.karte.confirm = confirm;
-      this.karte.dialog = true;
     },
 
     /**
