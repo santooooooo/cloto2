@@ -1,16 +1,16 @@
 <template>
   <v-container class="mt-4" fluid id="content-container">
     <v-row>
-      <v-col cols="2" class="p-0">
+      <v-col cols="2" class="p-0 border-right pr-2">
         <h1 class="font-weight-bold text-h5 mb-2 text-center green">
           入門期
         </h1>
-        <h2 class="text-h6 font-weight-bolder green">
+        <h2 class="text-h6 font-weight-bolder green pl-2">
           Class 0
         </h2>
         <div>
           <!-- 目次 -->
-          <ul class="p-0">
+          <ul class="p-0 pl-2">
             <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#buy', offset: -80 }">0-1.</li>
             <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#suggest', offset: -80 }">0-2.</li>
             <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#cut', offset: -80 }">0-3</li>
@@ -21,8 +21,8 @@
       <v-col cols="10">
         <h1 class="mb-12 text-center">クラス2以降、ここにコースタイトル反映</h1>
         <!-- タイトル -->
-        <div class="grey lighten-2 mb-8 pa-4">
-          <h1 class="text-h4 font-weight-bold">{{ title }}</h1>
+        <div class="mb-8 pa-4">
+          <h1 class="text-center text-h4 font-weight-bold">{{ title }}</h1>
           <p class="text-body-2 mx-6 mt-6 mb-0">ダミー</p>
         </div>
 
