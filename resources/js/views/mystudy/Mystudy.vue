@@ -20,6 +20,6 @@ export default {
 
 <style lang="scss" scoped>
 #mystudy {
-  min-height: 100vh;
+  height: calc(100vh - 64px);
 }
 </style>

@@ -23,38 +23,34 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
+
+        <!-- 期一覧 -->
+        <Periods />
       </v-list>
-      <Periods />
 
-      <v-col class="text-center">
-        <v-btn class="white--text w-100" color="yellow" @click="karteDialogOpen">カルテ記入</v-btn>
-      </v-col>
-
-      <v-dialog v-model="dialog">
-        <Karte />
-      </v-dialog>
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-btn block depressed color="#f6bf00" dark @click="dialog = true">カルテ記入</v-btn>
+          <KartePostDialog @close="dialog = $event" v-if="dialog" />
+        </div>
+      </template>
     </v-navigation-drawer>
   </v-card>
 </template>
 
 <script>
 import Periods from '@/components/mystudy/Periods.vue';
-import Karte from '@/components/room/KartePostDialog.vue';
+import KartePostDialog from '@/components/commons/KartePostDialog';
 
 export default {
   components: {
     Periods,
-    Karte,
+    KartePostDialog,
   },
   data() {
     return {
-      dialog: false,
+      dialog: false, // カルテ投稿ダイアログの制御
     };
-  },
-  methods: {
-    karteDialogOpen: function () {
-      this.dialog = true;
-    },
   },
 };
 </script>

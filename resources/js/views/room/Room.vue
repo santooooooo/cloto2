@@ -10,7 +10,7 @@
       :room-status="roomStatus"
       :chat-is-show="chat.isShow"
       @toggle-chat="chat.isShow = $event"
-      @input-karte="karteDialog = true"
+      @input-karte="kartePostDialog = true"
       @leave-room="leaveRoom()"
     />
 
@@ -124,8 +124,8 @@
         v-if="profile.dialog"
       />
 
-      <!-- カルテダイアログ -->
-      <KartePostDialog @close="karteDialog = $event" v-if="karteDialog" />
+      <!-- カルテ投稿ダイアログ -->
+      <KartePostDialog @close="kartePostDialog = $event" v-if="kartePostDialog" />
     </v-flex>
   </v-layout>
 </template>
@@ -136,7 +136,7 @@ import Call from '@/components/room/Call';
 import SeminarSpeak from '@/components/room/SeminarSpeak';
 import SeminarView from '@/components/room/SeminarView';
 import Media from '@/components/room/Media';
-import KartePostDialog from '@/components/room/KartePostDialog';
+import KartePostDialog from '@/components/commons/KartePostDialog';
 import ProfileDialog from '@/components/commons/ProfileDialog';
 import { OK } from '@/consts/status';
 
@@ -194,7 +194,7 @@ export default {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
       },
-      karteDialog: false, // カルテ記入ダイアログの制御
+      kartePostDialog: false, // カルテ投稿ダイアログの制御
     };
   },
   beforeRouteEnter: async (to, from, next) => {
