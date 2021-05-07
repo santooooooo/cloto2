@@ -8,14 +8,12 @@
         <h2 class="text-h6 font-weight-bolder green pl-2">
           Class 0
         </h2>
-        <div>
           <!-- 目次 -->
           <ul class="p-0 pl-2">
             <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#buy', offset: -80 }">0-1. ダミー1</li>
             <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#suggest', offset: -80 }">0-2. ダミー2</li>
             <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#cut', offset: -80 }">0-3. ダミー3</li>
           </ul>
-        </div>
       </v-col>
 
       <v-col cols="10">
