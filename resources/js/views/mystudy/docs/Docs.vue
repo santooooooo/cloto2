@@ -1,5 +1,5 @@
 <template>
-  <v-container id="docs">
+  <v-container class="overflow-y-auto" id="docs">
     <router-view />
   </v-container>
 </template>

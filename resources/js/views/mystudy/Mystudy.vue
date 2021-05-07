@@ -1,7 +1,7 @@
 <template>
   <v-layout id="mystudy">
     <Drawer />
-    <v-flex>
+    <v-flex class="overflow-y-auto">
       <!-- 強制的にコンポーネントを初期化（変数の初期化） -->
       <router-view :key="$route.name" />
     </v-flex>
@@ -20,6 +20,6 @@ export default {
 
 <style lang="scss" scoped>
 #mystudy {
-  min-height: 100vh;
+  height: calc(100vh - 64px);
 }
 </style>
