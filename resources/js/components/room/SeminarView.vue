@@ -706,8 +706,7 @@ export default {
         this.stopVoiceDetection();
 
         // 通話の接続を終了
-        //await this.peer.disconnect();
-        await this.peer.destroy(); //disconnectは非推奨のため
+        await this.peer.destroy();
 
         this.peer = null;
       }
@@ -1034,16 +1033,19 @@ export default {
 
     // エラー発生時のイベント
     Vue.config.errorHandler = (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     };
 
     // エラー発生時のイベント
     window.addEventListener('error', (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 
     // エラー発生時のイベント
     window.addEventListener('unhandledrejection', (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 

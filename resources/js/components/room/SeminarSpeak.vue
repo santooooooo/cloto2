@@ -847,8 +847,7 @@ export default {
         }
 
         // 通話の接続を終了
-        //await this.peer.disconnect();
-        await this.peer.destroy(); //disconnectは非推奨のため
+        await this.peer.destroy();
         this.peer = null;
       }
     },
@@ -1012,8 +1011,7 @@ export default {
         this.screenSharing.stream = null;
 
         // 画面共有用の接続を終了
-        //this.screenSharing.peer.disconnect();
-        await this.screenSharing.peer.destroy(); //disconnectは非推奨のため
+        await this.screenSharing.peer.destroy();
       }
     },
 
@@ -1033,7 +1031,7 @@ export default {
           stream.getTracks().forEach((track) => track.stop());
           //** デバイスの一覧を取得 */
           const devices = await navigator.mediaDevices.enumerateDevices().catch((error) => {
-            //デバイスが存在しない場合
+            // デバイスが存在しない場合
             this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
           });
           // マイクデバイスの一覧を取得
@@ -1070,7 +1068,7 @@ export default {
               const devices = await navigator.mediaDevices
                 .enumerateDevices()
                 .catch(async (error) => {
-                  //デバイスが存在しない場合
+                  // デバイスが存在しない場合
                   this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
                 });
               // マイクデバイスの一覧を取得
@@ -1088,7 +1086,7 @@ export default {
               this.permissionOverlay = false;
             })
             .catch(async (error) => {
-              //デバイスが存在しない場合
+              // デバイスが存在しない場合
               this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
             });
         });
@@ -1430,16 +1428,19 @@ export default {
 
     // エラー発生時のイベント
     Vue.config.errorHandler = (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     };
 
     // エラー発生時のイベント
     window.addEventListener('error', (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 
     // エラー発生時のイベント
     window.addEventListener('unhandledrejection', (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 
