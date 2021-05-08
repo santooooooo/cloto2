@@ -2,18 +2,20 @@
   <v-container class="mt-4" fluid id="content-container">
     <v-row>
       <v-col cols="2" class="p-0 border-right pr-2">
-        <h1 class="font-weight-bold text-h5 mb-2 text-center green">
-          入門期
-        </h1>
-        <h2 class="text-h6 font-weight-bolder green pl-2">
-          Class 0
-        </h2>
-          <!-- 目次 -->
-          <ul class="p-0 pl-2">
-            <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#buy', offset: -80 }">0-1. ダミー1</li>
-            <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#suggest', offset: -80 }">0-2. ダミー2</li>
-            <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#cut', offset: -80 }">0-3. ダミー3</li>
-          </ul>
+        <h1 class="font-weight-bold text-h5 mb-2 text-center green">入門期</h1>
+        <h2 class="text-h6 font-weight-bolder green pl-2">Class 0</h2>
+        <!-- 目次 -->
+        <ul class="p-0 pl-2">
+          <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#buy', offset: -80 }">
+            0-1. ダミー1
+          </li>
+          <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#suggest', offset: -80 }">
+            0-2. ダミー2
+          </li>
+          <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#cut', offset: -80 }">
+            0-3. ダミー3
+          </li>
+        </ul>
       </v-col>
 
       <v-col cols="10">
@@ -87,9 +89,20 @@
 
         <!-- 次へ進むボタン -->
         <v-col class="text-center">
-          <v-btn color="blue" class="text-white" :to="{ name: 'javascript-1' }">
+          <v-btn
+            color="blue"
+            class="text-white"
+            @click="dialog = true"
+          >
+          <!-- <v-btn
+            color="blue"
+            class="text-white"
+            :to="{ name: 'javascript-1' }"
+            @click="dialog = true"
+          > -->
             完了（次へ進む）
           </v-btn>
+          <KartePostDialog @close="dialog = $event" v-if="dialog" />
         </v-col>
       </v-col>
     </v-row>
@@ -97,6 +110,8 @@
 </template>
 
 <script>
+import KartePostDialog from '@/components/commons/KartePostDialog';
+
 export default {
   head: {
     title() {
@@ -105,23 +120,27 @@ export default {
       };
     },
   },
+  components: {
+    KartePostDialog
+  },
   data() {
     return {
       title: 'Class 0', // コンテンツタイトル
+      dialog: false
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-ul{
+ul {
   list-style: none;
   & > li {
     cursor: pointer;
   }
 }
 
-.content-subtext{
+.content-subtext {
   font-size: 0.8rem;
 }
 
