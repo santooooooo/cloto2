@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import KartePostDialog from '@/components/commons/KartePostDialog';
+import KartePostDialog from '@/components/mystudy/ContentKartePostDialog';
 
 export default {
   head: {
