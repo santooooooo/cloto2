@@ -37,6 +37,7 @@
     </v-app-bar>
 
     <v-layout class="px-2" ref="container">
+	    <p>{{ participantsCount }}</p>
       <!-- 視聴者一覧 -->
       <v-flex xs1 class="viewer-container">
         <!-- 自分 -->
@@ -60,7 +61,6 @@
           <img :src="$storage('icon') + viewer.icon" />
         </v-avatar>
       </v-flex>
-
       <v-flex>
         <v-container fluid py-0>
           <!--*** 画面共有ON ***-->
@@ -554,10 +554,15 @@ export default {
     },
     viewers() {
       // 視聴者
+		  console.log(this.participants.length)
       return this.participants.filter((participant) => {
         return typeof participant.stream === 'undefined';
       });
     },
+	  participantsCount() {
+		  console.log(this.participants.length)
+		  return this.participants.length
+	  }
   },
   watch: {
     $windowWidth: function () {
@@ -771,6 +776,7 @@ export default {
       // 同一のPeerIDが存在しないことを確認する
       let isJoin = !this.participants.some((participant) => participant.peerId === peerId);
 
+	      console.log('before push! OK!');
       if (isJoin) {
         // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
         this.call.send({ type: 'joinViewerData', content: this.authUser });
@@ -784,6 +790,7 @@ export default {
           JOIN_CALL_SOUND.play();
         }
 
+	      console.log('viwers added! OK!');
         // 参加者の追加
         this.participants.push({
           username: user.username, // ユーザー名
