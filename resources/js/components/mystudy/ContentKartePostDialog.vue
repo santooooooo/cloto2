@@ -246,6 +246,9 @@ export default {
         // カルテ保存処理
         let response = await axios.post('/api/kartes', input);
 
+      // ページ遷移
+        window.location.href = 'class-1'
+
         if (response.status === OK) {
           // 本番サーバでのみツイート
           if (window.location.hostname === 'cloto.jp') {
