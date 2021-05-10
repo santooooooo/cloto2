@@ -2,7 +2,7 @@
   <v-container class="mt-4" fluid id="content-container">
     <v-row>
       <v-col cols="2" class="p-0 border-right">
-        <div class="position-fixed pr-4" id="fix-div">
+        <div class="position-fixed pr-2" id="fix-div">
         <h1 class="font-weight-bold text-h5 mb-2 text-center green">入門期</h1>
         <h2 class="text-h6 font-weight-bolder green pl-2">Class 0</h2>
         <!-- 目次 -->
