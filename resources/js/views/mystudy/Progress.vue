@@ -19,9 +19,10 @@
           </v-col>
         </v-col>
         <v-col cols="8" class="text-center">
+          <!-- 入れる図によって、max-height,max-widthを変える-->
           <v-img
-            max-height="300"
-            max-width="400"
+            max-height="1200"
+            max-width="800"
             src="https://picsum.photos/id/11/500/300"
             class="mb-10"
           ></v-img>

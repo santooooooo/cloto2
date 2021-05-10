@@ -1,21 +1,23 @@
 <template>
   <v-container class="mt-4" fluid id="content-container">
     <v-row>
-      <v-col cols="2" class="p-0 border-right pr-2">
+      <v-col cols="2" class="p-0 border-right">
+        <div class="position-fixed pr-4" id="fix-div">
         <h1 class="font-weight-bold text-h5 mb-2 text-center green">入門期</h1>
         <h2 class="text-h6 font-weight-bolder green pl-2">Class 0</h2>
         <!-- 目次 -->
         <ul class="p-0 pl-2">
-          <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#buy', offset: -80 }">
+          <li class="my-6 grey--text content-subtext py-2 pl-1" v-scroll-to="{ el: '#buy', offset: -80 }">
             0-1. ダミー1
           </li>
-          <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#suggest', offset: -80 }">
+          <li class="my-6 grey--text content-subtext py-2 pl-1" v-scroll-to="{ el: '#suggest', offset: -80 }">
             0-2. ダミー2
           </li>
-          <li class="my-6 grey--text content-subtext" v-scroll-to="{ el: '#cut', offset: -80 }">
+          <li class="my-6 grey--text content-subtext py-2 pl-1" v-scroll-to="{ el: '#cut', offset: -80 }">
             0-3. ダミー3
           </li>
         </ul>
+        </div>
       </v-col>
 
       <v-col cols="10">
@@ -133,6 +135,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#fix-div {
+  width: 12%;
+}
+
 ul {
   list-style: none;
   & > li {
@@ -142,6 +148,11 @@ ul {
 
 .content-subtext {
   font-size: 0.8rem;
+  &:hover {
+    background: rgb(152, 201, 247);
+    color: white!important;
+    border-radius: 4%;
+  }
 }
 
 @media (min-width: 768px) {
