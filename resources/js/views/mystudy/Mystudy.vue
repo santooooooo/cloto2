@@ -17,9 +17,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-#mystudy {
-  height: calc(100vh - 64px);
-}
-</style>

@@ -3,20 +3,29 @@
     <v-row>
       <v-col cols="2" class="p-0 border-right">
         <div class="position-fixed pr-2" id="fix-div">
-        <h1 class="font-weight-bold text-h5 mb-2 text-center green">入門期</h1>
-        <h2 class="text-h6 font-weight-bolder green pl-2">Class 0</h2>
-        <!-- 目次 -->
-        <ul class="p-0 pl-2">
-          <li class="my-6 grey--text content-subtext py-2 pl-1" v-scroll-to="{ el: '#buy', offset: -80 }">
-            0-1. ダミー1
-          </li>
-          <li class="my-6 grey--text content-subtext py-2 pl-1" v-scroll-to="{ el: '#suggest', offset: -80 }">
-            0-2. ダミー2
-          </li>
-          <li class="my-6 grey--text content-subtext py-2 pl-1" v-scroll-to="{ el: '#cut', offset: -80 }">
-            0-3. ダミー3
-          </li>
-        </ul>
+          <h1 class="font-weight-bold text-h5 mb-2 text-center green">入門期</h1>
+          <h2 class="text-h6 font-weight-bolder green pl-2">Class 0</h2>
+          <!-- 目次 -->
+          <ul class="p-0 pl-2">
+            <li
+              class="my-6 grey--text content-subtext py-2 pl-1"
+              v-scroll-to="{ el: '#buy', offset: -80 }"
+            >
+              0-1. ダミー1
+            </li>
+            <li
+              class="my-6 grey--text content-subtext py-2 pl-1"
+              v-scroll-to="{ el: '#suggest', offset: -80 }"
+            >
+              0-2. ダミー2
+            </li>
+            <li
+              class="my-6 grey--text content-subtext py-2 pl-1"
+              v-scroll-to="{ el: '#cut', offset: -80 }"
+            >
+              0-3. ダミー3
+            </li>
+          </ul>
         </div>
       </v-col>
 
@@ -91,12 +100,8 @@
 
         <!-- 次へ進むボタン -->
         <v-col class="text-center">
-          <v-btn
-            color="blue"
-            class="text-white"
-            @click="dialog = true"
-          >
-          <!-- <v-btn
+          <v-btn color="blue" class="text-white" @click="dialog = true">
+            <!-- <v-btn
             color="blue"
             class="text-white"
             :to="{ name: 'javascript-1' }"
@@ -123,12 +128,12 @@ export default {
     },
   },
   components: {
-    KartePostDialog
+    KartePostDialog,
   },
   data() {
     return {
       title: 'Class 0', // コンテンツタイトル
-      dialog: false
+      dialog: false,
     };
   },
 };
@@ -150,7 +155,7 @@ ul {
   font-size: 0.8rem;
   &:hover {
     background: rgb(152, 201, 247);
-    color: white!important;
+    color: white !important;
     border-radius: 4%;
   }
 }

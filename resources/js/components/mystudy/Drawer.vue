@@ -26,14 +26,12 @@
 
         <!-- 期一覧 -->
         <Periods />
-      </v-list>
 
-      <template v-slot:append>
         <div class="pa-2">
           <v-btn block depressed color="#f6bf00" dark @click="dialog = true">カルテ記入</v-btn>
           <KartePostDialog @close="dialog = $event" v-if="dialog" />
         </div>
-      </template>
+      </v-list>
     </v-navigation-drawer>
   </v-card>
 </template>
