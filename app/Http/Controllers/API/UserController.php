@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Events\SeatStatusUpdated;
+use App\Notifications\UserFollowed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -185,7 +186,7 @@ class UserController extends Controller
     /**
      * フォロー/フォロー解除
      *
-     * @param  \App\Models\User  $user  フォロー（解除）するユーザー
+     * @param  \App\Models\User  $user  フォロー/フォロー解除するユーザー
      * @return \Illuminate\Http\Response
      */
     public function follow(User $user)
@@ -194,8 +195,13 @@ class UserController extends Controller
             return response()->json(['message' => '自分はフォローできません。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        // フォロー（解除）処理
-        $this->auth_user->follows()->toggle($user->id);
+        // フォロー/フォロー解除処理
+        $result = $this->auth_user->follows()->toggle($user->id);
+
+        // フォロー時には通知を発行
+        if (count($result['attached'])) {
+            $user->notify(new UserFollowed($this->auth_user));
+        }
 
         return $this->show($user->id);
     }
