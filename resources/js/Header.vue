@@ -70,6 +70,7 @@
             offset-x="43"
             offset-y="23"
             :content="authUser.unread_notifications_count"
+            :value="authUser.unread_notifications_count"
           >
             <v-btn icon v-bind="attrs" v-on="on" class="mr-6">
               <v-icon large>mdi-bell</v-icon>
@@ -79,6 +80,9 @@
         <v-list dense>
           <div v-for="notification in authUser.notifications" :key="notification.id">
             <v-list-item
+              :style="{
+                'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
+              }"
               v-if="notification.type === 'UserFollowed'"
               @click="showProfile(notification.username)"
             >
@@ -158,13 +162,21 @@ export default {
 
   methods: {
     /**
-     * ステータス更新処理
+     * ステータスの更新
      *
      * @param {String} status - ステータス
      */
     updateStatus: async function (status) {
       await axios.post('/api/status/' + status);
-      await this.$store.dispatch('auth/syncAuthUser');
+      this.$store.dispatch('auth/syncAuthUser');
+    },
+
+    /**
+     * 通知の既読
+     */
+    markNotificationsAsRead: async function () {
+      await axios.post('/api/users/mark-notifications-as-read');
+      this.$store.dispatch('auth/syncAuthUser');
     },
 
     /**
@@ -175,6 +187,7 @@ export default {
     showProfile: function (username) {
       this.profile.username = username;
       this.profile.dialog = true;
+      this.markNotificationsAsRead();
     },
   },
 };
@@ -198,5 +211,9 @@ a:hover {
     font-size: 20px;
     font-weight: bold;
   }
+}
+
+.v-list {
+  padding: 0;
 }
 </style>

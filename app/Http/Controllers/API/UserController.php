@@ -62,7 +62,8 @@ class UserController extends Controller
                     [
                         'type' => 'UserFollowed',
                         'username' => $user->username,
-                        'message' => $user->handlename . 'さんにフォローされました！'
+                        'message' => $user->handlename . 'さんにフォローされました！',
+                        'read_at' => $notification->read_at
                     ]
                 );
             }
@@ -104,6 +105,18 @@ class UserController extends Controller
             // 現在のステータスで更新する
             Cache::put('user-' . $this->auth_user->id, $this->auth_user->status, $expires_at);
         }
+
+        return response()->json();
+    }
+
+    /**
+     * 通知の既読
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function markNotificationsAsRead()
+    {
+        $this->auth_user->unreadNotifications()->update(['read_at' => now()]);
 
         return response()->json();
     }
