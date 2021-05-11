@@ -60,6 +60,42 @@
         {{ $store.getters['alert/isSoundOn'] ? 'mdi-music-note' : 'mdi-music-note-off' }}
       </v-icon>
     </v-btn>
+
+    <!-- 通知一覧ボタン -->
+    <div v-if="authCheck">
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-badge
+            color="#f6bf00"
+            offset-x="43"
+            offset-y="23"
+            :content="authUser.unread_notifications_count"
+          >
+            <v-btn icon v-bind="attrs" v-on="on" class="mr-6">
+              <v-icon large>mdi-bell</v-icon>
+            </v-btn>
+          </v-badge>
+        </template>
+        <v-list dense>
+          <div v-for="notification in authUser.notifications" :key="notification.id">
+            <v-list-item
+              v-if="notification.type === 'UserFollowed'"
+              @click="showProfile(notification.username)"
+            >
+              <v-list-item-title>
+                {{ notification.message }}
+              </v-list-item-title>
+            </v-list-item>
+          </div>
+        </v-list>
+      </v-menu>
+
+      <ProfileDialog
+        :username="profile.username"
+        @close="profile.dialog = $event"
+        v-if="profile.dialog"
+      />
+    </div>
   </v-app-bar>
 
   <v-app-bar app dark height="64px" v-else>
@@ -68,7 +104,13 @@
 </template>
 
 <script>
+import ProfileDialog from '@/components/commons/ProfileDialog';
+
 export default {
+  components: {
+    ProfileDialog,
+  },
+
   data() {
     return {
       status: null, // 現在のステータス
@@ -78,8 +120,13 @@ export default {
         { text: '自習中', value: 'busy' },
         { text: '離席中', value: 'away' },
       ],
+      profile: {
+        dialog: false, // プロフィールのダイアログ制御
+        username: null, // プロフィールを表示するユーザー名
+      },
     };
   },
+
   computed: {
     isSmartphone() {
       if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
@@ -88,13 +135,16 @@ export default {
         return false;
       }
     },
+
     authCheck() {
       return this.$store.getters['auth/check'];
     },
+
     authUser() {
       return this.$store.getters['auth/user'];
     },
   },
+
   watch: {
     authCheck: async function (check, oldCheck) {
       // ログインまたはリロード時
@@ -105,6 +155,7 @@ export default {
       }
     },
   },
+
   methods: {
     /**
      * ステータス更新処理
@@ -114,6 +165,16 @@ export default {
     updateStatus: async function (status) {
       await axios.post('/api/status/' + status);
       await this.$store.dispatch('auth/syncAuthUser');
+    },
+
+    /**
+     * プロフィールの表示
+     *
+     * @param {String} username - プロフィールを表示するユーザー名
+     */
+    showProfile: function (username) {
+      this.profile.username = username;
+      this.profile.dialog = true;
     },
   },
 };

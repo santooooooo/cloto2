@@ -49,6 +49,32 @@ class UserController extends Controller
             return response()->json();
         }
 
+        // 通知の取得
+        $notifications = [];
+        $unread_notifications_count = 0;
+        foreach ($this->auth_user->notifications()->take(10)->get() as $notification) {
+            // フォロー通知
+            if (preg_match('/UserFollowed/', $notification->type)) {
+                $user = $this->user->find($notification->data['user_id']);
+
+                array_push(
+                    $notifications,
+                    [
+                        'type' => 'UserFollowed',
+                        'username' => $user->username,
+                        'message' => $user->handlename . 'さんにフォローされました！'
+                    ]
+                );
+            }
+
+            // 未読通知数のカウント
+            if (empty($notification->read_at)) {
+                $unread_notifications_count += 1;
+            }
+        }
+        $this->auth_user->notifications = $notifications;
+        $this->auth_user->unread_notifications_count = $unread_notifications_count;
+
         return response()->json($this->auth_user);
     }
 
