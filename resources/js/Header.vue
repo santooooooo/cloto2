@@ -57,7 +57,7 @@
     <!-- 通知音ボタン -->
     <v-btn icon class="mx-6" @click="$store.dispatch('alert/switchSound')" v-if="authCheck">
       <v-icon large>
-        {{ $store.getters['alert/isSoundOn'] ? 'mdi-bell' : 'mdi-bell-off' }}
+        {{ $store.getters['alert/isSoundOn'] ? 'mdi-music-note' : 'mdi-music-note-off' }}
       </v-icon>
     </v-btn>
   </v-app-bar>
