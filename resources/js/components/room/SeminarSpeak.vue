@@ -530,9 +530,9 @@
           <v-row justify="end">
             <!-- 通知音ボタン -->
             <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
-              <v-icon large>{{
-                isNotificationOn ? 'mdi-music-note' : 'mdi-music-note-off'
-              }}</v-icon>
+              <v-icon large>
+                {{ isNotificationOn ? 'mdi-music-note' : 'mdi-music-note-off' }}
+              </v-icon>
             </v-btn>
 
             <!-- チャットボタン -->
