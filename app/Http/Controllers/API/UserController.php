@@ -53,19 +53,33 @@ class UserController extends Controller
         $notifications = [];
         $unread_notifications_count = 0;
         foreach ($this->auth_user->notifications()->take(10)->get() as $notification) {
-            // フォロー通知
-            if (preg_match('/UserFollowed/', $notification->type)) {
-                $user = $this->user->find($notification->data['user_id']);
+            switch ($notification->type) {
+                case 'App\Notifications\UserFollowed':
+                    // フォロー通知
+                    $user = $this->user->find($notification->data['user_id']);
+                    array_push(
+                        $notifications,
+                        [
+                            'type' => 'UserFollowed',
+                            'username' => $user->username,
+                            'message' => $user->handlename . 'さんにフォローされました！',
+                            'read_at' => $notification->read_at
+                        ]
+                    );
+                    break;
 
-                array_push(
-                    $notifications,
-                    [
-                        'type' => 'UserFollowed',
-                        'username' => $user->username,
-                        'message' => $user->handlename . 'さんにフォローされました！',
-                        'read_at' => $notification->read_at
-                    ]
-                );
+                case 'App\Notifications\KarteCommentPosted':
+                    // カルテへのコメント通知
+                    array_push(
+                        $notifications,
+                        [
+                            'type' => 'KarteCommentPosted',
+                            'karte_id' => $notification->data['karte_id'],
+                            'message' => 'カルテにコメントがつきました！',
+                            'read_at' => $notification->read_at
+                        ]
+                    );
+                    break;
             }
 
             // 未読通知数のカウント

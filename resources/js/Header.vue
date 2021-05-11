@@ -79,6 +79,7 @@
         </template>
         <v-list dense>
           <div v-for="notification in authUser.notifications" :key="notification.id">
+            <!-- フォロー通知 -->
             <v-list-item
               :style="{
                 'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
@@ -90,10 +91,24 @@
                 {{ notification.message }}
               </v-list-item-title>
             </v-list-item>
+
+            <!-- カルテへのコメント通知 -->
+            <v-list-item
+              :style="{
+                'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
+              }"
+              v-else-if="notification.type === 'KarteCommentPosted'"
+              @click="showKarte(notification.karte_id)"
+            >
+              <v-list-item-title>
+                {{ notification.message }}
+              </v-list-item-title>
+            </v-list-item>
           </div>
         </v-list>
       </v-menu>
 
+      <KarteDialog :karteId="karteId" @close="karteId = $event" />
       <ProfileDialog
         :username="profile.username"
         @close="profile.dialog = $event"
@@ -108,10 +123,12 @@
 </template>
 
 <script>
+import KarteDialog from '@/components/commons/KarteDialog';
 import ProfileDialog from '@/components/commons/ProfileDialog';
 
 export default {
   components: {
+    KarteDialog,
     ProfileDialog,
   },
 
@@ -124,6 +141,7 @@ export default {
         { text: '自習中', value: 'busy' },
         { text: '離席中', value: 'away' },
       ],
+      karteId: null, // 詳細を表示するカルテID
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
@@ -177,6 +195,18 @@ export default {
     markNotificationsAsRead: async function () {
       await axios.post('/api/users/mark-notifications-as-read');
       this.$store.dispatch('auth/syncAuthUser');
+    },
+
+    /**
+     * カルテの詳細表示
+     *
+     * @param {Number} karteId - 詳細を表示するカルテID
+     */
+    showKarte: function (karteId) {
+      if (karteId) {
+        this.karteId = karteId;
+        this.markNotificationsAsRead();
+      }
     },
 
     /**
