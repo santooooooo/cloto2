@@ -212,13 +212,10 @@
 </template>
 
 <script>
-import ProfileDialog from '@/components/commons/ProfileDialog';
 import KarteDialog from '@/components/commons/KarteDialog';
 
 export default {
-  name: 'ProfileDialog',
   components: {
-    ProfileDialog,
     KarteDialog,
   },
 

@@ -20,6 +20,7 @@ Vue.prototype.$slack = functions.slackPost;
 /**
  * Vueコンポーネントの読み込み
  */
+Vue.component('ProfileDialog', require('./components/commons/ProfileDialog').default);
 Vue.component('ImageInput', require('./components/commons/form/ImageInput').default);
 
 /**
