@@ -92,7 +92,7 @@
               </v-list-item-title>
             </v-list-item>
 
-            <!-- カルテへのコメント通知 -->
+            <!-- カルテへの通知 -->
             <v-list-item
               :style="{
                 'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
@@ -107,12 +107,14 @@
               </v-list-item-title>
             </v-list-item>
 
-            <!-- 投稿へのコメント通知 -->
+            <!-- 投稿への通知 -->
             <v-list-item
               :style="{
                 'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
               }"
-              v-else-if="notification.type === 'PostCommentPosted'"
+              v-else-if="
+                notification.type === 'PostCommentPosted' || notification.type === 'PostFavorited'
+              "
               @click="showPost(notification.post_id)"
             >
               <v-list-item-title>

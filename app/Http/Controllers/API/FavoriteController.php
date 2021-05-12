@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Favorite;
 use App\Models\Karte;
+use App\Models\Post;
 use App\Notifications\KarteFavorited;
+use App\Notifications\PostFavorited;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,13 +17,15 @@ class FavoriteController extends Controller
     protected $favorite;
     /** @var Karte */
     protected $karte;
+    /** @var Post */
+    protected $post;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Favorite $favorite, Karte $karte)
+    public function __construct(Favorite $favorite, Karte $karte, Post $post)
     {
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
@@ -30,6 +34,7 @@ class FavoriteController extends Controller
 
         $this->favorite = $favorite;
         $this->karte = $karte;
+        $this->post = $post;
     }
 
 
@@ -68,9 +73,15 @@ class FavoriteController extends Controller
         // 通知の発行
         if (!empty($result['karte_id'])) {
             $karte = $this->karte->find($result['karte_id']);
-            // 自分のカルテへのコメントでは通知を発行しない
+            // 自分のカルテへのいいねでは通知を発行しない
             if ($karte->user->id != $this->user->id) {
                 $karte->user->notify(new KarteFavorited($karte, $this->user));
+            }
+        } else if (!empty($result['post_id'])) {
+            $post = $this->post->find($result['post_id']);
+            // 自分の投稿へのいいねでは通知を発行しない
+            if ($post->user->id != $this->user->id) {
+                $post->user->notify(new PostFavorited($post, $this->user));
             }
         }
 

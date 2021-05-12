@@ -107,6 +107,19 @@ class UserController extends Controller
                         ]
                     );
                     break;
+
+                case 'App\Notifications\PostFavorited':
+                    // 投稿へのいいね通知
+                    array_push(
+                        $notifications,
+                        [
+                            'type' => 'PostFavorited',
+                            'post_id' => $notification->data['post_id'],
+                            'message' => $user->handlename . 'がいいねしました！',
+                            'read_at' => $notification->read_at
+                        ]
+                    );
+                    break;
             }
 
             // 未読通知数のカウント
