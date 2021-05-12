@@ -94,6 +94,19 @@ class UserController extends Controller
                         ]
                     );
                     break;
+
+                case 'App\Notifications\KarteFavorited':
+                    // カルテへのいいね通知
+                    array_push(
+                        $notifications,
+                        [
+                            'type' => 'KarteFavorited',
+                            'karte_id' => $notification->data['karte_id'],
+                            'message' => $user->handlename . 'がいいねしました！',
+                            'read_at' => $notification->read_at
+                        ]
+                    );
+                    break;
             }
 
             // 未読通知数のカウント

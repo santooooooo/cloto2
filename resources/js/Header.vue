@@ -97,7 +97,9 @@
               :style="{
                 'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
               }"
-              v-else-if="notification.type === 'KarteCommentPosted'"
+              v-else-if="
+                notification.type === 'KarteCommentPosted' || notification.type === 'KarteFavorited'
+              "
               @click="showKarte(notification.karte_id)"
             >
               <v-list-item-title>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Favorite;
+use App\Models\Karte;
+use App\Notifications\KarteFavorited;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,13 +13,15 @@ class FavoriteController extends Controller
 {
     /** @var Favorite */
     protected $favorite;
+    /** @var Karte */
+    protected $karte;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Favorite $favorite)
+    public function __construct(Favorite $favorite, Karte $karte)
     {
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
@@ -25,6 +29,7 @@ class FavoriteController extends Controller
         });
 
         $this->favorite = $favorite;
+        $this->karte = $karte;
     }
 
 
@@ -58,6 +63,15 @@ class FavoriteController extends Controller
 
         if (empty($result)) {
             return response()->json(['message' => 'いいねに失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        // 通知の発行
+        if (!empty($result['karte_id'])) {
+            $karte = $this->karte->find($result['karte_id']);
+            // 自分のカルテへのコメントでは通知を発行しない
+            if ($karte->user->id != $this->user->id) {
+                $karte->user->notify(new KarteFavorited($karte, $this->user));
+            }
         }
 
         return response()->json($result->id);
