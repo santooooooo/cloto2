@@ -95,8 +95,9 @@ class KarteController extends Controller
      */
     public function show(Karte $karte)
     {
-        return response()->json($karte->load(['comments' => function ($query) {
-            $query->latest();
-        }]));
+        return response()
+            ->json($karte->load(['comments' => function ($query) {
+                $query->latest();
+            }]));
     }
 }
