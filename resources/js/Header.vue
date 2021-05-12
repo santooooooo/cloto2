@@ -98,7 +98,9 @@
                 'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
               }"
               v-else-if="
-                notification.type === 'KarteCommentPosted' || notification.type === 'KarteFavorited'
+                notification.type === 'KarteCommentPosted' ||
+                notification.type === 'KarteFavorited' ||
+                notification.type === 'CommentToKarteFavorited'
               "
               @click="showKarte(notification.karte_id)"
             >
@@ -113,7 +115,9 @@
                 'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
               }"
               v-else-if="
-                notification.type === 'PostCommentPosted' || notification.type === 'PostFavorited'
+                notification.type === 'PostCommentPosted' ||
+                notification.type === 'PostFavorited' ||
+                notification.type === 'CommentToPostFavorited'
               "
               @click="showPost(notification.post_id)"
             >

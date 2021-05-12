@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Favorite;
 use App\Models\Karte;
 use App\Models\Post;
+use App\Models\Comment;
 use App\Notifications\KarteFavorited;
 use App\Notifications\PostFavorited;
+use App\Notifications\CommentFavorited;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,7 +27,7 @@ class FavoriteController extends Controller
      *
      * @return void
      */
-    public function __construct(Favorite $favorite, Karte $karte, Post $post)
+    public function __construct(Favorite $favorite, Karte $karte, Post $post, Comment $comment)
     {
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
@@ -35,6 +37,7 @@ class FavoriteController extends Controller
         $this->favorite = $favorite;
         $this->karte = $karte;
         $this->post = $post;
+        $this->comment = $comment;
     }
 
 
@@ -82,6 +85,12 @@ class FavoriteController extends Controller
             // 自分の投稿へのいいねでは通知を発行しない
             if ($post->user->id != $this->user->id) {
                 $post->user->notify(new PostFavorited($post, $this->user));
+            }
+        } else if (!empty($result['comment_id'])) {
+            $comment = $this->comment->find($result['comment_id']);
+            // 自分のコメントへのいいねでは通知を発行しない
+            if ($comment->user->id != $this->user->id) {
+                $comment->user->notify(new CommentFavorited($comment, $this->user));
             }
         }
 

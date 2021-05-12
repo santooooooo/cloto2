@@ -120,6 +120,28 @@ class UserController extends Controller
                         ]
                     );
                     break;
+
+                case 'App\Notifications\CommentFavorited':
+                    // コメントへのいいね通知
+                    $data = [
+                        'message' => 'コメントに' . $user->handlename . 'がいいねしました！',
+                        'read_at' => $notification->read_at
+                    ];
+
+                    if (!empty($notification->data['karte_id'])) {
+                        $data += [
+                            'type' => 'CommentToKarteFavorited',
+                            'karte_id' => $notification->data['karte_id'],
+                        ];
+                    } else if (!empty($notification->data['post_id'])) {
+                        $data += [
+                            'type' => 'CommentToPostFavorited',
+                            'post_id' => $notification->data['post_id'],
+                        ];
+                    }
+
+                    array_push($notifications, $data);
+                    break;
             }
 
             // 未読通知数のカウント
