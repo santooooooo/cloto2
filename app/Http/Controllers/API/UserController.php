@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Events\SeatStatusUpdated;
+use App\Notifications\UserFollowed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -48,6 +49,89 @@ class UserController extends Controller
             return response()->json();
         }
 
+        // 通知の取得
+        $notifications = [];
+        $unread_notifications_count = 0;
+        foreach ($this->auth_user->notifications()->take(10)->get() as $notification) {
+            // データの作成
+            $data = ['read_at' => $notification->read_at];
+            $user = $this->user->find($notification->data['user_id']);
+
+            $type = explode('\\', $notification->type);
+            switch (end($type)) {
+                case 'UserFollowed':
+                    // フォロー通知
+                    $data += [
+                        'type' => 'UserFollowed',
+                        'username' => $user->username,
+                        'message' => $user->handlename . 'さんにフォローされました！'
+                    ];
+                    break;
+
+                case 'KarteCommentPosted':
+                    // カルテへのコメント通知
+                    $data += [
+                        'type' => 'KarteCommentPosted',
+                        'karte_id' => $notification->data['karte_id'],
+                        'message' => 'カルテに' . $user->handlename . 'さんがコメントしました！'
+                    ];
+                    break;
+
+                case 'PostCommentPosted':
+                    // 投稿へのコメント通知
+                    $data += [
+                        'type' => 'PostCommentPosted',
+                        'post_id' => $notification->data['post_id'],
+                        'message' => '投稿に' . $user->handlename . 'さんがコメントしました！'
+                    ];
+                    break;
+
+                case 'KarteFavorited':
+                    // カルテへのいいね通知
+                    $data += [
+                        'type' => 'KarteFavorited',
+                        'karte_id' => $notification->data['karte_id'],
+                        'message' => 'カルテに' . $user->handlename . 'さんがいいねしました！'
+                    ];
+                    break;
+
+                case 'PostFavorited':
+                    // 投稿へのいいね通知
+                    $data += [
+                        'type' => 'PostFavorited',
+                        'post_id' => $notification->data['post_id'],
+                        'message' => '投稿に' . $user->handlename . 'さんがいいねしました！'
+                    ];
+                    break;
+
+                case 'CommentFavorited':
+                    // コメントへのいいね通知
+                    $data += ['message' => 'コメントに' . $user->handlename . 'さんがいいねしました！'];
+
+                    if (!empty($notification->data['karte_id'])) {
+                        $data += [
+                            'type' => 'CommentToKarteFavorited',
+                            'karte_id' => $notification->data['karte_id'],
+                        ];
+                    } else if (!empty($notification->data['post_id'])) {
+                        $data += [
+                            'type' => 'CommentToPostFavorited',
+                            'post_id' => $notification->data['post_id'],
+                        ];
+                    }
+                    break;
+            }
+
+            array_push($notifications, $data);
+
+            // 未読通知数のカウント
+            if (empty($notification->read_at)) {
+                $unread_notifications_count += 1;
+            }
+        }
+        $this->auth_user->notifications = $notifications;
+        $this->auth_user->unread_notifications_count = $unread_notifications_count;
+
         return response()->json($this->auth_user);
     }
 
@@ -77,6 +161,18 @@ class UserController extends Controller
             // 現在のステータスで更新する
             Cache::put('user-' . $this->auth_user->id, $this->auth_user->status, $expires_at);
         }
+
+        return response()->json();
+    }
+
+    /**
+     * 通知の既読
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function markNotificationsAsRead()
+    {
+        $this->auth_user->unreadNotifications()->update(['read_at' => now()]);
 
         return response()->json();
     }
@@ -185,7 +281,7 @@ class UserController extends Controller
     /**
      * フォロー/フォロー解除
      *
-     * @param  \App\Models\User  $user  フォロー（解除）するユーザー
+     * @param  \App\Models\User  $user  フォロー/フォロー解除するユーザー
      * @return \Illuminate\Http\Response
      */
     public function follow(User $user)
@@ -194,8 +290,17 @@ class UserController extends Controller
             return response()->json(['message' => '自分はフォローできません。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        // フォロー（解除）処理
-        $this->auth_user->follows()->toggle($user->id);
+        // フォロー/フォロー解除処理
+        $result = $this->auth_user->follows()->toggle($user->id);
+
+        if (empty($result)) {
+            return response()->json(['message' => 'フォロー/フォロー解除に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        // フォロー時には通知を発行
+        if (count($result['attached'])) {
+            $user->notify(new UserFollowed($this->auth_user));
+        }
 
         return $this->show($user->id);
     }

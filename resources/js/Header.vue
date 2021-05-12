@@ -57,9 +57,86 @@
     <!-- 通知音ボタン -->
     <v-btn icon class="mx-6" @click="$store.dispatch('alert/switchSound')" v-if="authCheck">
       <v-icon large>
-        {{ $store.getters['alert/isSoundOn'] ? 'mdi-bell' : 'mdi-bell-off' }}
+        {{ $store.getters['alert/isSoundOn'] ? 'mdi-music-note' : 'mdi-music-note-off' }}
       </v-icon>
     </v-btn>
+
+    <!-- 通知一覧ボタン -->
+    <div v-if="authCheck">
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-badge
+            color="#f6bf00"
+            offset-x="43"
+            offset-y="23"
+            :content="authUser.unread_notifications_count"
+            :value="authUser.unread_notifications_count"
+          >
+            <v-btn icon v-bind="attrs" v-on="on" class="mr-6">
+              <v-icon large>mdi-bell</v-icon>
+            </v-btn>
+          </v-badge>
+        </template>
+        <v-list>
+          <div v-for="notification in authUser.notifications" :key="notification.id">
+            <!-- フォロー通知 -->
+            <v-list-item
+              :style="{
+                'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
+              }"
+              v-if="notification.type === 'UserFollowed'"
+              @click="showProfile(notification.username)"
+            >
+              <v-list-item-title>
+                {{ notification.message }}
+              </v-list-item-title>
+            </v-list-item>
+
+            <!-- カルテへの通知 -->
+            <v-list-item
+              :style="{
+                'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
+              }"
+              v-else-if="
+                notification.type === 'KarteCommentPosted' ||
+                notification.type === 'KarteFavorited' ||
+                notification.type === 'CommentToKarteFavorited'
+              "
+              @click="showKarte(notification.karte_id)"
+            >
+              <v-list-item-title>
+                {{ notification.message }}
+              </v-list-item-title>
+            </v-list-item>
+
+            <!-- 投稿への通知 -->
+            <v-list-item
+              :style="{
+                'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
+              }"
+              v-else-if="
+                notification.type === 'PostCommentPosted' ||
+                notification.type === 'PostFavorited' ||
+                notification.type === 'CommentToPostFavorited'
+              "
+              @click="showPost(notification.post_id)"
+            >
+              <v-list-item-title>
+                {{ notification.message }}
+              </v-list-item-title>
+            </v-list-item>
+          </div>
+        </v-list>
+      </v-menu>
+
+      <ProfileDialog
+        :username="profile.username"
+        @close="profile.dialog = $event"
+        v-if="profile.dialog"
+      />
+      <KarteDialog :karteId="karteId" @close="karteId = $event" />
+      <PostDialog :postId="postId" @close="postId = $event" />
+    </div>
   </v-app-bar>
 
   <v-app-bar app dark height="64px" v-else>
@@ -78,8 +155,15 @@ export default {
         { text: '自習中', value: 'busy' },
         { text: '離席中', value: 'away' },
       ],
+      profile: {
+        dialog: false, // プロフィールのダイアログ制御
+        username: null, // プロフィールを表示するユーザー名
+      },
+      karteId: null, // 詳細を表示するカルテID
+      postId: null, // 詳細を表示する投稿ID
     };
   },
+
   computed: {
     isSmartphone() {
       if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
@@ -88,13 +172,16 @@ export default {
         return false;
       }
     },
+
     authCheck() {
       return this.$store.getters['auth/check'];
     },
+
     authUser() {
       return this.$store.getters['auth/user'];
     },
   },
+
   watch: {
     authCheck: async function (check, oldCheck) {
       // ログインまたはリロード時
@@ -105,15 +192,59 @@ export default {
       }
     },
   },
+
   methods: {
     /**
-     * ステータス更新処理
+     * ステータスの更新
      *
      * @param {String} status - ステータス
      */
     updateStatus: async function (status) {
       await axios.post('/api/status/' + status);
-      await this.$store.dispatch('auth/syncAuthUser');
+      this.$store.dispatch('auth/syncAuthUser');
+    },
+
+    /**
+     * 通知の既読
+     */
+    markNotificationsAsRead: async function () {
+      await axios.post('/api/users/mark-notifications-as-read');
+      this.$store.dispatch('auth/syncAuthUser');
+    },
+
+    /**
+     * プロフィールの表示
+     *
+     * @param {String} username - プロフィールを表示するユーザー名
+     */
+    showProfile: function (username) {
+      this.profile.username = username;
+      this.profile.dialog = true;
+      this.markNotificationsAsRead();
+    },
+
+    /**
+     * カルテの表示
+     *
+     * @param {Number} karteId - 詳細を表示するカルテID
+     */
+    showKarte: function (karteId) {
+      if (karteId) {
+        this.karteId = karteId;
+        this.markNotificationsAsRead();
+      }
+    },
+
+    /**
+     * 投稿の表示
+     *
+     * @param {Number} postId - 詳細を表示する投稿ID
+     */
+    showPost: function (postId) {
+      if (postId) {
+        this.postId = postId;
+        this.markNotificationsAsRead();
+      }
     },
   },
 };
@@ -137,5 +268,9 @@ a:hover {
     font-size: 20px;
     font-weight: bold;
   }
+}
+
+.v-list {
+  padding: 0;
 }
 </style>

@@ -495,7 +495,9 @@
           <v-row justify="end">
             <!-- 通知音ボタン -->
             <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
-              <v-icon large>{{ isNotificationOn ? 'mdi-bell' : 'mdi-bell-off' }}</v-icon>
+              <v-icon large>
+                {{ isNotificationOn ? 'mdi-music-note' : 'mdi-music-note-off' }}
+              </v-icon>
             </v-btn>
 
             <!-- チャットボタン -->
@@ -549,15 +551,11 @@
 
 <script>
 import voiceDetection from 'voice-activity-detection';
-import ProfileDialog from '@/components/commons/ProfileDialog';
 import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND, RECEIVE_MESSAGE_SOUND } from '@/consts/sound';
 
 const API_KEY = process.env.MIX_SKYWAY_API_KEY;
 
 export default {
-  components: {
-    ProfileDialog,
-  },
   props: {
     callId: Number,
     capacity: Number,

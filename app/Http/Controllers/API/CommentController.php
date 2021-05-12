@@ -4,6 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
+use App\Models\Karte;
+use App\Models\Post;
+use App\Notifications\KarteCommentPosted;
+use App\Notifications\PostCommentPosted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,13 +15,17 @@ class CommentController extends Controller
 {
     /** @var Comment */
     protected $comment;
+    /** @var Karte */
+    protected $karte;
+    /** @var Post */
+    protected $post;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Comment $comment)
+    public function __construct(Comment $comment, Karte $karte, Post $post)
     {
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
@@ -25,6 +33,8 @@ class CommentController extends Controller
         });
 
         $this->comment = $comment;
+        $this->karte = $karte;
+        $this->post = $post;
     }
 
 
@@ -48,6 +58,21 @@ class CommentController extends Controller
 
         if (empty($result)) {
             return response()->json(['message' => 'コメントの投稿に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        // 通知の発行
+        if (!empty($result['karte_id'])) {
+            $karte = $this->karte->find($result['karte_id']);
+            // 自分のカルテへのコメントでは通知を発行しない
+            if ($karte->user->id != $this->user->id) {
+                $karte->user->notify(new KarteCommentPosted($karte, $this->user));
+            }
+        } else if (!empty($result['post_id'])) {
+            $post = $this->post->find($result['post_id']);
+            // 自分の投稿へのコメントでは通知を発行しない
+            if ($post->user->id != $this->user->id) {
+                $post->user->notify(new PostCommentPosted($post, $this->user));
+            }
         }
 
         return response()->json();

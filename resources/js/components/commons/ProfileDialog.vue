@@ -212,16 +212,7 @@
 </template>
 
 <script>
-import ProfileDialog from '@/components/commons/ProfileDialog';
-import KarteDialog from '@/components/commons/KarteDialog';
-
 export default {
-  name: 'ProfileDialog',
-  components: {
-    ProfileDialog,
-    KarteDialog,
-  },
-
   props: {
     username: String, // 表示するユーザー名
   },

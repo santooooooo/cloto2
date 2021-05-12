@@ -192,22 +192,19 @@
           </v-card>
         </v-dialog>
 
-        <KarteDialog :karteId="showKarteId" @close="showKarteId = $event" />
-        <PostDialog :postId="showPostId" @close="showPostId = $event" />
         <ProfileDialog
           :username="profile.username"
           @close="profile.dialog = $event"
           v-if="profile.dialog"
         />
+        <KarteDialog :karteId="showKarteId" @close="showKarteId = $event" />
+        <PostDialog :postId="showPostId" @close="showPostId = $event" />
       </v-container>
     </v-container>
   </v-layout>
 </template>
 
 <script>
-import KarteDialog from '@/components/commons/KarteDialog';
-import PostDialog from '@/components/commons/PostDialog';
-import ProfileDialog from '@/components/commons/ProfileDialog';
 import { OK, NOT_FOUND } from '@/consts/status';
 
 export default {
@@ -228,12 +225,12 @@ export default {
       items: [], // 表示データ
       kartes: [], // カルテ一覧
       posts: [], // 投稿一覧
-      showKarteId: null, // 詳細を表示するカルテID
-      showPostId: null, // 詳細を表示する投稿ID
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
       },
+      showKarteId: null, // 詳細を表示するカルテID
+      showPostId: null, // 詳細を表示する投稿ID
       postForm: {
         body: '', // 内容
         max: 1000, // 最大長
@@ -249,12 +246,6 @@ export default {
         data: {},
       },
     };
-  },
-
-  components: {
-    KarteDialog,
-    PostDialog,
-    ProfileDialog,
   },
 
   computed: {
@@ -298,6 +289,16 @@ export default {
     },
 
     /**
+     * プロフィールの表示
+     *
+     * @param {String} username - プロフィールを表示するユーザー名
+     */
+    showProfile: function (username) {
+      this.profile.username = username;
+      this.profile.dialog = true;
+    },
+
+    /**
      * カルテの詳細表示
      *
      * @param {Number} karteId - 詳細を表示するカルテID
@@ -317,16 +318,6 @@ export default {
       if (postId) {
         this.showPostId = postId;
       }
-    },
-
-    /**
-     * プロフィールの表示
-     *
-     * @param {String} username - プロフィールを表示するユーザー名
-     */
-    showProfile: function (username) {
-      this.profile.username = username;
-      this.profile.dialog = true;
     },
 
     /**
