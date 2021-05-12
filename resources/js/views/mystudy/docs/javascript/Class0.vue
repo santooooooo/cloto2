@@ -9,18 +9,21 @@
           <ul class="p-0 pl-2">
             <li
               class="my-6 grey--text content-subtext py-2 pl-1"
+              id="buy-title"
               v-scroll-to="{ el: '#buy', offset: -80 }"
             >
               0-1. ダミー1
             </li>
             <li
               class="my-6 grey--text content-subtext py-2 pl-1"
+              id="suggest-title"
               v-scroll-to="{ el: '#suggest', offset: -80 }"
             >
               0-2. ダミー2
             </li>
             <li
               class="my-6 grey--text content-subtext py-2 pl-1"
+              id="cut-title"
               v-scroll-to="{ el: '#cut', offset: -80 }"
             >
               0-3. ダミー3
@@ -136,6 +139,54 @@ export default {
       dialog: false,
     };
   },
+  mounted() {
+    this.setValue();
+    window.addEventListener('scroll', this.setup);
+  },
+  methods: {
+    /**
+     * コンテンツサイドバーのスクロールアニメーションの設定
+     */
+    setValue() {
+      let zeroOne = document.getElementById('buy').getBoundingClientRect();
+      let zeroTwo = document.getElementById('suggest').getBoundingClientRect();
+      let zeroThree = document.getElementById('cut').getBoundingClientRect();
+
+      //本当はdataにプロパティとして座標の値を入れて管理したいが、mountedはgetの処理しかできないため、
+      //とりあえずこの処理
+
+      // console(<変数>.top)で座標が取れるから、コンテンツ以下の度に確認
+      // console.log(zeroOne.top);
+      // console.log(zeroTwo.top);
+      // console.log(zeroThree.top);
+    },
+    setup() {
+      let buyTitle = document.getElementById('buy-title');
+      let suggestTitle = document.getElementById('suggest-title');
+      let cutTitle = document.getElementById('cut-title');
+      let scrollY = window.scrollY;
+
+      // 数字は取ってきた値
+      if (scrollY > 1130) {
+        buyTitle.classList.remove('active-style');
+        suggestTitle.classList.remove('active-style');
+        cutTitle.classList.add('active-style');
+      }
+      // 100引いて差分を調整
+      else if (scrollY > 596) {
+        buyTitle.classList.remove('active-style');
+        suggestTitle.classList.add('active-style');
+        cutTitle.classList.remove('active-style');
+      } else {
+        buyTitle.classList.add('active-style');
+        suggestTitle.classList.remove('active-style');
+        cutTitle.classList.remove('active-style');
+      }
+    },
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.setup);
+  },
 };
 </script>
 
@@ -158,6 +209,12 @@ ul {
     color: white !important;
     border-radius: 4%;
   }
+}
+
+.active-style {
+  background: rgb(207, 204, 204, 0.6);
+  border-radius: 4%;
+  box-shadow: 0 0 2px black;
 }
 
 @media (min-width: 768px) {
