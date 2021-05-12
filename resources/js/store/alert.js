@@ -64,7 +64,10 @@ const mutations = {
     } else {
       // 強制的に状態変更する場合（ログイン時など）
       state.isSoundOn = data.isOn;
-      data.sound.play();
+      // 切り替え音の再生
+      if (data.sound) {
+        data.sound.play();
+      }
     }
   },
 };

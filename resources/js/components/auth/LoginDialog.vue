@@ -132,6 +132,9 @@ export default {
             // 未認証時のリダイレクト
             window.location.pathname = '/email/verify';
           } else {
+            // 通知音の有効化
+            this.$store.dispatch('alert/switchSound', { isOn: true });
+
             // ページ遷移
             this.$router.push({ name: 'home' });
           }

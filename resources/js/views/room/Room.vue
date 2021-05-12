@@ -143,6 +143,7 @@ import SeminarView from '@/components/room/SeminarView';
 import Media from '@/components/room/Media';
 import KartePostDialog from '@/components/room/KartePostDialog';
 import { OK } from '@/consts/status';
+import { RECEIVE_CHAT_SOUND } from '@/consts/sound';
 
 export default {
   head: {
@@ -1075,6 +1076,11 @@ export default {
       .listen('ChatPosted', (event) => {
         // チャットメッセージの追加
         this.messages.unshift(event);
+
+        // 他人からのメッセージ受信時には通知
+        if (this.$store.getters['alert/isSoundOn'] && event.user.id !== this.authUser.id) {
+          RECEIVE_CHAT_SOUND.play();
+        }
       });
 
     // ロード終了
