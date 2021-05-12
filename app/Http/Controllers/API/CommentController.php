@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Karte;
+use App\Models\Post;
 use App\Notifications\KarteCommentPosted;
+use App\Notifications\PostCommentPosted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,13 +17,15 @@ class CommentController extends Controller
     protected $comment;
     /** @var Karte */
     protected $karte;
+    /** @var Post */
+    protected $post;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Comment $comment, Karte $karte)
+    public function __construct(Comment $comment, Karte $karte, Post $post)
     {
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
@@ -30,6 +34,7 @@ class CommentController extends Controller
 
         $this->comment = $comment;
         $this->karte = $karte;
+        $this->post = $post;
     }
 
 
@@ -55,6 +60,12 @@ class CommentController extends Controller
             // 自分のカルテへのコメントでは通知を発行しない
             if ($karte->user->id != $this->user->id) {
                 $karte->user->notify(new KarteCommentPosted($karte));
+            }
+        } else if (!empty($data['post_id'])) {
+            $post = $this->post->find($data['post_id']);
+            // 自分の投稿へのコメントでは通知を発行しない
+            if ($post->user->id != $this->user->id) {
+                $post->user->notify(new PostCommentPosted($post, $this->user));
             }
         }
 

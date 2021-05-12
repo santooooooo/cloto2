@@ -80,6 +80,20 @@ class UserController extends Controller
                         ]
                     );
                     break;
+
+                case 'App\Notifications\PostCommentPosted':
+                    // 投稿へのコメント通知
+                    $user = $this->user->find($notification->data['user_id']);
+                    array_push(
+                        $notifications,
+                        [
+                            'type' => 'PostCommentPosted',
+                            'post_id' => $notification->data['post_id'],
+                            'message' => $user->handlename . 'がコメントしました！',
+                            'read_at' => $notification->read_at
+                        ]
+                    );
+                    break;
             }
 
             // 未読通知数のカウント

@@ -104,16 +104,30 @@
                 {{ notification.message }}
               </v-list-item-title>
             </v-list-item>
+
+            <!-- 投稿へのコメント通知 -->
+            <v-list-item
+              :style="{
+                'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
+              }"
+              v-else-if="notification.type === 'PostCommentPosted'"
+              @click="showPost(notification.post_id)"
+            >
+              <v-list-item-title>
+                {{ notification.message }}
+              </v-list-item-title>
+            </v-list-item>
           </div>
         </v-list>
       </v-menu>
 
-      <KarteDialog :karteId="karteId" @close="karteId = $event" />
       <ProfileDialog
         :username="profile.username"
         @close="profile.dialog = $event"
         v-if="profile.dialog"
       />
+      <KarteDialog :karteId="karteId" @close="karteId = $event" />
+      <PostDialog :postId="postId" @close="postId = $event" />
     </div>
   </v-app-bar>
 
@@ -123,13 +137,15 @@
 </template>
 
 <script>
-import KarteDialog from '@/components/commons/KarteDialog';
 import ProfileDialog from '@/components/commons/ProfileDialog';
+import KarteDialog from '@/components/commons/KarteDialog';
+import PostDialog from '@/components/commons/PostDialog';
 
 export default {
   components: {
-    KarteDialog,
     ProfileDialog,
+    KarteDialog,
+    PostDialog,
   },
 
   data() {
@@ -141,11 +157,12 @@ export default {
         { text: '自習中', value: 'busy' },
         { text: '離席中', value: 'away' },
       ],
-      karteId: null, // 詳細を表示するカルテID
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
       },
+      karteId: null, // 詳細を表示するカルテID
+      postId: null, // 詳細を表示する投稿ID
     };
   },
 
@@ -198,7 +215,18 @@ export default {
     },
 
     /**
-     * カルテの詳細表示
+     * プロフィールの表示
+     *
+     * @param {String} username - プロフィールを表示するユーザー名
+     */
+    showProfile: function (username) {
+      this.profile.username = username;
+      this.profile.dialog = true;
+      this.markNotificationsAsRead();
+    },
+
+    /**
+     * カルテの表示
      *
      * @param {Number} karteId - 詳細を表示するカルテID
      */
@@ -210,14 +238,15 @@ export default {
     },
 
     /**
-     * プロフィールの表示
+     * 投稿の表示
      *
-     * @param {String} username - プロフィールを表示するユーザー名
+     * @param {Number} postId - 詳細を表示する投稿ID
      */
-    showProfile: function (username) {
-      this.profile.username = username;
-      this.profile.dialog = true;
-      this.markNotificationsAsRead();
+    showPost: function (postId) {
+      if (postId) {
+        this.postId = postId;
+        this.markNotificationsAsRead();
+      }
     },
   },
 };
