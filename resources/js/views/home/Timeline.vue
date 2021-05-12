@@ -205,9 +205,6 @@
 </template>
 
 <script>
-import ProfileDialog from '@/components/commons/ProfileDialog';
-import KarteDialog from '@/components/commons/KarteDialog';
-import PostDialog from '@/components/commons/PostDialog';
 import { OK, NOT_FOUND } from '@/consts/status';
 
 export default {
@@ -217,12 +214,6 @@ export default {
         inner: 'タイムライン',
       };
     },
-  },
-
-  components: {
-    ProfileDialog,
-    KarteDialog,
-    PostDialog,
   },
 
   data() {

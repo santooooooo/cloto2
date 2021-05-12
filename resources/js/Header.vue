@@ -145,17 +145,7 @@
 </template>
 
 <script>
-import ProfileDialog from '@/components/commons/ProfileDialog';
-import KarteDialog from '@/components/commons/KarteDialog';
-import PostDialog from '@/components/commons/PostDialog';
-
 export default {
-  components: {
-    ProfileDialog,
-    KarteDialog,
-    PostDialog,
-  },
-
   data() {
     return {
       status: null, // 現在のステータス

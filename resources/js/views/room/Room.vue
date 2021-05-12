@@ -142,7 +142,6 @@ import SeminarSpeak from '@/components/room/SeminarSpeak';
 import SeminarView from '@/components/room/SeminarView';
 import Media from '@/components/room/Media';
 import KartePostDialog from '@/components/room/KartePostDialog';
-import ProfileDialog from '@/components/commons/ProfileDialog';
 import { OK } from '@/consts/status';
 
 export default {
@@ -163,7 +162,6 @@ export default {
     SeminarView,
     Media,
     KartePostDialog,
-    ProfileDialog,
   },
   data() {
     return {

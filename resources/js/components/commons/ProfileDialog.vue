@@ -212,13 +212,7 @@
 </template>
 
 <script>
-import KarteDialog from '@/components/commons/KarteDialog';
-
 export default {
-  components: {
-    KarteDialog,
-  },
-
   props: {
     username: String, // 表示するユーザー名
   },
