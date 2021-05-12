@@ -77,7 +77,7 @@
             </v-btn>
           </v-badge>
         </template>
-        <v-list dense>
+        <v-list>
           <div v-for="notification in authUser.notifications" :key="notification.id">
             <!-- フォロー通知 -->
             <v-list-item
