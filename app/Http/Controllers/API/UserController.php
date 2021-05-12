@@ -53,80 +53,60 @@ class UserController extends Controller
         $notifications = [];
         $unread_notifications_count = 0;
         foreach ($this->auth_user->notifications()->take(10)->get() as $notification) {
+            // データの作成
+            $data = ['read_at' => $notification->read_at];
             $user = $this->user->find($notification->data['user_id']);
 
-            switch ($notification->type) {
-                case 'App\Notifications\UserFollowed':
+            $type = explode('\\', $notification->type);
+            switch (end($type)) {
+                case 'UserFollowed':
                     // フォロー通知
-                    array_push(
-                        $notifications,
-                        [
-                            'type' => 'UserFollowed',
-                            'username' => $user->username,
-                            'message' => $user->handlename . 'さんにフォローされました！',
-                            'read_at' => $notification->read_at
-                        ]
-                    );
-                    break;
-
-                case 'App\Notifications\KarteCommentPosted':
-                    // カルテへのコメント通知
-                    array_push(
-                        $notifications,
-                        [
-                            'type' => 'KarteCommentPosted',
-                            'karte_id' => $notification->data['karte_id'],
-                            'message' => $user->handlename . 'がコメントしました！',
-                            'read_at' => $notification->read_at
-                        ]
-                    );
-                    break;
-
-                case 'App\Notifications\PostCommentPosted':
-                    // 投稿へのコメント通知
-                    array_push(
-                        $notifications,
-                        [
-                            'type' => 'PostCommentPosted',
-                            'post_id' => $notification->data['post_id'],
-                            'message' => $user->handlename . 'がコメントしました！',
-                            'read_at' => $notification->read_at
-                        ]
-                    );
-                    break;
-
-                case 'App\Notifications\KarteFavorited':
-                    // カルテへのいいね通知
-                    array_push(
-                        $notifications,
-                        [
-                            'type' => 'KarteFavorited',
-                            'karte_id' => $notification->data['karte_id'],
-                            'message' => $user->handlename . 'がいいねしました！',
-                            'read_at' => $notification->read_at
-                        ]
-                    );
-                    break;
-
-                case 'App\Notifications\PostFavorited':
-                    // 投稿へのいいね通知
-                    array_push(
-                        $notifications,
-                        [
-                            'type' => 'PostFavorited',
-                            'post_id' => $notification->data['post_id'],
-                            'message' => $user->handlename . 'がいいねしました！',
-                            'read_at' => $notification->read_at
-                        ]
-                    );
-                    break;
-
-                case 'App\Notifications\CommentFavorited':
-                    // コメントへのいいね通知
-                    $data = [
-                        'message' => 'コメントに' . $user->handlename . 'がいいねしました！',
-                        'read_at' => $notification->read_at
+                    $data += [
+                        'type' => 'UserFollowed',
+                        'username' => $user->username,
+                        'message' => $user->handlename . 'さんにフォローされました！'
                     ];
+                    break;
+
+                case 'KarteCommentPosted':
+                    // カルテへのコメント通知
+                    $data += [
+                        'type' => 'KarteCommentPosted',
+                        'karte_id' => $notification->data['karte_id'],
+                        'message' => 'カルテに' . $user->handlename . 'さんがコメントしました！'
+                    ];
+                    break;
+
+                case 'PostCommentPosted':
+                    // 投稿へのコメント通知
+                    $data += [
+                        'type' => 'PostCommentPosted',
+                        'post_id' => $notification->data['post_id'],
+                        'message' => '投稿に' . $user->handlename . 'さんがコメントしました！'
+                    ];
+                    break;
+
+                case 'KarteFavorited':
+                    // カルテへのいいね通知
+                    $data += [
+                        'type' => 'KarteFavorited',
+                        'karte_id' => $notification->data['karte_id'],
+                        'message' => 'カルテに' . $user->handlename . 'さんがいいねしました！'
+                    ];
+                    break;
+
+                case 'PostFavorited':
+                    // 投稿へのいいね通知
+                    $data += [
+                        'type' => 'PostFavorited',
+                        'post_id' => $notification->data['post_id'],
+                        'message' => '投稿に' . $user->handlename . 'さんがいいねしました！'
+                    ];
+                    break;
+
+                case 'CommentFavorited':
+                    // コメントへのいいね通知
+                    $data += ['message' => 'コメントに' . $user->handlename . 'さんがいいねしました！'];
 
                     if (!empty($notification->data['karte_id'])) {
                         $data += [
@@ -139,10 +119,10 @@ class UserController extends Controller
                             'post_id' => $notification->data['post_id'],
                         ];
                     }
-
-                    array_push($notifications, $data);
                     break;
             }
+
+            array_push($notifications, $data);
 
             // 未読通知数のカウント
             if (empty($notification->read_at)) {
