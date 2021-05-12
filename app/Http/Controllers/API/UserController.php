@@ -278,6 +278,10 @@ class UserController extends Controller
         // フォロー/フォロー解除処理
         $result = $this->auth_user->follows()->toggle($user->id);
 
+        if (empty($result)) {
+            return response()->json(['message' => 'フォロー/フォロー解除に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
         // フォロー時には通知を発行
         if (count($result['attached'])) {
             $user->notify(new UserFollowed($this->auth_user));

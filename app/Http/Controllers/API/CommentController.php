@@ -54,25 +54,25 @@ class CommentController extends Controller
             return response()->json(['message' => 'コメントの投稿に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        // 通知の発行
-        if (!empty($data['karte_id'])) {
-            $karte = $this->karte->find($data['karte_id']);
-            // 自分のカルテへのコメントでは通知を発行しない
-            if ($karte->user->id != $this->user->id) {
-                $karte->user->notify(new KarteCommentPosted($karte, $this->user));
-            }
-        } else if (!empty($data['post_id'])) {
-            $post = $this->post->find($data['post_id']);
-            // 自分の投稿へのコメントでは通知を発行しない
-            if ($post->user->id != $this->user->id) {
-                $post->user->notify(new PostCommentPosted($post, $this->user));
-            }
-        }
-
         $result = $this->comment->create($data);
 
         if (empty($result)) {
             return response()->json(['message' => 'コメントの投稿に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        // 通知の発行
+        if (!empty($result['karte_id'])) {
+            $karte = $this->karte->find($result['karte_id']);
+            // 自分のカルテへのコメントでは通知を発行しない
+            if ($karte->user->id != $this->user->id) {
+                $karte->user->notify(new KarteCommentPosted($karte, $this->user));
+            }
+        } else if (!empty($result['post_id'])) {
+            $post = $this->post->find($result['post_id']);
+            // 自分の投稿へのコメントでは通知を発行しない
+            if ($post->user->id != $this->user->id) {
+                $post->user->notify(new PostCommentPosted($post, $this->user));
+            }
         }
 
         return response()->json();
