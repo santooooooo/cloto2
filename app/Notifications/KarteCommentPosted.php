@@ -5,6 +5,7 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use App\Models\Karte;
+use App\Models\User;
 
 class KarteCommentPosted extends Notification
 {
@@ -12,15 +13,18 @@ class KarteCommentPosted extends Notification
 
     /** @var Karte */
     protected $karte;
+    /** @var User */
+    protected $user;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Karte $karte)
+    public function __construct(Karte $karte, User $user)
     {
         $this->karte = $karte;
+        $this->user = $user;
     }
 
 
@@ -44,7 +48,8 @@ class KarteCommentPosted extends Notification
     public function toArray($notifiable)
     {
         return [
-            'karte_id' => $this->karte->id
+            'karte_id' => $this->karte->id,
+            'user_id' => $this->user->id
         ];
     }
 }

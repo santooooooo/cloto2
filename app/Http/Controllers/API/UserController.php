@@ -53,10 +53,11 @@ class UserController extends Controller
         $notifications = [];
         $unread_notifications_count = 0;
         foreach ($this->auth_user->notifications()->take(10)->get() as $notification) {
+            $user = $this->user->find($notification->data['user_id']);
+
             switch ($notification->type) {
                 case 'App\Notifications\UserFollowed':
                     // フォロー通知
-                    $user = $this->user->find($notification->data['user_id']);
                     array_push(
                         $notifications,
                         [
@@ -75,7 +76,7 @@ class UserController extends Controller
                         [
                             'type' => 'KarteCommentPosted',
                             'karte_id' => $notification->data['karte_id'],
-                            'message' => 'カルテにコメントがつきました！',
+                            'message' => $user->handlename . 'がコメントしました！',
                             'read_at' => $notification->read_at
                         ]
                     );
@@ -83,7 +84,6 @@ class UserController extends Controller
 
                 case 'App\Notifications\PostCommentPosted':
                     // 投稿へのコメント通知
-                    $user = $this->user->find($notification->data['user_id']);
                     array_push(
                         $notifications,
                         [

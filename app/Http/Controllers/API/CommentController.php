@@ -59,7 +59,7 @@ class CommentController extends Controller
             $karte = $this->karte->find($data['karte_id']);
             // 自分のカルテへのコメントでは通知を発行しない
             if ($karte->user->id != $this->user->id) {
-                $karte->user->notify(new KarteCommentPosted($karte));
+                $karte->user->notify(new KarteCommentPosted($karte, $this->user));
             }
         } else if (!empty($data['post_id'])) {
             $post = $this->post->find($data['post_id']);
