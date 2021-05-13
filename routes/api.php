@@ -58,9 +58,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('rooms', 'RoomController', ['only' => ['index', 'show']]);
         Route::post('/rooms/announce', 'RoomController@announce');
 
-        Route::patch('/seats/sit/{seat}', 'SeatController@sit')->where('seat', '[0-9]+');
+        Route::patch('/seats/{seat}/sit', 'SeatController@sit')->where('seat', '[0-9]+');
         Route::patch('/seats/leave', 'SeatController@leave');
-        Route::patch('/seats/move/{seat}', 'SeatController@move')->where('seat', '[0-9]+');
+        Route::patch('/seats/{seat}/move', 'SeatController@move')->where('seat', '[0-9]+');
         Route::patch('/seats/back', 'SeatController@back');
 
         Route::resource('chats', 'ChatController', ['only' => ['index', 'store']]);

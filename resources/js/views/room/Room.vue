@@ -708,7 +708,7 @@ export default {
       switch (action) {
         case 'sitting':
           // 着席処理
-          response = await axios.post('/api/seats/sit/' + seatObject.seatId, {
+          response = await axios.post('/api/seats/' + seatObject.seatId + '/sit', {
             _method: 'patch',
           });
 
@@ -743,7 +743,7 @@ export default {
 
         case 'enterCall':
           // 通話室入室処理
-          response = await axios.post('/api/seats/move/' + seatObject.seatId, {
+          response = await axios.post('/api/seats/' + seatObject.seatId + '/move', {
             _method: 'patch',
           });
           if (response.status === OK) {
@@ -753,7 +753,7 @@ export default {
 
         case 'enterMedia':
           // メディア視聴ブース入室処理
-          await axios.post('/api/seats/move/' + seatObject.seatId, {
+          await axios.post('/api/seats/' + seatObject.seatId + '/move', {
             _method: 'patch',
           });
           break;
