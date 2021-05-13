@@ -452,7 +452,7 @@
             <!-- ビデオオフボタン -->
             <v-btn
               :color="!isVideoOff ? 'white' : 'red'"
-              :disabled="isAudioLoading || isVideoLoading"
+              :disabled="isAudioLoading || isVideoLoading || !video"
               fab
               depressed
               :large="$vuetify.breakpoint.lg"

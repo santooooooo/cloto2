@@ -487,7 +487,7 @@
             <!-- ビデオオフボタン -->
             <v-btn
               :color="!isVideoOff ? 'white' : 'red'"
-              :disabled="isAudioLoading || isVideoLoading"
+              :disabled="isAudioLoading || isVideoLoading || !video"
               fab
               depressed
               :large="$vuetify.breakpoint.lg"
@@ -622,6 +622,7 @@ export default {
       },
 
       //*** 入力デバイス ***//
+      video: false, // ビデオの有無
       audioDevices: [], // 音声入力デバイス一覧
       videoDevices: [], // 映像入力デバイス一覧
       selectedAudio: null, // 選択されている音声入力
@@ -1056,6 +1057,7 @@ export default {
           // 初期値の設定
           this.selectedAudio = this.audioDevices[0].deviceId;
           this.selectedVideo = this.videoDevices[0].deviceId;
+          this.video = true;
           this.permissionOverlay = false;
         })
         .catch(async (error) => {
@@ -1083,6 +1085,7 @@ export default {
 
               // 初期値の設定
               this.selectedAudio = this.audioDevices[0].deviceId;
+              this.video = false;
               this.permissionOverlay = false;
             });
         });
