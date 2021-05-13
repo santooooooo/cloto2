@@ -217,7 +217,7 @@ export default {
         );
 
         // ユーザーデータ保存処理
-        let response = await axios.post('/api/users', input);
+        let response = await axios.post('/api/user', input);
 
         if (response.status === OK) {
           // ユーザーデータの同期

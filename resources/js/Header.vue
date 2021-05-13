@@ -69,8 +69,8 @@
             color="#f6bf00"
             offset-x="43"
             offset-y="23"
-            :content="authUser.unread_notifications_count"
-            :value="authUser.unread_notifications_count"
+            :content="unreadNotificationsCount"
+            :value="unreadNotificationsCount"
           >
             <v-btn icon v-bind="attrs" v-on="on" class="mr-6">
               <v-icon large>mdi-bell</v-icon>
@@ -78,7 +78,7 @@
           </v-badge>
         </template>
         <v-list>
-          <div v-for="notification in authUser.notifications" :key="notification.id">
+          <div v-for="notification in notifications" :key="notification.id">
             <!-- フォロー通知 -->
             <v-list-item
               :style="{
@@ -155,6 +155,8 @@ export default {
         { text: '自習中', value: 'busy' },
         { text: '離席中', value: 'away' },
       ],
+      notifications: [], // 通知一覧
+      unreadNotificationsCount: 0, // 未読通知数
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
@@ -189,6 +191,9 @@ export default {
         // ステータスの更新
         await this.updateStatus(this.authUser.status || 'free');
         this.status = this.authUser.status;
+
+        // 通知の取得
+        this.getNotifications();
       }
     },
   },
@@ -205,11 +210,21 @@ export default {
     },
 
     /**
+     * 通知の取得
+     */
+    getNotifications: async function () {
+      let response = await axios.get('/api/user/notifications');
+      this.notifications = response.data.notifications;
+      this.unreadNotificationsCount = response.data.unread_notifications_count;
+    },
+
+    /**
      * 通知の既読
      */
     markNotificationsAsRead: async function () {
-      await axios.post('/api/users/mark-notifications-as-read');
-      this.$store.dispatch('auth/syncAuthUser');
+      let response = await axios.post('/api/user/notifications');
+      this.notifications = response.data.notifications;
+      this.unreadNotificationsCount = response.data.unread_notifications_count;
     },
 
     /**

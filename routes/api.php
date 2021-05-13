@@ -42,11 +42,12 @@ Route::group(['middleware' => 'auth'], function () {
         */
         Route::post('/status/{status?}', 'UserController@updateStatus');
         Route::get('/users/{user_param}', 'UserController@show');
-        Route::patch('/users', 'UserController@update');
-        Route::post('/users/mark-notifications-as-read', 'UserController@markNotificationsAsRead');
         Route::post('/users/{user}/follow', 'UserController@follow')->where('user', '[0-9]+');
         Route::get('/users/{user}/follows', 'UserController@follows')->where('user', '[0-9]+');
         Route::get('/users/{user}/followers', 'UserController@followers')->where('user', '[0-9]+');
+        Route::patch('/user', 'UserController@update');
+        Route::get('/user/notifications', 'UserController@getNotifications');
+        Route::post('/user/notifications', 'UserController@markNotificationsAsRead');
 
 
         /*
