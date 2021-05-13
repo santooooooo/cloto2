@@ -923,23 +923,17 @@ export default {
       this.permissionOverlay = true;
 
       if (this.video) {
-        const localStream = await navigator.mediaDevices
-          .getUserMedia({
-            audio: true,
-            video: true,
-          })
-          .catch((error) => {
-            // デバイスが存在しない場合
-            this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
-          });
+        // ビデオ通話
+        const localStream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video: true,
+        });
+
         // デバイスの停止
         localStream.getTracks().forEach((track) => track.stop());
 
         //** デバイスの一覧を取得 */
-        const devices = await navigator.mediaDevices.enumerateDevices().catch((error) => {
-          //デバイスが存在しない場合
-          this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
-        });
+        const devices = await navigator.mediaDevices.enumerateDevices();
 
         // マイクデバイスの一覧を取得
         this.audioDevices = devices.filter((device) => {
@@ -964,24 +958,17 @@ export default {
         this.selectedVideo = this.videoDevices[0].deviceId;
         this.permissionOverlay = false;
       } else {
-        // マイクのみが許可またはマイクのみしか使用できない場合
-        const localStream = await navigator.mediaDevices
-          .getUserMedia({
-            audio: true,
-            video: false,
-          })
-          .catch((error) => {
-            // デバイスが存在しない場合
-            this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
-          });
+        // 音声通話
+        const localStream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video: false,
+        });
 
         // デバイスの停止
         localStream.getTracks().forEach((track) => track.stop());
+
         //** デバイスの一覧を取得 */
-        const devices = await navigator.mediaDevices.enumerateDevices().catch((error) => {
-          // デバイスが存在しない場合
-          this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
-        });
+        const devices = await navigator.mediaDevices.enumerateDevices();
 
         // マイクデバイスの一覧を取得
         this.audioDevices = devices.filter((device) => {

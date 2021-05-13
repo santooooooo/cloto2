@@ -1022,18 +1022,19 @@ export default {
       //** 権限確認 */
       this.permissionOverlay = true;
 
+      // ビデオ通話
       await navigator.mediaDevices
         .getUserMedia({
           audio: true,
           video: true,
         })
         .then(async (stream) => {
+          // デバイスの停止
           stream.getTracks().forEach((track) => track.stop());
+
           //** デバイスの一覧を取得 */
-          const devices = await navigator.mediaDevices.enumerateDevices().catch((error) => {
-            // デバイスが存在しない場合
-            this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
-          });
+          const devices = await navigator.mediaDevices.enumerateDevices();
+
           // マイクデバイスの一覧を取得
           this.audioDevices = devices.filter((device) => {
             return (
@@ -1042,6 +1043,7 @@ export default {
               device.deviceId !== 'communications'
             );
           });
+
           // カメラデバイスの一覧を取得
           this.videoDevices = devices.filter((device) => {
             return (
@@ -1054,23 +1056,22 @@ export default {
           // 初期値の設定
           this.selectedAudio = this.audioDevices[0].deviceId;
           this.selectedVideo = this.videoDevices[0].deviceId;
-
           this.permissionOverlay = false;
         })
         .catch(async (error) => {
+          // 音声通話
           await navigator.mediaDevices
             .getUserMedia({
               audio: true,
               video: false,
             })
             .then(async (stream) => {
+              // デバイスの停止
               stream.getTracks().forEach((track) => track.stop());
-              const devices = await navigator.mediaDevices
-                .enumerateDevices()
-                .catch(async (error) => {
-                  // デバイスが存在しない場合
-                  this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
-                });
+
+              //** デバイスの一覧を取得 */
+              const devices = await navigator.mediaDevices.enumerateDevices();
+
               // マイクデバイスの一覧を取得
               this.audioDevices = devices.filter((device) => {
                 return (
@@ -1082,12 +1083,7 @@ export default {
 
               // 初期値の設定
               this.selectedAudio = this.audioDevices[0].deviceId;
-
               this.permissionOverlay = false;
-            })
-            .catch(async (error) => {
-              // デバイスが存在しない場合
-              this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
             });
         });
     },
