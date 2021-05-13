@@ -185,15 +185,23 @@ export default {
   },
 
   watch: {
-    authCheck: async function (check, oldCheck) {
-      // ログインまたはリロード時
-      if (check && !oldCheck) {
+    authCheck: async function (check) {
+      if (check) {
         // ステータスの更新
         await this.updateStatus(this.authUser.status || 'free');
         this.status = this.authUser.status;
 
         // 通知の取得
         this.getNotifications();
+
+        // 通知イベントの受信開始
+        Echo.channel('user.' + this.authUser.id).listen('NotificationPosted', (event) => {
+          this.notifications = event.notifications;
+          this.unreadNotificationsCount = event.unread_notifications_count;
+        });
+      } else {
+        // 通知イベントの受信終了
+        Echo.leave('user.' + this.authUser.id);
       }
     },
   },

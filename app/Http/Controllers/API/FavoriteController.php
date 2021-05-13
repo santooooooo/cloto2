@@ -10,6 +10,7 @@ use App\Models\Comment;
 use App\Notifications\KarteFavorited;
 use App\Notifications\PostFavorited;
 use App\Notifications\CommentFavorited;
+use App\Events\NotificationPosted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -79,18 +80,21 @@ class FavoriteController extends Controller
             // 自分のカルテへのいいねでは通知を発行しない
             if ($karte->user->id != $this->user->id) {
                 $karte->user->notify(new KarteFavorited($karte, $this->user));
+                broadcast(new NotificationPosted($karte->user));
             }
         } else if (!empty($result['post_id'])) {
             $post = $this->post->find($result['post_id']);
             // 自分の投稿へのいいねでは通知を発行しない
             if ($post->user->id != $this->user->id) {
                 $post->user->notify(new PostFavorited($post, $this->user));
+                broadcast(new NotificationPosted($post->user));
             }
         } else if (!empty($result['comment_id'])) {
             $comment = $this->comment->find($result['comment_id']);
             // 自分のコメントへのいいねでは通知を発行しない
             if ($comment->user->id != $this->user->id) {
                 $comment->user->notify(new CommentFavorited($comment, $this->user));
+                broadcast(new NotificationPosted($comment->user));
             }
         }
 

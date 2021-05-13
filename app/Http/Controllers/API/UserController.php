@@ -227,6 +227,7 @@ class UserController extends Controller
         // フォロー時には通知を発行
         if (count($result['attached'])) {
             $user->notify(new UserFollowed($this->auth_user));
+            broadcast(new NotificationPosted($user));
         }
 
         return $this->show($user->id);

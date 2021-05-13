@@ -8,6 +8,7 @@ use App\Models\Karte;
 use App\Models\Post;
 use App\Notifications\KarteCommentPosted;
 use App\Notifications\PostCommentPosted;
+use App\Events\NotificationPosted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -66,12 +67,14 @@ class CommentController extends Controller
             // 自分のカルテへのコメントでは通知を発行しない
             if ($karte->user->id != $this->user->id) {
                 $karte->user->notify(new KarteCommentPosted($karte, $this->user));
+                broadcast(new NotificationPosted($karte->user));
             }
         } else if (!empty($result['post_id'])) {
             $post = $this->post->find($result['post_id']);
             // 自分の投稿へのコメントでは通知を発行しない
             if ($post->user->id != $this->user->id) {
                 $post->user->notify(new PostCommentPosted($post, $this->user));
+                broadcast(new NotificationPosted($post->user));
             }
         }
 
