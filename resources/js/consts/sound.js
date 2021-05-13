@@ -6,6 +6,9 @@ onSound.volume = 0.4;
 // 通知音オフ
 const offSound = new Audio(Storage('system') + 'sound_off.mp3');
 offSound.volume = 0.4;
+// 通知音
+const notificationSound = new Audio(Storage('system') + 'notification.mp3');
+notificationSound.volume = 0.4;
 // アナウンス
 const announceSound = new Audio(Storage('system') + 'announce.mp3');
 announceSound.volume = 0.4;
@@ -24,6 +27,7 @@ receiveMessageSound.volume = 0.4;
 
 export const ON_SOUND = onSound;
 export const OFF_SOUND = offSound;
+export const NOTIFICATION_SOUND = notificationSound;
 export const ANNOUNCE_SOUND = announceSound;
 export const RECEIVE_CHAT_SOUND = receiveChatSound;
 export const JOIN_CALL_SOUND = joinCallSound;

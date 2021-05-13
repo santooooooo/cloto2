@@ -145,6 +145,8 @@
 </template>
 
 <script>
+import { NOTIFICATION_SOUND } from '@/consts/sound';
+
 export default {
   data() {
     return {
@@ -198,10 +200,11 @@ export default {
         Echo.channel('user.' + this.authUser.id).listen('NotificationPosted', (event) => {
           this.notifications = event.notifications;
           this.unreadNotificationsCount = event.unread_notifications_count;
+
+          if (this.$store.getters['alert/isSoundOn']) {
+            NOTIFICATION_SOUND.play();
+          }
         });
-      } else {
-        // 通知イベントの受信終了
-        Echo.leave('user.' + this.authUser.id);
       }
     },
   },
