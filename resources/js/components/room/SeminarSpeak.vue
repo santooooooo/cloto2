@@ -487,7 +487,7 @@
             <!-- ビデオオフボタン -->
             <v-btn
               :color="!isVideoOff ? 'white' : 'red'"
-              :disabled="isAudioLoading || isVideoLoading"
+              :disabled="isAudioLoading || isVideoLoading || !video"
               fab
               depressed
               :large="$vuetify.breakpoint.lg"
@@ -620,6 +620,7 @@ export default {
       },
 
       //*** 入力デバイス ***//
+      video: false, // ビデオの有無
       audioDevices: [], // 音声入力デバイス一覧
       videoDevices: [], // 映像入力デバイス一覧
       selectedAudio: null, // 選択されている音声入力
@@ -845,7 +846,7 @@ export default {
         }
 
         // 通話の接続を終了
-        await this.peer.disconnect();
+        await this.peer.destroy();
         this.peer = null;
       }
     },
@@ -1009,7 +1010,7 @@ export default {
         this.screenSharing.stream = null;
 
         // 画面共有用の接続を終了
-        this.screenSharing.peer.disconnect();
+        await this.screenSharing.peer.destroy();
       }
     },
 
@@ -1017,46 +1018,72 @@ export default {
      * 通話デバイスへのアクセス
      */
     accessDevice: async function () {
-      try {
-        //** 権限確認 */
-        this.permissionOverlay = true;
+      //** 権限確認 */
+      this.permissionOverlay = true;
 
-        const userMedia = await navigator.mediaDevices.getUserMedia({
+      // ビデオ通話
+      await navigator.mediaDevices
+        .getUserMedia({
           audio: true,
           video: true,
-        });
-        // デバイスの停止
-        userMedia.getTracks().forEach((track) => track.stop());
+        })
+        .then(async (stream) => {
+          // デバイスの停止
+          stream.getTracks().forEach((track) => track.stop());
 
-        //** デバイスの一覧を取得 */
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        // マイクデバイスの一覧を取得
-        this.audioDevices = devices.filter((device) => {
-          return (
-            device.kind === 'audioinput' &&
-            device.deviceId !== 'default' &&
-            device.deviceId !== 'communications'
-          );
-        });
-        // カメラデバイスの一覧を取得
-        this.videoDevices = devices.filter((device) => {
-          return (
-            device.kind === 'videoinput' &&
-            device.deviceId !== 'default' &&
-            device.deviceId !== 'communications'
-          );
-        });
+          //** デバイスの一覧を取得 */
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          // マイクデバイスの一覧を取得
+          this.audioDevices = devices.filter((device) => {
+            return (
+              device.kind === 'audioinput' &&
+              device.deviceId !== 'default' &&
+              device.deviceId !== 'communications'
+            );
+          });
+          // カメラデバイスの一覧を取得
+          this.videoDevices = devices.filter((device) => {
+            return (
+              device.kind === 'videoinput' &&
+              device.deviceId !== 'default' &&
+              device.deviceId !== 'communications'
+            );
+          });
 
-        // 初期値の設定
-        this.selectedAudio = this.audioDevices[0].deviceId;
-        this.selectedVideo = this.videoDevices[0].deviceId;
+          // 初期値の設定
+          this.selectedAudio = this.audioDevices[0].deviceId;
+          this.selectedVideo = this.videoDevices[0].deviceId;
+          this.video = true;
+          this.permissionOverlay = false;
+        })
+        .catch(async (error) => {
+          // 音声通話
+          await navigator.mediaDevices
+            .getUserMedia({
+              audio: true,
+              video: false,
+            })
+            .then(async (stream) => {
+              // デバイスの停止
+              stream.getTracks().forEach((track) => track.stop());
 
-        this.permissionOverlay = false;
-      } catch (error) {
-        // connectDeviceの例外処理で上書きされるので，これは表示されない
-        // デバイスが存在しない場合
-        this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
-      }
+              //** デバイスの一覧を取得 */
+              const devices = await navigator.mediaDevices.enumerateDevices();
+              // マイクデバイスの一覧を取得
+              this.audioDevices = devices.filter((device) => {
+                return (
+                  device.kind === 'audioinput' &&
+                  device.deviceId !== 'default' &&
+                  device.deviceId !== 'communications'
+                );
+              });
+
+              // 初期値の設定
+              this.selectedAudio = this.audioDevices[0].deviceId;
+              this.video = false;
+              this.permissionOverlay = false;
+            });
+        });
     },
 
     /**
@@ -1073,7 +1100,7 @@ export default {
       };
 
       // 録画サイズの設定
-      if (constraints.video !== false) {
+      if (constraints.video) {
         constraints.video.width = {
           min: this.videoSize.width,
           max: this.videoSize.width,
@@ -1089,7 +1116,7 @@ export default {
         this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
 
         // 起動時はすぐにカメラを停止する
-        if (this.loading) {
+        if (this.loading && constraints.video) {
           // 接続時にはenabledで停止
           // デバイスを停止すると，相手にvideoストリームが届かない
           this.localStream.getVideoTracks()[0].enabled = false;
@@ -1395,16 +1422,19 @@ export default {
 
     // エラー発生時のイベント
     Vue.config.errorHandler = (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     };
 
     // エラー発生時のイベント
     window.addEventListener('error', (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 
     // エラー発生時のイベント
     window.addEventListener('unhandledrejection', (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 
