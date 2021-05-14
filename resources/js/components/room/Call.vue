@@ -994,7 +994,7 @@ export default {
       };
 
       // 録画サイズの設定
-      if (constraints.video !== false) {
+      if (constraints.video) {
         constraints.video.width = {
           min: this.videoSize.width,
           max: this.videoSize.width,
@@ -1010,7 +1010,7 @@ export default {
         this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
 
         // 起動時はすぐにカメラを停止する
-        if (this.loading && !constraints.video) {
+        if (this.loading && constraints.video) {
           // 接続時にはenabledで停止
           // デバイスを停止すると，相手にvideoストリームが届かない
           this.localStream.getVideoTracks()[0].enabled = false;
