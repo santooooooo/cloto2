@@ -924,12 +924,12 @@ export default {
 
       if (this.video) {
         // ビデオ通話
-        const localStream = await navigator.mediaDevices.getUserMedia({
+        const stream = await navigator.mediaDevices.getUserMedia({
           audio: true,
           video: true,
         });
         // デバイスの停止
-        localStream.getTracks().forEach((track) => track.stop());
+        stream.getTracks().forEach((track) => track.stop());
 
         //** デバイスの一覧を取得 */
         const devices = await navigator.mediaDevices.enumerateDevices();
@@ -956,12 +956,12 @@ export default {
         this.permissionOverlay = false;
       } else {
         // 音声通話
-        const localStream = await navigator.mediaDevices.getUserMedia({
+        const stream = await navigator.mediaDevices.getUserMedia({
           audio: true,
           video: false,
         });
         // デバイスの停止
-        localStream.getTracks().forEach((track) => track.stop());
+        stream.getTracks().forEach((track) => track.stop());
 
         //** デバイスの一覧を取得 */
         const devices = await navigator.mediaDevices.enumerateDevices();
