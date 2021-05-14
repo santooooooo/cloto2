@@ -1035,7 +1035,6 @@ export default {
 
           //** デバイスの一覧を取得 */
           const devices = await navigator.mediaDevices.enumerateDevices();
-
           // マイクデバイスの一覧を取得
           this.audioDevices = devices.filter((device) => {
             return (
@@ -1044,7 +1043,6 @@ export default {
               device.deviceId !== 'communications'
             );
           });
-
           // カメラデバイスの一覧を取得
           this.videoDevices = devices.filter((device) => {
             return (
@@ -1073,7 +1071,6 @@ export default {
 
               //** デバイスの一覧を取得 */
               const devices = await navigator.mediaDevices.enumerateDevices();
-
               // マイクデバイスの一覧を取得
               this.audioDevices = devices.filter((device) => {
                 return (
@@ -1121,7 +1118,7 @@ export default {
         this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
 
         // 起動時はすぐにカメラを停止する
-        if (this.loading && constraints.video !== false) {
+        if (this.loading && !constraints.video) {
           // 接続時にはenabledで停止
           // デバイスを停止すると，相手にvideoストリームが届かない
           this.localStream.getVideoTracks()[0].enabled = false;
