@@ -707,7 +707,6 @@ export default {
 
         // 通話の接続を終了
         await this.peer.destroy();
-
         this.peer = null;
       }
     },
