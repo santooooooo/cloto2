@@ -911,7 +911,7 @@ export default {
         this.screenSharing.stream = null;
 
         // 画面共有用の接続を終了
-        this.screenSharing.peer.destroy();
+        await this.screenSharing.peer.destroy();
       }
     },
 
