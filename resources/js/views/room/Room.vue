@@ -31,6 +31,7 @@
       <Call
         :call-id="call.id"
         :capacity="call.capacity"
+        :video="true"
         @leave-call="leaveCall()"
         v-else-if="call.roles.includes(authUser.seat.role)"
       />
@@ -142,8 +143,8 @@ import SeminarSpeak from '@/components/room/SeminarSpeak';
 import SeminarView from '@/components/room/SeminarView';
 import Media from '@/components/room/Media';
 import KartePostDialog from '@/components/room/KartePostDialog';
-import ProfileDialog from '@/components/commons/ProfileDialog';
 import { OK } from '@/consts/status';
+import { RECEIVE_CHAT_SOUND } from '@/consts/sound';
 
 export default {
   head: {
@@ -163,7 +164,6 @@ export default {
     SeminarView,
     Media,
     KartePostDialog,
-    ProfileDialog,
   },
   data() {
     return {
@@ -709,7 +709,7 @@ export default {
       switch (action) {
         case 'sitting':
           // 着席処理
-          response = await axios.post('/api/seats/sit/' + seatObject.seatId, {
+          response = await axios.post('/api/seats/' + seatObject.seatId + '/sit', {
             _method: 'patch',
           });
 
@@ -744,7 +744,7 @@ export default {
 
         case 'enterCall':
           // 通話室入室処理
-          response = await axios.post('/api/seats/move/' + seatObject.seatId, {
+          response = await axios.post('/api/seats/' + seatObject.seatId + '/move', {
             _method: 'patch',
           });
           if (response.status === OK) {
@@ -754,7 +754,7 @@ export default {
 
         case 'enterMedia':
           // メディア視聴ブース入室処理
-          await axios.post('/api/seats/move/' + seatObject.seatId, {
+          await axios.post('/api/seats/' + seatObject.seatId + '/move', {
             _method: 'patch',
           });
           break;
@@ -1077,6 +1077,11 @@ export default {
       .listen('ChatPosted', (event) => {
         // チャットメッセージの追加
         this.messages.unshift(event);
+
+        // 他人からのメッセージ受信時には通知
+        if (this.$store.getters['alert/isSoundOn'] && event.user.id !== this.authUser.id) {
+          RECEIVE_CHAT_SOUND.play();
+        }
       });
 
     // ロード終了

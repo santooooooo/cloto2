@@ -38,8 +38,6 @@
 </template>
 
 <script>
-import ProfileDialog from '@/components/commons/ProfileDialog';
-
 export default {
   head: {
     title() {
@@ -47,9 +45,6 @@ export default {
         inner: 'フォロー&フォロワー',
       };
     },
-  },
-  components: {
-    ProfileDialog,
   },
   data() {
     return {

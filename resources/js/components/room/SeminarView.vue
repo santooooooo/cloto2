@@ -412,7 +412,9 @@
           <v-row justify="end">
             <!-- 通知音ボタン -->
             <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
-              <v-icon large>{{ isNotificationOn ? 'mdi-bell' : 'mdi-bell-off' }}</v-icon>
+              <v-icon large>
+                {{ isNotificationOn ? 'mdi-music-note' : 'mdi-music-note-off' }}
+              </v-icon>
             </v-btn>
 
             <!-- チャットボタン -->
@@ -466,15 +468,11 @@
 
 <script>
 import voiceDetection from 'voice-activity-detection';
-import ProfileDialog from '@/components/commons/ProfileDialog';
 import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND } from '@/consts/sound';
 
 const API_KEY = process.env.MIX_SKYWAY_API_KEY;
 
 export default {
-  components: {
-    ProfileDialog,
-  },
   props: {
     callId: Number,
     capacity: Number,
@@ -706,7 +704,7 @@ export default {
         this.stopVoiceDetection();
 
         // 通話の接続を終了
-        await this.peer.disconnect();
+        await this.peer.destroy();
         this.peer = null;
       }
     },
@@ -1032,16 +1030,19 @@ export default {
 
     // エラー発生時のイベント
     Vue.config.errorHandler = (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     };
 
     // エラー発生時のイベント
     window.addEventListener('error', (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 
     // エラー発生時のイベント
     window.addEventListener('unhandledrejection', (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 

@@ -104,6 +104,12 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <ProfileDialog
+      :username="profile.username"
+      @close="profile.dialog = $event"
+      v-if="profile.dialog"
+    />
   </v-container>
 </template>
 
@@ -119,6 +125,10 @@ export default {
 
   data() {
     return {
+      profile: {
+        dialog: false, // プロフィールのダイアログ制御
+        username: null, // プロフィールを表示するユーザー名
+      },
       commentForm: {
         body: '', // 内容
         max: 1000, // 最大長
@@ -143,6 +153,16 @@ export default {
   },
 
   methods: {
+    /**
+     * プロフィールの表示
+     *
+     * @param {String} username - プロフィールを表示するユーザー名
+     */
+    showProfile: function (username) {
+      this.profile.username = username;
+      this.profile.dialog = true;
+    },
+
     /**
      * コメントの投稿
      */
@@ -231,7 +251,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-pre {
-  white-space: pre-wrap;
+.v-card {
+  .pointer {
+    cursor: pointer;
+  }
+
+  pre {
+    white-space: pre-wrap;
+  }
 }
 </style>
