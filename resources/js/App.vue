@@ -103,7 +103,7 @@ export default {
   },
   watch: {
     authCheck: function (check) {
-      if (check === true) {
+      if (check) {
         // ログアウトの検知
         axios.interceptors.response.use((error) => {
           if (error.status === 401) {

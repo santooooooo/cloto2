@@ -172,28 +172,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * フォローしているか
-     *
-     * @param  Int $user_id フォロー先のユーザー
-     * @return Boolean
-     */
-    public function isFollowing(Int $user_id)
-    {
-        return $this->follows()->where('followed_id', $user_id)->exists();
-    }
-
-    /**
-     * フォローされているか
-     *
-     * @param  Int $user_id フォロー元のユーザー
-     * @return Boolean
-     */
-    public function isFollowed(Int $user_id)
-    {
-        return $this->followers()->where('following_id', $user_id)->exists();
-    }
-
-    /**
      * 状態データの追加
      *
      * @return \Illuminate\Support\Facades\Cache
@@ -249,5 +227,119 @@ class User extends Authenticatable implements MustVerifyEmail
 
         $room = $seat->section()->first()->room;
         return ['id' => $room->id, 'name' => $room->name];
+    }
+
+    /**
+     * フォローしているか
+     *
+     * @param  Int  $user_id  フォロー先のユーザー
+     * @return Boolean
+     */
+    public function isFollowing(Int $user_id)
+    {
+        return $this->follows()->where('followed_id', $user_id)->exists();
+    }
+
+    /**
+     * フォローされているか
+     *
+     * @param  Int  $user_id  フォロー元のユーザー
+     * @return Boolean
+     */
+    public function isFollowed(Int $user_id)
+    {
+        return $this->followers()->where('following_id', $user_id)->exists();
+    }
+
+    /**
+     * 通知の取得
+     *
+     * @param  Int  $limit  取得件数
+     * @return Array  通知一覧
+     */
+    public function getNotifications(Int $limit = 10)
+    {
+        $notifications = [];
+        $unread_notifications_count = 0;
+
+        // データの作成
+        foreach ($this->notifications()->take($limit)->get() as $notification) {
+            $data = ['read_at' => $notification->read_at];
+            $user = $this->find($notification->data['user_id']);
+
+            $type = explode('\\', $notification->type);
+            switch (end($type)) {
+                case 'UserFollowed':
+                    // フォロー通知
+                    $data += [
+                        'type' => 'UserFollowed',
+                        'username' => $user->username,
+                        'message' => $user->handlename . 'さんにフォローされました！'
+                    ];
+                    break;
+
+                case 'KarteCommentPosted':
+                    // カルテへのコメント通知
+                    $data += [
+                        'type' => 'KarteCommentPosted',
+                        'karte_id' => $notification->data['karte_id'],
+                        'message' => 'カルテに' . $user->handlename . 'さんがコメントしました！'
+                    ];
+                    break;
+
+                case 'PostCommentPosted':
+                    // 投稿へのコメント通知
+                    $data += [
+                        'type' => 'PostCommentPosted',
+                        'post_id' => $notification->data['post_id'],
+                        'message' => '投稿に' . $user->handlename . 'さんがコメントしました！'
+                    ];
+                    break;
+
+                case 'KarteFavorited':
+                    // カルテへのいいね通知
+                    $data += [
+                        'type' => 'KarteFavorited',
+                        'karte_id' => $notification->data['karte_id'],
+                        'message' => 'カルテに' . $user->handlename . 'さんがいいねしました！'
+                    ];
+                    break;
+
+                case 'PostFavorited':
+                    // 投稿へのいいね通知
+                    $data += [
+                        'type' => 'PostFavorited',
+                        'post_id' => $notification->data['post_id'],
+                        'message' => '投稿に' . $user->handlename . 'さんがいいねしました！'
+                    ];
+                    break;
+
+                case 'CommentFavorited':
+                    // コメントへのいいね通知
+                    $data += ['message' => 'コメントに' . $user->handlename . 'さんがいいねしました！'];
+
+                    if (!empty($notification->data['karte_id'])) {
+                        $data += [
+                            'type' => 'CommentToKarteFavorited',
+                            'karte_id' => $notification->data['karte_id'],
+                        ];
+                    } else if (!empty($notification->data['post_id'])) {
+                        $data += [
+                            'type' => 'CommentToPostFavorited',
+                            'post_id' => $notification->data['post_id'],
+                        ];
+                    }
+                    break;
+            }
+
+            array_push($notifications, $data);
+
+            // 未読通知数のカウント
+            if (empty($notification->read_at)) {
+                $unread_notifications_count += 1;
+            }
+        }
+
+        return compact('notifications', 'unread_notifications_count');
     }
 }

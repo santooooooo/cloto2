@@ -123,8 +123,6 @@
 </template>
 
 <script>
-import KarteDialog from '@/components/commons/KarteDialog';
-
 export default {
   head: {
     title() {
@@ -132,9 +130,6 @@ export default {
         inner: 'カルテ',
       };
     },
-  },
-  components: {
-    KarteDialog,
   },
   data() {
     return {

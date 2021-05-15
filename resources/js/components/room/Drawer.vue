@@ -177,7 +177,7 @@ export default {
       if (this.inProgress.body !== (this.authUser.in_progress || '')) {
         this.inProgress.loading = true;
 
-        let response = await axios.post('/api/users', {
+        let response = await axios.post('/api/user', {
           _method: 'patch',
           in_progress: this.inProgress.body,
         });

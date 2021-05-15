@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Events\SeatStatusUpdated;
+use App\Notifications\UserFollowed;
+use App\Events\NotificationPosted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -79,6 +81,28 @@ class UserController extends Controller
         }
 
         return response()->json();
+    }
+
+    /**
+     * 通知の取得
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getNotifications()
+    {
+        return response()->json($this->auth_user->getNotifications());
+    }
+
+    /**
+     * 通知の既読
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function markNotificationsAsRead()
+    {
+        $this->auth_user->unreadNotifications()->update(['read_at' => now()]);
+
+        return $this->getNotifications();
     }
 
     /**
@@ -185,7 +209,7 @@ class UserController extends Controller
     /**
      * フォロー/フォロー解除
      *
-     * @param  \App\Models\User  $user  フォロー（解除）するユーザー
+     * @param  \App\Models\User  $user  フォロー/フォロー解除するユーザー
      * @return \Illuminate\Http\Response
      */
     public function follow(User $user)
@@ -194,8 +218,18 @@ class UserController extends Controller
             return response()->json(['message' => '自分はフォローできません。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        // フォロー（解除）処理
-        $this->auth_user->follows()->toggle($user->id);
+        // フォロー/フォロー解除処理
+        $result = $this->auth_user->follows()->toggle($user->id);
+
+        if (empty($result)) {
+            return response()->json(['message' => 'フォロー/フォロー解除に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        // フォロー時には通知を発行
+        if (count($result['attached'])) {
+            $user->notify(new UserFollowed($this->auth_user));
+            broadcast(new NotificationPosted($user));
+        }
 
         return $this->show($user->id);
     }

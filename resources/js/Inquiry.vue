@@ -28,7 +28,7 @@
 
 <script>
 import { OK } from '@/consts/status';
-import { RECEIVE_INQUIRY_SOUND } from '@/consts/sound';
+import { RECEIVE_CHAT_SOUND } from '@/consts/sound';
 
 export default {
   data() {
@@ -195,7 +195,7 @@ export default {
       // 通知
       if (!this.isOpen) {
         if (this.$store.getters['alert/isSoundOn']) {
-          RECEIVE_INQUIRY_SOUND.play();
+          RECEIVE_CHAT_SOUND.play();
         }
         const inquiry = document.getElementsByClassName('sc-launcher')[0];
         inquiry.classList.add('notification');

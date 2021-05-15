@@ -117,7 +117,7 @@ return [
     */
 
     'system' => [
-        'address' => env('MAIL_SYSTEM_ADDRESS', 'system@cloto.jp'),
+        'address' => env('MAIL_SYSTEM_ADDRESS', 'dummy@cloto.jp'),
         'name' => env('MAIL_SYSTEM_NAME', 'CLOTOシステムメール'),
     ],
 
@@ -131,7 +131,7 @@ return [
     */
 
     'service' => [
-        'verify' => env('MAIL_VERIFY_ADDRESS', 'verify@cloto.jp'),
-        'contact' => env('MAIL_CONTACT_ADDRESS', 'contact@cloto.jp'),
+        'verify' => env('MAIL_VERIFY_ADDRESS', 'dummy@cloto.jp'),
+        'contact' => env('MAIL_CONTACT_ADDRESS', 'dummy@cloto.jp'),
     ]
 ];

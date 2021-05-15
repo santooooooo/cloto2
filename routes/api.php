@@ -42,10 +42,12 @@ Route::group(['middleware' => 'auth'], function () {
         */
         Route::post('/status/{status?}', 'UserController@updateStatus');
         Route::get('/users/{user_param}', 'UserController@show');
-        Route::patch('/users', 'UserController@update');
         Route::post('/users/{user}/follow', 'UserController@follow')->where('user', '[0-9]+');
         Route::get('/users/{user}/follows', 'UserController@follows')->where('user', '[0-9]+');
         Route::get('/users/{user}/followers', 'UserController@followers')->where('user', '[0-9]+');
+        Route::patch('/user', 'UserController@update');
+        Route::get('/user/notifications', 'UserController@getNotifications');
+        Route::post('/user/notifications', 'UserController@markNotificationsAsRead');
 
 
         /*
@@ -56,9 +58,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('rooms', 'RoomController', ['only' => ['index', 'show']]);
         Route::post('/rooms/announce', 'RoomController@announce');
 
-        Route::patch('/seats/sit/{seat}', 'SeatController@sit')->where('seat', '[0-9]+');
+        Route::patch('/seats/{seat}/sit', 'SeatController@sit')->where('seat', '[0-9]+');
         Route::patch('/seats/leave', 'SeatController@leave');
-        Route::patch('/seats/move/{seat}', 'SeatController@move')->where('seat', '[0-9]+');
+        Route::patch('/seats/{seat}/move', 'SeatController@move')->where('seat', '[0-9]+');
         Route::patch('/seats/back', 'SeatController@back');
 
         Route::resource('chats', 'ChatController', ['only' => ['index', 'store']]);
