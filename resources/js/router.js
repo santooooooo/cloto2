@@ -130,14 +130,30 @@ router.beforeEach(async (to, from, next) => {
     next({ name: 'login' });
   }
 
-  if (store.getters['auth/check'] && store.getters['auth/user'].email_verified_at === null) {
-    // 未認証時のリダイレクト
-    window.location.pathname = '/email/verify';
-  }
+  if (store.getters['auth/check']) {
+    if (store.getters['auth/user'].email_verified_at === null) {
+      // 未認証時のリダイレクト
+      window.location.pathname = '/email/verify';
+    }
 
-  if (store.getters['auth/check'] && to.name === 'login') {
-    // ログイン時のリダイレクト
-    next({ name: 'home' });
+    if (to.name === 'login') {
+      // ログイン時のリダイレクト
+      next({ name: 'home' });
+    }
+
+    if (
+      to.name === 'docs' &&
+      to.params.class > store.getters['auth/user'].roadmaps[0].in_progress
+    ) {
+      // 取り組み中のクラスよりも先のコンテンツへのアクセス時のリダイレクト
+      next({
+        name: 'docs',
+        params: {
+          roadName: 'javascript',
+          class: store.getters['auth/user'].roadmaps[0].in_progress,
+        },
+      });
+    }
   }
 
   next();
