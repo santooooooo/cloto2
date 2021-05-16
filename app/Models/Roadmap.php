@@ -19,6 +19,13 @@ class Roadmap extends Model
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['road'];
+
+    /**
      * User モデルのリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -36,5 +43,15 @@ class Roadmap extends Model
     public function road()
     {
         return $this->belongsTo('App\Models\Road');
+    }
+
+    /**
+     * ロードデータの追加
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getRoadAttribute()
+    {
+        return $this->road()->first();
     }
 }
