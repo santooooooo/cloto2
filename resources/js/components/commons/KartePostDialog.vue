@@ -57,8 +57,19 @@
                 ></v-textarea>
 
                 <v-card-text class="pa-2 white--text title font-weight-bold">
-                  参考文献
+                  URL<span class="red--text" v-if="roadmap">*</span>
                 </v-card-text>
+                <v-textarea
+                  v-model="karteForm.reference"
+                  :rules="karteForm.validation.referenceRules"
+                  :disabled="karteForm.loading"
+                  solo
+                  rounded
+                  rows="1"
+                  label="https://cloto.jp"
+                  auto-grow
+                  v-if="roadmap"
+                ></v-textarea>
                 <v-textarea
                   v-model="karteForm.reference"
                   :disabled="karteForm.loading"
@@ -67,11 +78,14 @@
                   rows="1"
                   label="https://cloto.jp"
                   auto-grow
+                  v-else
                 ></v-textarea>
               </v-col>
 
               <v-col>
-                <v-card-text class="pa-0 white--text title font-weight-bold"> 画像 </v-card-text>
+                <v-card-text class="pa-0 white--text title font-weight-bold">
+                  画像<span class="red--text" v-if="roadmap">*</span>
+                </v-card-text>
 
                 <ImageInput output-type="png" @input="karteForm.image = $event" />
               </v-col>
@@ -160,6 +174,9 @@
 import { OK } from '@/consts/status';
 
 export default {
+  props: {
+    roadmap: Boolean,
+  },
   data() {
     return {
       dialog: true,
@@ -168,12 +185,13 @@ export default {
         achieve: '', // 達成できたこと
         challenge: '', // 次の課題
         reference: '', // 参考文献
-        image: '', // 画像
+        image: null, // 画像
         activityTime: '00:00', // 活動時間
         loading: false,
         validation: {
           valid: false,
           bodyRules: [(v) => !!v || '活動内容は必須項目です。'],
+          referenceRules: [(v) => !!v || 'URLは必須項目です。'],
         },
       },
       tag: {
@@ -231,7 +249,15 @@ export default {
      * カルテの投稿
      */
     submit: async function () {
-      if (this.$refs.karteForm.validate()) {
+      // バリデーション
+      let validate = this.$refs.karteForm.validate();
+      if (this.roadmap && this.karteForm.image === null) {
+        // ロードマップでは画像の入力が必須
+        validate = false;
+        this.$store.dispatch('alert/error', '画像は必須です！');
+      }
+
+      if (validate) {
         this.karteForm.loading = true;
 
         let input = new FormData();

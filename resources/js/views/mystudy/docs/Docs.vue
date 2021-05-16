@@ -14,7 +14,7 @@
       <JavaScript10 @next="next()" v-else-if="$route.params.class == 10" />
     </div>
 
-    <KartePostDialog @close="dialog = $event" v-if="dialog" />
+    <KartePostDialog roadmap @close="dialog = $event" v-if="dialog" />
   </v-container>
 </template>
 
