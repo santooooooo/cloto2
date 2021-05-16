@@ -1,42 +1,14 @@
 <template>
   <v-container class="mt-4" fluid id="content-container">
     <v-row>
-      <v-col cols="2" class="p-0 border-right">
-        <div class="position-fixed pr-2" id="fix-div">
-          <h1 class="font-weight-bold text-h5 mb-2 text-center green">入門期</h1>
-          <h2 class="text-h6 font-weight-bolder green pl-2">Class 0</h2>
-          <!-- 目次 -->
-          <ul class="p-0 pl-2">
-            <li
-              class="my-6 grey--text content-subtext py-2 pl-1"
-              id="buy-title"
-              v-scroll-to="{ el: '#buy', offset: -80 }"
-            >
-              0-1. ダミー1
-            </li>
-            <li
-              class="my-6 grey--text content-subtext py-2 pl-1"
-              id="suggest-title"
-              v-scroll-to="{ el: '#suggest', offset: -80 }"
-            >
-              0-2. ダミー2
-            </li>
-            <li
-              class="my-6 grey--text content-subtext py-2 pl-1"
-              id="cut-title"
-              v-scroll-to="{ el: '#cut', offset: -80 }"
-            >
-              0-3. ダミー3
-            </li>
-          </ul>
-        </div>
-      </v-col>
+      <!-- 目次 -->
+      <ContentTable period="入門期" className="Class 0" :contents="contents" />
 
       <v-col cols="10">
-        <h1 class="mb-12 text-center">クラス2以降、ここにコースタイトル反映</h1>
+        <h1 class="mb-12 text-center">{{ title }}</h1>
         <!-- タイトル -->
         <div class="mb-8 pa-4">
-          <h1 class="text-center text-h4 font-weight-bold">{{ title }}</h1>
+          <h1 class="text-center text-h4 font-weight-bold">Class 0</h1>
           <p class="text-body-2 mx-6 mt-6 mb-0">ダミー</p>
         </div>
 
@@ -120,6 +92,7 @@
 </template>
 
 <script>
+import ContentTable from '@/components/mystudy/docs/ContentTable';
 import KartePostDialog from '@/components/mystudy/ContentKartePostDialog';
 
 export default {
@@ -131,97 +104,19 @@ export default {
     },
   },
   components: {
+    ContentTable,
     KartePostDialog,
   },
   data() {
     return {
-      title: 'Class 0', // コンテンツタイトル
+      title: 'クラス2以降、ここにコースタイトル反映', // コンテンツタイトル
+      contents: [
+        { id: '#buy', title: '0-1. ダミー1', activeStart: 0, activeEnd: 596 },
+        { id: '#suggest', title: '0-2. ダミー2', activeStart: 596, activeEnd: 1130 },
+        { id: '#cut', title: '0-3. ダミー3', activeStart: 1130, activeEnd: 99999 },
+      ], // 目次データ
       dialog: false,
     };
   },
-  mounted() {
-    this.setValue();
-    window.addEventListener('scroll', this.setup);
-  },
-  methods: {
-    /**
-     * コンテンツサイドバーのスクロールアニメーションの設定
-     */
-    setValue() {
-      let zeroOne = document.getElementById('buy').getBoundingClientRect();
-      let zeroTwo = document.getElementById('suggest').getBoundingClientRect();
-      let zeroThree = document.getElementById('cut').getBoundingClientRect();
-
-      //本当はdataにプロパティとして座標の値を入れて管理したいが、mountedはgetの処理しかできないため、
-      //とりあえずこの処理
-
-      // console(<変数>.top)で座標が取れるから、コンテンツ以下の度に確認
-      // console.log(zeroOne.top);
-      // console.log(zeroTwo.top);
-      // console.log(zeroThree.top);
-    },
-    setup() {
-      let buyTitle = document.getElementById('buy-title');
-      let suggestTitle = document.getElementById('suggest-title');
-      let cutTitle = document.getElementById('cut-title');
-      let scrollY = window.scrollY;
-
-      // 数字は取ってきた値
-      if (scrollY > 1130) {
-        buyTitle.classList.remove('active-style');
-        suggestTitle.classList.remove('active-style');
-        cutTitle.classList.add('active-style');
-      }
-      // 100引いて差分を調整
-      else if (scrollY > 596) {
-        buyTitle.classList.remove('active-style');
-        suggestTitle.classList.add('active-style');
-        cutTitle.classList.remove('active-style');
-      } else {
-        buyTitle.classList.add('active-style');
-        suggestTitle.classList.remove('active-style');
-        cutTitle.classList.remove('active-style');
-      }
-    },
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.setup);
-  },
 };
 </script>
-
-<style lang="scss" scoped>
-#fix-div {
-  width: 12%;
-}
-
-ul {
-  list-style: none;
-  & > li {
-    cursor: pointer;
-  }
-}
-
-.content-subtext {
-  font-size: 0.8rem;
-  &:hover {
-    background: rgb(152, 201, 247);
-    color: white !important;
-    border-radius: 4%;
-  }
-}
-
-.active-style {
-  background: rgb(207, 204, 204, 0.6);
-  border-radius: 4%;
-  box-shadow: 0 0 2px black;
-}
-
-@media (min-width: 768px) {
-  .container-md,
-  .container-sm,
-  .container {
-    max-width: 1280px !important;
-  }
-}
-</style>
