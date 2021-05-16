@@ -69,14 +69,16 @@ export default {
     startRoad: async function () {
       this.loading = true;
 
-      let response = await axios.post('/api/roadmaps', {
-        user_id: this.authUser.id,
-        road_id: 1,
-        class: 0,
-      });
+      if (this.authUser.roadmaps.length) {
+        // ロード開始済み
+        this.$router.push({ name: 'javascript-' + this.authUser.roadmaps[0].class });
+      } else {
+        // ロード開始処理
+        let response = await axios.post('/api/roadmaps');
 
-      if (response.status === OK) {
-        this.$router.push({ name: 'javascript-0' });
+        if (response.status === OK) {
+          this.$router.push({ name: 'javascript-0' });
+        }
       }
 
       this.loading = false;

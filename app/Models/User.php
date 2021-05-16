@@ -246,7 +246,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getRoadmapsAttribute()
     {
-        return $this->roadmaps();
+        return $this->roadmaps()->get();
     }
 
     /**
