@@ -71,7 +71,7 @@ export default {
 
       if (this.authUser.roadmaps.length) {
         // ロード開始済み
-        this.$router.push({ name: 'javascript-' + this.authUser.roadmaps[0].class });
+        this.$router.push({ name: 'javascript-' + this.authUser.roadmaps[0].in_progress });
       } else {
         // ロード開始処理
         let response = await axios.post('/api/roadmaps');

@@ -17,11 +17,11 @@ class CreateRoadmapsTable extends Migration
             $table->id();
             $table->foreignId('user_id')
                 ->constrained()
-                ->cascadeOnDelete();            // ユーザーID
+                ->cascadeOnDelete();                // ユーザーID
             $table->foreignId('road_id')
                 ->constrained()
-                ->cascadeOnDelete();            // ロードID
-            $table->unsignedInteger('class');   // クリアしたクラス
+                ->cascadeOnDelete();                // ロードID
+            $table->unsignedInteger('in_progress'); // 取り組み中のクラス
             $table->dateTimes();
         });
     }

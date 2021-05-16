@@ -39,7 +39,7 @@ class RoadmapsController extends Controller
         $data = $request->all();
         $data['user_id'] = $this->user->id;
         $data['road_id'] = 1;
-        $data['class'] = 0;
+        $data['in_progress'] = 0;
 
         $result = $this->roadmap->create($data);
 

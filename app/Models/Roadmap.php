@@ -15,7 +15,7 @@ class Roadmap extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'road_id', 'class'
+        'user_id', 'road_id', 'in_progress'
     ];
 
     /**
