@@ -71,13 +71,16 @@ export default {
 
       if (this.authUser.roadmaps.length) {
         // ロード開始済み
-        this.$router.push({ name: 'javascript-' + this.authUser.roadmaps[0].in_progress });
+        this.$router.push({
+          name: 'docs',
+          params: { roadName: 'javascript', class: this.authUser.roadmaps[0].in_progress },
+        });
       } else {
         // ロード開始処理
         let response = await axios.post('/api/roadmaps');
 
         if (response.status === OK) {
-          this.$router.push({ name: 'javascript-0' });
+          this.$router.push({ name: 'docs', params: { roadName: 'javascript', class: 0 } });
         }
       }
 
