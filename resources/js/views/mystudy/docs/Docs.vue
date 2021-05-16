@@ -1,20 +1,20 @@
 <template>
   <v-container id="docs">
     <div v-if="$route.params.roadName === 'javascript'">
-      <JavaScript0 @next="next()" v-if="$route.params.class == 0" />
-      <JavaScript1 @next="next()" v-else-if="$route.params.class == 1" />
-      <JavaScript2 @next="next()" v-else-if="$route.params.class == 2" />
-      <JavaScript3 @next="next()" v-else-if="$route.params.class == 3" />
-      <JavaScript4 @next="next()" v-else-if="$route.params.class == 4" />
-      <JavaScript5 @next="next()" v-else-if="$route.params.class == 5" />
-      <JavaScript6 @next="next()" v-else-if="$route.params.class == 6" />
-      <JavaScript7 @next="next()" v-else-if="$route.params.class == 7" />
-      <JavaScript8 @next="next()" v-else-if="$route.params.class == 8" />
-      <JavaScript9 @next="next()" v-else-if="$route.params.class == 9" />
-      <JavaScript10 @next="next()" v-else-if="$route.params.class == 10" />
+      <JavaScript0 @next="next()" v-if="currentClass === 0" />
+      <JavaScript1 @next="next()" v-else-if="currentClass === 1" />
+      <JavaScript2 @next="next()" v-else-if="currentClass === 2" />
+      <JavaScript3 @next="next()" v-else-if="currentClass === 3" />
+      <JavaScript4 @next="next()" v-else-if="currentClass === 4" />
+      <JavaScript5 @next="next()" v-else-if="currentClass === 5" />
+      <JavaScript6 @next="next()" v-else-if="currentClass === 6" />
+      <JavaScript7 @next="next()" v-else-if="currentClass === 7" />
+      <JavaScript8 @next="next()" v-else-if="currentClass === 8" />
+      <JavaScript9 @next="next()" v-else-if="currentClass === 9" />
+      <JavaScript10 @next="next()" v-else-if="currentClass === 10" />
     </div>
 
-    <KartePostDialog roadmap @close="dialog = $event" v-if="dialog" />
+    <KartePostDialog roadmap @close="dialog = $event" @nextClass="nextClass()" v-if="dialog" />
   </v-container>
 </template>
 
@@ -31,6 +31,7 @@ import JavaScript7 from '@/views/mystudy/docs/javascript/Class7';
 import JavaScript8 from '@/views/mystudy/docs/javascript/Class8';
 import JavaScript9 from '@/views/mystudy/docs/javascript/Class9';
 import JavaScript10 from '@/views/mystudy/docs/javascript/Class10';
+import { OK } from '@/consts/status';
 
 export default {
   data() {
@@ -56,21 +57,39 @@ export default {
     authUser() {
       return this.$store.getters['auth/user'];
     },
+    currentClass() {
+      return Number(this.$route.params.class);
+    },
   },
   methods: {
     /**
      * 次へ進むボタン押下時の処理
      */
     next: function () {
-      if (this.$route.params.class < this.authUser.roadmaps[0].in_progress) {
+      if (this.currentClass < this.authUser.roadmaps[0].in_progress) {
         // クリア済みのクラスから進む場合
         this.$router.push({
           name: 'docs',
-          params: { roadName: 'javascript', class: this.$route.params.class + 1 },
+          params: { roadName: 'javascript', class: this.currentClass + 1 },
         });
-      } else if (this.$route.params.class == this.authUser.roadmaps[0].in_progress) {
-        // 進行中のクラスから進む場合
+      } else if (this.currentClass === this.authUser.roadmaps[0].in_progress) {
+        // 進行中のクラスから進む場合はカルテを記入
         this.dialog = true;
+      }
+    },
+    /**
+     * 次のクラスへ進む
+     */
+    nextClass: async function () {
+      let response = await axios.post('/api/roadmaps/' + this.authUser.roadmaps[0].id, {
+        _method: 'patch',
+      });
+
+      if (response.status === OK) {
+        this.$router.push({
+          name: 'docs',
+          params: { roadName: 'javascript', class: this.currentClass + 1 },
+        });
       }
     },
   },

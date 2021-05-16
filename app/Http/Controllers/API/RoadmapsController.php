@@ -51,14 +51,21 @@ class RoadmapsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * ロードマップの更新（次へ進む）
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Roadmap  $roadmap
+     * @param  \App\Models\Roadmap  $roadmap  更新するロードマップ
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Roadmap $roadmap)
     {
-        //
+        // 次のクラスへ
+        $result = $roadmap->increment('in_progress');
+
+        if (empty($result)) {
+            return response()->json(['message' => 'ロードマップの更新に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        return response()->json();
     }
 }

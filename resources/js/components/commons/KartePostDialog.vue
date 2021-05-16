@@ -285,6 +285,11 @@ export default {
           }
 
           this.$emit('close', false);
+
+          if (this.roadmap) {
+            // ロードマップの入力後は次のクラスへ
+            this.$emit('nextClass');
+          }
         } else {
           this.karteForm.loading = false;
         }
