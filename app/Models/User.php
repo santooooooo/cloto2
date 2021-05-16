@@ -82,6 +82,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Roadmap モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function roadmaps()
+    {
+        return $this->hasMany('App\Models\Roadmap');
+    }
+
+    /**
      * Karte モデルのリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

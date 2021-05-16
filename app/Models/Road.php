@@ -17,4 +17,14 @@ class Road extends Model
     protected $fillable = [
         'name'
     ];
+
+    /**
+     * Roadmap モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function roadmaps()
+    {
+        return $this->hasMany('App\Models\Roadmap');
+    }
 }
