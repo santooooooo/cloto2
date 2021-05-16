@@ -23,10 +23,35 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
+
+        <!-- 期一覧 -->
+        <PeriodTable />
+
+        <div class="pa-2">
+          <v-btn block depressed color="#f6bf00" dark @click="dialog = true">カルテ記入</v-btn>
+          <KartePostDialog @close="dialog = $event" v-if="dialog" />
+        </div>
       </v-list>
     </v-navigation-drawer>
   </v-card>
 </template>
+
+<script>
+import PeriodTable from '@/components/mystudy/PeriodTable.vue';
+import KartePostDialog from '@/components/commons/KartePostDialog';
+
+export default {
+  components: {
+    PeriodTable,
+    KartePostDialog,
+  },
+  data() {
+    return {
+      dialog: false, // カルテ投稿ダイアログの制御
+    };
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 a:hover {
