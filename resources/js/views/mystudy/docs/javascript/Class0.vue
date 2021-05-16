@@ -73,28 +73,15 @@
           <p>ダミー</p>
         </v-container>
 
-        <!-- 次へ進むボタン -->
-        <v-col class="text-center">
-          <v-btn color="blue" class="text-white" @click="dialog = true">
-            <!-- <v-btn
-            color="blue"
-            class="text-white"
-            :to="{ name: 'javascript-1' }"
-            @click="dialog = true"
-          > -->
-            完了（次へ進む）
-          </v-btn>
-          <KartePostDialog @close="dialog = $event" v-if="dialog" />
-        </v-col>
+        <v-row justify="center">
+          <v-btn color="blue" class="text-white" @click="$emit('next')">完了（次へ進む）</v-btn>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import ContentTable from '@/components/mystudy/docs/ContentTable';
-import KartePostDialog from '@/components/mystudy/ContentKartePostDialog';
-
 export default {
   head: {
     title() {
@@ -102,10 +89,6 @@ export default {
         inner: this.title,
       };
     },
-  },
-  components: {
-    ContentTable,
-    KartePostDialog,
   },
   data() {
     return {
@@ -115,7 +98,6 @@ export default {
         { id: '#suggest', title: '0-2. ダミー2', activeStart: 596, activeEnd: 1130 },
         { id: '#cut', title: '0-3. ダミー3', activeStart: 1130, activeEnd: 99999 },
       ], // 目次データ
-      dialog: false,
     };
   },
 };

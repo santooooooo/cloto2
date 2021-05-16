@@ -24,6 +24,7 @@ Vue.component('ProfileDialog', require('./components/commons/ProfileDialog').def
 Vue.component('KarteDialog', require('./components/commons/KarteDialog').default);
 Vue.component('PostDialog', require('./components/commons/PostDialog').default);
 Vue.component('ImageInput', require('./components/commons/form/ImageInput').default);
+Vue.component('ContentTable', require('./components/mystudy/docs/ContentTable').default);
 
 /**
  * Vueの定義
