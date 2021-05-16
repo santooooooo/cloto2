@@ -25,7 +25,7 @@
         </v-list-item-group>
 
         <!-- 期一覧 -->
-        <Periods />
+        <PeriodTable />
 
         <div class="pa-2">
           <v-btn block depressed color="#f6bf00" dark @click="dialog = true">カルテ記入</v-btn>
@@ -37,12 +37,12 @@
 </template>
 
 <script>
-import Periods from '@/components/mystudy/Periods.vue';
+import PeriodTable from '@/components/mystudy/PeriodTable.vue';
 import KartePostDialog from '@/components/commons/KartePostDialog';
 
 export default {
   components: {
-    Periods,
+    PeriodTable,
     KartePostDialog,
   },
   data() {
