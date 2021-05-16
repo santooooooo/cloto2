@@ -244,9 +244,9 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function getRoadmapAttribute()
+    public function getRoadmapsAttribute()
     {
-        return $this->roadmaps()->all();
+        return $this->roadmaps();
     }
 
     /**
