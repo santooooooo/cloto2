@@ -91,7 +91,7 @@ export default {
   },
   data() {
     return {
-      period: '入門期', // 期間名
+      period: 'introduction', // 期間名
       className: 'Class 0', // クラス名
       title: 'こんてんつ0', // コンテンツタイトル
       contents: [

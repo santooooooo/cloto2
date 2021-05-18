@@ -91,7 +91,7 @@ export default {
   },
   data() {
     return {
-      period: '苦労人前期', // 期間名
+      period: 'intermediate', // 期間名
       className: 'Class 4', // クラス名
       title: 'こんてんつ4', // コンテンツタイトル
       contents: [

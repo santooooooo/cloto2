@@ -2,7 +2,12 @@
   <v-list nav dense class="ma-4" v-if="authUser && authUser.roadmaps.length">
     <v-list-item-group color="#f6bf00">
       <v-list-item
-        :class="['mb-4', 0 <= authUser.roadmaps[0].in_progress ? 'blue lighten-1' : 'grey']"
+        class="mb-4"
+        :style="{
+          'background-color': $periodColor(
+            0 <= authUser.roadmaps[0].in_progress ? 'introduction' : ''
+          ),
+        }"
       >
         <v-list-item-content>
           <v-list-item-title class="text-center white--text">
@@ -14,7 +19,10 @@
       </v-list-item>
 
       <v-list-item
-        :class="['mb-4', 1 <= authUser.roadmaps[0].in_progress ? 'blue darken-4' : 'grey']"
+        class="mb-4"
+        :style="{
+          'background-color': $periodColor(1 <= authUser.roadmaps[0].in_progress ? 'beginner' : ''),
+        }"
       >
         <v-list-item-content>
           <v-list-item-title class="text-center white--text">
@@ -32,7 +40,14 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item :class="['mb-4', 4 <= authUser.roadmaps[0].in_progress ? 'green' : 'grey']">
+      <v-list-item
+        class="mb-4"
+        :style="{
+          'background-color': $periodColor(
+            4 <= authUser.roadmaps[0].in_progress ? 'intermediate' : ''
+          ),
+        }"
+      >
         <v-list-item-content>
           <v-list-item-title class="text-center white--text">
             <span class="text-body-2 font-weight-bold pr-2">苦労人前期</span>
@@ -49,7 +64,12 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item :class="['mb-4', 7 <= authUser.roadmaps[0].in_progress ? 'orange' : 'grey']">
+      <v-list-item
+        class="mb-4"
+        :style="{
+          'background-color': $periodColor(7 <= authUser.roadmaps[0].in_progress ? 'advanced' : ''),
+        }"
+      >
         <v-list-item-content>
           <v-list-item-title class="text-center white--text">
             <span class="text-body-2 font-weight-bold pr-2">苦労人後期</span>
@@ -66,7 +86,12 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item :class="['mb-4', 11 <= authUser.roadmaps[0].in_progress ? 'red' : 'grey']">
+      <v-list-item
+        class="mb-4"
+        :style="{
+          'background-color': $periodColor(11 <= authUser.roadmaps[0].in_progress ? 'expert' : ''),
+        }"
+      >
         <v-list-item-content>
           <v-list-item-title class="text-center white--text">
             <span class="text-body-2 font-weight-bold pr-2">玄人期</span>

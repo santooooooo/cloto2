@@ -91,7 +91,7 @@ export default {
   },
   data() {
     return {
-      period: '玄人期', // 期間名
+      period: 'expert', // 期間名
       className: 'Clear', // クラス名
       title: 'クリア', // コンテンツタイトル
       contents: [

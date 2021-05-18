@@ -91,7 +91,7 @@ export default {
   },
   data() {
     return {
-      period: '素人期', // 期間名
+      period: 'beginner', // 期間名
       className: 'Class 3', // クラス名
       title: 'こんてんつ3', // コンテンツタイトル
       contents: [

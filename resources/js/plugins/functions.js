@@ -15,7 +15,7 @@ export function formatStr(str) {
 }
 
 /**
- * ステータス色の取得
+ * ステータスの色の取得
  *
  * @param {String} status - ステータス
  * @return {String} 色
@@ -33,6 +33,43 @@ export function statusColor(status) {
 
     case 'away':
       color = 'grey';
+      break;
+  }
+
+  return color;
+}
+
+/**
+ * 期の色の取得
+ *
+ * @param {String} period - 期
+ * @return {String} 色
+ */
+export function periodColor(period) {
+  let color;
+  switch (period) {
+    case 'introduction':
+      color = '#42a5f5';
+      break;
+
+    case 'beginner':
+      color = '#0d47a1';
+      break;
+
+    case 'intermediate':
+      color = '#4caf50';
+      break;
+
+    case 'advanced':
+      color = '#ff9800';
+      break;
+
+    case 'expert':
+      color = '#f44336';
+      break;
+
+    default:
+      color = '#9e9e9e';
       break;
   }
 
