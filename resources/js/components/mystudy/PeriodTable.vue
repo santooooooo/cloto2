@@ -66,7 +66,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item :class="['mb-4', 10 <= authUser.roadmaps[0].in_progress ? 'red' : 'grey']">
+      <v-list-item :class="['mb-4', 11 <= authUser.roadmaps[0].in_progress ? 'red' : 'grey']">
         <v-list-item-content>
           <v-list-item-title class="text-center white--text">
             <span class="text-body-2 font-weight-bold pr-2">玄人期</span>
