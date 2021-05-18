@@ -93,7 +93,7 @@ export default {
     return {
       period: '入門期', // 期間名
       className: 'Class 0', // クラス名
-      title: 'クラス2以降、ここにコースタイトル反映', // コンテンツタイトル
+      title: 'こんてんつ0', // コンテンツタイトル
       contents: [
         { id: '#buy', title: '0-1. ダミー1', activeStart: 0, activeEnd: 596 },
         { id: '#suggest', title: '0-2. ダミー2', activeStart: 596, activeEnd: 1130 },
