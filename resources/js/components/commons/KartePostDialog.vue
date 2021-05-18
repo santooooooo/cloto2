@@ -57,7 +57,7 @@
                 ></v-textarea>
 
                 <v-card-text class="pa-2 white--text title font-weight-bold">
-                  URL<span class="red--text" v-if="roadmapId">*</span>
+                  参考サイトや公開物のURL<span class="red--text" v-if="roadmapId">*</span>
                 </v-card-text>
                 <v-textarea
                   v-model="karteForm.reference"
