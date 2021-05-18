@@ -2,14 +2,13 @@
   <v-container class="mt-4" fluid id="content-container">
     <v-row>
       <!-- 目次 -->
-      <ContentTable period="入門期" className="Class 0" :contents="contents" />
+      <ContentTable :period="period" :className="className" :contents="contents" />
 
       <v-col cols="10">
-        <h1 class="mb-12 text-center">{{ title }}</h1>
         <!-- タイトル -->
-        <div class="mb-8 pa-4">
-          <h1 class="text-center text-h4 font-weight-bold">Class 0</h1>
-          <p class="text-body-2 mx-6 mt-6 mb-0">ダミー</p>
+        <div class="mb-4 pa-4">
+          <h1 class="text-h4 text-center mb-12">{{ title }}</h1>
+          <p class="text-body-2 mx-6">このコンテンツの説明</p>
         </div>
 
         <!-- コンテンツ1 -->
@@ -92,6 +91,8 @@ export default {
   },
   data() {
     return {
+      period: '入門期', // 期間名
+      className: 'Class 0', // クラス名
       title: 'クラス2以降、ここにコースタイトル反映', // コンテンツタイトル
       contents: [
         { id: '#buy', title: '0-1. ダミー1', activeStart: 0, activeEnd: 596 },
