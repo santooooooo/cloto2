@@ -47,10 +47,10 @@
       <v-row class="mb-12" justify="center">
         <v-btn
           depressed
-          color="success"
-          class="ma-4"
+          class="font-weight-bold white--text ma-4"
           v-for="content in contents"
           :key="content"
+          :color="$classColor(content)"
           :disabled="content > authUser.roadmaps[0].in_progress"
           :to="{ name: 'docs', params: { roadName: 'javascript', class: content } }"
         >

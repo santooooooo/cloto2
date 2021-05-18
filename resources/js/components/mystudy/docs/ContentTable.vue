@@ -9,7 +9,15 @@
       >
         {{ getPeriodName(period) }}
       </h1>
-      <h2 class="rounded text-h6 font-weight-bolder green pl-2">{{ className }}</h2>
+      <h2
+        class="rounded text-h6 font-weight-bolder white--text pl-2 py-1"
+        :style="{
+          'background-color': $classColor(currentClass),
+        }"
+      >
+        <span v-if="currentClass <= 10">Class {{ currentClass }}</span>
+        <span v-else>Clear</span>
+      </h2>
 
       <ul class="ml-2 p-0">
         <li
@@ -32,13 +40,17 @@
 export default {
   props: {
     period: String,
-    className: String,
     contents: Array,
   },
   data() {
     return {
       scrollY: 0, // スクロール位置
     };
+  },
+  computed: {
+    currentClass() {
+      return Number(this.$route.params.class);
+    },
   },
   methods: {
     /**

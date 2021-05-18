@@ -2,7 +2,7 @@
   <v-container class="mt-4" fluid id="content-container">
     <v-row>
       <!-- 目次 -->
-      <ContentTable :period="period" :className="className" :contents="contents" />
+      <ContentTable :period="period" :contents="contents" />
 
       <v-col cols="10">
         <!-- タイトル -->
@@ -92,7 +92,6 @@ export default {
   data() {
     return {
       period: 'beginner', // 期間名
-      className: 'Class 1', // クラス名
       title: 'こんてんつ1', // コンテンツタイトル
       contents: [
         { id: '#buy', title: '0-1. ダミー1', activeStart: 0, activeEnd: 596 },

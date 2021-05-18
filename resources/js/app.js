@@ -16,6 +16,7 @@ const functions = require('./plugins/functions');
 Vue.prototype.$formatStr = functions.formatStr;
 Vue.prototype.$statusColor = functions.statusColor;
 Vue.prototype.$periodColor = functions.periodColor;
+Vue.prototype.$classColor = functions.classColor;
 Vue.prototype.$slack = functions.slackPost;
 
 /**
