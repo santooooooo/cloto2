@@ -12,6 +12,7 @@
       <JavaScript8 @next="next()" v-else-if="currentClass === 8" />
       <JavaScript9 @next="next()" v-else-if="currentClass === 9" />
       <JavaScript10 @next="next()" v-else-if="currentClass === 10" />
+      <JavaScriptClear v-else-if="currentClass > 10" />
     </div>
 
     <KartePostDialog
@@ -36,6 +37,7 @@ import JavaScript7 from '@/views/mystudy/docs/javascript/Class7';
 import JavaScript8 from '@/views/mystudy/docs/javascript/Class8';
 import JavaScript9 from '@/views/mystudy/docs/javascript/Class9';
 import JavaScript10 from '@/views/mystudy/docs/javascript/Class10';
+import JavaScriptClear from '@/views/mystudy/docs/javascript/Clear';
 import { OK } from '@/consts/status';
 
 export default {
@@ -57,6 +59,7 @@ export default {
     JavaScript8,
     JavaScript9,
     JavaScript10,
+    JavaScriptClear,
   },
   computed: {
     authUser() {
