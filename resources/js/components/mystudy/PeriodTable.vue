@@ -1,5 +1,5 @@
 <template>
-  <v-list nav dense class="ma-4" v-if="authUser.roadmaps.length">
+  <v-list nav dense class="ma-4" v-if="authUser && authUser.roadmaps.length">
     <v-list-item-group color="#f6bf00">
       <v-list-item
         :class="['mb-4', 0 <= authUser.roadmaps[0].in_progress ? 'blue lighten-1' : 'grey']"

@@ -102,8 +102,10 @@ export default {
   },
   async created() {
     // ロードマップとカルテ一覧を取得
-    let response = await axios.get('/api/roadmaps/' + this.authUser.roadmaps[0].id);
-    this.kartes = response.data.kartes;
+    if (this.authUser.roadmaps.length) {
+      let response = await axios.get('/api/roadmaps/' + this.authUser.roadmaps[0].id);
+      this.kartes = response.data.kartes;
+    }
   },
 };
 </script>
