@@ -48,23 +48,7 @@
               <KarteContainer :karte="item" v-if="item.activity_time" />
 
               <!-- 投稿 -->
-              <v-card-actions class="d-block" v-else>
-                <v-row no-gutters justify="end" v-if="item.user.id === authUser.id">
-                  <v-btn icon x-small @click="deletePost(item)">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-                </v-row>
-
-                <div class="pointer" @click="showPost(item.id)">
-                  <!-- 内容 -->
-                  <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
-
-                  <!-- 投稿日時 -->
-                  <p class="mt-6 mb-0 text-right small">
-                    {{ $moment(item.created_at).format('MM/DD HH:mm') }}
-                  </p>
-                </div>
-              </v-card-actions>
+              <PostContainer :post="item" @delete="deletePost(item)" v-else />
 
               <v-divider></v-divider>
 
