@@ -18,13 +18,11 @@
     <div v-if="call.isEnter">
       <SeminarSpeak
         :call-id="call.id"
-        :capacity="call.capacity"
         @leave-call="leaveCall()"
         v-if="authUser.seat.role === 'speak'"
       />
       <SeminarView
         :call-id="call.id"
-        :capacity="call.capacity"
         @leave-call="leaveCall()"
         v-else-if="authUser.seat.role === 'view'"
       />

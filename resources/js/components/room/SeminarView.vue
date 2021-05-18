@@ -475,7 +475,6 @@ const API_KEY = process.env.MIX_SKYWAY_API_KEY;
 export default {
   props: {
     callId: Number,
-    capacity: Number,
   },
   data() {
     return {
@@ -491,7 +490,7 @@ export default {
 
       //*** 通話 ***//
       participants: [], // 参加者
-      roomMode: 'mesh', // 接続モード
+      roomMode: 'sfu', // 接続モード
       peer: null, // Peer接続オブジェクト
       call: null, // 接続プロパティ
       screenSharing: {
@@ -1067,11 +1066,6 @@ export default {
         // 再処理
         continue;
       }
-    }
-
-    // 定員が30人より多い場合はSFU方式を利用
-    if (this.capacity > 30) {
-      this.roomMode = 'sfu';
     }
 
     // Peerの作成
