@@ -1,14 +1,7 @@
 <template>
   <v-col cols="2" class="p-0 border-right">
     <div class="position-fixed">
-      <h1
-        :class="[
-          'font-weight-bold text-h5 text-center green',
-          $vuetify.breakpoint.xl ? 'px-12' : '',
-          $vuetify.breakpoint.lg ? 'px-10' : '',
-          $vuetify.breakpoint.md ? 'px-5' : 'px-1',
-        ]"
-      >
+      <h1 class="font-weight-bold text-h5 text-center green px-5">
         {{ period }}
       </h1>
       <h2 class="text-h6 font-weight-bolder green pl-2">{{ className }}</h2>

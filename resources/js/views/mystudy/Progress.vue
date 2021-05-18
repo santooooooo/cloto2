@@ -1,7 +1,9 @@
 <template>
-  <v-container>
-    <h1 class="font-weight-bold mt-4">あなたの「独学」を支援するCLOTOの「マイスタディ」</h1>
-    <v-container class="my-8" fluid>
+  <v-container fluid>
+    <h1 class="font-weight-bold mt-4 text-center">
+      あなたの「独学」を支援するCLOTOの「マイスタディ」
+    </h1>
+    <v-container class="my-8">
       <v-row>
         <v-col cols="4" class="pr-4 font-weight-black">
           <p>
@@ -24,7 +26,7 @@
               :loading="loading"
               @click="startRoad()"
             >
-              独学で学ぶ
+              はじめる
             </v-btn>
           </v-col>
         </v-col>

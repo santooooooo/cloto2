@@ -73,9 +73,7 @@
         </v-container>
 
         <v-row justify="center">
-          <v-btn color="blue" class="text-white" :to="{ name: 'timeline' }">
-            みんなを助けに行く
-          </v-btn>
+          <v-btn color="blue" class="text-white" :to="{ name: 'home' }">みんなを助けに行く</v-btn>
         </v-row>
       </v-col>
     </v-row>
