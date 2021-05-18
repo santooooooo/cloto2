@@ -57,7 +57,7 @@
                 ></v-textarea>
 
                 <v-card-text class="pa-2 white--text title font-weight-bold">
-                  URL<span class="red--text" v-if="roadmap">*</span>
+                  URL<span class="red--text" v-if="roadmapId">*</span>
                 </v-card-text>
                 <v-textarea
                   v-model="karteForm.reference"
@@ -68,7 +68,7 @@
                   rows="1"
                   label="https://cloto.jp"
                   auto-grow
-                  v-if="roadmap"
+                  v-if="roadmapId"
                 ></v-textarea>
                 <v-textarea
                   v-model="karteForm.reference"
@@ -84,7 +84,7 @@
 
               <v-col>
                 <v-card-text class="pa-0 white--text title font-weight-bold">
-                  画像<span class="red--text" v-if="roadmap">*</span>
+                  画像<span class="red--text" v-if="roadmapId">*</span>
                 </v-card-text>
 
                 <ImageInput output-type="png" @input="karteForm.image = $event" />
@@ -175,7 +175,7 @@ import { OK } from '@/consts/status';
 
 export default {
   props: {
-    roadmap: Boolean,
+    roadmapId: Number, // 紐付けるロードマップID
   },
   data() {
     return {
@@ -251,7 +251,7 @@ export default {
     submit: async function () {
       // バリデーション
       let validate = this.$refs.karteForm.validate();
-      if (this.roadmap && this.karteForm.image === null) {
+      if (this.roadmapId && this.karteForm.image === null) {
         // ロードマップでは画像の入力が必須
         validate = false;
         this.$store.dispatch('alert/error', '画像は必須です！');
@@ -261,6 +261,7 @@ export default {
         this.karteForm.loading = true;
 
         let input = new FormData();
+        input.append('roadmap_id', this.roadmapId || '');
         input.append('activity_time', this.karteForm.activityTime);
         input.append('tags', this.tag.inputIds);
         input.append('body', this.karteForm.body);
@@ -286,7 +287,7 @@ export default {
 
           this.$emit('close', false);
 
-          if (this.roadmap) {
+          if (this.roadmapId) {
             // ロードマップの入力後は次のクラスへ
             this.$emit('nextClass');
           }

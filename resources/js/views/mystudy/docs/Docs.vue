@@ -14,7 +14,12 @@
       <JavaScript10 @next="next()" v-else-if="currentClass === 10" />
     </div>
 
-    <KartePostDialog roadmap @close="dialog = $event" @nextClass="nextClass()" v-if="dialog" />
+    <KartePostDialog
+      :roadmapId="authUser.roadmaps[0].id"
+      @close="dialog = $event"
+      @nextClass="nextClass()"
+      v-if="dialog"
+    />
   </v-container>
 </template>
 
