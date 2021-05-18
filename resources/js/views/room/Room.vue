@@ -792,8 +792,6 @@ export default {
      * 自習室からの退席処理
      */
     leaveRoom: async function () {
-      this.karte.dialog = false;
-
       // ロード開始
       this.loading = true;
 

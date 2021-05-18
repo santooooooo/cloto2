@@ -1,7 +1,7 @@
 <template>
   <!-- カルテ記入ダイアログ -->
   <v-container ma-0 pa-0>
-    <v-dialog persistent v-model="dialog" v-if="authUser.seat" width="1000">
+    <v-dialog persistent v-model="dialog" width="1000">
       <v-form ref="karteForm" v-model="karteForm.validation.valid" lazy-validation>
         <v-card class="headline grey darken-2 text-center px-2">
           <v-container>
