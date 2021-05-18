@@ -42,20 +42,22 @@
     </v-container>
 
     <!-- コンテンツ一覧 -->
-    <h5 class="text-h5 text-center">コンテンツ一覧</h5>
-    <v-row class="mb-12" justify="center">
-      <v-btn
-        depressed
-        color="success"
-        class="ma-4"
-        v-for="content in contents"
-        :key="content"
-        :disabled="content > authUser.roadmaps[0].in_progress"
-        :to="{ name: 'docs', params: { roadName: 'javascript', class: content } }"
-      >
-        Class {{ content }}
-      </v-btn>
-    </v-row>
+    <div v-if="authUser.roadmaps.length">
+      <h5 class="text-h5 text-center">コンテンツ一覧</h5>
+      <v-row class="mb-12" justify="center">
+        <v-btn
+          depressed
+          color="success"
+          class="ma-4"
+          v-for="content in contents"
+          :key="content"
+          :disabled="content > authUser.roadmaps[0].in_progress"
+          :to="{ name: 'docs', params: { roadName: 'javascript', class: content } }"
+        >
+          Class {{ content }}
+        </v-btn>
+      </v-row>
+    </div>
 
     <!-- カルテ -->
     <vue-masonry-wall :items="kartes" :options="{ width: width, padding: 8 }">
