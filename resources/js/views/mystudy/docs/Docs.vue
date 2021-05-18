@@ -81,7 +81,7 @@ export default {
           params: { roadName: 'javascript', class: this.currentClass + 1 },
         });
         // 最上部へスクロール
-        this.$scrollTo('#docs');
+        this.$scrollTo('#main');
       } else if (this.currentClass === this.authUser.roadmaps[0].in_progress) {
         // 進行中のクラスから進む場合はカルテを記入
         this.dialog = true;
@@ -101,7 +101,7 @@ export default {
           params: { roadName: 'javascript', class: this.currentClass + 1 },
         });
         // 最上部へスクロール
-        this.$scrollTo('#docs');
+        this.$scrollTo('#main');
       }
     },
   },
