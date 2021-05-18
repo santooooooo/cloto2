@@ -17,7 +17,7 @@ class Karte extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'body', 'achieve', 'challenge', 'reference', 'image', 'activity_time'
+        'user_id', 'roadmap_id', 'body', 'achieve', 'challenge', 'reference', 'image', 'activity_time'
     ];
 
     /**
@@ -42,6 +42,16 @@ class Karte extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User');
+    }
+
+    /**
+     * Roadmap モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function roadmap()
+    {
+        return $this->belongsTo('App\Models\Roadmap');
     }
 
     /**

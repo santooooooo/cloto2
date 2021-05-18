@@ -46,6 +46,16 @@ class Roadmap extends Model
     }
 
     /**
+     * Karte モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function kartes()
+    {
+        return $this->hasMany('App\Models\Karte');
+    }
+
+    /**
      * ロードデータの追加
      *
      * @return \Illuminate\Database\Eloquent\Model
