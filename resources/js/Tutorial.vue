@@ -3,7 +3,9 @@
     <v-card>
       <v-card-title class="text-h5 grey lighten-2">使い方を学ぼう！</v-card-title>
 
-      <video controls autoplay muted :src="$storage('system') + 'tutorial.mp4'"></video>
+      <div class="text-center">
+        <video controls autoplay muted :src="$storage('system') + 'tutorial.mp4'"></video>
+      </div>
 
       <v-card-actions>
         <small class="red--text ml-4">
@@ -40,6 +42,7 @@ export default {
 
 <style lang="scss" scoped>
 video {
-  width: 100%;
+  max-width: 100%;
+  max-height: 70vh;
 }
 </style>
