@@ -91,41 +91,32 @@
           </v-card>
         </v-row>
 
-        <v-row class="my-3" justify="center">
+        <v-row class="my-6" justify="center">
           <v-spacer></v-spacer>
 
-          <v-col
-            md="3"
-            class="select"
-            @click="showFollows()"
-            :style="{ 'background-color': show === 'follow' ? '#909090' : '#808080' }"
-          >
-            <p class="text-center">フォロー</p>
-            <p class="text-center mb-0">{{ user.follows_count }}</p>
+          <v-col md="3" class="select pa-0" @click="showFollows()">
+            <v-card class="py-4" :color="color" :elevation="show === 'follow' ? 1 : 3">
+              <p class="text-center">フォロー</p>
+              <p class="text-center mb-0">{{ user.follows_count }}</p>
+            </v-card>
           </v-col>
 
           <v-spacer></v-spacer>
 
-          <v-col
-            md="3"
-            class="select"
-            @click="showFollowers()"
-            :style="{ 'background-color': show === 'follower' ? '#909090' : '#808080' }"
-          >
-            <p class="text-center">フォロワー</p>
-            <p class="text-center mb-0">{{ user.followers_count }}</p>
+          <v-col md="3" class="select pa-0" @click="showFollowers()">
+            <v-card class="py-4" :color="color" :elevation="show === 'follower' ? 1 : 3">
+              <p class="text-center">フォロワー</p>
+              <p class="text-center mb-0">{{ user.followers_count }}</p>
+            </v-card>
           </v-col>
 
           <v-spacer></v-spacer>
 
-          <v-col
-            md="3"
-            class="select"
-            @click="showKartes()"
-            :style="{ 'background-color': show === 'karte' ? '#909090' : '#808080' }"
-          >
-            <p class="text-center">カルテ</p>
-            <p class="text-center mb-0"><v-icon>mdi-chevron-down</v-icon></p>
+          <v-col md="3" class="select pa-0" @click="showKartes()">
+            <v-card class="py-4" :color="color" :elevation="show === 'karte' ? 1 : 3">
+              <p class="text-center">カルテ</p>
+              <p class="text-center mb-0"><v-icon>mdi-chevron-down</v-icon></p>
+            </v-card>
           </v-col>
 
           <v-spacer></v-spacer>
@@ -133,7 +124,7 @@
 
         <!-- フォロー/フォロワー一覧 -->
         <v-list
-          :class="color"
+          :color="color"
           v-if="(show === 'follow' || show === 'follower') && followers.length"
         >
           <v-list-item
@@ -158,7 +149,7 @@
         </v-list>
 
         <v-list
-          :class="color"
+          :color="color"
           v-if="(show === 'follow' || show === 'follower') && !followers.length"
         >
           <v-list-item>
@@ -167,7 +158,7 @@
         </v-list>
 
         <!-- カルテ一覧 -->
-        <v-list :class="color" v-if="show === 'karte' && kartes.length">
+        <v-list :color="color" v-if="show === 'karte' && kartes.length">
           <v-list-item v-for="karte in kartes" :key="karte.id" @click="showKarteId = karte.id">
             <v-img
               max-width="80"
@@ -191,7 +182,7 @@
           </v-list-item>
         </v-list>
 
-        <v-list :class="color" v-if="show === 'karte' && !kartes.length">
+        <v-list :color="color" v-if="show === 'karte' && !kartes.length">
           <v-list-item>
             <span class="mx-auto">まだカルテがないようです．．．</span>
           </v-list-item>
@@ -239,14 +230,7 @@ export default {
     },
 
     color() {
-      let color;
-      if (this.user.type === 'pro') {
-        color = 'green darken-2';
-      } else {
-        color = 'grey darken-1';
-      }
-
-      return color;
+      return this.$classColor(this.user.roadmaps.length ? this.user.roadmaps[0].in_progress : '');
     },
   },
 

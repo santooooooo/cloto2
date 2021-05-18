@@ -132,6 +132,10 @@ export function classColor(classNumber) {
     case 11:
       color = '#f44336';
       break;
+
+    default:
+      color = '#9e9e9e';
+      break;
   }
 
   return color;
