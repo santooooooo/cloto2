@@ -51,6 +51,19 @@ class RoadmapsController extends Controller
     }
 
     /**
+     * ロードマップとカルテ一覧の取得
+     *
+     * @param  \App\Models\Roadmap  $roadmap  取得するロードマップ
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Roadmap $roadmap)
+    {
+        return response()->json($roadmap->load(['kartes' => function ($query) {
+            $query->latest();
+        }]));
+    }
+
+    /**
      * ロードマップの更新（次へ進む）
      *
      * @param  \Illuminate\Http\Request  $request

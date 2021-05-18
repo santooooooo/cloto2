@@ -71,7 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
         | ロード
         |--------------------------------------------------------------------------
         */
-        Route::resource('roadmaps', 'RoadmapsController', ['only' => ['store', 'update']]);
+        Route::resource('roadmaps', 'RoadmapsController', ['only' => ['store', 'show', 'update']]);
 
 
         /*
