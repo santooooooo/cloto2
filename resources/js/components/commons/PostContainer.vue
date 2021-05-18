@@ -6,7 +6,7 @@
       </v-btn>
     </v-row>
 
-    <div class="pointer" @click="showPost(post.id)">
+    <div id="post" @click="showPost(post.id)">
       <!-- 内容 -->
       <pre class="text-body-2" v-html="$formatStr(post.body)"></pre>
 
@@ -51,7 +51,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pointer {
+#post {
   cursor: pointer;
+
+  pre {
+    white-space: pre-wrap;
+  }
 }
 </style>

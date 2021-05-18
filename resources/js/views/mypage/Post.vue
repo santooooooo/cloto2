@@ -158,11 +158,5 @@ export default {
   .v-progress-linear {
     top: 0;
   }
-
-  .v-card {
-    pre {
-      white-space: pre-wrap;
-    }
-  }
 }
 </style>

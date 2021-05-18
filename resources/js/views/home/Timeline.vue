@@ -394,14 +394,8 @@ export default {
     width: 60%;
   }
 
-  .v-card {
-    .pointer {
-      cursor: pointer;
-    }
-
-    pre {
-      white-space: pre-wrap;
-    }
+  .pointer {
+    cursor: pointer;
   }
 }
 </style>

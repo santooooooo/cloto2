@@ -1,6 +1,6 @@
 <template>
   <v-container class="d-block">
-    <div class="pointer" @click="showKarte(karte.id)">
+    <div id="karte" @click="showKarte(karte.id)">
       <v-img
         max-height="300"
         class="mx-auto my-2 rounded-xl"
@@ -61,7 +61,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pointer {
+#karte {
   cursor: pointer;
+
+  pre {
+    white-space: pre-wrap;
+  }
 }
 </style>
