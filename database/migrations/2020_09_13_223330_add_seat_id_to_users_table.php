@@ -14,7 +14,10 @@ class AddSeatIdToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('seat_id')->after('role')->nullable()->constrained(); // 着席している座席ID
+            $table->foreignId('seat_id')
+                ->after('role')
+                ->nullable()
+                ->constrained();            // 着席している座席ID
         });
     }
 
