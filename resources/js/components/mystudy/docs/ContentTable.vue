@@ -91,6 +91,7 @@ export default {
     setupScrollEvent: function () {
       // スクロール位置の取得
       this.scrollY = window.scrollY;
+      console.log(this.scrollY);
     },
   },
   mounted() {
