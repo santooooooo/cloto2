@@ -1,6 +1,6 @@
 <template>
-  <v-col cols="2" class="p-0 border-right">
-    <div class="position-fixed">
+  <v-col cols="2" class="px-0">
+    <div class="position-fixed border-right pr-4">
       <h1
         class="rounded font-weight-bold text-h5 text-center white--text px-5 py-1"
         :style="{
@@ -19,13 +19,13 @@
         <span v-else>Clear</span>
       </h2>
 
-      <ul class="ml-2 p-0">
+      <ul class="pl-2">
         <li
           v-for="content in contents"
           :key="content.id"
           v-scroll-to="{ el: content.id, offset: -80 }"
           :class="[
-            'my-6 pa-2 grey--text content',
+            'my-6 pa-2 grey--text',
             content.activeStart <= scrollY && scrollY < content.activeEnd ? 'active' : '',
           ]"
         >
@@ -39,8 +39,8 @@
 <script>
 export default {
   props: {
-    period: String,
-    contents: Array,
+    period: String, // 期間名
+    contents: Array, // 目次データ
   },
   data() {
     return {
@@ -54,10 +54,10 @@ export default {
   },
   methods: {
     /**
-     * 期の名前の取得
+     * 期の表示名の取得
      *
      * @param {String} period - 期
-     * @return {String} 色
+     * @return {String} 表示名
      */
     getPeriodName: function (period) {
       let name;
@@ -106,22 +106,20 @@ export default {
 ul {
   list-style: none;
 
-  & > li {
+  li {
     cursor: pointer;
-  }
-}
 
-.content {
-  &:hover {
-    background: rgb(152, 201, 247);
-    color: white !important;
-    border-radius: 4%;
+    &:hover {
+      background: #98c9f7;
+      border-radius: 4px;
+      color: #ffffff !important;
+    }
   }
-}
 
-.active {
-  background: rgb(207, 204, 204, 0.6);
-  border-radius: 4%;
-  box-shadow: 0 0 2px black;
+  .active {
+    background: #cfcccc;
+    border-radius: 4px;
+    box-shadow: 0 0 2px #000000;
+  }
 }
 </style>
