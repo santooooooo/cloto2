@@ -46,7 +46,7 @@ export function getStoragePath(name) {
 }
 
 /**
- * コンテンツのパスの取得
+ * コンテンツデータのパスの取得
  *
  * @param {String} content - 取得するコンテンツ
  * @param {String} page - 取得するページ

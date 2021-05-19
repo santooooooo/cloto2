@@ -37,9 +37,9 @@
             </v-col>
             <v-col cols="6">
               <v-img
-                max-height="300"
-                max-width="400"
-                src="https://picsum.photos/id/11/500/300"
+                max-width="90%"
+                max-height="60vh"
+                :src="filePath + '1.png'"
                 class="mb-10"
               ></v-img>
             </v-col>
@@ -52,9 +52,9 @@
             </v-col>
             <v-col cols="6">
               <v-img
-                max-height="300"
-                max-width="400"
-                src="https://picsum.photos/id/11/500/300"
+                max-width="90%"
+                max-height="60vh"
+                :src="filePath + '2.png'"
                 class="mb-10"
               ></v-img>
             </v-col>
@@ -98,6 +98,8 @@ export default {
         { id: '#suggest', title: '0-2. ダミー2', activeStart: 596, activeEnd: 1130 },
         { id: '#cut', title: '0-3. ダミー3', activeStart: 1130, activeEnd: 99999 },
       ], // 目次データ
+
+      filePath: this.$docs(this.$route.params.roadName, 'class' + Number(this.$route.params.class)), // コンテンツデータのパス
     };
   },
 };
