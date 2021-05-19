@@ -6,21 +6,7 @@
     <vue-masonry-wall :items="posts" :options="{ width: width, padding: 8 }" @append="getPosts">
       <template v-slot:default="{ item }">
         <v-card :width="width - 50" class="mx-auto pa-3">
-          <v-card-actions class="d-block">
-            <v-row no-gutters justify="end" v-if="item.user.id === authUser.id">
-              <v-btn icon x-small @click="deletePost(item)">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </v-row>
-
-            <!-- 内容 -->
-            <pre class="mb-0 text-body-2" v-html="$formatStr(item.body)"></pre>
-
-            <!-- 投稿日時 -->
-            <p class="mt-6 mb-0 text-right small">
-              {{ $moment(item.created_at).format('MM/DD HH:mm') }}
-            </p>
-          </v-card-actions>
+          <PostContainer :post="item" @delete="deletePost(item)" />
         </v-card>
       </template>
     </vue-masonry-wall>
@@ -171,12 +157,6 @@ export default {
 
   .v-progress-linear {
     top: 0;
-  }
-
-  .v-card {
-    pre {
-      white-space: pre-wrap;
-    }
   }
 }
 </style>

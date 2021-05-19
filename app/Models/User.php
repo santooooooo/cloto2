@@ -49,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
-    protected $appends = ['status', 'follows_count', 'followers_count', 'seat', 'room'];
+    protected $appends = ['status', 'follows_count', 'followers_count', 'seat', 'room', 'roadmaps'];
 
     /**
      * Send the email verification notification.
@@ -79,6 +79,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function chats()
     {
         return $this->hasMany('App\Models\Chat');
+    }
+
+    /**
+     * Roadmap モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function roadmaps()
+    {
+        return $this->hasMany('App\Models\Roadmap');
     }
 
     /**
@@ -227,6 +237,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
         $room = $seat->section()->first()->room;
         return ['id' => $room->id, 'name' => $room->name];
+    }
+
+    /**
+     * ロードマップデータの追加
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getRoadmapsAttribute()
+    {
+        return $this->roadmaps()->get();
     }
 
     /**

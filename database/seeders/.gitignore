@@ -3,3 +3,4 @@
 !*.example
 !DatabaseSeeder.php
 !rooms/
+!RoadsTableSeeder.php

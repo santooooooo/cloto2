@@ -10,7 +10,6 @@
       :room-status="roomStatus"
       :chat-is-show="chat.isShow"
       @toggle-chat="chat.isShow = $event"
-      @input-karte="inputKarte(true)"
       @leave-room="leaveRoom()"
     />
 
@@ -122,14 +121,6 @@
         @close="profile.dialog = $event"
         v-if="profile.dialog"
       />
-
-      <!-- カルテダイアログ -->
-      <KartePostDialog
-        :confirm="karte.confirm"
-        @close="karte.dialog = $event"
-        @leave-room="leaveRoom()"
-        v-if="karte.dialog"
-      />
     </v-flex>
   </v-layout>
 </template>
@@ -140,7 +131,6 @@ import Call from '@/components/room/Call';
 import SeminarSpeak from '@/components/room/SeminarSpeak';
 import SeminarView from '@/components/room/SeminarView';
 import Media from '@/components/room/Media';
-import KartePostDialog from '@/components/room/KartePostDialog';
 import { OK } from '@/consts/status';
 import { RECEIVE_CHAT_SOUND } from '@/consts/sound';
 
@@ -161,7 +151,6 @@ export default {
     SeminarSpeak,
     SeminarView,
     Media,
-    KartePostDialog,
   },
   data() {
     return {
@@ -196,10 +185,6 @@ export default {
       profile: {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
-      },
-      karte: {
-        dialog: false, // カルテ記入ダイアログの制御
-        confirm: true, // 自習継続の確認
       },
     };
   },
@@ -803,8 +788,6 @@ export default {
      * 自習室からの退席処理
      */
     leaveRoom: async function () {
-      this.karte.dialog = false;
-
       // ロード開始
       this.loading = true;
 
@@ -843,16 +826,6 @@ export default {
 
       // ロード終了
       this.loading = false;
-    },
-
-    /**
-     * カルテの記入
-     *
-     * @param {Boolean} confirm - 自習継続の確認をするか
-     */
-    inputKarte: function (confirm) {
-      this.karte.confirm = confirm;
-      this.karte.dialog = true;
     },
 
     /**

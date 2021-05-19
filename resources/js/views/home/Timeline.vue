@@ -45,61 +45,10 @@
           <template v-slot:default="{ item }">
             <v-card :width="width - 50" class="mx-auto pa-3">
               <!-- カルテ -->
-              <v-card-actions class="d-block" v-if="item.activity_time">
-                <div class="pointer" @click="showKarte(item.id)">
-                  <v-img
-                    max-height="300"
-                    class="mx-auto my-2 rounded-xl"
-                    contain
-                    eager
-                    :src="item.path + item.image"
-                    v-if="item.image"
-                  ></v-img>
-
-                  <!-- タグ -->
-                  <v-chip class="ma-1" v-for="tag in item.tags" :key="tag.id" :value="tag.id">
-                    {{ tag.name }}
-                  </v-chip>
-
-                  <!-- 活動時間 -->
-                  <p
-                    :class="[
-                      'text-body-2',
-                      'font-weight-bold',
-                      item.image || item.tags.length ? 'mt-6' : '',
-                    ]"
-                  >
-                    活動時間：{{ item.activity_time.slice(0, 5) }}
-                  </p>
-
-                  <!-- 活動内容 -->
-                  <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
-
-                  <!-- 投稿日時 -->
-                  <p class="mt-6 mb-0 text-right small">
-                    {{ $moment(item.created_at).format('MM/DD HH:mm') }}
-                  </p>
-                </div>
-              </v-card-actions>
+              <KarteContainer :karte="item" v-if="item.activity_time" />
 
               <!-- 投稿 -->
-              <v-card-actions class="d-block" v-else>
-                <v-row no-gutters justify="end" v-if="item.user.id === authUser.id">
-                  <v-btn icon x-small @click="deletePost(item)">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-                </v-row>
-
-                <div class="pointer" @click="showPost(item.id)">
-                  <!-- 内容 -->
-                  <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
-
-                  <!-- 投稿日時 -->
-                  <p class="mt-6 mb-0 text-right small">
-                    {{ $moment(item.created_at).format('MM/DD HH:mm') }}
-                  </p>
-                </div>
-              </v-card-actions>
+              <PostContainer :post="item" @delete="deletePost(item)" v-else />
 
               <v-divider></v-divider>
 
@@ -445,14 +394,8 @@ export default {
     width: 60%;
   }
 
-  .v-card {
-    .pointer {
-      cursor: pointer;
-    }
-
-    pre {
-      white-space: pre-wrap;
-    }
+  .pointer {
+    cursor: pointer;
   }
 }
 </style>

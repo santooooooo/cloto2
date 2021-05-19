@@ -15,15 +15,20 @@ Vue.prototype.$storage = require('./consts/storage').getStoragePath;
 const functions = require('./plugins/functions');
 Vue.prototype.$formatStr = functions.formatStr;
 Vue.prototype.$statusColor = functions.statusColor;
+Vue.prototype.$periodColor = functions.periodColor;
+Vue.prototype.$classColor = functions.classColor;
 Vue.prototype.$slack = functions.slackPost;
 
 /**
  * Vueコンポーネントの読み込み
  */
 Vue.component('ProfileDialog', require('./components/commons/ProfileDialog').default);
+Vue.component('KarteContainer', require('./components/commons/KarteContainer').default);
 Vue.component('KarteDialog', require('./components/commons/KarteDialog').default);
+Vue.component('PostContainer', require('./components/commons/PostContainer').default);
 Vue.component('PostDialog', require('./components/commons/PostDialog').default);
 Vue.component('ImageInput', require('./components/commons/form/ImageInput').default);
+Vue.component('ContentTable', require('./components/mystudy/docs/ContentTable').default);
 
 /**
  * Vueの定義

@@ -60,6 +60,9 @@
 
     <!-- 問い合わせ -->
     <Inquiry v-if="authCheck" />
+
+    <!-- チュートリアル -->
+    <Tutorial v-if="authCheck" />
   </v-app>
 </template>
 
@@ -68,6 +71,7 @@ import Header from './Header';
 import Drawer from './Drawer';
 import Footer from './Footer';
 import Inquiry from './Inquiry';
+import Tutorial from './Tutorial';
 import { OK, NOT_FOUND, UNPROCESSABLE_ENTITY, INTERNAL_SERVER_ERROR } from '@/consts/status';
 import { ANNOUNCE_SOUND } from '@/consts/sound';
 
@@ -77,6 +81,7 @@ export default {
     Drawer,
     Footer,
     Inquiry,
+    Tutorial,
   },
   data() {
     return {
@@ -103,6 +108,7 @@ export default {
   },
   watch: {
     authCheck: function (check) {
+      // ログイン時の処理
       if (check) {
         // ログアウトの検知
         axios.interceptors.response.use((error) => {
