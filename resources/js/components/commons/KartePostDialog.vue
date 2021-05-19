@@ -289,7 +289,7 @@ export default {
 
           if (this.roadmapId) {
             // ロードマップへの紐付け後は次のクラスへ
-            this.$emit('nextClass');
+            this.$emit('next-class');
           }
         } else {
           this.karteForm.loading = false;

@@ -18,7 +18,7 @@
     <KartePostDialog
       :roadmapId="authUser.roadmaps[0].id"
       @close="dialog = $event"
-      @nextClass="nextClass()"
+      @next-class="nextClass()"
       v-if="dialog"
     />
   </v-container>
