@@ -175,7 +175,7 @@ import { OK } from '@/consts/status';
 
 export default {
   props: {
-    roadmapId: Number, // 紐付けるロードマップID
+    roadmapId: Number, // カルテを紐付けるロードマップID
   },
   data() {
     return {
@@ -191,7 +191,7 @@ export default {
         validation: {
           valid: false,
           bodyRules: [(v) => !!v || '活動内容は必須項目です。'],
-          referenceRules: [(v) => !!v || 'URLは必須項目です。'],
+          referenceRules: [(v) => !!v || '参考サイトや公開物のURLは必須項目です。'],
         },
       },
       tag: {
@@ -252,7 +252,7 @@ export default {
       // バリデーション
       let validate = this.$refs.karteForm.validate();
       if (this.roadmapId && this.karteForm.image === null) {
-        // ロードマップでは画像の入力が必須
+        // ロードマップへの紐付け時には画像の入力が必須
         validate = false;
         this.$store.dispatch('alert/error', '画像は必須です！');
       }
@@ -288,7 +288,7 @@ export default {
           this.$emit('close', false);
 
           if (this.roadmapId) {
-            // ロードマップの入力後は次のクラスへ
+            // ロードマップへの紐付け後は次のクラスへ
             this.$emit('nextClass');
           }
         } else {
