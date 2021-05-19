@@ -133,7 +133,6 @@ import Call from '@/components/room/Call';
 import SeminarSpeak from '@/components/room/SeminarSpeak';
 import SeminarView from '@/components/room/SeminarView';
 import Media from '@/components/room/Media';
-import KartePostDialog from '@/components/commons/KartePostDialog';
 import { OK } from '@/consts/status';
 import { RECEIVE_CHAT_SOUND } from '@/consts/sound';
 
@@ -154,7 +153,6 @@ export default {
     SeminarSpeak,
     SeminarView,
     Media,
-    KartePostDialog,
   },
   data() {
     return {

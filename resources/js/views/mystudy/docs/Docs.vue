@@ -43,7 +43,7 @@ import { OK } from '@/consts/status';
 export default {
   data() {
     return {
-      dialog: false, // カルテ投稿のダイアログ制御
+      dialog: false, // カルテ投稿ダイアログの制御
     };
   },
   components: {
