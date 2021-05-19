@@ -372,7 +372,7 @@ export default {
         { id: '#greeting', title: '0-0. Greeting', activeStart: 0, activeEnd: 1526 },
         {
           id: '#programming-setting',
-          title: '0-1. プログラミングを\n取り巻く環境',
+          title: '0-1. プログラミングを取り巻く環境',
           activeStart: 1526,
           activeEnd: 2461,
         },
