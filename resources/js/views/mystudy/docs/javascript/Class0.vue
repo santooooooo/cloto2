@@ -219,6 +219,38 @@
           </p>
         </v-container>
 
+        <!-- コンテンツ４ -->
+        <v-container fluid class="mb-12" id="output-ism">
+          <h4 class="text-h4 font-weight-bold text-left-border mb-10">
+            <span class="pl-3 grey lighten-3">アウトプット至上主義</span>
+          </h4>
+
+          <p class="mb-8">
+            第一に「プログラミング独学」を充実させる要素の一つとして「インプットだけでなく、必ずアウトプットをする。」ことをあげました。
+          </p>
+          <p class="mb-8 font-weight-bolder">
+            プログラミング学習では、アウトプットこそが一番重要と言っても過言ではありません。
+          </p>
+          <p class="mb-8">
+            プログラミングは何かを創るための手段です。<br />
+            つまり、プログラミングについての知識をいくら集めたところで、何にもならないのです。<br />
+            情報を集めることはもちろん重要です。<br />
+            ですがそれ以上に実際に手を動かし、コーディングすること。それらを公開すること。<br />
+            これが重要になります。
+          </p>
+
+          <p class="mb-8">また、アウトプットにも様々な種類があります。</p>
+          <ul class="mb-8">
+            <li>インプットしたことをすぐに実践して都度公開すること</li>
+            <li>知識を利用して誰かに教えてあげること</li>
+            <li>実際に製品やサービスをつくること</li>
+          </ul>
+          などがあります。
+          <p class="mb-8">
+            CLOTOではこれらのアウトプットをスムーズに行うことができる環境を整備していきます。
+          </p>
+        </v-container>
+
         <v-row justify="center">
           <v-btn color="blue" class="text-white" @click="$emit('next')">完了（次へ進む）</v-btn>
         </v-row>
@@ -249,7 +281,13 @@ export default {
           activeEnd: 2461,
         },
         { id: '#cloto-desc', title: '0-2. CLOTO', activeStart: 2461, activeEnd: 2981 },
-        { id: '#alone', title: '1-1. 独学のすゝめ', activeStart: 2981, activeEnd: 99999 },
+        { id: '#alone', title: '1-1. 独学のすゝめ', activeStart: 2981, activeEnd: 4213 },
+        {
+          id: '#output-ism',
+          title: '1-2. アウトプット至上主義',
+          activeStart: 4213,
+          activeEnd: 99999,
+        },
       ], // 目次データ
 
       filePath: this.$docs(this.$route.params.roadName, 'class' + Number(this.$route.params.class)), // コンテンツデータのパス
