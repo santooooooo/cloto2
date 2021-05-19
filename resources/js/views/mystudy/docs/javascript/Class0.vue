@@ -18,7 +18,7 @@
       <!-- 目次 -->
       <ContentTable :period="period" :contents="contents" />
 
-      <v-col cols="10">
+      <v-col cols="8">
         <!-- タイトル -->
         <div class="mb-4 pa-4">
           <h1 class="text-h4 text-center mb-12">{{ title }}</h1>

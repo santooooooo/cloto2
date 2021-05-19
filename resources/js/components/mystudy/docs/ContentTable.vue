@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="2" class="px-0">
+  <v-col cols="4" class="px-0">
     <div class="position-fixed border-right pr-4">
       <h1
         class="rounded font-weight-bold text-h5 text-center white--text px-5 py-1"
@@ -106,7 +106,7 @@ export default {
 <style lang="scss" scoped>
 ul {
   list-style: none;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
 
   li {
     cursor: pointer;
