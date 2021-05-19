@@ -12,7 +12,7 @@
         </div>
 
         <!-- コンテンツ1 -->
-        <v-container fluid class="mb-12" id="buy">
+        <v-container fluid class="mb-12" id="greeting">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
             <span class="pl-3 grey lighten-3">Greeting</span>
           </h4>
@@ -117,13 +117,20 @@ export default {
       period: 'introduction', // 期間名
       title: 'Class 0', // コンテンツタイトル
       contents: [
-        { id: '#buy', title: '0-0. Greeting', activeStart: 0, activeEnd: 596 },
-        { id: '#suggest', title: '0-1. ダミー2', activeStart: 596, activeEnd: 1130 },
-        { id: '#cut', title: '0-3. ダミー3', activeStart: 1130, activeEnd: 99999 },
+        { id: '#greeting', title: '0-0. Greeting', activeStart: 0, activeEnd: 1648 },
+        { id: '#suggest', title: '0-1. プログラミングを\n取り巻く環境', activeStart: 1648, activeEnd: 8000 },
+        { id: '#cut', title: '0-3. ダミー3', activeStart: 8000, activeEnd: 99999 },
       ], // 目次データ
 
       filePath: this.$docs(this.$route.params.roadName, 'class' + Number(this.$route.params.class)), // コンテンツデータのパス
     };
   },
+  mounted(){
+    let suggest = document.getElementById('suggest')
+    let clientRect = suggest.getBoundingClientRect()
+
+    let y = clientRect.top
+    console.log(y);
+  }
 };
 </script>
