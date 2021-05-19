@@ -14,7 +14,11 @@ class AddRoadmapIdToKartesTable extends Migration
     public function up()
     {
         Schema::table('kartes', function (Blueprint $table) {
-            $table->foreignId('roadmap_id')->after('user_id')->nullable()->constrained();   // ロードマップID
+            $table->foreignId('roadmap_id')
+                ->after('user_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();               // ロードマップID
         });
     }
 
