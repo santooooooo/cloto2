@@ -1,3 +1,17 @@
+            <!-- 画像が必要な時 -->
+          <!-- <v-row>
+            <v-col cols="6">
+              <p class="mb-8">ダミー</p>
+            </v-col>
+            <v-col cols="6">
+              <v-img
+                max-width="90%"
+                max-height="60vh"
+                :src="filePath + '1.png'"
+                class="mb-10"
+              ></v-img>
+            </v-col>
+          </v-row> -->
 <template>
   <v-container class="mt-4" fluid id="content-container">
     <v-row>
@@ -48,44 +62,40 @@
         </v-container>
 
         <!-- コンテンツ2 -->
-        <v-container fluid class="mb-12" id="suggest">
+        <v-container fluid class="mb-12" id="programming-setting">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
-            <span class="pl-3 grey lighten-3">ダミー2</span>
+            <span class="pl-3 grey lighten-3">プログラミングを取り巻く環境</span>
           </h4>
 
-          <h5 class="text-h5 font-weight-bold mb-8">ダミー</h5>
-          <v-row>
-            <v-col cols="6">
-              <p class="mb-8">ダミー</p>
-            </v-col>
-            <v-col cols="6">
-              <v-img
-                max-width="90%"
-                max-height="60vh"
-                :src="filePath + '1.png'"
-                class="mb-10"
-              ></v-img>
-            </v-col>
-          </v-row>
+<p class="mb-8">21世紀に入り、プログラミングは人間社会のほぼ全ての領域に影響を及ぼす存在になりました。</p>
+<p class="mb-8">現在みなさんがこの記事をご覧になっているPCも、スマートフォンも、<br />そこに映るWebサイトやアプリケーションもプログラミングによって動作しています。</p>
+<p class="mb-8">一見プログラミングとは無関係に見える製造業やサービス業などでも、膨大なデータを分析し、<br />
+サービスを向上させている要因の一つには、やはりプログラミングがあります。<br />
+このように、プログラミングは現代社会の幅広い分野に影響を及ぼしており、もはや必須の存在になりました。</p>
+<p class="mb-8">かつては日本企業が牽引していた、精密機械の時代も、昨今の米中の巨大IT企業の台頭によって過去のものとなりました。<br />
+21世紀はソフトウェアで溢れる世の中です。</p>
+		
+<p class="mb-8 font-weight-bolder">しかし、日本ではそのようなモノの開発に携わるITエンジニア不足が深刻化しています。</p>
+<p>エンジニア不足は一つの産業の停滞では済まず、先に述べた影響の大きさから、<br />国家の成長にとっても由々しき事態であると言えます。<br />
+このような国際的、国家的な動きの中でプログラミングはここ数年で大きく注目されている学習領域の一つです。</p>
+<p class="mb-8">そして、ITエンジニアを増やすことが国際競争力に直結するような時代において、その重要度は日に日に増しています。<br />
+欧米諸国に遅れて、義務教育におけるプログラミング学習の必修化もようやく始まりました。<br />		
+今後社会に出てくる若者たちは、プログラミングというものを私たちより遥かに身近に感じていくことでしょう。</p>
+	
+<p class="mb-8">そういった社会の中で活躍し続けることができる人材とはどのような人間、どのようなエンジニアなのでしょうか。それこそが先に述べた、</p>
+<p class="mb-8 font-weight-bolder">「プログラミングを駆使し、新たな価値を創り続けることができる」エンジニア</p>
+<p class="mb-8">ではないでしょうか。<br />
+そして、プログラミングそのものを、目的ではなく、創作活動の一手段として捉える観点から考えると、<br />
+スキルや幅広い視野や発想、創造力、社会性など、これまで以上に総合的な力が求められるでしょう。</p>
+<p class="mb-8">今、プログラミング学習を学び始めることは非常に意義のあることです。<br />
+幸いなことに学び始める年齢や前職、これまでの文系理系といった価値観もあまり関係ありません。</p>
+<p class="mb-8 font-weight-bolder">今、この時が、プログラミング学習を始める最良のタイミングです！</p>
 
-          <h5 class="text-h5 font-weight-bold mb-8">ダミー</h5>
-          <v-row>
-            <v-col cols="6">
-              <p class="mb-8">ダミー</p>
-            </v-col>
-            <v-col cols="6">
-              <v-img
-                max-width="90%"
-                max-height="60vh"
-                :src="filePath + '2.png'"
-                class="mb-10"
-              ></v-img>
-            </v-col>
-          </v-row>
+
         </v-container>
 
         <!-- コンテンツ3 -->
-        <v-container fluid class="mb-12" id="cut">
+        <v-container fluid class="mb-12" id="cloto-desc">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
             <span class="pl-3 grey lighten-3">ダミー3</span>
           </h4>
@@ -118,15 +128,15 @@ export default {
       title: 'Class 0', // コンテンツタイトル
       contents: [
         { id: '#greeting', title: '0-0. Greeting', activeStart: 0, activeEnd: 1648 },
-        { id: '#suggest', title: '0-1. プログラミングを\n取り巻く環境', activeStart: 1648, activeEnd: 8000 },
-        { id: '#cut', title: '0-3. ダミー3', activeStart: 8000, activeEnd: 99999 },
+        { id: '#programming-setting', title: '0-1. プログラミングを\n取り巻く環境', activeStart: 1648, activeEnd: 2782 },
+        { id: '#cloto-desc', title: '0-3. ダミー3', activeStart: 2782, activeEnd: 99999 },
       ], // 目次データ
 
       filePath: this.$docs(this.$route.params.roadName, 'class' + Number(this.$route.params.class)), // コンテンツデータのパス
     };
   },
   mounted(){
-    let suggest = document.getElementById('suggest')
+    let suggest = document.getElementById('cloto-desc')
     let clientRect = suggest.getBoundingClientRect()
 
     let y = clientRect.top
