@@ -331,6 +331,22 @@
           </p>
         </v-container>
 
+        <!-- コンテンツ8 -->
+        <v-container fluid class="mb-12" id="self-optimize">
+          <h4 class="text-h4 font-weight-bold text-left-border mb-10">
+            <span class="pl-3 grey lighten-3">自己最適化利用の推奨</span>
+          </h4>
+
+<p class="mb-8">CLOTOではサービスや情報発信を通じて、「プログラミング独学」環境をより良いものに整備して参りますが、<br />
+その中でも「独学」であるということを強く意識してください。</p>
+
+<p class="mb-8 font-weight-bolder">「独学」の最大のメリットの１つとして、「自分好みの学習スタイルにカスタマイズできる」ことがあると思います。</p>
+
+<p class="mb-8">自分にとって最適な学習効果が得られるように創意工夫することも重要な力です。<br />
+是非CLOTOを使いこなしてみてください！</p>
+
+        </v-container>
+
         <v-row justify="center">
           <v-btn color="blue" class="text-white" @click="$emit('next')">完了（次へ進む）</v-btn>
         </v-row>
@@ -378,6 +394,12 @@ export default {
           id: '#interchange',
           title: '1-4. 視野を広げる積極的な交流',
           activeStart: 5820,
+          activeEnd: 5964,
+        },
+        {
+          id: '#self-optimize',
+          title: '1-5. 自己最適化利用の推奨',
+          activeStart: 5964,
           activeEnd: 99999,
         },
       ], // 目次データ
