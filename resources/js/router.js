@@ -141,18 +141,23 @@ router.beforeEach(async (to, from, next) => {
       next({ name: 'home' });
     }
 
-    if (
-      to.name === 'docs' &&
-      to.params.class > store.getters['auth/user'].roadmaps[0].in_progress
-    ) {
-      // 取り組み中のクラスよりも先のコンテンツへのアクセス時のリダイレクト
-      next({
-        name: 'docs',
-        params: {
-          roadName: 'javascript',
-          class: store.getters['auth/user'].roadmaps[0].in_progress,
-        },
-      });
+    if (to.name === 'docs') {
+      if (!store.getters['auth/user'].roadmaps.length) {
+        // ロードマップ未開始時
+        next({ name: 'mystudy' });
+      } else if (
+        store.getters['auth/user'].roadmaps.length &&
+        to.params.class > store.getters['auth/user'].roadmaps[0].in_progress
+      ) {
+        // 取り組み中のクラスよりも先のコンテンツへのアクセス時のリダイレクト
+        next({
+          name: 'docs',
+          params: {
+            roadName: 'javascript',
+            class: store.getters['auth/user'].roadmaps[0].in_progress,
+          },
+        });
+      }
     }
   }
 
