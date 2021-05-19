@@ -76,7 +76,7 @@ class RoadmapsController extends Controller
         $result = $roadmap->increment('in_progress');
 
         if (empty($result)) {
-            return response()->json(['message' => 'ロードマップの更新に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => 'ロードの更新に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
         return response()->json();
