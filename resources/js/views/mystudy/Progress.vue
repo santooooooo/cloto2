@@ -42,7 +42,7 @@
     </v-container>
 
     <!-- コンテンツ一覧 -->
-    <div v-if="authUser.roadmaps.length">
+    <div v-if="authUser && authUser.roadmaps.length">
       <h5 class="text-h5 text-center">コンテンツ一覧</h5>
       <v-row class="mb-12" justify="center">
         <v-btn
@@ -59,7 +59,7 @@
       </v-row>
     </div>
 
-    <!-- カルテ -->
+    <!-- カルテ一覧 -->
     <vue-masonry-wall :items="kartes" :options="{ width: width, padding: 8 }">
       <template v-slot:default="{ item }">
         <v-card :width="width - 50" class="mx-auto pa-3">
