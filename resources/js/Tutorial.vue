@@ -1,5 +1,5 @@
 <template>
-  <v-dialog persistent v-model="tutorial" width="80%">
+  <v-dialog persistent v-model="dialog" width="80%">
     <v-card>
       <v-card-title class="text-h5 grey lighten-2">使い方を学ぼう！</v-card-title>
 
@@ -14,7 +14,7 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn color="primary" text @click="tutorial = false" :to="{ name: 'mystudy' }">
+        <v-btn color="primary" text @click="dialog = false" :to="{ name: 'mystudy' }">
           使ってみる
         </v-btn>
       </v-card-actions>
@@ -26,7 +26,7 @@
 export default {
   data() {
     return {
-      tutorial: false,
+      dialog: false,
     };
   },
   computed: {
@@ -35,7 +35,7 @@ export default {
     },
   },
   created() {
-    this.tutorial = this.authUser.roadmaps.length ? false : true;
+    this.dialog = this.authUser.roadmaps.length ? false : true;
   },
 };
 </script>
