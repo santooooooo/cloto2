@@ -116,15 +116,6 @@ export default {
 
   // router-view内の要素のCSS
   &::v-deep {
-    .index {
-      position: fixed;
-      margin-left: 3%;
-
-      li {
-        cursor: pointer;
-      }
-    }
-
     .text-left-border {
       border-left: 6px solid $dark-blue;
     }
