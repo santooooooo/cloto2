@@ -119,6 +119,9 @@ export default {
     .text-left-border {
       border-left: 6px solid $dark-blue;
     }
+    p {
+      line-height: 1.8;
+    }
   }
 }
 </style>

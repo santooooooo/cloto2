@@ -105,6 +105,7 @@ export default {
 <style lang="scss" scoped>
 ul {
   list-style: none;
+  font-size: 0.8rem;
 
   li {
     cursor: pointer;
