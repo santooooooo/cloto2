@@ -299,7 +299,7 @@
         <!-- コンテンツ7 -->
         <v-container fluid class="mb-12" id="interchange">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
-            <span class="pl-3 grey lighten-3">自己及び学習管理の徹底</span>
+            <span class="pl-3 grey lighten-3">視野を広げる積極的な交流</span>
           </h4>
 
           <p class="mb-8">
