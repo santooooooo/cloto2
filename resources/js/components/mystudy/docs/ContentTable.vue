@@ -91,7 +91,6 @@ export default {
     setupScrollEvent: function () {
       // スクロール位置の取得
       this.scrollY = window.scrollY;
-      console.log(this.scrollY);
     },
   },
   mounted() {
@@ -106,7 +105,7 @@ export default {
 <style lang="scss" scoped>
 ul {
   list-style: none;
-  max-height: 70vh;
+  max-height: calc(80vh - 110px);
 
   li {
     cursor: pointer;
