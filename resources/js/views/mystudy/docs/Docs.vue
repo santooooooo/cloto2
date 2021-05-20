@@ -119,7 +119,7 @@ export default {
     .text-left-border {
       border-left: 6px solid $dark-blue;
     }
-    p, ul {
+    p{
       line-height: 1.8;
     }
   }

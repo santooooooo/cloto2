@@ -19,7 +19,7 @@
         <span v-else>Clear</span>
       </h2>
 
-      <ul class="pl-2">
+      <ul class="pl-2 overflow-y-auto" id="contents-list">
         <li
           v-for="content in contents"
           :key="content.id"
@@ -104,9 +104,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-ul {
+#contents-list {
   list-style: none;
   font-size: 0.6rem;
+  max-height: 500px;
+  line-height: 1.2;
 
   li {
     cursor: pointer;
