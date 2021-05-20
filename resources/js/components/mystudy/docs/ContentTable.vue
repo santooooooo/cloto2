@@ -19,13 +19,13 @@
         <span v-else>Clear</span>
       </h2>
 
-      <ul class="pl-2 overflow-y-auto" id="contents-list">
+      <ul class="px-2 overflow-y-auto">
         <li
           v-for="content in contents"
           :key="content.id"
           v-scroll-to="{ el: content.id, offset: -80 }"
           :class="[
-            'my-6 pa-2 grey--text',
+            'my-1 pa-2 small grey--text',
             content.activeStart <= scrollY && scrollY < content.activeEnd ? 'active' : '',
           ]"
         >
@@ -104,11 +104,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#contents-list {
+ul {
   list-style: none;
-  font-size: 0.6rem;
-  max-height: 500px;
-  line-height: 1.2;
+  max-height: 70vh;
 
   li {
     cursor: pointer;
