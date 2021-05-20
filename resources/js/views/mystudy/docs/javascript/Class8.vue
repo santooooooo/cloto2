@@ -1,10 +1,10 @@
 <template>
-  <v-container class="mt-4" fluid id="content-container">
+  <v-container fluid class="mt-4">
     <v-row>
       <!-- 目次 -->
       <ContentTable :period="period" :contents="contents" />
 
-      <v-col cols="10">
+      <v-col cols="8" id="content">
         <!-- タイトル -->
         <div class="mb-4 pa-4">
           <h1 class="text-h4 text-center mb-12">{{ title }}</h1>
@@ -13,9 +13,9 @@
 
         <!-- コンテンツ1 -->
         <v-container fluid class="mb-12" id="buy">
-          <h4 class="text-h4 font-weight-bold text-left-border mb-10">
+          <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">ダミー1</span>
-          </h4>
+          </h2>
 
           <p class="mb-8">ダミー</p>
           <p class="mb-8">
@@ -26,9 +26,9 @@
 
         <!-- コンテンツ2 -->
         <v-container fluid class="mb-12" id="suggest">
-          <h4 class="text-h4 font-weight-bold text-left-border mb-10">
+          <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">ダミー2</span>
-          </h4>
+          </h2>
 
           <h5 class="text-h5 font-weight-bold mb-8">ダミー</h5>
           <v-row>
@@ -63,9 +63,9 @@
 
         <!-- コンテンツ3 -->
         <v-container fluid class="mb-12" id="cut">
-          <h4 class="text-h4 font-weight-bold text-left-border mb-10">
+          <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">ダミー3</span>
-          </h4>
+          </h2>
 
           <p class="mb-8">ダミー</p>
           <p class="mb-8">ダミー</p>

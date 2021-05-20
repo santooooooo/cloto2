@@ -116,11 +116,12 @@ export default {
 
   // router-view内の要素のCSS
   &::v-deep {
-    .text-left-border {
-      border-left: 6px solid $dark-blue;
-    }
-    p{
-      line-height: 1.8;
+    #content {
+      font-size: 1.2em;
+
+      h2 {
+        border-left: 6px solid $dark-blue;
+      }
     }
   }
 }
