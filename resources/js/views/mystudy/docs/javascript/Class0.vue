@@ -20,28 +20,65 @@
 
       <v-col cols="8">
         <!-- タイトル -->
-        <div class="mb-4 pa-4">
+        <div class="mb-4 pa-4" id="class0-desc">
           <h1 class="text-h4 text-center mb-12">{{ title }}</h1>
         </div>
 
-        <!-- コンテンツ1 -->
-        <v-container fluid class="mb-12" id="greeting">
+        <!-- 0-0 -->
+
+        <p class="mb-8">ようこそClass 0へ。Class 0では、</p>
+
+        <p class="mb-8">「独学」・「プログラミング」について学習していきます。</p>
+
+        <p class="mb-8">
+          なぜ、さまざまな学習方法がある中で、一見効率が悪そうにも思える「独学」にこだわるのか。<br />
+          そもそもプログロラミングとは何なのか。<br />
+          これから始まるプログラミング学習において、根幹となるマインドセットをしていきます。
+        </p>
+
+        <p class="mb-8">
+          早速手を動かすことを期待していて、もどかしく感じているあなたは非常に将来有望です。<br />
+          しかし、プログラミングは決して数ヶ月という単位で終わるようなものではありません。<br />
+          早る気持ちを抑えて、一旦これから取り組むことについて深く考えてみましょう。
+        </p>
+
+        <ul class="mb-8" style="list-style: none">
+          <li>0-0　Class 0</li>
+          <li>0-1　目標をどこに置くべきか</li>
+          <li>0-2　プログラミングを取り巻く環境</li>
+          <li>0-3　CLOTOとは何か</li>
+          <li>1-0　独学のすゝめ</li>
+          <li>1-1　受動的学習の完全否定</li>
+          <li>1-2　アウトプット至上主義</li>
+          <li>1-3　自己及び学習管理の徹底</li>
+          <li>1-4　積極的交流の奨励</li>
+          <li>1-5　自己最適化利用の推奨</li>
+          <li>2-0　プログラミング</li>
+          <li>2-1　定義</li>
+          <li>2-2　歴史</li>
+          <li>2-3　種類</li>
+          <li>2-4　分類</li>
+          <li>2-5　プログラミングと現代社会</li>
+          <li>2-6　プログラミングの活用例</li>
+          <li>2-7　プログラミングを活かせる職</li>
+        </ul>
+
+        <!-- 0-1 -->
+        <v-container fluid class="mb-12" id="set-object">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
-            <span class="pl-3 grey lighten-3">Greeting</span>
+            <span class="pl-3 grey lighten-3">目標をどこに置くべきか</span>
           </h4>
 
-          <p class="mb-8">ようこそCLOTOへ。</p>
-
           <p class="mb-8">
-            この文章をご覧になっているみなさんは、おそらく「プログラミングを学習したい」と思われていることと思います。
+            CLOTOのアカウントを作り、実際にClass 0に取り組んでいるあなたは、<br />おそらく「プログラミングを学習したい」と思われていることと思います。
           </p>
           <p class="mb-8">
-            さて、この「プログラミングの学習」ですが、目標には何を置くべきでしょうか。<br />
+            さて、この「プログラミングの学習」ですが、目標には何を,どこに置くべきでしょうか。<br />
             就職？転職？フリーランス？それとも趣味？研究？
             ある意味では全て正しいのではないでしょうか。
           </p>
           <p class="mb-8">
-            みなさんそれぞれに、何かの目的があってプログラミング学習を始められたこと思います。<br />
+            それぞれに、何かの目的があってプログラミング学習を始められたこと思います。<br />
             実際に世の中に普及し始めたプログラミング学習支援サービスのほとんどが、<br />
             上記のような目標に向かってカリキュラムを組んでいます。
           </p>
@@ -53,23 +90,36 @@
             「それはプログラミング学習の目標として最適なのか。」
           </p>
           <p class="mb-8">
-            プログラミング学習の直接的な目標＝ゴールはエンジニア就職を果たすことでしょうか。<br />転職して収入を上げることでしょうか。研究成果を出すことでしょうか。
+            プログラミング学習の直接的な目標＝ゴールはエンジニア就職を果たすことでしょうか。<br />
+            転職して収入を上げることでしょうか。研究成果を出すことでしょうか。
           </p>
           <p class="mb-8">
-            もちろん間接的に、プログラミング学習を進めた先に、そのような体験が待っていることは間違いありません。<br />また強い動機になり得るので重要です。
+            もちろん間接的に、プログラミング学習を進めた先に、そのような体験が待っていることは間違いありません。<br />
+            また強い動機になり得るので具体的なイメージが有ることは重要です。
+          </p>
+          <p class="mb-8">
+            しかしそれはあくまであなたという人間の人生の目標の一つであって、<br />
+            目下の目標であるプログラミング学習の目標として最適でしょうか。<br />
+            最適な学習の筋道は立つでしょうか。
           </p>
           <p class="mb-8">
             しかしそれはあくまで学習する目的、動機の一つではないでしょうか。<br />
             エンジニア転職を成功させることこそがプログラミング学習のゴールと言えるでしょうか。<br />
-            新卒の見込み採用で、エンジニア就職した人にはプログラミング学習は不要でしょうか。
+            未経験ながらエンジニア就職した人にはプログラミング学習は不要でしょうか。
           </p>
-
+          <p class="mb-8 font-weight-bolder">答えは明確に言えます。「否」です。</p>
           <p class="mb-8">
             新卒の見込み採用で、エンジニア就職した人にはプログラミング学習は不要でしょうか。 <br />
-            これはエンジニアに限ったことではありませんが、<br />特にIT業界は技術の変化が速い領域ですのでエンジニア自身にも常に学び続ける姿勢が求められます。
+            これはエンジニアに限ったことではありませんが、<br />
+            特にIT業界は技術の変化が速い領域ですのでエンジニア自身にも常に学び続ける姿勢が求められます。
+            実際に現役でエンジニアとして活躍されている方々の、ほぼ全員が、<br />
+            「プログラミングの勉強はずっと続くから」と口を揃えておっしゃいます。
           </p>
           <p class="mb-8">
-            つまり、プログラミング学習のゴールは、<br />本来的に就職、転職、案件獲得、と言った人生における区切りとは直接関係のないものなのです。
+            つまり、プログラミング学習のゴールは、<br />
+            本来的に就職、転職、案件獲得、と言った人生における区切りとは直接関係のないものなのです。
+            そのため、プログラミング学習の目標を、<br />
+            「就職」や「転職」、「案件獲得」に置くことは、言語化したものとしてあまり適切とは言えないのです。
           </p>
           <p class="mb-8">
             CLOTOはこの「プログラミング学習の目標は何か」という本質的な問いに対する答えとして<br />
@@ -80,12 +130,27 @@
           <p class="mb-8">
             というものを提唱します。<br />
             何かを「創る」体験を、学習を通じて得る必要があると考えています。
+            また、たった一度、何かを創ったとしてもその価値はすぐに他の何かにとって代わられてしまいます。<br />
+            だから常に成長し続け、価値を創り続けることが求められるのです。
           </p>
 
-          <p class="mb-8">みなさんのプログラミング学習が実りあるものになることを願っています。</p>
+          <p class="mb-8">
+            究極的には「スクールでウェブサイトの作り方を学んだ」や「Pythonの参考書を一通りやった。」ということは、<br />
+            プログラミング学習のほんの一部でしかないということです。<br />
+            目標でなく、過程です。
+          </p>
+          <p class="mb-8 font-weight-bolder">
+            「どんな価値を創るために何を学び、どうやって技術を身につけるべきかを知っている。」
+          </p>
+
+          <p class="mb-8">
+            そんな状態を学ぶ体験を、<br />
+            あなたのプログラミング学習を通じて得る必要があると考えています。<br />
+            そのためには後述する「独学」が欠かせません。
+          </p>
         </v-container>
 
-        <!-- コンテンツ2 -->
+        <!-- 0-2 -->
         <v-container fluid class="mb-12" id="programming-setting">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
             <span class="pl-3 grey lighten-3">プログラミングを取り巻く環境</span>
@@ -95,7 +160,8 @@
             21世紀に入り、プログラミングは人間社会のほぼ全ての領域に影響を及ぼす存在になりました。
           </p>
           <p class="mb-8">
-            現在みなさんがこの記事をご覧になっているPCも、スマートフォンも、<br />そこに映るWebサイトやアプリケーションもプログラミングによって動作しています。
+            現在みなさんがこの記事をご覧になっているPCも、スマートフォンも、<br />
+            そこに映るWebサイトやアプリケーションもプログラミングによって動作しています。
           </p>
           <p class="mb-8">
             一見プログラミングとは無関係に見える製造業やサービス業などでも、膨大なデータを分析し、<br />
@@ -140,10 +206,10 @@
           </p>
         </v-container>
 
-        <!-- コンテンツ3 -->
+        <!-- 0-3 -->
         <v-container fluid class="mb-12" id="cloto-desc">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
-            <span class="pl-3 grey lighten-3">CLOTO</span>
+            <span class="pl-3 grey lighten-3">CLOTOとは何か</span>
           </h4>
 
           <p class="mb-8 font-weight-bolder">
@@ -166,7 +232,7 @@
           </p>
         </v-container>
 
-        <!-- コンテンツ４ -->
+        <!-- 1-0 -->
         <v-container fluid class="mb-12" id="alone">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
             <span class="pl-3 grey lighten-3">独学のすゝめ</span>
@@ -180,8 +246,28 @@
             そのための手段としてCLOTOは「独学」を推奨しています。
           </p>
           <p class="mb-8">
-            これまでのプログラミング学習では、一定のスキルを短期間で習得することを目指して設計されたものが多く、<br />
-            エンジニアにとって最も重要な「自ら創意工夫すること」や「苦悩しながらも学び続けること」は各自の努力に委ねられていました。<br />
+            これまでのプログラミング学習では、<br />
+            一定のスキルを短期間で習得することを目指して設計されたものが多く、支持されてきました。<br />
+            例えばスクーリングや技術習得を目的とする教材や、デジタルサービスです。<br />
+            これらは、スキル獲得や、スピード感を持って、<br />
+            プログラミングに対して一定の理解を進めることに役立ちます。
+          </p>
+
+          <p class="mb-8">
+            一方でこれらのサービスが一般化した近年では、様々な問題点も露呈しています。<br />
+            転職目的でスクーリングを受けたが、キャリアアップどころか転職すらできない。<br />
+            思っていたような就職につながらない。<br />
+            スクール卒業後、サービス終了後に次に何をしていいかがわからない。<br />
+            このような事態が近年多数見受けられます。
+          </p>
+
+          <p class="mb-8">
+            これらは決してスクールやサービス側の問題ばかりとはいえません。<br />
+            後述しますが、学習者の受け身の学習姿勢が大きな問題であると考えています。
+          </p>
+
+          <p class="mb-8">
+            しかしエンジニアにとって最も重要な「自ら創意工夫すること」や「苦悩しながらも学び続けること」は各自の努力に委ねられていました。<br />
             つまり、どのような方法で学習していても、<br />
             最終的に、エンジニアとして必要な力を身につけるためには「独学」が必要になるのです。
           </p>
@@ -207,11 +293,17 @@
             また継続的な学習のために、それらの体験は楽しくなくてはなりません。
           </p>
 
-          <p>この「プログラミング独学」を充実させる要素は大きく分けて以下の三つです。</p>
+          <p class="mb-8 font-weight-bolder">
+            この学習スタイルをCLOTOは改めて「プログラミング独学」と定義します。
+          </p>
+
+          <p>この「プログラミング独学」を充実させる要素は大きく分けて以下の５つです。</p>
           <ol class="mb-8">
-            <li>インプットだけでなく、必ずアウトプットをする。</li>
+            <li>受動的学習姿勢の完全否定</li>
+            <li>アウトプット至上主義</li>
             <li>自己及び学習管理の徹底</li>
-            <li>視野を広げる積極的な交流の推奨</li>
+            <li>積極的交流の奨励</li>
+            <li>自己最適化利用の推奨</li>
           </ol>
 
           <p class="mb-8">
@@ -219,7 +311,56 @@
           </p>
         </v-container>
 
-        <!-- コンテンツ５ -->
+        <!-- 1-1 -->
+        <v-container fluid class="mb-12" id="not-active-learn">
+          <h4 class="text-h4 font-weight-bold text-left-border mb-10">
+            <span class="pl-3 grey lighten-3">受動学習の完全否定</span>
+          </h4>
+
+          <p class="mb-8">
+            「プログラミング独学」を充実させる要素の第一番目として「受動的学習の完全否定」をあげました。
+          </p>
+
+          <p class="mb-8">
+            CLOTOでは「プログラミング独学」において「受動的な学習姿勢」を完全に否定します。<br />
+            この場合における「受動的な学習姿勢」とはいったい何か。それは以下のようなものです。
+          </p>
+
+          <ul class="mb-8">
+            <li>
+              従来の「教える者」「教えられる者」という関係性を前提とし、<br />
+              「教えられる者」として独学に向かうような学習姿勢
+            </li>
+            <li>
+              新しく得た知識や情報を、すぐに事項へ移さずに、<br />受け流したり「学びっぱなし」の状態にしてしまう学習姿勢
+            </li>
+            <li>
+              進路や学習内容、方法に対して自分の意思、見解を持たず、<br />
+              「誰かが勧めている」といった他者の意見及び見解を、<br />疑いなく採用するような他者依存の学習姿勢
+            </li>
+            <li>創意工夫を面倒くさがり、「より良いものを創る」ことに消極的な学習姿勢</li>
+            <li>
+              与えられたもの以上の学習に取り組まず、<br />
+              人それぞれに最適な学習が異なることを認めず、<br />
+              最初から、「最小限の努力」「効率の良さ」を求めるような学習姿勢
+            </li>
+          </ul>
+
+          <p class="mb-8">
+            このような学習姿勢を「受動的な学習姿勢」と位置付け、独学の質を下げる最大の要因として完全に否定します。<br />
+            ではどのような学習姿勢が好ましいのでしょうか。
+          </p>
+
+          <p class="mb-8 font-weight-bolder">それは、素直かつ能動的、積極的な学習姿勢です。</p>
+
+          <p class="mb-8">
+            自分が学びたいから学んでいるということを自覚し、学習する過程でのあらゆる選択に意志を持って臨み、<br />
+            その結果に対して全ての責任が自身にあることを深く理解していればこそ、<br />
+            謙虚で、なおかつパワフルな学習ができるのではないでしょうか。
+          </p>
+        </v-container>
+
+        <!-- 1-2 -->
         <v-container fluid class="mb-12" id="output-ism">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
             <span class="pl-3 grey lighten-3">アウトプット至上主義</span>
@@ -245,13 +386,16 @@
             <li>知識を利用して誰かに教えてあげること</li>
             <li>実際に製品やサービスをつくること</li>
           </ul>
-          などがあります。
+          <p class="mb-8">
+            などがあります。<br />
+            「プログラミング独学」においてこの「アウトプット至上主義」は常に意識し続けましょう。
+          </p>
           <p class="mb-8">
             CLOTOではこれらのアウトプットをスムーズに行うことができる環境を整備していきます。
           </p>
         </v-container>
 
-        <!-- コンテンツ６ -->
+        <!-- 1-3 -->
         <v-container fluid class="mb-12" id="self-management">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
             <span class="pl-3 grey lighten-3">自己及び学習管理の徹底</span>
@@ -294,12 +438,19 @@
             まずは、規則正しい生活。特に睡眠を重視して健康管理をしていきましょう。<br />
             こちらもどんどん情報発信していくのでご注目ください！
           </p>
+
+          <p class="mb-8">
+            続いて学習管理です。<br />
+
+            「プログラミング独学」が独学たる所以は、<br />
+            自分で学習の管理をしながら進めていくことが求められる点にあります。
+          </p>
         </v-container>
 
-        <!-- コンテンツ7 -->
+        <!-- 1-4 -->
         <v-container fluid class="mb-12" id="interchange">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
-            <span class="pl-3 grey lighten-3">視野を広げる積極的な交流</span>
+            <span class="pl-3 grey lighten-3">積極的交流の奨励</span>
           </h4>
 
           <p class="mb-8">
@@ -331,7 +482,7 @@
           </p>
         </v-container>
 
-        <!-- コンテンツ8 -->
+        <!-- 1-5 -->
         <v-container fluid class="mb-12" id="self-optimize">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
             <span class="pl-3 grey lighten-3">自己最適化利用の推奨</span>
@@ -352,16 +503,22 @@
           </p>
         </v-container>
 
-        <!-- コンテンツ9 -->
+        <!-- 2-0 -->
         <v-container fluid class="mb-12" id="about-programming">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
-            <span class="pl-3 grey lighten-3">プログラミングとは</span>
+            <span class="pl-3 grey lighten-3">プログラミング</span>
           </h4>
 
           <p class="mb-8">
             さて、私たちがこれから学習していくプログラミングとは一体何なのでしょうか。
           </p>
+        </v-container>
 
+        <!-- 2-1 -->
+        <v-container fluid class="mb-12" id="define-programming">
+          <h4 class="text-h4 font-weight-bold text-left-border mb-10">
+            <span class="pl-3 grey lighten-3">定義</span>
+          </h4>
           <p class="mb-8">
             正式にはコンピュータプログラミング。<br />
             「コンピュータプログラムを作成することにより、
@@ -382,10 +539,10 @@
           </p>
         </v-container>
 
-        <!-- コンテンツ10 -->
+        <!-- 2-2 -->
         <v-container fluid class="mb-12" id="history-programming">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
-            <span class="pl-3 grey lighten-3">プログラミングの歴史</span>
+            <span class="pl-3 grey lighten-3">歴史</span>
           </h4>
 
           <p class="mb-8">
@@ -518,10 +675,10 @@
           </p>
         </v-container>
 
-        <!-- コンテンツ11 -->
+        <!-- 2-3 -->
         <v-container fluid class="mb-12" id="kind-programming">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
-            <span class="pl-3 grey lighten-3">プログラミングの種類</span>
+            <span class="pl-3 grey lighten-3">種類</span>
           </h4>
 
           <p class="mb-8">
@@ -644,10 +801,10 @@
           </p>
         </v-container>
 
-        <!-- コンテンツ12 -->
+        <!-- 2-4 -->
         <v-container fluid class="mb-12" id="type-programming">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
-            <span class="pl-3 grey lighten-3">プログラミング言語の分類</span>
+            <span class="pl-3 grey lighten-3">分類</span>
           </h4>
 
           <p class="mb-8">
@@ -883,10 +1040,10 @@
           </p>
         </v-container>
 
-        <!-- コンテンツ13 -->
+        <!-- 2-5 -->
         <v-container fluid class="mb-12" id="social-programming">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
-            <span class="pl-3 grey lighten-3">現代社会での活用</span>
+            <span class="pl-3 grey lighten-3">プログラミングと現代社会</span>
           </h4>
 
           <p class="mb-8">
@@ -909,10 +1066,10 @@
           <p class="mb-8">それぞれをもう少し観にいきましょう。</p>
         </v-container>
 
-        <!-- コンテンツ14 -->
+        <!-- 2-6 -->
         <v-container fluid class="mb-12" id="example-programming">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
-            <span class="pl-3 grey lighten-3">活用例</span>
+            <span class="pl-3 grey lighten-3">プログラミングの活用例</span>
           </h4>
 
           <p class="mb-8 font-weight-bolder">1. ソフトウェアの開発</p>
@@ -1000,7 +1157,7 @@
           </p>
         </v-container>
 
-        <!-- コンテンツ15 -->
+        <!-- 2-7 -->
         <v-container fluid class="mb-12" id="vocation-programming">
           <h4 class="text-h4 font-weight-bold text-left-border mb-10">
             <span class="pl-3 grey lighten-3">プログラミングを活かせる職</span>
@@ -1059,79 +1216,97 @@ export default {
       period: 'introduction', // 期間名
       title: 'Class 0', // コンテンツタイトル
       contents: [
-        { id: '#greeting', title: '0-0. Greeting', activeStart: 0, activeEnd: 1526 },
+        { id: '#class0-desc', title: '0-0. Class 0', activeStart: 36, activeEnd: 925 },
+        {
+          id: '#set-object',
+          title: '0-1. 目標をどこに置くべきか',
+          activeStart: 925,
+          activeEnd: 2862,
+        },
         {
           id: '#programming-setting',
-          title: '0-1. プログラミングを取り巻く環境',
-          activeStart: 1526,
-          activeEnd: 2461,
+          title: '0-2. プログラミングを取り巻く環境',
+          activeStart: 2862,
+          activeEnd: 4125,
         },
-        { id: '#cloto-desc', title: '0-2. CLOTO', activeStart: 2461, activeEnd: 2981 },
-        { id: '#alone', title: '1-1. 独学のすゝめ', activeStart: 2981, activeEnd: 4213 },
+        { id: '#cloto-desc', title: '0-3. CLOTOとは何か', activeStart: 4125, activeEnd: 4696 },
+        { id: '#alone', title: '1-0. 独学のすゝめ', activeStart: 4696, activeEnd: 6258 },
+        {
+          id: '#not-active-learn',
+          title: '1-1. 受動的学習の完全否定',
+          activeStart: 6258,
+          activeEnd: 7121,
+        },
         {
           id: '#output-ism',
           title: '1-2. アウトプット至上主義',
-          activeStart: 4213,
-          activeEnd: 4867,
+          activeStart: 7121,
+          activeEnd: 7869,
         },
         {
           id: '#self-management',
           title: '1-3. 自己及び学習管理の徹底',
-          activeStart: 4867,
-          activeEnd: 5820,
+          activeStart: 7869,
+          activeEnd: 9001,
         },
         {
           id: '#interchange',
-          title: '1-4. 視野を広げる積極的な交流',
-          activeStart: 5820,
-          activeEnd: 5964,
+          title: '1-4. 積極的交流の奨励',
+          activeStart: 9001,
+          activeEnd: 9729,
         },
         {
           id: '#self-optimize',
           title: '1-5. 自己最適化利用の推奨',
-          activeStart: 5964,
-          activeEnd: 7208,
+          activeStart: 9729,
+          activeEnd: 10156,
         },
         {
           id: '#about-programming',
-          title: '2-1. プログラミングとは',
-          activeStart: 7208,
-          activeEnd: 7928,
+          title: '2-0. プログラミング',
+          activeStart: 10156,
+          activeEnd: 10365,
+        },
+        {
+          id: '#define-programming',
+          title: '2-1. 定義',
+          activeStart: 10365,
+          activeEnd: 10850,
         },
         {
           id: '#history-programming',
-          title: '2-2. プログラミングの歴史',
-          activeStart: 7928,
-          activeEnd: 10640,
+          title: '2-2. 歴史',
+          activeStart: 10850,
+          activeEnd: 13562,
         },
         {
           id: '#kind-programming',
-          title: '2-3. プログラミングの種類',
-          activeStart: 10640,
-          activeEnd: 13285,
+          title: '2-3. 種類',
+          activeStart: 13562,
+          activeEnd: 16209,
         },
         {
           id: '#type-programming',
-          title: '2-4. プログラミング言語の分類',
-          activeStart: 13285,
-          activeEnd: 18096,
+          title: '2-4. 分類',
+          activeStart: 16209,
+          activeEnd: 21205,
         },
         {
           id: '#social-programming',
-          title: '2-5. 現代社会での活用',
-          activeStart: 18096,
-          activeEnd: 18816,
+          title: '2-5. プログラミングと現代社会',
+          activeStart: 21205,
+          activeEnd: 21738,
         },
         {
           id: '#example-programming',
-          title: '2-6. 活用例',
-          activeStart: 18816,
-          activeEnd: 20832,
+          title: '2-6. プログラミングの活用例',
+          activeStart: 21738,
+          activeEnd: 23650,
         },
         {
           id: '#vocation-programming',
           title: '2-7. プログラミングを活かせる職',
-          activeStart: 20832,
+          activeStart: 23650,
           activeEnd: 99999,
         },
       ], // 目次データ
