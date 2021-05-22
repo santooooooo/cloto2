@@ -22,7 +22,7 @@ class AdminController extends Controller
     public function __construct(Admin $admin)
     {
         $this->middleware(function ($request, $next) {
-            $this->auth_admin = Auth::guard('admin')->user();
+            $this->auth = Auth::guard('admin')->user();
             return $next($request);
         });
 
@@ -37,11 +37,11 @@ class AdminController extends Controller
      */
     public function auth()
     {
-        if (empty($this->auth_admin)) {
+        if (empty($this->auth)) {
             return response()->json();
         }
 
-        return response()->json($this->auth_admin);
+        return response()->json($this->auth);
     }
 
     /**

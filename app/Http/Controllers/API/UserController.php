@@ -30,7 +30,7 @@ class UserController extends Controller
     public function __construct(User $user)
     {
         $this->middleware(function ($request, $next) {
-            $this->auth_user = Auth::user();
+            $this->auth = Auth::user();
             $this->updateStatus();
             return $next($request);
         });
@@ -46,11 +46,11 @@ class UserController extends Controller
      */
     public function auth()
     {
-        if (empty($this->auth_user)) {
+        if (empty($this->auth)) {
             return response()->json();
         }
 
-        return response()->json($this->auth_user);
+        return response()->json($this->auth);
     }
 
     /**
@@ -61,7 +61,7 @@ class UserController extends Controller
      */
     public function updateStatus(String $status = null)
     {
-        if (empty($this->auth_user)) {
+        if (empty($this->auth)) {
             return response()->json();
         }
 
@@ -70,14 +70,14 @@ class UserController extends Controller
 
         if ($status != null) {
             // ステータスの変更
-            Cache::put('user-' . $this->auth_user->id, $status, $expires_at);
+            Cache::put('user-' . $this->auth->id, $status, $expires_at);
 
-            if (!empty($this->auth_user->seat)) {
-                broadcast(new SeatStatusUpdated($this->auth_user->room['id']));
+            if (!empty($this->auth->seat)) {
+                broadcast(new SeatStatusUpdated($this->auth->room['id']));
             }
         } else {
             // 現在のステータスで更新する
-            Cache::put('user-' . $this->auth_user->id, $this->auth_user->status, $expires_at);
+            Cache::put('user-' . $this->auth->id, $this->auth->status, $expires_at);
         }
 
         return response()->json();
@@ -90,7 +90,7 @@ class UserController extends Controller
      */
     public function getNotifications()
     {
-        return response()->json($this->auth_user->getNotifications());
+        return response()->json($this->auth->getNotifications());
     }
 
     /**
@@ -100,7 +100,7 @@ class UserController extends Controller
      */
     public function markNotificationsAsRead()
     {
-        $this->auth_user->unreadNotifications()->update(['read_at' => now()]);
+        $this->auth->unreadNotifications()->update(['read_at' => now()]);
 
         return $this->getNotifications();
     }
@@ -133,8 +133,8 @@ class UserController extends Controller
         $user = $this->get_user($user_param);
 
         // フォロー関係の追加
-        $user['following'] = $this->auth_user->isFollowing($user->id);
-        $user['followed'] = $this->auth_user->isFollowed($user->id);
+        $user['following'] = $this->auth->isFollowing($user->id);
+        $user['followed'] = $this->auth->isFollowed($user->id);
 
         return response()->json($user);
     }
@@ -157,9 +157,9 @@ class UserController extends Controller
         // アイコンの保存
         if (!empty($request->file('icon'))) {
             // 削除処理
-            if ($this->auth_user->icon != self::DEFAULT_ICON_FILENAME) {
+            if ($this->auth->icon != self::DEFAULT_ICON_FILENAME) {
                 // 初期アイコン以外の場合には登録中のアイコンを削除
-                Storage::delete(config('consts.storage.icon') . $this->auth_user->icon);
+                Storage::delete(config('consts.storage.icon') . $this->auth->icon);
             }
 
             // 保存処理
@@ -169,7 +169,7 @@ class UserController extends Controller
             $data['icon'] = $filename;
         }
 
-        $result = $this->auth_user->fill($data)->save();
+        $result = $this->auth->fill($data)->save();
 
         if (empty($result)) {
             return response()->json(['message' => 'ユーザーデータの更新に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
@@ -177,7 +177,7 @@ class UserController extends Controller
 
         // 取り組み中のタスクが更新された場合
         if (array_key_exists('in_progress', $data)) {
-            broadcast(new SeatStatusUpdated($this->auth_user->room['id']));
+            broadcast(new SeatStatusUpdated($this->auth->room['id']));
             return response()->json();
         }
 
@@ -214,12 +214,12 @@ class UserController extends Controller
      */
     public function follow(User $user)
     {
-        if ($this->auth_user->id == $user->id) {
+        if ($this->auth->id == $user->id) {
             return response()->json(['message' => '自分はフォローできません。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
         // フォロー/フォロー解除処理
-        $result = $this->auth_user->follows()->toggle($user->id);
+        $result = $this->auth->follows()->toggle($user->id);
 
         if (empty($result)) {
             return response()->json(['message' => 'フォロー/フォロー解除に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
@@ -227,7 +227,7 @@ class UserController extends Controller
 
         // フォロー時には通知を発行
         if (count($result['attached'])) {
-            $user->notify(new UserFollowed($this->auth_user));
+            $user->notify(new UserFollowed($this->auth));
             broadcast(new NotificationPosted($user));
         }
 
