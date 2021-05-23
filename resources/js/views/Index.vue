@@ -327,7 +327,7 @@
       <p class="text-h4 text-center font-weight-bold">メンバー</p>
 
       <v-row no-gutters justify="center" class="mx-12 my-8">
-        <v-col>
+        <v-col md="4" xl="4">
           <v-card max-height="600" width="400" class="mx-auto my-4" id="profile-1">
             <v-img
               contain
@@ -375,7 +375,7 @@
           </v-card>
         </v-col>
 
-        <v-col>
+        <v-col md="4" xl="4">
           <v-card max-height="600" width="400" class="mx-auto my-4" id="profile-2">
             <v-img contain :src="$storage('system') + 'fujii.jpg'" class="white--text align-end">
               <div class="profile">
@@ -429,11 +429,11 @@
           </v-card>
         </v-col>
 
-        <v-col>
+        <v-col md="4" xl="4">
           <v-card max-height="600" width="400" class="mx-auto my-4" id="profile-3">
-            <v-img contain :src="$storage('system') + 'logo.svg'" class="white--text align-end">
+            <v-img contain :src="$storage('system') + 'santo.jpg'" class="white--text align-end">
               <div class="profile">
-                <h5 class="text-h5">XX XX <small>@xxx</small></h5>
+                <h5 class="text-h5">山藤 駿亮 <small>@santo</small></h5>
               </div>
             </v-img>
 
@@ -442,18 +442,8 @@
                 <v-btn
                   icon
                   x-large
-                  color="#3b5998"
-                  href="https://www.facebook.com/a2h1r0"
-                  target="_blank"
-                >
-                  <v-icon>mdi-facebook</v-icon>
-                </v-btn>
-
-                <v-btn
-                  icon
-                  x-large
                   color="#1da1f2"
-                  href="https://twitter.com/_a2h1r0"
+                  href="https://twitter.com/SAshunchan"
                   target="_blank"
                 >
                   <v-icon>mdi-twitter</v-icon>
@@ -462,18 +452,8 @@
                 <v-btn
                   icon
                   x-large
-                  color="#262626"
-                  href="https://www.instagram.com/_a2h1r0_"
-                  target="_blank"
-                >
-                  <v-icon>mdi-instagram</v-icon>
-                </v-btn>
-
-                <v-btn
-                  icon
-                  x-large
                   color="#000000"
-                  href="https://github.com/a2h1r0"
+                  href="https://github.com/santooooooo"
                   target="_blank"
                 >
                   <v-icon>mdi-github</v-icon>
@@ -483,7 +463,7 @@
           </v-card>
         </v-col>
 
-        <v-col>
+        <v-col md="4" xl="4">
           <v-card max-height="600" width="400" class="mx-auto my-4" id="profile-4">
             <v-img contain :src="$storage('system') + 'logo.svg'" class="white--text align-end">
               <div class="profile">
@@ -537,7 +517,7 @@
           </v-card>
         </v-col>
 
-        <v-col>
+        <v-col md="4" xl="4">
           <v-card max-height="600" width="400" class="mx-auto my-4" id="profile-5">
             <v-img contain :src="$storage('system') + 'logo.svg'" class="white--text align-end">
               <div class="profile">
