@@ -80,7 +80,11 @@
                   <v-btn
                     icon
                     class="mx-1"
-                    @click="'activity_time' in item ? showKarte(item.id) : showPost(item.id)"
+                    @click="
+                      'activity_time' in item
+                        ? $store.dispatch('dialog/openKarte', item.id)
+                        : showPost(item.id)
+                    "
                   >
                     <v-icon>mdi-message-text</v-icon>
                     <span>{{ item.comments_count }}</span>
@@ -110,7 +114,6 @@
           @close="profile.dialog = $event"
           v-if="profile.dialog"
         />
-        <KarteDialog :karteId="showKarteId" @close="showKarteId = $event" />
         <PostDialog :postId="showPostId" @close="showPostId = $event" />
       </v-container>
     </v-container>
@@ -142,7 +145,6 @@ export default {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
       },
-      showKarteId: null, // 詳細を表示するカルテID
       showPostId: null, // 詳細を表示する投稿ID
       postForm: {
         body: '', // 内容
@@ -204,17 +206,6 @@ export default {
     showProfile: function (username) {
       this.profile.username = username;
       this.profile.dialog = true;
-    },
-
-    /**
-     * カルテの詳細表示
-     *
-     * @param {Number} karteId - 詳細を表示するカルテID
-     */
-    showKarte: function (karteId) {
-      if (karteId) {
-        this.showKarteId = karteId;
-      }
     },
 
     /**

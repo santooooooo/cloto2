@@ -134,7 +134,6 @@
         @close="profile.dialog = $event"
         v-if="profile.dialog"
       />
-      <KarteDialog :karteId="karteId" @close="karteId = $event" />
       <PostDialog :postId="postId" @close="postId = $event" />
     </div>
   </v-app-bar>
@@ -163,7 +162,6 @@ export default {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
       },
-      karteId: null, // 詳細を表示するカルテID
       postId: null, // 詳細を表示する投稿ID
     };
   },
@@ -255,10 +253,8 @@ export default {
      * @param {Number} karteId - 詳細を表示するカルテID
      */
     showKarte: function (karteId) {
-      if (karteId) {
-        this.karteId = karteId;
-        this.markNotificationsAsRead();
-      }
+      this.$store.dispatch('dialog/openKarte', karteId);
+      this.markNotificationsAsRead();
     },
 
     /**

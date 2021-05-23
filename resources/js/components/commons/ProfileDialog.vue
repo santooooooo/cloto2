@@ -159,7 +159,11 @@
 
         <!-- カルテ一覧 -->
         <v-list :color="color" v-if="show === 'karte' && kartes.length">
-          <v-list-item v-for="karte in kartes" :key="karte.id" @click="showKarteId = karte.id">
+          <v-list-item
+            v-for="karte in kartes"
+            :key="karte.id"
+            @click="$store.dispatch('dialog/openKarte', karte.id)"
+          >
             <v-img
               max-width="80"
               height="40"
@@ -196,9 +200,6 @@
       @close="profile.dialog = $event"
       v-if="profile.dialog"
     />
-
-    <!-- カルテ詳細ダイアログ -->
-    <KarteDialog :karteId="showKarteId" @close="showKarteId = null" />
   </v-dialog>
 </template>
 
@@ -216,7 +217,6 @@ export default {
       show: null, // フォロー/フォロワーどちらを表示するか
       followers: [], // フォロー/フォロワー一覧
       kartes: [], // カルテ一覧
-      showKarteId: null, // 詳細を表示するカルテID
       profile: {
         dialog: false, // 追加ダイアログ制御
         username: null, // 表示するユーザー名

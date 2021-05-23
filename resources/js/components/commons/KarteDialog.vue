@@ -1,9 +1,9 @@
 <template>
-  <v-dialog v-model="dialog" @click:outside="$emit('close', null)" width="1000">
+  <v-dialog v-model="dialog" @click:outside="close()" width="1000">
     <v-card class="headline grey darken-2 text-center px-2" v-if="karte">
       <v-container>
         <v-row justify="end">
-          <v-btn fab x-small depressed color="error" class="mr-4" @click="$emit('close', null)">
+          <v-btn fab x-small depressed color="error" class="mr-4" @click="close()">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
@@ -102,9 +102,6 @@ export default {
   components: {
     CommentContainer,
   },
-  props: {
-    karteId: Number, // 表示するカルテID
-  },
   data() {
     return {
       dialog: false,
@@ -112,20 +109,15 @@ export default {
     };
   },
   computed: {
-    authUser() {
-      return this.$store.getters['auth/user'];
+    karteId() {
+      return this.$store.getters['dialog/karteId'];
     },
   },
   watch: {
     karteId: function (karteId) {
+      // 値がセットされたらオープン
       if (karteId) {
-        // データの取得
-        this.getKarte();
-        this.dialog = true;
-      } else {
-        // データの初期化
-        this.dialog = false;
-        this.karte = null;
+        this.open();
       }
     },
   },
@@ -136,6 +128,25 @@ export default {
     getKarte: async function () {
       let response = await axios.get('/api/kartes/' + this.karteId);
       this.karte = response.data;
+    },
+    /**
+     * ダイアログのオープン
+     */
+    open: async function () {
+      await this.getKarte();
+      this.dialog = true;
+    },
+    /**
+     * ダイアログのクローズ
+     */
+    close: function () {
+      this.dialog = false;
+      this.$store.dispatch('dialog/closeKarte');
+
+      // クローズアニメーションの終了後に表示データを初期化
+      setTimeout(() => {
+        this.karte = null;
+      }, 10000);
     },
   },
 };
