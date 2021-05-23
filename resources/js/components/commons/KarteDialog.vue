@@ -157,12 +157,4 @@ export default {
 pre {
   white-space: pre-wrap;
 }
-
-#comment-form {
-  width: 60%;
-}
-
-#favorite-count {
-  font-size: 0.8rem;
-}
 </style>

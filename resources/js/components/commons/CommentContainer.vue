@@ -40,15 +40,16 @@
           </p>
         </v-card-actions>
 
-        <v-row class="mt-3 pointer">
-          <!-- ユーザーアイコン -->
+        <v-row class="mt-3">
           <v-col
             cols="8"
+            class="pointer"
             @click="
               $store.dispatch('dialog/open', { type: 'user', username: comment.user.username })
             "
           >
             <v-row>
+              <!-- ユーザーアイコン -->
               <v-col cols="3" class="my-auto text-center">
                 <v-avatar
                   size="40"
@@ -58,8 +59,8 @@
                 </v-avatar>
               </v-col>
 
+              <!-- ユーザー名 -->
               <v-col cols="9" class="my-auto text-start">
-                <!-- ユーザー名 -->
                 <p class="mb-0 text-body-1 text-truncate">{{ comment.user.handlename }}</p>
                 <p class="mb-0 text-body-2 text-truncate">@{{ comment.user.username }}</p>
               </v-col>
@@ -234,13 +235,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-card {
-  .pointer {
-    cursor: pointer;
-  }
+pre {
+  white-space: pre-wrap;
+}
 
-  pre {
-    white-space: pre-wrap;
-  }
+.pointer {
+  cursor: pointer;
 }
 </style>
