@@ -141,12 +141,7 @@ export default {
      */
     close: function () {
       this.dialog = false;
-      this.$store.dispatch('dialog/closeKarte');
-
-      // クローズアニメーションの終了後に表示データを初期化
-      setTimeout(() => {
-        this.karte = null;
-      }, 10000);
+      this.$store.dispatch('dialog/close', 'karte');
     },
   },
 };

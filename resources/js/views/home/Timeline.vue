@@ -81,9 +81,10 @@
                     icon
                     class="mx-1"
                     @click="
-                      'activity_time' in item
-                        ? $store.dispatch('dialog/openKarte', item.id)
-                        : $store.dispatch('dialog/openPost', item.id)
+                      $store.dispatch('dialog/open', {
+                        type: 'activity_time' in item ? 'karte' : 'post',
+                        id: item.id,
+                      })
                     "
                   >
                     <v-icon>mdi-message-text</v-icon>

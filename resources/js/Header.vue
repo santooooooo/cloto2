@@ -102,7 +102,7 @@
                 notification.type === 'KarteFavorited' ||
                 notification.type === 'CommentToKarteFavorited'
               "
-              @click="showKarte(notification.karte_id)"
+              @click="showItem('karte', notification.karte_id)"
             >
               <v-list-item-title>
                 {{ notification.message }}
@@ -119,7 +119,7 @@
                 notification.type === 'PostFavorited' ||
                 notification.type === 'CommentToPostFavorited'
               "
-              @click="showPost(notification.post_id)"
+              @click="showItem('post', notification.post_id)"
             >
               <v-list-item-title>
                 {{ notification.message }}
@@ -246,22 +246,13 @@ export default {
     },
 
     /**
-     * カルテの表示
+     * アイテムの表示
      *
-     * @param {Number} karteId - 詳細を表示するカルテID
+     * @param {String} type - タイプ
+     * @param {Number} itemId - 詳細を表示するアイテムID
      */
-    showKarte: function (karteId) {
-      this.$store.dispatch('dialog/openKarte', karteId);
-      this.markNotificationsAsRead();
-    },
-
-    /**
-     * 投稿の表示
-     *
-     * @param {Number} postId - 詳細を表示する投稿ID
-     */
-    showPost: function (postId) {
-      this.$store.dispatch('dialog/openPost', postId);
+    showItem: function (type, itemId) {
+      this.$store.dispatch('dialog/open', { type: type, id: itemId });
       this.markNotificationsAsRead();
     },
   },

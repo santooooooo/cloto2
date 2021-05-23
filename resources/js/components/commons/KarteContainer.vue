@@ -1,6 +1,6 @@
 <template>
   <v-container class="d-block">
-    <div id="karte" @click="$store.dispatch('dialog/openKarte', karte.id)">
+    <div id="karte" @click="$store.dispatch('dialog/open', { type: 'karte', id: karte.id })">
       <v-img
         max-height="300"
         class="mx-auto my-2 rounded-xl"

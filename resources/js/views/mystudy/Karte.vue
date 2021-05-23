@@ -19,7 +19,7 @@
             <tr
               v-for="karte in kartes"
               :key="karte.id"
-              @click="$store.dispatch('dialog/openKarte', karte.id)"
+              @click="$store.dispatch('dialog/open', { type: 'karte', id: karte.id })"
             >
               <!-- 画像 -->
               <td>

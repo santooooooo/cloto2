@@ -85,7 +85,7 @@ export default {
      */
     close: function () {
       this.dialog = false;
-      this.$store.dispatch('dialog/closePost');
+      this.$store.dispatch('dialog/close', 'post');
     },
   },
 };

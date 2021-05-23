@@ -9,32 +9,36 @@ const getters = {
 };
 
 const mutations = {
-  setKarte(state, data) {
-    state.karteId = data;
+  setItem(state, data) {
+    switch (data.type) {
+      case 'karte':
+        state.karteId = data.id;
+        break;
+
+      case 'post':
+        state.postId = data.id;
+        break;
+    }
   },
-  clearKarte(state) {
-    state.karteId = null;
-  },
-  setPost(state, data) {
-    state.postId = data;
-  },
-  clearPost(state) {
-    state.postId = null;
+  clearItem(state, data) {
+    switch (data) {
+      case 'karte':
+        state.karteId = null;
+        break;
+
+      case 'post':
+        state.postId = null;
+        break;
+    }
   },
 };
 
 const actions = {
-  openKarte(context, data) {
-    context.commit('setKarte', data);
+  open(context, data) {
+    context.commit('setItem', data);
   },
-  closeKarte(context) {
-    context.commit('clearKarte');
-  },
-  openPost(context, data) {
-    context.commit('setPost', data);
-  },
-  closePost(context) {
-    context.commit('clearPost');
+  close(context, data) {
+    context.commit('clearItem', data);
   },
 };
 

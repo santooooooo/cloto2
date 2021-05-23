@@ -162,7 +162,7 @@
           <v-list-item
             v-for="karte in kartes"
             :key="karte.id"
-            @click="$store.dispatch('dialog/openKarte', karte.id)"
+            @click="$store.dispatch('dialog/open', { type: 'karte', id: karte.id })"
           >
             <v-img
               max-width="80"

@@ -6,7 +6,7 @@
       </v-btn>
     </v-row>
 
-    <div id="post" @click="$store.dispatch('dialog/openPost', post.id)">
+    <div id="post" @click="$store.dispatch('dialog/open', { type: 'post', id: post.id })">
       <!-- 内容 -->
       <pre class="text-body-2" v-html="$formatStr(post.body)"></pre>
 
