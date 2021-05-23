@@ -1,9 +1,11 @@
 const state = {
   karteId: null,
+  postId: null,
 };
 
 const getters = {
   karteId: (state) => state.karteId,
+  postId: (state) => state.postId,
 };
 
 const mutations = {
@@ -13,6 +15,12 @@ const mutations = {
   clearKarte(state) {
     state.karteId = null;
   },
+  setPost(state, data) {
+    state.postId = data;
+  },
+  clearPost(state) {
+    state.postId = null;
+  },
 };
 
 const actions = {
@@ -21,6 +29,12 @@ const actions = {
   },
   closeKarte(context) {
     context.commit('clearKarte');
+  },
+  openPost(context, data) {
+    context.commit('setPost', data);
+  },
+  closePost(context) {
+    context.commit('clearPost');
   },
 };
 

@@ -134,7 +134,6 @@
         @close="profile.dialog = $event"
         v-if="profile.dialog"
       />
-      <PostDialog :postId="postId" @close="postId = $event" />
     </div>
   </v-app-bar>
 
@@ -162,7 +161,6 @@ export default {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
       },
-      postId: null, // 詳細を表示する投稿ID
     };
   },
 
@@ -263,10 +261,8 @@ export default {
      * @param {Number} postId - 詳細を表示する投稿ID
      */
     showPost: function (postId) {
-      if (postId) {
-        this.postId = postId;
-        this.markNotificationsAsRead();
-      }
+      this.$store.dispatch('dialog/openPost', postId);
+      this.markNotificationsAsRead();
     },
   },
 };

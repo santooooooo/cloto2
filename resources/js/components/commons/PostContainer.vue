@@ -6,7 +6,7 @@
       </v-btn>
     </v-row>
 
-    <div id="post" @click="showPost(post.id)">
+    <div id="post" @click="$store.dispatch('dialog/openPost', post.id)">
       <!-- 内容 -->
       <pre class="text-body-2" v-html="$formatStr(post.body)"></pre>
 
@@ -16,11 +16,8 @@
       </p>
     </div>
 
-    <!-- 投稿詳細ダイアログ -->
-    <PostDialog :postId="showPostId" @close="showPostId = $event" />
-
     <!-- 投稿削除確認ダイアログ -->
-    <v-dialog v-model="deletePostForm.dialog" max-width="500px" persistent>
+    <v-dialog v-model="deleteForm.dialog" max-width="500px" persistent>
       <v-card class="headline grey darken-2 text-center pa-2">
         <v-card-title>
           <span class="headline white--text">削除しますか？</span>
@@ -29,21 +26,15 @@
         <v-card-text>
           <v-container>
             <v-card-text class="pa-1 white--text">
-              {{ deletePostForm.data.body }}
+              {{ deleteForm.data.body }}
             </v-card-text>
           </v-container>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="grey" :loading="deletePostForm.loading" @click="deleteSubmit()">
-            削除
-          </v-btn>
-          <v-btn
-            color="error"
-            :loading="deletePostForm.loading"
-            @click="deletePostForm.dialog = false"
-          >
+          <v-btn color="grey" :loading="deleteForm.loading" @click="deleteSubmit()"> 削除 </v-btn>
+          <v-btn color="error" :loading="deleteForm.loading" @click="deleteForm.dialog = false">
             キャンセル
           </v-btn>
         </v-card-actions>
@@ -61,8 +52,7 @@ export default {
   },
   data() {
     return {
-      showPostId: null, // 詳細を表示する投稿ID
-      deletePostForm: {
+      deleteForm: {
         dialog: false,
         loading: false,
         data: {},
@@ -76,42 +66,31 @@ export default {
   },
   methods: {
     /**
-     * 投稿の詳細表示
-     *
-     * @param {Number} postId - 詳細を表示する投稿ID
-     */
-    showPost: function (postId) {
-      if (postId) {
-        this.showPostId = postId;
-      }
-    },
-
-    /**
      * 投稿の削除
      *
      * @param {Object} post - 削除する投稿
      */
     deletePost: function (post) {
-      this.deletePostForm.data = post;
-      this.deletePostForm.dialog = true;
+      this.deleteForm.data = post;
+      this.deleteForm.dialog = true;
     },
 
     /**
      * 削除データの送信
      */
     deleteSubmit: async function () {
-      this.deletePostForm.loading = true;
+      this.deleteForm.loading = true;
 
       // 投稿削除処理
-      let response = await axios.delete('/api/posts/' + this.deletePostForm.data.id);
+      let response = await axios.delete('/api/posts/' + this.deleteForm.data.id);
 
       if (response.status === OK) {
         // 表示データから削除
-        this.$emit('delete', this.deletePostForm.data);
-        this.deletePostForm.dialog = false;
+        this.$emit('delete', this.deleteForm.data);
+        this.deleteForm.dialog = false;
       }
 
-      this.deletePostForm.loading = false;
+      this.deleteForm.loading = false;
     },
   },
 };

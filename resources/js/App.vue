@@ -64,8 +64,9 @@
     <!-- チュートリアル -->
     <Tutorial v-if="authCheck" />
 
-    <!-- カルテ詳細ダイアログ -->
+    <!-- 詳細ダイアログ -->
     <KarteDialog />
+    <PostDialog />
   </v-app>
 </template>
 
@@ -76,6 +77,7 @@ import Footer from './Footer';
 import Inquiry from './Inquiry';
 import Tutorial from './Tutorial';
 import KarteDialog from '@/components/commons/KarteDialog';
+import PostDialog from '@/components/commons/PostDialog';
 import { OK, NOT_FOUND, UNPROCESSABLE_ENTITY, INTERNAL_SERVER_ERROR } from '@/consts/status';
 import { ANNOUNCE_SOUND } from '@/consts/sound';
 
@@ -87,6 +89,7 @@ export default {
     Inquiry,
     Tutorial,
     KarteDialog,
+    PostDialog,
   },
   data() {
     return {

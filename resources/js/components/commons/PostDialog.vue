@@ -1,9 +1,9 @@
 <template>
-  <v-dialog v-model="dialog" @click:outside="$emit('close', null)" width="1000">
+  <v-dialog v-model="dialog" @click:outside="close()" width="1000">
     <v-card class="headline grey darken-2 text-center px-2" v-if="post">
       <v-container>
         <v-row justify="end">
-          <v-btn fab x-small depressed color="error" class="mr-4" @click="$emit('close', null)">
+          <v-btn fab x-small depressed color="error" class="mr-4" @click="close()">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
@@ -46,9 +46,6 @@ export default {
   components: {
     CommentContainer,
   },
-  props: {
-    postId: Number, // 表示する投稿ID
-  },
   data() {
     return {
       dialog: false,
@@ -56,20 +53,15 @@ export default {
     };
   },
   computed: {
-    authUser() {
-      return this.$store.getters['auth/user'];
+    postId() {
+      return this.$store.getters['dialog/postId'];
     },
   },
   watch: {
     postId: function (postId) {
+      // 値がセットされたらオープン
       if (postId) {
-        // データの取得
-        this.getPost();
-        this.dialog = true;
-      } else {
-        // データの初期化
-        this.dialog = false;
-        this.post = null;
+        this.open();
       }
     },
   },
@@ -80,6 +72,20 @@ export default {
     getPost: async function () {
       let response = await axios.get('/api/posts/' + this.postId);
       this.post = response.data;
+    },
+    /**
+     * ダイアログのオープン
+     */
+    open: async function () {
+      await this.getPost();
+      this.dialog = true;
+    },
+    /**
+     * ダイアログのクローズ
+     */
+    close: function () {
+      this.dialog = false;
+      this.$store.dispatch('dialog/closePost');
     },
   },
 };

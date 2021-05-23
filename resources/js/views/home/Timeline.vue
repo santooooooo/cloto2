@@ -83,7 +83,7 @@
                     @click="
                       'activity_time' in item
                         ? $store.dispatch('dialog/openKarte', item.id)
-                        : showPost(item.id)
+                        : $store.dispatch('dialog/openPost', item.id)
                     "
                   >
                     <v-icon>mdi-message-text</v-icon>
@@ -114,7 +114,6 @@
           @close="profile.dialog = $event"
           v-if="profile.dialog"
         />
-        <PostDialog :postId="showPostId" @close="showPostId = $event" />
       </v-container>
     </v-container>
   </v-layout>
@@ -145,7 +144,6 @@ export default {
         dialog: false, // プロフィールのダイアログ制御
         username: null, // プロフィールを表示するユーザー名
       },
-      showPostId: null, // 詳細を表示する投稿ID
       postForm: {
         body: '', // 内容
         max: 1000, // 最大長
@@ -206,17 +204,6 @@ export default {
     showProfile: function (username) {
       this.profile.username = username;
       this.profile.dialog = true;
-    },
-
-    /**
-     * 投稿の詳細表示
-     *
-     * @param {Number} postId - 詳細を表示する投稿ID
-     */
-    showPost: function (postId) {
-      if (postId) {
-        this.showPostId = postId;
-      }
     },
 
     /**

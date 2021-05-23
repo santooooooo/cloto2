@@ -25,7 +25,6 @@ Vue.prototype.$slack = functions.slackPost;
 Vue.component('ProfileDialog', require('./components/commons/ProfileDialog').default);
 Vue.component('KarteContainer', require('./components/commons/KarteContainer').default);
 Vue.component('PostContainer', require('./components/commons/PostContainer').default);
-Vue.component('PostDialog', require('./components/commons/PostDialog').default);
 Vue.component('ImageInput', require('./components/commons/form/ImageInput').default);
 Vue.component('ContentTable', require('./components/mystudy/docs/ContentTable').default);
 
