@@ -85,7 +85,7 @@
                 'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
               }"
               v-if="notification.type === 'UserFollowed'"
-              @click="showProfile(notification.username)"
+              @click="showItem('user', notification.username)"
             >
               <v-list-item-title>
                 {{ notification.message }}
@@ -128,12 +128,6 @@
           </div>
         </v-list>
       </v-menu>
-
-      <ProfileDialog
-        :username="profile.username"
-        @close="profile.dialog = $event"
-        v-if="profile.dialog"
-      />
     </div>
   </v-app-bar>
 
@@ -157,10 +151,6 @@ export default {
       ],
       notifications: [], // 通知一覧
       unreadNotificationsCount: 0, // 未読通知数
-      profile: {
-        dialog: false, // プロフィールのダイアログ制御
-        username: null, // プロフィールを表示するユーザー名
-      },
     };
   },
 
@@ -235,24 +225,18 @@ export default {
     },
 
     /**
-     * プロフィールの表示
-     *
-     * @param {String} username - プロフィールを表示するユーザー名
-     */
-    showProfile: function (username) {
-      this.profile.username = username;
-      this.profile.dialog = true;
-      this.markNotificationsAsRead();
-    },
-
-    /**
      * アイテムの表示
      *
      * @param {String} type - タイプ
-     * @param {Number} itemId - 詳細を表示するアイテムID
+     * @param {String|Number} item - 詳細を表示するアイテム
      */
-    showItem: function (type, itemId) {
-      this.$store.dispatch('dialog/open', { type: type, id: itemId });
+    showItem: function (type, item) {
+      if (type === 'user') {
+        this.$store.dispatch('dialog/open', { type: type, username: item });
+      } else if (type === 'karte' || type === 'post') {
+        this.$store.dispatch('dialog/open', { type: type, id: item });
+      }
+
       this.markNotificationsAsRead();
     },
   },

@@ -1,9 +1,11 @@
 const state = {
+  username: null,
   karteId: null,
   postId: null,
 };
 
 const getters = {
+  username: (state) => state.username,
   karteId: (state) => state.karteId,
   postId: (state) => state.postId,
 };
@@ -11,6 +13,10 @@ const getters = {
 const mutations = {
   setItem(state, data) {
     switch (data.type) {
+      case 'user':
+        state.username = data.username;
+        break;
+
       case 'karte':
         state.karteId = data.id;
         break;
@@ -22,6 +28,10 @@ const mutations = {
   },
   clearItem(state, data) {
     switch (data) {
+      case 'user':
+        state.username = null;
+        break;
+
       case 'karte':
         state.karteId = null;
         break;

@@ -64,7 +64,8 @@
     <!-- チュートリアル -->
     <Tutorial v-if="authCheck" />
 
-    <!-- 詳細ダイアログ -->
+    <!-- データ詳細ダイアログ -->
+    <ProfileDialog />
     <KarteDialog />
     <PostDialog />
   </v-app>
@@ -76,6 +77,7 @@ import Drawer from './Drawer';
 import Footer from './Footer';
 import Inquiry from './Inquiry';
 import Tutorial from './Tutorial';
+import ProfileDialog from '@/components/commons/ProfileDialog';
 import KarteDialog from '@/components/commons/KarteDialog';
 import PostDialog from '@/components/commons/PostDialog';
 import { OK, NOT_FOUND, UNPROCESSABLE_ENTITY, INTERNAL_SERVER_ERROR } from '@/consts/status';
@@ -88,6 +90,7 @@ export default {
     Footer,
     Inquiry,
     Tutorial,
+    ProfileDialog,
     KarteDialog,
     PostDialog,
   },

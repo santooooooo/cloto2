@@ -57,7 +57,9 @@
                 <v-col
                   cols="3"
                   class="my-auto text-center"
-                  @click="showProfile(item.user.username)"
+                  @click="
+                    $store.dispatch('dialog/open', { type: 'user', username: item.user.username })
+                  "
                 >
                   <v-avatar
                     size="50"
@@ -67,7 +69,13 @@
                   </v-avatar>
                 </v-col>
 
-                <v-col cols="5" class="my-auto text-start" @click="showProfile(item.user.username)">
+                <v-col
+                  cols="5"
+                  class="my-auto text-start"
+                  @click="
+                    $store.dispatch('dialog/open', { type: 'user', username: item.user.username })
+                  "
+                >
                   <!-- ユーザー名 -->
                   <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
                   <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
@@ -109,12 +117,6 @@
         <v-row justify="center">
           <p class="text-h5 my-12" v-if="stopGetting">これ以上データはありません。</p>
         </v-row>
-
-        <ProfileDialog
-          :username="profile.username"
-          @close="profile.dialog = $event"
-          v-if="profile.dialog"
-        />
       </v-container>
     </v-container>
   </v-layout>
@@ -141,10 +143,6 @@ export default {
       items: [], // 表示データ
       kartes: [], // カルテ一覧
       posts: [], // 投稿一覧
-      profile: {
-        dialog: false, // プロフィールのダイアログ制御
-        username: null, // プロフィールを表示するユーザー名
-      },
       postForm: {
         body: '', // 内容
         max: 1000, // 最大長
@@ -195,16 +193,6 @@ export default {
 
         this.loading = false;
       }
-    },
-
-    /**
-     * プロフィールの表示
-     *
-     * @param {String} username - プロフィールを表示するユーザー名
-     */
-    showProfile: function (username) {
-      this.profile.username = username;
-      this.profile.dialog = true;
     },
 
     /**

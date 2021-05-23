@@ -22,7 +22,6 @@ Vue.prototype.$slack = functions.slackPost;
 /**
  * Vueコンポーネントの読み込み
  */
-Vue.component('ProfileDialog', require('./components/commons/ProfileDialog').default);
 Vue.component('KarteContainer', require('./components/commons/KarteContainer').default);
 Vue.component('PostContainer', require('./components/commons/PostContainer').default);
 Vue.component('ImageInput', require('./components/commons/form/ImageInput').default);

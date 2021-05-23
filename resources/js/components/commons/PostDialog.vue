@@ -46,17 +46,20 @@ export default {
   components: {
     CommentContainer,
   },
+
   data() {
     return {
       dialog: false,
       post: null, // 表示する投稿
     };
   },
+
   computed: {
     postId() {
       return this.$store.getters['dialog/postId'];
     },
   },
+
   watch: {
     postId: function (postId) {
       // 値がセットされたらオープン
@@ -65,14 +68,8 @@ export default {
       }
     },
   },
+
   methods: {
-    /**
-     * 投稿データの取得
-     */
-    getPost: async function () {
-      let response = await axios.get('/api/posts/' + this.postId);
-      this.post = response.data;
-    },
     /**
      * ダイアログのオープン
      */
@@ -80,12 +77,21 @@ export default {
       await this.getPost();
       this.dialog = true;
     },
+
     /**
      * ダイアログのクローズ
      */
     close: function () {
       this.dialog = false;
       this.$store.dispatch('dialog/close', 'post');
+    },
+
+    /**
+     * 投稿データの取得
+     */
+    getPost: async function () {
+      let response = await axios.get('/api/posts/' + this.postId);
+      this.post = response.data;
     },
   },
 };

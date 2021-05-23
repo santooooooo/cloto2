@@ -102,17 +102,20 @@ export default {
   components: {
     CommentContainer,
   },
+
   data() {
     return {
       dialog: false,
       karte: null, // 表示するカルテ
     };
   },
+
   computed: {
     karteId() {
       return this.$store.getters['dialog/karteId'];
     },
   },
+
   watch: {
     karteId: function (karteId) {
       // 値がセットされたらオープン
@@ -121,14 +124,8 @@ export default {
       }
     },
   },
+
   methods: {
-    /**
-     * カルテデータの取得
-     */
-    getKarte: async function () {
-      let response = await axios.get('/api/kartes/' + this.karteId);
-      this.karte = response.data;
-    },
     /**
      * ダイアログのオープン
      */
@@ -136,12 +133,21 @@ export default {
       await this.getKarte();
       this.dialog = true;
     },
+
     /**
      * ダイアログのクローズ
      */
     close: function () {
       this.dialog = false;
       this.$store.dispatch('dialog/close', 'karte');
+    },
+
+    /**
+     * カルテデータの取得
+     */
+    getKarte: async function () {
+      let response = await axios.get('/api/kartes/' + this.karteId);
+      this.karte = response.data;
     },
   },
 };
