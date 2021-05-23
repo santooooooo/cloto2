@@ -325,30 +325,28 @@
 
     <div class="my-12 py-12">
       <p class="text-h4 text-center font-weight-bold">メンバー</p>
-      <p class="text-body-2 text-center font-weight-bold">一緒に創る仲間、募集中です！</p>
 
       <v-row no-gutters justify="center" class="mx-12 my-8">
-        <v-col sm="4">
+        <v-col>
           <v-card max-height="600" width="400" class="mx-auto my-4" id="profile-1">
             <v-img
               contain
               :src="$storage('system') + 'tachibana.jpg'"
               class="white--text align-end"
             >
-              <v-card-title class="text-h5" style="background-color: #000000">
-                立花 慶人
-              </v-card-title>
+              <div class="profile">
+                <h5 class="text-h5">立花 慶人 <small>@y0sh1z0</small></h5>
+              </div>
             </v-img>
 
             <v-card-actions>
-              <v-row no-gutters justify="center">
+              <v-row no-gutters justify="space-around">
                 <v-btn
                   icon
                   x-large
-                  color="#3B5998"
+                  color="#3b5998"
                   href="https://www.facebook.com/y0sh1z0415"
                   target="_blank"
-                  class="mx-4"
                 >
                   <v-icon>mdi-facebook</v-icon>
                 </v-btn>
@@ -356,10 +354,9 @@
                 <v-btn
                   icon
                   x-large
-                  color="#1DA1F2"
+                  color="#1da1f2"
                   href="https://twitter.com/y0_sh1z0_CLOTO"
                   target="_blank"
-                  class="mx-4"
                 >
                   <v-icon>mdi-twitter</v-icon>
                 </v-btn>
@@ -370,7 +367,6 @@
                   color="#262626"
                   href="https://www.instagram.com/y0_sh1z0"
                   target="_blank"
-                  class="mx-4"
                 >
                   <v-icon>mdi-instagram</v-icon>
                 </v-btn>
@@ -379,23 +375,22 @@
           </v-card>
         </v-col>
 
-        <v-col sm="4">
+        <v-col>
           <v-card max-height="600" width="400" class="mx-auto my-4" id="profile-2">
             <v-img contain :src="$storage('system') + 'fujii.jpg'" class="white--text align-end">
-              <v-card-title class="text-h5" style="background-color: #000000">
-                藤井 敦寛
-              </v-card-title>
+              <div class="profile">
+                <h5 class="text-h5">藤井 敦寛 <small>@a2h1r0</small></h5>
+              </div>
             </v-img>
 
             <v-card-actions>
-              <v-row no-gutters justify="center">
+              <v-row no-gutters justify="space-around">
                 <v-btn
                   icon
                   x-large
-                  color="#3B5998"
+                  color="#3b5998"
                   href="https://www.facebook.com/a2h1r0"
                   target="_blank"
-                  class="mx-4"
                 >
                   <v-icon>mdi-facebook</v-icon>
                 </v-btn>
@@ -403,10 +398,9 @@
                 <v-btn
                   icon
                   x-large
-                  color="#1DA1F2"
+                  color="#1da1f2"
                   href="https://twitter.com/_a2h1r0"
                   target="_blank"
-                  class="mx-4"
                 >
                   <v-icon>mdi-twitter</v-icon>
                 </v-btn>
@@ -417,9 +411,180 @@
                   color="#262626"
                   href="https://www.instagram.com/_a2h1r0_"
                   target="_blank"
-                  class="mx-4"
                 >
                   <v-icon>mdi-instagram</v-icon>
+                </v-btn>
+
+                <v-btn
+                  icon
+                  x-large
+                  color="#000000"
+                  href="https://github.com/a2h1r0"
+                  target="_blank"
+                >
+                  <v-icon>mdi-github</v-icon>
+                </v-btn>
+              </v-row>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+
+        <v-col>
+          <v-card max-height="600" width="400" class="mx-auto my-4" id="profile-3">
+            <v-img contain :src="$storage('system') + 'logo.svg'" class="white--text align-end">
+              <div class="profile">
+                <h5 class="text-h5">XX XX <small>@xxx</small></h5>
+              </div>
+            </v-img>
+
+            <v-card-actions>
+              <v-row no-gutters justify="space-around">
+                <v-btn
+                  icon
+                  x-large
+                  color="#3b5998"
+                  href="https://www.facebook.com/a2h1r0"
+                  target="_blank"
+                >
+                  <v-icon>mdi-facebook</v-icon>
+                </v-btn>
+
+                <v-btn
+                  icon
+                  x-large
+                  color="#1da1f2"
+                  href="https://twitter.com/_a2h1r0"
+                  target="_blank"
+                >
+                  <v-icon>mdi-twitter</v-icon>
+                </v-btn>
+
+                <v-btn
+                  icon
+                  x-large
+                  color="#262626"
+                  href="https://www.instagram.com/_a2h1r0_"
+                  target="_blank"
+                >
+                  <v-icon>mdi-instagram</v-icon>
+                </v-btn>
+
+                <v-btn
+                  icon
+                  x-large
+                  color="#000000"
+                  href="https://github.com/a2h1r0"
+                  target="_blank"
+                >
+                  <v-icon>mdi-github</v-icon>
+                </v-btn>
+              </v-row>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+
+        <v-col>
+          <v-card max-height="600" width="400" class="mx-auto my-4" id="profile-4">
+            <v-img contain :src="$storage('system') + 'logo.svg'" class="white--text align-end">
+              <div class="profile">
+                <h5 class="text-h5">XX XX <small>@xxx</small></h5>
+              </div>
+            </v-img>
+
+            <v-card-actions>
+              <v-row no-gutters justify="space-around">
+                <v-btn
+                  icon
+                  x-large
+                  color="#3b5998"
+                  href="https://www.facebook.com/a2h1r0"
+                  target="_blank"
+                >
+                  <v-icon>mdi-facebook</v-icon>
+                </v-btn>
+
+                <v-btn
+                  icon
+                  x-large
+                  color="#1da1f2"
+                  href="https://twitter.com/_a2h1r0"
+                  target="_blank"
+                >
+                  <v-icon>mdi-twitter</v-icon>
+                </v-btn>
+
+                <v-btn
+                  icon
+                  x-large
+                  color="#262626"
+                  href="https://www.instagram.com/_a2h1r0_"
+                  target="_blank"
+                >
+                  <v-icon>mdi-instagram</v-icon>
+                </v-btn>
+
+                <v-btn
+                  icon
+                  x-large
+                  color="#000000"
+                  href="https://github.com/a2h1r0"
+                  target="_blank"
+                >
+                  <v-icon>mdi-github</v-icon>
+                </v-btn>
+              </v-row>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+
+        <v-col>
+          <v-card max-height="600" width="400" class="mx-auto my-4" id="profile-5">
+            <v-img contain :src="$storage('system') + 'logo.svg'" class="white--text align-end">
+              <div class="profile">
+                <h5 class="text-h5">XX XX <small>@xxx</small></h5>
+              </div>
+            </v-img>
+
+            <v-card-actions>
+              <v-row no-gutters justify="space-around">
+                <v-btn
+                  icon
+                  x-large
+                  color="#3b5998"
+                  href="https://www.facebook.com/a2h1r0"
+                  target="_blank"
+                >
+                  <v-icon>mdi-facebook</v-icon>
+                </v-btn>
+
+                <v-btn
+                  icon
+                  x-large
+                  color="#1da1f2"
+                  href="https://twitter.com/_a2h1r0"
+                  target="_blank"
+                >
+                  <v-icon>mdi-twitter</v-icon>
+                </v-btn>
+
+                <v-btn
+                  icon
+                  x-large
+                  color="#262626"
+                  href="https://www.instagram.com/_a2h1r0_"
+                  target="_blank"
+                >
+                  <v-icon>mdi-instagram</v-icon>
+                </v-btn>
+
+                <v-btn
+                  icon
+                  x-large
+                  color="#000000"
+                  href="https://github.com/a2h1r0"
+                  target="_blank"
+                >
+                  <v-icon>mdi-github</v-icon>
                 </v-btn>
               </v-row>
             </v-card-actions>
@@ -567,7 +732,10 @@ export default {
       }
       if (scrollY >= 2800) {
         document.getElementById('profile-1').classList.add('fade-up');
-        document.getElementById('profile-2').classList.add('ex-fade-up');
+        document.getElementById('profile-2').classList.add('fade-up2');
+        document.getElementById('profile-3').classList.add('fade-up3');
+        document.getElementById('profile-4').classList.add('fade-up4');
+        document.getElementById('profile-5').classList.add('fade-up5');
       }
       if (scrollY >= 3800) {
         document.getElementById('contact').classList.add('open-width');
@@ -630,6 +798,20 @@ export default {
     text-decoration: none;
   }
 
+  .profile {
+    line-height: 2rem;
+    padding: 16px;
+    background-color: #000000;
+
+    h5 {
+      margin: 0;
+
+      small {
+        font-size: 0.6em;
+      }
+    }
+  }
+
   // animation動作前の表示を隠す
   #cloto-title,
   #cloto-text,
@@ -640,6 +822,9 @@ export default {
   #company-example,
   #profile-1,
   #profile-2,
+  #profile-3,
+  #profile-4,
+  #profile-5,
   #contact {
     opacity: 0;
   }
@@ -653,8 +838,20 @@ export default {
     animation: fadeUp 2s ease-out 0.5s normal 1 forwards;
   }
 
-  .ex-fade-up {
-    animation: fadeUp 2s ease 1.5s normal 1 forwards;
+  .fade-up2 {
+    animation: fadeUp 2s ease 0.8s normal 1 forwards;
+  }
+
+  .fade-up3 {
+    animation: fadeUp 2s ease 1.1s normal 1 forwards;
+  }
+
+  .fade-up4 {
+    animation: fadeUp 2s ease 1.4s normal 1 forwards;
+  }
+
+  .fade-up5 {
+    animation: fadeUp 2s ease 1.7s normal 1 forwards;
   }
 
   .fade-in-left {
