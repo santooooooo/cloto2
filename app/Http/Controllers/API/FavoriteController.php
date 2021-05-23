@@ -31,7 +31,7 @@ class FavoriteController extends Controller
     public function __construct(Favorite $favorite, Karte $karte, Post $post, Comment $comment)
     {
         $this->middleware(function ($request, $next) {
-            $this->user = Auth::user();
+            $this->auth = Auth::user();
             return $next($request);
         });
 
@@ -51,7 +51,7 @@ class FavoriteController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['user_id'] = $this->user->id;
+        $data['user_id'] = $this->auth->id;
 
         // いいねはカルテか投稿かコメントのどれかにのみ紐づく
         if (!empty($data['karte_id'])) {
@@ -78,22 +78,22 @@ class FavoriteController extends Controller
         if (!empty($result['karte_id'])) {
             $karte = $this->karte->find($result['karte_id']);
             // 自分のカルテへのいいねでは通知を発行しない
-            if ($karte->user->id != $this->user->id) {
-                $karte->user->notify(new KarteFavorited($karte, $this->user));
+            if ($karte->user->id != $this->auth->id) {
+                $karte->user->notify(new KarteFavorited($karte, $this->auth));
                 broadcast(new NotificationPosted($karte->user));
             }
         } else if (!empty($result['post_id'])) {
             $post = $this->post->find($result['post_id']);
             // 自分の投稿へのいいねでは通知を発行しない
-            if ($post->user->id != $this->user->id) {
-                $post->user->notify(new PostFavorited($post, $this->user));
+            if ($post->user->id != $this->auth->id) {
+                $post->user->notify(new PostFavorited($post, $this->auth));
                 broadcast(new NotificationPosted($post->user));
             }
         } else if (!empty($result['comment_id'])) {
             $comment = $this->comment->find($result['comment_id']);
             // 自分のコメントへのいいねでは通知を発行しない
-            if ($comment->user->id != $this->user->id) {
-                $comment->user->notify(new CommentFavorited($comment, $this->user));
+            if ($comment->user->id != $this->auth->id) {
+                $comment->user->notify(new CommentFavorited($comment, $this->auth));
                 broadcast(new NotificationPosted($comment->user));
             }
         }

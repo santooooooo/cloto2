@@ -48,39 +48,53 @@
               <KarteContainer :karte="item" v-if="item.activity_time" />
 
               <!-- 投稿 -->
-              <PostContainer :post="item" @delete="deletePost(item)" v-else />
+              <PostContainer :post="item" @delete="deletePost($event)" v-else />
 
               <v-divider></v-divider>
 
-              <v-row no-gutters class="mt-3 pointer">
-                <!-- ユーザーアイコン -->
+              <v-row no-gutters class="mt-3">
                 <v-col
-                  cols="3"
-                  class="my-auto text-center"
-                  @click="showProfile(item.user.username)"
+                  cols="7"
+                  class="ml-2 pointer"
+                  @click="
+                    $store.dispatch('dialog/open', {
+                      type: 'user',
+                      username: item.user.username,
+                    })
+                  "
                 >
-                  <v-avatar
-                    size="50"
-                    :style="{ 'box-shadow': '0 0 0 5px ' + $statusColor(item.user.status) }"
-                  >
-                    <img :src="$storage('icon') + item.user.icon" />
-                  </v-avatar>
-                </v-col>
+                  <v-row>
+                    <!-- ユーザーアイコン -->
+                    <v-col cols="3" class="my-auto text-center">
+                      <v-avatar
+                        size="40"
+                        :style="{ 'box-shadow': '0 0 0 3px ' + $statusColor(item.user.status) }"
+                      >
+                        <img :src="$storage('icon') + item.user.icon" />
+                      </v-avatar>
+                    </v-col>
 
-                <v-col cols="5" class="my-auto text-start" @click="showProfile(item.user.username)">
-                  <!-- ユーザー名 -->
-                  <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
-                  <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
+                    <!-- ユーザー名 -->
+                    <v-col cols="8" class="my-auto text-start">
+                      <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
+                      <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
+                    </v-col>
+                  </v-row>
                 </v-col>
 
                 <v-spacer></v-spacer>
 
-                <v-col cols="3" class="my-auto text-center" v-if="item.id">
+                <v-col cols="4" class="my-auto text-center" v-if="item.id">
                   <!-- コメントボタン -->
                   <v-btn
                     icon
                     class="mx-1"
-                    @click="'activity_time' in item ? showKarte(item.id) : showPost(item.id)"
+                    @click="
+                      $store.dispatch('dialog/open', {
+                        type: 'activity_time' in item ? 'karte' : 'post',
+                        id: item.id,
+                      })
+                    "
                   >
                     <v-icon>mdi-message-text</v-icon>
                     <span>{{ item.comments_count }}</span>
@@ -104,50 +118,6 @@
         <v-row justify="center">
           <p class="text-h5 my-12" v-if="stopGetting">これ以上データはありません。</p>
         </v-row>
-
-        <!-- 投稿削除確認ダイアログ -->
-        <v-dialog v-model="deletePostForm.dialog" max-width="500px" persistent>
-          <v-card class="headline grey darken-2 text-center pa-2">
-            <v-card-title>
-              <span class="headline white--text">削除しますか？</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-card-text class="pa-1 white--text">
-                  {{ deletePostForm.data.body }}
-                </v-card-text>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="grey"
-                class="white--text"
-                :loading="deletePostForm.loading"
-                @click="deleteSubmit()"
-              >
-                削除
-              </v-btn>
-              <v-btn
-                color="error"
-                :loading="deletePostForm.loading"
-                @click="deletePostForm.dialog = false"
-              >
-                キャンセル
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-
-        <ProfileDialog
-          :username="profile.username"
-          @close="profile.dialog = $event"
-          v-if="profile.dialog"
-        />
-        <KarteDialog :karteId="showKarteId" @close="showKarteId = $event" />
-        <PostDialog :postId="showPostId" @close="showPostId = $event" />
       </v-container>
     </v-container>
   </v-layout>
@@ -174,12 +144,6 @@ export default {
       items: [], // 表示データ
       kartes: [], // カルテ一覧
       posts: [], // 投稿一覧
-      profile: {
-        dialog: false, // プロフィールのダイアログ制御
-        username: null, // プロフィールを表示するユーザー名
-      },
-      showKarteId: null, // 詳細を表示するカルテID
-      showPostId: null, // 詳細を表示する投稿ID
       postForm: {
         body: '', // 内容
         max: 1000, // 最大長
@@ -188,11 +152,6 @@ export default {
           valid: false,
           bodyRules: [(v) => !!v || '内容が無いようです。'],
         },
-      },
-      deletePostForm: {
-        dialog: false,
-        loading: false,
-        data: {},
       },
     };
   },
@@ -238,38 +197,6 @@ export default {
     },
 
     /**
-     * プロフィールの表示
-     *
-     * @param {String} username - プロフィールを表示するユーザー名
-     */
-    showProfile: function (username) {
-      this.profile.username = username;
-      this.profile.dialog = true;
-    },
-
-    /**
-     * カルテの詳細表示
-     *
-     * @param {Number} karteId - 詳細を表示するカルテID
-     */
-    showKarte: function (karteId) {
-      if (karteId) {
-        this.showKarteId = karteId;
-      }
-    },
-
-    /**
-     * 投稿の詳細表示
-     *
-     * @param {Number} postId - 詳細を表示する投稿ID
-     */
-    showPost: function (postId) {
-      if (postId) {
-        this.showPostId = postId;
-      }
-    },
-
-    /**
      * 投稿
      */
     submitPost: async function () {
@@ -292,32 +219,14 @@ export default {
      * @param {Object} post - 削除する投稿
      */
     deletePost: function (post) {
-      this.deletePostForm.data = post;
-      this.deletePostForm.dialog = true;
-    },
-
-    /**
-     * 削除データの送信
-     */
-    deleteSubmit: async function () {
-      this.deletePostForm.loading = true;
-
-      // 投稿削除処理
-      let response = await axios.delete('/api/posts/' + this.deletePostForm.data.id);
-
-      if (response.status === OK) {
-        // 表示データから削除
-        this.items.forEach((item) => {
-          if (item.id === this.deletePostForm.data.id) {
-            item.id = null;
-            item.user.id = null;
-            item.body = '削除済み';
-          }
-        });
-        this.deletePostForm.dialog = false;
-      }
-
-      this.deletePostForm.loading = false;
+      // 表示データから削除
+      this.items.forEach((item) => {
+        if (item.id === post.id) {
+          item.id = null;
+          item.user.id = null;
+          item.body = '削除済み';
+        }
+      });
     },
 
     /**

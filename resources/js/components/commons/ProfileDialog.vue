@@ -1,12 +1,9 @@
 <template>
-  <v-dialog v-model="dialog" @click:outside="$emit('close', false)" width="600">
-    <!-- ローディングバー -->
-    <v-progress-linear indeterminate color="white" class="mb-0" v-if="!user"></v-progress-linear>
-
-    <v-card :color="color" dark v-else>
+  <v-dialog v-model="dialog" @click:outside="close()" width="600">
+    <v-card :color="color" dark v-if="user">
       <v-container>
         <v-row justify="end">
-          <v-btn fab x-small depressed color="error" class="mr-4" @click="$emit('close', false)">
+          <v-btn fab x-small depressed color="error" class="mr-4" @click="close()">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
@@ -130,7 +127,7 @@
           <v-list-item
             v-for="follower in followers"
             :key="follower.id"
-            @click="showProfile(follower.username)"
+            @click="$store.dispatch('dialog/open', { type: 'user', username: follower.username })"
           >
             <v-list-item-avatar>
               <v-img :src="$storage('icon') + follower.icon"></v-img>
@@ -159,7 +156,11 @@
 
         <!-- カルテ一覧 -->
         <v-list :color="color" v-if="show === 'karte' && kartes.length">
-          <v-list-item v-for="karte in kartes" :key="karte.id" @click="showKarteId = karte.id">
+          <v-list-item
+            v-for="karte in kartes"
+            :key="karte.id"
+            @click="$store.dispatch('dialog/open', { type: 'karte', id: karte.id })"
+          >
             <v-img
               max-width="80"
               height="40"
@@ -189,38 +190,19 @@
         </v-list>
       </v-container>
     </v-card>
-
-    <!-- 追加プロフィールダイアログ -->
-    <ProfileDialog
-      :username="profile.username"
-      @close="profile.dialog = $event"
-      v-if="profile.dialog"
-    />
-
-    <!-- カルテ詳細ダイアログ -->
-    <KarteDialog :karteId="showKarteId" @close="showKarteId = null" />
   </v-dialog>
 </template>
 
 <script>
 export default {
-  props: {
-    username: String, // 表示するユーザー名
-  },
-
   data() {
     return {
-      dialog: true,
-      loading: false,
+      dialog: false,
+      loading: false, // ローディング制御
       user: null, // 表示するプロフィール
       show: null, // フォロー/フォロワーどちらを表示するか
       followers: [], // フォロー/フォロワー一覧
       kartes: [], // カルテ一覧
-      showKarteId: null, // 詳細を表示するカルテID
-      profile: {
-        dialog: false, // 追加ダイアログ制御
-        username: null, // 表示するユーザー名
-      },
     };
   },
 
@@ -229,12 +211,49 @@ export default {
       return this.$store.getters['auth/user'];
     },
 
+    username() {
+      return this.$store.getters['dialog/username'];
+    },
+
     color() {
       return this.$classColor(this.user.roadmaps.length ? this.user.roadmaps[0].in_progress : '');
     },
   },
 
+  watch: {
+    username: function (username) {
+      // 値がセットされたらオープン
+      if (username) {
+        this.open();
+      }
+    },
+  },
+
   methods: {
+    /**
+     * ダイアログのオープン
+     */
+    open: async function () {
+      await this.getUser();
+      this.dialog = true;
+    },
+
+    /**
+     * ダイアログのクローズ
+     */
+    close: function () {
+      this.dialog = false;
+      this.$store.dispatch('dialog/close', 'user');
+    },
+
+    /**
+     * ユーザーデータの取得
+     */
+    getUser: async function () {
+      let response = await axios.get('/api/users/' + this.username);
+      this.user = response.data;
+    },
+
     /**
      * フォロー処理
      */
@@ -273,22 +292,6 @@ export default {
       this.kartes = response.data;
       this.show = 'karte';
     },
-
-    /**
-     * 追加ダイアログの表示
-     *
-     * @param {String} username - 表示するユーザー名
-     */
-    showProfile: function (username) {
-      this.profile.username = username;
-      this.profile.dialog = true;
-    },
-  },
-
-  async created() {
-    // ユーザーデータの取得
-    let response = await axios.get('/api/users/' + this.username);
-    this.user = response.data;
   },
 };
 </script>

@@ -9,7 +9,7 @@
       <v-list-item
         v-for="follower in followers"
         :key="follower.id"
-        @click="showProfile(follower.username)"
+        @click="$store.dispatch('dialog/open', { type: 'user', username: follower.username })"
       >
         <v-list-item-avatar>
           <v-img :src="$storage('icon') + follower.icon"></v-img>
@@ -27,13 +27,6 @@
       </v-list-item>
     </v-list>
     <p v-else>まだ誰もいないようです。</p>
-
-    <!-- プロフィールダイアログ -->
-    <ProfileDialog
-      :username="profile.username"
-      @close="profile.dialog = $event"
-      v-if="profile.dialog"
-    />
   </v-container>
 </template>
 
@@ -49,10 +42,6 @@ export default {
   data() {
     return {
       followers: [], // フォロー/フォロワー一覧
-      profile: {
-        dialog: false, // プロフィールのダイアログ制御
-        username: null, // プロフィールを表示するユーザー名
-      },
     };
   },
   computed: {
@@ -75,16 +64,6 @@ export default {
     showFollowers: async function () {
       let response = await axios.get('/api/users/' + this.authUser.id + '/followers');
       this.followers = response.data;
-    },
-
-    /**
-     * プロフィールの表示
-     *
-     * @param {String} username - プロフィールを表示するユーザー名
-     */
-    showProfile: function (username) {
-      this.profile.username = username;
-      this.profile.dialog = true;
     },
   },
   created() {

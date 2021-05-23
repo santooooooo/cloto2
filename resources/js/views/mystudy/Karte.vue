@@ -16,7 +16,11 @@
           </thead>
 
           <tbody>
-            <tr v-for="karte in kartes" :key="karte.id" @click="showKarteId = karte.id">
+            <tr
+              v-for="karte in kartes"
+              :key="karte.id"
+              @click="$store.dispatch('dialog/open', { type: 'karte', id: karte.id })"
+            >
               <!-- 画像 -->
               <td>
                 <v-img
@@ -116,9 +120,6 @@
 
       <v-card-text class="text-center" v-if="!loading && !kartes.length">未投稿</v-card-text>
     </v-card>
-
-    <!-- カルテ表示ダイアログ -->
-    <KarteDialog :karteId="showKarteId" @close="showKarteId = $event" />
   </v-container>
 </template>
 
@@ -135,7 +136,6 @@ export default {
     return {
       loading: false, // ローディング制御
       kartes: null, // カルテ一覧
-      showKarteId: null, // 詳細を表示するカルテID
     };
   },
   computed: {

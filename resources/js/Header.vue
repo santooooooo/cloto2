@@ -85,7 +85,7 @@
                 'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
               }"
               v-if="notification.type === 'UserFollowed'"
-              @click="showProfile(notification.username)"
+              @click="showItem('user', notification.username)"
             >
               <v-list-item-title>
                 {{ notification.message }}
@@ -102,7 +102,7 @@
                 notification.type === 'KarteFavorited' ||
                 notification.type === 'CommentToKarteFavorited'
               "
-              @click="showKarte(notification.karte_id)"
+              @click="showItem('karte', notification.karte_id)"
             >
               <v-list-item-title>
                 {{ notification.message }}
@@ -119,7 +119,7 @@
                 notification.type === 'PostFavorited' ||
                 notification.type === 'CommentToPostFavorited'
               "
-              @click="showPost(notification.post_id)"
+              @click="showItem('post', notification.post_id)"
             >
               <v-list-item-title>
                 {{ notification.message }}
@@ -128,14 +128,6 @@
           </div>
         </v-list>
       </v-menu>
-
-      <ProfileDialog
-        :username="profile.username"
-        @close="profile.dialog = $event"
-        v-if="profile.dialog"
-      />
-      <KarteDialog :karteId="karteId" @close="karteId = $event" />
-      <PostDialog :postId="postId" @close="postId = $event" />
     </div>
   </v-app-bar>
 
@@ -159,12 +151,6 @@ export default {
       ],
       notifications: [], // 通知一覧
       unreadNotificationsCount: 0, // 未読通知数
-      profile: {
-        dialog: false, // プロフィールのダイアログ制御
-        username: null, // プロフィールを表示するユーザー名
-      },
-      karteId: null, // 詳細を表示するカルテID
-      postId: null, // 詳細を表示する投稿ID
     };
   },
 
@@ -239,38 +225,19 @@ export default {
     },
 
     /**
-     * プロフィールの表示
+     * アイテムの表示
      *
-     * @param {String} username - プロフィールを表示するユーザー名
+     * @param {String} type - タイプ
+     * @param {String|Number} item - 詳細を表示するアイテム
      */
-    showProfile: function (username) {
-      this.profile.username = username;
-      this.profile.dialog = true;
+    showItem: function (type, item) {
+      if (type === 'user') {
+        this.$store.dispatch('dialog/open', { type: type, username: item });
+      } else if (type === 'karte' || type === 'post') {
+        this.$store.dispatch('dialog/open', { type: type, id: item });
+      }
+
       this.markNotificationsAsRead();
-    },
-
-    /**
-     * カルテの表示
-     *
-     * @param {Number} karteId - 詳細を表示するカルテID
-     */
-    showKarte: function (karteId) {
-      if (karteId) {
-        this.karteId = karteId;
-        this.markNotificationsAsRead();
-      }
-    },
-
-    /**
-     * 投稿の表示
-     *
-     * @param {Number} postId - 詳細を表示する投稿ID
-     */
-    showPost: function (postId) {
-      if (postId) {
-        this.postId = postId;
-        this.markNotificationsAsRead();
-      }
     },
   },
 };

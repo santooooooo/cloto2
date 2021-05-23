@@ -26,7 +26,7 @@ class KarteController extends Controller
     public function __construct(Karte $karte, Tag $tag)
     {
         $this->middleware(function ($request, $next) {
-            $this->user = Auth::user();
+            $this->auth = Auth::user();
             return $next($request);
         });
 
@@ -57,7 +57,7 @@ class KarteController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['user_id'] = $this->user->id;
+        $data['user_id'] = $this->auth->id;
 
         // 画像ファイル名の取得
         if (!empty($request->file('image'))) {
@@ -74,7 +74,7 @@ class KarteController extends Controller
 
         // 画像ファイルの保存（カルテの作成日時を使用するためcreate後に実行）
         if (!empty($request->file('image'))) {
-            $dir = config('consts.storage.karte') . $this->user->username . '/' . (new Carbon($result->created_at))->format('Y_md_Hi');
+            $dir = config('consts.storage.karte') . $this->auth->username . '/' . (new Carbon($result->created_at))->format('Y_md_Hi');
             $request->file('image')->storeAs($dir, $filename);
         }
 

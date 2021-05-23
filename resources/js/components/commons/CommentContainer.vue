@@ -40,21 +40,31 @@
           </p>
         </v-card-actions>
 
-        <v-row class="mt-3 pointer">
-          <!-- ユーザーアイコン -->
-          <v-col cols="2" class="my-auto text-center" @click="showProfile(comment.user.username)">
-            <v-avatar
-              size="40"
-              :style="{ 'box-shadow': '0 0 0 3px ' + $statusColor(comment.user.status) }"
-            >
-              <img :src="$storage('icon') + comment.user.icon" />
-            </v-avatar>
-          </v-col>
+        <v-row class="mt-3">
+          <v-col
+            cols="8"
+            class="pointer"
+            @click="
+              $store.dispatch('dialog/open', { type: 'user', username: comment.user.username })
+            "
+          >
+            <v-row>
+              <!-- ユーザーアイコン -->
+              <v-col cols="3" class="my-auto text-center">
+                <v-avatar
+                  size="40"
+                  :style="{ 'box-shadow': '0 0 0 3px ' + $statusColor(comment.user.status) }"
+                >
+                  <img :src="$storage('icon') + comment.user.icon" />
+                </v-avatar>
+              </v-col>
 
-          <v-col cols="6" class="my-auto text-start" @click="showProfile(comment.user.username)">
-            <!-- ユーザー名 -->
-            <p class="mb-0 text-body-1 text-truncate">{{ comment.user.handlename }}</p>
-            <p class="mb-0 text-body-2 text-truncate">@{{ comment.user.username }}</p>
+              <!-- ユーザー名 -->
+              <v-col cols="9" class="my-auto text-start">
+                <p class="mb-0 text-body-1 text-truncate">{{ comment.user.handlename }}</p>
+                <p class="mb-0 text-body-2 text-truncate">@{{ comment.user.username }}</p>
+              </v-col>
+            </v-row>
           </v-col>
 
           <v-col cols="3" class="my-auto text-right">
@@ -75,7 +85,7 @@
     </v-container>
 
     <!-- コメント削除確認ダイアログ -->
-    <v-dialog v-model="deleteCommentForm.dialog" max-width="500px" persistent>
+    <v-dialog v-model="deleteForm.dialog" max-width="500px" persistent>
       <v-card class="headline grey darken-2 text-center pa-2">
         <v-card-title>
           <span class="headline white--text">削除しますか？</span>
@@ -84,32 +94,20 @@
         <v-card-text>
           <v-container>
             <v-card-text class="pa-1 white--text">
-              {{ deleteCommentForm.data.body }}
+              {{ deleteForm.data.body }}
             </v-card-text>
           </v-container>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="grey" :loading="deleteCommentForm.loading" @click="deleteSubmit()">
-            削除
-          </v-btn>
-          <v-btn
-            color="error"
-            :loading="deleteCommentForm.loading"
-            @click="deleteCommentForm.dialog = false"
-          >
+          <v-btn color="grey" :loading="deleteForm.loading" @click="deleteSubmit()"> 削除 </v-btn>
+          <v-btn color="error" :loading="deleteForm.loading" @click="deleteForm.dialog = false">
             キャンセル
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-    <ProfileDialog
-      :username="profile.username"
-      @close="profile.dialog = $event"
-      v-if="profile.dialog"
-    />
   </v-container>
 </template>
 
@@ -125,10 +123,6 @@ export default {
 
   data() {
     return {
-      profile: {
-        dialog: false, // プロフィールのダイアログ制御
-        username: null, // プロフィールを表示するユーザー名
-      },
       commentForm: {
         body: '', // 内容
         max: 1000, // 最大長
@@ -138,7 +132,7 @@ export default {
           bodyRules: [(v) => !!v || '内容が無いようです。'],
         },
       },
-      deleteCommentForm: {
+      deleteForm: {
         dialog: false,
         loading: false,
         data: {},
@@ -153,16 +147,6 @@ export default {
   },
 
   methods: {
-    /**
-     * プロフィールの表示
-     *
-     * @param {String} username - プロフィールを表示するユーザー名
-     */
-    showProfile: function (username) {
-      this.profile.username = username;
-      this.profile.dialog = true;
-    },
-
     /**
      * コメントの投稿
      */
@@ -199,25 +183,25 @@ export default {
      * @param {Object} comment - 削除するコメント
      */
     deleteComment: function (comment) {
-      this.deleteCommentForm.data = comment;
-      this.deleteCommentForm.dialog = true;
+      this.deleteForm.data = comment;
+      this.deleteForm.dialog = true;
     },
 
     /**
      * 削除データの送信
      */
     deleteSubmit: async function () {
-      this.deleteCommentForm.loading = true;
+      this.deleteForm.loading = true;
 
-      let response = await axios.delete('/api/comments/' + this.deleteCommentForm.data.id);
+      let response = await axios.delete('/api/comments/' + this.deleteForm.data.id);
 
       if (response.status === OK) {
         // コメントデータの更新
         this.$emit('update');
-        this.deleteCommentForm.dialog = false;
+        this.deleteForm.dialog = false;
       }
 
-      this.deleteCommentForm.loading = false;
+      this.deleteForm.loading = false;
     },
 
     /**
@@ -251,13 +235,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-card {
-  .pointer {
-    cursor: pointer;
-  }
+pre {
+  white-space: pre-wrap;
+}
 
-  pre {
-    white-space: pre-wrap;
-  }
+.pointer {
+  cursor: pointer;
 }
 </style>

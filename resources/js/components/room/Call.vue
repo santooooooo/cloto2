@@ -128,7 +128,12 @@
                         icon
                         x-large
                         class="account-button"
-                        @click="showProfile(participant.username)"
+                        @click="
+                          $store.dispatch('dialog/open', {
+                            type: 'user',
+                            username: participant.username,
+                          })
+                        "
                       >
                         <v-icon> mdi-account </v-icon>
                       </v-btn>
@@ -213,7 +218,12 @@
                         icon
                         x-large
                         class="account-button"
-                        @click="showProfile(pinnedParticipant.username)"
+                        @click="
+                          $store.dispatch('dialog/open', {
+                            type: 'user',
+                            username: pinnedParticipant.username,
+                          })
+                        "
                       >
                         <v-icon> mdi-account </v-icon>
                       </v-btn>
@@ -338,7 +348,12 @@
                             icon
                             x-large
                             class="account-button"
-                            @click="showProfile(participant.username)"
+                            @click="
+                              $store.dispatch('dialog/open', {
+                                type: 'user',
+                                username: participant.username,
+                              })
+                            "
                           >
                             <v-icon> mdi-account </v-icon>
                           </v-btn>
@@ -350,13 +365,6 @@
               </v-row>
             </v-col>
           </v-row>
-
-          <!-- プロフィールダイアログ -->
-          <ProfileDialog
-            :username="profile.username"
-            @close="profile.dialog = $event"
-            v-if="profile.dialog"
-          ></ProfileDialog>
         </v-container>
       </v-flex>
 
@@ -608,12 +616,6 @@ export default {
         notification: false, // 通知制御
         localText: '', // 送信するメッセージ
         messages: [], // メッセージ一覧
-      },
-
-      //*** プロフィール ***//
-      profile: {
-        dialog: false, // プロフィールのダイアログ制御
-        username: null, // プロフィールを表示するユーザー名
       },
     };
   },
@@ -1184,16 +1186,6 @@ export default {
     },
 
     /**
-     * プロフィールの表示
-     *
-     * @param {String} username - プロフィールを表示するユーザー名
-     */
-    showProfile: function (username) {
-      this.profile.username = username;
-      this.profile.dialog = true;
-    },
-
-    /**
      * ツールバーの表示制御
      *
      * @param {Event} event - マウス移動イベント
@@ -1369,7 +1361,7 @@ export default {
 .video {
   position: relative;
 
-  // v-hover
+  // v-hover要素に適用
   .v-overlay {
     z-index: 0 !important;
   }

@@ -20,7 +20,7 @@ class RoadmapsController extends Controller
     public function __construct(Roadmap $roadmap)
     {
         $this->middleware(function ($request, $next) {
-            $this->user = Auth::user();
+            $this->auth = Auth::user();
             return $next($request);
         });
 
@@ -37,7 +37,7 @@ class RoadmapsController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['user_id'] = $this->user->id;
+        $data['user_id'] = $this->auth->id;
         $data['road_id'] = 1;
         $data['in_progress'] = 0;
 

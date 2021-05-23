@@ -1,6 +1,6 @@
 <template>
   <v-container class="d-block">
-    <div id="karte" @click="showKarte(karte.id)">
+    <div id="karte" @click="$store.dispatch('dialog/open', { type: 'karte', id: karte.id })">
       <v-img
         max-height="300"
         class="mx-auto my-2 rounded-xl"
@@ -30,8 +30,6 @@
         {{ $moment(karte.created_at).format('MM/DD HH:mm') }}
       </p>
     </div>
-
-    <KarteDialog :karteId="showKarteId" @close="showKarteId = $event" />
   </v-container>
 </template>
 
@@ -39,23 +37,6 @@
 export default {
   props: {
     karte: Object, // 表示するカルテ
-  },
-  data() {
-    return {
-      showKarteId: null, // 詳細を表示するカルテID
-    };
-  },
-  methods: {
-    /**
-     * カルテの詳細表示
-     *
-     * @param {Number} karteId - 詳細を表示するカルテID
-     */
-    showKarte: function (karteId) {
-      if (karteId) {
-        this.showKarteId = karteId;
-      }
-    },
   },
 };
 </script>

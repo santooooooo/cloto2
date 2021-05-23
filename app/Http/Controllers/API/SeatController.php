@@ -20,7 +20,7 @@ class SeatController extends Controller
     public function __construct(Seat $seat)
     {
         $this->middleware(function ($request, $next) {
-            $this->user = Auth::user();
+            $this->auth = Auth::user();
             return $next($request);
         });
 
@@ -45,8 +45,8 @@ class SeatController extends Controller
 
 
         // ユーザーと座席を紐付け
-        $this->user->seat()->associate($seat);
-        $this->user->save();
+        $this->auth->seat()->associate($seat);
+        $this->auth->save();
 
         // 座席状態の更新
         $seat->fill(['status' => 'sitting'])->save();
@@ -62,17 +62,17 @@ class SeatController extends Controller
      */
     public function leave()
     {
-        $room_id = $this->user->room['id'];
+        $room_id = $this->auth->room['id'];
 
         // 着席中の座席の状態を初期化
-        $this->user->seat->fill(['status' => null, 'reservation_user_id' => null])->save();
+        $this->auth->seat->fill(['status' => null, 'reservation_user_id' => null])->save();
 
         // ユーザーと座席を紐付け解除
-        $this->user->seat()->dissociate();
-        $this->user->save();
+        $this->auth->seat()->dissociate();
+        $this->auth->save();
 
         // 予約中の座席の状態を初期化（念の為）
-        $seat = $this->seat->where('reservation_user_id', $this->user->id)->first();
+        $seat = $this->seat->where('reservation_user_id', $this->auth->id)->first();
         if (!empty($seat)) {
             $seat->fill(['status' => null, 'reservation_user_id' => null])->save();
         }
@@ -98,11 +98,11 @@ class SeatController extends Controller
 
 
         // 現在の座席をbreakに変更
-        $this->user->seat->fill(['status' => 'break', 'reservation_user_id' => $this->user->id])->save();
+        $this->auth->seat->fill(['status' => 'break', 'reservation_user_id' => $this->auth->id])->save();
 
         // ユーザーと座席を紐付け
-        $this->user->seat()->associate($seat);
-        $this->user->save();
+        $this->auth->seat()->associate($seat);
+        $this->auth->save();
 
         // 座席状態の更新
         $seat->fill(['status' => 'sitting'])->save();
@@ -119,15 +119,15 @@ class SeatController extends Controller
     public function back()
     {
         // 戻り先の座席を検索
-        $seat = $this->seat->where('reservation_user_id', $this->user->id)->first();
+        $seat = $this->seat->where('reservation_user_id', $this->auth->id)->first();
         $room_id = $seat->section->room_id;
 
         // 着席していた座席を離席状態に変更
-        $this->user->seat->fill(['status' => null])->save();
+        $this->auth->seat->fill(['status' => null])->save();
 
         // ユーザーと戻り先の座席を紐付け
-        $this->user->seat()->associate($seat);
-        $this->user->save();
+        $this->auth->seat()->associate($seat);
+        $this->auth->save();
 
         // 座席状態の更新
         $seat->fill(['status' => 'sitting', 'reservation_user_id' => null])->save();

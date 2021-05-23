@@ -18,7 +18,7 @@ class ChatController extends Controller
     public function __construct(Chat $chat)
     {
         $this->middleware(function ($request, $next) {
-            $this->user = Auth::user();
+            $this->auth = Auth::user();
             return $next($request);
         });
 
@@ -33,7 +33,7 @@ class ChatController extends Controller
      */
     public function index()
     {
-        $room = $this->user->seat->section->room;
+        $room = $this->auth->seat->section->room;
         return response()->json($room->chats->sortByDesc('created_at')->values());
     }
 
@@ -46,8 +46,8 @@ class ChatController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['user_id'] = $this->user->id;
-        $data['room_id'] = $this->user->room['id'];
+        $data['user_id'] = $this->auth->id;
+        $data['room_id'] = $this->auth->room['id'];
 
         $result = $this->chat->create($data);
 
@@ -55,7 +55,7 @@ class ChatController extends Controller
             return response()->json(['message' => 'チャットの送信に失敗しました．．．'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        broadcast(new ChatPosted($this->user, $request->body));
+        broadcast(new ChatPosted($this->auth, $request->body));
         return response()->json();
     }
 }

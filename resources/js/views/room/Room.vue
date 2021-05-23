@@ -87,7 +87,10 @@
             @click="chat.message = '>> ' + message.user.handlename + 'さん\n' + chat.message"
           >
             <p class="font-weight-bold mb-0 mx-1">
-              <span @click="showProfile(message.user.username)"
+              <span
+                @click="
+                  $store.dispatch('dialog/open', { type: 'user', username: message.user.username })
+                "
                 >{{ message.user.handlename }}
                 <small>@{{ message.user.username }}</small>
               </span>
@@ -114,13 +117,6 @@
       <div id="in-progress" ref="inProgress" v-show="inProgress.isShow">
         <p>{{ inProgress.text }}</p>
       </div>
-
-      <!-- プロフィールダイアログ -->
-      <ProfileDialog
-        :username="profile.username"
-        @close="profile.dialog = $event"
-        v-if="profile.dialog"
-      />
     </v-flex>
   </v-layout>
 </template>
@@ -181,10 +177,6 @@ export default {
       inProgress: {
         isShow: false, // いまやっていること吹き出し制御
         text: '', // 吹き出しに表示するテキスト
-      },
-      profile: {
-        dialog: false, // プロフィールのダイアログ制御
-        username: null, // プロフィールを表示するユーザー名
       },
     };
   },
@@ -644,7 +636,7 @@ export default {
           this.loading = false;
         }
       } else if (target.type === 'user') {
-        this.showProfile(target.username);
+        this.$store.dispatch('dialog/open', { type: 'user', username: target.username });
       }
     },
 
@@ -826,16 +818,6 @@ export default {
 
       // ロード終了
       this.loading = false;
-    },
-
-    /**
-     * プロフィールの表示
-     *
-     * @param {String} username - ユーザー名
-     */
-    showProfile: function (username) {
-      this.profile.username = username;
-      this.profile.dialog = true;
     },
 
     /**

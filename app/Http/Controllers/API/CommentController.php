@@ -29,7 +29,7 @@ class CommentController extends Controller
     public function __construct(Comment $comment, Karte $karte, Post $post)
     {
         $this->middleware(function ($request, $next) {
-            $this->user = Auth::user();
+            $this->auth = Auth::user();
             return $next($request);
         });
 
@@ -48,7 +48,7 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['user_id'] = $this->user->id;
+        $data['user_id'] = $this->auth->id;
 
         // コメントはカルテか投稿のどちらかにのみ紐づく
         if (!empty($data['karte_id']) && !empty($data['post_id'])) {
@@ -66,17 +66,17 @@ class CommentController extends Controller
             $karte = $this->karte->find($result['karte_id']);
 
             // カルテの投稿者への通知
-            if ($karte->user->id != $this->user->id) {
+            if ($karte->user->id != $this->auth->id) {
                 // 自分のカルテのコメントでは通知を発行しない
-                $karte->user->notify(new KarteCommentPosted($karte, $this->user));
+                $karte->user->notify(new KarteCommentPosted($karte, $this->auth));
                 broadcast(new NotificationPosted($karte->user));
             }
 
             // カルテのコメントの投稿者への通知
             foreach ($karte->comments->unique('user_id') as $comment) {
-                if ($comment->user->id != $this->user->id && $comment->user->id != $karte->user->id) {
+                if ($comment->user->id != $this->auth->id && $comment->user->id != $karte->user->id) {
                     // 自分およびカルテの投稿者へは通知しない
-                    $comment->user->notify(new KarteCommentPosted($karte, $this->user));
+                    $comment->user->notify(new KarteCommentPosted($karte, $this->auth));
                     broadcast(new NotificationPosted($comment->user));
                 }
             }
@@ -84,17 +84,17 @@ class CommentController extends Controller
             $post = $this->post->find($result['post_id']);
 
             // 投稿の投稿者への通知
-            if ($post->user->id != $this->user->id) {
+            if ($post->user->id != $this->auth->id) {
                 // 自分の投稿のコメントでは通知を発行しない
-                $post->user->notify(new PostCommentPosted($post, $this->user));
+                $post->user->notify(new PostCommentPosted($post, $this->auth));
                 broadcast(new NotificationPosted($post->user));
             }
 
             // 投稿のコメントの投稿者への通知
             foreach ($post->comments->unique('user_id') as $comment) {
-                if ($comment->user->id != $this->user->id && $comment->user->id != $post->user->id) {
+                if ($comment->user->id != $this->auth->id && $comment->user->id != $post->user->id) {
                     // 自分および投稿の投稿者へは通知しない
-                    $comment->user->notify(new PostCommentPosted($post, $this->user));
+                    $comment->user->notify(new PostCommentPosted($post, $this->auth));
                     broadcast(new NotificationPosted($comment->user));
                 }
             }

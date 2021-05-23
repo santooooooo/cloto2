@@ -22,7 +22,7 @@ class PostController extends Controller
     public function __construct(Post $post)
     {
         $this->middleware(function ($request, $next) {
-            $this->user = Auth::user();
+            $this->auth = Auth::user();
             return $next($request);
         });
 
@@ -68,7 +68,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['user_id'] = $this->user->id;
+        $data['user_id'] = $this->auth->id;
 
         $result = $this->post->create($data);
 
