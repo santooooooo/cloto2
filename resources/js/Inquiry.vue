@@ -164,6 +164,22 @@ export default {
         },
       }
     );
+    this.messages.push(
+      {
+        author: 'support',
+        type: 'text',
+        data: {
+          text: '発生中のバグ一覧：https://spark.adobe.com/page/Kr5Vq5g5J2wbf',
+        },
+      },
+      {
+        author: 'support',
+        type: 'text',
+        data: {
+          text: '修正完了まで今しばらくお待ち下さい。',
+        },
+      }
+    );
 
     // ログイン時に自動展開
     if (!this.isDebug) {
