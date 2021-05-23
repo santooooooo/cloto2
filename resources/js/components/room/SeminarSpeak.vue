@@ -1525,7 +1525,7 @@ export default {
 .video {
   position: relative;
 
-  // v-hover
+  // v-hover要素に適用
   .v-overlay {
     z-index: 0 !important;
   }
