@@ -52,38 +52,39 @@
 
               <v-divider></v-divider>
 
-              <v-row no-gutters class="mt-3 pointer">
-                <!-- ユーザーアイコン -->
+              <v-row no-gutters class="mt-3">
                 <v-col
-                  cols="3"
-                  class="my-auto text-center"
+                  cols="7"
+                  class="ml-2 pointer"
                   @click="
-                    $store.dispatch('dialog/open', { type: 'user', username: item.user.username })
+                    $store.dispatch('dialog/open', {
+                      type: 'user',
+                      username: item.user.username,
+                    })
                   "
                 >
-                  <v-avatar
-                    size="50"
-                    :style="{ 'box-shadow': '0 0 0 5px ' + $statusColor(item.user.status) }"
-                  >
-                    <img :src="$storage('icon') + item.user.icon" />
-                  </v-avatar>
-                </v-col>
+                  <v-row>
+                    <!-- ユーザーアイコン -->
+                    <v-col cols="3" class="my-auto text-center">
+                      <v-avatar
+                        size="40"
+                        :style="{ 'box-shadow': '0 0 0 3px ' + $statusColor(item.user.status) }"
+                      >
+                        <img :src="$storage('icon') + item.user.icon" />
+                      </v-avatar>
+                    </v-col>
 
-                <v-col
-                  cols="5"
-                  class="my-auto text-start"
-                  @click="
-                    $store.dispatch('dialog/open', { type: 'user', username: item.user.username })
-                  "
-                >
-                  <!-- ユーザー名 -->
-                  <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
-                  <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
+                    <!-- ユーザー名 -->
+                    <v-col cols="8" class="my-auto text-start">
+                      <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
+                      <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
+                    </v-col>
+                  </v-row>
                 </v-col>
 
                 <v-spacer></v-spacer>
 
-                <v-col cols="3" class="my-auto text-center" v-if="item.id">
+                <v-col cols="4" class="my-auto text-center" v-if="item.id">
                   <!-- コメントボタン -->
                   <v-btn
                     icon
