@@ -4,10 +4,10 @@
       <h1
         class="rounded font-weight-bold text-h5 text-center white--text px-5 py-1"
         :style="{
-          'background-color': $periodColor(currentPeriod),
+          'background-color': $periodColor(currentPeriod()),
         }"
       >
-        {{ getPeriodText(currentPeriod) }}
+        {{ currentPeriod(true) }}
       </h1>
       <h2
         class="rounded text-h6 font-weight-bolder white--text pl-2 py-1"
@@ -51,43 +51,16 @@ export default {
       // 現在閲覧中のクラス
       return Number(this.$route.params.class);
     },
-    currentPeriod() {
-      // 現在閲覧中の期
-      return this.$periodName(this.currentClass);
-    },
   },
   methods: {
     /**
-     * 期の表示名の取得
+     * 現在閲覧中の期
      *
-     * @param {String} period - 期
-     * @return {String} 表示名
+     * @param {Boolean} show - 画面表示するか
+     * @return {String} 名前または表示名
      */
-    getPeriodText: function (period) {
-      let name;
-      switch (period) {
-        case 'introduction':
-          name = '入門期';
-          break;
-
-        case 'beginner':
-          name = '素人期';
-          break;
-
-        case 'intermediate':
-          name = '苦労人前期';
-          break;
-
-        case 'advanced':
-          name = '苦労人後期';
-          break;
-
-        case 'expert':
-          name = '玄人期';
-          break;
-      }
-
-      return name;
+    currentPeriod: function (show = false) {
+      return this.$periodName(this.currentClass, show);
     },
     /**
      * スクロールイベントの設定

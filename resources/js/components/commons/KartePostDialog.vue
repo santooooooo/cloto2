@@ -274,23 +274,34 @@ export default {
         let response = await axios.post('/api/kartes', input);
 
         if (response.status === OK) {
-          // 本番サーバでのみツイート
+          let tweet;
+          if (this.roadmapId) {
+            // ロードマップへの紐付け後
+            tweet =
+              '【' +
+              this.$periodName(this.authUser.roadmaps[0].in_progress, true) +
+              ' / Class ' +
+              this.authUser.roadmaps[0].in_progress +
+              '】をクリアしました🎉🎉🎉\n\n' +
+              this.karteForm.body;
+
+            // 次のクラスへ
+            this.$emit('next-class');
+          } else {
+            tweet = this.karteForm.body;
+          }
+
           if (window.location.hostname === 'cloto.jp') {
-            let tweet =
+            // 本番サーバでのみツイート
+            let url =
               'https://twitter.com/intent/tweet?text=' +
               encodeURIComponent(
-                this.substr(this.karteForm.body, 216) +
-                  '\n\n#今日の積み上げ\n#CLOTO\n@cloto_jp\ncloto.jp'
+                this.substr(tweet, 216) + '\n\n#今日の積み上げ\n#CLOTO\n@cloto_jp\ncloto.jp'
               );
-            window.open(tweet, 'Tweet', 'width=650, height=470');
+            window.open(url, 'Tweet', 'width=650, height=470');
           }
 
           this.$emit('close', false);
-
-          if (this.roadmapId) {
-            // ロードマップへの紐付け後は次のクラスへ
-            this.$emit('next-class');
-          }
         } else {
           this.karteForm.loading = false;
         }
