@@ -17,10 +17,24 @@
 
     <KartePostDialog
       :roadmapId="authUser.roadmaps[0].id"
-      @close="dialog = $event"
+      @close="kartePostDialog = $event"
       @next-class="nextClass()"
-      v-if="dialog"
+      v-if="kartePostDialog"
     />
+
+    <!-- クリア祝いダイアログ -->
+    <v-dialog persistent v-model="congratulationDialog" width="80%">
+      <v-card>
+        <div class="text-center">
+          <v-img contain :src="$storage('system') + 'card.png'"></v-img>
+        </div>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="next()">次のコースへ</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -43,7 +57,8 @@ import { OK } from '@/consts/status';
 export default {
   data() {
     return {
-      dialog: false, // カルテ投稿ダイアログの制御
+      kartePostDialog: false, // カルテ投稿ダイアログの制御
+      congratulationDialog: false, // クリア祝いダイアログの制御
     };
   },
   components: {
@@ -75,20 +90,21 @@ export default {
      */
     next: function () {
       if (this.currentClass < this.authUser.roadmaps[0].in_progress) {
-        // クリア済みのクラスから進む場合
+        // カルテ記入後もしくはクリア済みのクラスから進む場合
         this.$router.push({
           name: 'docs',
           params: { roadName: 'javascript', class: this.currentClass + 1 },
         });
         // 最上部へスクロール
         this.$scrollTo('#main');
+        this.congratulationDialog = false;
       } else if (this.currentClass === this.authUser.roadmaps[0].in_progress) {
         // 進行中のクラスから進む場合はカルテを記入
-        this.dialog = true;
+        this.kartePostDialog = true;
       }
     },
     /**
-     * 次のクラスへ進む
+     * 次のクラスへ進む（カルテ記入後）
      */
     nextClass: async function () {
       let response = await axios.post('/api/roadmaps/' + this.authUser.roadmaps[0].id, {
@@ -96,12 +112,8 @@ export default {
       });
 
       if (response.status === OK) {
-        this.$router.push({
-          name: 'docs',
-          params: { roadName: 'javascript', class: this.currentClass + 1 },
-        });
-        // 最上部へスクロール
-        this.$scrollTo('#main');
+        this.authUser.roadmaps[0].in_progress += 1;
+        this.congratulationDialog = true;
       }
     },
   },
