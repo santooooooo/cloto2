@@ -16,6 +16,7 @@ Vue.prototype.$docs = require('./consts/storage').getDocsPath;
 const functions = require('./plugins/functions');
 Vue.prototype.$formatStr = functions.formatStr;
 Vue.prototype.$statusColor = functions.statusColor;
+Vue.prototype.$periodName = functions.periodName;
 Vue.prototype.$periodColor = functions.periodColor;
 Vue.prototype.$classColor = functions.classColor;
 Vue.prototype.$slack = functions.slackPost;

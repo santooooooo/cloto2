@@ -40,6 +40,29 @@ export function statusColor(status) {
 }
 
 /**
+ * 期の取得
+ *
+ * @param {Number} classNumber - クラス番号
+ * @return {String} 期
+ */
+export function periodName(classNumber) {
+  let name;
+  if (classNumber === 0) {
+    name = 'introduction';
+  } else if (1 <= classNumber && classNumber <= 3) {
+    name = 'beginner';
+  } else if (4 <= classNumber && classNumber <= 6) {
+    name = 'intermediate';
+  } else if (7 <= classNumber && classNumber <= 10) {
+    name = 'advanced';
+  } else if (11 <= classNumber) {
+    name = 'expert';
+  }
+
+  return name;
+}
+
+/**
  * 期の色の取得
  *
  * @param {String} period - 期

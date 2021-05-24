@@ -4,10 +4,10 @@
       <h1
         class="rounded font-weight-bold text-h5 text-center white--text px-5 py-1"
         :style="{
-          'background-color': $periodColor(period),
+          'background-color': $periodColor(currentPeriod),
         }"
       >
-        {{ getPeriodName(period) }}
+        {{ getPeriodText(currentPeriod) }}
       </h1>
       <h2
         class="rounded text-h6 font-weight-bolder white--text pl-2 py-1"
@@ -39,7 +39,6 @@
 <script>
 export default {
   props: {
-    period: String, // 期間名
     contents: Array, // 目次データ
   },
   data() {
@@ -49,7 +48,12 @@ export default {
   },
   computed: {
     currentClass() {
+      // 現在閲覧中のクラス
       return Number(this.$route.params.class);
+    },
+    currentPeriod() {
+      // 現在閲覧中の期
+      return this.$periodName(this.currentClass);
     },
   },
   methods: {
@@ -59,7 +63,7 @@ export default {
      * @param {String} period - 期
      * @return {String} 表示名
      */
-    getPeriodName: function (period) {
+    getPeriodText: function (period) {
       let name;
       switch (period) {
         case 'introduction':

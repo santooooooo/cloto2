@@ -16,7 +16,7 @@
   <v-container fluid class="mt-4">
     <v-row>
       <!-- 目次 -->
-      <ContentTable :period="period" :contents="contents" />
+      <ContentTable :contents="contents" />
 
       <v-col cols="8" id="content">
         <!-- タイトル -->
@@ -1213,7 +1213,6 @@ export default {
   },
   data() {
     return {
-      period: 'introduction', // 期間名
       title: 'Class 0', // コンテンツタイトル
       contents: [
         { id: '#class0-desc', title: '0-0. Class 0', activeStart: 36, activeEnd: 925 },
