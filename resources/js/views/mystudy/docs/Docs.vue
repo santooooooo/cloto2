@@ -122,6 +122,12 @@ export default {
       h2 {
         border-left: 6px solid $dark-blue;
       }
+
+      p,
+      ul,
+      ol {
+        margin-bottom: 32px;
+      }
     }
   }
 }

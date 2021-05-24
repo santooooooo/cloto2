@@ -72,8 +72,8 @@
           <p>ダミー</p>
         </v-container>
 
-        <v-row justify="center">
-          <v-btn color="blue" class="text-white" @click="$emit('next')">完了（次へ進む）</v-btn>
+        <v-row justify="center" class="mb-4">
+          <v-btn dark color="primary" @click="$emit('next')">完了（次へ進む）</v-btn>
         </v-row>
       </v-col>
     </v-row>
