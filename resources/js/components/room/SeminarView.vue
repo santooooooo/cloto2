@@ -37,9 +37,34 @@
     </v-app-bar>
 
     <v-layout class="px-2" ref="container">
-	    <p>{{ participantsCount }}</p>
       <!-- 視聴者一覧 -->
-      <v-flex xs1 class="viewer-container">
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn class="ma-16 bg-warning text-white font-weight-bold" v-bind="attrs" v-on="on" width="15%">
+            参加人数：{{ viewers.length }}
+          </v-btn>
+        </template>
+        <v-list max-height="200" class="bg-secondary viewer-container">
+            <v-list-item v-for="viewer in viewers" :key="viewer.peerId">
+              <v-list-item-title
+                class="d-flex"
+                @click="showProfile(viewer.username)"
+              >
+                <v-avatar
+                  size="40"
+                  class="viewer ma-1"
+                  v-for="viewer in viewers"
+                  :key="viewer.peerId"
+                >
+                  <img :src="$storage('icon') + viewer.icon" />
+                </v-avatar>
+                <p class="ma-4 font-weight-bold text-white">{{ viewer.username }}</p>
+              </v-list-item-title>
+            </v-list-item>
+        </v-list>
+      </v-menu>
+      <!-- 視聴者一覧 -->
+      <v-flex xs1 class="viewer-container" v-if="false">
         <!-- 自分 -->
         <v-avatar
           size="40"
@@ -554,15 +579,11 @@ export default {
     },
     viewers() {
       // 視聴者
-		  console.log(this.participants.length)
-      return this.participants.filter((participant) => {
-        return typeof participant.stream === 'undefined';
-      });
+      return this.participants;
+      //    .filter((participant) => {
+      //return typeof participant.stream === 'undefined';
+      //});
     },
-	  participantsCount() {
-		  console.log(this.participants.length)
-		  return this.participants.length
-	  }
   },
   watch: {
     $windowWidth: function () {
@@ -607,6 +628,7 @@ export default {
       // データ到着イベント
       this.call.on('data', async ({ data, src }) => {
         // 送信者が取得されるまで待機
+        // console.log('call on data');
         let sender;
         for (let i = 0; i < 50; i++) {
           // 参加直後，this.participantsへの追加前に検索されるので回避
@@ -776,8 +798,8 @@ export default {
       // 同一のPeerIDが存在しないことを確認する
       let isJoin = !this.participants.some((participant) => participant.peerId === peerId);
 
-	      console.log('before push! OK!');
       if (isJoin) {
+        console.log('joinViewr Event');
         // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
         this.call.send({ type: 'joinViewerData', content: this.authUser });
         // 現在のトピックを送信
@@ -790,7 +812,6 @@ export default {
           JOIN_CALL_SOUND.play();
         }
 
-	      console.log('viwers added! OK!');
         // 参加者の追加
         this.participants.push({
           username: user.username, // ユーザー名
@@ -1135,11 +1156,7 @@ export default {
 }
 
 .viewer-container {
-  margin: 65px 0px 105px 0px;
-
-  .viewer {
     cursor: pointer;
-  }
 }
 
 .video {
