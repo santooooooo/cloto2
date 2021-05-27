@@ -38,53 +38,26 @@
 
     <v-layout class="px-2" ref="container">
       <!-- 視聴者一覧 -->
-      <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn class="ma-16 bg-warning text-white font-weight-bold" v-bind="attrs" v-on="on" width="15%">
-            参加人数：{{ viewers.length }}
-          </v-btn>
-        </template>
-        <v-list max-height="200" class="bg-secondary viewer-container">
-            <v-list-item v-for="viewer in viewers" :key="viewer.peerId">
-              <v-list-item-title
-                class="d-flex"
-                @click="showProfile(viewer.username)"
-              >
-                <v-avatar
-                  size="40"
-                  class="viewer ma-1"
-                  v-for="viewer in viewers"
-                  :key="viewer.peerId"
-                >
-                  <img :src="$storage('icon') + viewer.icon" />
-                </v-avatar>
-                <p class="ma-4 font-weight-bold text-white">{{ viewer.username }}</p>
-              </v-list-item-title>
-            </v-list-item>
-        </v-list>
-      </v-menu>
-      <!-- 視聴者一覧 -->
-      <v-flex xs1 class="viewer-container" v-if="false">
-        <!-- 自分 -->
-        <v-avatar
-          size="40"
-          class="viewer ma-1"
-          @click="showProfile(authUser.username)"
-          v-if="!loading"
-        >
-          <img :src="$storage('icon') + authUser.icon" />
-        </v-avatar>
-
-        <!-- 他の視聴者 -->
-        <v-avatar
-          size="40"
-          class="viewer ma-1"
-          v-for="viewer in viewers"
-          :key="viewer.peerId"
-          @click="showProfile(viewer.username)"
-        >
-          <img :src="$storage('icon') + viewer.icon" />
-        </v-avatar>
+      <v-flex>
+        <v-container fluid py-0>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn class="ma-16 bg-warning text-white font-weight-bold" v-bind="attrs" v-on="on">
+                参加人数：{{ viewers.length + 1 }}
+              </v-btn>
+            </template>
+            <v-list max-height="200" class="bg-secondary viewer-container">
+              <v-list-item v-for="viewer in viewers" :key="viewer.peerId">
+                <v-list-item-title class="d-flex" @click="showProfile(viewer.username)">
+                  <v-avatar size="40" class="viewer ma-1">
+                    <img :src="$storage('icon') + viewer.icon" />
+                  </v-avatar>
+                  <p class="ma-4 font-weight-bold text-white">{{ viewer.username }}</p>
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-container>
       </v-flex>
       <v-flex>
         <v-container fluid py-0>
@@ -580,9 +553,6 @@ export default {
     viewers() {
       // 視聴者
       return this.participants;
-      //    .filter((participant) => {
-      //return typeof participant.stream === 'undefined';
-      //});
     },
   },
   watch: {
@@ -733,7 +703,7 @@ export default {
         this.stopVoiceDetection();
 
         // 通話の接続を終了
-        await this.peer.disconnect();
+        await this.peer.destroy();
         this.peer = null;
       }
     },
@@ -1156,7 +1126,7 @@ export default {
 }
 
 .viewer-container {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .video {

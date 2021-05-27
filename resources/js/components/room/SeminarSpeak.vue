@@ -58,18 +58,27 @@
 
     <v-layout class="px-2" ref="container">
       <!-- 視聴者一覧 -->
-      <v-flex xs1 class="viewer-container" v-if="viewers.length">
-        <v-avatar
-          size="40"
-          class="viewer ma-1"
-          v-for="viewer in viewers"
-          :key="viewer.peerId"
-          @click="showProfile(viewer.username)"
-        >
-          <img :src="$storage('icon') + viewer.icon" />
-        </v-avatar>
+      <v-flex>
+        <v-container fluid py-0>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn class="ma-16 bg-warning text-white font-weight-bold" v-bind="attrs" v-on="on">
+                参加人数：{{ viewers.length }}
+              </v-btn>
+            </template>
+            <v-list max-height="200" class="bg-secondary viewer-container">
+              <v-list-item v-for="viewer in viewers" :key="viewer.peerId">
+                <v-list-item-title class="d-flex" @click="showProfile(viewer.username)">
+                  <v-avatar size="40" class="viewer ma-1">
+                    <img :src="$storage('icon') + viewer.icon" />
+                  </v-avatar>
+                  <p class="ma-4 font-weight-bold text-white">{{ viewer.username }}</p>
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-container>
       </v-flex>
-
       <v-flex>
         <v-container fluid py-0>
           <!--*** 画面共有ON ***-->
@@ -682,9 +691,7 @@ export default {
     },
     viewers() {
       // 視聴者
-      return this.participants.filter((participant) => {
-        return typeof participant.stream === 'undefined';
-      });
+      return this.participants;
     },
   },
   watch: {
@@ -847,7 +854,7 @@ export default {
         }
 
         // 通話の接続を終了
-        await this.peer.disconnect();
+        await this.peer.destroy();
         this.peer = null;
       }
     },
@@ -1011,7 +1018,7 @@ export default {
         this.screenSharing.stream = null;
 
         // 画面共有用の接続を終了
-        this.screenSharing.peer.disconnect();
+        this.screenSharing.peer.destroy();
       }
     },
 
@@ -1501,11 +1508,7 @@ export default {
 }
 
 .viewer-container {
-  margin: 65px 0px 105px 0px;
-
-  .viewer {
-    cursor: pointer;
-  }
+  cursor: pointer;
 }
 
 .video {
