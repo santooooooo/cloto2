@@ -1093,11 +1093,8 @@ export default {
     connectDevice: async function () {
       // Audioは常に残す（どちらかを定義しておく必要あり）
       let constraints = {
-        audio: this.selectedAudio ? { deviceId: { exact: this.selectedAudio } } : false,
-        video:
-          this.selectedVideo && !this.isVideoOff
-            ? { deviceId: { exact: this.selectedVideo } }
-            : false,
+        audio: this.selectedAudio ? { deviceId: this.selectedAudio } : false,
+        video: this.selectedVideo && !this.isVideoOff ? { deviceId: this.selectedVideo } : false,
       };
 
       // 録画サイズの設定
