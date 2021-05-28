@@ -6,7 +6,7 @@
       <img :src="$storage('system') + 'header_logo.svg'" />
     </router-link>
 
-    <span class="mt-4 mr-3 text-h4 font-weight-bold">α1.0</span>
+    <span class="mt-4 mr-3 text-h4 font-weight-bold">β1.0</span>
 
     <v-btn
       text
@@ -43,29 +43,92 @@
     <v-select
       v-model="status"
       :items="statuses"
-      :color="color"
-      :item-color="color"
+      :color="$statusColor(status)"
+      :item-color="$statusColor(status)"
       class="ml-9 mt-5"
       @change="updateStatus(status)"
       v-if="authCheck"
     >
       <template v-slot:selection="{ item }">
-        <span :class="color + '--text'">{{ item.text }}</span>
+        <span :class="$statusColor(status) + '--text'">{{ item.text }}</span>
       </template>
     </v-select>
 
     <!-- 通知音ボタン -->
-    <v-btn
-      color="white"
-      icon
-      class="mx-6"
-      @click="$store.dispatch('alert/switchSound')"
-      v-if="authCheck"
-    >
+    <v-btn icon class="mx-6" @click="$store.dispatch('alert/switchSound')" v-if="authCheck">
       <v-icon large>
-        {{ $store.getters['alert/isSoundOn'] ? 'mdi-bell' : 'mdi-bell-off' }}
+        {{ $store.getters['alert/isSoundOn'] ? 'mdi-music-note' : 'mdi-music-note-off' }}
       </v-icon>
     </v-btn>
+
+    <!-- 通知一覧ボタン -->
+    <div v-if="authCheck">
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-badge
+            color="#f6bf00"
+            offset-x="43"
+            offset-y="23"
+            :content="unreadNotificationsCount"
+            :value="unreadNotificationsCount"
+          >
+            <v-btn icon v-bind="attrs" v-on="on" class="mr-6">
+              <v-icon large>mdi-bell</v-icon>
+            </v-btn>
+          </v-badge>
+        </template>
+        <v-list>
+          <div v-for="notification in notifications" :key="notification.id">
+            <!-- フォロー通知 -->
+            <v-list-item
+              :style="{
+                'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
+              }"
+              v-if="notification.type === 'UserFollowed'"
+              @click="showItem('user', notification.username)"
+            >
+              <v-list-item-title>
+                {{ notification.message }}
+              </v-list-item-title>
+            </v-list-item>
+
+            <!-- カルテへの通知 -->
+            <v-list-item
+              :style="{
+                'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
+              }"
+              v-else-if="
+                notification.type === 'KarteCommentPosted' ||
+                notification.type === 'KarteFavorited' ||
+                notification.type === 'CommentToKarteFavorited'
+              "
+              @click="showItem('karte', notification.karte_id)"
+            >
+              <v-list-item-title>
+                {{ notification.message }}
+              </v-list-item-title>
+            </v-list-item>
+
+            <!-- 投稿への通知 -->
+            <v-list-item
+              :style="{
+                'background-color': notification.read_at ? '' : 'rgba(246, 191, 0, 0.2)',
+              }"
+              v-else-if="
+                notification.type === 'PostCommentPosted' ||
+                notification.type === 'PostFavorited' ||
+                notification.type === 'CommentToPostFavorited'
+              "
+              @click="showItem('post', notification.post_id)"
+            >
+              <v-list-item-title>
+                {{ notification.message }}
+              </v-list-item-title>
+            </v-list-item>
+          </div>
+        </v-list>
+      </v-menu>
+    </div>
   </v-app-bar>
 
   <v-app-bar app dark height="64px" v-else>
@@ -74,6 +137,8 @@
 </template>
 
 <script>
+import { NOTIFICATION_SOUND } from '@/consts/sound';
+
 export default {
   data() {
     return {
@@ -84,8 +149,11 @@ export default {
         { text: '自習中', value: 'busy' },
         { text: '離席中', value: 'away' },
       ],
+      notifications: [], // 通知一覧
+      unreadNotificationsCount: 0, // 未読通知数
     };
   },
+
   computed: {
     isSmartphone() {
       if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
@@ -94,50 +162,82 @@ export default {
         return false;
       }
     },
+
     authCheck() {
       return this.$store.getters['auth/check'];
     },
+
     authUser() {
       return this.$store.getters['auth/user'];
     },
-    color() {
-      let color;
-      switch (this.status) {
-        case 'free':
-          color = 'green';
-          break;
-
-        case 'busy':
-          color = 'red';
-          break;
-
-        case 'away':
-          color = 'grey';
-          break;
-      }
-
-      return color;
-    },
   },
+
   watch: {
-    authCheck: async function (check, oldCheck) {
-      // ログインまたはリロード時
-      if (check && !oldCheck) {
+    authCheck: async function (check) {
+      if (check) {
         // ステータスの更新
         await this.updateStatus(this.authUser.status || 'free');
         this.status = this.authUser.status;
+
+        // 通知の取得
+        this.getNotifications();
+
+        // 通知イベントの受信開始
+        Echo.channel('user.' + this.authUser.id).listen('NotificationPosted', (event) => {
+          this.notifications = event.notifications;
+          this.unreadNotificationsCount = event.unread_notifications_count;
+
+          if (this.$store.getters['alert/isSoundOn']) {
+            NOTIFICATION_SOUND.play();
+          }
+        });
       }
     },
   },
+
   methods: {
     /**
-     * ステータス更新処理
+     * ステータスの更新
      *
      * @param {String} status - ステータス
      */
     updateStatus: async function (status) {
       await axios.post('/api/status/' + status);
-      await this.$store.dispatch('auth/syncAuthUser');
+      this.$store.dispatch('auth/syncAuthUser');
+    },
+
+    /**
+     * 通知の取得
+     */
+    getNotifications: async function () {
+      let response = await axios.get('/api/user/notifications');
+      this.notifications = response.data.notifications;
+      this.unreadNotificationsCount = response.data.unread_notifications_count;
+    },
+
+    /**
+     * 通知の既読
+     */
+    markNotificationsAsRead: async function () {
+      let response = await axios.post('/api/user/notifications');
+      this.notifications = response.data.notifications;
+      this.unreadNotificationsCount = response.data.unread_notifications_count;
+    },
+
+    /**
+     * アイテムの表示
+     *
+     * @param {String} type - タイプ
+     * @param {String|Number} item - 詳細を表示するアイテム
+     */
+    showItem: function (type, item) {
+      if (type === 'user') {
+        this.$store.dispatch('dialog/open', { type: type, username: item });
+      } else if (type === 'karte' || type === 'post') {
+        this.$store.dispatch('dialog/open', { type: type, id: item });
+      }
+
+      this.markNotificationsAsRead();
     },
   },
 };
@@ -161,5 +261,9 @@ a:hover {
     font-size: 20px;
     font-weight: bold;
   }
+}
+
+.v-list {
+  padding: 0;
 }
 </style>

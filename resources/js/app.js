@@ -14,12 +14,18 @@ Vue.prototype.$moment = require('moment');
 Vue.prototype.$storage = require('./consts/storage').getStoragePath;
 const functions = require('./plugins/functions');
 Vue.prototype.$formatStr = functions.formatStr;
+Vue.prototype.$statusColor = functions.statusColor;
+Vue.prototype.$periodColor = functions.periodColor;
+Vue.prototype.$classColor = functions.classColor;
 Vue.prototype.$slack = functions.slackPost;
 
 /**
  * Vueコンポーネントの読み込み
  */
-Vue.component('ImageInput', require('./components/form/ImageInput').default);
+Vue.component('KarteContainer', require('./components/commons/KarteContainer').default);
+Vue.component('PostContainer', require('./components/commons/PostContainer').default);
+Vue.component('ImageInput', require('./components/commons/form/ImageInput').default);
+Vue.component('ContentTable', require('./components/mystudy/docs/ContentTable').default);
 
 /**
  * Vueの定義
@@ -31,8 +37,9 @@ import vuetify from './plugins/vuetify';
 import { VueWindowSizePlugin } from 'vue-window-size/option-api';
 import VueHead from 'vue-head';
 import VueDragscroll from 'vue-dragscroll';
+import VueScrollTo from 'vue-scrollto';
 import Chat from 'vue-beautiful-chat';
-import { VueMasonryPlugin } from 'vue-masonry';
+import VueMasonryWall from 'vue-masonry-wall';
 
 Vue.use(VueWindowSizePlugin)
   .use(VueHead, {
@@ -40,8 +47,9 @@ Vue.use(VueWindowSizePlugin)
     complement: process.env.MIX_APP_NAME,
   })
   .use(VueDragscroll)
+  .use(VueScrollTo)
   .use(Chat)
-  .use(VueMasonryPlugin);
+  .use(VueMasonryWall);
 
 new Vue({
   router,

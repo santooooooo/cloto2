@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class Karte extends Model
 {
@@ -16,7 +17,7 @@ class Karte extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'body', 'achieve', 'challenge', 'reference', 'image', 'activity_time'
+        'user_id', 'roadmap_id', 'body', 'achieve', 'challenge', 'reference', 'image', 'activity_time'
     ];
 
     /**
@@ -31,7 +32,7 @@ class Karte extends Model
      *
      * @var array
      */
-    protected $appends = ['path', 'user', 'tags'];
+    protected $appends = ['path', 'user', 'tags', 'comments_count', 'favorites_count', 'favorite_id_by_auth_user'];
 
     /**
      * User モデルのリレーション
@@ -44,6 +45,16 @@ class Karte extends Model
     }
 
     /**
+     * Roadmap モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function roadmap()
+    {
+        return $this->belongsTo('App\Models\Roadmap');
+    }
+
+    /**
      * Tag モデルのリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -51,6 +62,26 @@ class Karte extends Model
     public function tags()
     {
         return $this->belongsToMany('App\Models\Tag');
+    }
+
+    /**
+     * Comment モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
+    /**
+     * Favorite モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function favorites()
+    {
+        return $this->hasMany('App\Models\Favorite');
     }
 
     /**
@@ -84,5 +115,36 @@ class Karte extends Model
     public function getTagsAttribute()
     {
         return $this->tags()->get();
+    }
+
+    /**
+     * コメント数の追加
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getCommentsCountAttribute()
+    {
+        return $this->comments()->count();
+    }
+
+    /**
+     * いいね数の追加
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getFavoritesCountAttribute()
+    {
+        return $this->favorites()->count();
+    }
+
+    /**
+     * ログインユーザーによるいいねIDの追加
+     *
+     * @return Int|Null
+     */
+    public function getFavoriteIdByAuthUserAttribute()
+    {
+        $favorite = $this->favorites()->select('id')->where('user_id', Auth::id())->first();
+        return $favorite ? $favorite->id : null;
     }
 }

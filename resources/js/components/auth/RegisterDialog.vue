@@ -78,7 +78,7 @@
                   counter
                 ></v-text-field>
 
-                <!-- <p class="ma-4">
+                <p class="ma-4">
                   当サービスを利用する前に、<br />
                   必ず<a
                     class="blue--text"
@@ -86,13 +86,16 @@
                     target="_blank"
                     rel="noopener noreferrer"
                     >アンケート</a
-                  >にご回答ください。
+                  >にご回答ください。<br />
+                  <small class="red--text"
+                    >アンケートにご回答いただかないと、当サービスのご利用ができません。また、記入漏れなどの不備があった際には、運営より連絡を差し上げる場合がございます。</small
+                  >
                 </p>
                 <v-checkbox
                   label="回答しました"
                   v-model="registerForm.checkbox"
                   :rules="registerForm.validation.checkboxRules"
-                ></v-checkbox> -->
+                ></v-checkbox>
 
                 <v-row justify="center" class="mt-4">
                   <v-btn
@@ -140,7 +143,7 @@ export default {
         password: '',
         passwordConfirmation: '',
         handlename: '',
-        // checkbox: false,
+        checkbox: false,
         showPassword: false,
         loading: false,
         validation: {
@@ -169,11 +172,7 @@ export default {
             (v) => (v && v === this.registerForm.password) || 'パスワードが一致しません。',
           ],
           handlenameRules: [(v) => !!v || '表示名は必須項目です。'],
-          // checkboxRules: [
-          //   (v) =>
-          //     !!v ||
-          //     'アンケートにご回答いただかないと、当サービスのご利用ができません。また、記入漏れなどの不備があった際には、運営より連絡を差し上げる場合がございます。',
-          // ],
+          checkboxRules: [(v) => !!v || 'アンケートの回答は必須です。'],
         },
       },
     };

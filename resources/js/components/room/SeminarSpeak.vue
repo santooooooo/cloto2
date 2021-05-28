@@ -68,7 +68,7 @@
             </template>
             <v-list max-height="200" class="bg-secondary viewer-container">
               <v-list-item v-for="viewer in viewers" :key="viewer.peerId">
-                <v-list-item-title class="d-flex" @click="showProfile(viewer.username)">
+                <v-list-item-title class="d-flex" @click="$store.dispatch('dialog/open', { type: 'user', username: viewer.username })">
                   <v-avatar size="40" class="viewer ma-1">
                     <img :src="$storage('icon') + viewer.icon" />
                   </v-avatar>
@@ -174,7 +174,12 @@
                         icon
                         x-large
                         class="account-button"
-                        @click="showProfile(speaker.username)"
+                        @click="
+                          $store.dispatch('dialog/open', {
+                            type: 'user',
+                            username: speaker.username,
+                          })
+                        "
                       >
                         <v-icon> mdi-account </v-icon>
                       </v-btn>
@@ -259,7 +264,12 @@
                         icon
                         x-large
                         class="account-button"
-                        @click="showProfile(pinnedSpeaker.username)"
+                        @click="
+                          $store.dispatch('dialog/open', {
+                            type: 'user',
+                            username: pinnedSpeaker.username,
+                          })
+                        "
                       >
                         <v-icon> mdi-account </v-icon>
                       </v-btn>
@@ -378,7 +388,12 @@
                             icon
                             x-large
                             class="account-button"
-                            @click="showProfile(speaker.username)"
+                            @click="
+                              $store.dispatch('dialog/open', {
+                                type: 'user',
+                                username: speaker.username,
+                              })
+                            "
                           >
                             <v-icon> mdi-account </v-icon>
                           </v-btn>
@@ -390,13 +405,6 @@
               </v-row>
             </v-col>
           </v-row>
-
-          <!-- プロフィールダイアログ -->
-          <ProfileDialog
-            :username="profile.username"
-            @close="profile.dialog = $event"
-            v-if="profile.dialog"
-          ></ProfileDialog>
         </v-container>
       </v-flex>
 
@@ -496,7 +504,7 @@
             <!-- ビデオオフボタン -->
             <v-btn
               :color="!isVideoOff ? 'white' : 'red'"
-              :disabled="isAudioLoading || isVideoLoading"
+              :disabled="isAudioLoading || isVideoLoading || !video"
               fab
               depressed
               :large="$vuetify.breakpoint.lg"
@@ -539,7 +547,9 @@
           <v-row justify="end">
             <!-- 通知音ボタン -->
             <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
-              <v-icon large>{{ isNotificationOn ? 'mdi-bell' : 'mdi-bell-off' }}</v-icon>
+              <v-icon large>
+                {{ isNotificationOn ? 'mdi-music-note' : 'mdi-music-note-off' }}
+              </v-icon>
             </v-btn>
 
             <!-- チャットボタン -->
@@ -593,18 +603,13 @@
 
 <script>
 import voiceDetection from 'voice-activity-detection';
-import ProfileDialog from '@/components/user/ProfileDialog';
 import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND } from '@/consts/sound';
 
 const API_KEY = process.env.MIX_SKYWAY_API_KEY;
 
 export default {
-  components: {
-    ProfileDialog,
-  },
   props: {
     callId: Number,
-    capacity: Number,
   },
   data() {
     return {
@@ -620,7 +625,7 @@ export default {
 
       //*** 通話 ***//
       participants: [], // 参加者
-      roomMode: 'mesh', // 接続モード
+      roomMode: 'sfu', // 接続モード
       peer: null, // Peer接続オブジェクト
       localStream: null, // 自分の送信データ
       call: null, // 接続プロパティ
@@ -631,6 +636,7 @@ export default {
       },
 
       //*** 入力デバイス ***//
+      video: false, // ビデオの有無
       audioDevices: [], // 音声入力デバイス一覧
       videoDevices: [], // 映像入力デバイス一覧
       selectedAudio: null, // 選択されている音声入力
@@ -655,12 +661,6 @@ export default {
         notification: false, // 通知制御
         localText: '', // 送信するメッセージ
         messages: [], // メッセージ一覧
-      },
-
-      //*** プロフィール ***//
-      profile: {
-        dialog: false, // プロフィールのダイアログ制御
-        username: null, // プロフィールを表示するユーザー名
       },
     };
   },
@@ -1018,7 +1018,7 @@ export default {
         this.screenSharing.stream = null;
 
         // 画面共有用の接続を終了
-        this.screenSharing.peer.destroy();
+        await this.screenSharing.peer.destroy();
       }
     },
 
@@ -1026,46 +1026,72 @@ export default {
      * 通話デバイスへのアクセス
      */
     accessDevice: async function () {
-      try {
-        //** 権限確認 */
-        this.permissionOverlay = true;
+      //** 権限確認 */
+      this.permissionOverlay = true;
 
-        const userMedia = await navigator.mediaDevices.getUserMedia({
+      // ビデオ通話
+      await navigator.mediaDevices
+        .getUserMedia({
           audio: true,
           video: true,
-        });
-        // デバイスの停止
-        userMedia.getTracks().forEach((track) => track.stop());
+        })
+        .then(async (stream) => {
+          // デバイスの停止
+          stream.getTracks().forEach((track) => track.stop());
 
-        //** デバイスの一覧を取得 */
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        // マイクデバイスの一覧を取得
-        this.audioDevices = devices.filter((device) => {
-          return (
-            device.kind === 'audioinput' &&
-            device.deviceId !== 'default' &&
-            device.deviceId !== 'communications'
-          );
-        });
-        // カメラデバイスの一覧を取得
-        this.videoDevices = devices.filter((device) => {
-          return (
-            device.kind === 'videoinput' &&
-            device.deviceId !== 'default' &&
-            device.deviceId !== 'communications'
-          );
-        });
+          //** デバイスの一覧を取得 */
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          // マイクデバイスの一覧を取得
+          this.audioDevices = devices.filter((device) => {
+            return (
+              device.kind === 'audioinput' &&
+              device.deviceId !== 'default' &&
+              device.deviceId !== 'communications'
+            );
+          });
+          // カメラデバイスの一覧を取得
+          this.videoDevices = devices.filter((device) => {
+            return (
+              device.kind === 'videoinput' &&
+              device.deviceId !== 'default' &&
+              device.deviceId !== 'communications'
+            );
+          });
 
-        // 初期値の設定
-        this.selectedAudio = this.audioDevices[0].deviceId;
-        this.selectedVideo = this.videoDevices[0].deviceId;
+          // 初期値の設定
+          this.selectedAudio = this.audioDevices[0].deviceId;
+          this.selectedVideo = this.videoDevices[0].deviceId;
+          this.video = true;
+          this.permissionOverlay = false;
+        })
+        .catch(async (error) => {
+          // 音声通話
+          await navigator.mediaDevices
+            .getUserMedia({
+              audio: true,
+              video: false,
+            })
+            .then(async (stream) => {
+              // デバイスの停止
+              stream.getTracks().forEach((track) => track.stop());
 
-        this.permissionOverlay = false;
-      } catch (error) {
-        // connectDeviceの例外処理で上書きされるので，これは表示されない
-        // デバイスが存在しない場合
-        this.errorEvent('マイクまたはカメラが認識できませんでした。どちらも必須です。');
-      }
+              //** デバイスの一覧を取得 */
+              const devices = await navigator.mediaDevices.enumerateDevices();
+              // マイクデバイスの一覧を取得
+              this.audioDevices = devices.filter((device) => {
+                return (
+                  device.kind === 'audioinput' &&
+                  device.deviceId !== 'default' &&
+                  device.deviceId !== 'communications'
+                );
+              });
+
+              // 初期値の設定
+              this.selectedAudio = this.audioDevices[0].deviceId;
+              this.video = false;
+              this.permissionOverlay = false;
+            });
+        });
     },
 
     /**
@@ -1082,7 +1108,7 @@ export default {
       };
 
       // 録画サイズの設定
-      if (constraints.video !== false) {
+      if (constraints.video) {
         constraints.video.width = {
           min: this.videoSize.width,
           max: this.videoSize.width,
@@ -1098,7 +1124,7 @@ export default {
         this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
 
         // 起動時はすぐにカメラを停止する
-        if (this.loading) {
+        if (this.loading && constraints.video) {
           // 接続時にはenabledで停止
           // デバイスを停止すると，相手にvideoストリームが届かない
           this.localStream.getVideoTracks()[0].enabled = false;
@@ -1325,16 +1351,6 @@ export default {
     },
 
     /**
-     * プロフィールの表示
-     *
-     * @param {String} username - プロフィールを表示するユーザー名
-     */
-    showProfile: function (username) {
-      this.profile.username = username;
-      this.profile.dialog = true;
-    },
-
-    /**
      * ツールバーの表示制御
      *
      * @param {Event} event - マウス移動イベント
@@ -1404,23 +1420,21 @@ export default {
 
     // エラー発生時のイベント
     Vue.config.errorHandler = (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     };
 
     // エラー発生時のイベント
     window.addEventListener('error', (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 
     // エラー発生時のイベント
     window.addEventListener('unhandledrejection', (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
-
-    // 定員が30人より多い場合はSFU方式を利用
-    if (this.capacity > 30) {
-      this.roomMode = 'sfu';
-    }
 
     // Peerの作成
     this.peer = new Peer({ key: API_KEY });
@@ -1514,7 +1528,7 @@ export default {
 .video {
   position: relative;
 
-  // v-hover
+  // v-hover要素に適用
   .v-overlay {
     z-index: 0 !important;
   }

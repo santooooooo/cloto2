@@ -28,7 +28,7 @@
 
 <script>
 import { OK } from '@/consts/status';
-import { RECEIVE_INQUIRY_SOUND } from '@/consts/sound';
+import { RECEIVE_CHAT_SOUND } from '@/consts/sound';
 
 export default {
   data() {
@@ -64,6 +64,9 @@ export default {
     };
   },
   computed: {
+    isDebug() {
+      return process.env.MIX_APP_DEBUG === 'true' ? true : false;
+    },
     authUser() {
       return this.$store.getters['auth/user'];
     },
@@ -153,20 +156,6 @@ export default {
           text: process.env.MIX_APP_NAME + 'へようこそ！',
         },
       },
-      // {
-      //   author: 'support',
-      //   type: 'text',
-      //   data: {
-      //     text: '皆さまへの適切な学習方法をご提案するために、1分程度のアンケートにお答えください！',
-      //   },
-      // },
-      // {
-      //   author: 'support',
-      //   type: 'text',
-      //   data: {
-      //     text: 'https://forms.gle/Lt714ek8fGBAmZzT9',
-      //   },
-      // },
       {
         author: 'support',
         type: 'text',
@@ -175,9 +164,27 @@ export default {
         },
       }
     );
+    this.messages.push(
+      {
+        author: 'support',
+        type: 'text',
+        data: {
+          text: '発生中のバグ一覧：https://spark.adobe.com/page/Kr5Vq5g5J2wbf',
+        },
+      },
+      {
+        author: 'support',
+        type: 'text',
+        data: {
+          text: '修正完了まで今しばらくお待ち下さい。',
+        },
+      }
+    );
 
     // ログイン時に自動展開
-    this.open();
+    if (!this.isDebug) {
+      this.open();
+    }
 
     // 問い合わせイベントの受信開始
     Echo.channel('user.' + this.authUser.id).listen('InquiryPosted', (event) => {
@@ -190,7 +197,7 @@ export default {
       // 通知
       if (!this.isOpen) {
         if (this.$store.getters['alert/isSoundOn']) {
-          RECEIVE_INQUIRY_SOUND.play();
+          RECEIVE_CHAT_SOUND.play();
         }
         const inquiry = document.getElementsByClassName('sc-launcher')[0];
         inquiry.classList.add('notification');

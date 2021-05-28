@@ -26,7 +26,7 @@ class InquiryController extends Controller
     public function __construct(Inquiry $inquiry)
     {
         $this->middleware(function ($request, $next) {
-            $this->user = Auth::user();
+            $this->auth = Auth::user();
             return $next($request);
         });
 
@@ -42,7 +42,7 @@ class InquiryController extends Controller
     public function index()
     {
         $inquiries = [];
-        foreach ($this->user->inquiries as $inquiry) {
+        foreach ($this->auth->inquiries as $inquiry) {
             $inquiry->data += ['meta' => (new Carbon($inquiry->created_at))->format('H時i分')];
 
             array_push($inquiries, [
@@ -64,7 +64,7 @@ class InquiryController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['user_id'] = $this->user->id;
+        $data['user_id'] = $this->auth->id;
 
         $result = $this->inquiry->create($data);
 
@@ -73,7 +73,7 @@ class InquiryController extends Controller
         }
 
         // 投稿したデータを送信
-        broadcast(new InquiryPosted($this->user, $result));
+        broadcast(new InquiryPosted($this->auth, $result));
 
         // // 管理者全員にメール通知
         // foreach (Admin::all() as $admin) {
@@ -84,7 +84,7 @@ class InquiryController extends Controller
         //             'from' => config('mail.system.address'),
         //             'from_name' => config('mail.system.name'),
         //             'subject' => '【お問い合わせ】- ' . config('app.name'),
-        //             'handlename' => $this->user->handlename,
+        //             'handlename' => $this->auth->handlename,
         //             'body' => $data['data']['text']
         //         ]));
         //     } catch (Exception $e) {

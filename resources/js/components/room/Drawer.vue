@@ -61,9 +61,10 @@
       <div class="pa-2" v-else>
         <v-btn block depressed color="error" @click="$emit('leave-room')">退席</v-btn>
 
-        <v-btn block depressed color="#f6bf00" dark @click="$emit('input-karte')" class="mt-3">
+        <v-btn block depressed color="#f6bf00" dark @click="kartePostDialog = true" class="mt-3">
           カルテ記入
         </v-btn>
+        <KartePostDialog @close="kartePostDialog = $event" v-if="kartePostDialog" />
 
         <v-card class="mt-5 pa-1 grey darken-1 text-center">
           <v-container>
@@ -130,9 +131,13 @@
 </template>
 
 <script>
+import KartePostDialog from '@/components/commons/KartePostDialog';
 import { OK } from '@/consts/status';
 
 export default {
+  components: {
+    KartePostDialog,
+  },
   props: {
     roomName: String,
     roomStatus: String,
@@ -140,6 +145,7 @@ export default {
   },
   data() {
     return {
+      kartePostDialog: false, // カルテ投稿ダイアログの制御
       inProgress: {
         max: 200, // 入力最大長
         loading: false, // ローディング制御
@@ -171,7 +177,7 @@ export default {
       if (this.inProgress.body !== (this.authUser.in_progress || '')) {
         this.inProgress.loading = true;
 
-        let response = await axios.post('/api/users', {
+        let response = await axios.post('/api/user', {
           _method: 'patch',
           in_progress: this.inProgress.body,
         });

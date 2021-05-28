@@ -15,6 +15,133 @@ export function formatStr(str) {
 }
 
 /**
+ * ステータスの色の取得
+ *
+ * @param {String} status - ステータス
+ * @return {String} 色
+ */
+export function statusColor(status) {
+  let color;
+  switch (status) {
+    case 'free':
+      color = 'green';
+      break;
+
+    case 'busy':
+      color = 'red';
+      break;
+
+    case 'away':
+      color = 'grey';
+      break;
+  }
+
+  return color;
+}
+
+/**
+ * 期の色の取得
+ *
+ * @param {String} period - 期
+ * @return {String} 色
+ */
+export function periodColor(period) {
+  let color;
+  switch (period) {
+    case 'introduction':
+      color = '#42a5f5';
+      break;
+
+    case 'beginner':
+      color = '#0d47a1';
+      break;
+
+    case 'intermediate':
+      color = '#4caf50';
+      break;
+
+    case 'advanced':
+      color = '#ff9800';
+      break;
+
+    case 'expert':
+      color = '#f44336';
+      break;
+
+    default:
+      color = '#9e9e9e';
+      break;
+  }
+
+  return color;
+}
+
+/**
+ * クラスの色の取得
+ *
+ * @param {Number} classNumber - クラス番号
+ * @return {String} 色
+ */
+export function classColor(classNumber) {
+  let color;
+  switch (classNumber) {
+    case 0:
+      color = '#42a5f5';
+      break;
+
+    case 1:
+      color = '#5c93e6';
+      break;
+
+    case 2:
+      color = '#2e77e6';
+      break;
+
+    case 3:
+      color = '#0d47a1';
+      break;
+
+    case 4:
+      color = '#00b050';
+      break;
+
+    case 5:
+      color = '#70ad47';
+      break;
+
+    case 6:
+      color = '#92d050';
+      break;
+
+    case 7:
+      color = '#ccc900';
+      break;
+
+    case 8:
+      color = '#e6bd45';
+      break;
+
+    case 9:
+      color = '#ffcc33';
+      break;
+
+    case 10:
+      color = '#ffc000';
+      break;
+
+    case 11:
+      color = '#f44336';
+      break;
+
+    default:
+      color = '#9e9e9e';
+      break;
+  }
+
+  return color;
+}
+
+/**
  * Slack通知
  *
  * @param {String} username - 投稿するユーザー名
