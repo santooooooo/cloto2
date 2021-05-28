@@ -63,7 +63,7 @@
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn class="ma-16 bg-warning text-white font-weight-bold" v-bind="attrs" v-on="on">
-                参加人数：{{ viewers.length }}
+                参加人数：{{ viewers.length + 1 }}
               </v-btn>
             </template>
             <v-list max-height="200" class="bg-secondary viewer-container">
