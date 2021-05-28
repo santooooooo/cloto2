@@ -598,7 +598,6 @@ export default {
       // データ到着イベント
       this.call.on('data', async ({ data, src }) => {
         // 送信者が取得されるまで待機
-        // console.log('call on data');
         let sender;
         for (let i = 0; i < 50; i++) {
           // 参加直後，this.participantsへの追加前に検索されるので回避
@@ -769,7 +768,6 @@ export default {
       let isJoin = !this.participants.some((participant) => participant.peerId === peerId);
 
       if (isJoin) {
-        console.log('joinViewr Event');
         // 現在の自分の状態を送信（新規参加者に現在の状態を通知）
         this.call.send({ type: 'joinViewerData', content: this.authUser });
         // 現在のトピックを送信
