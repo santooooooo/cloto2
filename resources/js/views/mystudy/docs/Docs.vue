@@ -1,25 +1,25 @@
 <template>
   <v-container id="docs">
     <div v-if="$route.params.roadName === 'javascript'">
-      <JavaScript0 @next="next()" v-if="currentClass === 0" />
-      <JavaScript1 @next="next()" v-else-if="currentClass === 1" />
-      <JavaScript2 @next="next()" v-else-if="currentClass === 2" />
-      <JavaScript3 @next="next()" v-else-if="currentClass === 3" />
-      <JavaScript4 @next="next()" v-else-if="currentClass === 4" />
-      <JavaScript5 @next="next()" v-else-if="currentClass === 5" />
-      <JavaScript6 @next="next()" v-else-if="currentClass === 6" />
-      <JavaScript7 @next="next()" v-else-if="currentClass === 7" />
-      <JavaScript8 @next="next()" v-else-if="currentClass === 8" />
-      <JavaScript9 @next="next()" v-else-if="currentClass === 9" />
-      <JavaScript10 @next="next()" v-else-if="currentClass === 10" />
+      <JavaScript0 @karte-post="kartePost()" @next="next()" v-if="currentClass === 0" />
+      <JavaScript1 @karte-post="kartePost()" @next="next()" v-else-if="currentClass === 1" />
+      <JavaScript2 @karte-post="kartePost()" @next="next()" v-else-if="currentClass === 2" />
+      <JavaScript3 @karte-post="kartePost()" @next="next()" v-else-if="currentClass === 3" />
+      <JavaScript4 @karte-post="kartePost()" @next="next()" v-else-if="currentClass === 4" />
+      <JavaScript5 @karte-post="kartePost()" @next="next()" v-else-if="currentClass === 5" />
+      <JavaScript6 @karte-post="kartePost()" @next="next()" v-else-if="currentClass === 6" />
+      <JavaScript7 @karte-post="kartePost()" @next="next()" v-else-if="currentClass === 7" />
+      <JavaScript8 @karte-post="kartePost()" @next="next()" v-else-if="currentClass === 8" />
+      <JavaScript9 @karte-post="kartePost()" @next="next()" v-else-if="currentClass === 9" />
+      <JavaScript10 @karte-post="kartePost()" @next="next()" v-else-if="currentClass === 10" />
       <JavaScriptClear v-else-if="currentClass > 10" />
     </div>
 
     <KartePostDialog
-      :roadmapId="authUser.roadmaps[0].id"
-      @close="kartePostDialog = $event"
+      :roadmapId="karte.roadmapId"
+      @close="karte.dialog = $event"
       @next-class="nextClass()"
-      v-if="kartePostDialog"
+      v-if="karte.dialog"
     />
 
     <!-- クリア祝いダイアログ -->
@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import KartePostDialog from '@/components/commons/KartePostDialog';
 import JavaScript0 from '@/views/mystudy/docs/javascript/Class0';
 import JavaScript1 from '@/views/mystudy/docs/javascript/Class1';
 import JavaScript2 from '@/views/mystudy/docs/javascript/Class2';
@@ -57,12 +56,14 @@ import { OK } from '@/consts/status';
 export default {
   data() {
     return {
-      kartePostDialog: false, // カルテ投稿ダイアログの制御
+      karte: {
+        dialog: false, // カルテ投稿ダイアログの制御
+        roadmapId: null, // カルテを紐付けるロードマップID
+      },
       congratulationDialog: false, // クリア祝いダイアログの制御
     };
   },
   components: {
-    KartePostDialog,
     JavaScript0,
     JavaScript1,
     JavaScript2,
@@ -86,6 +87,15 @@ export default {
   },
   methods: {
     /**
+     * カルテの投稿
+     *
+     * @param {Number} roadmapId - カルテを紐付けるロードマップID
+     */
+    kartePost: function (roadmapId = null) {
+      this.karte.roadmapId = roadmapId;
+      this.karte.dialog = true;
+    },
+    /**
      * 次へ進むボタン押下時の処理
      */
     next: function () {
@@ -100,7 +110,7 @@ export default {
         this.congratulationDialog = false;
       } else if (this.currentClass === this.authUser.roadmaps[0].in_progress) {
         // 進行中のクラスから進む場合はカルテを記入
-        this.kartePostDialog = true;
+        this.kartePost(this.authUser.roadmaps[0].id);
       }
     },
     /**
