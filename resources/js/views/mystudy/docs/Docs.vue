@@ -134,6 +134,10 @@ export default {
       h2 {
         border-left: 6px solid $dark-blue;
       }
+      
+      .agenda {
+        list-style: none;
+      }
 
       p,
       ul,
