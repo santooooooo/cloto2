@@ -1,6 +1,6 @@
 <template>
   <v-container id="docs">
-    <div v-if="$route.params.roadName === 'javascript'">
+    <div v-if="currentRoad === 'javascript'">
       <JavaScript0 @karte-post="kartePost()" @next="next()" v-if="currentClass === 0" />
       <JavaScript1 @karte-post="kartePost()" @next="next()" v-else-if="currentClass === 1" />
       <JavaScript2 @karte-post="kartePost()" @next="next()" v-else-if="currentClass === 2" />
@@ -26,7 +26,7 @@
     <v-dialog persistent v-model="congratulationDialog" width="80%">
       <v-card>
         <div class="text-center">
-          <v-img contain :src="$storage('system') + 'card.png'"></v-img>
+          <v-img contain :src="$docs(currentRoad, 'class' + currentClass) + 'clear.png'"></v-img>
         </div>
 
         <v-card-actions>
@@ -81,7 +81,12 @@ export default {
     authUser() {
       return this.$store.getters['auth/user'];
     },
+    currentRoad() {
+      // 現在閲覧中のロード
+      return this.$route.params.roadName;
+    },
     currentClass() {
+      // 現在閲覧中のクラス
       return Number(this.$route.params.class);
     },
   },
@@ -144,7 +149,7 @@ export default {
       h2 {
         border-left: 6px solid $dark-blue;
       }
-      
+
       .agenda {
         list-style: none;
       }
