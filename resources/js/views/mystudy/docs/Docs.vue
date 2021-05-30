@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import KartePostDialog from '@/components/commons/KartePostDialog';
 import JavaScript0 from '@/views/mystudy/docs/javascript/Class0';
 import JavaScript1 from '@/views/mystudy/docs/javascript/Class1';
 import JavaScript2 from '@/views/mystudy/docs/javascript/Class2';
@@ -65,7 +64,6 @@ export default {
     };
   },
   components: {
-    KartePostDialog,
     JavaScript0,
     JavaScript1,
     JavaScript2,

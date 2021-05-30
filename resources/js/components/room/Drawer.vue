@@ -131,13 +131,9 @@
 </template>
 
 <script>
-import KartePostDialog from '@/components/commons/KartePostDialog';
 import { OK } from '@/consts/status';
 
 export default {
-  components: {
-    KartePostDialog,
-  },
   props: {
     roomName: String,
     roomStatus: String,
