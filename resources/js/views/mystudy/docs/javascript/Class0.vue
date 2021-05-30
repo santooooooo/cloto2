@@ -204,6 +204,9 @@
           <p class="font-weight-bolder">
             今、この時が、プログラミング学習を始める最良のタイミングです！
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 0-3 -->
@@ -230,6 +233,9 @@
             CLOTOではあくまで学習者各自の「独学」を主とし、その過程で必要な情報や環境が用意されています。<br />
             上手に使いこなし、「玄人エンジニア」になりましょう！
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 1-0 -->
@@ -305,6 +311,9 @@
           </ol>
 
           <p>これから体系的に一生使える「プログラミング独学」法を学んでいきましょう！</p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 1-1 -->
@@ -354,6 +363,9 @@
             その結果に対して全ての責任が自身にあることを深く理解していればこそ、<br />
             謙虚で、なおかつパワフルな学習ができるのではないでしょうか。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 1-2 -->
@@ -387,6 +399,9 @@
             「プログラミング独学」においてこの「アウトプット至上主義」は常に意識し続けましょう。
           </p>
           <p>CLOTOではこれらのアウトプットをスムーズに行うことができる環境を整備していきます。</p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 1-3 -->
@@ -439,6 +454,9 @@
             「プログラミング独学」が独学たる所以は、<br />
             自分で学習の管理をしながら進めていくことが求められる点にあります。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 1-4 -->
@@ -474,6 +492,9 @@
             CLOTOでは他者との交流をなるべくストレスなく行えるように製品設計をしていきます。
             どんどん活用して、爆速で成長していきましょう！
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 1-5 -->
@@ -495,6 +516,9 @@
             自分にとって最適な学習効果が得られるように創意工夫することも重要な力です。<br />
             是非CLOTOを使いこなしてみてください！
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 2-0 -->
@@ -504,6 +528,9 @@
           </h2>
 
           <p>さて、私たちがこれから学習していくプログラミングとは一体何なのでしょうか。</p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 2-1 -->
@@ -529,6 +556,9 @@
           <p>
             目的や用途によってプログラミング言語の種類やその実装方法も多岐にわたるため、<br />ひと口にプログラミングと言っても非常に幅の広いものになっています。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 2-2 -->
@@ -663,6 +693,9 @@
             普段PCを使っているまさにその瞬間に、PCの中で何が起こっており、<br />自分が何をしているのかがよくわかり非常に面白いです。<br />
             ぜひお時間がある時に調べてみてください。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 2-3 -->
@@ -789,6 +822,9 @@
             有意義な情報を聞き逃したり、全く理解できなかったりして、<br />その場を過ごしてしまうのは非常にもったいないので、<br />
             少し、基礎を学習していきましょう。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 2-4 -->
@@ -1026,6 +1062,9 @@
             CLOTO内で交流する際に、話題も広がり、<br />
             そこから学びとれる情報の質もきっと上がることでしょう。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 2-5 -->
@@ -1052,6 +1091,9 @@
           </ol>
 
           <p>それぞれをもう少し観にいきましょう。</p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 2-6 -->
@@ -1143,6 +1185,9 @@
             もちろん分類としてここに入りらない専門領域などもあるので、<br />
             ぜひ興味を持って調べてみてください。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 2-7 -->

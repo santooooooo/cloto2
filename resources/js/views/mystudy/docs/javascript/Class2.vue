@@ -5,7 +5,7 @@
       <ContentTable :period="period" :contents="contents" />
 
       <v-col cols="8" id="content">
-        <div class="mb-4 pa-4" id="class1-desc">
+        <div class="mb-4 pa-4" id="class2-desc">
           <h1 class="text-h4 text-center mb-12">{{ title }}</h1>
         </div>
 
@@ -56,6 +56,9 @@
           </p>
 
           <p>CLOTOの用意している記事を参考に、どんどん調べ学習をしていきましょう。</p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="search">
@@ -89,6 +92,9 @@
             効率と、忍耐強さが求められるもので、調べる力の不足で困難が解決できず、<br />
             学習から離脱してしまう人が多いようです。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="search-how">
@@ -206,6 +212,9 @@
             Webブラウザの検索エンジンの仕組みなども調べてみると、<br />
             よりヒットしやすい言葉を選ぶことができるようになるかもしれませんよ。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="question-how">
@@ -268,6 +277,9 @@
             CLOTOでは他の学習者がどのコースのどのクラスの人かがわかるようになっています。<br />
             コミュニティやタイムラインで、自分に近い人を見つけたら積極的に質問や交流をしてみてください！
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="en-lang">
@@ -290,6 +302,9 @@
             わからない箇所を疑問形にして投稿することで、アドバイスがもらえるかもしれません。
             積極的に活用していきましょう。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="pubhos">
@@ -321,6 +336,9 @@
           <p class="font-weight-bolder">何事も継続が一番です。学習したら記録をつけて公開する。</p>
 
           <p>この一連の流れを、欠かさずに行いましょう。</p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="seisaku">
@@ -334,6 +352,9 @@
           </p>
 
           <p>まずはこれから取り組んでいくことについて調べ学習をしていきます。</p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="about-web">
@@ -373,6 +394,9 @@
           </p>
 
           <p>これら一連の仕組みをWebというのです。</p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="page-site">
@@ -419,9 +443,12 @@
           <p>
             では、具体的にどのようにクライアントとサーバーがやりとりをしているのか、見ていきましょう。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
-        <v-container fluid class="mb-12" id="">
+        <v-container fluid class="mb-12" id="system">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3"> Webページの構成と表示の仕組み </span>
           </h2>
@@ -454,6 +481,9 @@
             サーバーはこれに対し、「レスポンス」を返します。<br />
             これにより、クライアント側のWebブラウザ上にWebページを表示することができます。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="difference">
@@ -483,6 +513,9 @@
             今回このコースでみなさんが目標にするのは、Web制作ができるようになること、<br />
             そしてWebサイトを用いて、情報を適切に伝えることです。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="web-rec">
@@ -595,11 +628,6 @@ export default {
     },
   },
   data() {
-    //   <v-container fluid class="mb-12" id="">
-    // <h2 class="text-h4 font-weight-bold mb-10">
-    //   <span class="pl-3 grey lighten-3"></span>
-    // </h2>
-    // </v-container>
     return {
       title: ' Class 2', // コンテンツタイトル
       contents: [

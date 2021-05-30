@@ -135,6 +135,9 @@
             技術だけでなく、自分自身も磨き上げていきましょう。<br />
             これが「プログラミング独学」です。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="five-steps">
@@ -235,6 +238,9 @@
             この入門期から玄人期までの学習者が使うことができる、<br />
             バーチャル学習施設とそのシステムこそがCLOTOです。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="susume">
@@ -256,6 +262,9 @@
             これまでCLOTOの提唱する、プログラミング学習について見てきましたが、<br />
             実際にどのような仕組みを用いているのか簡単に紹介していきます。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="">
@@ -347,7 +356,10 @@
             検定への挑戦に向けた学習をするコースです。
           </p>
 
-          <p>β版では、プログラミングで「伝える」コースのみを開設しています（順次開講）。</p>
+          <p>β 版では、プログラミングで「伝える」コースのみを開設しています（順次開講）。</p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="load-intro">
@@ -367,6 +379,9 @@
             この具体的な開発環境、開発方法ごとに小さく分類されたものをロードと呼んでいます。<br />
             随時増やしていくので楽しみにしていてください。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="class-intro">
@@ -385,6 +400,9 @@
             したがってクラスも0~11の12段階あります。<br />
             一つ一つクリアしていくことで、確実に玄人に近づける仕組みになっています。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="">
@@ -415,6 +433,9 @@
             或いは自分と同じコースで、自分よりクラスが進んでいる人と交流することや、<br />
             同じコースの玄人と交流すればより速い成長が見込めるでしょう。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="calte-intro">
@@ -434,6 +455,9 @@
             その日に何を学んだかを残し、のちに見返すことができるようになる。<br />
             他の学習者と交流するきっかけになったり、質問する際に相手に伝わりやすくなったりする。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="event-intro">
@@ -449,7 +473,10 @@
             LT大会を開いたりしていこうと考えています。
           </p>
 
-          <p>人脈形成や、教材からは得ることのできない成長機会ですので奮ってご参加ください。</p>
+          <p>人 脈形成や、教材からは得ることのできない成長機会ですので奮ってご参加ください。</p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="">
@@ -472,6 +499,9 @@
             しっかりとした心理的土台を作り目標を据えることで、<br />
             今後ぶれてしまうことなく学習を進めていくことができるでしょう。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="why">
@@ -506,6 +536,9 @@
             より具体的な言葉で理由を書き出してみましょう。
             <!-- ブレストタイムです！ -->
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="experience">
@@ -532,6 +565,9 @@
             今一度、どのようなタイミングで何に影響を受けたのか。<br />
             あるいは誰に影響を受けたのか。じっくりと思い出してみましょう。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="">
@@ -551,6 +587,9 @@
             それともプログラミングそのものが楽しくて仕方ないのでしょうか。<br />
             プログラミング学習を志すきっかけとなった出来事をしっかりと思い浮かべてみましょう。
           </p>
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <v-container fluid class="mb-12" id="tell">
