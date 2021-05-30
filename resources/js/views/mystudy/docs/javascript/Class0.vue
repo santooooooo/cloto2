@@ -144,6 +144,10 @@
             あなたのプログラミング学習を通じて得る必要があると考えています。<br />
             そのためには後述する「独学」が欠かせません。
           </p>
+
+          <v-row justify="center" class="mt-10">
+            <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+          </v-row>
         </v-container>
 
         <!-- 0-2 -->
