@@ -16,6 +16,7 @@
       </template>
     </side-catalog>
 
+    <!-- コンテンツ -->
     <div v-if="currentRoad === 'javascript'">
       <JavaScript0 @karte-post="kartePost()" @next="next()" v-if="currentClass === 0" />
       <JavaScript1 @karte-post="kartePost()" @next="next()" v-else-if="currentClass === 1" />
@@ -31,6 +32,7 @@
       <JavaScriptClear v-else-if="currentClass > 10" />
     </div>
 
+    <!-- カルテ投稿ダイアログ -->
     <KartePostDialog
       :roadmapId="karte.roadmapId"
       @close="karte.dialog = $event"
