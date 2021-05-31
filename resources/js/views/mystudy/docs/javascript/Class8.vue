@@ -75,12 +75,6 @@ export default {
   data() {
     return {
       title: 'こんてんつ8', // コンテンツタイトル
-      contents: [
-        { id: '#buy', title: '0-1. ダミー1', activeStart: 0, activeEnd: 596 },
-        { id: '#suggest', title: '0-2. ダミー2', activeStart: 596, activeEnd: 1130 },
-        { id: '#cut', title: '0-3. ダミー3', activeStart: 1130, activeEnd: 99999 },
-      ], // 目次データ
-
       filePath: this.$docs(this.$route.params.roadName, 'class' + Number(this.$route.params.class)), // コンテンツデータのパス
     };
   },

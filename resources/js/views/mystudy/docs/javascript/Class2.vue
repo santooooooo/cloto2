@@ -616,37 +616,6 @@ export default {
   data() {
     return {
       title: ' Class 2', // コンテンツタイトル
-      contents: [
-        { id: '#class2-desc', title: '0-0. Class2', activeStart: 0, activeEnd: 596 },
-        { id: '#search-rec', title: '1-0. 調べ学習のすゝめ', activeStart: 0, activeEnd: 596 },
-        { id: '#search', title: '1-1. 調べる', activeStart: 0, activeEnd: 596 },
-        { id: '#search-how', title: '1-2. 検索の仕方', activeStart: 0, activeEnd: 596 },
-        { id: '#question-how', title: '1-3. 質問の仕方', activeStart: 0, activeEnd: 596 },
-        { id: '#en-lang', title: '1-4. 学びを言語化しよう', activeStart: 0, activeEnd: 596 },
-        {
-          id: '#pubhos',
-          title: '1-5. パブリックホスティングの重要性',
-          activeStart: 0,
-          activeEnd: 596,
-        },
-        { id: '#seisaku', title: '2-0. Web制作', activeStart: 0, activeEnd: 596 },
-        { id: '#about-web', title: '2-1. Webとは', activeStart: 0, activeEnd: 596 },
-        { id: '#page-site', title: '2-2. Webページ・Webサイト', activeStart: 0, activeEnd: 596 },
-        {
-          id: '#system',
-          title: '2-3. Webページの構成と表示の仕組み',
-          activeStart: 0,
-          activeEnd: 596,
-        },
-        {
-          id: '#difference',
-          title: '2-4. WebサイトとWebアプリの違い',
-          activeStart: 0,
-          activeEnd: 596,
-        },
-        { id: '#web-rec', title: '2-5. Web制作のすゝめ', activeStart: 0, activeEnd: 596 },
-      ], // 目次データ
-
       filePath: this.$docs(this.$route.params.roadName, 'class' + Number(this.$route.params.class)), // コンテンツデータのパス
     };
   },

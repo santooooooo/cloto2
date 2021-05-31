@@ -567,21 +567,6 @@ export default {
   data() {
     return {
       title: 'Class 4', // コンテンツタイトル
-      contents: [
-        { id: '#class4-desc', title: '0-0. Class4', activeStart: 0, activeEnd: 596 },
-        { id: '#html', title: '1-1. HTMLの学習', activeStart: 0, activeEnd: 596 },
-        { id: '#CSS', title: '1-2. CSSの学習', activeStart: 0, activeEnd: 596 },
-        { id: '#Bootstrap', title: '1-3. Bootstrapの学習', activeStart: 0, activeEnd: 596 },
-        { id: '#js', title: '1-4. JavaScriptの学習', activeStart: 0, activeEnd: 596 },
-        { id: '#jq', title: '1-5. jQueryの学習', activeStart: 0, activeEnd: 596 },
-        { id: '#make-env', title: '2-1. Web制作の開発環境', activeStart: 0, activeEnd: 596 },
-        { id: '#should-search', title: '2-2. 調べるべきこと', activeStart: 0, activeEnd: 596 },
-        { id: '#recommend', title: '3-0. おすすめ教材', activeStart: 0, activeEnd: 596 },
-        { id: '#book', title: '3-1. 参考書', activeStart: 0, activeEnd: 596 },
-        { id: '#document', title: '3-2. 公式ドキュメント', activeStart: 0, activeEnd: 596 },
-        { id: '#dotinstall', title: '3-3. ドットインストール', activeStart: 0, activeEnd: 596 },
-      ], // 目次データ
-
       filePath: this.$docs(this.$route.params.roadName, 'class' + Number(this.$route.params.class)), // コンテンツデータのパス
     };
   },

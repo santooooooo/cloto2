@@ -374,20 +374,6 @@ export default {
   data() {
     return {
       title: 'Class 5', // コンテンツタイトル
-      contents: [
-        { id: '#class5-desc', title: '0-0. Class5', activeStart: 0, activeEnd: 596 },
-        { id: '#recommend', title: '1-0. 模写学習のすゝめ', activeStart: 0, activeEnd: 596 },
-        { id: '#set-rule', title: '1-1. 模写学習のルールを決める', activeStart: 0, activeEnd: 596 },
-        { id: '#method', title: '1-2. 効果的な模写学習の方法', activeStart: 0, activeEnd: 596 },
-        { id: '#browser', title: '2-0. Webブラウザの活用', activeStart: 0, activeEnd: 596 },
-        { id: '#devtool', title: '2-1. 開発者ツール', activeStart: 0, activeEnd: 596 },
-        { id: '#file', title: '2-2. ファイル構造の理解と確認 ', activeStart: 0, activeEnd: 596 },
-        { id: '#kyozai', title: '3-0. おすすめの模写学習教材 ', activeStart: 0, activeEnd: 596 },
-        { id: '#codestep', title: '3-1. Codestep', activeStart: 0, activeEnd: 596 },
-        { id: '#youtube', title: '3-2. Youtube', activeStart: 0, activeEnd: 596 },
-        { id: '#other', title: '3-3. その他', activeStart: 0, activeEnd: 596 },
-      ], // 目次データ
-
       filePath: this.$docs(this.$route.params.roadName, 'class' + Number(this.$route.params.class)), // コンテンツデータのパス
     };
   },

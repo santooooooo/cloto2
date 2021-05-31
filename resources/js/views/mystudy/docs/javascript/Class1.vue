@@ -651,34 +651,6 @@ export default {
   data() {
     return {
       title: 'Class 1', // コンテンツタイトル
-      contents: [
-        { id: '#class1-desc', title: '0-0. Class1', activeStart: 0, activeEnd: 596 },
-        { id: '#overview', title: '1-1. プログラミング学習の概要', activeStart: 0, activeEnd: 596 },
-        {
-          id: '#five-steps',
-          title: '1-2. プログラミング学習の5段階',
-          activeStart: 0,
-          activeEnd: 596,
-        },
-        { id: '#susume', title: '2-0. CLOTO利用のすゝめ', activeStart: 0, activeEnd: 596 },
-        { id: '#course-intro', title: '2-1. コースの紹介', activeStart: 0, activeEnd: 596 },
-        { id: '#load-intro', title: '2-2. ロードの紹介', activeStart: 0, activeEnd: 596 },
-        { id: '#class-intro', title: '2-3. クラスの紹介', activeStart: 0, activeEnd: 596 },
-        { id: '#comunity-intro', title: '2-4. コミュニティの紹介', activeStart: 0, activeEnd: 596 },
-        { id: '#calte-intro', title: '2-5. カルテの紹介', activeStart: 0, activeEnd: 596 },
-        { id: '#event-intro', title: '2-6. イベントの紹介', activeStart: 0, activeEnd: 596 },
-        { id: '#motivate', title: '3-0. 立志', activeStart: 0, activeEnd: 596 },
-        {
-          id: '#why',
-          title: '3-1. あなたはなぜプログラミングを学ぶのか',
-          activeStart: 0,
-          activeEnd: 596,
-        },
-        { id: '#experience', title: '3-2. 原体験を探る', activeStart: 0, activeEnd: 596 },
-        { id: '#How', title: '3-3. どうなりたいのか', activeStart: 0, activeEnd: 596 },
-        { id: '#tell', title: '3-4. 目標宣言する', activeStart: 0, activeEnd: 596 },
-      ], // 目次データ
-
       filePath: this.$docs(this.$route.params.roadName, 'class' + Number(this.$route.params.class)), // コンテンツデータのパス
     };
   },

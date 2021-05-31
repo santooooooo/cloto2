@@ -381,21 +381,6 @@ export default {
   data() {
     return {
       title: 'Class 3', //コンテンツタイトル
-      contents: [
-        { id: '#class3-desc', title: '0-0. Class3', activeStart: 0, activeEnd: 596 },
-        {
-          id: '#recommend',
-          title: '1-0. おすすめチュートリアルサービス',
-          activeStart: 0,
-          activeEnd: 596,
-        },
-        { id: '#progate', title: '1-1. progate', activeStart: 0, activeEnd: 596 },
-        { id: '#dotinstall', title: '1-2. ドットインストール', activeStart: 0, activeEnd: 596 },
-        { id: '#paiza', title: '1-3. Paizaラーニング', activeStart: 0, activeEnd: 596 },
-        { id: '#udemy', title: '1-4. Udemy', activeStart: 0, activeEnd: 596 },
-        { id: '#youtube', title: '1-5. Youtube', activeStart: 0, activeEnd: 596 },
-      ], //目次データ
-
       filePath: this.$docs(this.$route.params.roadName, 'class' + Number(this.$route.params.class)), //コンテンツデータのパス
     };
   },

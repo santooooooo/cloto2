@@ -409,43 +409,6 @@ export default {
   data() {
     return {
       title: 'Class 6', // コンテンツタイトル
-      contents: [
-        { id: '#classdesc', title: '0-0. Class6', activeStart: 0, activeEnd: 596 },
-        { id: '#begin', title: '1-0. 初制作のすゝめ', activeStart: 0, activeEnd: 596 },
-        { id: '#intro-hp', title: '2-0. 「自己紹介HP」を創る', activeStart: 0, activeEnd: 596 },
-        {
-          id: '#need',
-          title: '2-1. 「自己紹介」HP制作における必須項目',
-          activeStart: 0,
-          activeEnd: 596,
-        },
-        { id: '#theme', title: '2-2. テーマを決める', activeStart: 0, activeEnd: 596 },
-        { id: '#pages', title: '2-3. ページ構成を考える', activeStart: 0, activeEnd: 596 },
-        {
-          id: '#info',
-          title: '2-4. ページごとに載せる情報を考える',
-          activeStart: 0,
-          activeEnd: 596,
-        },
-        {
-          id: '#atmosphere',
-          title: '2-5. 各ページの雰囲気を考える',
-          activeStart: 0,
-          activeEnd: 596,
-        },
-        { id: '#align', title: '2-6. 配置などを手書きする', activeStart: 0, activeEnd: 596 },
-        { id: '#equip', title: '2-7. 素材を用意する', activeStart: 0, activeEnd: 596 },
-        { id: '#coding', title: '2-8. コーディングする', activeStart: 0, activeEnd: 596 },
-        {
-          id: '#framework',
-          title: '3-0. フレームワーク利用のすゝめ',
-          activeStart: 0,
-          activeEnd: 596,
-        },
-        { id: '#open', title: '4-0. Webページ公開のすゝめ', activeStart: 0, activeEnd: 596 },
-        { id: '#githubpages', title: '4-1. GitHub Pages', activeStart: 0, activeEnd: 596 },
-      ], // 目次データ
-
       filePath: this.$docs(this.$route.params.roadName, 'class' + Number(this.$route.params.class)), // コンテンツデータのパス
     };
   },
