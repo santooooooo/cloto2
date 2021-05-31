@@ -1,19 +1,21 @@
-<!-- 画像が必要な時 -->
-<!-- <v-row>
-            <v-col cols="6">
-              <p >ダミー</p>
-            </v-col>
-            <v-col cols="6">
-              <v-img
-                max-width="90%"
-                max-height="60vh"
-                :src="filePath + '1.png'"
-                class="mb-10"
-              ></v-img>
-            </v-col>
-          </v-row> -->
 <template>
-  <v-container id="docs">
+  <!-- 画像が必要な時 -->
+  <!-- <v-row>
+    <v-col cols="6">
+      <p>ダミー</p>
+    </v-col>
+    <v-col cols="6">
+      <v-img max-width="90%" max-height="60vh" :src="filePath + '1.png'" class="mb-10"></v-img>
+    </v-col>
+  </v-row> -->
+  <v-container fluid id="docs">
+    <!-- 目次 -->
+    <side-catalog class="catalog" v-bind="catalogProps">
+      <template #default="{ isActive }">
+        <i :class="['line-style', isActive ? 'line-style--active' : '']"></i>
+      </template>
+    </side-catalog>
+
     <div v-if="currentRoad === 'javascript'">
       <JavaScript0 @karte-post="kartePost()" @next="next()" v-if="currentClass === 0" />
       <JavaScript1 @karte-post="kartePost()" @next="next()" v-else-if="currentClass === 1" />
@@ -53,6 +55,9 @@
 </template>
 
 <script>
+import SideCatalog from 'vue-side-catalog';
+import 'vue-side-catalog/lib/vue-side-catalog.css';
+import { OK } from '@/consts/status';
 import JavaScript0 from '@/views/mystudy/docs/javascript/Class0';
 import JavaScript1 from '@/views/mystudy/docs/javascript/Class1';
 import JavaScript2 from '@/views/mystudy/docs/javascript/Class2';
@@ -65,11 +70,15 @@ import JavaScript8 from '@/views/mystudy/docs/javascript/Class8';
 import JavaScript9 from '@/views/mystudy/docs/javascript/Class9';
 import JavaScript10 from '@/views/mystudy/docs/javascript/Class10';
 import JavaScriptClear from '@/views/mystudy/docs/javascript/Clear';
-import { OK } from '@/consts/status';
 
 export default {
   data() {
     return {
+      catalogProps: {
+        container: '#content',
+        iconLeft: true,
+        lineLeft: 0,
+      }, // 目次の設定
       karte: {
         dialog: false, // カルテ投稿ダイアログの制御
         roadmapId: null, // カルテを紐付けるロードマップID
@@ -78,6 +87,7 @@ export default {
     };
   },
   components: {
+    SideCatalog,
     JavaScript0,
     JavaScript1,
     JavaScript2,
@@ -155,13 +165,37 @@ export default {
 #docs {
   background-color: $white;
 
+  .catalog {
+    position: fixed;
+    top: 100px;
+    left: 270px;
+    max-width: 230px;
+
+    .line-style {
+      display: inline-block;
+      width: 3px;
+      height: 20px;
+      background: transparent;
+    }
+
+    .line-style--active {
+      background: currentColor;
+    }
+  }
+
   // router-view内の要素のCSS
   &::v-deep {
     #content {
+      padding-left: 250px;
       font-size: 1.2em;
 
       h2 {
-        border-left: 6px solid $dark-blue;
+        padding-top: 30px;
+
+        span {
+          border-left: 6px solid $dark-blue;
+          background-color: #eeeeee;
+        }
       }
 
       .agenda {
