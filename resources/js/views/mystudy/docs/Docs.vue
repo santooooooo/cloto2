@@ -1,3 +1,17 @@
+<!-- 画像が必要な時 -->
+<!-- <v-row>
+            <v-col cols="6">
+              <p >ダミー</p>
+            </v-col>
+            <v-col cols="6">
+              <v-img
+                max-width="90%"
+                max-height="60vh"
+                :src="filePath + '1.png'"
+                class="mb-10"
+              ></v-img>
+            </v-col>
+          </v-row> -->
 <template>
   <v-container id="docs">
     <div v-if="currentRoad === 'javascript'">

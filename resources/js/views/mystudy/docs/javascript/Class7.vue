@@ -90,6 +90,14 @@ export default {
     },
   },
   data() {
+     //               <v-container fluid class="mb-12" id="">
+    //           <h2 class="text-h4 font-weight-bold mb-10">
+    //             <span class="pl-3 grey lighten-3"></span>
+    //           </h2>
+    // <v-row justify="center" class="mt-10">
+    //        <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
+    //      </v-row>
+    //         </v-container>
     return {
       title: 'こんてんつ7', // コンテンツタイトル
       contents: [
