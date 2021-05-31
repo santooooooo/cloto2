@@ -86,11 +86,10 @@
 
     <p class="font-weight-bolder">意識的にClass3は一点短期集中で切り抜けましょう。</p>
 
-    <v-container fluid class="mb-12" id="">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3"> おすすめチュートリアルサービス </span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>おすすめチュートリアルサービス</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         年々質も高くなり、学習できる言語の種類も増えてきました。<br />
         ここでは、代表的な5つのサービスを紹介します。<br />
@@ -110,10 +109,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3"> Progate </span>
-      </h2>
+    <h2 class="text-h4 font-weight-bold">
+      <span>Progate</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>プログラミングのチュートリアル教材の筆頭といえばこの「Progate」でしょう。</p>
 
       <p>
@@ -181,7 +180,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> ドットインストール </span>
+      <span>ドットインストール</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -237,7 +236,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> Paizaラーニング </span>
+      <span>Paizaラーニング</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>PaizaはITエンジニア向けの転職・就活・学習サービスです。</p>
@@ -290,7 +289,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> Udemy </span>
+      <span>Udemy</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -311,7 +310,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> YouTube </span>
+      <span>YouTube</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>

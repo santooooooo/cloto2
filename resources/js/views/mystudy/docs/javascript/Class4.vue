@@ -41,7 +41,7 @@
     </ul>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> 参考書学習のすゝめ </span>
+      <span>参考書学習のすゝめ</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -69,7 +69,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> HTMLの学習 </span>
+      <span>HTMLの学習</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -97,7 +97,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> CSSの学習 </span>
+      <span>CSSの学習</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -118,7 +118,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> Bootstrapの学習 </span>
+      <span>Bootstrapの学習</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -190,7 +190,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> JavaScriptの学習 </span>
+      <span>JavaScriptの学習</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -249,7 +249,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> jQueryの学習 </span>
+      <span>jQueryの学習</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -331,7 +331,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> 調べるべきこと </span>
+      <span>調べるべきこと</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -414,7 +414,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> おすすめ教材 </span>
+      <span>おすすめ教材</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -436,7 +436,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> 参考書 </span>
+      <span>参考書</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -481,7 +481,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> 公式ドキュメント </span>
+      <span>公式ドキュメント</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -520,7 +520,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> ドットインストール </span>
+      <span>ドットインストール</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>

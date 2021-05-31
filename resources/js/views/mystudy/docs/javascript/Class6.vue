@@ -64,7 +64,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> 「自己紹介HP」を創る </span>
+      <span>「自己紹介HP」を創る</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -111,7 +111,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> テーマを決める </span>
+      <span>テーマを決める</span>
     </h2>
     <v-container fluid class="mb-12"> </v-container>
 
@@ -189,7 +189,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> 各ページの雰囲気を考える </span>
+      <span>各ページの雰囲気を考える</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>

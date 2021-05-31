@@ -294,7 +294,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> パブリックポスティングの重要性 </span>
+      <span>パブリックポスティングの重要性</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -326,7 +326,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> Web制作 </span>
+      <span>Web制作</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -341,7 +341,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> Webとは </span>
+      <span>Webとは</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -382,7 +382,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> Webページ・Webサイト </span>
+      <span>Webページ・Webサイト</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -430,7 +430,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> Webページの構成と表示の仕組み </span>
+      <span>Webページの構成と表示の仕組み</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -468,7 +468,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> WebサイトとWebアプリの違い </span>
+      <span>WebサイトとWebアプリの違い</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -499,7 +499,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> Web制作のすゝめ </span>
+      <span>Web制作のすゝめ</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>

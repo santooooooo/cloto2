@@ -69,7 +69,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> 模写学習のルールを決める </span>
+      <span>模写学習のルールを決める</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -107,7 +107,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> 効果的な模写学習の方法 </span>
+      <span>効果的な模写学習の方法</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -133,7 +133,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> Webブラウザの活用 </span>
+      <span>Webブラウザの活用</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -155,7 +155,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> 開発者ツール </span>
+      <span>開発者ツール</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -185,7 +185,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> ファイル構造の理解・確認 </span>
+      <span>ファイル構造の理解・確認</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -204,7 +204,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> おすすめの模写学習教材 </span>
+      <span>おすすめの模写学習教材</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -219,7 +219,7 @@
       </v-row>
     </v-container>
     <h2 class="text-h4 font-weight-bold">
-      <span> Codestep </span>
+      <span>Codestep</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -241,7 +241,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> YouTube </span>
+      <span>YouTube</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -271,7 +271,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> その他 </span>
+      <span>その他</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>

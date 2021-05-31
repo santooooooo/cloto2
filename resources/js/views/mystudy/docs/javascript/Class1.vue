@@ -253,11 +253,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">コースの紹介</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>コースの紹介</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         CLOTOでは独自の成果物の完成をもってそのゴールとしています。<br />
         これを実現するのが「コース」です。
@@ -349,7 +348,7 @@
     </v-container>
 
     <h2 class="text-h4 font-weight-bold">
-      <span> ロードの紹介 </span>
+      <span>ロードの紹介</span>
     </h2>
     <v-container fluid class="mb-12">
       <p>
@@ -389,11 +388,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">コミュニティの紹介</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>コミュニティの紹介</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         プログラミング言語ごとにコミュニティを用意しています。<br />
         これがバーチャル学習施設です。
@@ -461,11 +459,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">立志</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>立志</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         プログラミングやそれを取り巻く現状、<br />
         プログラミング独学の学習体系において重要なことについて学んできました。<br />
@@ -547,11 +544,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">どうなりたいのか</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>どうなりたいのか</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>では、さらに踏み込んでいきましょう。</p>
 
       <p>
