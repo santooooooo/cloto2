@@ -19,9 +19,9 @@
     </v-container>
 
     <!-- コンテンツ2 -->
-    <h2 class="text-h4 font-weight-bold">
+    <h3 class="text-h4 font-weight-bold">
       <span>ダミー2</span>
-    </h2>
+    </h3>
     <v-container fluid class="mb-12">
       <h5 class="text-h5 font-weight-bold mb-8">ダミー</h5>
       <v-row>
@@ -45,9 +45,9 @@
     </v-container>
 
     <!-- コンテンツ3 -->
-    <h2 class="text-h4 font-weight-bold">
+    <h4 class="text-h4 font-weight-bold">
       <span>ダミー3</span>
-    </h2>
+    </h4>
     <v-container fluid class="mb-12">
       <p class="mb-8">ダミー</p>
       <p class="mb-8">ダミー</p>
