@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="mt-4" id="content">
+  <v-container fluid id="content">
     <!-- タイトル -->
     <div class="mb-4 pa-4">
       <h1 class="text-h4 text-center mb-12">{{ title }}</h1>

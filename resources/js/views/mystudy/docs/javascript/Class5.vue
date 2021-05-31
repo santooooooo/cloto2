@@ -1,6 +1,5 @@
-import { ANNOUNCE_SOUND } from '@/consts/sound'; import Call from '@/components/room/Call';
 <template>
-  <v-container fluid class="mt-4" id="content">
+  <v-container fluid id="content">
     <div class="mb-4 pa-4" id="class5-desc">
       <h1 class="text-h4 text-center mb-12">{{ title }}</h1>
     </div>
