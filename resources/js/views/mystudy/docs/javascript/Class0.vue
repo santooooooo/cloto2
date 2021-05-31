@@ -9,7 +9,6 @@
           <h1 class="text-h4 text-center mb-12">{{ title }}</h1>
         </div>
 
-
         <p>ようこそClass 0へ。Class 0では、</p>
 
         <p>「独学」・「プログラミング」について学習していきます。</p>
@@ -47,7 +46,6 @@
           <li>2-7　プログラミングを活かせる職</li>
         </ul>
 
-        
         <v-container fluid class="mb-12" id="set-object">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">目標をどこに置くべきか</span>
@@ -134,7 +132,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="programming-setting">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">プログラミングを取り巻く環境</span>
@@ -193,7 +190,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="cloto-desc">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">CLOTOとは何か</span>
@@ -222,7 +218,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="alone">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">独学のすゝめ</span>
@@ -300,7 +295,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="not-active-learn">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">受動学習の完全否定</span>
@@ -352,7 +346,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="output-ism">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">アウトプット至上主義</span>
@@ -388,7 +381,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="self-management">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">自己及び学習管理の徹底</span>
@@ -443,7 +435,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="interchange">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">積極的交流の奨励</span>
@@ -481,7 +472,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="self-optimize">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">自己最適化利用の推奨</span>
@@ -505,7 +495,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="about-programming">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">プログラミング</span>
@@ -517,7 +506,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="define-programming">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">定義</span>
@@ -545,7 +533,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="history-programming">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">歴史</span>
@@ -682,7 +669,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="kind-programming">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">種類</span>
@@ -811,7 +797,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="type-programming">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">分類</span>
@@ -1051,7 +1036,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="social-programming">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">プログラミングと現代社会</span>
@@ -1080,7 +1064,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="example-programming">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">プログラミングの活用例</span>
@@ -1174,7 +1157,6 @@
           </v-row>
         </v-container>
 
-        
         <v-container fluid class="mb-12" id="vocation-programming">
           <h2 class="text-h4 font-weight-bold mb-10">
             <span class="pl-3 grey lighten-3">プログラミングを活かせる職</span>
