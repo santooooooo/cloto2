@@ -28,7 +28,6 @@ Vue.component('KarteContainer', require('./components/commons/KarteContainer').d
 Vue.component('PostContainer', require('./components/commons/PostContainer').default);
 Vue.component('KartePostDialog', require('./components/commons/KartePostDialog').default);
 Vue.component('ImageInput', require('./components/commons/form/ImageInput').default);
-Vue.component('ContentTable', require('./components/mystudy/docs/ContentTable').default);
 
 /**
  * Vueの定義
