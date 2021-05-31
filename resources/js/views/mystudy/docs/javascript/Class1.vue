@@ -56,10 +56,10 @@
 
     <p class="font-weight-bolder">それこそがプログラミング学習の根幹である、「独学力」なのです。</p>
 
-    <v-container fluid class="mb-12" id="overview">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">プログラミング学習の概要</span>
-      </h2>
+    <h2 class="text-h4 font-weight-bold">
+      <span>プログラミング学習の概要</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>CLOTOではプログラミング学習の目標を、<br /></p>
 
       <p class="font-weight-bolder">
@@ -129,11 +129,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="five-steps">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">プログラミング学習の5段階</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>プログラミング学習の5段階</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>CLOTOはプログラミング学習の学習者を以下の5段階に分けました。</p>
 
       <ol>
@@ -230,10 +229,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="susume">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">CLOTO利用のすゝめ</span>
-      </h2>
+    <h2 class="text-h4 font-weight-bold">
+      <span>CLOTO利用のすゝめ</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         CLOTOは教材ではありません。<br />
         CLOTOはみなさんのプログラミング学習を支える、環境であり、道標です。
@@ -349,11 +348,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="load-intro">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3"> ロードの紹介 </span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span> ロードの紹介 </span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         コースが目標制作物で分けられた大きい分類であるのに対し、<br />
         ロードはさらにそれを細分化したものになっています。
@@ -371,11 +369,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="class-intro">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">クラスの紹介</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>クラスの紹介</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>クラスはその名の通り「級」です。</p>
 
       <p>
@@ -425,11 +422,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="calte-intro">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">カルテの紹介</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>カルテの紹介</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         CLOTOでは日々の学習記録のことを「カルテ」と呼んで、<br />
         積極的に記録することを推奨しています。<br />
@@ -447,11 +443,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="event-intro">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">イベントの紹介</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>イベントの紹介</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>CLOTOでは頻繁にイベントを開催しています。</p>
 
       <p>
@@ -491,11 +486,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="why">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">あなたはなぜプログラミングを学ぶのか</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>あなたはなぜプログラミングを学ぶのか</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         Class0で紹介した通り、プログラミング学習は、<br />
         基本的には現段階において誰からも強いられるものではありません。
@@ -525,11 +519,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="experience">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">原体験を探る</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>原体験を探る</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         どうでしょうか。どれくらい書き出せたでしょうか。<br />
         あるいは強い一つの理由があったでしょうか。<br />
@@ -576,11 +569,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="tell">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">目標を宣言する</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>目標を宣言する</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>ここまで自分がなぜプログラミング学習を志したのか深掘りをしてきました。</p>
 
       <p>

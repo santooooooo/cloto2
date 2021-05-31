@@ -40,11 +40,10 @@
       <li>3-3　その他</li>
     </ul>
 
-    <v-container fluid class="mb-12" id="recommend">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">模写学習のすゝめ</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>模写学習のすゝめ</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         Class4の教材学習で言語ごと基礎的な学習が済んだら、<br />
         実際に動いているプログラムのソースコードを模写してみましょう。<br />
@@ -69,11 +68,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="set-rule">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3"> 模写学習のルールを決める </span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span> 模写学習のルールを決める </span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         模写学習からは様々なことを学習することができます。<br />
         フォントや文字サイズ、色、デザイン、レイアウト、レスポンシブ、背景画像の配置や見せ方、<br />
@@ -108,10 +106,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="method">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3"> 効果的な模写学習の方法 </span>
-      </h2>
+    <h2 class="text-h4 font-weight-bold">
+      <span> 効果的な模写学習の方法 </span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         模写学習は丁寧に取り組むことが肝心です。<br />
         まず手本とするWebページのHTMLのソースコードを読み解く必要があります。<br />
@@ -134,11 +132,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="browser">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3"> Webブラウザの活用 </span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span> Webブラウザの活用 </span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         WebサイトはWebブラウザに表示されるわけですが、<br />
         このWebブラウザにはWebページを表示する以外にも多くの機能があります。<br />
@@ -157,11 +154,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="devtool">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3"> 開発者ツール </span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span> 開発者ツール </span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         先ほど紹介したWebブラウザの機能の一つとして、<br />
         「開発者ツール」と呼ばれるものがあります。<br />
@@ -188,11 +184,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="file">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3"> ファイル構造の理解・確認 </span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span> ファイル構造の理解・確認 </span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         開発者ツールを開くとソースコードが見れることに加え、<br />
         それらが記述されたファイルが、どのように関連しているのか。<br />
@@ -208,11 +203,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="kyozai">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3"> おすすめの模写学習教材 </span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span> おすすめの模写学習教材 </span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         模写学習で使うべき教材は、あまり高度で複雑なものではなく、<br />
         シンプルなものがいいです。<br />
@@ -224,11 +218,10 @@
         <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
       </v-row>
     </v-container>
-    <v-container fluid class="mb-12" id="codestep">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3"> Codestep </span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span> Codestep </span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         CodestepはWebサイト制作の実践力をつけるためのコーディング学習サイトです。<br />
         難易度や学習内容ごとに用意されたデモサイト、そのレイアウトの解説、<br />
@@ -247,11 +240,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="youtube">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3"> YouTube </span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span> YouTube </span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         YouTubeでWebサイトを作るような動画では、<br />
         ほとんどの場合、投稿者がテキストエディタを画面収録しながら、<br />
@@ -278,11 +270,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="other">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3"> その他 </span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span> その他 </span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         もちろん一般に自分で見つけたWebサイトを模写しても結構です。<br />
         専用の解説がなく一から読解していく必要があるので、非常に勉強になります。

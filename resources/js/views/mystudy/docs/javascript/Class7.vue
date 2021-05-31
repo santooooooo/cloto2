@@ -7,11 +7,10 @@
     </div>
 
     <!-- コンテンツ1 -->
-    <v-container fluid class="mb-12" id="buy">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">ダミー1</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>ダミー1</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p class="mb-8">ダミー</p>
       <p class="mb-8">
         ダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミー
@@ -20,11 +19,10 @@
     </v-container>
 
     <!-- コンテンツ2 -->
-    <v-container fluid class="mb-12" id="suggest">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">ダミー2</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>ダミー2</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <h5 class="text-h5 font-weight-bold mb-8">ダミー</h5>
       <v-row>
         <v-col cols="6">
@@ -47,11 +45,10 @@
     </v-container>
 
     <!-- コンテンツ3 -->
-    <v-container fluid class="mb-12" id="cut">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">ダミー3</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>ダミー3</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p class="mb-8">ダミー</p>
       <p class="mb-8">ダミー</p>
       <p>ダミー</p>

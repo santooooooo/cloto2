@@ -193,6 +193,7 @@ export default {
         padding-top: 30px;
 
         span {
+          padding-left: 12px;
           border-left: 6px solid $dark-blue;
           background-color: #eeeeee;
         }

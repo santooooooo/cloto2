@@ -41,11 +41,10 @@
       <li>2-7　プログラミングを活かせる職</li>
     </ul>
 
-    <v-container fluid class="mb-12" id="set-object">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">目標をどこに置くべきか</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>目標をどこに置くべきか</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         CLOTOのアカウントを作り、実際にClass 0に取り組んでいるあなたは、<br />おそらく「プログラミングを学習したい」と思われていることと思います。
       </p>
@@ -124,11 +123,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="programming-setting">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">プログラミングを取り巻く環境</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>プログラミングを取り巻く環境</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>21世紀に入り、プログラミングは人間社会のほぼ全ての領域に影響を及ぼす存在になりました。</p>
       <p>
         現在みなさんがこの記事をご覧になっているPCも、スマートフォンも、<br />
@@ -180,11 +178,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="cloto-desc">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">CLOTOとは何か</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>CLOTOとは何か</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p class="font-weight-bolder">
         CLOTOは「プログラミング独学者のためバーチャル学習施設」です。
       </p>
@@ -208,11 +205,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="alone">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">独学のすゝめ</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>独学のすゝめ</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         プログラミング学習の目標を「プログラミングを駆使し、新たな価値を創り続けることができるようになること」と位置付けました。<br />
         ではどうすれば新しい価値を創れるエンジニア、「玄人」になれるのでしょうか。
@@ -285,11 +281,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="not-active-learn">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">受動学習の完全否定</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>受動学習の完全否定</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         「プログラミング独学」を充実させる要素の第一番目として「受動的学習の完全否定」をあげました。
       </p>
@@ -336,11 +331,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="output-ism">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">アウトプット至上主義</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>アウトプット至上主義</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         第一に「プログラミング独学」を充実させる要素の一つとして「インプットだけでなく、必ずアウトプットをする。」ことをあげました。
       </p>
@@ -371,11 +365,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="self-management">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">自己及び学習管理の徹底</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>自己及び学習管理の徹底</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         第二に「プログラミング独学」を充実させる要素の一つとして「自己管理、学習管理の徹底」をあげました。
       </p>
@@ -425,11 +418,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="interchange">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">積極的交流の奨励</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>積極的交流の奨励</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         第三に「プログラミング独学」を充実させる要素の一つとして「視野を広げる積極的な交流の推奨」をあげました。
       </p>
@@ -462,11 +454,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="self-optimize">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">自己最適化利用の推奨</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>自己最適化利用の推奨</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         CLOTOではサービスや情報発信を通じて、「プログラミング独学」環境をより良いものに整備して参りますが、<br />
         その中でも「独学」であるということを強く意識してください。
@@ -485,21 +476,20 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="about-programming">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">プログラミング</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>プログラミング</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>さて、私たちがこれから学習していくプログラミングとは一体何なのでしょうか。</p>
       <v-row justify="center" class="mt-10">
         <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="define-programming">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">定義</span>
-      </h2>
+    <h2 class="text-h4 font-weight-bold">
+      <span>定義</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         正式にはコンピュータプログラミング。<br />
         「コンピュータプログラムを作成することにより、
@@ -523,11 +513,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="history-programming">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">歴史</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>歴史</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>プログラミングを学ぶにあたっては、その成り立ちを知っておくことも重要でしょう。</p>
       <p>
         プログラミングの発展において無視できないのは、そのプログラミングを実行する機器、<br />
@@ -659,11 +648,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="kind-programming">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">種類</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>種類</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         さてプログラミングの歴史でも触れたように、プログラミングの用途が生まれ、<br />
         発展してきた過程において、非常に多くの言語が生まれました。<br />
@@ -786,11 +774,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="type-programming">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">分類</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>分類</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         一般にプログラミング言語とはコンピュータプログラミング言語を指します。<br />
         それは「コンピュータプログラムを記述するための形式言語」です。<br />
@@ -1025,11 +1012,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="social-programming">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">プログラミングと現代社会</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>プログラミングと現代社会</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>
         現代社会においてプログラミングが欠かせないものになってきたことは、すでに触れてきた通りです。<br />
         では、実際にはどのような場面で利用されているのでしょうか。
@@ -1053,11 +1039,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="example-programming">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">プログラミングの活用例</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>プログラミングの活用例</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p class="font-weight-bolder">1. ソフトウェアの開発</p>
 
       <p>
@@ -1146,11 +1131,10 @@
       </v-row>
     </v-container>
 
-    <v-container fluid class="mb-12" id="vocation-programming">
-      <h2 class="text-h4 font-weight-bold mb-10">
-        <span class="pl-3 grey lighten-3">プログラミングを活かせる職</span>
-      </h2>
-
+    <h2 class="text-h4 font-weight-bold">
+      <span>プログラミングを活かせる職</span>
+    </h2>
+    <v-container fluid class="mb-12">
       <p>プログラミングを活かせる職はたくさんあります。</p>
 
       <ul>
