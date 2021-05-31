@@ -59,7 +59,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>プログラミング学習の概要</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>CLOTOではプログラミング学習の目標を、<br /></p>
 
       <p class="font-weight-bolder">
@@ -132,7 +132,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>プログラミング学習の5段階</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>CLOTOはプログラミング学習の学習者を以下の5段階に分けました。</p>
 
       <ol>
@@ -232,7 +232,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>CLOTO利用のすゝめ</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         CLOTOは教材ではありません。<br />
         CLOTOはみなさんのプログラミング学習を支える、環境であり、道標です。
@@ -256,7 +256,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>コースの紹介</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         CLOTOでは独自の成果物の完成をもってそのゴールとしています。<br />
         これを実現するのが「コース」です。
@@ -350,7 +350,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>ロードの紹介</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         コースが目標制作物で分けられた大きい分類であるのに対し、<br />
         ロードはさらにそれを細分化したものになっています。
@@ -371,7 +371,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>クラスの紹介</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>クラスはその名の通り「級」です。</p>
 
       <p>
@@ -391,7 +391,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>コミュニティの紹介</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         プログラミング言語ごとにコミュニティを用意しています。<br />
         これがバーチャル学習施設です。
@@ -423,7 +423,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>カルテの紹介</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         CLOTOでは日々の学習記録のことを「カルテ」と呼んで、<br />
         積極的に記録することを推奨しています。<br />
@@ -444,7 +444,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>イベントの紹介</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>CLOTOでは頻繁にイベントを開催しています。</p>
 
       <p>
@@ -462,7 +462,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>立志</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         プログラミングやそれを取り巻く現状、<br />
         プログラミング独学の学習体系において重要なことについて学んできました。<br />
@@ -486,7 +486,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>あなたはなぜプログラミングを学ぶのか</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         Class0で紹介した通り、プログラミング学習は、<br />
         基本的には現段階において誰からも強いられるものではありません。
@@ -519,7 +519,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>原体験を探る</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         どうでしょうか。どれくらい書き出せたでしょうか。<br />
         あるいは強い一つの理由があったでしょうか。<br />
@@ -547,7 +547,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>どうなりたいのか</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>では、さらに踏み込んでいきましょう。</p>
 
       <p>
@@ -568,7 +568,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>目標を宣言する</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>ここまで自分がなぜプログラミング学習を志したのか深掘りをしてきました。</p>
 
       <p>

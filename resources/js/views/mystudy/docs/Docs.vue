@@ -190,7 +190,8 @@ export default {
       font-size: 1.2em;
 
       h2 {
-        padding-top: 30px;
+        margin-top: 30px;
+        padding-top: 50px;
 
         span {
           padding-left: 12px;

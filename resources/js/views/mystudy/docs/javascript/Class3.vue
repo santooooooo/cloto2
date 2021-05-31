@@ -89,7 +89,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>おすすめチュートリアルサービス</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         年々質も高くなり、学習できる言語の種類も増えてきました。<br />
         ここでは、代表的な5つのサービスを紹介します。<br />
@@ -112,7 +112,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>Progate</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>プログラミングのチュートリアル教材の筆頭といえばこの「Progate」でしょう。</p>
 
       <p>
@@ -182,7 +182,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>ドットインストール</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         ドットインストールは１レッスン３分の動画を見ながら、<br />
         自身の開発環境で学習するサービスです。
@@ -238,7 +238,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>Paizaラーニング</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>PaizaはITエンジニア向けの転職・就活・学習サービスです。</p>
 
       <p>
@@ -291,7 +291,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>Udemy</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         UdemyはITエンジニアリングやデザイン、ビジネススキル、音楽など<br />
         世界中の技術を持つ人々が自発的に講座を作成し、売り出す、<br />
@@ -312,7 +312,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>YouTube</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         言わずと知れたYouTubeですが、<br />
         最近はプログラミング学習系ユーチューバーも増えていて、<br />

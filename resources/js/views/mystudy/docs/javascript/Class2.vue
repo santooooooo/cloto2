@@ -40,7 +40,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>調べ学習のすゝめ</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>早速Web制作、Webデザインについて学習していきましょう。</p>
 
       <p>
@@ -58,7 +58,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>調べる</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>Class2では、Web制作のために必要な前提知識を集めるために「調べ学習」をしています。</p>
 
       <p>
@@ -92,7 +92,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>検索の仕方</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         検索はWebブラウザを通して、<br />
         自分の欲しがっている情報にアクセスすることです。
@@ -209,7 +209,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>質問の仕方</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         続いて、検索してもどうしてもヒットしなかったものや、学習法や進路、教材の良し悪しなど、<br />
         なかなか検索だけでは解決しない問題もあるかと思います。<br />
@@ -272,7 +272,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>学びを言語化しよう</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         その日に学んだことは忘れてしまう前に簡単にまとめて言語化することでアプトプットしましょう。
       </p>
@@ -296,7 +296,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>パブリックポスティングの重要性</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         疑問の解決や直接的な交流といった効果以外にも、カルテの公開には重要な意義があります。<br />
         それは「パブリックポスティング」によって得ることのできる、モチベーションの持続効果です。
@@ -328,7 +328,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>Web制作</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         [プログラミングで「伝える」コース]では、HTMLやCSS。JavaScriptやRubyなどのフロント系言語、<br />
         それぞれのフレームワークなどを用いて、Web制作を行っていきます。
@@ -343,7 +343,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>Webとは</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         「Webサイト」や「Webアプリ」。「Webデザイン」に「Web制作」、「web開発」。<br />
         いろいろな場面でこの「Web」という言葉に出逢います。
@@ -384,7 +384,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>Webページ・Webサイト</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         サーバーというコンピュータとクライアントというコンピュータがあることを述べました。<br />
         これらはどちらも、インターネットに接続できるようになっています。<br />
@@ -432,7 +432,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>Webページの構成と表示の仕組み</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         先ほども触れた通り、WebページはHTMLなどのハイパーテキスト形式で書かれた記事です。<br />
         Webページ制作者はHTMLやCSS、JavaScriptなどを用いてWebページを制作し、<br />
@@ -470,7 +470,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>WebサイトとWebアプリの違い</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         Webアプリケーション(Webアプリ)は簡単にいってしまうと、<br />
         高度な機能を持ったWebサイトです。<br />
@@ -501,7 +501,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>Web制作のすゝめ</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         [プログラミングで「伝える」コース]　ではWeb制作ができるようになること、<br />
         そしてWebページを用いて、それを見た人に効果的に意図や情報を伝えることを学習します。

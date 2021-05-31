@@ -43,7 +43,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>模写学習のすゝめ</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         Class4の教材学習で言語ごと基礎的な学習が済んだら、<br />
         実際に動いているプログラムのソースコードを模写してみましょう。<br />
@@ -71,7 +71,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>模写学習のルールを決める</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         模写学習からは様々なことを学習することができます。<br />
         フォントや文字サイズ、色、デザイン、レイアウト、レスポンシブ、背景画像の配置や見せ方、<br />
@@ -109,7 +109,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>効果的な模写学習の方法</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         模写学習は丁寧に取り組むことが肝心です。<br />
         まず手本とするWebページのHTMLのソースコードを読み解く必要があります。<br />
@@ -135,7 +135,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>Webブラウザの活用</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         WebサイトはWebブラウザに表示されるわけですが、<br />
         このWebブラウザにはWebページを表示する以外にも多くの機能があります。<br />
@@ -157,7 +157,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>開発者ツール</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         先ほど紹介したWebブラウザの機能の一つとして、<br />
         「開発者ツール」と呼ばれるものがあります。<br />
@@ -187,7 +187,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>ファイル構造の理解・確認</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         開発者ツールを開くとソースコードが見れることに加え、<br />
         それらが記述されたファイルが、どのように関連しているのか。<br />
@@ -206,7 +206,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>おすすめの模写学習教材</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         模写学習で使うべき教材は、あまり高度で複雑なものではなく、<br />
         シンプルなものがいいです。<br />
@@ -221,7 +221,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>Codestep</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         CodestepはWebサイト制作の実践力をつけるためのコーディング学習サイトです。<br />
         難易度や学習内容ごとに用意されたデモサイト、そのレイアウトの解説、<br />
@@ -243,7 +243,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>YouTube</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         YouTubeでWebサイトを作るような動画では、<br />
         ほとんどの場合、投稿者がテキストエディタを画面収録しながら、<br />
@@ -273,7 +273,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>その他</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         もちろん一般に自分で見つけたWebサイトを模写しても結構です。<br />
         専用の解説がなく一から読解していく必要があるので、非常に勉強になります。

@@ -10,7 +10,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>ダミー1</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p class="mb-8">ダミー</p>
       <p class="mb-8">
         ダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミー
@@ -22,7 +22,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>ダミー2</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <h5 class="text-h5 font-weight-bold mb-8">ダミー</h5>
       <v-row>
         <v-col cols="6">
@@ -48,7 +48,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>ダミー3</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p class="mb-8">ダミー</p>
       <p class="mb-8">ダミー</p>
       <p>ダミー</p>

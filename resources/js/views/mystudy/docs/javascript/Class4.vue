@@ -43,7 +43,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>参考書学習のすゝめ</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         参考書学習の目標は一つの言語に対して、<br />
         チュートリアル学習から、さらに踏み込んで細かい学習を進めていくことにあります。<br />
@@ -71,7 +71,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>HTMLの学習</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         HTMLの正式名はHyperText Markup Language。<br />
         テキストを記述するための言語で、<br />
@@ -99,7 +99,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>CSSの学習</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         CSSの正式名はCascading Style<br />
         Sheets。HTMLの要素をどのように表示、修飾するかを指示するスタイルシートという仕様の一つです。<br />
@@ -120,7 +120,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>Bootstrapの学習</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         BootstrapとはWebサイトやWebアプリケーションを作成する、<br />
         Webアプリケーションフレームワークです。<br />
@@ -192,7 +192,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>JavaScriptの学習</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         JavaScriptはプログラミング言語です。<br />
         分類的にはオブジェクト指向スクリプト言語と言われます。<br />
@@ -251,7 +251,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>jQueryの学習</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         jQueryはJavaScriptの記述をより簡易化するために設計されたJavaScriptのフレームワークです。<br />
         jQueryはそのコンセプトにもなっているように、<br />
@@ -289,7 +289,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>Web制作の開発環境 </span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         Class2でも触れたWeb制作の仕組みを理解できていれば、<br />
         決して難しいものではありません。<br />
@@ -333,7 +333,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>調べるべきこと</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         Class4では、教材に乗っ取ってとりあえず開発してみることが良いと思います。<br />
         HTML、CSS、JavaScriptの「型」を一通り学習しましょう。<br />
@@ -416,7 +416,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>おすすめ教材</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         Class4の目的をおさらいすると、<br />
         「各言語に対して、基本文法や記述の仕方、特徴を学ぶ」ことにあります。<br />
@@ -438,7 +438,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>参考書</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         参考書学習とは、書籍やPDFといった印刷物で学習していく方法です。<br />
         特にHTML&CSSや、Webデザイン、ホームページ制作といった教材はかなり充実しており、<br />
@@ -483,7 +483,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>公式ドキュメント</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         公式ドキュメントとは言語の開発者、団体などがまとめているドキュメントのことで、<br />
         実はチュートリアルから各要素、文法、構文などが事細かに記述されています。<br />
@@ -522,7 +522,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>ドットインストール</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         Class3でも紹介したこの「ドットインストール」ですが、<br />
         こちらの教材は言語ごとにチュートリアルレベルから、<br />

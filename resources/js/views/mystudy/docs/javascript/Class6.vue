@@ -31,7 +31,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>初制作のすゝめ</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         いよいよ１から全ての制作フローを経て、一つのWebサイトを作る段階に来ました。<br />
         [プログラミングで「伝える」コース]という名の通り、<br />
@@ -66,7 +66,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>「自己紹介HP」を創る</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         Class6では一律に「自己紹介」のWebページを創ってみましょう。<br />
         チュートリアル学習、参考書学習、模写学習で学んだことを活かしながら、<br />
@@ -94,7 +94,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>「自己紹介」HP制作における必須項目</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>必須項目は以下の通りです。</p>
 
       <ul>
@@ -113,7 +113,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>テーマを決める</span>
     </h2>
-    <v-container fluid class="mb-12"> </v-container>
+    <v-container fluid> </v-container>
 
     <p>
       まずテーマを定めましょう。<br />
@@ -147,7 +147,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>ページ構成を考える</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         「伝えたいこと」であるテーマを決めることができれば、<br />
         次は実際にページ構成を考えていきましょう。<br />
@@ -171,7 +171,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>ページごとに載せる情報を考える</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         ページ割りが決まれば、次はページごとに載せる情報を考えていきましょう。<br />
         全てを載せることはナンセンスです。 1ページでテーマは一つに絞りましょう。<br />
@@ -191,7 +191,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>各ページの雰囲気を考える</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         各ページごとにテーマからブレない程度に雰囲気をつけていきましょう。<br />
         ページしたときに心奪われるような、ワクワクするような閲覧体験を作りましょう。<br />
@@ -206,7 +206,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>配置などを手書きする</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         ページ構成、ページごとの情報、雰囲気が決まったら、<br />
         今度は各ページのレイアウト、配置を定めていきましょう。<br />
@@ -243,7 +243,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>素材を用意する</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         ここまでいかがだったでしょうか。<br />
         これから作ろうとしている自己紹介Webサイトのイメージはできたでしょうか。<br />
@@ -269,7 +269,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>コーディングする</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         ページ構成や、テキストの内容、レイアウトの決定や素材の準備など、<br />
         Web制作の準備ができたらいよいよコーディングです。<br />
@@ -300,7 +300,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>フレームワーク利用のすゝめ</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         Class4で学習したフレームワーク。<br />
         写真などをテキストと一緒に効果的に表示する際など、<br />
@@ -322,7 +322,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>Webページ公開のすゝめ</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         初のWeb制作はいかがでしょうか。<br />
         実際に思い描いていたものや「伝えたいこと」がWebブラウザ上に表示されれば、<br />
@@ -361,7 +361,7 @@
     <h2 class="text-h4 font-weight-bold">
       <span>GitHub Pages</span>
     </h2>
-    <v-container fluid class="mb-12">
+    <v-container fluid>
       <p>
         最も簡単なWebページの公開方法の一つとして、GitHubPagesを紹介します。<br />
         GitHub PagesはGitHubがユーザーに提供している静的Webページのための、<br />
