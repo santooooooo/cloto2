@@ -37,7 +37,7 @@ class TimelineController extends Controller
         $data = $this->karte->all()
             ->concat($this->post->all())
             ->sortByDesc('created_at')
-            ->forPage($request->page ?? 1, 40)
+            ->forPage($request->page ?? 1, 25)
             ->values()
             ->toArray();
 
