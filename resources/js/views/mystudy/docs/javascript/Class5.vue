@@ -1,7 +1,7 @@
 <template>
   <v-container fluid id="content">
-    <div class="mb-4 pa-4" id="class5-desc">
-      <h1 class="text-h4 text-center mb-12">{{ title }}</h1>
+    <div class="mb-12 pa-4" id="classdesc">
+      <h1 class="text-h3 text-center">{{ title }}</h1>
     </div>
 
     <p>
@@ -342,9 +342,6 @@
         各国のデザイナーが評価軸ごとに採点しているのも面白いポイントです。<br />
         高評価されているサイトから学ぶことは多いと思うので是非見てみてください。
       </p>
-      <v-row justify="center" class="mt-10">
-        <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
-      </v-row>
     </v-container>
 
     <v-row justify="center" class="mb-4">

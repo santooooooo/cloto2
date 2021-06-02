@@ -1,7 +1,7 @@
 <template>
   <v-container fluid id="content">
-    <div class="mb-4 pa-4" id="class0-desc">
-      <h1 class="text-h4 text-center mb-12">{{ title }}</h1>
+    <div class="mb-12 pa-4" id="classdesc">
+      <h1 class="text-h3 text-center">{{ title }}</h1>
     </div>
 
     <p>ようこそClass 0へ。Class 0では、</p>

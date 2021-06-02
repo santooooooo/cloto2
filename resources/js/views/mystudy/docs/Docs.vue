@@ -186,12 +186,37 @@ export default {
     }
   }
 
+  // vue-side-catalogのCSS
+.side-catalog__list {
+  overflow-y: auto;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
   // router-view内の要素のCSS
   &::v-deep {
     #content {
-      padding-left: 250px;
-      font-size: 1.2em;
+      padding-left: 320px;
+      // padding-left: 300px;
+      font-size: 1.2rem;
 
+      #classdesc {
+        padding: 0 !important;
+        background-color: #f6bf00;
+        color: #ffffff;
+        height: 20vh;
+        position: relative;
+        & > h1 {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translateY(-50%) translateX(-50%);
+        }
+      }
       h2 {
         margin-top: 30px;
         padding-top: 50px;
@@ -212,20 +237,14 @@ export default {
       ol {
         margin-bottom: 32px;
       }
+
+      p {
+        line-height: 2.4;
+      }
     }
   }
 }
+
 </style>
 
-<style lang="scss">
-// vue-side-catalogのCSS
-.side-catalog__list {
-  overflow-y: auto;
 
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-</style>

@@ -1,7 +1,7 @@
 <template>
   <v-container fluid id="content">
-    <div class="mb-4 pa-4" id="class4-desc">
-      <h1 class="text-h4 text-center mb-12">{{ title }}</h1>
+    <div class="mb-12 pa-4" id="classdesc">
+      <h1 class="text-h3 text-center">{{ title }}</h1>
     </div>
 
     <p>Class4からは「苦労人前期」に入ります。</p>
@@ -534,9 +534,6 @@
         言語で言えば「HTML」「CSS」「JavaScript」「jQuery」。<br />
         そのほかでいえば「Webサイト制作」などのレッスンに取り組むことをお勧めします。
       </p>
-      <v-row justify="center" class="mt-10">
-        <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
-      </v-row>
     </v-container>
 
     <v-row justify="center" class="mb-4">

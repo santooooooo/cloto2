@@ -1,8 +1,8 @@
 <template>
   <v-container fluid id="content">
     <!-- タイトル -->
-    <div class="mb-4 pa-4">
-      <h1 class="text-h4 text-center mb-12">{{ title }}</h1>
+    <div class="mb-12 pa-4">
+      <h1 class="text-h3 text-center">{{ title }}</h1>
       <p class="text-body-2 mx-6">このコンテンツの説明</p>
     </div>
 

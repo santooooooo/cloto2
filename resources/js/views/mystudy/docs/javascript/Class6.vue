@@ -1,7 +1,7 @@
 <template>
   <v-container fluid id="content">
-    <div class="mb-4 pa-4" id="classdesc">
-      <h1 class="text-h4 text-center mb-12">{{ title }}</h1>
+    <div class="mb-12 pa-4" id="classdesc">
+      <h1 class="text-h3 text-center">{{ title }}</h1>
     </div>
 
     <p>
@@ -374,9 +374,6 @@
         HTMLやCSS、JavaScriptで構成されているようなWebサイトの公開には最適のツールの一つですので、<br />
         是非調べて活用してみてください。
       </p>
-      <v-row justify="center" class="mt-10">
-        <v-btn dark color="success" @click="$emit('karte-post')">ここまでを記録</v-btn>
-      </v-row>
     </v-container>
 
     <v-row justify="center" class="mb-4">
