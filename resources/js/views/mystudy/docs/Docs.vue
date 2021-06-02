@@ -74,21 +74,6 @@ import JavaScript10 from '@/views/mystudy/docs/javascript/Class10';
 import JavaScriptClear from '@/views/mystudy/docs/javascript/Clear';
 
 export default {
-  data() {
-    return {
-      catalogProps: {
-        container: '#content',
-        height: 'calc(90vh - 150px)',
-        iconLeft: true,
-        lineLeft: 0,
-      }, // 目次の設定
-      karte: {
-        dialog: false, // カルテ投稿ダイアログの制御
-        roadmapId: null, // カルテを紐付けるロードマップID
-      },
-      congratulationDialog: false, // クリア祝いダイアログの制御
-    };
-  },
   components: {
     VueSideCatalog,
     JavaScript0,
@@ -104,14 +89,31 @@ export default {
     JavaScript10,
     JavaScriptClear,
   },
+  data() {
+    return {
+      catalogProps: {
+        container: '#content',
+        height: 'calc(90vh - 150px)',
+        iconLeft: true,
+        lineLeft: 0,
+      }, // 目次の設定
+      karte: {
+        dialog: false, // カルテ投稿ダイアログの制御
+        roadmapId: null, // カルテを紐付けるロードマップID
+      },
+      congratulationDialog: false, // クリア祝いダイアログの制御
+    };
+  },
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
     },
+
     currentRoad() {
       // 現在閲覧中のロード
       return this.$route.params.roadName;
     },
+
     currentClass() {
       // 現在閲覧中のクラス
       return Number(this.$route.params.class);
@@ -127,6 +129,7 @@ export default {
       this.karte.roadmapId = roadmapId;
       this.karte.dialog = true;
     },
+
     /**
      * 次へ進むボタン押下時の処理
      */
@@ -145,6 +148,7 @@ export default {
         this.kartePost(this.authUser.roadmaps[0].id);
       }
     },
+
     /**
      * 次のクラスへ進む（カルテ記入後）
      */
