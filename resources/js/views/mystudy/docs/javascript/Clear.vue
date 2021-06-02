@@ -1,19 +1,16 @@
 <template>
   <v-container fluid id="content">
-    <div class="pa-4" id="cleardesc">
-      <h1 class="text-h1 text-center">{{ title }}</h1>
-    </div>
+    <!-- 目次用 -->
+    <h2 class="font-weight-bold" style="display: none">
+      <span>クリアおめでとう！！</span>
+    </h2>
 
-      <h2 class="font-weight-bold" style="display: none;">
-        <span>
-          
-        クリアおめでとう！！
-        </span>
-        
-        </h2>
+    <v-sheet color="#f6bf00" width="100%" height="80vh" class="mb-12">
+      <h1 class="text-h1 white--text">{{ title }}</h1>
+    </v-sheet>
 
-    <v-row justify="center">
-      <v-btn color="blue" class="text-white" :to="{ name: 'home' }">みんなを助けに行く</v-btn>
+    <v-row justify="center" class="mb-4">
+      <v-btn dark color="primary" :to="{ name: 'home' }">みんなを助けに行く</v-btn>
     </v-row>
   </v-container>
 </template>
@@ -37,27 +34,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '~/_variables';
+.v-sheet {
+  position: relative;
 
-
-      #cleardesc {
-        background-color: #f6bf00;
-        color: #ffffff;
-        height: 80vh;
-        position: relative;
-        margin-bottom: 80px;
-        & > h1 {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translateY(-50%) translateX(-50%);
-        }
-      }
-      h2 {
-        span {
-          padding-left: 12px;
-          border-left: 6px solid $dark-blue;
-          background-color: #eeeeee;
-        }
-      }
+  h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+  }
+}
 </style>
