@@ -212,14 +212,14 @@ export default {
         list-style: none;
       }
 
-      p,
       ul,
       ol {
         margin-bottom: 32px;
       }
 
       p {
-        line-height: 2.4;
+        line-height: 2.4em;
+        margin-bottom: 32px;
       }
     }
   }
@@ -231,6 +231,7 @@ export default {
 .side-catalog__list {
   overflow-y: auto;
 
+  // スクロールバーを非表示
   -ms-overflow-style: none;
   scrollbar-width: none;
   &::-webkit-scrollbar {
