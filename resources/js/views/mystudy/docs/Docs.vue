@@ -78,6 +78,7 @@ export default {
     return {
       catalogProps: {
         container: '#content',
+        height: 'calc(90vh - 64px)',
         iconLeft: true,
         lineLeft: 0,
       }, // 目次の設定
@@ -212,6 +213,19 @@ export default {
         margin-bottom: 32px;
       }
     }
+  }
+}
+</style>
+
+<style lang="scss">
+// vue-side-catalogのCSS
+.side-catalog__list {
+  overflow-y: auto;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 </style>
