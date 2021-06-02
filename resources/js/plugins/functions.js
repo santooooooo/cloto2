@@ -43,7 +43,7 @@ export function statusColor(status) {
  * 期の取得
  *
  * @param {Number} classNumber - クラス番号
- * @param {Boolean} show - 画面表示するか
+ * @param {Boolean} show - 画面表示用か
  * @return {String} 期
  */
 export function periodName(classNumber, show = false) {
