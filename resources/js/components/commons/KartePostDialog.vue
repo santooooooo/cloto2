@@ -275,6 +275,7 @@ export default {
 
         if (response.status === OK) {
           let tweet;
+          
           if (this.roadmapId) {
             // ロードマップへの紐付け後
             tweet =
