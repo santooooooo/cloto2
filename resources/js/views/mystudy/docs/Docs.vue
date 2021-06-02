@@ -9,8 +9,8 @@
     </v-col>
   </v-row> -->
   <v-container fluid id="docs">
-    <!-- 目次 -->
-    <VueSideCatalog class="catalog" v-bind="catalogProps">
+    <!-- 目次（要初期化） -->
+    <VueSideCatalog class="catalog" v-bind="catalogProps" :key="currentClass">
       <template #default="{ isActive }">
         <i :class="['line-style', isActive ? 'line-style--active' : '']"></i>
       </template>
@@ -212,13 +212,13 @@ export default {
         list-style: none;
       }
 
-      ul,
-      ol {
+      p {
+        line-height: 2.4em;
         margin-bottom: 32px;
       }
 
-      p {
-        line-height: 2.4em;
+      ul,
+      ol {
         margin-bottom: 32px;
       }
     }
