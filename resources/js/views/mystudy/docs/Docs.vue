@@ -78,7 +78,7 @@ export default {
     return {
       catalogProps: {
         container: '#content',
-        height: 'calc(90vh - 64px)',
+        height: 'calc(90vh - 150px)',
         iconLeft: true,
         lineLeft: 0,
       }, // 目次の設定
