@@ -10,6 +10,7 @@ const ROOM = '/storage/system/room/';
 const SEAT = '/storage/system/room/seat/';
 const MEDIA = '/storage/system/room/media/';
 const ICON = '/storage/user/icon/';
+const DOCS = '/storage/system/docs/';
 
 /**
  * パスの取得
@@ -42,4 +43,15 @@ export function getStoragePath(name) {
   }
 
   return path;
+}
+
+/**
+ * コンテンツデータのパスの取得
+ *
+ * @param {String} content - 取得するコンテンツ
+ * @param {String} page - 取得するページ
+ * @return {String} ディレクトリのパス
+ */
+export function getDocsPath(content, page) {
+  return DOCS + content + '/' + page + '/';
 }

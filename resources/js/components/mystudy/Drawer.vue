@@ -38,12 +38,10 @@
 
 <script>
 import PeriodTable from '@/components/mystudy/PeriodTable.vue';
-import KartePostDialog from '@/components/commons/KartePostDialog';
 
 export default {
   components: {
     PeriodTable,
-    KartePostDialog,
   },
   data() {
     return {

@@ -40,6 +40,30 @@ export function statusColor(status) {
 }
 
 /**
+ * 期の取得
+ *
+ * @param {Number} classNumber - クラス番号
+ * @param {Boolean} show - 画面表示用か
+ * @return {String} 期
+ */
+export function periodName(classNumber, show = false) {
+  let name;
+  if (classNumber === 0) {
+    name = show ? '入門期' : 'introduction';
+  } else if (1 <= classNumber && classNumber <= 3) {
+    name = show ? '素人期' : 'beginner';
+  } else if (4 <= classNumber && classNumber <= 6) {
+    name = show ? '苦労人前期' : 'intermediate';
+  } else if (7 <= classNumber && classNumber <= 10) {
+    name = show ? '苦労人後期' : 'advanced';
+  } else if (11 <= classNumber) {
+    name = show ? '玄人期' : 'expert';
+  }
+
+  return name;
+}
+
+/**
  * 期の色の取得
  *
  * @param {String} period - 期

@@ -12,9 +12,11 @@ window.FlowChat = require('./plugins/flow-chat');
  */
 Vue.prototype.$moment = require('moment');
 Vue.prototype.$storage = require('./consts/storage').getStoragePath;
+Vue.prototype.$docs = require('./consts/storage').getDocsPath;
 const functions = require('./plugins/functions');
 Vue.prototype.$formatStr = functions.formatStr;
 Vue.prototype.$statusColor = functions.statusColor;
+Vue.prototype.$periodName = functions.periodName;
 Vue.prototype.$periodColor = functions.periodColor;
 Vue.prototype.$classColor = functions.classColor;
 Vue.prototype.$slack = functions.slackPost;
@@ -24,8 +26,8 @@ Vue.prototype.$slack = functions.slackPost;
  */
 Vue.component('KarteContainer', require('./components/commons/KarteContainer').default);
 Vue.component('PostContainer', require('./components/commons/PostContainer').default);
+Vue.component('KartePostDialog', require('./components/commons/KartePostDialog').default);
 Vue.component('ImageInput', require('./components/commons/form/ImageInput').default);
-Vue.component('ContentTable', require('./components/mystudy/docs/ContentTable').default);
 
 /**
  * Vueの定義

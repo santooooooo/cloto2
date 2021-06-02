@@ -32,9 +32,9 @@
         </v-col>
         <v-col cols="8">
           <v-img
-            max-height="1200"
-            max-width="800"
-            src="https://picsum.photos/id/11/500/300"
+            max-width="60%"
+            max-height="80vh"
+            :src="$storage('system') + 'mystudy.png'"
             class="mx-auto mb-10"
           ></v-img>
         </v-col>
