@@ -172,7 +172,7 @@ export default {
     position: fixed;
     top: 100px;
     left: 270px;
-    max-width: 230px;
+    width: 230px;
 
     .line-style {
       display: inline-block;
@@ -183,17 +183,6 @@ export default {
 
     .line-style--active {
       background: currentColor;
-    }
-  }
-
-  // vue-side-catalogのCSS
-  .side-catalog__list {
-    overflow-y: auto;
-
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
     }
   }
 
@@ -233,6 +222,19 @@ export default {
         line-height: 2.4;
       }
     }
+  }
+}
+</style>
+
+<style lang="scss">
+// vue-side-catalogのCSS
+.side-catalog__list {
+  overflow-y: auto;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 </style>
