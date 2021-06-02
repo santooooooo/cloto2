@@ -1,8 +1,6 @@
 <template>
   <v-container fluid id="content">
-    <div class="mb-12 pa-4" id="classdesc">
-      <h1 class="text-h3 text-center">{{ title }}</h1>
-    </div>
+    <h1 class="text-h3 white--text text-center mb-12 pa-4">{{ title }}</h1>
 
     <p>
       Class5ではClass4で学んだ言語ごとの基礎的な文法や仕組みを、<br />

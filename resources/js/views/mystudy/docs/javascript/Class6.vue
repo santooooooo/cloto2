@@ -1,8 +1,6 @@
 <template>
   <v-container fluid id="content">
-    <div class="mb-12 pa-4" id="classdesc">
-      <h1 class="text-h3 text-center">{{ title }}</h1>
-    </div>
+    <h1 class="text-h3 white--text text-center mb-12 pa-4">{{ title }}</h1>
 
     <p>
       Class6ではお題に沿っていよいよ初制作を行なっていきます。<br />

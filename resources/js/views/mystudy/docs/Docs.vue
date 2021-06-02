@@ -10,11 +10,11 @@
   </v-row> -->
   <v-container fluid id="docs">
     <!-- 目次 -->
-    <side-catalog class="catalog" v-bind="catalogProps">
+    <VueSideCatalog class="catalog" v-bind="catalogProps">
       <template #default="{ isActive }">
         <i :class="['line-style', isActive ? 'line-style--active' : '']"></i>
       </template>
-    </side-catalog>
+    </VueSideCatalog>
 
     <!-- コンテンツ -->
     <div v-if="currentRoad === 'javascript'">
@@ -49,7 +49,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="next()">次のコースへ</v-btn>
+          <v-btn text color="primary" @click="next()">次のコースへ</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import SideCatalog from 'vue-side-catalog';
+import VueSideCatalog from 'vue-side-catalog';
 import 'vue-side-catalog/lib/vue-side-catalog.css';
 import { OK } from '@/consts/status';
 import JavaScript0 from '@/views/mystudy/docs/javascript/Class0';
@@ -90,7 +90,7 @@ export default {
     };
   },
   components: {
-    SideCatalog,
+    VueSideCatalog,
     JavaScript0,
     JavaScript1,
     JavaScript2,
@@ -132,7 +132,7 @@ export default {
      */
     next: function () {
       if (this.currentClass < this.authUser.roadmaps[0].in_progress) {
-        // カルテ記入後もしくはクリア済みのクラスから進む場合
+        // クリア済みのクラスから進む場合（もしくはカルテ記入後）
         this.$router.push({
           name: 'docs',
           params: { roadName: 'javascript', class: this.currentClass + 1 },
@@ -187,36 +187,27 @@ export default {
   }
 
   // vue-side-catalogのCSS
-.side-catalog__list {
-  overflow-y: auto;
+  .side-catalog__list {
+    overflow-y: auto;
 
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
-}
 
   // router-view内の要素のCSS
   &::v-deep {
     #content {
       padding-left: 320px;
-      // padding-left: 300px;
       font-size: 1.2rem;
 
-      #classdesc {
-        padding: 0 !important;
-        background-color: #f6bf00;
-        color: #ffffff;
-        height: 20vh;
-        position: relative;
-        & > h1 {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translateY(-50%) translateX(-50%);
-        }
+      h1 {
+        line-height: 20vh;
+        background-color: $primary;
       }
+
       h2 {
         margin-top: 30px;
         padding-top: 50px;
@@ -244,7 +235,4 @@ export default {
     }
   }
 }
-
 </style>
-
-

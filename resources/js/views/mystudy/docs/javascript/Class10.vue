@@ -1,9 +1,6 @@
-import { ANNOUNCE_SOUND } from '@/consts/sound';
 <template>
   <v-container fluid id="content">
-    <div class="mb-12 pa-4" id="classdesc">
-      <h1 class="text-h3 text-center">{{ title }}</h1>
-    </div>
+    <h1 class="text-h3 white--text text-center mb-12 pa-4">{{ title }}</h1>
 
     <p>
       Class7~Class9で「伝えたいこと」を伝えるためのWeb制作をしてきました。<br />
