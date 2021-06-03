@@ -198,7 +198,7 @@ export default {
   &::v-deep {
     #content {
       padding-left: 320px;
-      font-size: 1.2rem;
+      font-size: 1.1em;
 
       h1 {
         line-height: 20vh;
@@ -221,7 +221,7 @@ export default {
       }
 
       p {
-        line-height: 2.4em;
+        line-height: 2.2em;
         margin-bottom: 32px;
       }
 
