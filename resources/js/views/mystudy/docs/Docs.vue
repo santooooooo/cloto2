@@ -44,7 +44,11 @@
     <v-dialog persistent v-model="congratulationDialog" width="80%">
       <v-card>
         <div class="text-center">
-          <v-img contain :src="$docs(currentRoad, 'class' + currentClass) + 'clear.png'"></v-img>
+          <v-img
+            max-width="100%"
+            max-height="80vh"
+            :src="$docs(currentRoad, 'class' + currentClass) + 'clear.png'"
+          ></v-img>
         </div>
 
         <v-card-actions>
