@@ -5,7 +5,7 @@
     </h1>
     <v-container class="my-8">
       <v-row>
-        <v-col cols="4" class="pr-4 font-weight-black">
+        <v-col cols="4" class="font-weight-black">
           <p>
             「マイスタディ」では、<br />
             右の図のような6つのコースと<br />
@@ -32,7 +32,7 @@
         </v-col>
         <v-col cols="8">
           <v-img
-            max-width="60%"
+            max-width="100%"
             max-height="80vh"
             :src="$storage('system') + 'mystudy.png'"
             class="mx-auto mb-10"
