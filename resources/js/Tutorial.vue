@@ -4,13 +4,13 @@
       <v-card-title class="text-h5 grey lighten-2">使い方を学ぼう！</v-card-title>
 
       <div class="text-center">
-        <video controls autoplay muted :src="$storage('system') + 'tutorial.mp4'"></video>
+        <video controls muted autoplay loop :src="$storage('system') + 'tutorial.mp4'"></video>
       </div>
 
       <v-card-actions>
-        <small class="red--text ml-4">
+        <span class="red--text ml-4">
           ※この動画はマイスタディから学習を開始すると表示されなくなります。
-        </small>
+        </span>
 
         <v-spacer></v-spacer>
 
