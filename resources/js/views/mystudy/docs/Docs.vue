@@ -200,8 +200,7 @@ export default {
       padding-left: 320px;
       font-size: 1.1em;
 
-      h1 {
-        line-height: 20vh;
+      #title {
         background-color: $primary;
       }
 

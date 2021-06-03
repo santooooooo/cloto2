@@ -1,6 +1,9 @@
 <template>
   <v-container fluid id="content">
-    <h1 class="text-h3 white--text text-center mb-12 pa-4">{{ title }}</h1>
+    <div class="white--text text-center mb-12 py-8" id="title">
+      <h1 class="text-h4 my-4">プログラミングで「伝える」コース</h1>
+      <h1 class="text-h4 my-4">{{ title }}</h1>
+    </div>
 
     <p>
       Class8で実際にWeb制作をしてきました。<br />
