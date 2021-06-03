@@ -3,7 +3,7 @@
     <h1 class="font-weight-bold mt-4 text-center">
       あなたの「独学」を支援するCLOTOの「マイスタディ」
     </h1>
-    <v-container class="my-8">
+    <v-container class="my-8 px-12">
       <v-row>
         <v-col cols="4" class="font-weight-black">
           <p>
