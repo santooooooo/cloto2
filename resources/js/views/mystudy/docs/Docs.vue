@@ -167,6 +167,10 @@ export default {
       }
     },
   },
+  created() {
+    // 最上部へスクロール（なぜかスクロールされた状態で表示されるため）
+    this.$scrollTo('#main');
+  },
 };
 </script>
 
