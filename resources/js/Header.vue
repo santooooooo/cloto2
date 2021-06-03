@@ -12,7 +12,7 @@
       text
       x-large
       class="font-weight-bold"
-      href="https://spark.adobe.com/page/Z34f2zfDFQnUU"
+      href="https://spark.adobe.com/page/v8FwCCgsdObtI"
       target="_blank"
     >
       使い方とQ&A
