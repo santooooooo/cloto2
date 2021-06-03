@@ -14,7 +14,7 @@
       Class2から分かれていくコースの選択を行います。
     </p>
 
-    <ul class="agenda">
+    <ul id="agenda">
       <li>0-0　Class1</li>
       <li>1-1　プログラミング学習の概要</li>
       <li>1-2　プログラミング学習の5段階</li>

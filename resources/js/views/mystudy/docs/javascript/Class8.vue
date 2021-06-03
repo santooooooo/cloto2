@@ -10,7 +10,7 @@
       すでに素材と設計図は整いました。早速始めていきましょう！
     </p>
 
-    <ul class="agenda">
+    <ul id="agenda">
       <li>0-0　Class8</li>
       <li>1-0　コーディングの準備</li>
       <li>1-1　Git</li>

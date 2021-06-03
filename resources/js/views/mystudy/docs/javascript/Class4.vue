@@ -24,7 +24,7 @@
       できるだけ丁寧に学習していきましょう！
     </p>
 
-    <ul class="agenda">
+    <ul id="agenda">
       <li>0-0　Class4</li>
       <li>1-0　参考書学習のすゝめ</li>
       <li>1-1　HTMLの学習</li>

@@ -17,7 +17,7 @@
       Class10終了後に公開することを前提として本気で取り組んで行きましょう。
     </p>
 
-    <ul class="agenda">
+    <ul id="agenda">
       <li>0-0　Class7</li>
       <li>1-0　下準備のすゝめ</li>
       <li>1-1　Web制作のマインドセット</li>

@@ -204,6 +204,10 @@ export default {
         background-color: $primary;
       }
 
+      #agenda {
+        list-style: none;
+      }
+
       h2 {
         margin-top: 30px;
         padding-top: 50px;
@@ -213,10 +217,6 @@ export default {
           border-left: 6px solid $dark-blue;
           background-color: #eeeeee;
         }
-      }
-
-      .agenda {
-        list-style: none;
       }
 
       p {

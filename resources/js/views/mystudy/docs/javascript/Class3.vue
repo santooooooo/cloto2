@@ -24,7 +24,7 @@
       カルテやタイムラインに投稿して教えてください！
     </p>
 
-    <ul class="agenda">
+    <ul id="agenda">
       <li>0-0　Class3</li>
       <li>1-0　おすすめチュートリアルサービス</li>
       <li>1-1　Progate</li>
