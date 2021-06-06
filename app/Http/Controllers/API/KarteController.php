@@ -26,7 +26,7 @@ class KarteController extends Controller
     public function __construct(Karte $karte, Tag $tag)
     {
         $this->middleware(function ($request, $next) {
-            $this->user = Auth::user();
+            $this->auth = Auth::user();
             return $next($request);
         });
 
@@ -41,15 +41,9 @@ class KarteController extends Controller
      * @param  \App\Models\User  $user  カルテを取得するユーザー
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user = null)
+    public function index(User $user)
     {
-        if (empty($user)) {
-            // 全ユーザーのカルテ一覧
-            $kartes = $this->karte->orderBy('created_at', 'desc')->get();
-        } else {
-            // 指定したユーザーのカルテ一覧
-            $kartes = $user->kartes->sortByDesc('created_at')->values();
-        }
+        $kartes = $user->kartes->sortByDesc('created_at')->values();
 
         return response()->json($kartes);
     }
@@ -63,7 +57,7 @@ class KarteController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['user_id'] = $this->user->id;
+        $data['user_id'] = $this->auth->id;
 
         // 画像ファイル名の取得
         if (!empty($request->file('image'))) {
@@ -80,7 +74,7 @@ class KarteController extends Controller
 
         // 画像ファイルの保存（カルテの作成日時を使用するためcreate後に実行）
         if (!empty($request->file('image'))) {
-            $dir = config('consts.storage.karte') . $this->user->username . '/' . (new Carbon($result->created_at))->format('Y_md_Hi');
+            $dir = config('consts.storage.karte') . $this->auth->username . '/' . (new Carbon($result->created_at))->format('Y_md_Hi');
             $request->file('image')->storeAs($dir, $filename);
         }
 
@@ -91,5 +85,19 @@ class KarteController extends Controller
 
         broadcast(new TimelineUpdated($result));
         return response()->json(['message' => 'カルテが保存されました。']);
+    }
+
+    /**
+     * カルテとコメント一覧の取得
+     *
+     * @param  \App\Models\Karte  $karte  取得するカルテ
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Karte $karte)
+    {
+        return response()
+            ->json($karte->load(['comments' => function ($query) {
+                $query->latest();
+            }]));
     }
 }

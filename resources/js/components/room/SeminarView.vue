@@ -53,7 +53,7 @@
             </template>
             <v-list max-height="200" class="bg-secondary" v-if="viewers.length != 0">
               <v-list-item v-for="viewer in viewers" :key="viewer.peerId">
-                <v-list-item-title class="d-flex" @click="showProfile(viewer.username)">
+                <v-list-item-title class="d-flex" @click="$store.dispatch('dialog/open', { type: 'user', username: viewer.username })">
                   <v-avatar size="40" class="viewer ma-1">
                     <img :src="$storage('icon') + viewer.icon" />
                   </v-avatar>
@@ -128,7 +128,12 @@
                         icon
                         x-large
                         class="account-button"
-                        @click="showProfile(speaker.username)"
+                        @click="
+                          $store.dispatch('dialog/open', {
+                            type: 'user',
+                            username: speaker.username,
+                          })
+                        "
                       >
                         <v-icon> mdi-account </v-icon>
                       </v-btn>
@@ -213,7 +218,12 @@
                         icon
                         x-large
                         class="account-button"
-                        @click="showProfile(pinnedSpeaker.username)"
+                        @click="
+                          $store.dispatch('dialog/open', {
+                            type: 'user',
+                            username: pinnedSpeaker.username,
+                          })
+                        "
                       >
                         <v-icon> mdi-account </v-icon>
                       </v-btn>
@@ -292,7 +302,12 @@
                             icon
                             x-large
                             class="account-button"
-                            @click="showProfile(speaker.username)"
+                            @click="
+                              $store.dispatch('dialog/open', {
+                                type: 'user',
+                                username: speaker.username,
+                              })
+                            "
                           >
                             <v-icon> mdi-account </v-icon>
                           </v-btn>
@@ -304,13 +319,6 @@
               </v-row>
             </v-col>
           </v-row>
-
-          <!-- プロフィールダイアログ -->
-          <ProfileDialog
-            :username="profile.username"
-            @close="profile.dialog = $event"
-            v-if="profile.dialog"
-          ></ProfileDialog>
         </v-container>
       </v-flex>
 
@@ -415,7 +423,9 @@
           <v-row justify="end">
             <!-- 通知音ボタン -->
             <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
-              <v-icon large>{{ isNotificationOn ? 'mdi-bell' : 'mdi-bell-off' }}</v-icon>
+              <v-icon large>
+                {{ isNotificationOn ? 'mdi-music-note' : 'mdi-music-note-off' }}
+              </v-icon>
             </v-btn>
 
             <!-- チャットボタン -->
@@ -469,18 +479,13 @@
 
 <script>
 import voiceDetection from 'voice-activity-detection';
-import ProfileDialog from '@/components/user/ProfileDialog';
 import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND } from '@/consts/sound';
 
 const API_KEY = process.env.MIX_SKYWAY_API_KEY;
 
 export default {
-  components: {
-    ProfileDialog,
-  },
   props: {
     callId: Number,
-    capacity: Number,
   },
   data() {
     return {
@@ -496,7 +501,7 @@ export default {
 
       //*** 通話 ***//
       participants: [], // 参加者
-      roomMode: 'mesh', // 接続モード
+      roomMode: 'sfu', // 接続モード
       peer: null, // Peer接続オブジェクト
       call: null, // 接続プロパティ
       screenSharing: {
@@ -521,12 +526,6 @@ export default {
         notification: false, // 通知制御
         localText: '', // 送信するメッセージ
         messages: [], // メッセージ一覧
-      },
-
-      //*** プロフィール ***//
-      profile: {
-        dialog: false, // プロフィールのダイアログ制御
-        username: null, // プロフィールを表示するユーザー名
       },
     };
   },
@@ -956,16 +955,6 @@ export default {
     },
 
     /**
-     * プロフィールの表示
-     *
-     * @param {String} username - プロフィールを表示するユーザー名
-     */
-    showProfile: function (username) {
-      this.profile.username = username;
-      this.profile.dialog = true;
-    },
-
-    /**
      * ツールバーの表示制御
      *
      * @param {Event} event - マウス移動イベント
@@ -1035,16 +1024,19 @@ export default {
 
     // エラー発生時のイベント
     Vue.config.errorHandler = (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     };
 
     // エラー発生時のイベント
     window.addEventListener('error', (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 
     // エラー発生時のイベント
     window.addEventListener('unhandledrejection', (error) => {
+      console.log(error);
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 
@@ -1069,11 +1061,6 @@ export default {
         // 再処理
         continue;
       }
-    }
-
-    // 定員が30人より多い場合はSFU方式を利用
-    if (this.capacity > 30) {
-      this.roomMode = 'sfu';
     }
 
     // Peerの作成
@@ -1140,7 +1127,7 @@ export default {
 .video {
   position: relative;
 
-  // v-hover
+  // v-hover要素に適用
   .v-overlay {
     z-index: 0 !important;
   }

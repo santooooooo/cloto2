@@ -15,16 +15,17 @@ import index from '@/views/Index';
 import terms from '@/views/service/Terms';
 import login from '@/views/Login';
 import home from '@/views/home/Home';
-import information from '@/views/home/Information';
+import timeline from '@/views/home/Timeline';
 import floor from '@/views/home/Floor';
 import room from '@/views/room/Room';
 import mypage from '@/views/mypage/Mypage';
 import profile from '@/views/mypage/Profile';
 import follower from '@/views/mypage/Follower';
-import karte from '@/views/mypage/Karte';
 import post from '@/views/mypage/Post';
-// import docs from '@/views/docs/Docs';
-// import sample from '@/views/docs/Sample';
+import mystudy from '@/views/mystudy/Mystudy';
+import progress from '@/views/mystudy/Progress';
+import karte from '@/views/mystudy/Karte';
+import docs from '@/views/mystudy/docs/Docs';
 import notFound from '@/views/errors/NotFound';
 
 const router = new VueRouter({
@@ -53,9 +54,9 @@ const router = new VueRouter({
       component: home,
       children: [
         {
-          path: 'information',
+          path: 'timeline',
           name: 'home',
-          component: information,
+          component: timeline,
         },
         {
           path: 'floor/:roomId',
@@ -84,28 +85,33 @@ const router = new VueRouter({
           component: follower,
         },
         {
-          path: 'karte',
-          name: 'karte',
-          component: karte,
-        },
-        {
           path: 'post',
           name: 'post',
           component: post,
         },
       ],
     },
-    // {
-    //   path: '/docs',
-    //   component: docs,
-    //   children: [
-    //     {
-    //       path: 'sample',
-    //       name: 'sample',
-    //       component: sample,
-    //     },
-    //   ],
-    // },
+    {
+      path: '/mystudy',
+      component: mystudy,
+      children: [
+        {
+          path: 'progress',
+          name: 'mystudy',
+          component: progress,
+        },
+        {
+          path: 'karte',
+          name: 'karte',
+          component: karte,
+        },
+        {
+          path: 'docs/:roadName/class/:class',
+          name: 'docs',
+          component: docs,
+        },
+      ],
+    },
     {
       path: '*',
       name: notFound,
@@ -124,14 +130,35 @@ router.beforeEach(async (to, from, next) => {
     next({ name: 'login' });
   }
 
-  if (store.getters['auth/check'] && store.getters['auth/user'].email_verified_at === null) {
-    // 未認証時のリダイレクト
-    window.location.pathname = '/email/verify';
-  }
+  if (store.getters['auth/check']) {
+    if (store.getters['auth/user'].email_verified_at === null) {
+      // 未認証時のリダイレクト
+      window.location.pathname = '/email/verify';
+    }
 
-  if (store.getters['auth/check'] && to.name === 'login') {
-    // ログイン時のリダイレクト
-    next({ name: 'home' });
+    if (to.name === 'login') {
+      // ログイン時のリダイレクト
+      next({ name: 'home' });
+    }
+
+    if (to.name === 'docs') {
+      if (!store.getters['auth/user'].roadmaps.length) {
+        // ロードマップ未開始時
+        next({ name: 'mystudy' });
+      } else if (
+        store.getters['auth/user'].roadmaps.length &&
+        to.params.class > store.getters['auth/user'].roadmaps[0].in_progress
+      ) {
+        // 取り組み中のクラスよりも先のコンテンツへのアクセス時のリダイレクト
+        next({
+          name: 'docs',
+          params: {
+            roadName: 'javascript',
+            class: store.getters['auth/user'].roadmaps[0].in_progress,
+          },
+        });
+      }
+    }
   }
 
   next();

@@ -14,7 +14,9 @@ class Chat extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'room_id', 'body'];
+    protected $fillable = [
+        'user_id', 'room_id', 'body'
+    ];
 
     /**
      * The accessors to append to the model's array form.

@@ -114,21 +114,6 @@ export default {
     setUser: function (seat) {
       // 念の為ユーザーの存在確認
       if (seat.user) {
-        let color;
-        switch (seat.user.status) {
-          case 'free':
-            color = 'green';
-            break;
-
-          case 'busy':
-            color = 'red';
-            break;
-
-          case 'away':
-            color = 'grey';
-            break;
-        }
-
         fabric.Image.fromURL(this.$storage('icon') + seat.user.icon, (img) => {
           let status = new fabric.Circle({
             originX: 'center',
@@ -137,7 +122,7 @@ export default {
             height: 10,
             radius: seat.size / 2,
             strokeWidth: 10,
-            stroke: color,
+            stroke: this.$statusColor(seat.user.status),
           });
 
           let icon = img.set({

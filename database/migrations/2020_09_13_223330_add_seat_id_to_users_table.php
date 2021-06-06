@@ -13,9 +13,11 @@ class AddSeatIdToUsersTable extends Migration
      */
     public function up()
     {
-        // 外部キー制約のため，seatsテーブル作成後にカラムを追加
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('seat_id')->after('role')->nullable()->constrained(); // 着席している座席ID
+            $table->foreignId('seat_id')
+                ->after('role')
+                ->nullable()
+                ->constrained();            // 着席している座席ID
         });
     }
 
@@ -28,6 +30,7 @@ class AddSeatIdToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign('users_seat_id_foreign');
+            $table->dropColumn('seat_id');
         });
     }
 }
