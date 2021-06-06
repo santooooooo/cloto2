@@ -38,15 +38,20 @@
 
     <v-layout class="px-2" ref="container">
       <!-- 視聴者一覧 -->
-      <v-flex>
+      <v-flex class="viewer-container">
         <v-container fluid py-0>
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn class="ma-16 bg-warning text-white font-weight-bold" v-bind="attrs" v-on="on">
+              <v-btn
+                class="bg-warning text-white font-weight-bold"
+                v-bind="attrs"
+                v-on="on"
+                style="font-size: 1rem"
+              >
                 参加人数：{{ viewers.length + 1 }}
               </v-btn>
             </template>
-            <v-list max-height="200" class="bg-secondary viewer-container">
+            <v-list max-height="200" class="bg-secondary" v-if="viewers.length != 0">
               <v-list-item v-for="viewer in viewers" :key="viewer.peerId">
                 <v-list-item-title class="d-flex" @click="showProfile(viewer.username)">
                   <v-avatar size="40" class="viewer ma-1">
@@ -552,7 +557,9 @@ export default {
     },
     viewers() {
       // 視聴者
-      return this.participants;
+      return this.participants.filter((participant) => {
+        return typeof participant.stream === 'undefined';
+      });
     },
   },
   watch: {
@@ -1124,7 +1131,10 @@ export default {
 }
 
 .viewer-container {
+  position: absolute;
+  top: 4rem;
   cursor: pointer;
+  z-index: 2;
 }
 
 .video {
