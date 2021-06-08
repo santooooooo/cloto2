@@ -185,7 +185,7 @@ export default {
         achieve: '', // 達成できたこと
         challenge: '', // 次の課題
         reference: '', // 参考文献
-        image: null, // 画像
+        image: '', // 画像
         activityTime: '00:00', // 活動時間
         loading: false,
         validation: {
@@ -251,7 +251,7 @@ export default {
     submit: async function () {
       // バリデーション
       let validate = this.$refs.karteForm.validate();
-      if (this.roadmapId && this.karteForm.image === null) {
+      if (this.roadmapId && this.karteForm.image === '') {
         // ロードマップへの紐付け時には画像の入力が必須
         validate = false;
         this.$store.dispatch('alert/error', '画像は必須です！');
@@ -275,7 +275,7 @@ export default {
 
         if (response.status === OK) {
           let tweet;
-          
+
           if (this.roadmapId) {
             // ロードマップへの紐付け後
             tweet =
