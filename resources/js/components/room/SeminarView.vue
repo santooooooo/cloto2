@@ -53,12 +53,7 @@
             </template>
             <v-list max-height="200" class="bg-secondary" v-if="viewers.length != 0">
               <v-list-item v-for="viewer in viewers" :key="viewer.peerId">
-                <v-list-item-title
-                  class="d-flex"
-                  @click="
-                    $store.dispatch('dialog/open', { type: 'user', username: viewer.username })
-                  "
-                >
+                <v-list-item-title class="d-flex" @click="$store.dispatch('dialog/open', { type: 'user', username: viewer.username })">
                   <v-avatar size="40" class="viewer ma-1">
                     <img :src="$storage('icon') + viewer.icon" />
                   </v-avatar>
@@ -542,7 +537,7 @@ export default {
       return this.$store.getters['alert/isSoundOn'];
     },
     videoShowWidth() {
-      return this.$windowWidth / 3.75;
+      return this.$windowWidth / 3;
     },
     videoShowHeight() {
       return (this.videoShowWidth / 16) * 9;
