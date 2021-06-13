@@ -537,7 +537,7 @@ export default {
       return this.$store.getters['alert/isSoundOn'];
     },
     videoShowWidth() {
-      return this.$windowWidth / 3;
+      return this.$windowWidth / 3.75;
     },
     videoShowHeight() {
       return (this.videoShowWidth / 16) * 9;
