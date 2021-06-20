@@ -243,6 +243,8 @@ export default {
      */
     close: function () {
       this.dialog = false;
+      this.kartes = [];
+      this.show = null;
       this.$store.dispatch('dialog/close', 'user');
     },
 
