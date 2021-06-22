@@ -53,7 +53,7 @@
             </template>
 
             <v-list max-height="200" class="bg-secondary">
-              <v-list-item v-for="viewer in viewers" :key="viewer.id" class="viewer">
+              <v-list-item v-for="viewer in viewers" :key="viewer.id" class="viewer bg-secondary">
                 <v-list-item-title
                   class="d-flex"
                   @click="
