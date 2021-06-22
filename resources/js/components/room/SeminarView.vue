@@ -38,27 +38,37 @@
 
     <v-layout class="px-2" ref="container">
       <!-- 視聴者一覧 -->
-      <v-flex xs1 class="viewer-container">
-        <!-- 自分 -->
-        <v-avatar
-          size="40"
-          class="viewer ma-1"
-          @click="$store.dispatch('dialog/open', { type: 'user', username: authUser.username })"
-          v-if="!loading"
-        >
-          <img :src="$storage('icon') + authUser.icon" />
-        </v-avatar>
+      <v-flex class="viewer-container">
+        <v-container fluid py-0>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                class="bg-warning text-white font-weight-bold"
+                v-bind="attrs"
+                v-on="on"
+                :disabled="!viewers.length"
+              >
+                参加人数：{{ viewers.length + 1 }}
+              </v-btn>
+            </template>
 
-        <!-- 他の視聴者 -->
-        <v-avatar
-          size="40"
-          class="viewer ma-1"
-          v-for="viewer in viewers"
-          :key="viewer.peerId"
-          @click="$store.dispatch('dialog/open', { type: 'user', username: viewer.username })"
-        >
-          <img :src="$storage('icon') + viewer.icon" />
-        </v-avatar>
+            <v-list max-height="200" class="bg-secondary">
+              <v-list-item v-for="viewer in viewers" :key="viewer.id" class="viewer">
+                <v-list-item-title
+                  class="d-flex"
+                  @click="
+                    $store.dispatch('dialog/open', { type: 'user', username: viewer.username })
+                  "
+                >
+                  <v-avatar size="40" class="ma-1">
+                    <img :src="$storage('icon') + viewer.icon" />
+                  </v-avatar>
+                  <p class="ma-4 font-weight-bold text-white">{{ viewer.username }}</p>
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-container>
       </v-flex>
 
       <v-flex>
@@ -534,7 +544,7 @@ export default {
       return this.$store.getters['alert/isSoundOn'];
     },
     videoShowWidth() {
-      return this.$windowWidth / 3;
+      return this.$windowWidth / 3.75;
     },
     videoShowHeight() {
       return (this.videoShowWidth / 16) * 9;
@@ -1115,11 +1125,8 @@ export default {
 }
 
 .viewer-container {
-  margin: 65px 0px 105px 0px;
-
-  .viewer {
-    cursor: pointer;
-  }
+  position: absolute;
+  top: 5rem;
 }
 
 .video {
@@ -1237,5 +1244,9 @@ export default {
 <style lang="scss">
 .v-dialog {
   background-size: cover;
+}
+
+.viewer {
+  cursor: pointer;
 }
 </style>

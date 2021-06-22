@@ -244,6 +244,7 @@ export default {
      */
     close: function () {
       this.dialog = false;
+      this.show = null;
       this.$store.dispatch('dialog/close', 'user');
     },
 
