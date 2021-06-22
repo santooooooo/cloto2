@@ -66,15 +66,21 @@
                 class="bg-warning text-white font-weight-bold"
                 v-bind="attrs"
                 v-on="on"
-                style="font-size: 1rem"
+                :disabled="!viewers.length"
               >
                 参加人数：{{ viewers.length }}
               </v-btn>
             </template>
-            <v-list max-height="200" class="bg-secondary" v-if="viewers.length != 0">
-              <v-list-item v-for="viewer in viewers" :key="viewer.peerId">
-                <v-list-item-title class="d-flex" @click="$store.dispatch('dialog/open', { type: 'user', username: viewer.username })">
-                  <v-avatar size="40" class="viewer ma-1">
+
+            <v-list max-height="200" class="bg-secondary">
+              <v-list-item v-for="viewer in viewers" :key="viewer.id" class="viewer">
+                <v-list-item-title
+                  class="d-flex"
+                  @click="
+                    $store.dispatch('dialog/open', { type: 'user', username: viewer.username })
+                  "
+                >
+                  <v-avatar size="40" class="ma-1">
                     <img :src="$storage('icon') + viewer.icon" />
                   </v-avatar>
                   <p class="ma-4 font-weight-bold text-white">{{ viewer.username }}</p>
@@ -84,6 +90,7 @@
           </v-menu>
         </v-container>
       </v-flex>
+
       <v-flex>
         <v-container fluid py-0>
           <!--*** 画面共有ON ***-->
@@ -1530,9 +1537,7 @@ export default {
 
 .viewer-container {
   position: absolute;
-  top: 4rem;
-  cursor: pointer;
-  z-index: 2;
+  top: 5rem;
 }
 
 .video {
@@ -1650,5 +1655,9 @@ export default {
 <style lang="scss">
 .v-dialog {
   background-size: cover;
+}
+
+.viewer {
+  cursor: pointer;
 }
 </style>
