@@ -216,7 +216,8 @@ export default {
     },
 
     color() {
-      return this.$classColor(this.user.roadmaps.length ? this.user.roadmaps[0].in_progress : '');
+      return '#9e9e9e';
+      // return this.$classColor(this.user.roadmaps.length ? this.user.roadmaps[0].in_progress : '');
     },
   },
 
