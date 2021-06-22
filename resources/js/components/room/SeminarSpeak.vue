@@ -53,37 +53,6 @@
             </v-btn>
           </v-row>
         </v-col>
-        <!-- タイマー -->
-        <v-col md="1" sm="1" class="ml-15">
-          <v-row dense>
-            <v-text-field
-              class="mt-8 px-2"
-              label="分"
-              @keydown="showAppBar"
-              @keydown.enter="updateTopic"
-              type="number"
-              min="0"
-            ></v-text-field>
-          </v-row>
-        </v-col>
-        <v-col md="1" sm="1">
-          <v-row dense>
-            <v-text-field
-              class="mt-8 px-2"
-              label="秒"
-              @keydown="showAppBar"
-              @keydown.enter="updateTopic"
-              width="5%"
-              type="number"
-              min="0"
-            ></v-text-field>
-          </v-row>
-        </v-col>
-        <v-col md="1" sm="3">
-          <v-row dense>
-            <v-btn class="mt-6" color="#FF9800">タイマー設定</v-btn>
-          </v-row>
-        </v-col>
       </v-row>
     </v-app-bar>
 
@@ -99,16 +68,6 @@
         >
           <img :src="$storage('icon') + viewer.icon" />
         </v-avatar>
-      </v-flex>
-
-      <!-- タイマーの表示 -->
-      <v-flex class="timer">
-        <v-card color="#FF9800" width="100%">
-          <v-col color="#FFE0B2">
-            <v-card-title>残り時間</v-card-title>
-            <v-card-text> 10分10秒 </v-card-text>
-          </v-col>
-        </v-card>
       </v-flex>
 
       <v-flex>
@@ -440,6 +399,49 @@
         </v-container>
       </v-flex>
 
+      <!-- タイマーの設定画面の表示 -->
+      <v-flex  class="timerDialog" v-if="timerDialog">
+        <v-card width="50%">
+          <v-row justify="space-around">
+            <v-card-title>タイマーセット</v-card-title>
+            <v-btn fab x-small depressed color="error" class="mt-3" @click="timerDialog = !timerDialog">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-row>
+
+          <v-row dense justify="center">
+            <v-col md="3" sm="3">
+              <v-row dense>
+                <v-text-field
+                  v-model="minutes"
+                  class="mt-3 px-2"
+                  label="分"
+                  type="number"
+                  min="0"
+                ></v-text-field>
+              </v-row>
+            </v-col>
+            <v-col md="3" sm="3">
+              <v-row dense>
+                <v-text-field
+                  v-model="seconds"
+                  class="mt-3 px-2"
+                  label="秒"
+                  width="5%"
+                  type="number"
+                  min="0"
+                ></v-text-field>
+              </v-row>
+            </v-col>
+            <v-col md="1" sm="3">
+              <v-row dense>
+                <v-btn class="mt-5" @click="setTimer" color="#FF9800">セット</v-btn>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-flex>
+
       <!-- チャットエリア -->
       <v-flex xs2 v-show="chat.isOpen">
         <v-card color="grey lighten-2" class="mx-auto" id="chat">
@@ -577,6 +579,11 @@
 
         <v-col md="4" sm="4" align-self="center">
           <v-row justify="end">
+            <!-- タイマーの設定画面を開くボタン -->
+            <v-btn color="white" icon class="mr-6">
+              <v-icon @click="timerDialog = !timerDialog" large>mdi-alarm</v-icon>
+            </v-btn>
+
             <!-- 通知音ボタン -->
             <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
               <v-icon large>
@@ -694,6 +701,12 @@ export default {
         localText: '', // 送信するメッセージ
         messages: [], // メッセージ一覧
       },
+
+      //*** タイマー ***//
+      timerDialog: false, //　タイマーの設定画面の表示の有無
+      timer: false, //　タイマーの表示非表示の有無
+      minutes: null, //　タイマーの分数
+      seconds: null, //　タイマーの秒数
     };
   },
   computed: {
@@ -704,7 +717,7 @@ export default {
       return this.$store.getters['alert/isSoundOn'];
     },
     videoShowWidth() {
-      return this.$windowWidth / 3;
+      return this.$windowWidth / 3.75;
     },
     videoShowHeight() {
       return (this.videoShowWidth / 16) * 9;
@@ -845,6 +858,18 @@ export default {
               this.chat.notification = true;
               this.showAppBar();
             }
+            break;
+
+          case 'setTimer':
+            this.timer = true;
+            this.minutes = data.content.minutes;
+            this.seconds = data.content.seconds;
+            break;
+
+          case 'cancelTimer':
+            this.timer = false;
+            this.minutes = null;
+            this.seconds = null;
             break;
         }
       });
@@ -1431,6 +1456,37 @@ export default {
       this.$store.dispatch('alert/error', message);
       this.leaveCall();
     },
+
+    /**
+     * タイマーをセット
+     *
+     */
+    setTimer: function () {
+      this.timer = true;
+
+      const timerInfo = {
+        minutes: this.minutes,
+        seconds: this.seconds,
+      };
+
+      // タイマーの情報を登壇会場全体へ送信
+      this.call.send({ type: 'setTimer', content: timerInfo });
+      //this.$store.dispatch('alert/success', 'タイマーがセットされました。');
+    },
+
+    /**
+     * タイマーの解除
+     *
+     */
+    cancelTimer: function () {
+      this.timer = false;
+      this.minutes = null;
+      this.seconds = null;
+
+      // タイマーの情報を登壇会場全体へ送信
+      this.call.send({ type: 'cancelTimer', content: null });
+      //this.$store.dispatch('alert/success', 'タイマーがセットされました。');
+    },
   },
 
   async created() {
@@ -1559,10 +1615,17 @@ export default {
     cursor: pointer;
   }
 }
+.timerDialog {
+  position: absolute;
+  top: 20rem;
+  left: 75rem;
+  z-index: 3;
+}
 
 .timer {
   position: absolute;
   top: 10rem;
+  z-index: 3;
 }
 
 .video {
