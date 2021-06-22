@@ -85,33 +85,38 @@ const router = new VueRouter({
           component: follower,
         },
         {
+          path: 'karte',
+          name: 'karte',
+          component: karte,
+        },
+        {
           path: 'post',
           name: 'post',
           component: post,
         },
       ],
     },
-    {
-      path: '/mystudy',
-      component: mystudy,
-      children: [
-        {
-          path: 'progress',
-          name: 'mystudy',
-          component: progress,
-        },
-        {
-          path: 'karte',
-          name: 'karte',
-          component: karte,
-        },
-        {
-          path: 'docs/:roadName/class/:class',
-          name: 'docs',
-          component: docs,
-        },
-      ],
-    },
+    // {
+    //   path: '/mystudy',
+    //   component: mystudy,
+    //   children: [
+    //     {
+    //       path: 'progress',
+    //       name: 'mystudy',
+    //       component: progress,
+    //     },
+    //     {
+    //       path: 'karte',
+    //       name: 'karte',
+    //       component: karte,
+    //     },
+    //     {
+    //       path: 'docs/:roadName/class/:class',
+    //       name: 'docs',
+    //       component: docs,
+    //     },
+    //   ],
+    // },
     {
       path: '*',
       name: notFound,

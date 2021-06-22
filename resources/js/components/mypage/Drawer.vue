@@ -27,6 +27,12 @@
             </v-list-item-content>
           </v-list-item>
 
+          <v-list-item class="mb-4" :to="{ name: 'karte' }">
+            <v-list-item-content>
+              <v-list-item-title class="text-body-1 font-weight-bold">カルテ</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
           <v-list-item class="mb-4" :to="{ name: 'post' }">
             <v-list-item-content>
               <v-list-item-title class="text-body-1 font-weight-bold">つぶやき</v-list-item-title>

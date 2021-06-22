@@ -23,14 +23,14 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item exact :to="{ name: 'mystudy' }">
+      <!-- <v-list-item exact :to="{ name: 'mystudy' }">
         <v-list-item-icon>
           <v-icon>mdi-note-text</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>マイスタディ</v-list-item-title>
         </v-list-item-content>
-      </v-list-item>
+      </v-list-item> -->
 
       <v-list-item exact :to="{ name: 'mypage' }">
         <v-list-item-icon>
