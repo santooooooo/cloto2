@@ -53,6 +53,37 @@
             </v-btn>
           </v-row>
         </v-col>
+        <!-- タイマー -->
+        <v-col md="1" sm="1" class="ml-15">
+          <v-row dense>
+            <v-text-field
+              class="mt-8 px-2"
+              label="分"
+              @keydown="showAppBar"
+              @keydown.enter="updateTopic"
+              type="number"
+              min="0"
+            ></v-text-field>
+          </v-row>
+        </v-col>
+        <v-col md="1" sm="1">
+          <v-row dense>
+            <v-text-field
+              class="mt-8 px-2"
+              label="秒"
+              @keydown="showAppBar"
+              @keydown.enter="updateTopic"
+              width="5%"
+              type="number"
+              min="0"
+            ></v-text-field>
+          </v-row>
+        </v-col>
+        <v-col md="1" sm="3">
+          <v-row dense>
+            <v-btn class="mt-6" color="#FF9800">タイマー設定</v-btn>
+          </v-row>
+        </v-col>
       </v-row>
     </v-app-bar>
 
@@ -68,6 +99,16 @@
         >
           <img :src="$storage('icon') + viewer.icon" />
         </v-avatar>
+      </v-flex>
+
+      <!-- タイマーの表示 -->
+      <v-flex class="timer">
+        <v-card color="#FF9800" width="100%">
+          <v-col color="#FFE0B2">
+            <v-card-title>残り時間</v-card-title>
+            <v-card-text> 10分10秒 </v-card-text>
+          </v-col>
+        </v-card>
       </v-flex>
 
       <v-flex>
@@ -1517,6 +1558,11 @@ export default {
   .viewer {
     cursor: pointer;
   }
+}
+
+.timer {
+  position: absolute;
+  top: 10rem;
 }
 
 .video {
