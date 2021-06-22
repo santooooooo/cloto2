@@ -35,7 +35,7 @@ export default {
     },
   },
   created() {
-    this.dialog = this.authUser.roadmaps.length ? false : true;
+    // this.dialog = this.authUser.roadmaps.length ? false : true;
   },
 };
 </script>
