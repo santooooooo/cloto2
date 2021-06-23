@@ -400,11 +400,18 @@
       </v-flex>
 
       <!-- タイマーの設定画面の表示 -->
-      <v-flex  class="timerDialog" v-if="timerDialog">
-        <v-card width="50%">
+      <v-flex class="timerDialog" v-if="timerDialog">
+        <v-card width="320">
           <v-row justify="space-around">
             <v-card-title>タイマーセット</v-card-title>
-            <v-btn fab x-small depressed color="error" class="mt-3" @click="timerDialog = !timerDialog">
+            <v-btn
+              fab
+              x-small
+              depressed
+              color="error"
+              class="mt-3"
+              @click="timerDialog = !timerDialog"
+            >
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-row>
@@ -413,33 +420,67 @@
             <v-col md="3" sm="3">
               <v-row dense>
                 <v-text-field
-                  v-model="minutes"
+                  v-model="minutesInDialog"
                   class="mt-3 px-2"
                   label="分"
                   type="number"
                   min="0"
+                  max="99"
                 ></v-text-field>
               </v-row>
             </v-col>
             <v-col md="3" sm="3">
               <v-row dense>
                 <v-text-field
-                  v-model="seconds"
+                  v-model="secondsInDialog"
                   class="mt-3 px-2"
                   label="秒"
                   width="5%"
                   type="number"
                   min="0"
+                  max="59"
                 ></v-text-field>
               </v-row>
             </v-col>
             <v-col md="1" sm="3">
               <v-row dense>
-                <v-btn class="mt-5" @click="setTimer" color="#FF9800">セット</v-btn>
+                <v-btn
+                  class="mt-5 text-white"
+                  @click="setTimer"
+                  color="yellow darken-3"
+                  :disabled="
+                    (minutesInDialog == 0 && secondsInDialog == 0) ||
+                    minutesInDialog > 99 ||
+                    secondsInDialog > 59
+                  "
+                  >セット</v-btn
+                >
               </v-row>
             </v-col>
           </v-row>
         </v-card>
+      </v-flex>
+
+      <!-- タイマーの表示(spanは一桁の数字の時に二桁目に0を埋め、見た目をよくするため) -->
+      <v-flex class="normalTimerPosition" v-if="timer">
+        <v-toolbar width="300" class="rounded" color="yellow darken-3">
+          <v-toolbar-title class="text-white" style="font-size: 2rem"
+            ><span v-if="String(minutes).length === 1">0</span> {{ minutes }}:<span
+              v-if="String(seconds).length === 1"
+              >0</span
+            >{{ seconds }}</v-toolbar-title
+          >
+          <v-row justify="center">
+            <v-btn icon color="white" @click="playTimer" :disabled="play"
+              ><v-icon>mdi-play</v-icon></v-btn
+            >
+            <v-btn icon color="white" @click="pauseTimer"><v-icon>mdi-pause</v-icon></v-btn>
+            <v-btn icon color="white"><v-icon>mdi-reload</v-icon></v-btn>
+            <v-btn icon color="white" @click="cancelTimer" :disabled="cancel"
+              ><v-icon>mdi-close-circle</v-icon></v-btn
+            >
+          </v-row>
+        </v-toolbar>
       </v-flex>
 
       <!-- チャットエリア -->
@@ -705,8 +746,13 @@ export default {
       //*** タイマー ***//
       timerDialog: false, //　タイマーの設定画面の表示の有無
       timer: false, //　タイマーの表示非表示の有無
-      minutes: null, //　タイマーの分数
-      seconds: null, //　タイマーの秒数
+      minutesInDialog: 0, //　タイマーの設定画面の分数の表示。全体に表示されるタイマーの分数と別で設定する理由は、タイマーをセットする側のタイマーの表示と全体のタイマーの表示のずれをなくすため
+      secondsInDialog: 0, //　タイマーの設定画面の秒数の表示。
+      minutes: 0, //　タイマーの分数
+      seconds: 0, //　タイマーの秒数
+      play: false, //　タイマーのスタートボタンの利用の可否
+      pause: true, //　タイマーの一時停止を行うかどうか
+      cancel: false, //　タイマーの削除ボタンの利用の可否
     };
   },
   computed: {
@@ -868,8 +914,8 @@ export default {
 
           case 'cancelTimer':
             this.timer = false;
-            this.minutes = null;
-            this.seconds = null;
+            this.minutes = 0;
+            this.seconds = 0;
             break;
         }
       });
@@ -1462,16 +1508,70 @@ export default {
      *
      */
     setTimer: function () {
-      this.timer = true;
+      //タイマーにセットされる値の検証
+      if (this.minutesInDialog != 0 || this.secondsInDialog != 0 || this.secondsInDialog < 59) {
+        //タイマーの表示
+        this.timer = true;
+        //自身のタイマーに値をセット
+        this.minutes = this.minutesInDialog;
+        this.seconds = this.secondsInDialog;
 
-      const timerInfo = {
-        minutes: this.minutes,
-        seconds: this.seconds,
+        const timerInfo = {
+          minutes: this.minutesInDialog,
+          seconds: this.secondsInDialog,
+        };
+
+        // タイマーの情報を登壇会場全体へ送信
+        this.call.send({ type: 'setTimer', content: timerInfo });
+        //this.$store.dispatch('alert/success', 'タイマーがセットされました。');
+      }
+    },
+
+    /**
+     * タイマーの開始
+     *
+     */
+    playTimer: function () {
+      //タイマーの開始ボタンを使用不可にする。理由は複数回このメソッドが実行されると、経過時間が速くなるため
+      this.play = true;
+      //タイマーの削除ボタンを使用不可にする。理由はタイマーの実行中にうっかり消してしまうことを避けるため
+      this.cancel = true;
+      //タイマーの一時停止ボタンを使用可能にする。
+      this.pause = false;
+
+      //タイマーのカウントダウンを実行する
+      const countDown = () => {
+        if (this.seconds >= 0) {
+          //タイマーの一時停止
+          if (this.pause) {
+            clearInterval(interval);
+          }
+
+          //分数が1以上ので秒数が0になるとき、分数を一つ下げて秒数を60にする
+          if (this.minutes > 0 && this.seconds === 0) {
+            this.minutes -= 1;
+            this.seconds += 60;
+          }
+
+          //秒数のカウントダウン
+          if (this.seconds > 0) {
+            this.seconds -= 1;
+          }
+        }
       };
 
-      // タイマーの情報を登壇会場全体へ送信
-      this.call.send({ type: 'setTimer', content: timerInfo });
-      //this.$store.dispatch('alert/success', 'タイマーがセットされました。');
+      //タイマーのカウントダウンを一秒ごとに実行
+      const interval = setInterval(countDown, 1000);
+    },
+
+    /**
+     * タイマーの開始
+     *
+     */
+    pauseTimer: function () {
+      this.play = false;
+      this.pause = true;
+      this.cancel = false;
     },
 
     /**
@@ -1479,11 +1579,13 @@ export default {
      *
      */
     cancelTimer: function () {
+      //タイマーの非表示
       this.timer = false;
-      this.minutes = null;
-      this.seconds = null;
+      //自身のタイマーの値をリセット
+      this.minutes = 0;
+      this.seconds = 0;
 
-      // タイマーの情報を登壇会場全体へ送信
+      // タイマーの解除を登壇会場全体へ送信
       this.call.send({ type: 'cancelTimer', content: null });
       //this.$store.dispatch('alert/success', 'タイマーがセットされました。');
     },
@@ -1621,11 +1723,17 @@ export default {
   left: 75rem;
   z-index: 3;
 }
-
-.timer {
+.screenSharingTimerPosition {
   position: absolute;
-  top: 10rem;
-  z-index: 3;
+  top: 4rem;
+  left: 100rem;
+  z-index: 2;
+}
+.normalTimerPosition {
+  position: absolute;
+  top: 20rem;
+  left: 50rem;
+  z-index: 2;
 }
 
 .video {
