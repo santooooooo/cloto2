@@ -448,11 +448,7 @@
                   class="mt-5 text-white"
                   @click="setTimer"
                   color="yellow darken-3"
-                  :disabled="
-                    (minutesInDialog == 0 && secondsInDialog == 0) ||
-                    minutesInDialog > 99 ||
-                    secondsInDialog > 59
-                  "
+                  :disabled="!timerValidate"
                   >セット</v-btn
                 >
               </v-row>
@@ -790,6 +786,26 @@ export default {
       return this.participants.filter((participant) => {
         return typeof participant.stream === 'undefined';
       });
+    },
+    //　タイマーの設定値の検証
+    timerValidate() {
+      //入力値をNumber型へ変更
+      const minutes = Number(this.minutesInDialog);
+      const seconds = Number(this.secondsInDialog);
+
+      //分数の入力値の検証。検証内容は、９９以上０以下の正の整数であるかどうか
+      const validMinutes = minutes < 99 && minutes >= 0 && Number.isInteger(minutes);
+
+      //秒数の入力値の検証。検証内容は、９９以上０以下の正の整数であるかどうか
+      const validSeconds = seconds < 59 && seconds >= 0 && Number.isInteger(seconds);
+
+      //分数・秒数ともに０である場合はタイマーは使用できない
+      const validMinAndSec = minutes > 0 || seconds > 0;
+
+      if (validMinutes && validSeconds && validMinAndSec) {
+        return true;
+      }
+      return false;
     },
   },
   watch: {
@@ -1528,13 +1544,15 @@ export default {
      */
     setTimer: function () {
       //タイマーにセットされる値の検証
-      if (this.minutesInDialog != 0 || this.secondsInDialog != 0 || this.secondsInDialog < 59) {
+      const validation = this.timerValidate;
+
+      if (validation) {
         //タイマーの表示
         this.timer = true;
 
         //自身のタイマーに値をセット
-        this.minutes = this.minutesInDialog;
-        this.seconds = this.secondsInDialog;
+        this.minutes = Number(this.minutesInDialog);
+        this.seconds = Number(this.secondsInDialog);
 
         //タイマーのリロード時にタイマーの値をセットした時の値に戻すために、リロードで使用するdataに値をセット
         this.reloadMinutes = this.minutesInDialog;
@@ -1547,8 +1565,12 @@ export default {
 
         // タイマーの情報を登壇会場全体へ送信
         this.call.send({ type: 'setTimer', content: timerInfo });
-        this.$store.dispatch('alert/success', 'タイマーがセットされました。');
+        return this.$store.dispatch('alert/success', 'タイマーがセットされました。');
       }
+      return this.$store.dispatch(
+        'alert/error',
+        'タイマーの設定値に誤りがあります。正しい値を入力してください。'
+      );
     },
 
     /**
@@ -1671,7 +1693,6 @@ export default {
       this.call.send({ type: 'reloadTimer', content: null });
       this.reloadTimer();
     },
-
   },
 
   async created() {
