@@ -463,19 +463,21 @@
 
       <!-- タイマーの表示(spanは一桁の数字の時に二桁目に0を埋め、見た目をよくするため) -->
       <v-flex class="normalTimerPosition" v-if="timer">
-        <v-toolbar width="300" class="rounded" color="yellow darken-3">
-          <v-toolbar-title class="text-white" style="font-size: 2rem"
-            ><span v-if="String(minutes).length === 1">0</span> {{ minutes }}:<span
+        <v-toolbar width="310" class="rounded" color="yellow darken-3">
+          <v-toolbar-title class="text-white" style="font-size: 2rem">
+            <span v-if="String(minutes).length === 1">0</span>{{ minutes }}:<span
               v-if="String(seconds).length === 1"
               >0</span
             >{{ seconds }}</v-toolbar-title
           >
           <v-row justify="center">
-            <v-btn icon color="white" @click="playTimer" :disabled="play"
+            <v-btn icon color="white" @click="playAllTimer" :disabled="play"
               ><v-icon>mdi-play</v-icon></v-btn
             >
-            <v-btn icon color="white" @click="pauseTimer"><v-icon>mdi-pause</v-icon></v-btn>
-            <v-btn icon color="white"><v-icon>mdi-reload</v-icon></v-btn>
+            <v-btn icon color="white" @click="pauseAllTimer"><v-icon>mdi-pause</v-icon></v-btn>
+            <v-btn icon color="white" @click="reloadAllTimer" :disabled="reload"
+              ><v-icon>mdi-reload</v-icon></v-btn
+            >
             <v-btn icon color="white" @click="cancelTimer" :disabled="cancel"
               ><v-icon>mdi-close-circle</v-icon></v-btn
             >
@@ -683,7 +685,7 @@
 
 <script>
 import voiceDetection from 'voice-activity-detection';
-import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND } from '@/consts/sound';
+import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND, NOTIFICATION_SOUND } from '@/consts/sound';
 
 const API_KEY = process.env.MIX_SKYWAY_API_KEY;
 
@@ -753,6 +755,9 @@ export default {
       play: false, //　タイマーのスタートボタンの利用の可否
       pause: true, //　タイマーの一時停止を行うかどうか
       cancel: false, //　タイマーの削除ボタンの利用の可否
+      reload: false, //　タイマーのリロードボタンの利用の可否
+      reloadMinutes: 0, //　タイマーのリロード時にminutesInDialogの値をminutesへセットする時に使用する。
+      reloadSeconds: 0, //　タイマーのリロード時にminutesInSecondsの値をsecondsへセットする時に使用する。
     };
   },
   computed: {
@@ -910,12 +915,26 @@ export default {
             this.timer = true;
             this.minutes = data.content.minutes;
             this.seconds = data.content.seconds;
+            this.minutesInDialog = data.content.minutes;
+            this.secondsInDialog = data.content.seconds;
             break;
 
           case 'cancelTimer':
             this.timer = false;
             this.minutes = 0;
             this.seconds = 0;
+            break;
+
+          case 'playTimer':
+            this.playTimer();
+            break;
+
+          case 'pauseTimer':
+            this.pauseTimer();
+            break;
+
+          case 'reloadTimer':
+            this.reloadTimer();
             break;
         }
       });
@@ -1512,9 +1531,14 @@ export default {
       if (this.minutesInDialog != 0 || this.secondsInDialog != 0 || this.secondsInDialog < 59) {
         //タイマーの表示
         this.timer = true;
+
         //自身のタイマーに値をセット
         this.minutes = this.minutesInDialog;
         this.seconds = this.secondsInDialog;
+
+        //タイマーのリロード時にタイマーの値をセットした時の値に戻すために、リロードで使用するdataに値をセット
+        this.reloadMinutes = this.minutesInDialog;
+        this.reloadSeconds = this.secondsInDialog;
 
         const timerInfo = {
           minutes: this.minutesInDialog,
@@ -1523,7 +1547,7 @@ export default {
 
         // タイマーの情報を登壇会場全体へ送信
         this.call.send({ type: 'setTimer', content: timerInfo });
-        //this.$store.dispatch('alert/success', 'タイマーがセットされました。');
+        this.$store.dispatch('alert/success', 'タイマーがセットされました。');
       }
     },
 
@@ -1536,8 +1560,10 @@ export default {
       this.play = true;
       //タイマーの削除ボタンを使用不可にする。理由はタイマーの実行中にうっかり消してしまうことを避けるため
       this.cancel = true;
-      //タイマーの一時停止ボタンを使用可能にする。
+      //タイマーを一時停止しない状態にする。
       this.pause = false;
+      //タイマーのリロードボタンを使用不可にする。
+      this.reload = true;
 
       //タイマーのカウントダウンを実行する
       const countDown = () => {
@@ -1553,10 +1579,19 @@ export default {
             this.seconds += 60;
           }
 
-          //秒数のカウントダウン
-          if (this.seconds > 0) {
-            this.seconds -= 1;
+          //秒数のカウントダウンの終了。
+          if (this.seconds === 0) {
+            NOTIFICATION_SOUND.play();
+            clearInterval(interval);
+            //タイマーの削除ボタンを使用可能にする。
+            this.cancel = false;
+            //タイマーのリロードボタンを使用可能にする。
+            this.reload = false;
+            return;
           }
+
+          //秒数のカウントダウン。this.seconds > 0の条件を付けている理由は、0分0秒になったときにthis.secondsが-1にならないようにするため
+          this.seconds -= 1;
         }
       };
 
@@ -1565,13 +1600,30 @@ export default {
     },
 
     /**
-     * タイマーの開始
+     * タイマーの一時停止
      *
      */
     pauseTimer: function () {
+      //タイマーのスタートボタンを使用可能にする。
       this.play = false;
+      //タイマーを一時停止する状態にする。
       this.pause = true;
+      //タイマーの削除ボタンを使用可能にする。
       this.cancel = false;
+      //タイマーのリロードボタンを使用可能にする。
+      this.reload = false;
+    },
+
+    /**
+     * タイマーのリロード
+     *
+     */
+    reloadTimer: function () {
+      //タイマーのスタートボタンを使用可能にする。
+      this.play = false;
+      //タイマーの値を設定画面で設定した値に戻す。
+      this.minutes = this.minutesInDialog;
+      this.seconds = this.secondsInDialog;
     },
 
     /**
@@ -1589,6 +1641,37 @@ export default {
       this.call.send({ type: 'cancelTimer', content: null });
       //this.$store.dispatch('alert/success', 'タイマーがセットされました。');
     },
+
+    /**
+     * 登壇会場全体のタイマーの開始
+     *
+     */
+    playAllTimer: function () {
+      // タイマーの情報を登壇会場全体へ送信
+      this.call.send({ type: 'playTimer', content: null });
+      this.playTimer();
+    },
+
+    /**
+     * 登壇会場全体のタイマーの一時停止
+     *
+     */
+    pauseAllTimer: function () {
+      // タイマーの情報を登壇会場全体へ送信
+      this.call.send({ type: 'pauseTimer', content: null });
+      this.pauseTimer();
+    },
+
+    /**
+     * 登壇会場全体のタイマーのリロード
+     *
+     */
+    reloadAllTimer: function () {
+      // タイマーの情報を登壇会場全体へ送信
+      this.call.send({ type: 'reloadTimer', content: null });
+      this.reloadTimer();
+    },
+
   },
 
   async created() {
