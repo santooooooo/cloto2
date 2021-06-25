@@ -319,6 +319,18 @@
         </v-container>
       </v-flex>
 
+      <!-- タイマーの表示(spanは一桁の数字の時に二桁目に0を埋め、見た目をよくするため) -->
+      <v-flex class="screenSharingTimerPosition" v-if="timer.isTimer">
+        <v-toolbar width="130" class="rounded" color="yellow darken-3">
+          <v-toolbar-title class="text-white" style="font-size: 2rem">
+            <span v-if="String(minutes).length === 1">0</span>{{ minutes }}:<span
+              v-if="String(seconds).length === 1"
+              >0</span
+            >{{ seconds }}</v-toolbar-title
+          >
+        </v-toolbar>
+      </v-flex>
+
       <!-- チャットエリア -->
       <v-flex xs2 v-show="chat.isOpen">
         <v-card color="grey lighten-2" class="mx-auto" id="chat">
@@ -476,7 +488,7 @@
 
 <script>
 import voiceDetection from 'voice-activity-detection';
-import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND } from '@/consts/sound';
+import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND, NOTIFICATION_SOUND } from '@/consts/sound';
 
 const API_KEY = process.env.MIX_SKYWAY_API_KEY;
 
@@ -524,6 +536,18 @@ export default {
         localText: '', // 送信するメッセージ
         messages: [], // メッセージ一覧
       },
+
+      //*** タイマー ***//
+      //タイマーの状態を表す
+      timer: {
+        isTimer: false, //　タイマーの表示非表示の有無
+        pause: true, //　タイマーの一時停止を行うかどうか
+      },
+
+      minutesInDialog: 0, //　タイマーの設定画面の分数の表示。全体に表示されるタイマーの分数と別で設定する理由は、タイマーをセットする側のタイマーの表示と全体のタイマーの表示のずれをなくすため
+      secondsInDialog: 0, //　タイマーの設定画面の秒数の表示。
+      minutes: 0, //　タイマーの分数
+      seconds: 0, //　タイマーの秒数
     };
   },
   computed: {
@@ -534,7 +558,7 @@ export default {
       return this.$store.getters['alert/isSoundOn'];
     },
     videoShowWidth() {
-      return this.$windowWidth / 3;
+      return this.$windowWidth / 3.75;
     },
     videoShowHeight() {
       return (this.videoShowWidth / 16) * 9;
@@ -674,6 +698,40 @@ export default {
               this.chat.notification = true;
               this.showAppBar();
             }
+            break;
+
+          case 'setTimer':
+            //タイマーの表示
+            this.timer.isTimer = true;
+            //タイマーの値のセット
+            this.minutes = data.content.minutes;
+            this.seconds = data.content.seconds;
+            //タイマー設定値の値を設定者のものと合わせる。タイマーのリロード時に使用する
+            this.minutesInDialog = data.content.minutes;
+            this.secondsInDialog = data.content.seconds;
+            break;
+
+          case 'cancelTimer':
+            //タイマーの非表示
+            this.timer.isTimer = false;
+            //タイマーの値を初期値へ戻す
+            this.minutes = 0;
+            this.seconds = 0;
+            break;
+
+          case 'playTimer':
+            //タイマーのスタート
+            this.playTimer();
+            break;
+
+          case 'pauseTimer':
+            //タイマーの一時停止
+            this.pauseTimer();
+            break;
+
+          case 'reloadTimer':
+            //タイマーのリロード
+            this.reloadTimer();
             break;
         }
       });
@@ -1001,6 +1059,67 @@ export default {
       this.$store.dispatch('alert/error', message);
       this.leaveCall();
     },
+
+    /**
+     * タイマーの開始
+     *
+     */
+    playTimer: function () {
+      //タイマーを一時停止しない状態にする。
+      this.timer.pause = false;
+
+      //タイマーのカウントダウンを実行する
+      const countDown = () => {
+        if (this.seconds >= 0) {
+          //タイマーの一時停止
+          if (this.timer.pause) {
+            clearInterval(interval);
+          }
+
+          //分数が1以上ので秒数が0になるとき、分数を一つ下げて秒数を60にする
+          if (this.minutes > 0 && this.seconds === 0) {
+            this.minutes -= 1;
+            this.seconds += 60;
+          }
+
+          //秒数のカウントダウンの終了。
+          if (this.seconds === 0) {
+            NOTIFICATION_SOUND.play();
+            clearInterval(interval);
+            //タイマーの削除ボタンを使用可能にする。
+            this.timer.cancel = false;
+            //タイマーのリロードボタンを使用可能にする。
+            this.timer.reload = false;
+            return;
+          }
+
+          //秒数のカウントダウン。
+          this.seconds -= 1;
+        }
+      };
+
+      //タイマーのカウントダウンを一秒ごとに実行
+      const interval = setInterval(countDown, 1000);
+    },
+
+    /**
+     * タイマーの一時停止
+     *
+     */
+    pauseTimer: function () {
+      //タイマーを一時停止する状態にする。
+      this.timer.pause = true;
+    },
+
+    /**
+     * タイマーのリロード
+     *
+     */
+    reloadTimer: function () {
+      //タイマーの値を設定画面で設定した値に戻す。
+      this.minutes = this.minutesInDialog;
+      this.seconds = this.secondsInDialog;
+    },
   },
 
   async created() {
@@ -1120,6 +1239,13 @@ export default {
   .viewer {
     cursor: pointer;
   }
+}
+
+.screenSharingTimerPosition {
+  position: absolute;
+  top: 4rem;
+  left: 110rem;
+  z-index: 2;
 }
 
 .video {
