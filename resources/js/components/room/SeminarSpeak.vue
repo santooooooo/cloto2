@@ -420,7 +420,7 @@
             <v-col md="3" sm="3">
               <v-row dense>
                 <v-text-field
-                  v-model="minutesInDialog"
+                  v-model="timerDialog.minutes"
                   class="mt-3 px-2"
                   label="分"
                   type="number"
@@ -432,7 +432,7 @@
             <v-col md="3" sm="3">
               <v-row dense>
                 <v-text-field
-                  v-model="secondsInDialog"
+                  v-model="timerDialog.seconds"
                   class="mt-3 px-2"
                   label="秒"
                   width="5%"
@@ -467,10 +467,10 @@
       >
         <v-toolbar width="310" class="rounded" color="yellow darken-3">
           <v-toolbar-title class="text-white" style="font-size: 2rem">
-            <span v-if="String(minutes).length === 1">0</span>{{ minutes }}:<span
-              v-if="String(seconds).length === 1"
+            <span v-if="String(timer.minutes).length === 1">0</span>{{ timer.minutes }}:<span
+              v-if="String(timer.seconds).length === 1"
               >0</span
-            >{{ seconds }}</v-toolbar-title
+            >{{ timer.seconds }}</v-toolbar-title
           >
           <v-row justify="center">
             <v-btn icon color="white" @click="playAllTimer" :disabled="timer.play"
@@ -756,12 +756,13 @@ export default {
         pause: true, //　タイマーの一時停止を行うかどうか
         cancel: false, //　タイマーの削除ボタンの利用の可否
         reload: false, //　タイマーのリロードボタンの利用の可否
+        minutes: 0, //　タイマーの分数
+        seconds: 0, //　タイマーの秒数
       },
-
-      minutesInDialog: 0, //　タイマーの設定画面の分数の表示。全体に表示されるタイマーの分数と別で設定する理由は、タイマーをセットする側のタイマーの表示と全体のタイマーの表示のずれをなくすため
-      secondsInDialog: 0, //　タイマーの設定画面の秒数の表示。
-      minutes: 0, //　タイマーの分数
-      seconds: 0, //　タイマーの秒数
+      timerDialog: {
+        minutes: 0, //　タイマーの設定画面の分数の表示。全体に表示されるタイマーの分数と別で設定する理由は、タイマーをセットする側のタイマーの表示と全体のタイマーの表示のずれをなくすため
+        seconds: 0, //　タイマーの設定画面の秒数の表示。
+      },
     };
   },
   computed: {
@@ -798,8 +799,8 @@ export default {
     //　タイマーの設定値の検証
     timerValidate() {
       //入力値をNumber型へ変更
-      const minutes = Number(this.minutesInDialog);
-      const seconds = Number(this.secondsInDialog);
+      const minutes = Number(this.timerDialog.minutes);
+      const seconds = Number(this.timerDialog.seconds);
 
       //分数の入力値の検証。検証内容は、９９以上０以下の正の整数であるかどうか
       const validMinutes = minutes < 99 && minutes >= 0 && Number.isInteger(minutes);
@@ -939,11 +940,11 @@ export default {
             //タイマーの表示
             this.timer.isTimer = true;
             //タイマーの値のセット
-            this.minutes = data.content.minutes;
-            this.seconds = data.content.seconds;
+            this.timer.minutes = data.content.minutes;
+            this.timer.seconds = data.content.seconds;
             //タイマー設定値の値を設定者のものと合わせる。タイマーのリロード時に使用する
-            this.minutesInDialog = data.content.minutes;
-            this.secondsInDialog = data.content.seconds;
+            this.timerDialog.minutes = data.content.minutes;
+            this.timerDialog.seconds = data.content.seconds;
             break;
 
           case 'cancelTimer':
@@ -952,8 +953,8 @@ export default {
             //タイマーのスタートボタンを有効にする。理由はこれがないと、一時停止またはリロードボタンを押さずにタイマーが削除された後にタイマーを再設定した際にスタートボタンが使えなくなるから。
             this.timer.play = false;
             //タイマーの値を初期値へ戻す
-            this.minutes = 0;
-            this.seconds = 0;
+            this.timer.minutes = 0;
+            this.timer.seconds = 0;
             break;
 
           case 'playTimer':
@@ -1557,7 +1558,7 @@ export default {
     },
 
     /**
-     * タイマーをセット
+     * 自身のタイマーと全体のタイマーをセット
      *
      */
     setTimer: function () {
@@ -1569,21 +1570,20 @@ export default {
         this.timer.isTimer = true;
 
         //自身のタイマーに値をNunber型に変換してセット
-        this.minutes = Number(this.minutesInDialog);
-        this.seconds = Number(this.secondsInDialog);
+        this.timer.minutes = Number(this.timerDialog.minutes);
+        this.timer.seconds = Number(this.timerDialog.seconds);
 
         //全体へ送る用のデータの作成
         const timerInfo = {
-          minutes: this.minutes,
-          seconds: this.seconds,
+          minutes: this.timer.minutes,
+          seconds: this.timer.seconds,
         };
 
         // タイマーの情報を登壇会場全体へ送信
         this.call.send({ type: 'setTimer', content: timerInfo });
-        // タイマーの設定成功時のメッセージを設定者へ送信
-        return this.$store.dispatch('alert/success', 'タイマーがセットされました。');
+        return;
       }
-        // タイマーの設定失敗時のメッセージを設定者へ送信
+      // タイマーの設定失敗時のメッセージを設定者へ送信
       return this.$store.dispatch(
         'alert/error',
         'タイマーの設定値に誤りがあります。正しい値を入力してください。'
@@ -1606,20 +1606,20 @@ export default {
 
       //タイマーのカウントダウンを実行する
       const countDown = () => {
-        if (this.seconds >= 0) {
+        if (this.timer.seconds >= 0) {
           //タイマーの一時停止
           if (this.timer.pause) {
             clearInterval(interval);
           }
 
           //分数が1以上ので秒数が0になるとき、分数を一つ下げて秒数を60にする
-          if (this.minutes > 0 && this.seconds === 0) {
-            this.minutes -= 1;
-            this.seconds += 60;
+          if (this.timer.minutes > 0 && this.timer.seconds === 0) {
+            this.timer.minutes -= 1;
+            this.timer.seconds += 60;
           }
 
           //秒数のカウントダウンの終了。
-          if (this.seconds === 0) {
+          if (this.timer.seconds === 0) {
             NOTIFICATION_SOUND.play();
             clearInterval(interval);
             //タイマーの削除ボタンを使用可能にする。
@@ -1630,7 +1630,7 @@ export default {
           }
 
           //秒数のカウントダウン。
-          this.seconds -= 1;
+          this.timer.seconds -= 1;
         }
       };
 
@@ -1661,12 +1661,12 @@ export default {
       //タイマーのスタートボタンを使用可能にする。
       this.timer.play = false;
       //タイマーの値を設定画面で設定した値に戻す。
-      this.minutes = Number(this.minutesInDialog);
-      this.seconds = Number(this.secondsInDialog);
+      this.timer.minutes = Number(this.timerDialog.minutes);
+      this.timer.seconds = Number(this.timerDialog.seconds);
     },
 
     /**
-     * タイマーの削除
+     * 自身と全体のタイマーの削除
      *
      */
     cancelTimer: function () {
