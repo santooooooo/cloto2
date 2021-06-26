@@ -1072,21 +1072,19 @@ export default {
       //タイマーのカウントダウンを実行する
       const countDown = () => {
         if (this.timer.seconds >= 0) {
-          //タイマーの一時停止
-          if (this.timer.pause) {
-            clearInterval(interval);
-          }
-
           //分数が1以上ので秒数が0になるとき、分数を一つ下げて秒数を60にする
           if (this.timer.minutes > 0 && this.timer.seconds === 0) {
-            this.timer.minutes -= 1;
+            this.timer.minutes--;
             this.timer.seconds += 60;
           }
 
-          //秒数のカウントダウンの終了。
           if (this.timer.seconds === 0) {
+            //タイマーの終了時に音を出す
             NOTIFICATION_SOUND.play();
-            clearInterval(interval);
+            //秒数のカウントダウンの終了。
+            clearInterval(play);
+            //秒数のカウントダウン停止の有無の検知の終了
+            clearInterval(pause);
             //タイマーの削除ボタンを使用可能にする。
             this.timer.cancel = false;
             //タイマーのリロードボタンを使用可能にする。
@@ -1095,12 +1093,24 @@ export default {
           }
 
           //秒数のカウントダウン。
-          this.timer.seconds -= 1;
+          this.timer.seconds--;
         }
       };
 
-      //タイマーのカウントダウンを一秒ごとに実行
-      const interval = setInterval(countDown, 1000);
+      //タイマーの一時停止
+      const stopCount = () => {
+        if (this.timer.pause) {
+          //秒数のカウントダウンの終了
+          clearInterval(play);
+          //秒数のカウントダウン停止の有無の検知の終了
+          clearInterval(pause);
+        }
+      };
+
+      //タイマーのカウントダウンを1秒ごとに実行
+      const play = setInterval(countDown, 1000);
+      //タイマーのカウントダウン一時停止の有無の検知を10ミリ秒ごとに実行
+      const pause = setInterval(stopCount, 10);
     },
 
     /**
