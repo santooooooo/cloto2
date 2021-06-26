@@ -84,7 +84,6 @@
           <div
             v-for="(message, index) in messages"
             :key="index"
-            @click="chat.message = '>> ' + message.user.handlename + 'さん\n' + chat.message"
           >
             <p class="font-weight-bold mb-0 mx-1">
               <span
@@ -94,6 +93,7 @@
                 >{{ message.user.handlename }}
                 <small>@{{ message.user.username }}</small>
               </span>
+		  <v-btn rounded depressed small color="#E0E0E0" @click="chat.message = '>> ' + message.user.handlename + 'さん\n' + chat.message">メンション</v-btn>
             </p>
 
             <pre class="text-body-2 mb-0 mx-1" v-html="$formatStr(message.body)"></pre>
