@@ -200,21 +200,33 @@ export default {
 
       // エラー発生時のイベント
       Vue.config.errorHandler = (error) => {
-        console.log(error);
+        this.$slack(
+          'エラーBot',
+          ':poop:',
+          this.authUser.username + '様のデバイスでエラー発生！\n' + '```' + error + '```'
+        );
         this.$store.dispatch('alert/error');
       };
 
       // エラー発生時のイベント
       window.addEventListener('error', (error) => {
         if (error.message !== 'ResizeObserver loop limit exceeded') {
-          console.log(error);
+          this.$slack(
+            'エラーBot',
+            ':poop:',
+            this.authUser.username + '様のデバイスでエラー発生！\n' + '```' + error + '```'
+          );
           this.$store.dispatch('alert/error');
         }
       });
 
       // エラー発生時のイベント
       window.addEventListener('unhandledrejection', (error) => {
-        console.log(error);
+        this.$slack(
+          'エラーBot',
+          ':poop:',
+          this.authUser.username + '様のデバイスでエラー発生！\n' + '```' + error + '```'
+        );
         this.$store.dispatch('alert/error');
       });
     },
