@@ -180,6 +180,27 @@ export default {
   },
   methods: {
     /**
+     * 複数タブ操作の禁止
+     */
+    disallowMultiTabs: function () {
+      // タブ単位での記憶
+      let sessionTabId = sessionStorage.getItem('tabID');
+      // ブラウザ単位での記憶
+      let localTabId = localStorage.getItem('tabID');
+
+      if (sessionTabId === null || (sessionTabId !== null && !this.issuedTabId)) {
+        // 新規タブのオープン，タブ複製時にIDを発行
+        let tabId = this.$moment().format('HHmmssSSS');
+        sessionStorage.setItem('tabID', tabId);
+        localStorage.setItem('tabID', tabId);
+        this.issuedTabId = true;
+      } else if (sessionTabId !== localTabId) {
+        // タブを無効化
+        window.open('about:blank', '_self').close();
+      }
+    },
+
+    /**
      * イベントの設定
      */
     setupEvents: function () {
@@ -299,23 +320,7 @@ export default {
   },
   created() {
     // 複数タブ操作の禁止
-    setInterval(() => {
-      // タブ単位での記憶
-      let sessionTabId = sessionStorage.getItem('tabID');
-      // ブラウザ単位での記憶
-      let localTabId = localStorage.getItem('tabID');
-
-      if (sessionTabId === null || (sessionTabId !== null && !this.issuedTabId)) {
-        // 新規タブのオープン，タブ複製時にIDを発行
-        let tabId = this.$moment().format('HHmmssSSS');
-        sessionStorage.setItem('tabID', tabId);
-        localStorage.setItem('tabID', tabId);
-        this.issuedTabId = true;
-      } else if (sessionTabId !== localTabId) {
-        // タブを無効化
-        window.open('about:blank', '_self').close();
-      }
-    }, 1000);
+    setInterval(this.disallowMultiTabs, 1000);
 
     // 処理結果アラート表示処理の定義
     axios.interceptors.response.use((response) => {
