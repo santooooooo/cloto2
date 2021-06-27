@@ -752,8 +752,8 @@ export default {
       timer: {
         dialog: false, //　タイマーの設定画面の表示の有無
         isTimer: false, //　タイマーの表示非表示の有無
-        play: false, //　タイマーのスタートボタンの利用の可否
-        pause: true, //　タイマーの一時停止を行うかどうか
+        play: false, //　タイマーのスタートボタンの利用の可否。また、タイマーのスタートの判断を行うためにも使用する
+        pause: true, //　タイマーの一時停止の判断に使用する
         cancel: false, //　タイマーの削除ボタンの利用の可否
         reload: false, //　タイマーのリロードボタンの利用の可否
         minutes: 0, //　タイマーの分数
@@ -938,14 +938,16 @@ export default {
             break;
 
           case 'setTimer':
-            //タイマーの表示
-            this.timer.isTimer = true;
-            //タイマーの値のセット
-            this.timer.minutes = data.content.minutes;
-            this.timer.seconds = data.content.seconds;
-            //タイマー設定値の値を設定者のものと合わせる。タイマーのリロード時に使用する
-            this.timerDialog.minutes = data.content.minutes;
-            this.timerDialog.seconds = data.content.seconds;
+            if (!this.timer.isTimer) {
+              //タイマーの表示
+              this.timer.isTimer = true;
+              //タイマーの値のセット
+              this.timer.minutes = data.content.minutes;
+              this.timer.seconds = data.content.seconds;
+              //タイマー設定値の値を設定者のものと合わせる。タイマーのリロード時に使用する
+              this.timerDialog.minutes = data.content.timerDialogMinutes;
+              this.timerDialog.seconds = data.content.timerDialogSeconds;
+            }
             break;
 
           case 'cancelTimer':
@@ -959,8 +961,11 @@ export default {
             break;
 
           case 'playTimer':
-            //タイマーのスタート
-            this.playTimer();
+            // タイマーが既にスタートしている場合は何もしない
+            if (!this.timer.play) {
+              //タイマーのスタート
+              this.playTimer();
+            }
             break;
 
           case 'pauseTimer':
@@ -1043,6 +1048,25 @@ export default {
             this.call.send({ type: 'topic', content: this.topic });
           }
 
+          // 途中参加者へタイマーの情報を送信
+          if (this.timer.isTimer) {
+            // 全体へ送る用のデータの作成
+            const timerInfo = {
+              // タイマーのリロードのために設定値も送信
+              timerDialogMinutes: this.timerDialog.minutes,
+              timerDialogSeconds: this.timerDialog.seconds,
+              minutes: this.timer.minutes,
+              seconds: this.timer.seconds,
+            };
+
+            // タイマーの情報を登壇会場全体へ送信
+            this.call.send({ type: 'setTimer', content: timerInfo });
+            if (this.timer.play) {
+              // タイマーがスタートしていた場合は途中参加者のタイマーもスタートさせる
+              this.call.send({ type: 'playTimer', content: null });
+            }
+          }
+
           // 通知音
           if (this.isNotificationOn) {
             JOIN_CALL_SOUND.play();
@@ -1094,6 +1118,25 @@ export default {
         // 現在のトピックを送信
         if (this.topic !== null) {
           this.call.send({ type: 'topic', content: this.topic });
+        }
+
+        // 途中参加者へタイマーの情報を送信
+        if (this.timer.isTimer) {
+          // 全体へ送る用のデータの作成
+          const timerInfo = {
+            // タイマーのリロードのために設定値も送信
+            timerDialogMinutes: this.timerDialog.minutes,
+            timerDialogSeconds: this.timerDialog.seconds,
+            minutes: this.timer.minutes,
+            seconds: this.timer.seconds,
+          };
+
+          // タイマーの情報を登壇会場全体へ送信
+          this.call.send({ type: 'setTimer', content: timerInfo });
+          // タイマーがスタートしていた場合は途中参加者のタイマーもスタートさせる
+          if (this.timer.play) {
+            this.call.send({ type: 'playTimer', content: null });
+          }
         }
 
         // 通知音
@@ -1567,15 +1610,20 @@ export default {
       const validation = this.timerValidate;
 
       if (validation) {
-        //タイマーの表示
+        // タイマーの表示
         this.timer.isTimer = true;
 
-        //自身のタイマーに値をNunber型に変換してセット
-        this.timer.minutes = Number(this.timerDialog.minutes);
-        this.timer.seconds = Number(this.timerDialog.seconds);
+        // 自身のタイマーに値をNunber型に変換してセット
+        this.timerDialog.minutes = Number(this.timerDialog.minutes);
+        this.timerDialog.seconds = Number(this.timerDialog.seconds);
+        this.timer.minutes = this.timerDialog.minutes;
+        this.timer.seconds = this.timerDialog.seconds;
 
-        //全体へ送る用のデータの作成
+        // 全体へ送る用のデータの作成
         const timerInfo = {
+          // タイマーのリロードのために設定値も送信
+          timerDialogMinutes: this.timerDialog.minutes,
+          timerDialogSeconds: this.timerDialog.seconds,
           minutes: this.timer.minutes,
           seconds: this.timer.seconds,
         };
@@ -1596,7 +1644,7 @@ export default {
      *
      */
     playTimer: function () {
-      //タイマーの開始ボタンを使用不可にする。理由は複数回このメソッドが実行されると、経過時間が速くなるため
+      //タイマーのスタートを使用不可にする。理由は複数回このメソッドが実行されると、経過時間が速くなるため
       this.timer.play = true;
       //タイマーの削除ボタンを使用不可にする。理由はタイマーの実行中にうっかり消してしまうことを避けるため
       this.timer.cancel = true;

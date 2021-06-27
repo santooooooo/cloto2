@@ -541,7 +541,8 @@ export default {
       //タイマーの状態を表す
       timer: {
         isTimer: false, //　タイマーの表示非表示の有無
-        pause: true, //　タイマーの一時停止を行うかどうか
+        play: false, //　タイマーのスタートの判断を行うために使用する
+        pause: true, //　タイマーの一時停止の判断を行うために使用する
         minutes: 0, //　タイマーの分数
         seconds: 0, //　タイマーの秒数
       },
@@ -702,14 +703,16 @@ export default {
             break;
 
           case 'setTimer':
-            //タイマーの表示
-            this.timer.isTimer = true;
-            //タイマーの値のセット
-            this.timer.minutes = data.content.minutes;
-            this.timer.seconds = data.content.seconds;
-            //タイマー設定値の値を設定者のものと合わせる。タイマーのリロード時に使用する
-            this.timerDialog.minutes = data.content.minutes;
-            this.timerDialog.seconds = data.content.seconds;
+            if (!this.timer.isTimer) {
+              //タイマーの表示
+              this.timer.isTimer = true;
+              //タイマーの値のセット
+              this.timer.minutes = data.content.minutes;
+              this.timer.seconds = data.content.seconds;
+              //タイマー設定値の値を設定者のものと合わせる。タイマーのリロード時に使用する
+              this.timerDialog.minutes = data.content.timerDialogMinutes;
+              this.timerDialog.seconds = data.content.timerDialogSeconds;
+            }
             break;
 
           case 'cancelTimer':
@@ -721,8 +724,11 @@ export default {
             break;
 
           case 'playTimer':
-            //タイマーのスタート
-            this.playTimer();
+            // タイマーが既にスタートしている場合は何もしない
+            if (!this.timer.play) {
+              //タイマーのスタート
+              this.playTimer();
+            }
             break;
 
           case 'pauseTimer':
@@ -1066,6 +1072,8 @@ export default {
      *
      */
     playTimer: function () {
+      //タイマーがスタートした状態にし、複数回タイマーがスタートされないようにする。
+      this.timer.play = true;
       //タイマーを一時停止しない状態にする。
       this.timer.pause = false;
 
@@ -1085,10 +1093,6 @@ export default {
             clearInterval(play);
             //秒数のカウントダウン停止の有無の検知の終了
             clearInterval(pause);
-            //タイマーの削除ボタンを使用可能にする。
-            this.timer.cancel = false;
-            //タイマーのリロードボタンを使用可能にする。
-            this.timer.reload = false;
             return;
           }
 
@@ -1118,6 +1122,8 @@ export default {
      *
      */
     pauseTimer: function () {
+      //タイマーのスタート可能な状態にする。
+      this.timer.play = false;
       //タイマーを一時停止する状態にする。
       this.timer.pause = true;
     },
@@ -1127,6 +1133,8 @@ export default {
      *
      */
     reloadTimer: function () {
+      //タイマーのスタート可能な状態にする。
+      this.timer.play = false;
       //タイマーの値を設定画面で設定した値に戻す。
       this.timer.minutes = this.timerDialog.minutes;
       this.timer.seconds = this.timerDialog.seconds;
