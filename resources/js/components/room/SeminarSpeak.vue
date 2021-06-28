@@ -941,13 +941,13 @@ export default {
             if (!this.timer.isTimer) {
               //タイマーの表示
               this.timer.isTimer = true;
-              //タイマーの値のセット
-              this.timer.minutes = data.content.minutes;
-              this.timer.seconds = data.content.seconds;
-              //タイマー設定値の値を設定者のものと合わせる。タイマーのリロード時に使用する
-              this.timerDialog.minutes = data.content.timerDialogMinutes;
-              this.timerDialog.seconds = data.content.timerDialogSeconds;
             }
+            //タイマーの値のセット
+            this.timer.minutes = data.content.minutes;
+            this.timer.seconds = data.content.seconds;
+            //タイマー設定値の値を設定者のものと合わせる。タイマーのリロード時に使用する
+            this.timerDialog.minutes = data.content.timerDialogMinutes;
+            this.timerDialog.seconds = data.content.timerDialogSeconds;
             break;
 
           case 'cancelTimer':
@@ -961,11 +961,12 @@ export default {
             break;
 
           case 'playTimer':
-            // タイマーが既にスタートしている場合は何もしない
             if (!this.timer.play) {
               //タイマーのスタート
-              this.playTimer();
+              this.playTimer(data.content);
             }
+            // タイマーが既にスタートしている場合は終了時刻の再設定のみ行う
+            this.getExactTime(data.content);
             break;
 
           case 'pauseTimer':
@@ -1052,18 +1053,26 @@ export default {
           if (this.timer.isTimer) {
             // 全体へ送る用のデータの作成
             const timerInfo = {
+              minutes: this.timer.minutes,
+              seconds: this.timer.seconds,
               // タイマーのリロードのために設定値も送信
               timerDialogMinutes: this.timerDialog.minutes,
               timerDialogSeconds: this.timerDialog.seconds,
-              minutes: this.timer.minutes,
-              seconds: this.timer.seconds,
             };
 
-            // タイマーの情報を登壇会場全体へ送信
+            // タイマーの情報を登壇者へ送信
             this.call.send({ type: 'setTimer', content: timerInfo });
+
+            // タイマーがスタートしていた場合は途中参加者のタイマーもスタートさせる
             if (this.timer.play) {
-              // タイマーがスタートしていた場合は途中参加者のタイマーもスタートさせる
-              this.call.send({ type: 'playTimer', content: null });
+              // タイマーの終了時刻を登壇者へ送信
+              const now = this.$moment().format('MMMM Do YYYY, h:mm:ss a');
+              const endTime = this.$moment(now, 'MMMM Do YYYY, h:mm:ss a')
+                .add(this.timer.minutes, 'minutes')
+                .add(this.timer.seconds, 'seconds');
+
+              //タイマーをスタートさせる
+              this.call.send({ type: 'playTimer', content: endTime });
             }
           }
 
@@ -1124,18 +1133,25 @@ export default {
         if (this.timer.isTimer) {
           // 全体へ送る用のデータの作成
           const timerInfo = {
+            minutes: this.timer.minutes,
+            seconds: this.timer.seconds,
             // タイマーのリロードのために設定値も送信
             timerDialogMinutes: this.timerDialog.minutes,
             timerDialogSeconds: this.timerDialog.seconds,
-            minutes: this.timer.minutes,
-            seconds: this.timer.seconds,
           };
 
           // タイマーの情報を登壇会場全体へ送信
           this.call.send({ type: 'setTimer', content: timerInfo });
           // タイマーがスタートしていた場合は途中参加者のタイマーもスタートさせる
           if (this.timer.play) {
-            this.call.send({ type: 'playTimer', content: null });
+            // タイマーの終了時刻を登壇者へ送信
+            const now = this.$moment().format('MMMM Do YYYY, h:mm:ss a');
+            const endTime = this.$moment(now, 'MMMM Do YYYY, h:mm:ss a')
+              .add(this.timer.minutes, 'minutes')
+              .add(this.timer.seconds, 'seconds');
+
+            //タイマーをスタートさせる
+            this.call.send({ type: 'playTimer', content: endTime });
           }
         }
 
@@ -1621,11 +1637,11 @@ export default {
 
         // 全体へ送る用のデータの作成
         const timerInfo = {
-          // タイマーのリロードのために設定値も送信
-          timerDialogMinutes: this.timerDialog.minutes,
-          timerDialogSeconds: this.timerDialog.seconds,
+          // タイマーの設定値を送信
           minutes: this.timer.minutes,
           seconds: this.timer.seconds,
+          timerDialogMinutes: this.timerDialog.minutes,
+          timerDialogSeconds: this.timerDialog.seconds,
         };
 
         // タイマーの情報を登壇会場全体へ送信
@@ -1640,10 +1656,37 @@ export default {
     },
 
     /**
-     * タイマーの開始
-     *
+     * タイマーの終了時刻から正確な時間の取得し、タイマーへセット
+     * @param {String} endTime - タイマー設定者から送信されたタイマー終了時刻
      */
-    playTimer: function () {
+    getExactTime: function (endTime) {
+      //終了時刻と現在の時刻をMomentオブジェクトとして求める
+      endTime = this.$moment(endTime);
+      const now = this.$moment();
+
+      //終了時刻と現在の時刻の差からタイマーにセットする分数・秒数を求める
+      const diffMinutes = this.$moment(endTime, 'MMMM Do YYYY, h:mm:ss a').diff(
+        this.$moment(now, 'MMMM Do YYYY, h:mm:ss a'),
+        'minutes'
+      );
+      const diffSeconds = this.$moment(endTime, 'MMMM Do YYYY, h:mm:ss a').diff(
+        this.$moment(now, 'MMMM Do YYYY, h:mm:ss a'),
+        'seconds'
+      );
+
+      //上記で求めた分数・秒数をタイマーにセットする
+      this.timer.minutes = diffMinutes;
+      this.timer.seconds = diffSeconds - diffMinutes * 60;
+    },
+
+    /**
+     * タイマーの開始
+     * @param {String} endTime - タイマー設定者から送信されたタイマー終了時刻
+     */
+    playTimer: function (endTime) {
+      //正確な値を取得し、タイマーへセットする
+      this.getExactTime(endTime);
+
       //タイマーのスタートを使用不可にする。理由は複数回このメソッドが実行されると、経過時間が速くなるため
       this.timer.play = true;
       //タイマーの削除ボタンを使用不可にする。理由はタイマーの実行中にうっかり消してしまうことを避けるため
@@ -1659,7 +1702,7 @@ export default {
           //分数が1以上ので秒数が0になるとき、分数を一つ下げて秒数を60にする
           if (this.timer.minutes > 0 && this.timer.seconds === 0) {
             this.timer.minutes--;
-            this.timer.seconds += 59;
+            this.timer.seconds += 60;
           }
 
           if (this.timer.seconds === 0) {
@@ -1747,10 +1790,17 @@ export default {
      *
      */
     playAllTimer: function () {
+      //終了時刻を求める
+      const now = this.$moment().format('MMMM Do YYYY, h:mm:ss a');
+      const endTime = this.$moment(now, 'MMMM Do YYYY, h:mm:ss a')
+        .add(this.timer.minutes, 'minutes')
+        .add(this.timer.seconds, 'seconds');
+
       // 登壇会場内の全ユーザーのタイマーを開始すさせる
-      this.call.send({ type: 'playTimer', content: null });
+      this.call.send({ type: 'playTimer', content: endTime });
+
       // 自身のタイマーを開始させる
-      this.playTimer();
+      this.playTimer(endTime);
     },
 
     /**

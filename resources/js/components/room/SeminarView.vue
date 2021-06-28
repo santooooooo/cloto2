@@ -706,13 +706,13 @@ export default {
             if (!this.timer.isTimer) {
               //タイマーの表示
               this.timer.isTimer = true;
-              //タイマーの値のセット
-              this.timer.minutes = data.content.minutes;
-              this.timer.seconds = data.content.seconds;
-              //タイマー設定値の値を設定者のものと合わせる。タイマーのリロード時に使用する
-              this.timerDialog.minutes = data.content.timerDialogMinutes;
-              this.timerDialog.seconds = data.content.timerDialogSeconds;
             }
+            //タイマーの値のセット
+            this.timer.minutes = data.content.minutes;
+            this.timer.seconds = data.content.seconds;
+            //タイマー設定値の値を設定者のものと合わせる。タイマーのリロード時に使用する
+            this.timerDialog.minutes = data.content.timerDialogMinutes;
+            this.timerDialog.seconds = data.content.timerDialogSeconds;
             break;
 
           case 'cancelTimer':
@@ -724,11 +724,12 @@ export default {
             break;
 
           case 'playTimer':
-            // タイマーが既にスタートしている場合は何もしない
             if (!this.timer.play) {
               //タイマーのスタート
-              this.playTimer();
+              this.playTimer(data.content);
             }
+            // タイマーが既にスタートしている場合は終了時刻の再設定のみ行う
+            this.getExactTime(data.content);
             break;
 
           case 'pauseTimer':
@@ -1068,10 +1069,37 @@ export default {
     },
 
     /**
-     * タイマーの開始
-     *
+     * タイマーの終了時刻から正確な時間の取得し、タイマーへセット
+     * @param {String} endTime - タイマー設定者から送信されたタイマー終了時刻
      */
-    playTimer: function () {
+    getExactTime: function (endTime) {
+      //終了時刻と現在の時刻をMomentオブジェクトとして求める
+      endTime = this.$moment(endTime);
+      const now = this.$moment();
+
+      //終了時刻と現在の時刻の差からタイマーにセットする分数・秒数を求める
+      const diffMinutes = this.$moment(endTime, 'MMMM Do YYYY, h:mm:ss a').diff(
+        this.$moment(now, 'MMMM Do YYYY, h:mm:ss a'),
+        'minutes'
+      );
+      const diffSeconds = this.$moment(endTime, 'MMMM Do YYYY, h:mm:ss a').diff(
+        this.$moment(now, 'MMMM Do YYYY, h:mm:ss a'),
+        'seconds'
+      );
+
+      //上記で求めた分数・秒数をタイマーにセットする
+      this.timer.minutes = diffMinutes;
+      this.timer.seconds = diffSeconds - diffMinutes * 60;
+    },
+
+    /**
+     * タイマーの開始
+     * @param {String} endTime - タイマー設定者から送信されたタイマー終了時刻
+     */
+    playTimer: function (endTime) {
+      //正確な値を取得し、タイマーへセットする
+      this.getExactTime(endTime);
+
       //タイマーがスタートした状態にし、複数回タイマーがスタートされないようにする。
       this.timer.play = true;
       //タイマーを一時停止しない状態にする。
