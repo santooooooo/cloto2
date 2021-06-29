@@ -964,9 +964,10 @@ export default {
             if (!this.timer.play) {
               //タイマーのスタート
               this.playTimer(data.content);
+            } else {
+              // タイマーが既にスタートしている場合は終了時刻の再設定のみ行う
+              this.getExactTime(data.content);
             }
-            // タイマーが既にスタートしている場合は終了時刻の再設定のみ行う
-            this.getExactTime(data.content);
             break;
 
           case 'pauseTimer':
