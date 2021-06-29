@@ -173,8 +173,8 @@ export function classColor(classNumber) {
  * @param {String} message - 通知の内容
  */
 export function slackPost(username, icon, message) {
-  // 本番サーバでのみ通知
-  if (window.location.hostname === 'cloto.jp') {
+  // 本番環境でのみ通知
+  if (process.env.MIX_APP_DEBUG === 'false') {
     let data = {
       channel: process.env.MIX_SLACK_CHANNEL,
       username: username,

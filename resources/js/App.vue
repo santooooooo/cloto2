@@ -235,7 +235,13 @@ export default {
           this.$slack(
             'エラーBot',
             ':poop:',
-            this.authUser.username + '様のデバイスでエラー発生！\n' + '```' + error + '```'
+            this.authUser.username +
+              '様のデバイスでエラー発生！\n' +
+              '```' +
+              error.type +
+              ': ' +
+              error.message +
+              '```'
           );
           this.$store.dispatch('alert/error');
         }
@@ -246,7 +252,7 @@ export default {
         this.$slack(
           'エラーBot',
           ':poop:',
-          this.authUser.username + '様のデバイスでエラー発生！\n' + '```' + error + '```'
+          this.authUser.username + '様のデバイスでエラー発生！\n' + '```' + error.reason + '```'
         );
         this.$store.dispatch('alert/error');
       });

@@ -1265,7 +1265,13 @@ export default {
       this.$slack(
         'エラーBot',
         ':poop:',
-        this.authUser.username + '様のデバイスでエラー発生！\n' + '```' + error + '```'
+        this.authUser.username +
+          '様のデバイスでエラー発生！\n' +
+          '```' +
+          error.type +
+          ': ' +
+          error.message +
+          '```'
       );
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
@@ -1275,7 +1281,7 @@ export default {
       this.$slack(
         'エラーBot',
         ':poop:',
-        this.authUser.username + '様のデバイスでエラー発生！\n' + '```' + error + '```'
+        this.authUser.username + '様のデバイスでエラー発生！\n' + '```' + error.reason + '```'
       );
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
