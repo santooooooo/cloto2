@@ -219,6 +219,42 @@ export default {
       return '#9e9e9e';
       // return this.$classColor(this.user.roadmaps.length ? this.user.roadmaps[0].in_progress : '');
     },
+
+    /**
+     * すべてのカルテに対するタグごとのカルテの割合の取得
+     */
+    percentagePerTag: function () {
+      const allKartes = this.kartes.length;
+
+      let allTags = this.kartes.map((karte) => karte.tags);
+      allTags = allTags.filter((tag) => tag.length !== 0);
+
+      let tagNames = [];
+      for (let i = 0; i < allTags.length; i++) {
+        tagNames = tagNames.concat(allTags[i]);
+      }
+
+      tagNames = tagNames.map((tag) => tag.name);
+
+      let tagPercentage = {};
+      for (let i = 0; i < tagNames.length; i++) {
+        tagPercentage[tagNames[i]] =
+          tagPercentage[tagNames[i]] === undefined ? 1 : tagPercentage[tagNames[i]] + 1;
+      }
+
+      for (let tag in tagPercentage) {
+        tagPercentage[tag] = Math.round(tagPercentage[tag] / allKartes * 100);
+      }
+
+      const tagPercentageArray = Object.keys(tagPercentage).map((k) => ({ key: k, value: tagPercentage[k] }));
+      tagPercentageArray.sort((a, b) => b.value - a.value);
+      tagPercentage = Object.assign(
+        {},
+        ...tagPercentageArray.map((item) => ({
+          [item.key]: item.value,
+        }))
+      );
+    },
   },
 
   watch: {
