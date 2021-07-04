@@ -119,6 +119,9 @@
           <v-spacer></v-spacer>
         </v-row>
 
+        <h2>BarChart</h2>
+        <bar-chart :graph-data="percentagePerTag"></bar-chart>
+
         <!-- フォロー/フォロワー一覧 -->
         <v-list
           :color="color"
@@ -194,7 +197,12 @@
 </template>
 
 <script>
+import BarChart from './BarChart.vue';
+
 export default {
+  components: {
+    BarChart,
+  },
   data() {
     return {
       dialog: false,
@@ -203,6 +211,7 @@ export default {
       show: null, // フォロー/フォロワーどちらを表示するか
       followers: [], // フォロー/フォロワー一覧
       kartes: [], // カルテ一覧
+      graphData: null,
     };
   },
 
@@ -223,9 +232,12 @@ export default {
     /**
      * すべてのカルテに対するタグごとのカルテの割合の取得
      */
-    percentagePerTag: function () {
+    percentagePerTag: async function () {
+      await this.showKartes();
+      //すべてのカルテの件数を取得
       const allKartes = this.kartes.length;
 
+      //すべてのカルテにつけられたタグを取得
       let allTags = this.kartes.map((karte) => karte.tags);
       allTags = allTags.filter((tag) => tag.length !== 0);
 
@@ -233,9 +245,9 @@ export default {
       for (let i = 0; i < allTags.length; i++) {
         tagNames = tagNames.concat(allTags[i]);
       }
-
       tagNames = tagNames.map((tag) => tag.name);
 
+      //タグごとのカルテの割合を取得
       let tagPercentage = {};
       for (let i = 0; i < tagNames.length; i++) {
         tagPercentage[tagNames[i]] =
@@ -243,10 +255,14 @@ export default {
       }
 
       for (let tag in tagPercentage) {
-        tagPercentage[tag] = Math.round(tagPercentage[tag] / allKartes * 100);
+        tagPercentage[tag] = Math.round((tagPercentage[tag] / allKartes) * 100);
       }
 
-      const tagPercentageArray = Object.keys(tagPercentage).map((k) => ({ key: k, value: tagPercentage[k] }));
+      //タグごとのカルテの割合を降順にソート
+      const tagPercentageArray = Object.keys(tagPercentage).map((k) => ({
+        key: k,
+        value: tagPercentage[k],
+      }));
       tagPercentageArray.sort((a, b) => b.value - a.value);
       tagPercentage = Object.assign(
         {},
@@ -254,9 +270,10 @@ export default {
           [item.key]: item.value,
         }))
       );
+
+      return tagPercentage;
     },
   },
-
   watch: {
     username: function (username) {
       // 値がセットされたらオープン
@@ -329,6 +346,52 @@ export default {
       let response = await axios.get('/api/kartes/user/' + this.user.id);
       this.kartes = response.data;
       this.show = 'karte';
+    },
+
+    /**
+     * すべてのカルテに対するタグごとのカルテの割合の取得
+     */
+    percentagePerTag: async function () {
+      //すべてのカルテの件数を取得
+      let response = await axios.get('/api/kartes/user/' + this.user.id);
+      this.kartes = response.data;
+      const allKartes = this.kartes.length;
+
+      //すべてのカルテにつけられたタグを取得
+      let allTags = this.kartes.map((karte) => karte.tags);
+      allTags = allTags.filter((tag) => tag.length !== 0);
+
+      let tagNames = [];
+      for (let i = 0; i < allTags.length; i++) {
+        tagNames = tagNames.concat(allTags[i]);
+      }
+      tagNames = tagNames.map((tag) => tag.name);
+
+      //タグごとのカルテの割合を取得
+      let tagPercentage = {};
+      for (let i = 0; i < tagNames.length; i++) {
+        tagPercentage[tagNames[i]] =
+          tagPercentage[tagNames[i]] === undefined ? 1 : tagPercentage[tagNames[i]] + 1;
+      }
+
+      for (let tag in tagPercentage) {
+        tagPercentage[tag] = Math.round((tagPercentage[tag] / allKartes) * 100);
+      }
+
+      //タグごとのカルテの割合を降順にソート
+      const tagPercentageArray = Object.keys(tagPercentage).map((k) => ({
+        key: k,
+        value: tagPercentage[k],
+      }));
+      tagPercentageArray.sort((a, b) => b.value - a.value);
+      tagPercentage = Object.assign(
+        {},
+        ...tagPercentageArray.map((item) => ({
+          [item.key]: item.value,
+        }))
+      );
+
+      this.graphData = tagPercentage;
     },
   },
 };
