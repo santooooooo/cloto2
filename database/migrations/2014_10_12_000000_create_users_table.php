@@ -29,7 +29,7 @@ class CreateUsersTable extends Migration
             // foreignId('seat_id')                             // 着席している座席ID
             $table->string('in_progress')->nullable();          // 取り組み中のタスク
             // string('vision')                                 // 目標
-            // time('sitting_time')                             // 累計着席時間
+            // unsignedInteger('sitting_time')                  // 累計着席時間
             $table->rememberToken();
             $table->dateTimes();
 

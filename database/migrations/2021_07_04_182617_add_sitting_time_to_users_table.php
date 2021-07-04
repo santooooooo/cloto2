@@ -14,9 +14,9 @@ class AddSittingTimeToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->time('sitting_time')
+            $table->unsignedInteger('sitting_time')
                 ->after('vision')
-                ->default('00:00');         // 累計着席時間
+                ->default(0);                           // 累計着席時間
         });
     }
 
