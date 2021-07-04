@@ -16,6 +16,9 @@
             <v-row class="mt-2 text-body-2" justify="center">
               登録日：{{ $moment(user.created_at).format('YYYY年MM月DD日') }}
             </v-row>
+            <v-row class="mt-2 text-body-2" justify="center">
+              累計着席時間：{{ Math.floor(user.sitting_time / 60) }}時間
+            </v-row>
 
             <v-row class="mt-3" justify="center" v-if="user.sns || user.web">
               <v-btn
