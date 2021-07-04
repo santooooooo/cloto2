@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Seat extends Model
 {
     protected $primaryKey = 'id';
-    public $timestamps = false;
+    protected $dates = ['created_at', 'updated_at'];
 
     /**
      * The attributes that are mass assignable.

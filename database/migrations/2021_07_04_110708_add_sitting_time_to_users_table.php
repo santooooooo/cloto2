@@ -16,7 +16,7 @@ class AddSittingTimeToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->time('sitting_time')
                 ->after('in_progress')
-                ->default('00:00:00');      // 累計着席時間
+                ->default('00:00');         // 累計着席時間
         });
     }
 
