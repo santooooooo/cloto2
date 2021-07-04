@@ -88,6 +88,14 @@
           </v-card>
         </v-row>
 
+        <v-row justify="center">
+          <v-card light flat width="80%" class="mx-6 mt-2 text-center">
+            <v-card-text class="pt-3 pl-3 pb-0 black--text">目標</v-card-text>
+
+            <pre class="ma-3 text-body-1">{{ user.vision || 'がんばる' }}</pre>
+          </v-card>
+        </v-row>
+
         <v-row class="my-6" justify="center">
           <v-spacer></v-spacer>
 
