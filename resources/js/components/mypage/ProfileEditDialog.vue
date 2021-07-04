@@ -3,6 +3,19 @@
     <v-form ref="editProfileForm" v-model="editProfileForm.validation.valid" lazy-validation>
       <v-card class="headline grey darken-2 text-center px-2">
         <v-container>
+          <!-- 目標 -->
+          <v-card-text class="pa-1 white--text">目標</v-card-text>
+          <v-textarea
+            v-model="editProfileForm.data.vision"
+            placeholder="がんばる"
+            maxlength="200"
+            rows="3"
+            counter
+            solo
+            rounded
+            class="pa-2"
+          ></v-textarea>
+
           <!-- アイコン -->
           <ImageInput
             :no-change-crop-ratio="true"
@@ -205,16 +218,14 @@ export default {
 
         let input = new FormData();
         input.append('_method', 'patch');
+        input.append('vision', this.editProfileForm.data.vision || '');
         input.append('username', this.editProfileForm.data.username);
         input.append('email', this.editProfileForm.data.email);
         input.append('handlename', this.editProfileForm.data.handlename);
         input.append('icon', this.editProfileForm.data.icon);
         input.append('sns', JSON.stringify(sns));
-        input.append('web', this.editProfileForm.data.web ? this.editProfileForm.data.web : '');
-        input.append(
-          'introduction',
-          this.editProfileForm.data.introduction ? this.editProfileForm.data.introduction : ''
-        );
+        input.append('web', this.editProfileForm.data.web || '');
+        input.append('introduction', this.editProfileForm.data.introduction || '');
 
         // ユーザーデータ保存処理
         let response = await axios.post('/api/user', input);
@@ -240,5 +251,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>

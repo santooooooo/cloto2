@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('role')->default('user');            // 役割
             // foreignId('seat_id')                             // 着席している座席ID
             $table->string('in_progress')->nullable();          // 取り組み中のタスク
+            // string('vision')                                 // 目標
             $table->rememberToken();
             $table->dateTimes();
 
