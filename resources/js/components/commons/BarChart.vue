@@ -12,11 +12,11 @@ export default {
   data() {
     return {
       data: {
-        labels: ['First', 'Second'],
+        labels: [],
         datasets: [
           {
             label: 'Test Bar',
-            data: [10, 20],
+            data: [],
             backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
           },
         ],
@@ -37,16 +37,19 @@ export default {
   },
   methods: {
     getData: async function () {
-      let test = null;
+      let data = null;
       await this.graphData.then(function (value) {
-        test = value;
+        data = value;
       });
-      this.result = test;
+      this.result = data;
     },
   },
   mounted: async function () {
     await this.getData();
-    console.log(this.result);
+
+    this.data.labels = ['php', 'JavaScript'];
+    this.data.datasets[0].data[0] = this.result['php'];
+    this.data.datasets[0].data[1] = this.result['JavaScript'];
     this.renderChart(this.data, this.options);
   },
 };

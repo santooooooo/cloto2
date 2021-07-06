@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" @click:outside="close()" width="600">
+  <v-dialog v-model="dialog" @click:outside="close()" width="1400">
     <v-card :color="color" dark v-if="user">
       <v-container>
         <v-row justify="end">
@@ -8,96 +8,138 @@
           </v-btn>
         </v-row>
 
-        <v-row class="text-center" justify="center">
-          <v-col class="pr-0" align-self="center">
-            <v-avatar size="100"><img :src="$storage('icon') + user.icon" /></v-avatar>
-            <v-row class="text-h5 mt-2" justify="center">{{ user.handlename }}</v-row>
-            <v-row class="text-body-2" justify="center">{{ '@' + user.username }}</v-row>
-            <v-row class="mt-2 text-body-2" justify="center">
-              登録日：{{ $moment(user.created_at).format('YYYY年MM月DD日') }}
-            </v-row>
-            <v-row class="mt-2 text-body-2" justify="center">
-              累計着席時間：{{ Math.floor(user.sitting_time / 60) }}時間
-            </v-row>
+        <v-container class="d-flex">
+          <v-row class="text-center" justify="center">
+            <v-col class="pr-0" align-self="center">
+              <v-avatar size="100"><img :src="$storage('icon') + user.icon" /></v-avatar>
+              <v-row class="text-h5 mt-2" justify="center">{{ user.handlename }}</v-row>
+              <v-row class="text-body-2" justify="center">{{ '@' + user.username }}</v-row>
+              <v-row class="mt-2 text-body-2" justify="center">
+                登録日：{{ $moment(user.created_at).format('YYYY年MM月DD日') }}
+              </v-row>
+              <v-row class="mt-2 text-body-2" justify="center">
+                累計着席時間：{{ Math.floor(user.sitting_time / 60) }}時間
+              </v-row>
 
-            <v-row class="mt-3" justify="center" v-if="user.sns || user.web">
-              <v-btn
-                icon
-                color="#00acee"
-                :href="'https://twitter.com/' + user.sns.twitter"
-                target="_blank"
-                v-if="user.sns.twitter"
+              <v-row class="mt-3" justify="center" v-if="user.sns || user.web">
+                <v-btn
+                  icon
+                  color="#00acee"
+                  :href="'https://twitter.com/' + user.sns.twitter"
+                  target="_blank"
+                  v-if="user.sns.twitter"
+                >
+                  <v-icon>mdi-twitter</v-icon>
+                </v-btn>
+
+                <v-btn
+                  icon
+                  color="#000000"
+                  :href="'https://github.com/' + user.sns.github"
+                  target="_blank"
+                  v-if="user.sns.github"
+                >
+                  <v-icon>mdi-github</v-icon>
+                </v-btn>
+
+                <v-btn
+                  icon
+                  :href="'https://qiita.com/' + user.sns.qiita"
+                  target="_blank"
+                  v-if="user.sns.qiita"
+                >
+                  <v-avatar size="20" color="white">
+                    <v-img :src="$storage('system') + 'qiita.png'"></v-img>
+                  </v-avatar>
+                </v-btn>
+
+                <v-btn icon color="#ffffff" :href="user.web" target="_blank" v-if="user.web">
+                  <v-icon>mdi-home</v-icon>
+                </v-btn>
+              </v-row>
+
+              <v-row class="mt-3" justify="center" v-if="user.id !== authUser.id">
+                <v-btn
+                  :color="!user.following ? 'primary' : 'error'"
+                  :loading="loading"
+                  @click="follow()"
+                >
+                  {{ !user.following ? 'フォロー' : 'フォロー解除' }}
+                </v-btn>
+              </v-row>
+
+              <p class="mt-3 mb-0" v-if="user.followed">フォローされています</p>
+              <v-card
+                light
+                flat
+                class="mt-3 mr-2 overflow-y-auto"
+                min-height="240"
+                max-height="400"
               >
-                <v-icon>mdi-twitter</v-icon>
-              </v-btn>
+                <pre class="ma-3 text-body-1"
+                  >{{ user.introduction ? user.introduction : '自己紹介が未記入です' }}
+              </pre
+                >
+              </v-card>
+            </v-col>
+          </v-row>
 
-              <v-btn
-                icon
-                color="#000000"
-                :href="'https://github.com/' + user.sns.github"
-                target="_blank"
-                v-if="user.sns.github"
-              >
-                <v-icon>mdi-github</v-icon>
-              </v-btn>
+          <v-row justify="center">
+            <v-card light flat width="80%" class="mx-6 mt-2 text-center">
+              <v-card-text class="pt-3 pl-3 pb-0 black--text">目標</v-card-text>
 
-              <v-btn
-                icon
-                :href="'https://qiita.com/' + user.sns.qiita"
-                target="_blank"
-                v-if="user.sns.qiita"
-              >
-                <v-avatar size="20" color="white">
-                  <v-img :src="$storage('system') + 'qiita.png'"></v-img>
-                </v-avatar>
-              </v-btn>
-
-              <v-btn icon color="#ffffff" :href="user.web" target="_blank" v-if="user.web">
-                <v-icon>mdi-home</v-icon>
-              </v-btn>
-            </v-row>
-
-            <v-row class="mt-3" justify="center" v-if="user.id !== authUser.id">
-              <v-btn
-                :color="!user.following ? 'primary' : 'error'"
-                :loading="loading"
-                @click="follow()"
-              >
-                {{ !user.following ? 'フォロー' : 'フォロー解除' }}
-              </v-btn>
-            </v-row>
-
-            <p class="mt-3 mb-0" v-if="user.followed">フォローされています</p>
-          </v-col>
-
-          <v-col class="pl-0">
-            <v-card light flat class="mr-2 overflow-y-auto" min-height="240" max-height="400">
-              <pre class="ma-3 text-body-1"
-                >{{ user.introduction ? user.introduction : '自己紹介が未記入です' }}
-              </pre>
+              <pre class="ma-3 text-body-1">{{ user.vision || 'がんばる' }}</pre>
             </v-card>
-          </v-col>
-        </v-row>
+            <v-card light flat width="80%" class="mx-6 mt-2 text-center">
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"
+                >いまやっていること
+                <small v-if="user.seat">in {{ user.room.name }}</small>
+                <small v-else>未着席</small>
+              </v-card-text>
 
-        <v-row justify="center">
-          <v-card light flat width="80%" class="mx-6 text-center">
-            <v-card-text class="pt-3 pl-3 pb-0 black--text"
-              >いまやっていること
-              <small v-if="user.seat">in {{ user.room.name }}</small>
-              <small v-else>未着席</small>
-            </v-card-text>
-
-            <pre class="ma-3 text-body-1">{{ user.in_progress || '集中しています！' }}</pre>
-          </v-card>
-        </v-row>
-
-        <v-row justify="center">
-          <v-card light flat width="80%" class="mx-6 mt-2 text-center">
-            <v-card-text class="pt-3 pl-3 pb-0 black--text">目標</v-card-text>
-
-            <pre class="ma-3 text-body-1">{{ user.vision || 'がんばる' }}</pre>
-          </v-card>
-        </v-row>
+              <pre class="ma-3 text-body-1">{{ user.in_progress || '集中しています！' }}</pre>
+            </v-card>
+            <v-card light flat width="80%" class="mx-6 mt-2 text-center">
+              <v-card-text class="pt-3 pl-3 pb-0 black--text">カルテのグラフの表示</v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <!--bar-chart height="80%" :graph-data="percentagePerTag"></bar-chart-->
+            </v-card>
+            <v-card light flat width="80%" class="mx-6 mt-2 text-center">
+              <v-card-text class="pt-3 pl-3 pb-0 black--text">毎日のカルテ数の表示</v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+            </v-card>
+          </v-row>
+        </v-container>
 
         <v-row class="my-6" justify="center">
           <v-spacer></v-spacer>
@@ -129,9 +171,6 @@
 
           <v-spacer></v-spacer>
         </v-row>
-
-        <h2>BarChart</h2>
-        <bar-chart :graph-data="percentagePerTag"></bar-chart>
 
         <!-- フォロー/フォロワー一覧 -->
         <v-list
@@ -243,46 +282,49 @@ export default {
     /**
      * すべてのカルテに対するタグごとのカルテの割合の取得
      */
-    percentagePerTag: async function () {
-      await this.showKartes();
-      //すべてのカルテの件数を取得
-      const allKartes = this.kartes.length;
+    percentagePerTag: {
+      get: async function () {
+        await this.showKartes();
+        //すべてのカルテの件数を取得
+        const allKartes = this.kartes.length;
 
-      //すべてのカルテにつけられたタグを取得
-      let allTags = this.kartes.map((karte) => karte.tags);
-      allTags = allTags.filter((tag) => tag.length !== 0);
+        //すべてのカルテにつけられたタグを取得
+        let allTags = this.kartes.map((karte) => karte.tags);
+        allTags = allTags.filter((tag) => tag.length !== 0);
 
-      let tagNames = [];
-      for (let i = 0; i < allTags.length; i++) {
-        tagNames = tagNames.concat(allTags[i]);
-      }
-      tagNames = tagNames.map((tag) => tag.name);
+        let tagNames = [];
+        for (let i = 0; i < allTags.length; i++) {
+          tagNames = tagNames.concat(allTags[i]);
+        }
+        tagNames = tagNames.map((tag) => tag.name);
 
-      //タグごとのカルテの割合を取得
-      let tagPercentage = {};
-      for (let i = 0; i < tagNames.length; i++) {
-        tagPercentage[tagNames[i]] =
-          tagPercentage[tagNames[i]] === undefined ? 1 : tagPercentage[tagNames[i]] + 1;
-      }
+        //タグごとのカルテの割合を取得
+        let tagPercentage = {};
+        for (let i = 0; i < tagNames.length; i++) {
+          tagPercentage[tagNames[i]] =
+            tagPercentage[tagNames[i]] === undefined ? 1 : tagPercentage[tagNames[i]] + 1;
+        }
 
-      for (let tag in tagPercentage) {
-        tagPercentage[tag] = Math.round((tagPercentage[tag] / allKartes) * 100);
-      }
+        for (let tag in tagPercentage) {
+          tagPercentage[tag] = Math.round((tagPercentage[tag] / allKartes) * 100);
+        }
 
-      //タグごとのカルテの割合を降順にソート
-      const tagPercentageArray = Object.keys(tagPercentage).map((k) => ({
-        key: k,
-        value: tagPercentage[k],
-      }));
-      tagPercentageArray.sort((a, b) => b.value - a.value);
-      tagPercentage = Object.assign(
-        {},
-        ...tagPercentageArray.map((item) => ({
-          [item.key]: item.value,
-        }))
-      );
+        //タグごとのカルテの割合を降順にソート
+        const tagPercentageArray = Object.keys(tagPercentage).map((k) => ({
+          key: k,
+          value: tagPercentage[k],
+        }));
+        tagPercentageArray.sort((a, b) => b.value - a.value);
+        tagPercentage = Object.assign(
+          {},
+          ...tagPercentageArray.map((item) => ({
+            [item.key]: item.value,
+          }))
+        );
 
-      return tagPercentage;
+        return tagPercentage;
+      },
+      set: function () {},
     },
   },
   watch: {
