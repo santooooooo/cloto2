@@ -25,6 +25,7 @@ class CreateSeatsTable extends Migration
             $table->json('media')->nullable();                          // メディア
             $table->string('status')->nullable();                       // 座席状態
             $table->unsignedInteger('reservation_user_id')->nullable(); // 予約ID
+            // dateTimes();
         });
     }
 

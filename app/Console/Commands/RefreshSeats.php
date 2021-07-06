@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 use App\Models\Seat;
 use App\Models\User;
 use App\Events\SeatStatusUpdated;
@@ -48,7 +49,13 @@ class RefreshSeats extends Command
             if (!empty($seat->user)) {
                 // ユーザーがオフラインの場合
                 if (!$seat->user->isOnline()) {
-                    // シートの初期化
+                    // 累計着席時間の加算
+                    if ($seat->role == 'study' || $seat->role == 'staff') {
+                        $diff = Carbon::now()->diffInMinutes(new Carbon($seat->updated_at));
+                        $seat->user->sitting_time += $diff;
+                    }
+
+                    // 座席の初期化
                     $seat->fill(['status' => null, 'reservation_user_id' => null])->save();
                     // ユーザーの退席処理
                     $seat->user->fill(['seat_id' => null])->save();
@@ -62,7 +69,12 @@ class RefreshSeats extends Command
                 $reservation_user = User::find($seat->reservation_user_id);
                 // ユーザーがオフラインの場合
                 if (!$reservation_user->isOnline()) {
-                    // シートの予約解除
+                    // 累計着席時間の加算
+                    $diff = Carbon::now()->diffInMinutes(new Carbon($seat->updated_at));
+                    $reservation_user->sitting_time += $diff;
+                    $reservation_user->save();
+
+                    // 座席の予約解除
                     $seat->fill(['status' => null, 'reservation_user_id' => null])->save();
 
                     broadcast(new SeatStatusUpdated($seat->section->room_id));

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Seat;
 use App\Events\SeatStatusUpdated;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class SeatController extends Controller
 {
@@ -64,6 +65,10 @@ class SeatController extends Controller
     {
         $room_id = $this->auth->room['id'];
 
+        // 累計着席時間の加算
+        $diff = Carbon::now()->diffInMinutes(new Carbon($this->auth->seat->updated_at));
+        $this->auth->sitting_time += $diff;
+
         // 着席中の座席の状態を初期化
         $this->auth->seat->fill(['status' => null, 'reservation_user_id' => null])->save();
 
@@ -96,6 +101,10 @@ class SeatController extends Controller
             return response()->json(['message' => '他のユーザーが着席しています。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
+
+        // 累計着席時間の加算
+        $diff = Carbon::now()->diffInMinutes(new Carbon($this->auth->seat->updated_at));
+        $this->auth->sitting_time += $diff;
 
         // 現在の座席をbreakに変更
         $this->auth->seat->fill(['status' => 'break', 'reservation_user_id' => $this->auth->id])->save();

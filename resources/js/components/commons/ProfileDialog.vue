@@ -16,6 +16,9 @@
             <v-row class="mt-2 text-body-2" justify="center">
               登録日：{{ $moment(user.created_at).format('YYYY年MM月DD日') }}
             </v-row>
+            <v-row class="mt-2 text-body-2" justify="center">
+              累計着席時間：{{ Math.floor(user.sitting_time / 60) }}時間
+            </v-row>
 
             <v-row class="mt-3" justify="center" v-if="user.sns || user.web">
               <v-btn
@@ -85,6 +88,14 @@
             </v-card-text>
 
             <pre class="ma-3 text-body-1">{{ user.in_progress || '集中しています！' }}</pre>
+          </v-card>
+        </v-row>
+
+        <v-row justify="center">
+          <v-card light flat width="80%" class="mx-6 mt-2 text-center">
+            <v-card-text class="pt-3 pl-3 pb-0 black--text">目標</v-card-text>
+
+            <pre class="ma-3 text-body-1">{{ user.vision || 'がんばる' }}</pre>
           </v-card>
         </v-row>
 
