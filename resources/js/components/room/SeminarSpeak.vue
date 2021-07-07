@@ -462,8 +462,8 @@
       <v-flex
         class="timer"
         :style="{
-          top: screenSharing.stream ? '4rem' : '20rem',
-          left: screenSharing.stream ? '95rem' : '50rem',
+          top: screenSharing.stream ? '7%' : '40%',
+          left: screenSharing.stream ? '80%' : '40%',
         }"
         v-if="timer.isShow"
       >
@@ -1685,6 +1685,13 @@ export default {
 
       // カウントダウン
       const countDown = () => {
+        // 退席した際にタイマーの動作を停止
+        if (this.peer === null) {
+          clearInterval(play);
+          clearInterval(pause);
+          return;
+        }
+
         if (this.timer.seconds >= 0) {
           // 分数が1以上ので秒数が0になるとき、分数を一つ下げて秒数を60にする
           if (this.timer.minutes > 0 && this.timer.seconds === 0) {
@@ -1745,7 +1752,7 @@ export default {
     },
 
     /**
-     * タイマーの削除
+     * タイマーの解除
      */
     cancelTimer: function () {
       // タイマーの非表示
@@ -1925,8 +1932,8 @@ export default {
 
 .timer-setting {
   position: absolute;
-  top: 20rem;
-  left: 75rem;
+  top: 40%;
+  left: 65%;
   z-index: 3;
 }
 

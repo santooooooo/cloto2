@@ -1105,6 +1105,14 @@ export default {
 
       // カウントダウン
       const countDown = () => {
+        // 退席した際にタイマーの動作を停止
+        if (this.peer === null) {
+          clearInterval(play);
+          clearInterval(pause);
+          return;
+        }
+
+
         if (this.timer.seconds >= 0) {
           // 分数が1以上ので秒数が0になるとき、分数を一つ下げて秒数を60にする
           if (this.timer.minutes > 0 && this.timer.seconds === 0) {
@@ -1283,8 +1291,8 @@ export default {
 .timer {
   position: absolute;
   z-index: 2;
-  top: 4rem;
-  left: 110rem;
+  top: 9%;
+  left: 90%;
 }
 
 .video {
