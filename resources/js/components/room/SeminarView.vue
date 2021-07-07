@@ -320,7 +320,7 @@
       </v-flex>
 
       <!-- タイマーの表示(spanは一桁の数字の時に二桁目に0を埋め、見た目をよくするため) -->
-      <v-flex class="screenSharingTimerPosition" v-if="timer.isTimer">
+      <v-flex class="screenSharingTimerPosition" v-if="timer.isShow">
         <v-toolbar width="130" class="rounded" color="yellow darken-3">
           <v-toolbar-title class="text-white" style="font-size: 2rem">
             <span v-if="String(timer.minutes).length === 1">0</span>{{ timer.minutes }}:<span
@@ -540,15 +540,15 @@ export default {
       //*** タイマー ***//
       //タイマーの状態を表す
       timer: {
-        isTimer: false, //　タイマーの表示非表示の有無
-        play: false, //　タイマーのスタートの判断を行うために使用する
-        pause: true, //　タイマーの一時停止の判断を行うために使用する
-        minutes: 0, //　タイマーの分数
-        seconds: 0, //　タイマーの秒数
-      },
-      timerDialog: {
-        minutes: 0, //　タイマーの設定画面の分数の表示。タイマーのリロードでタイマーの値を初期値に戻すために使用される。
-        seconds: 0, //　タイマーの設定画面の秒数の表示。
+        isShow: false, // タイマーの表示制御
+        setting: {
+          minutes: 0, // タイマーの設定画面の分数
+          seconds: 0, // タイマーの設定画面の秒数
+        },
+        play: false, // タイマーのスタート制御
+        pause: true, // タイマーの一時停止制御
+        minutes: 0, // タイマーの分数
+        seconds: 0, // タイマーの秒数
       },
     };
   },
@@ -703,21 +703,21 @@ export default {
             break;
 
           case 'setTimer':
-            if (!this.timer.isTimer) {
+            if (!this.timer.isShow) {
               //タイマーの表示
-              this.timer.isTimer = true;
+              this.timer.isShow = true;
             }
             //タイマーの値のセット
             this.timer.minutes = data.content.minutes;
             this.timer.seconds = data.content.seconds;
             //タイマー設定値の値を設定者のものと合わせる。タイマーのリロード時に使用する
-            this.timerDialog.minutes = data.content.timerDialogMinutes;
-            this.timerDialog.seconds = data.content.timerDialogSeconds;
+            this.timer.setting.minutes = data.content.timerSettingMinutes;
+            this.timer.setting.seconds = data.content.timerSettingSeconds;
             break;
 
           case 'cancelTimer':
             //タイマーの非表示
-            this.timer.isTimer = false;
+            this.timer.isShow = false;
             //タイマーの値を初期値へ戻す
             this.timer.minutes = 0;
             this.timer.seconds = 0;
@@ -1165,8 +1165,8 @@ export default {
       //タイマーのスタート可能な状態にする。
       this.timer.play = false;
       //タイマーの値を設定画面で設定した値に戻す。
-      this.timer.minutes = this.timerDialog.minutes;
-      this.timer.seconds = this.timerDialog.seconds;
+      this.timer.minutes = this.timer.setting.minutes;
+      this.timer.seconds = this.timer.setting.seconds;
     },
   },
 
