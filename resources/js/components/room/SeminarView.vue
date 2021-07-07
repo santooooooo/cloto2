@@ -488,7 +488,7 @@
 
 <script>
 import voiceDetection from 'voice-activity-detection';
-import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND, NOTIFICATION_SOUND } from '@/consts/sound';
+import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND, ALARM_SOUND } from '@/consts/sound';
 
 const API_KEY = process.env.MIX_SKYWAY_API_KEY;
 
@@ -1113,7 +1113,7 @@ export default {
           }
 
           if (this.timer.seconds === 0) {
-            NOTIFICATION_SOUND.play();
+            ALARM_SOUND.play();
 
             // カウントダウンの終了
             clearInterval(play);

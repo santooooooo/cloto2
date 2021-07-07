@@ -24,6 +24,9 @@ leaveCallSound.volume = 0.4;
 // メッセージの受信
 const receiveMessageSound = new Audio(Storage('system') + 'receive_message.mp3');
 receiveMessageSound.volume = 0.4;
+// タイマー終了
+const alarmSound = new Audio(Storage('system') + 'alarm.mp3');
+alarmSound.volume = 0.4;
 
 export const ON_SOUND = onSound;
 export const OFF_SOUND = offSound;
@@ -33,3 +36,4 @@ export const RECEIVE_CHAT_SOUND = receiveChatSound;
 export const JOIN_CALL_SOUND = joinCallSound;
 export const LEAVE_CALL_SOUND = leaveCallSound;
 export const RECEIVE_MESSAGE_SOUND = receiveMessageSound;
+export const ALARM_SOUND = alarmSound;
