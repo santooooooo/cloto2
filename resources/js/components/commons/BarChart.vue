@@ -15,13 +15,14 @@ export default {
         labels: [],
         datasets: [
           {
-            label: 'Test Bar',
+            label: 'タグ別のカルテの割合',
             data: [],
-            backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+            backgroundColor: [],
           },
         ],
       },
       options: {
+        responsive: true,
         scales: {
           yAxes: [
             {
@@ -32,24 +33,30 @@ export default {
           ],
         },
       },
-      result: null,
+      propsObject: null,
     };
   },
   methods: {
     getData: async function () {
-      let data = null;
+      let promiseData = null;
       await this.graphData.then(function (value) {
-        data = value;
+        promiseData = value;
       });
-      this.result = data;
+      this.propsObject = promiseData;
+    },
+    setData: function () {
+      for (const key in this.propsObject) {
+        this.data.labels.push(key);
+        this.data.datasets[0].data.push(this.propsObject[key]);
+        this.data.datasets[0].backgroundColor.push('rgba(255,202,43,0.5)');
+      }
     },
   },
   mounted: async function () {
     await this.getData();
 
-    this.data.labels = ['php', 'JavaScript'];
-    this.data.datasets[0].data[0] = this.result['php'];
-    this.data.datasets[0].data[1] = this.result['JavaScript'];
+    this.setData();
+
     this.renderChart(this.data, this.options);
   },
 };

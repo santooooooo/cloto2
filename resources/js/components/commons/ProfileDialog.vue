@@ -73,6 +73,7 @@
                 light
                 flat
                 class="mt-3 mr-2 overflow-y-auto"
+                min-width="240"
                 min-height="240"
                 max-height="400"
               >
@@ -100,24 +101,7 @@
               <pre class="ma-3 text-body-1">{{ user.in_progress || '集中しています！' }}</pre>
             </v-card>
             <v-card light flat width="80%" class="mx-6 mt-2 text-center">
-              <v-card-text class="pt-3 pl-3 pb-0 black--text">カルテのグラフの表示</v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <!--bar-chart height="80%" :graph-data="percentagePerTag"></bar-chart-->
+              <bar-chart :height="90" :graph-data="percentagePerTag" v-if="barChart"></bar-chart>
             </v-card>
             <v-card light flat width="80%" class="mx-6 mt-2 text-center">
               <v-card-text class="pt-3 pl-3 pb-0 black--text">毎日のカルテ数の表示</v-card-text>
@@ -262,6 +246,7 @@ export default {
       followers: [], // フォロー/フォロワー一覧
       kartes: [], // カルテ一覧
       graphData: null,
+      barChart: true,
     };
   },
 
@@ -289,8 +274,9 @@ export default {
         const allKartes = this.kartes.length;
 
         //すべてのカルテにつけられたタグを取得
-        let allTags = this.kartes.map((karte) => karte.tags);
-        allTags = allTags.filter((tag) => tag.length !== 0);
+        let allTags = this.kartes.map((karte) =>
+          karte.tags != '' ? karte.tags : [{ name: 'タグなし' }]
+        );
 
         let tagNames = [];
         for (let i = 0; i < allTags.length; i++) {
@@ -343,12 +329,16 @@ export default {
     open: async function () {
       await this.getUser();
       this.dialog = true;
+      // タグ別のカルテの割合のグラフの表示
+      this.barChart = true;
     },
 
     /**
      * ダイアログのクローズ
      */
     close: function () {
+      // タグ別のカルテの割合のグラフの非表示
+      this.barChart = false;
       this.dialog = false;
       this.show = null;
       this.$store.dispatch('dialog/close', 'user');
@@ -399,52 +389,6 @@ export default {
       let response = await axios.get('/api/kartes/user/' + this.user.id);
       this.kartes = response.data;
       this.show = 'karte';
-    },
-
-    /**
-     * すべてのカルテに対するタグごとのカルテの割合の取得
-     */
-    percentagePerTag: async function () {
-      //すべてのカルテの件数を取得
-      let response = await axios.get('/api/kartes/user/' + this.user.id);
-      this.kartes = response.data;
-      const allKartes = this.kartes.length;
-
-      //すべてのカルテにつけられたタグを取得
-      let allTags = this.kartes.map((karte) => karte.tags);
-      allTags = allTags.filter((tag) => tag.length !== 0);
-
-      let tagNames = [];
-      for (let i = 0; i < allTags.length; i++) {
-        tagNames = tagNames.concat(allTags[i]);
-      }
-      tagNames = tagNames.map((tag) => tag.name);
-
-      //タグごとのカルテの割合を取得
-      let tagPercentage = {};
-      for (let i = 0; i < tagNames.length; i++) {
-        tagPercentage[tagNames[i]] =
-          tagPercentage[tagNames[i]] === undefined ? 1 : tagPercentage[tagNames[i]] + 1;
-      }
-
-      for (let tag in tagPercentage) {
-        tagPercentage[tag] = Math.round((tagPercentage[tag] / allKartes) * 100);
-      }
-
-      //タグごとのカルテの割合を降順にソート
-      const tagPercentageArray = Object.keys(tagPercentage).map((k) => ({
-        key: k,
-        value: tagPercentage[k],
-      }));
-      tagPercentageArray.sort((a, b) => b.value - a.value);
-      tagPercentage = Object.assign(
-        {},
-        ...tagPercentageArray.map((item) => ({
-          [item.key]: item.value,
-        }))
-      );
-
-      this.graphData = tagPercentage;
     },
   },
 };
