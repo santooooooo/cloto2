@@ -467,24 +467,28 @@
         }"
         v-if="timer.isShow"
       >
-        <v-toolbar width="310" class="rounded" color="yellow darken-3">
-          <v-toolbar-title class="text-white" style="font-size: 2rem">
+        <v-toolbar width="280" class="rounded" color="yellow darken-3">
+          <v-toolbar-title class="text-white mr-4" style="font-size: 2rem">
             <span v-if="String(timer.minutes).length === 1">0</span>{{ timer.minutes }}:<span
               v-if="String(timer.seconds).length === 1"
               >0</span
             >{{ timer.seconds }}</v-toolbar-title
           >
           <v-row justify="center">
-            <v-btn icon color="white" @click="playAllTimer" :disabled="timer.play"
-              ><v-icon>mdi-play</v-icon></v-btn
+            <v-btn
+              icon
+              color="white"
+              @click="timer.play ? pauseAllTimer() : playAllTimer()"
+              :disabled="timer.play"
             >
-            <v-btn icon color="white" @click="pauseAllTimer"><v-icon>mdi-pause</v-icon></v-btn>
-            <v-btn icon color="white" @click="reloadAllTimer" :disabled="timer.reload"
-              ><v-icon>mdi-reload</v-icon></v-btn
-            >
-            <v-btn icon color="white" @click="cancelTimer" :disabled="timer.cancel"
-              ><v-icon>mdi-close-circle</v-icon></v-btn
-            >
+              <v-icon>{{ timer.play ? 'mdi-pause' : 'mdi-play' }}</v-icon>
+            </v-btn>
+            <v-btn icon color="white" @click="reloadAllTimer" :disabled="timer.reload">
+              <v-icon>mdi-reload</v-icon>
+            </v-btn>
+            <v-btn icon color="white" @click="cancelTimer" :disabled="timer.cancel">
+              <v-icon>mdi-close-circle</v-icon>
+            </v-btn>
           </v-row>
         </v-toolbar>
       </v-flex>
