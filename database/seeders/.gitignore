@@ -3,5 +3,6 @@
 !*.example
 !DatabaseSeeder.php
 !rooms/
-!RoomsTableUpdateSeeder.php
+!RoomsTableSeeder.php
 !RoadsTableSeeder.php
+!RoomsTableUpdateSeeder.php
