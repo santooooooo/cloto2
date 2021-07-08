@@ -25,8 +25,7 @@ class RoomsTableUpdateSeeder extends Seeder
         Seat::truncate();
         Chat::truncate();
 
-        $this->call(rooms\Room1Seeder::class);
-        $this->call(rooms\Room2Seeder::class);
+        $this->call(RoomsTableSeeder::class);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
