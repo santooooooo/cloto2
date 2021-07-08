@@ -420,6 +420,100 @@
         </v-container>
       </v-flex>
 
+      <!-- タイマーの設定画面 -->
+      <v-flex class="timer-setting" v-if="timer.setting.dialog">
+        <v-card width="320">
+          <v-row justify="space-around">
+            <v-card-title>タイマーセット</v-card-title>
+            <v-btn
+              fab
+              x-small
+              depressed
+              color="error"
+              class="mt-3"
+              @click="timer.setting.dialog = !timer.setting.dialog"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-row>
+
+          <v-row dense justify="center">
+            <v-col md="3" sm="3">
+              <v-row dense>
+                <v-text-field
+                  v-model="timer.setting.minutes"
+                  class="mt-3 px-2"
+                  label="分"
+                  type="number"
+                  min="0"
+                  max="99"
+                ></v-text-field>
+              </v-row>
+            </v-col>
+            <v-col md="3" sm="3">
+              <v-row dense>
+                <v-text-field
+                  v-model="timer.setting.seconds"
+                  class="mt-3 px-2"
+                  label="秒"
+                  width="5%"
+                  type="number"
+                  min="0"
+                  max="59"
+                ></v-text-field>
+              </v-row>
+            </v-col>
+            <v-col md="1" sm="3">
+              <v-row dense>
+                <v-btn
+                  class="mt-5 text-white"
+                  @click="setTimer"
+                  color="yellow darken-3"
+                  :disabled="!timerValidate"
+                >
+                  セット
+                </v-btn>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-flex>
+
+      <!-- タイマー -->
+      <v-flex
+        class="timer"
+        :style="{
+          top: screenSharing.stream ? '7%' : '40%',
+          left: screenSharing.stream ? '80%' : '40%',
+        }"
+        v-if="timer.isShow"
+      >
+        <v-toolbar width="280" class="rounded" color="yellow darken-3">
+          <v-toolbar-title class="text-white mr-4" style="font-size: 2rem">
+            <span v-if="String(timer.minutes).length === 1">0</span>{{ timer.minutes }}:<span
+              v-if="String(timer.seconds).length === 1"
+              >0</span
+            >{{ timer.seconds }}</v-toolbar-title
+          >
+          <v-row justify="center">
+            <v-btn
+              icon
+              color="white"
+              @click="timer.play ? pauseAllTimer() : playAllTimer()"
+              :disabled="timer.play"
+            >
+              <v-icon>{{ timer.play ? 'mdi-pause' : 'mdi-play' }}</v-icon>
+            </v-btn>
+            <v-btn icon color="white" @click="reloadAllTimer" :disabled="timer.reload">
+              <v-icon>mdi-reload</v-icon>
+            </v-btn>
+            <v-btn icon color="white" @click="cancelTimer" :disabled="timer.cancel">
+              <v-icon>mdi-close-circle</v-icon>
+            </v-btn>
+          </v-row>
+        </v-toolbar>
+      </v-flex>
+
       <!-- チャットエリア -->
       <v-flex xs2 v-show="chat.isOpen">
         <v-card color="grey lighten-2" class="mx-auto" id="chat">
@@ -557,6 +651,11 @@
 
         <v-col md="4" sm="4" align-self="center">
           <v-row justify="end">
+            <!-- タイマーボタン -->
+            <v-btn color="white" icon class="mr-6">
+              <v-icon @click="timer.setting.dialog = !timer.setting.dialog" large>mdi-alarm</v-icon>
+            </v-btn>
+
             <!-- 通知音ボタン -->
             <v-btn color="white" icon class="mr-6" @click="$store.dispatch('alert/switchSound')">
               <v-icon large>
@@ -615,7 +714,7 @@
 
 <script>
 import voiceDetection from 'voice-activity-detection';
-import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND } from '@/consts/sound';
+import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND, ALARM_SOUND } from '@/consts/sound';
 
 const API_KEY = process.env.MIX_SKYWAY_API_KEY;
 
@@ -674,6 +773,22 @@ export default {
         localText: '', // 送信するメッセージ
         messages: [], // メッセージ一覧
       },
+
+      //*** タイマー ***//
+      timer: {
+        isShow: false, // タイマーの表示制御
+        setting: {
+          dialog: false, // タイマーの設定画面の表示制御
+          minutes: 0, // タイマーの設定画面の分数
+          seconds: 0, // タイマーの設定画面の秒数
+        },
+        play: false, // タイマーのスタート制御
+        pause: true, // タイマーの一時停止制御
+        cancel: false, // タイマーの削除制御
+        reload: false, // タイマーのリロード制御
+        minutes: 0, // タイマーの分数
+        seconds: 0, // タイマーの秒数
+      },
     };
   },
   computed: {
@@ -706,6 +821,22 @@ export default {
       return this.participants.filter((participant) => {
         return typeof participant.stream === 'undefined';
       });
+    },
+    timerValidate() {
+      // タイマーの設定値の検証
+      const minutes = Number(this.timer.setting.minutes);
+      const seconds = Number(this.timer.setting.seconds);
+
+      const validMinutes = minutes < 99 && minutes >= 0 && Number.isInteger(minutes);
+      const validSeconds = seconds < 59 && seconds >= 0 && Number.isInteger(seconds);
+
+      const validMinAndSec = minutes > 0 || seconds > 0;
+
+      if (validMinutes && validSeconds && validMinAndSec) {
+        return true;
+      }
+
+      return false;
     },
   },
   watch: {
@@ -826,6 +957,47 @@ export default {
               this.showAppBar();
             }
             break;
+
+          case 'setTimer':
+            if (!this.timer.isShow) {
+              // タイマーの表示
+              this.timer.isShow = true;
+            }
+            // タイマーの設定
+            this.timer.minutes = data.content.minutes;
+            this.timer.seconds = data.content.seconds;
+            // タイマーの再設定（リロード時）
+            this.timer.setting.minutes = data.content.timerSettingMinutes;
+            this.timer.setting.seconds = data.content.timerSettingSeconds;
+            break;
+
+          case 'cancelTimer':
+            // タイマーの非表示
+            this.timer.isShow = false;
+            this.timer.play = false;
+            this.timer.minutes = 0;
+            this.timer.seconds = 0;
+            break;
+
+          case 'playTimer':
+            if (!this.timer.play) {
+              // タイマーの開始
+              this.playTimer(data.content);
+            } else {
+              // タイマーが既に開始している場合は終了時刻の再設定のみ行う
+              this.setExactTime(data.content);
+            }
+            break;
+
+          case 'pauseTimer':
+            // タイマーの一時停止
+            this.pauseTimer();
+            break;
+
+          case 'reloadTimer':
+            // タイマーのリロード
+            this.reloadTimer();
+            break;
         }
       });
 
@@ -892,9 +1064,36 @@ export default {
           this.call.send({ type: 'loadingEvent', content: this.loading });
           this.call.send({ type: 'audioEvent', content: this.isMute });
           this.call.send({ type: 'videoEvent', content: this.isVideoOff });
+
           // 現在のトピックを送信
           if (this.topic !== null) {
             this.call.send({ type: 'topic', content: this.topic });
+          }
+
+          // 途中参加者へタイマーの情報を送信
+          if (this.timer.isShow) {
+            // 全体へ送信するデータの作成
+            const timerInfo = {
+              minutes: this.timer.minutes,
+              seconds: this.timer.seconds,
+              timerSettingMinutes: this.timer.setting.minutes,
+              timerSettingSeconds: this.timer.setting.seconds,
+            };
+
+            // タイマーの情報を登壇者へ送信
+            this.call.send({ type: 'setTimer', content: timerInfo });
+
+            // タイマーがスタートしていた場合は途中参加者のタイマーもスタートさせる
+            if (this.timer.play) {
+              // タイマーの終了時刻を登壇者へ送信
+              const now = this.$moment().format('MMMM Do YYYY, h:mm:ss a');
+              const endTime = this.$moment(now, 'MMMM Do YYYY, h:mm:ss a')
+                .add(this.timer.minutes, 'minutes')
+                .add(this.timer.seconds, 'seconds');
+
+              //タイマーをスタートさせる
+              this.call.send({ type: 'playTimer', content: endTime });
+            }
           }
 
           // 通知音
@@ -945,9 +1144,35 @@ export default {
         this.call.send({ type: 'loadingEvent', content: this.loading });
         this.call.send({ type: 'audioEvent', content: this.isMute });
         this.call.send({ type: 'videoEvent', content: this.isVideoOff });
+
         // 現在のトピックを送信
         if (this.topic !== null) {
           this.call.send({ type: 'topic', content: this.topic });
+        }
+
+        // 途中参加者へタイマーの情報を送信
+        if (this.timer.isShow) {
+          // 全体へ送信するデータの作成
+          const timerInfo = {
+            minutes: this.timer.minutes,
+            seconds: this.timer.seconds,
+            timerSettingMinutes: this.timer.setting.minutes,
+            timerSettingSeconds: this.timer.setting.seconds,
+          };
+
+          // タイマーの情報を登壇会場全体へ送信
+          this.call.send({ type: 'setTimer', content: timerInfo });
+          // タイマーがスタートしていた場合は途中参加者のタイマーもスタートさせる
+          if (this.timer.play) {
+            // タイマーの終了時刻を登壇者へ送信
+            const now = this.$moment().format('MMMM Do YYYY, h:mm:ss a');
+            const endTime = this.$moment(now, 'MMMM Do YYYY, h:mm:ss a')
+              .add(this.timer.minutes, 'minutes')
+              .add(this.timer.seconds, 'seconds');
+
+            // タイマーをスタートさせる
+            this.call.send({ type: 'playTimer', content: endTime });
+          }
         }
 
         // 通知音
@@ -1411,6 +1636,193 @@ export default {
       this.$store.dispatch('alert/error', message);
       this.leaveCall();
     },
+
+    /**
+     * タイマーのセット
+     */
+    setTimer: function () {
+      if (this.timerValidate) {
+        // タイマーの表示
+        this.timer.isShow = true;
+
+        this.timer.setting.minutes = Number(this.timer.setting.minutes);
+        this.timer.setting.seconds = Number(this.timer.setting.seconds);
+        this.timer.minutes = this.timer.setting.minutes;
+        this.timer.seconds = this.timer.setting.seconds;
+
+        // 全体へ送信するデータの作成
+        const timerInfo = {
+          minutes: this.timer.minutes,
+          seconds: this.timer.seconds,
+          timerSettingMinutes: this.timer.setting.minutes,
+          timerSettingSeconds: this.timer.setting.seconds,
+        };
+
+        // タイマーの情報を登壇会場全体へ送信
+        this.call.send({ type: 'setTimer', content: timerInfo });
+      } else {
+        this.$store.dispatch(
+          'alert/error',
+          'タイマーの設定値に誤りがあります。正しい値を入力してください。'
+        );
+      }
+    },
+
+    /**
+     * タイマーの終了時刻から正確な時間を取得し，タイマーへセット
+     *
+     * @param {String} endTime - タイマー設定者から送信されたタイマー終了時刻
+     */
+    setExactTime: function (endTime) {
+      endTime = this.$moment(endTime);
+      const now = this.$moment();
+
+      // 終了時刻と現在の時刻の差からタイマーにセットする分数・秒数を求める
+      const diffMinutes = this.$moment(endTime, 'MMMM Do YYYY, h:mm:ss a').diff(
+        this.$moment(now, 'MMMM Do YYYY, h:mm:ss a'),
+        'minutes'
+      );
+      const diffSeconds = this.$moment(endTime, 'MMMM Do YYYY, h:mm:ss a').diff(
+        this.$moment(now, 'MMMM Do YYYY, h:mm:ss a'),
+        'seconds'
+      );
+
+      // タイマーにセット
+      this.timer.minutes = diffMinutes;
+      this.timer.seconds = diffSeconds - diffMinutes * 60;
+    },
+
+    /**
+     * タイマーの開始
+     *
+     * @param {String} endTime - タイマー設定者から送信されたタイマー終了時刻
+     */
+    playTimer: function (endTime) {
+      this.setExactTime(endTime);
+
+      this.timer.play = true;
+      this.timer.cancel = true;
+      this.timer.pause = false;
+      this.timer.reload = true;
+
+      // カウントダウン
+      const countDown = () => {
+        // 退席した際にタイマーの動作を停止
+        if (this.peer === null) {
+          clearInterval(play);
+          clearInterval(pause);
+          return;
+        }
+
+        if (this.timer.seconds >= 0) {
+          // 分数が1以上ので秒数が0になるとき、分数を一つ下げて秒数を60にする
+          if (this.timer.minutes > 0 && this.timer.seconds === 0) {
+            this.timer.minutes--;
+            this.timer.seconds += 60;
+          }
+
+          if (this.timer.seconds === 0) {
+            ALARM_SOUND.play();
+
+            // カウントダウンの終了
+            clearInterval(play);
+            // 一時停止の検知の終了
+            clearInterval(pause);
+
+            this.timer.cancel = false;
+            this.timer.reload = false;
+            return;
+          }
+
+          // 秒数のカウントダウン。
+          this.timer.seconds--;
+        }
+      };
+
+      // 一時停止
+      const stopCount = () => {
+        if (this.timer.pause) {
+          clearInterval(play);
+          clearInterval(pause);
+        }
+      };
+
+      // カウントダウンの開始
+      const play = setInterval(countDown, 1000);
+      // 一時停止の検知の開始
+      const pause = setInterval(stopCount, 10);
+    },
+
+    /**
+     * タイマーの一時停止
+     */
+    pauseTimer: function () {
+      this.timer.play = false;
+      this.timer.pause = true;
+      this.timer.cancel = false;
+      this.timer.reload = false;
+    },
+
+    /**
+     * タイマーのリロード
+     */
+    reloadTimer: function () {
+      this.timer.play = false;
+      // タイマーの値を設定画面で設定した値に戻す
+      this.timer.minutes = Number(this.timer.setting.minutes);
+      this.timer.seconds = Number(this.timer.setting.seconds);
+    },
+
+    /**
+     * タイマーの解除
+     */
+    cancelTimer: function () {
+      // タイマーの非表示
+      this.timer.isShow = false;
+      this.timer.play = false;
+      this.timer.minutes = 0;
+      this.timer.seconds = 0;
+
+      // タイマーの解除を登壇会場全体へ送信
+      this.call.send({ type: 'cancelTimer', content: null });
+    },
+
+    /**
+     * 登壇会場全体のタイマーの開始
+     */
+    playAllTimer: function () {
+      // 終了時刻を求める
+      const now = this.$moment().format('MMMM Do YYYY, h:mm:ss a');
+      const endTime = this.$moment(now, 'MMMM Do YYYY, h:mm:ss a')
+        .add(this.timer.minutes, 'minutes')
+        .add(this.timer.seconds, 'seconds');
+
+      // 登壇会場内の全ユーザーのタイマーを開始
+      this.call.send({ type: 'playTimer', content: endTime });
+
+      // 自身のタイマーを開始
+      this.playTimer(endTime);
+    },
+
+    /**
+     * 登壇会場全体のタイマーの一時停止
+     */
+    pauseAllTimer: function () {
+      // 登壇会場内の全ユーザーのタイマーを一時停止
+      this.call.send({ type: 'pauseTimer', content: null });
+      // 自身のタイマーを一時停止
+      this.pauseTimer();
+    },
+
+    /**
+     * 登壇会場全体のタイマーのリロード
+     */
+    reloadAllTimer: function () {
+      // 登壇会場内の全ユーザーのタイマーをリロード
+      this.call.send({ type: 'reloadTimer', content: null });
+      // 自身のタイマーをリロード
+      this.reloadTimer();
+    },
   },
 
   async created() {
@@ -1553,6 +1965,18 @@ export default {
 .viewer-container {
   position: absolute;
   top: 5rem;
+}
+
+.timer-setting {
+  position: absolute;
+  z-index: 3;
+  top: 40%;
+  left: 65%;
+}
+
+.timer {
+  position: absolute;
+  z-index: 2;
 }
 
 .video {

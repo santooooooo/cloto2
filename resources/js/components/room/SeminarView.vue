@@ -329,6 +329,18 @@
         </v-container>
       </v-flex>
 
+      <!-- タイマー -->
+      <v-flex class="timer" v-if="timer.isShow">
+        <v-toolbar width="130" class="rounded" color="yellow darken-3">
+          <v-toolbar-title class="text-white" style="font-size: 2rem">
+            <span v-if="String(timer.minutes).length === 1">0</span>{{ timer.minutes }}:<span
+              v-if="String(timer.seconds).length === 1"
+              >0</span
+            >{{ timer.seconds }}</v-toolbar-title
+          >
+        </v-toolbar>
+      </v-flex>
+
       <!-- チャットエリア -->
       <v-flex xs2 v-show="chat.isOpen">
         <v-card color="grey lighten-2" class="mx-auto" id="chat">
@@ -486,7 +498,7 @@
 
 <script>
 import voiceDetection from 'voice-activity-detection';
-import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND } from '@/consts/sound';
+import { JOIN_CALL_SOUND, LEAVE_CALL_SOUND, ALARM_SOUND } from '@/consts/sound';
 
 const API_KEY = process.env.MIX_SKYWAY_API_KEY;
 
@@ -533,6 +545,20 @@ export default {
         notification: false, // 通知制御
         localText: '', // 送信するメッセージ
         messages: [], // メッセージ一覧
+      },
+
+      //*** タイマー ***//
+      //タイマーの状態を表す
+      timer: {
+        isShow: false, // タイマーの表示制御
+        setting: {
+          minutes: 0, // タイマーの設定画面の分数
+          seconds: 0, // タイマーの設定画面の秒数
+        },
+        play: false, // タイマーのスタート制御
+        pause: true, // タイマーの一時停止制御
+        minutes: 0, // タイマーの分数
+        seconds: 0, // タイマーの秒数
       },
     };
   },
@@ -684,6 +710,46 @@ export default {
               this.chat.notification = true;
               this.showAppBar();
             }
+            break;
+
+          case 'setTimer':
+            if (!this.timer.isShow) {
+              // タイマーの表示
+              this.timer.isShow = true;
+            }
+            // タイマーの設定
+            this.timer.minutes = data.content.minutes;
+            this.timer.seconds = data.content.seconds;
+            // タイマーの再設定（リロード時）
+            this.timer.setting.minutes = data.content.timerSettingMinutes;
+            this.timer.setting.seconds = data.content.timerSettingSeconds;
+            break;
+
+          case 'cancelTimer':
+            // タイマーの非表示
+            this.timer.isShow = false;
+            this.timer.minutes = 0;
+            this.timer.seconds = 0;
+            break;
+
+          case 'playTimer':
+            if (!this.timer.play) {
+              // タイマーの開始
+              this.playTimer(data.content);
+            } else {
+              // タイマーが既に開始している場合は終了時刻の再設定のみ行う
+              this.setExactTime(data.content);
+            }
+            break;
+
+          case 'pauseTimer':
+            // タイマーの一時停止
+            this.pauseTimer();
+            break;
+
+          case 'reloadTimer':
+            // タイマーのリロード
+            this.reloadTimer();
             break;
         }
       });
@@ -1011,6 +1077,105 @@ export default {
       this.$store.dispatch('alert/error', message);
       this.leaveCall();
     },
+
+    /**
+     * タイマーの終了時刻から正確な時間を取得し，タイマーへセット
+     *
+     * @param {String} endTime - タイマー設定者から送信されたタイマー終了時刻
+     */
+    setExactTime: function (endTime) {
+      endTime = this.$moment(endTime);
+      const now = this.$moment();
+
+      // 終了時刻と現在の時刻の差からタイマーにセットする分数・秒数を求める
+      const diffMinutes = this.$moment(endTime, 'MMMM Do YYYY, h:mm:ss a').diff(
+        this.$moment(now, 'MMMM Do YYYY, h:mm:ss a'),
+        'minutes'
+      );
+      const diffSeconds = this.$moment(endTime, 'MMMM Do YYYY, h:mm:ss a').diff(
+        this.$moment(now, 'MMMM Do YYYY, h:mm:ss a'),
+        'seconds'
+      );
+
+      // タイマーにセット
+      this.timer.minutes = diffMinutes;
+      this.timer.seconds = diffSeconds - diffMinutes * 60;
+    },
+
+    /**
+     * タイマーの開始
+     *
+     * @param {String} endTime - タイマー設定者から送信されたタイマー終了時刻
+     */
+    playTimer: function (endTime) {
+      this.setExactTime(endTime);
+
+      this.timer.play = true;
+      this.timer.pause = false;
+
+      // カウントダウン
+      const countDown = () => {
+        // 退席した際にタイマーの動作を停止
+        if (this.peer === null) {
+          clearInterval(play);
+          clearInterval(pause);
+          return;
+        }
+
+        if (this.timer.seconds >= 0) {
+          // 分数が1以上ので秒数が0になるとき、分数を一つ下げて秒数を60にする
+          if (this.timer.minutes > 0 && this.timer.seconds === 0) {
+            this.timer.minutes--;
+            this.timer.seconds += 60;
+          }
+
+          if (this.timer.seconds === 0) {
+            ALARM_SOUND.play();
+
+            // カウントダウンの終了
+            clearInterval(play);
+            // 一時停止の検知の終了
+            clearInterval(pause);
+
+            return;
+          }
+
+          // 秒数のカウントダウン。
+          this.timer.seconds--;
+        }
+      };
+
+      // 一時停止
+      const stopCount = () => {
+        if (this.timer.pause) {
+          clearInterval(play);
+          clearInterval(pause);
+        }
+      };
+
+      // カウントダウンの開始
+      const play = setInterval(countDown, 1000);
+      // 一時停止の検知の開始
+      const pause = setInterval(stopCount, 10);
+    },
+
+    /**
+     * タイマーの一時停止
+     */
+    pauseTimer: function () {
+      this.timer.play = false;
+      this.timer.pause = true;
+    },
+
+    /**
+     * タイマーのリロード
+     */
+    reloadTimer: function () {
+      this.timer.play = false;
+      // タイマーの値を設定画面で設定した値に戻す
+      this.timer.minutes = Number(this.timer.setting.minutes);
+      this.timer.seconds = Number(this.timer.setting.seconds);
+    },
   },
 
   async created() {
@@ -1145,6 +1310,13 @@ export default {
 .viewer-container {
   position: absolute;
   top: 5rem;
+}
+
+.timer {
+  position: absolute;
+  z-index: 2;
+  top: 9%;
+  left: 90%;
 }
 
 .video {

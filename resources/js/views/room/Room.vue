@@ -81,11 +81,7 @@
         <v-divider class="mt-0"></v-divider>
 
         <div class="overflow-y-auto" :style="messageContainerHeight">
-          <div
-            v-for="(message, index) in messages"
-            :key="index"
-            @click="chat.message = '>> ' + message.user.handlename + 'さん\n' + chat.message"
-          >
+          <div v-for="(message, index) in messages" :key="index">
             <p class="font-weight-bold mb-0 mx-1">
               <span
                 @click="
@@ -94,6 +90,13 @@
                 >{{ message.user.handlename }}
                 <small>@{{ message.user.username }}</small>
               </span>
+              <v-btn
+                text
+                small
+                @click="chat.message = '>> ' + message.user.handlename + 'さん\n' + chat.message"
+              >
+                返信
+              </v-btn>
             </p>
 
             <pre class="text-body-2 mb-0 mx-1" v-html="$formatStr(message.body)"></pre>
