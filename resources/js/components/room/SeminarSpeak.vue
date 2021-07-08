@@ -399,7 +399,7 @@
         </v-container>
       </v-flex>
 
-      <!-- タイマーの設定画面の表示 -->
+      <!-- タイマーの設定画面 -->
       <v-flex class="timer-setting" v-if="timer.setting.dialog">
         <v-card width="320">
           <v-row justify="space-around">
@@ -458,7 +458,7 @@
         </v-card>
       </v-flex>
 
-      <!-- タイマーの表示(spanは一桁の数字の時に二桁目に0を埋め、見た目をよくするため) -->
+      <!-- タイマー -->
       <v-flex
         class="timer"
         :style="{
@@ -630,7 +630,7 @@
 
         <v-col md="4" sm="4" align-self="center">
           <v-row justify="end">
-            <!-- タイマーの設定画面を開くボタン -->
+            <!-- タイマーボタン -->
             <v-btn color="white" icon class="mr-6">
               <v-icon @click="timer.setting.dialog = !timer.setting.dialog" large>mdi-alarm</v-icon>
             </v-btn>
@@ -1620,10 +1620,7 @@ export default {
      * タイマーのセット
      */
     setTimer: function () {
-      // タイマーにセットされる値の検証
-      const validation = this.timerValidate;
-
-      if (validation) {
+      if (this.timerValidate) {
         // タイマーの表示
         this.timer.isShow = true;
 
@@ -1936,9 +1933,9 @@ export default {
 
 .timer-setting {
   position: absolute;
+  z-index: 3;
   top: 40%;
   left: 65%;
-  z-index: 3;
 }
 
 .timer {

@@ -319,7 +319,7 @@
         </v-container>
       </v-flex>
 
-      <!-- タイマーの表示(spanは一桁の数字の時に二桁目に0を埋め、見た目をよくするため) -->
+      <!-- タイマー -->
       <v-flex class="timer" v-if="timer.isShow">
         <v-toolbar width="130" class="rounded" color="yellow darken-3">
           <v-toolbar-title class="text-white" style="font-size: 2rem">
@@ -1111,7 +1111,6 @@ export default {
           clearInterval(pause);
           return;
         }
-
 
         if (this.timer.seconds >= 0) {
           // 分数が1以上ので秒数が0になるとき、分数を一つ下げて秒数を60にする
