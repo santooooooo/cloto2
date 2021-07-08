@@ -127,7 +127,7 @@ import Call from '@/components/room/Call';
 import SeminarSpeak from '@/components/room/SeminarSpeak';
 import SeminarView from '@/components/room/SeminarView';
 import Media from '@/components/room/Media';
-import { OK } from '@/consts/status';
+import { OK, NOT_FOUND } from '@/consts/status';
 import { RECEIVE_CHAT_SOUND } from '@/consts/sound';
 
 export default {
@@ -179,14 +179,6 @@ export default {
         text: '', // 吹き出しに表示するテキスト
       },
     };
-  },
-  beforeRouteEnter: async (to, from, next) => {
-    const response = await axios.get(`/api/room/${to.params.roomId}`);
-    if (!Object.keys(response.data).length) {
-      next({ path: '/404' });
-    } else {
-      next();
-    }
   },
 
   computed: {
@@ -1039,6 +1031,15 @@ export default {
 
     // ロード終了
     this.loading = false;
+  },
+
+  beforeRouteEnter: async (to, from, next) => {
+    const response = await axios.get('/api/rooms/' + to.params.roomId);
+    if (response.status === NOT_FOUND) {
+      next({ path: '/404' });
+    } else {
+      next();
+    }
   },
 
   beforeDestroy() {
