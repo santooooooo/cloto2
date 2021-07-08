@@ -12,7 +12,7 @@
       <v-list nav dense>
         <v-list-item-group color="success">
           <v-tooltip bottom v-for="floor in floors.slice().reverse()" :key="floor.id">
-            <template v-slot:activator="{ on, attrs }" v-if="floor.id === 4 || floor.id === 5">
+            <template v-slot:activator="{ on, attrs }">
               <v-list-item
                 class="mb-4"
                 v-bind="attrs"
