@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { NOT_FOUND } from '@/consts/status';
+
 export default {
   data() {
     return {
@@ -175,17 +177,17 @@ export default {
     },
   },
 
+  async mounted() {
+    await this.setRoom();
+  },
+
   beforeRouteEnter: async (to, from, next) => {
-    const response = await axios.get(`/api/room/${to.params.roomId}`);
-    if (!Object.keys(response.data).length) {
+    const response = await axios.get('/api/rooms/' + to.params.roomId);
+    if (response.status === NOT_FOUND) {
       next({ path: '/404' });
     } else {
       next();
     }
-  },
-
-  async mounted() {
-    await this.setRoom();
   },
 };
 </script>
