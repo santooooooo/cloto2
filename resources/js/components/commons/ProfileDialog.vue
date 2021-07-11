@@ -272,11 +272,10 @@ export default {
       await this.showKartes();
       // すべてのカルテの件数を取得
       const allKartes = this.kartes.length;
-      console.log(allKartes);
 
-      // すべてのカルテにつけられたタグを取得
+      // すべてのカルテにつけられたタグを取得。カルテのタグがない場合は、「タグなし」として取得
       let allTags = this.kartes.map((karte) =>
-        karte.tags != '' ? karte.tags : [{ name: 'タグなし' }]
+        karte.tags.length !== 0 ? karte.tags : [{ name: 'タグなし' }]
       );
 
       let tagNames = [];
