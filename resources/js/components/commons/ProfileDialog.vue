@@ -246,7 +246,7 @@ export default {
       followers: [], // フォロー/フォロワー一覧
       kartes: [], // カルテ一覧
       graphData: null,
-      barChart: true,
+      barChart: true, //カルテ別の割合を示すグラフの表示の有無
     };
   },
 
@@ -267,50 +267,51 @@ export default {
     /**
      * すべてのカルテに対するタグごとのカルテの割合の取得
      */
-    percentagePerTag: {
-      get: async function () {
-        await this.showKartes();
-        //すべてのカルテの件数を取得
-        const allKartes = this.kartes.length;
+    percentagePerTag: async function () {
+      // ユーザーのカルテの取得。ここで呼び出さないとthis.kartesの値が取得できないのでここで実行した
+      await this.showKartes();
+      // すべてのカルテの件数を取得
+      const allKartes = this.kartes.length;
+      console.log(allKartes);
 
-        //すべてのカルテにつけられたタグを取得
-        let allTags = this.kartes.map((karte) =>
-          karte.tags != '' ? karte.tags : [{ name: 'タグなし' }]
-        );
+      // すべてのカルテにつけられたタグを取得
+      let allTags = this.kartes.map((karte) =>
+        karte.tags != '' ? karte.tags : [{ name: 'タグなし' }]
+      );
 
-        let tagNames = [];
-        for (let i = 0; i < allTags.length; i++) {
-          tagNames = tagNames.concat(allTags[i]);
-        }
-        tagNames = tagNames.map((tag) => tag.name);
+      let tagNames = [];
+      allTags.forEach((tagObject) => (tagNames = tagNames.concat(tagObject)));
+      tagNames = tagNames.map((tag) => tag.name);
 
-        //タグごとのカルテの割合を取得
-        let tagPercentage = {};
-        for (let i = 0; i < tagNames.length; i++) {
-          tagPercentage[tagNames[i]] =
-            tagPercentage[tagNames[i]] === undefined ? 1 : tagPercentage[tagNames[i]] + 1;
-        }
+      // タグごとのカルテの割合を取得
+      let tagPercentage = {};
+      tagNames.forEach(
+        (tagName) =>
+          (tagPercentage[tagName] =
+            tagPercentage[tagName] === undefined ? 1 : tagPercentage[tagName] + 1)
+      );
 
-        for (let tag in tagPercentage) {
-          tagPercentage[tag] = Math.round((tagPercentage[tag] / allKartes) * 100);
-        }
+      for (let tag in tagPercentage) {
+        tagPercentage[tag] = Math.round((tagPercentage[tag] / allKartes) * 100);
+      }
 
-        //タグごとのカルテの割合を降順にソート
-        const tagPercentageArray = Object.keys(tagPercentage).map((k) => ({
-          key: k,
-          value: tagPercentage[k],
-        }));
-        tagPercentageArray.sort((a, b) => b.value - a.value);
-        tagPercentage = Object.assign(
-          {},
-          ...tagPercentageArray.map((item) => ({
-            [item.key]: item.value,
-          }))
-        );
+      // タグごとのカルテの割合を降順にソート
+      // ソートをかけるために、tagPercentageオブジェクトのデータを配列に入れる
+      const tagPercentageArray = Object.keys(tagPercentage).map((k) => ({
+        key: k,
+        value: tagPercentage[k],
+      }));
+      // パーセンテージの値を降順に並び替え
+      tagPercentageArray.sort((a, b) => b.value - a.value);
+      // 配列のデータを取り出し、元のオブジェクトに戻す
+      tagPercentage = Object.assign(
+        {},
+        ...tagPercentageArray.map((item) => ({
+          [item.key]: item.value,
+        }))
+      );
 
-        return tagPercentage;
-      },
-      set: function () {},
+      return tagPercentage;
     },
   },
   watch: {
