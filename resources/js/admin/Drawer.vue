@@ -58,6 +58,13 @@
             </v-list-item-content>
           </template>
 
+          <v-list-item dense exact :to="{ name: 'mail' }">
+            <v-list-item-title>メール</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon>mdi-email</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+
           <v-list-item dense exact :to="{ name: 'user' }">
             <v-list-item-title>設定</v-list-item-title>
             <v-list-item-icon>
