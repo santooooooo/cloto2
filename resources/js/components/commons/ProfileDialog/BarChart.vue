@@ -30,7 +30,6 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
-                //max: 100,
               },
             },
           ],
@@ -41,7 +40,9 @@ export default {
     };
   },
   methods: {
-    // 親コンポーネントから渡されたPromiseオブジェクトのvalueプロパティの値を取得
+    /**
+     * 親コンポーネントから渡されたPromiseオブジェクトのvalueプロパティの値を取得
+     */
     getData: async function () {
       let promiseData = null;
       await this.graphData.then(function (value) {
@@ -52,6 +53,7 @@ export default {
 
     /**
      * すべてのカルテに対するタグごとのカルテの割合の取得
+     * @param {Object} kartes - カルテのデータ
      */
     percentagePerTag: async function (kartes) {
       // すべてのカルテの件数を取得
@@ -97,7 +99,10 @@ export default {
       return tagPercentage;
     },
 
-    // グラフにデータをセット
+    /*
+     * グラフにデータをセット
+     * @param {Object} percentages - タグごとのカルテのパーセンテージ
+     */
     setData: function (percentages) {
       let count = 0;
       for (const key in percentages) {
