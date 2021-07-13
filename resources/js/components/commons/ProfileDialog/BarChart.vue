@@ -37,7 +37,7 @@ export default {
         },
       },
       // 親コンポーネントから渡されるオブジェクトの取得に使用
-      propsObject: null,
+      kartes: null,
     };
   },
   methods: {
@@ -47,16 +47,64 @@ export default {
       await this.graphData.then(function (value) {
         promiseData = value;
       });
-      this.propsObject = promiseData;
+      this.kartes = promiseData;
     },
+
+    /**
+     * すべてのカルテに対するタグごとのカルテの割合の取得
+     */
+    percentagePerTag: async function (kartes) {
+      // すべてのカルテの件数を取得
+      const allKartes = kartes.length;
+
+      // すべてのカルテにつけられたタグを取得。カルテのタグがない場合は、「タグなし」として取得
+      let allTags = kartes.map((karte) =>
+        karte.tags.length !== 0 ? karte.tags : [{ name: 'タグなし' }]
+      );
+
+      let tagNames = [];
+      allTags.forEach((tagObject) => (tagNames = tagNames.concat(tagObject)));
+      tagNames = tagNames.map((tag) => tag.name);
+
+      // タグごとのカルテの割合を取得
+      let tagPercentage = {};
+      tagNames.forEach(
+        (tagName) =>
+          (tagPercentage[tagName] =
+            tagPercentage[tagName] === undefined ? 1 : tagPercentage[tagName] + 1)
+      );
+
+      for (let tag in tagPercentage) {
+        tagPercentage[tag] = Math.round((tagPercentage[tag] / allKartes) * 100);
+      }
+
+      // タグごとのカルテの割合を降順にソート
+      // ソートをかけるために、tagPercentageオブジェクトのデータを配列に入れる
+      const tagPercentageArray = Object.keys(tagPercentage).map((k) => ({
+        key: k,
+        value: tagPercentage[k],
+      }));
+      // パーセンテージの値を降順に並び替え
+      tagPercentageArray.sort((a, b) => b.value - a.value);
+      // 配列のデータを取り出し、元のオブジェクトに戻す
+      tagPercentage = Object.assign(
+        {},
+        ...tagPercentageArray.map((item) => ({
+          [item.key]: item.value,
+        }))
+      );
+
+      return tagPercentage;
+    },
+
     // グラフにデータをセット
-    setData: function () {
+    setData: function (percentages) {
       let count = 0;
-      for (const key in this.propsObject) {
+      for (const key in percentages) {
         // データが10以上ある場合は、上位10データをセット
         if (count < 10) {
           this.data.labels.push(key);
-          this.data.datasets[0].data.push(this.propsObject[key]);
+          this.data.datasets[0].data.push(percentages[key]);
           this.data.datasets[0].backgroundColor.push('rgba(255,202,43,0.5)');
         }
         count++;
@@ -76,8 +124,11 @@ export default {
     // 親コンポーネントから渡されるオブジェクトの取得
     await this.getData();
 
+    // すべてのカルテに対するタグごとのカルテの割合の取得
+    const percentages = await this.percentagePerTag(this.kartes);
+
     // グラフにデータをセット
-    this.setData();
+    this.setData(percentages);
 
     // グラフの描画
     this.renderChart(this.data, this.options);

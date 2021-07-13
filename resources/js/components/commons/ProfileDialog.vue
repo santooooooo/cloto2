@@ -101,7 +101,7 @@
               <pre class="ma-3 text-body-1">{{ user.in_progress || '集中しています！' }}</pre>
             </v-card>
             <v-card light flat width="80%" class="mx-6 mt-2 text-center">
-              <bar-chart :height="90" :graph-data="percentagePerTag" v-if="barChart"></bar-chart>
+              <bar-chart :height="90" :graph-data="allKartes" v-if="barChart"></bar-chart>
             </v-card>
             <v-card light flat width="80%" class="mx-6 mt-2 text-center">
               <v-card-text class="pt-3 pl-3 pb-0 black--text">毎日のカルテ数の表示</v-card-text>
@@ -264,52 +264,13 @@ export default {
     },
 
     /**
-     * すべてのカルテに対するタグごとのカルテの割合の取得
+     * ユーザーのカルテのデータを子コンポーネントへ渡す
      */
-    percentagePerTag: async function () {
+    allKartes: async function () {
       // ユーザーのカルテの取得。ここで呼び出さないとthis.kartesの値が取得できないのでここで実行した
-      await this.showKartes();
-      // すべてのカルテの件数を取得
-      const allKartes = this.kartes.length;
+      await this.getKartes();
 
-      // すべてのカルテにつけられたタグを取得。カルテのタグがない場合は、「タグなし」として取得
-      let allTags = this.kartes.map((karte) =>
-        karte.tags.length !== 0 ? karte.tags : [{ name: 'タグなし' }]
-      );
-
-      let tagNames = [];
-      allTags.forEach((tagObject) => (tagNames = tagNames.concat(tagObject)));
-      tagNames = tagNames.map((tag) => tag.name);
-
-      // タグごとのカルテの割合を取得
-      let tagPercentage = {};
-      tagNames.forEach(
-        (tagName) =>
-          (tagPercentage[tagName] =
-            tagPercentage[tagName] === undefined ? 1 : tagPercentage[tagName] + 1)
-      );
-
-      for (let tag in tagPercentage) {
-        tagPercentage[tag] = Math.round((tagPercentage[tag] / allKartes) * 100);
-      }
-
-      // タグごとのカルテの割合を降順にソート
-      // ソートをかけるために、tagPercentageオブジェクトのデータを配列に入れる
-      const tagPercentageArray = Object.keys(tagPercentage).map((k) => ({
-        key: k,
-        value: tagPercentage[k],
-      }));
-      // パーセンテージの値を降順に並び替え
-      tagPercentageArray.sort((a, b) => b.value - a.value);
-      // 配列のデータを取り出し、元のオブジェクトに戻す
-      tagPercentage = Object.assign(
-        {},
-        ...tagPercentageArray.map((item) => ({
-          [item.key]: item.value,
-        }))
-      );
-
-      return tagPercentage;
+      return this.kartes;
     },
   },
   watch: {
@@ -382,11 +343,17 @@ export default {
     },
 
     /**
+     * カルテの取得
+     */
+    getKartes: async function () {
+      let response = await axios.get('/api/kartes/user/' + this.user.id);
+      this.kartes = response.data;
+    },
+
+    /**
      * カルテ一覧の表示
      */
     showKartes: async function () {
-      let response = await axios.get('/api/kartes/user/' + this.user.id);
-      this.kartes = response.data;
       this.show = 'karte';
     },
   },
