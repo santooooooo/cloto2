@@ -62,7 +62,7 @@ export default {
         count++;
       }
 
-      // もしデータが10以下の場合は、グラフのデータの見栄えをよくするためにdata.datasets[0].dataにからのデータをセット
+      // もしデータが10以下の場合は、グラフのデータの見栄えをよくするためにdata.datasets[0].dataに空のデータをセット
       if (this.data.datasets[0].data.length < 10) {
         const datasetsLength = this.data.datasets[0].data.length;
         for (let i = 0; i < 10 - datasetsLength; i++) {

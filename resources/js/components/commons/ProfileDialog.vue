@@ -231,7 +231,7 @@
 </template>
 
 <script>
-import BarChart from './BarChart.vue';
+import BarChart from './ProfileDialog/BarChart.vue';
 
 export default {
   components: {
@@ -245,7 +245,6 @@ export default {
       show: null, // フォロー/フォロワーどちらを表示するか
       followers: [], // フォロー/フォロワー一覧
       kartes: [], // カルテ一覧
-      graphData: null,
       barChart: true, //カルテ別の割合を示すグラフの表示の有無
     };
   },
