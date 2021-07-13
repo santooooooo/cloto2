@@ -99,7 +99,7 @@ export default {
       return tagPercentage;
     },
 
-    /*
+    /**
      * グラフにデータをセット
      * @param {Object} percentages - タグごとのカルテのパーセンテージ
      */
