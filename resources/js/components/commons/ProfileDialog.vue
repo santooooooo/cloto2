@@ -328,7 +328,7 @@ export default {
     open: async function () {
       await this.getUser();
       this.dialog = true;
-      // タグ別のカルテの割合のグラフの表示
+      // タグ別のカルテの割合のグラフの生成
       this.barChart = true;
     },
 
@@ -336,7 +336,7 @@ export default {
      * ダイアログのクローズ
      */
     close: function () {
-      // タグ別のカルテの割合のグラフの非表示
+      // タグ別のカルテの割合のグラフの削除。これをしないと、他のユーザーのプロフィールを開いたときに、前のユーザーのデータがグラフに残るため
       this.barChart = false;
       this.dialog = false;
       this.show = null;
