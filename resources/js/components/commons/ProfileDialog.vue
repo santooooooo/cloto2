@@ -100,27 +100,11 @@
 
               <pre class="ma-3 text-body-1">{{ user.in_progress || '集中しています！' }}</pre>
             </v-card>
-            <v-card light flat width="80%" class="mx-6 mt-2 text-center">
+            <v-card light flat width="80%" class="mx-6 mt-2">
               <bar-chart :height="90" :graph-data="allKartes" v-if="barChart"></bar-chart>
             </v-card>
-            <v-card light flat width="80%" class="mx-6 mt-2 text-center">
-              <v-card-text class="pt-3 pl-3 pb-0 black--text">毎日のカルテ数の表示</v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
-              <v-card-text class="pt-3 pl-3 pb-0 black--text"></v-card-text>
+            <v-card light flat width="80%" class="mx-6 mt-2 p-2">
+              <heatmap :map-data="allKartes"></heatmap>
             </v-card>
           </v-row>
         </v-container>
@@ -232,10 +216,12 @@
 
 <script>
 import BarChart from './ProfileDialog/BarChart.vue';
+import Heatmap from './ProfileDialog/Heatmap.vue';
 
 export default {
   components: {
     BarChart,
+    Heatmap,
   },
   data() {
     return {
