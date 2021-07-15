@@ -500,7 +500,7 @@
               icon
               color="white"
               @click="timer.play ? pauseAllTimer() : playAllTimer()"
-              :disabled="timer.play"
+              :disabled="timer.minutes === 0 && timer.seconds === 0"
             >
               <v-icon>{{ timer.play ? 'mdi-pause' : 'mdi-play' }}</v-icon>
             </v-btn>
@@ -1853,27 +1853,27 @@ export default {
 
     // エラー発生時のイベント
     window.addEventListener('error', (error) => {
-          this.$slack(
-            'エラーBot',
-            ':poop:',
-            this.authUser.username +
-              '様のデバイスでエラー発生！\n' +
-              '```' +
-              error.type +
-              ': ' +
-              error.message +
-              '```'
-          );
+      this.$slack(
+        'エラーBot',
+        ':poop:',
+        this.authUser.username +
+          '様のデバイスでエラー発生！\n' +
+          '```' +
+          error.type +
+          ': ' +
+          error.message +
+          '```'
+      );
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 
     // エラー発生時のイベント
     window.addEventListener('unhandledrejection', (error) => {
-        this.$slack(
-          'エラーBot',
-          ':poop:',
-          this.authUser.username + '様のデバイスでエラー発生！\n' + '```' + error.reason + '```'
-        );
+      this.$slack(
+        'エラーBot',
+        ':poop:',
+        this.authUser.username + '様のデバイスでエラー発生！\n' + '```' + error.reason + '```'
+      );
       this.errorEvent('エラーが発生しました。再読み込みしてください。');
     });
 
