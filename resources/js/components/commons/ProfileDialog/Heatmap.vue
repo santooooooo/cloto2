@@ -14,17 +14,12 @@
 </template>
 
 <script>
-import { CalendarHeatmap } from 'vue-calendar-heatmap';
-
 export default {
   props: {
     mapData: {
       type: Promise,
       required: true,
     },
-  },
-  components: {
-    CalendarHeatmap,
   },
 };
 </script>

@@ -48,7 +48,7 @@ export default {
       await this.graphData.then(function (value) {
         promiseData = value;
       });
-      this.kartes = promiseData;
+      return promiseData;
     },
 
     /**
@@ -127,10 +127,10 @@ export default {
   },
   mounted: async function () {
     // 親コンポーネントから渡されるオブジェクトの取得
-    await this.getData();
+    const propsData = await this.getData();
 
     // すべてのカルテに対するタグごとのカルテの割合の取得
-    const percentages = await this.percentagePerTag(this.kartes);
+    const percentages = await this.percentagePerTag(propsData);
 
     // グラフにデータをセット
     this.setData(percentages);
