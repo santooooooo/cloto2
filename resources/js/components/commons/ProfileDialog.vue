@@ -101,10 +101,10 @@
               <pre class="ma-3 text-body-1">{{ user.in_progress || '集中しています！' }}</pre>
             </v-card>
             <v-card light flat width="80%" class="mx-6 mt-2">
-              <bar-chart :height="90" :graph-data="allKartes" v-if="barChart"></bar-chart>
+              <bar-chart :height="90" :graph-data="allKartes" v-if="graphShow"></bar-chart>
             </v-card>
             <v-card light flat width="80%" class="mx-6 mt-2 p-2">
-              <heatmap :map-data="allKartes"></heatmap>
+              <heatmap :map-data="allKartes" v-if="graphShow"></heatmap>
             </v-card>
           </v-row>
         </v-container>
@@ -231,7 +231,7 @@ export default {
       show: null, // フォロー/フォロワーどちらを表示するか
       followers: [], // フォロー/フォロワー一覧
       kartes: [], // カルテ一覧
-      barChart: true, //カルテ別の割合を示すグラフの表示の有無
+      graphShow: true, //カルテ別の割合を示すグラフの表示の有無
     };
   },
 
@@ -276,7 +276,7 @@ export default {
       await this.getUser();
       this.dialog = true;
       // タグ別のカルテの割合のグラフの生成
-      this.barChart = true;
+      this.graphShow = true;
     },
 
     /**
@@ -284,7 +284,7 @@ export default {
      */
     close: function () {
       // タグ別のカルテの割合のグラフの削除。これをしないと、他のユーザーのプロフィールを開いたときに、前のユーザーのデータがグラフに残るため
-      this.barChart = false;
+      this.graphShow = false;
       this.dialog = false;
       this.show = null;
       this.$store.dispatch('dialog/close', 'user');

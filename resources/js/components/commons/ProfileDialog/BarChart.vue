@@ -35,8 +35,6 @@ export default {
           ],
         },
       },
-      // 親コンポーネントから渡されるオブジェクトの取得に使用
-      kartes: null,
     };
   },
   methods: {
@@ -55,7 +53,7 @@ export default {
      * すべてのカルテに対するタグごとのカルテの割合の取得
      * @param {Object} kartes - カルテのデータ
      */
-    percentagePerTag: async function (kartes) {
+    percentagePerTag: function (kartes) {
       // すべてのカルテの件数を取得
       const allKartes = kartes.length;
 
@@ -127,10 +125,10 @@ export default {
   },
   mounted: async function () {
     // 親コンポーネントから渡されるオブジェクトの取得
-    const propsData = await this.getData();
+    const kartes = await this.getData();
 
     // すべてのカルテに対するタグごとのカルテの割合の取得
-    const percentages = await this.percentagePerTag(propsData);
+    const percentages = this.percentagePerTag(kartes);
 
     // グラフにデータをセット
     this.setData(percentages);
