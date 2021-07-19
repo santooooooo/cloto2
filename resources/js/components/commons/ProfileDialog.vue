@@ -73,7 +73,7 @@
                 light
                 flat
                 class="mt-3 mr-2 overflow-y-auto"
-                min-width="240"
+                width="240"
                 min-height="240"
                 max-height="400"
               >
