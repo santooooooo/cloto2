@@ -1,14 +1,15 @@
 <template>
   <div>
-    <p>{{ kartes.year }} kartes in the last year</p>
-    <p>{{ kartes.month }} kartes in the last month</p>
+    <div class="d-flex">
+      <p>一年間のカルテ数： {{ kartes.year }}</p>
+      <p class="ml-5">一か月間のカルテ数： {{ kartes.month }}</p>
+    </div>
     <calendar-heatmap
       :values="kartes.date"
-      :max="5"
+      :max="4"
       :end-date="Date()"
       :range-color="[
         '#ebedf0',
-        'rgba(255,202,43,0.2)',
         'rgba(255,202,43,0.4)',
         'rgba(255,202,43,0.6)',
         'rgba(255,202,43,0.8)',
@@ -29,6 +30,7 @@ export default {
   },
   data() {
     return {
+      // カルテ数に関するデータを格納
       kartes: {
         year: 0,
         month: 0,

@@ -77,7 +77,7 @@
                 min-height="240"
                 max-height="400"
               >
-                <pre class="ma-3 text-body-1"
+                <pre class="ma-3 text-body-1 text-left"
                   >{{ user.introduction ? user.introduction : '自己紹介が未記入です' }}
               </pre
                 >
@@ -100,12 +100,17 @@
 
               <pre class="ma-3 text-body-1">{{ user.in_progress || '集中しています！' }}</pre>
             </v-card>
+
+	    <!-- タグ別のカルテ数の表示を行うグラフ -->
             <v-card light flat width="80%" class="mx-6 mt-2">
               <bar-chart :height="90" :graph-data="allKartes" v-if="graphShow"></bar-chart>
             </v-card>
+
+	    <!-- 日別のカルテ数の表示を行うグラフ -->
             <v-card light flat width="80%" class="mx-6 mt-2 p-2">
               <heatmap :map-data="allKartes" v-if="graphShow"></heatmap>
             </v-card>
+
           </v-row>
         </v-container>
 
@@ -231,7 +236,7 @@ export default {
       show: null, // フォロー/フォロワーどちらを表示するか
       followers: [], // フォロー/フォロワー一覧
       kartes: [], // カルテ一覧
-      graphShow: true, //カルテ別の割合を示すグラフの表示の有無
+      graphShow: true, //カルテ別の割合、日別のカルテ数を表すグラフの表示の有無
     };
   },
 
@@ -275,7 +280,7 @@ export default {
     open: async function () {
       await this.getUser();
       this.dialog = true;
-      // タグ別のカルテの割合のグラフの生成
+      // タグ別のカルテの割合、日別のカルテ数のグラフの生成
       this.graphShow = true;
     },
 
@@ -283,7 +288,7 @@ export default {
      * ダイアログのクローズ
      */
     close: function () {
-      // タグ別のカルテの割合のグラフの削除。これをしないと、他のユーザーのプロフィールを開いたときに、前のユーザーのデータがグラフに残るため
+      // タグ別のカルテの割合、日別のカルテ数のグラフの削除。これをしないと、他のユーザーのプロフィールを開いたときに、前のユーザーのデータがグラフに残るため
       this.graphShow = false;
       this.dialog = false;
       this.show = null;
