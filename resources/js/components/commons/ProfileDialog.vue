@@ -344,7 +344,7 @@ export default {
     /**
      * カルテ一覧の表示
      */
-    showKartes: async function () {
+    showKartes: function () {
       this.show = 'karte';
     },
   },
