@@ -9,7 +9,7 @@ use App\Mail\BroadcastMail;
 use App\Models\User;
 use Exception;
 
-class BroadcastController extends Controller
+class NewsletterController extends Controller
 {
     /**
      * Send a mail about broadcast.

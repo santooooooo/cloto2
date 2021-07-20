@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class BroadcastMail extends Mailable
+class NewsletterMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -31,7 +31,7 @@ class BroadcastMail extends Mailable
      */
     public function build()
     {
-        return $this->text('emails.broadcast')
+        return $this->text('emails.newsletter')
             ->to($this->content['to'], $this->content['to_name'])
             ->from($this->content['from'], $this->content['from_name'])
             ->subject($this->content['subject'])
