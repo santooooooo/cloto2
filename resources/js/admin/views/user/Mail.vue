@@ -3,13 +3,13 @@
     <h3 class="my-4">一斉メール</h3>
 
     <v-textarea
-      v-model="broadcast.message"
-      :disabled="broadcast.loading"
+      v-model="newsletter.message"
+      :disabled="newsletter.loading"
       placeholder="全体一斉送信"
       rows="5"
       solo
     ></v-textarea>
-    <v-btn color="primary" :loading="broadcast.loading" @click="submit()" class="mb-12">
+    <v-btn color="primary" :loading="newsletter.loading" @click="submit()" class="mb-12">
       送信する
     </v-btn>
   </v-container>
@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      broadcast: {
+      newsletter: {
         loading: false, // ローディング制御
         message: '', // 全体一斉送信メッセージ
       },
@@ -37,47 +37,24 @@ export default {
   methods: {
     /**
      * 問い合わせの送信
-     *
-     * @param {Object} message - 送信データ
      */
-    submit: async function (message = null) {
-      if (message) {
-        // 個別送信
-        if (!this.loading) {
-          this.loading = true;
+    submit: async function () {
+      if (!this.newsletter.loading) {
+        this.newsletter.loading = true;
 
-          // 問い合わせの送信
-          await axios.post('/api/admin/inquiries', {
-            user_id: this.user.id,
-            author: 'support',
-            type: 'text',
-            data: { text: message.data.text },
-          });
+        // 問い合わせの送信
+        let response = await axios.post('/api/admin/newsletter', {
+          author: 'support',
+          type: 'text',
+          data: { text: this.newsletter.message },
+        });
 
-          this.loading = false;
+        if (response.status === OK) {
+          this.newsletter.message = '';
         }
-      } else {
-        // 全体一斉送信
-        if (!this.broadcast.loading) {
-          this.broadcast.loading = true;
 
-          // 問い合わせの送信
-          let response = await axios.post('/api/admin/inquiries', {
-            author: 'support',
-            type: 'text',
-            data: { text: this.broadcast.message },
-          });
-
-          if (response.status === OK) {
-            this.broadcast.message = '';
-          }
-
-          this.broadcast.loading = false;
-        }
+        this.newsletter.loading = false;
       }
-
-      // データの更新
-      this.getUsers();
     },
   },
 };

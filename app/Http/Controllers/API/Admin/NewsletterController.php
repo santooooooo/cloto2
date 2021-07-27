@@ -1,30 +1,31 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BroadcastMail;
+use App\Mail\NewsletterMail;
 use App\Models\User;
 use Exception;
 
 class NewsletterController extends Controller
 {
     /**
-     * Send a mail about broadcast.
+     * Send a mail about newsletter.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function broadcast(Request $request)
+    public function send(Request $request)
     {
         try {
             $users = User::all();
 
             foreach ($users as $user) {
                 if ($user->newsletter) {
-                    Mail::send(new BroadcastMail([
+                    Mail::send(new NewsletterMail([
                         'to' => $user->email,
                         'to_name' => $user->handlename,
                         'from' => config('mail.newsletter.address'),
