@@ -16,7 +16,7 @@ class AddNewsletterToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->boolean('newsletter')
                 ->after('sitting_time')
-                ->default(true);            // メール通知の可否
+                ->default(true);            // ニュースレターの可否
         });
     }
 

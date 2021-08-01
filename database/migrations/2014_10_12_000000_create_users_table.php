@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('in_progress')->nullable();          // 取り組み中のタスク
             // string('vision')                                 // 目標
             // unsignedInteger('sitting_time')                  // 累計着席時間
-            // boolean('newsletter')                            // メール通知の可否
+            // boolean('newsletter')                            // ニュースレターの可否
             $table->rememberToken();
             $table->dateTimes();
 
