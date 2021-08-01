@@ -145,25 +145,6 @@ export default {
       }
     },
     /**
-     * ニュースレターの送信
-     */
-    submitNewsletter: async function () {
-      if (this.$refs.newsletterForm.validate()) {
-        this.newsletterForm.loading = true;
-
-        let response = await axios.post('/api/admin/newsletter', {
-          subject: this.newsletterForm.subject,
-          body: this.newsletterForm.body,
-        });
-
-        if (response.status === OK) {
-          this.$refs.newsletterForm.reset();
-        }
-
-        this.newsletterForm.loading = false;
-      }
-    },
-    /**
      * 一斉メッセージの送信
      */
     submitInquiry: async function () {
@@ -181,6 +162,25 @@ export default {
         }
 
         this.inquiryForm.loading = false;
+      }
+    },
+    /**
+     * ニュースレターの送信
+     */
+    submitNewsletter: async function () {
+      if (this.$refs.newsletterForm.validate()) {
+        this.newsletterForm.loading = true;
+
+        let response = await axios.post('/api/admin/newsletter', {
+          subject: this.newsletterForm.subject,
+          body: this.newsletterForm.body,
+        });
+
+        if (response.status === OK) {
+          this.$refs.newsletterForm.reset();
+        }
+
+        this.newsletterForm.loading = false;
       }
     },
   },
