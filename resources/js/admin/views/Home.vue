@@ -18,23 +18,58 @@
       </v-overlay>
 
       <!-- ファイル -->
-      <h3>イベント情報のアップロード</h3>
-      <p class="red--text">*推奨サイズ：11667 × 2000px（PNG）</p>
-      <input type="file" @change="submitEvent" accept="image/png" ref="input" />
+      <v-container>
+        <h3>イベント情報のアップロード</h3>
+        <p class="red--text">*推奨サイズ：11667 × 2000px（PNG）</p>
+        <input type="file" @change="submitEvent" accept="image/png" ref="input" />
 
-      <p class="text-body-1 mt-5">
-        カレンダーは<a
-          href="https://m136363.freecalend.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          >こちら</a
-        >（ID：cloto / PW：cloto_no_calendar）
-      </p>
+        <p class="text-body-1 mt-5">
+          カレンダーは<a
+            href="https://m136363.freecalend.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            >こちら</a
+          >（ID：cloto / PW：cloto_no_calendar）
+        </p>
+      </v-container>
+
+      <!-- 一斉メール -->
+      <v-container>
+        <h3 class="my-4">一斉メール</h3>
+
+        <v-form ref="newsletterForm" v-model="newsletterForm.validation.valid" lazy-validation>
+          <v-text-field
+            v-model="newsletterForm.subject"
+            :rules="newsletterForm.validation.subjectRules"
+            :disabled="newsletterForm.loading"
+            label="件名"
+          ></v-text-field>
+          <v-textarea
+            v-model="newsletterForm.body"
+            :rules="newsletterForm.validation.bodyRules"
+            :disabled="newsletterForm.loading"
+            placeholder="内容"
+            rows="5"
+            solo
+          ></v-textarea>
+
+          <v-btn
+            color="primary"
+            :loading="newsletterForm.loading"
+            @click="submitNewsletter()"
+            class="mb-12"
+          >
+            送信する
+          </v-btn>
+        </v-form>
+      </v-container>
     </v-container>
   </v-container>
 </template>
 
 <script>
+import { OK } from '@/consts/status';
+
 export default {
   head: {
     title() {
@@ -46,6 +81,16 @@ export default {
   data() {
     return {
       loading: false,
+      newsletterForm: {
+        loading: false, // ローディング制御
+        subject: '', // タイトル
+        body: '', // メール内容
+        validation: {
+          valid: false,
+          subjectRules: [(v) => !!v || '件名は必須項目です。'],
+          bodyRules: [(v) => !!v || '内容は必須項目です。'],
+        },
+      },
     };
   },
   computed: {
@@ -70,6 +115,26 @@ export default {
 
         this.$refs.input.value = '';
         this.loading = false;
+      }
+    },
+    /**
+     * ニュースレターの送信
+     */
+    submitNewsletter: async function () {
+      if (this.$refs.newsletterForm.validate()) {
+        this.newsletterForm.loading = true;
+
+        // 問い合わせの送信
+        let response = await axios.post('/api/admin/newsletter', {
+          subject: this.newsletterForm.subject,
+          body: this.newsletterForm.body,
+        });
+
+        if (response.status === OK) {
+          this.$refs.newsletterForm.reset();
+        }
+
+        this.newsletterForm.loading = false;
       }
     },
   },
