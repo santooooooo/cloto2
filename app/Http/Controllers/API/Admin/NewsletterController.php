@@ -27,7 +27,7 @@ class NewsletterController extends Controller
                 if ($user->newsletter) {
                     Mail::send(new NewsletterMail([
                         'to' => $user->email,
-                        'to_name' => $user->handlename,
+                        'to_name' => $user->username,
                         'from' => config('mail.newsletter.address'),
                         'from_name' => config('mail.newsletter.name'),
                         'subject' => $request->subject,

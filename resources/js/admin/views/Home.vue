@@ -33,9 +33,29 @@
         </p>
       </v-container>
 
-      <!-- 一斉メール -->
+      <!-- 一斉メッセージ -->
       <v-container>
-        <h3 class="my-4">一斉メール</h3>
+        <h3 class="my-4">一斉メッセージ</h3>
+
+        <v-form ref="inquiryForm" v-model="inquiryForm.validation.valid" lazy-validation>
+          <v-textarea
+            v-model="inquiryForm.message"
+            :rules="inquiryForm.validation.messageRules"
+            :disabled="inquiryForm.loading"
+            placeholder="メッセージ"
+            rows="5"
+            solo
+          ></v-textarea>
+
+          <v-btn color="primary" :loading="inquiryForm.loading" @click="submitInquiry()">
+            送信する
+          </v-btn>
+        </v-form>
+      </v-container>
+
+      <!-- ニュースレター -->
+      <v-container>
+        <h3 class="my-4">ニュースレター</h3>
 
         <v-form ref="newsletterForm" v-model="newsletterForm.validation.valid" lazy-validation>
           <v-text-field
@@ -53,12 +73,7 @@
             solo
           ></v-textarea>
 
-          <v-btn
-            color="primary"
-            :loading="newsletterForm.loading"
-            @click="submitNewsletter()"
-            class="mb-12"
-          >
+          <v-btn color="primary" :loading="newsletterForm.loading" @click="submitNewsletter()">
             送信する
           </v-btn>
         </v-form>
@@ -80,7 +95,15 @@ export default {
   },
   data() {
     return {
-      loading: false,
+      loading: false, // ローディング制御
+      inquiryForm: {
+        loading: false, // ローディング制御
+        message: '', // メッセージ内容
+        validation: {
+          valid: false,
+          messageRules: [(v) => !!v || 'メッセージは必須項目です。'],
+        },
+      },
       newsletterForm: {
         loading: false, // ローディング制御
         subject: '', // タイトル
@@ -124,7 +147,6 @@ export default {
       if (this.$refs.newsletterForm.validate()) {
         this.newsletterForm.loading = true;
 
-        // 問い合わせの送信
         let response = await axios.post('/api/admin/newsletter', {
           subject: this.newsletterForm.subject,
           body: this.newsletterForm.body,
@@ -135,6 +157,26 @@ export default {
         }
 
         this.newsletterForm.loading = false;
+      }
+    },
+    /**
+     * 一斉メッセージの送信
+     */
+    submitInquiry: async function () {
+      if (this.$refs.inquiryForm.validate()) {
+        this.inquiryForm.loading = true;
+
+        let response = await axios.post('/api/admin/inquiries', {
+          author: 'support',
+          type: 'text',
+          data: { text: this.inquiryForm.message },
+        });
+
+        if (response.status === OK) {
+          this.$refs.inquiryForm.reset();
+        }
+
+        this.inquiryForm.loading = false;
       }
     },
   },
