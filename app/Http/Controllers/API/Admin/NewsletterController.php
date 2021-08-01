@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\BroadcastMail;
 use App\Mail\NewsletterMail;
 use App\Models\User;
 use Exception;
@@ -13,7 +12,7 @@ use Exception;
 class NewsletterController extends Controller
 {
     /**
-     * Send a mail about newsletter.
+     * Send newsletter mails.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -22,7 +21,6 @@ class NewsletterController extends Controller
     {
         try {
             $users = User::all();
-
             foreach ($users as $user) {
                 if ($user->newsletter) {
                     Mail::send(new NewsletterMail([
