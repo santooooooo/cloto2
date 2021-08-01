@@ -2,16 +2,26 @@
   <v-container>
     <h3 class="my-4">一斉メール</h3>
 
-    <v-textarea
-      v-model="newsletter.message"
-      :disabled="newsletter.loading"
-      placeholder="全体一斉送信"
-      rows="5"
-      solo
-    ></v-textarea>
-    <v-btn color="primary" :loading="newsletter.loading" @click="submit()" class="mb-12">
-      送信する
-    </v-btn>
+    <v-form ref="newsletterForm" v-model="newsletterForm.validation.valid" lazy-validation>
+      <v-text-field
+        v-model="newsletterForm.subject"
+        :rules="newsletterForm.validation.subjectRules"
+        :disabled="newsletterForm.loading"
+        label="件名"
+      ></v-text-field>
+      <v-textarea
+        v-model="newsletterForm.body"
+        :rules="newsletterForm.validation.bodyRules"
+        :disabled="newsletterForm.loading"
+        placeholder="内容"
+        rows="5"
+        solo
+      ></v-textarea>
+
+      <v-btn color="primary" :loading="newsletterForm.loading" @click="submit()" class="mb-12">
+        送信する
+      </v-btn>
+    </v-form>
   </v-container>
 </template>
 
@@ -28,32 +38,37 @@ export default {
   },
   data() {
     return {
-      newsletter: {
+      newsletterForm: {
         loading: false, // ローディング制御
-        message: '', // 全体一斉送信メッセージ
+        subject: '', // タイトル
+        body: '', // メール内容
+        validation: {
+          valid: false,
+          subjectRules: [(v) => !!v || '件名は必須項目です。'],
+          bodyRules: [(v) => !!v || '内容は必須項目です。'],
+        },
       },
     };
   },
   methods: {
     /**
-     * 問い合わせの送信
+     * ニュースレターの送信
      */
     submit: async function () {
-      if (!this.newsletter.loading) {
-        this.newsletter.loading = true;
+      if (this.$refs.newsletterForm.validate()) {
+        this.newsletterForm.loading = true;
 
         // 問い合わせの送信
         let response = await axios.post('/api/admin/newsletter', {
-          author: 'support',
-          type: 'text',
-          data: { text: this.newsletter.message },
+          subject: this.newsletterForm.subject,
+          body: this.newsletterForm.body,
         });
 
         if (response.status === OK) {
-          this.newsletter.message = '';
+          this.$refs.newsletterForm.reset();
         }
 
-        this.newsletter.loading = false;
+        this.newsletterForm.loading = false;
       }
     },
   },
