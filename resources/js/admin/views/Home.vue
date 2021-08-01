@@ -5,7 +5,7 @@
       <span class="text-h6 ml-10">{{ authUser.handlename }}様 ご利用ありがとうございます。</span>
     </h1>
 
-    <v-container mt-10>
+    <v-container>
       <!-- ローディング画面 -->
       <v-overlay z-index="205" v-if="loading">
         <v-row justify="center">
@@ -18,12 +18,12 @@
       </v-overlay>
 
       <!-- ファイル -->
-      <v-container>
+      <v-container my-10>
         <h3>イベント情報のアップロード</h3>
         <p class="red--text">*推奨サイズ：11667 × 2000px（PNG）</p>
         <input type="file" @change="submitEvent" accept="image/png" ref="input" />
 
-        <p class="text-body-1 mt-5">
+        <p class="text-body-1 mt-5 mb-0">
           カレンダーは<a
             href="https://m136363.freecalend.com"
             target="_blank"
@@ -33,9 +33,11 @@
         </p>
       </v-container>
 
+      <hr />
+
       <!-- 一斉メッセージ -->
-      <v-container>
-        <h3 class="my-4">一斉メッセージ</h3>
+      <v-container my-10>
+        <h3 class="mb-4">一斉メッセージ</h3>
 
         <v-form ref="inquiryForm" v-model="inquiryForm.validation.valid" lazy-validation>
           <v-textarea
@@ -53,9 +55,11 @@
         </v-form>
       </v-container>
 
+      <hr />
+
       <!-- ニュースレター -->
-      <v-container>
-        <h3 class="my-4">ニュースレター</h3>
+      <v-container my-10>
+        <h3 class="mb-4">ニュースレター</h3>
 
         <v-form ref="newsletterForm" v-model="newsletterForm.validation.valid" lazy-validation>
           <v-text-field
