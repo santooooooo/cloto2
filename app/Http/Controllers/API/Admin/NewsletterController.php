@@ -19,9 +19,8 @@ class NewsletterController extends Controller
      */
     public function send(Request $request)
     {
-        try {
-            $users = User::all();
-            foreach ($users as $user) {
+        foreach (User::all() as $user) {
+            try {
                 if ($user->newsletter) {
                     Mail::send(new NewsletterMail([
                         'to' => $user->email,
@@ -32,9 +31,10 @@ class NewsletterController extends Controller
                         'body' => $request->body
                     ]));
                 }
+            } catch (Exception $e) {
+                // メール送信時のエラーを無視，処理を続行する
+                continue;
             }
-        } catch (Exception $e) {
-            // メール送信時のエラーを無視，処理を続行する
         }
 
         return response()->json(['message' => 'ニュースレターを送信しました。']);
