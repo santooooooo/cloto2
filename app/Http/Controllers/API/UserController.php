@@ -233,4 +233,40 @@ class UserController extends Controller
 
         return $this->show($user->id);
     }
+
+    /**
+     * ユーザーの削除
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy()
+    {
+        // 着席中の座席の状態を初期化
+        $seat = $this->auth->seat;
+        if (!empty($seat)) {
+            $seat->fill(['status' => null, 'reservation_user_id' => null])->save();
+
+            // 予約中の座席の状態を初期化
+            $reservation_seat = $seat->where('reservation_user_id', $this->auth->id)->first();
+            if (!empty($reservation_seat)) {
+                $reservation_seat->fill(['status' => null, 'reservation_user_id' => null])->save();
+            }
+        }
+
+        // 初期アイコン以外の場合にはアイコンを削除
+        if ($this->auth->icon != self::DEFAULT_ICON_FILENAME) {
+            Storage::delete(config('consts.storage.icon') . $this->auth->icon);
+        }
+
+        // カルテ保存ディレクトリを削除
+        Storage::deleteDirectory(config('consts.storage.karte') . $this->auth->username);
+
+        $result = $this->auth->delete();
+
+        if (empty($result)) {
+            return response()->json(['message' => '退会に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+        }
+
+        return response()->json(['message' => '退会が完了しました。']);
+    }
 }

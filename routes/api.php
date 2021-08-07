@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::patch('/user', 'UserController@update');
         Route::get('/user/notifications', 'UserController@getNotifications');
         Route::post('/user/notifications', 'UserController@markNotificationsAsRead');
+        Route::delete('/user', 'UserController@destroy');
 
 
         /*
