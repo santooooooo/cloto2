@@ -34,7 +34,7 @@ import { NOT_FOUND } from '@/consts/status';
 export default {
   data() {
     return {
-      dialog: false, // チュートリアルダイアログ制御
+      dialog: true, // チュートリアルダイアログ制御
       canvas: null, // キャンバスエリア
       loading: false, // ローディング制御
       roomData: {}, // 教室データ
