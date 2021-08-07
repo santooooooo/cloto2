@@ -41,10 +41,10 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="error" :loading="loading" @click="deleteUserDialog = false">
+          <v-btn color="error" :loading="loading" @click="deleteSubmit()">退会</v-btn>
+          <v-btn color="success" :loading="loading" @click="deleteUserDialog = false">
             キャンセル
           </v-btn>
-          <v-btn color="success" :loading="loading" @click="deleteSubmit()">削除</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -84,7 +84,7 @@ export default {
 
   methods: {
     /**
-     * 削除データの送信
+     * 退会処理
      */
     deleteSubmit: async function () {
       this.loading = true;
