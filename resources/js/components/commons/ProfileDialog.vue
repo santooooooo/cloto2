@@ -102,7 +102,7 @@
               <pre class="ma-3 text-body-1">{{ user.in_progress || '集中しています！' }}</pre>
             </v-card>
             <v-card light flat width="80%" class="mx-6 mt-2 text-center">
-              <bar-chart :height="90" :graph-data="allKartes" v-if="barChart"></bar-chart>
+              <bar-chart :height="90" :graph-data="chartData" v-if="barChart"></bar-chart>
             </v-card>
             <v-card light flat width="80%" class="mx-6 mt-2 text-center">
               <v-card-text class="pt-3 pl-3 pb-0 black--text">毎日のカルテ数の表示</v-card-text>
@@ -147,7 +147,7 @@
 
           <v-spacer></v-spacer>
 
-          <v-col md="3" class="select pa-0" @click="showKartes()">
+          <v-col md="3" class="select pa-0" @click="getKartes()">
             <v-card class="py-4" :color="color" :elevation="show === 'karte' ? 1 : 3">
               <p class="text-center">カルテ</p>
               <p class="text-center mb-0"><v-icon>mdi-chevron-down</v-icon></p>
@@ -247,7 +247,6 @@ export default {
       followers: [], // フォロー/フォロワー一覧
       kartes: [], // カルテ一覧
       barChart: true, //カルテ別の割合を示すグラフの表示の有無
-      chartData: [],//カルテ別の割合を示すグラフのデータ
     };
   },
 
@@ -268,11 +267,11 @@ export default {
     /**
      * ユーザーのカルテのデータを子コンポーネントへ渡す
      */
-    allKartes: async function () {
-      // ユーザーのカルテの取得。ここで呼び出さないとthis.kartesの値が取得できないのでここで実行した
-      this.chartData = await this.getKartes();
+    chartData: async function () {
+      // ユーザーのカルテのに関するデータの取得。
+      const chartData = await this.getChatData();
 
-      return this.chartData;
+      return chartData;
     },
   },
   watch: {
@@ -347,7 +346,7 @@ export default {
     /**
      * カルテの取得
      */
-    getKartes: async function () {
+    getChatData: async function () {
       let response = await axios.get('/api/chart/user/' + this.user.id);
       return response.data;
     },
@@ -355,7 +354,7 @@ export default {
     /**
      * カルテ一覧の表示
      */
-    showKartes: async function () {
+    getKartes: async function () {
       let response = await axios.get('/api/kartes/user/' + this.user.id);
       this.kartes = response.data;
       this.show = 'karte';
