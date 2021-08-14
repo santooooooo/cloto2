@@ -147,7 +147,7 @@
 
           <v-spacer></v-spacer>
 
-          <v-col md="3" class="select pa-0" @click="getKartes()">
+          <v-col md="3" class="select pa-0" @click="showKartes()">
             <v-card class="py-4" :color="color" :elevation="show === 'karte' ? 1 : 3">
               <p class="text-center">カルテ</p>
               <p class="text-center mb-0"><v-icon>mdi-chevron-down</v-icon></p>
@@ -354,7 +354,7 @@ export default {
     /**
      * カルテ一覧の表示
      */
-    getKartes: async function () {
+    showKartes: async function () {
       let response = await axios.get('/api/kartes/user/' + this.user.id);
       this.kartes = response.data;
       this.show = 'karte';
