@@ -74,6 +74,7 @@
                 flat
                 class="mt-3 mr-2 overflow-y-auto"
                 min-width="240"
+                max-width="240"
                 min-height="240"
                 max-height="400"
               >
@@ -246,6 +247,7 @@ export default {
       followers: [], // フォロー/フォロワー一覧
       kartes: [], // カルテ一覧
       barChart: true, //カルテ別の割合を示すグラフの表示の有無
+      chartData: [],//カルテ別の割合を示すグラフのデータ
     };
   },
 
@@ -268,9 +270,9 @@ export default {
      */
     allKartes: async function () {
       // ユーザーのカルテの取得。ここで呼び出さないとthis.kartesの値が取得できないのでここで実行した
-      await this.getKartes();
+      this.chartData = await this.getKartes();
 
-      return this.kartes;
+      return this.chartData;
     },
   },
   watch: {
@@ -346,14 +348,16 @@ export default {
      * カルテの取得
      */
     getKartes: async function () {
-      let response = await axios.get('/api/kartes/user/' + this.user.id);
-      this.kartes = response.data;
+      let response = await axios.get('/api/chart/user/' + this.user.id);
+      return response.data;
     },
 
     /**
      * カルテ一覧の表示
      */
     showKartes: async function () {
+      let response = await axios.get('/api/kartes/user/' + this.user.id);
+      this.kartes = response.data;
       this.show = 'karte';
     },
   },

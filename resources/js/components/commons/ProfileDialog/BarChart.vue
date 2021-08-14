@@ -50,54 +50,6 @@ export default {
     },
 
     /**
-     * すべてのカルテに対するタグごとのカルテの割合の取得
-     * @param {Object} kartes - カルテのデータ
-     */
-    percentagePerTag: async function (kartes) {
-      // すべてのカルテの件数を取得
-      const allKartes = kartes.length;
-
-      // すべてのカルテにつけられたタグを取得。カルテのタグがない場合は、「タグなし」として取得
-      let allTags = kartes.map((karte) =>
-        karte.tags.length !== 0 ? karte.tags : [{ name: 'タグなし' }]
-      );
-
-      let tagNames = [];
-      allTags.forEach((tagObject) => (tagNames = tagNames.concat(tagObject)));
-      tagNames = tagNames.map((tag) => tag.name);
-
-      // タグごとのカルテの割合を取得
-      let tagPercentage = {};
-      tagNames.forEach(
-        (tagName) =>
-          (tagPercentage[tagName] =
-            tagPercentage[tagName] === undefined ? 1 : tagPercentage[tagName] + 1)
-      );
-
-      for (let tag in tagPercentage) {
-        tagPercentage[tag] = Math.round((tagPercentage[tag] / allKartes) * 100);
-      }
-
-      // タグごとのカルテの割合を降順にソート
-      // ソートをかけるために、tagPercentageオブジェクトのデータを配列に入れる
-      const tagPercentageArray = Object.keys(tagPercentage).map((k) => ({
-        key: k,
-        value: tagPercentage[k],
-      }));
-      // パーセンテージの値を降順に並び替え
-      tagPercentageArray.sort((a, b) => b.value - a.value);
-      // 配列のデータを取り出し、元のオブジェクトに戻す
-      tagPercentage = Object.assign(
-        {},
-        ...tagPercentageArray.map((item) => ({
-          [item.key]: item.value,
-        }))
-      );
-
-      return tagPercentage;
-    },
-
-    /**
      * グラフにデータをセット
      * @param {Object} percentages - タグごとのカルテのパーセンテージ
      */
@@ -127,11 +79,8 @@ export default {
     // 親コンポーネントから渡されるオブジェクトの取得
     const propsData = await this.getData();
 
-    // すべてのカルテに対するタグごとのカルテの割合の取得
-    const percentages = await this.percentagePerTag(propsData);
-
     // グラフにデータをセット
-    this.setData(percentages);
+    this.setData(propsData);
 
     // グラフの描画
     this.renderChart(this.data, this.options);
