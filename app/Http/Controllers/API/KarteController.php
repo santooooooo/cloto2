@@ -107,13 +107,13 @@ class KarteController extends Controller
      * @param  \App\Models\User  $user  カルテを取得するユーザー
      * @return \Illuminate\Http\Response
      */
-    public function chartData(User $user)
+    public function graphData(User $user)
     {
         $kartes = $user->kartes->sortByDesc('created_at')->values();
-        $chartData['bar'] = $this->countPerTags($kartes);
-        $chartData['grass'] = $this->countPerDay($kartes);
+        $graphData['bar'] = $this->countPerTags($kartes);
+        $graphData['grass'] = $this->countPerDay($kartes);
 
-        return response()->json($chartData);
+        return response()->json($graphData);
     }
 
     /**

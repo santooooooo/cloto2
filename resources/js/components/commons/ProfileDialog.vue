@@ -103,12 +103,12 @@
 
 	    <!-- タグ別のカルテ数の表示を行うグラフ -->
             <v-card light flat width="80%" class="mx-6 mt-2 text-center">
-              <bar-chart :height="90" :graph-data="chartData" v-if="graphShow"></bar-chart>
+              <bar-chart :height="90" :graph-data="graphData" v-if="graphShow"></bar-chart>
             </v-card>
 
 	    <!-- 日別のカルテ数の表示を行うグラフ -->
             <v-card light flat width="80%" class="mx-6 mt-2 p-2">
-              <heatmap :map-data="chartData" v-if="graphShow"></heatmap>
+              <heatmap :map-data="graphData" v-if="graphShow"></heatmap>
             </v-card>
 
           </v-row>
@@ -257,11 +257,11 @@ export default {
     /**
      * ユーザーのカルテのデータを子コンポーネントへ渡す
      */
-    chartData: async function () {
+    graphData: async function () {
       // ユーザーのカルテのに関するデータの取得。
-      const chartData = await this.getChartData();
+      const graphData = await this.getChartData();
 
-      return chartData;
+      return graphData;
     },
   },
   watch: {
@@ -337,7 +337,7 @@ export default {
      * カルテの取得
      */
     getChartData: async function () {
-      let response = await axios.get('/api/chart/user/' + this.user.id);
+      let response = await axios.get('/api/graph/user/' + this.user.id);
       return response.data;
     },
 
