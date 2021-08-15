@@ -259,7 +259,7 @@ export default {
      */
     chartData: async function () {
       // ユーザーのカルテのに関するデータの取得。
-      const chartData = await this.getChatData();
+      const chartData = await this.getChartData();
 
       return chartData;
     },
@@ -336,7 +336,7 @@ export default {
     /**
      * カルテの取得
      */
-    getChatData: async function () {
+    getChartData: async function () {
       let response = await axios.get('/api/chart/user/' + this.user.id);
       return response.data;
     },
