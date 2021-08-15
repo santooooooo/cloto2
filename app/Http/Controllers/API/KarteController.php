@@ -100,4 +100,80 @@ class KarteController extends Controller
                 $query->latest();
             }]));
     }
+
+    /**
+     * ユーザーごとのカルテのタグごとの割合の一覧を取得
+     *
+     * @param  \App\Models\User  $user  カルテを取得するユーザー
+     * @return \Illuminate\Http\Response
+     */
+    public function chartData(User $user)
+    {
+        $kartes = $user->kartes->sortByDesc('created_at')->values();
+        $chartData['bar'] = $this->countPerTags($kartes);
+        $chartData['grass'] = $this->countPerDay($kartes);
+
+        return response()->json($chartData);
+    }
+
+    /**
+     * タグごとのカルテのパーセンテージのデータを作成
+     *
+     * @param  object $kartes  ユーザーのカルテ
+     * @return array
+     */
+    public function countPerTags(object $kartes): array
+    {
+        $data = [];
+        // カルテの総数の取得
+        $max = count($kartes);
+
+        // タグごとのカルテ数の取得
+        for ($i=0;$i<$max;$i++) {
+            $tags = $kartes[$i]->tags;
+            $tagCount = count($tags);
+
+            if ($tagCount === 0) {
+                $data['nothing'] = key_exists('nothing', $data) ? $data['nothing'] + 1 : 1 ;
+                continue;
+            }
+
+            for ($s=0;$s<$tagCount;$s++) {
+                $tagName = $tags[$s]->name;
+                $data[$tagName] = key_exists($tagName, $data) ? $data[$tagName] + 1 : 1 ;
+            }
+        }
+
+        // タグごとのカルテ数の割合の取得
+        $percentage = function (int $value) use ($max) {
+            return round($value / $max, 2)*100;
+        };
+        $data = array_map($percentage, $data);
+
+        // データを降順に並び替え
+        arsort($data);
+
+        return $data;
+    }
+
+    /**
+     * 日ごとのカルテの数のデータを作成
+     *
+     * @param  object $kartes  ユーザーのカルテ
+     * @return array
+     */
+    public function countPerDay(object $kartes): array
+    {
+        $data = [];
+        // カルテの総数の取得
+        $max = count($kartes);
+
+        // 日ごとのカルテの数の取得
+        for ($i=0;$i<$max;$i++) {
+            $date = substr(date($kartes[$i]->created_at), 0, 10);
+            $data[$date] = key_exists($date, $data) ? $data[$date] + 1 : 1 ;
+        }
+
+        return $data;
+    }
 }

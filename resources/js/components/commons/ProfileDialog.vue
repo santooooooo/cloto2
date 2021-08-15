@@ -102,13 +102,13 @@
             </v-card>
 
 	    <!-- タグ別のカルテ数の表示を行うグラフ -->
-            <v-card light flat width="80%" class="mx-6 mt-2">
-              <bar-chart :height="90" :graph-data="allKartes" v-if="graphShow"></bar-chart>
+            <v-card light flat width="80%" class="mx-6 mt-2 text-center">
+              <bar-chart :height="90" :graph-data="chartData" v-if="graphShow"></bar-chart>
             </v-card>
 
 	    <!-- 日別のカルテ数の表示を行うグラフ -->
             <v-card light flat width="80%" class="mx-6 mt-2 p-2">
-              <heatmap :map-data="allKartes" v-if="graphShow"></heatmap>
+              <heatmap :map-data="chartData" v-if="graphShow"></heatmap>
             </v-card>
 
           </v-row>
@@ -257,11 +257,11 @@ export default {
     /**
      * ユーザーのカルテのデータを子コンポーネントへ渡す
      */
-    allKartes: async function () {
-      // ユーザーのカルテの取得。ここで呼び出さないとthis.kartesの値が取得できないのでここで実行した
-      await this.getKartes();
+    chartData: async function () {
+      // ユーザーのカルテのに関するデータの取得。
+      const chartData = await this.getChatData();
 
-      return this.kartes;
+      return chartData;
     },
   },
   watch: {
@@ -336,15 +336,17 @@ export default {
     /**
      * カルテの取得
      */
-    getKartes: async function () {
-      let response = await axios.get('/api/kartes/user/' + this.user.id);
-      this.kartes = response.data;
+    getChatData: async function () {
+      let response = await axios.get('/api/chart/user/' + this.user.id);
+      return response.data;
     },
 
     /**
      * カルテ一覧の表示
      */
-    showKartes: function () {
+    showKartes: async function () {
+      let response = await axios.get('/api/kartes/user/' + this.user.id);
+      this.kartes = response.data;
       this.show = 'karte';
     },
   },

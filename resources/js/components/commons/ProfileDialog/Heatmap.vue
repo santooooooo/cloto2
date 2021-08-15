@@ -48,8 +48,8 @@ export default {
         promiseData = value;
       });
       // すべてのカルテの作成日時の取得
-      const allDate = promiseData.map((karte) => karte.created_at);
-      return allDate;
+      //const allDate = promiseData.map((karte) => karte.created_at);
+      return promiseData.grass;
     },
 
     /**
@@ -63,7 +63,11 @@ export default {
 
       // 現在から一年前の日付よりも後に作成されたカルテ数の取得
       let count = 0;
-      kartes.forEach((karte) => (count = lastYear <= new Date(karte) ? count + 1 : count));
+      for (let key in kartes) {
+        if (lastYear <= new Date(key)) {
+          count += kartes[key];
+        }
+      }
       return count;
     },
 
@@ -76,9 +80,13 @@ export default {
       const now = new Date();
       const lastMonth = now.setMonth(now.getMonth() - 1);
 
-      // 現在から一年前の日付よりも後に作成されたカルテ数の取得
+      // 現在から一か月前の日付よりも後に作成されたカルテ数の取得
       let count = 0;
-      kartes.forEach((karte) => (count = lastMonth <= new Date(karte) ? count + 1 : count));
+      for (let key in kartes) {
+        if (lastMonth <= new Date(key)) {
+          count += kartes[key];
+        }
+      }
       return count;
     },
 
@@ -87,18 +95,10 @@ export default {
      * @param {Object} kartes - カルテのデータ
      */
     countPerDate: function (kartes) {
-      // 作成日時ごとにカルテ数をカウント
-      let countDate = {};
-      kartes.forEach(
-        (karte) =>
-          (countDate[karte.substr(0, 10)] =
-            countDate[karte.substr(0, 10)] === undefined ? 1 : countDate[karte.substr(0, 10)] + 1)
-      );
-
       // グラフで使用できるようにデータを加工
-      const results = Object.keys(countDate).map((k) => ({
+      const results = Object.keys(kartes).map((k) => ({
         date: k,
-        count: countDate[k],
+        count: kartes[k],
       }));
       return results;
     },
