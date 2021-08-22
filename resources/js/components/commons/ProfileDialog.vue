@@ -300,6 +300,10 @@ export default {
     getUser: async function () {
       let response = await axios.get('/api/users/' + this.username);
       this.user = response.data;
+      // フォロー一覧などから新たなユーザーのグラフのデータを表示する際のデータの初期化
+      this.graphShow = false;
+      // フォロー一覧などから新たなユーザーのフォロー・フォロワー一覧を見る際に、それまで見ていたユーザーの情報を残さないために一覧を非表示にする
+      this.show = null;
     },
 
     /**
