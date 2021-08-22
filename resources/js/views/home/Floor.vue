@@ -1,5 +1,18 @@
 <template>
   <v-layout id="floor" :style="!authUser.seat ? 'cursor: pointer' : ''" @click="enterRoom()">
+    <v-dialog v-model="dialog" max-width="70%">
+      <v-card>
+        <v-card-title class="text-h5 grey lighten-2">この部屋は．．．</v-card-title>
+
+        <v-img :src="$storage('room') + 'room_' + $route.params.roomId + '_tutorial.png'"></v-img>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="dialog = false">OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-flex>
       <!-- ローディング画面 -->
       <v-overlay :value="loading">
@@ -21,6 +34,7 @@ import { NOT_FOUND } from '@/consts/status';
 export default {
   data() {
     return {
+      dialog: true, // チュートリアルダイアログ制御
       canvas: null, // キャンバスエリア
       loading: false, // ローディング制御
       roomData: {}, // 教室データ

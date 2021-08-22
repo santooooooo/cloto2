@@ -132,6 +132,12 @@
             v-model="editProfileForm.data.introduction"
           ></v-textarea>
 
+          <!-- 運営からのメール連絡 -->
+          <v-card-text class="pa-1 white--text">運営からのメール連絡</v-card-text>
+          <v-row justify="center">
+            <v-checkbox dark label="許可" v-model="editProfileForm.data.newsletter"></v-checkbox>
+          </v-row>
+
           <!-- ボタン -->
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -226,6 +232,7 @@ export default {
         input.append('sns', JSON.stringify(sns));
         input.append('web', this.editProfileForm.data.web || '');
         input.append('introduction', this.editProfileForm.data.introduction || '');
+        input.append('newsletter', Number(this.editProfileForm.data.newsletter));
 
         // ユーザーデータ保存処理
         let response = await axios.post('/api/user', input);

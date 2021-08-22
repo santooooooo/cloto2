@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::patch('/user', 'UserController@update');
         Route::get('/user/notifications', 'UserController@getNotifications');
         Route::post('/user/notifications', 'UserController@markNotificationsAsRead');
+        Route::delete('/user', 'UserController@destroy');
 
 
         /*
@@ -85,7 +86,6 @@ Route::group(['middleware' => 'auth'], function () {
 
         // ユーザーのプロフィール欄に表示するグラフのデータ一覧
         Route::get('/graph/user/{user}', 'KarteController@graphData')->where('user', '[0-9]+');
-
         Route::resource('tags', 'TagController', ['only' => ['index']]);
 
 

@@ -110,7 +110,6 @@
             <v-card light flat width="80%" class="mx-6 mt-2 p-2">
               <heatmap :map-data="graphData" v-if="graphShow"></heatmap>
             </v-card>
-
           </v-row>
         </v-container>
 
