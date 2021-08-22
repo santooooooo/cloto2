@@ -107,13 +107,15 @@ class KarteController extends Controller
      * @param  \App\Models\User  $user  カルテを取得するユーザー
      * @return \Illuminate\Http\Response
      */
-    public function chartData(User $user)
+    public function graphData(User $user)
     {
         $kartes = $user->kartes->sortByDesc('created_at')->values();
-        $chartData = $this->countPerTags($kartes);
+        $graphData['bar'] = $this->countPerTags($kartes);
+        $graphData['grass'] = $this->countPerDay($kartes);
 
-        return response()->json($chartData);
+        return response()->json($graphData);
     }
+
     /**
      * タグごとのカルテのパーセンテージのデータを作成
      *
@@ -150,6 +152,27 @@ class KarteController extends Controller
 
         // データを降順に並び替え
         arsort($data);
+
+        return $data;
+    }
+
+    /**
+     * 日ごとのカルテの数のデータを作成
+     *
+     * @param  object $kartes  ユーザーのカルテ
+     * @return array
+     */
+    public function countPerDay(object $kartes): array
+    {
+        $data = [];
+        // カルテの総数の取得
+        $max = count($kartes);
+
+        // 日ごとのカルテの数の取得
+        for ($i=0;$i<$max;$i++) {
+            $date = substr(date($kartes[$i]->created_at), 0, 10);
+            $data[$date] = key_exists($date, $data) ? $data[$date] + 1 : 1 ;
+        }
 
         return $data;
     }

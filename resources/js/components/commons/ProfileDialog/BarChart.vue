@@ -46,7 +46,7 @@ export default {
       await this.graphData.then(function (value) {
         promiseData = value;
       });
-      return promiseData;
+      return promiseData.bar;
     },
 
     /**

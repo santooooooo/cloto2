@@ -85,8 +85,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/kartes/user/{user}', 'KarteController@index')->where('user', '[0-9]+');
 
         // ユーザーのプロフィール欄に表示するグラフのデータ一覧
-        Route::get('/chart/user/{user}', 'KarteController@chartData')->where('user', '[0-9]+');
-
+        Route::get('/graph/user/{user}', 'KarteController@graphData')->where('user', '[0-9]+');
         Route::resource('tags', 'TagController', ['only' => ['index']]);
 
 
