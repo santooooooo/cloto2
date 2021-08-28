@@ -4,7 +4,7 @@
       <v-card>
         <v-card-title class="text-h5 grey lighten-2">この部屋は．．．</v-card-title>
 
-        <v-img :src="$storage('room') + 'room_' + $route.params.roomId + '_tutorial.png'"></v-img>
+        <v-img :src="tutorialSrc"></v-img>
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -34,6 +34,12 @@ import { NOT_FOUND } from '@/consts/status';
 export default {
   data() {
     return {
+      tutorialSrc:
+        this.$storage('room') +
+        'room_' +
+        this.$route.params.roomId +
+        '_tutorial.png?' +
+        Math.random().toString(32).substring(2), // 部屋説明画像のURL
       dialog: true, // チュートリアルダイアログ制御
       canvas: null, // キャンバスエリア
       loading: false, // ローディング制御
