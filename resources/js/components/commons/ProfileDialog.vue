@@ -86,12 +86,12 @@
           </v-row>
 
           <v-row justify="center">
-            <v-card light flat width="80%" class="mx-6 mt-2 text-center">
+            <v-card light flat width="90%" class="mx-6 mt-2 text-center">
               <v-card-text class="pt-3 pl-3 pb-0 black--text">目標</v-card-text>
 
               <pre class="ma-3 text-body-1">{{ user.vision || 'がんばる' }}</pre>
             </v-card>
-            <v-card light flat width="80%" class="mx-6 mt-2 text-center">
+            <v-card light flat width="90%" class="mx-6 mt-2 text-center">
               <v-card-text class="pt-3 pl-3 pb-0 black--text"
                 >いまやっていること
                 <small v-if="user.seat">in {{ user.room.name }}</small>
@@ -102,12 +102,12 @@
             </v-card>
 
 	    <!-- タグ別のカルテ数の表示を行うグラフ -->
-            <v-card light flat width="80%" class="mx-6 mt-2 text-center">
+            <v-card light flat width="90%" class="mx-6 mt-2 text-center">
               <bar-chart :height="90" :graph-data="graphData" v-if="graphShow"></bar-chart>
             </v-card>
 
 	    <!-- 日別のカルテ数の表示を行うグラフ -->
-            <v-card light flat width="80%" class="mx-6 mt-2 p-2">
+            <v-card light flat width="90%" class="mx-6 mt-2 p-2">
               <heatmap :map-data="graphData" v-if="graphShow"></heatmap>
             </v-card>
           </v-row>
@@ -300,6 +300,10 @@ export default {
     getUser: async function () {
       let response = await axios.get('/api/users/' + this.username);
       this.user = response.data;
+      // フォロー一覧などから新たなユーザーのグラフのデータを表示する際のデータの初期化
+      this.graphShow = false;
+      // フォロー一覧などから新たなユーザーのフォロー・フォロワー一覧を見る際に、それまで見ていたユーザーの情報を残さないために一覧を非表示にする
+      this.show = null;
     },
 
     /**

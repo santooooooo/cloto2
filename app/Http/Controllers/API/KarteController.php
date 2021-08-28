@@ -134,7 +134,7 @@ class KarteController extends Controller
             $tagCount = count($tags);
 
             if ($tagCount === 0) {
-                $data['nothing'] = key_exists('nothing', $data) ? $data['nothing'] + 1 : 1 ;
+                $data['タグなし'] = key_exists('タグなし', $data) ? $data['タグなし'] + 1 : 1 ;
                 continue;
             }
 
