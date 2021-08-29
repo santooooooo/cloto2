@@ -14,7 +14,7 @@ class AddSlackToRoomsTable extends Migration
     public function up()
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->string('slack');    // Slack Webhook URL
+            $table->string('slack')->nullable();    // Slack Webhook URL
         });
     }
 
