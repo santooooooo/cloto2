@@ -236,7 +236,7 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         $room = $seat->section()->first()->room;
-        return ['id' => $room->id, 'name' => $room->name];
+        return ['id' => $room->id, 'name' => $room->name, 'slack' => $room->slack];
     }
 
     /**

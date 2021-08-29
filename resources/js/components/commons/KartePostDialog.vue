@@ -302,6 +302,21 @@ export default {
             window.open(url, 'Tweet', 'width=650, height=470');
           }
 
+          // Slack通知
+          if (this.authUser.room.slack) {
+            let body = '活動時間：' + this.karteForm.activityTime + '\n';
+            body += '活動内容：' + this.karteForm.body + '\n';
+            body += '参考サイトや公開物のURL：' + (this.karteForm.reference || '入力なし') + '\n';
+            body += '達成したこと：' + (this.karteForm.achieve || '入力なし') + '\n';
+            body += '次の課題：' + (this.karteForm.challenge || '入力なし');
+            this.$slack(
+              'カルテBot',
+              ':pencil:',
+              this.authUser.handlename + 'がカルテを投稿しました！\n' + '```' + body + '```',
+              this.authUser.room.slack
+            );
+          }
+
           this.$emit('close', false);
         } else {
           this.karteForm.loading = false;
