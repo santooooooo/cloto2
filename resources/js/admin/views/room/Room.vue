@@ -19,7 +19,7 @@
                 <v-card-text>
                   <v-container>
                     <!-- 背景画像 -->
-                    <v-card-text class="pa-1 white--text">部屋デザイン</v-card-text>
+                    <!-- <v-card-text class="pa-1 white--text">部屋デザイン</v-card-text>
                     <span class="red--text">*PNG型式で2160px × 1200pxのみ対応</span>
                     <input
                       type="file"
@@ -28,7 +28,7 @@
                       class="pa-2 mt-2 mb-6"
                       style="overflow: hidden"
                       v-if="editRoomForm.dialog"
-                    />
+                    /> -->
 
                     <!-- 部屋名 -->
                     <v-card-text class="pa-1 white--text">部屋名</v-card-text>
@@ -41,8 +41,19 @@
                       class="pa-2"
                     ></v-text-field>
 
+                    <!-- Slack Webhook URL -->
+                    <v-card-text class="pa-1 white--text">Slack Webhook URL</v-card-text>
+                    <v-text-field
+                      v-model="editRoomForm.data.slack"
+                      :rules="editRoomForm.validation.slackRules"
+                      label="Slack Webhook URL"
+                      solo
+                      rounded
+                      class="pa-2"
+                    ></v-text-field>
+
                     <!-- 時間割 -->
-                    <v-card-text class="pa-1 white--text">時間割</v-card-text>
+                    <!-- <v-card-text class="pa-1 white--text">時間割</v-card-text>
                     <v-list-item v-for="(time, index) in editRoomForm.data.timetable" :key="index">
                       <v-text-field
                         v-model="time.separate"
@@ -61,17 +72,17 @@
                         rounded
                         class="pa-2"
                       ></v-select>
-                    </v-list-item>
+                    </v-list-item> -->
 
                     <!-- 時間入力ダイアログ -->
-                    <v-dialog v-model="timePicker.dialog" width="290px">
+                    <!-- <v-dialog v-model="timePicker.dialog" width="290px">
                       <v-time-picker
                         v-if="timePicker.dialog"
                         v-model="timePicker.time"
                         full-width
                         @click:minute="setTimetable()"
                       ></v-time-picker>
-                    </v-dialog>
+                    </v-dialog> -->
                   </v-container>
                 </v-card-text>
 
@@ -137,6 +148,12 @@ export default {
         validation: {
           valid: false,
           nameRules: [(v) => !!v || '部屋名は必須項目です。'],
+          slackRules: [
+            (v) =>
+              !v ||
+              /https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+/g.test(v) ||
+              'URLを入力してください。',
+          ],
         },
       },
     };
@@ -251,6 +268,7 @@ export default {
         let input = new FormData();
         input.append('_method', 'patch');
         input.append('name', this.editRoomForm.data.name);
+        input.append('slack', this.editRoomForm.data.slack);
         input.append('timetable', JSON.stringify(timetable));
         if (this.editRoomForm.background !== null) {
           input.append('background', this.editRoomForm.background);
@@ -262,6 +280,7 @@ export default {
         if (response.status === OK) {
           if (this.editRoomForm.index > -1) {
             this.rooms[this.editRoomForm.index].name = this.editRoomForm.data.name;
+            this.rooms[this.editRoomForm.index].slack = this.editRoomForm.data.slack;
             this.rooms[this.editRoomForm.index].timetable = timetable;
           } else {
             this.rooms.push(this.editRoomForm);
