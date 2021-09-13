@@ -171,12 +171,13 @@ export function classColor(classNumber) {
  * @param {String} username - 投稿するユーザー名
  * @param {String} icon - 投稿時のアイコン
  * @param {String} message - 通知の内容
+ * @param {String} url - 通知先URL
  */
-export function slackPost(username, icon, message) {
+export function slackPost(username, icon, message, url = null) {
   // 本番環境でのみ通知
   if (process.env.MIX_APP_DEBUG === 'false') {
     let data = {
-      channel: process.env.MIX_SLACK_CHANNEL,
+      channel: url ? null : process.env.MIX_SLACK_CHANNEL,
       username: username,
       icon_emoji: icon,
       text: message,
@@ -184,7 +185,7 @@ export function slackPost(username, icon, message) {
 
     // AxiosではCORSエラーが発生する
     const xml = new XMLHttpRequest();
-    xml.open('POST', process.env.MIX_SLACK_URL);
+    xml.open('POST', url || process.env.MIX_SLACK_URL);
     xml.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
     xml.send(JSON.stringify(data));
   }
