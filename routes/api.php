@@ -121,6 +121,7 @@ Route::group(['middleware' => 'auth'], function () {
         |--------------------------------------------------------------------------
         */
         Route::get('/timeline', 'TimelineController@index');
+        Route::get('/timeline/rank', 'TimelineController@rank');
 
 
         /*

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Karte;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TimelineController extends Controller
 {
@@ -53,5 +54,59 @@ class TimelineController extends Controller
         }
 
         return response()->json($items);
+    }
+
+    /**
+     * タイムラインの表示データ一覧を取得
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function rank(Request $request)
+    {
+        switch ($request->category) {
+        case 'week':
+         $lastWeek = mktime(0, 0, 0, date("m"), date("d") - 7, date("Y"));
+         $data = $this->karte->whereDate('created_at', '>', date("Y-m-d", $lastWeek))->get();
+
+         $rank = [];
+         $count = count($data);
+         for ($i=0;$i<$count;$i++) {
+             $key = $data[$i]->user->username;
+             $rank[$key] = key_exists($key, $rank) ? $rank[$key] + 1 : 1;
+         }
+
+         break;
+
+        case 'month':
+         $lastMonth = mktime(0, 0, 0, date("m") - 1, date("d"), date("Y"));
+         $data = $this->karte->whereDate('created_at', '>', date("Y-m-d", $lastMonth))->get();
+
+         $rank = [];
+         $count = count($data);
+         for ($i=0;$i<$count;$i++) {
+             $key = $data[$i]->user->username;
+             $rank[$key] = key_exists($key, $rank) ? $rank[$key] + 1 : 1;
+         }
+         break;
+
+        case 'all':
+         $data = $this->karte->get();
+
+         $rank = [];
+         $count = count($data);
+         for ($i=0;$i<$count;$i++) {
+             $key = $data[$i]->user->username;
+             $rank[$key] = key_exists($key, $rank) ? $rank[$key] + 1 : 1;
+         }
+         break;
+        default:
+         $rank = [];
+         break;
+        }
+
+        arsort($rank);
+
+        return response()->json($rank);
     }
 }
