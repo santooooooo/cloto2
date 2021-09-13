@@ -106,6 +106,7 @@ class TimelineController extends Controller
         }
 
         arsort($rank);
+        $rank = array_slice($rank, 0, 9);
 
         return response()->json($rank);
     }

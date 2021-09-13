@@ -3,7 +3,17 @@
     <v-btn @click="category = 'week'">week</v-btn>
     <v-btn @click="category = 'month'">month</v-btn>
     <v-btn @click="category = 'all'">all</v-btn>
-    <h2>{{ ranking }}</h2>
+    <v-list>
+      <v-list-item v-for="rank in ranking" :key="rank.username">
+        <v-list-item-title
+          @click="$store.dispatch('dialog/open', { type: 'user', username: rank.username })"
+        >
+          <v-avatar size="100"><img :src="$storage('icon') + userIcon(rank.username)" /></v-avatar>
+          <p>{{ rank.username }}</p>
+          <p>{{ rank.kartes }}</p>
+        </v-list-item-title>
+      </v-list-item>
+    </v-list>
   </div>
 </template>
 <script>
@@ -16,6 +26,7 @@ export default {
         all: null,
       },
       category: 'week',
+      icon: null,
     };
   },
   computed: {
@@ -34,19 +45,38 @@ export default {
           return;
       }
     },
+    userIcon: function () {
+      return function (username) {
+        this.getUserIcon(username);
+        return this.icon;
+      };
+    },
   },
   methods: {
     getWeekData: async function () {
-      const response = await axios.get('/api/timeline/rank?category=' + this.category);
-      this.rank.week = response.data;
+      let response = await axios.get('/api/timeline/rank?category=' + this.category);
+      this.rank.week = Object.keys(response.data).map((k) => ({
+        username: k,
+        kartes: response.data[k],
+      }));
     },
     getMonthData: async function () {
-      const response = await axios.get('/api/timeline/rank?category=' + this.category);
-      this.rank.month = response.data;
+      let response = await axios.get('/api/timeline/rank?category=' + this.category);
+      this.rank.month = Object.keys(response.data).map((k) => ({
+        username: k,
+        kartes: response.data[k],
+      }));
     },
     getAllData: async function () {
-      const response = await axios.get('/api/timeline/rank?category=' + this.category);
-      this.rank.all = response.data;
+      let response = await axios.get('/api/timeline/rank?category=' + this.category);
+      this.rank.all = Object.keys(response.data).map((k) => ({
+        username: k,
+        kartes: response.data[k],
+      }));
+    },
+    getUserIcon: async function (username) {
+      let response = await axios.get('/api/users/' + username);
+      this.icon = response.data.icon;
     },
   },
 };
