@@ -112,7 +112,7 @@ class TimelineController extends Controller
         // データを降順で並び替える
         arsort($rank);
         // データを上位10人に絞る
-        $rank = array_slice($rank, 0, 9);
+        $rank = array_slice($rank, 0, 10);
 
         return response()->json($rank);
     }

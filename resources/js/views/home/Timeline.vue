@@ -124,8 +124,10 @@
             <p class="text-h5 my-12" v-if="stopGetting">これ以上データはありません。</p>
           </v-row>
         </v-container>
-        <v-card width="30%" max-height="600px">
-		<Rank />
+
+        <!-- カルテ数のランキングの表示 -->
+        <v-card width="30%" max-height="55rem" class="my-2">
+          <Rank />
         </v-card>
       </v-layout>
     </v-container>

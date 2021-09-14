@@ -1,18 +1,18 @@
 <template>
   <div class="p-3">
-    <p class="font-weight-bold">カルテ投稿ランキング</p>
+    <p class="font-weight-bold text-center" style="color: orange;">カルテ投稿ランキング</p>
     <v-tabs color="orange" centered>
       <v-tab @click="category = 'week'">week</v-tab>
       <v-tab @click="category = 'month'">month</v-tab>
       <v-tab @click="category = 'all'">all</v-tab>
     </v-tabs>
-    <v-list>
+    <v-list dense>
       <div v-for="rank in ranking" :key="rank.username">
         <v-subheader
           @click="$store.dispatch('dialog/open', { type: 'user', username: rank.username })"
           style="cursor: pointer"
         >
-          <b class="pr-2">{{ rank.id }}</b>
+          <v-list-item-avatar style="font-size: 1.2rem;">{{ rank.id }}</v-list-item-avatar>
           <v-list-item-avatar><img :src="$storage('icon') + rank.icon" /></v-list-item-avatar>
           <v-list-item>
             <v-list-item-content>
@@ -39,8 +39,6 @@ export default {
         all: [], // 通算のランキングのデータ
       },
       category: 'week', // 表示するランキングの指定
-      icon: null, // ランキングに表示するユーザーのアイコンのデータ
-      handleName: null,
     };
   },
   computed: {
@@ -76,27 +74,14 @@ export default {
           return;
       }
     },
-    // ランキングに表示されるユーザーのアイコンデータの表示
-    userIcon: function () {
-      return function (username) {
-        this.getUserIcon(username);
-        return this.icon;
-      };
-    },
-    // ランキングに表示されるユーザーのアイコンデータの表示
-    userHandleName: function () {
-      return function (username) {
-        this.getUserHandleName(username);
-        return this.handleName;
-      };
-    },
   },
   methods: {
     // 一週間のランキングのデータを取得
     getWeekData: async function () {
       let response = await axios.get('/api/timeline/rank?category=' + this.category);
-      // データを扱いやすい形へ加工
-      let id = 0;
+      // ランキングに必要なデータの取得とデータの加工
+      let id = 0; // ユーザーの順位を表す
+
       for (const username in response.data) {
         let userInfo = await axios.get('/api/users/' + username);
         let icon = userInfo.data.icon;
@@ -116,6 +101,7 @@ export default {
     getMonthData: async function () {
       let response = await axios.get('/api/timeline/rank?category=' + this.category);
       let id = 0;
+
       for (const username in response.data) {
         let userInfo = await axios.get('/api/users/' + username);
         let icon = userInfo.data.icon;
@@ -135,6 +121,7 @@ export default {
     getAllData: async function () {
       let response = await axios.get('/api/timeline/rank?category=' + this.category);
       let id = 0;
+
       for (const username in response.data) {
         let userInfo = await axios.get('/api/users/' + username);
         let icon = userInfo.data.icon;
@@ -149,10 +136,6 @@ export default {
         this.rank.all.push(data);
         id += 1;
       }
-    },
-  },
-};
-</script>
     },
   },
 };
