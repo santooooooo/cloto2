@@ -126,7 +126,7 @@
         </v-container>
 
         <!-- カルテ数のランキングの表示 -->
-        <v-card width="30%" max-height="55rem" class="my-2">
+        <v-card width="30%" max-height="60rem" class="my-2">
           <Rank />
         </v-card>
       </v-layout>

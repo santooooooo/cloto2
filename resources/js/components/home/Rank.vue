@@ -6,22 +6,25 @@
       <v-tab @click="category = 'month'">month</v-tab>
       <v-tab @click="category = 'all'">all</v-tab>
     </v-tabs>
-    <v-list dense>
-      <div v-for="rank in ranking" :key="rank.username">
+    <v-list>
+      <div v-for="user in ranking" :key="user.username">
         <v-subheader
-          @click="$store.dispatch('dialog/open', { type: 'user', username: rank.username })"
+          @click="$store.dispatch('dialog/open', { type: 'user', username: user.username })"
           style="cursor: pointer"
         >
-          <v-list-item-avatar style="font-size: 1.2rem;">{{ rank.id }}</v-list-item-avatar>
-          <v-list-item-avatar><img :src="$storage('icon') + rank.icon" /></v-list-item-avatar>
+	<v-list-item-avatar v-if="user.id === 1"><v-icon color="rgba(219,180,0)">mdi-medal</v-icon></v-list-item-avatar>
+	<v-list-item-avatar v-if="user.id === 2"><v-icon color="rgba(201,202,202)">mdi-medal</v-icon></v-list-item-avatar>
+	<v-list-item-avatar v-if="user.id === 3"><v-icon color="rgba(196,112,34)">mdi-medal</v-icon></v-list-item-avatar>
+	  <v-list-item-avatar style="font-size: 1.2rem;" v-if="user.id > 3">{{ user.id }}</v-list-item-avatar>
+          <v-list-item-avatar><img :src="$storage('icon') + user.icon" /></v-list-item-avatar>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title v-html="rank.handleName"></v-list-item-title>
-              <v-list-item-subtitle>@{{ rank.username }}</v-list-item-subtitle>
+              <v-list-item-title v-html="user.handleName"></v-list-item-title>
+              <v-list-item-subtitle>@{{ user.username }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item-title
-            ><span class="font-weight-bold">{{ rank.kartes }}</span> カルテ</v-list-item-title
+            ><span class="font-weight-bold">{{ user.kartes }}</span> カルテ</v-list-item-title
           >
         </v-subheader>
         <v-divider></v-divider>

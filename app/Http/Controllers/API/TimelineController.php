@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Karte;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class TimelineController extends Controller
 {
@@ -77,7 +76,6 @@ class TimelineController extends Controller
              $key = $data[$i]->user->username;
              $rank[$key] = key_exists($key, $rank) ? $rank[$key] + 1 : 1;
          }
-
          break;
 
         // 一か月のランキングに関するデータの作成
