@@ -1,6 +1,6 @@
 <template>
   <div class="p-3">
-    <p class="font-weight-bold text-center" style="color: orange;">カルテ投稿ランキング</p>
+    <p class="font-weight-bold text-center" style="color: orange">カルテ投稿ランキング</p>
     <v-tabs color="orange" centered>
       <v-tab @click="category = 'week'">week</v-tab>
       <v-tab @click="category = 'month'">month</v-tab>
@@ -12,10 +12,18 @@
           @click="$store.dispatch('dialog/open', { type: 'user', username: user.username })"
           style="cursor: pointer"
         >
-	<v-list-item-avatar v-if="user.id === 1"><v-icon color="rgba(219,180,0)">mdi-medal</v-icon></v-list-item-avatar>
-	<v-list-item-avatar v-if="user.id === 2"><v-icon color="rgba(201,202,202)">mdi-medal</v-icon></v-list-item-avatar>
-	<v-list-item-avatar v-if="user.id === 3"><v-icon color="rgba(196,112,34)">mdi-medal</v-icon></v-list-item-avatar>
-	  <v-list-item-avatar style="font-size: 1.2rem;" v-if="user.id > 3">{{ user.id }}</v-list-item-avatar>
+          <v-list-item-avatar v-if="user.id === 1"
+            ><v-icon color="rgba(219,180,0)">mdi-medal</v-icon></v-list-item-avatar
+          >
+          <v-list-item-avatar v-if="user.id === 2"
+            ><v-icon color="rgba(201,202,202)">mdi-medal</v-icon></v-list-item-avatar
+          >
+          <v-list-item-avatar v-if="user.id === 3"
+            ><v-icon color="rgba(196,112,34)">mdi-medal</v-icon></v-list-item-avatar
+          >
+          <v-list-item-avatar style="font-size: 1.2rem" v-if="user.id > 3">{{
+            user.id
+          }}</v-list-item-avatar>
           <v-list-item-avatar><img :src="$storage('icon') + user.icon" /></v-list-item-avatar>
           <v-list-item>
             <v-list-item-content>
