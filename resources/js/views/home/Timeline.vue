@@ -52,6 +52,7 @@
             :items="items"
             :options="{ width: width, padding: 8 }"
             @append="getTimeline"
+            v-if="items.length"
           >
             <template v-slot:default="{ item }">
               <v-card :width="width - 50" class="mx-auto pa-3">
@@ -127,7 +128,115 @@
             </template>
           </vue-masonry-wall>
           <v-row justify="center">
-            <p class="text-h5 my-12" v-if="stopGetting">これ以上データはありません。</p>
+            <p class="text-h5 my-12" v-if="stopGettingTimeline">これ以上データはありません。</p>
+          </v-row>
+        </v-container>
+
+        <!-- 質問 -->
+        <v-container fluid v-if="show === 'question'">
+          <v-row justify="center" class="my-6">
+            <v-btn color="primary">質問する</v-btn>
+          </v-row>
+
+          <vue-masonry-wall
+            :items="items"
+            :options="{ width: width, padding: 8 }"
+            @append="getTimeline"
+            v-if="items.length"
+          >
+            <template v-slot:default="{ item }">
+              <v-card :width="width - 50" class="mx-auto pa-3">
+                <v-container class="d-block">
+                  <div
+                    id="karte"
+                    @click="$store.dispatch('dialog/open', { type: 'karte', id: item.id })"
+                  >
+                    <v-img
+                      max-height="300"
+                      class="mx-auto my-2 rounded-xl"
+                      contain
+                      eager
+                      :src="item.path + item.image"
+                      v-if="item.image"
+                    ></v-img>
+
+                    <!-- 活動時間 -->
+                    <p
+                      :class="[
+                        'text-body-2',
+                        'font-weight-bold',
+                        item.image || item.tags.length ? 'mt-6' : '',
+                      ]"
+                    >
+                      活動時間：{{ item.activity_time.slice(0, 5) }}
+                    </p>
+
+                    <!-- 活動内容 -->
+                    <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
+
+                    <!-- 投稿日時 -->
+                    <p class="mt-6 mb-0 text-right small">
+                      {{ $moment(item.created_at).format('MM/DD HH:mm') }}
+                    </p>
+                  </div>
+                </v-container>
+
+                <v-divider></v-divider>
+
+                <v-row no-gutters class="mt-3">
+                  <v-col
+                    cols="7"
+                    class="ml-2 pointer"
+                    @click="
+                      $store.dispatch('dialog/open', {
+                        type: 'user',
+                        username: item.user.username,
+                      })
+                    "
+                  >
+                    <v-row>
+                      <!-- ユーザーアイコン -->
+                      <v-col cols="3" class="my-auto text-center">
+                        <v-avatar
+                          size="40"
+                          :style="{ 'box-shadow': '0 0 0 3px ' + $statusColor(item.user.status) }"
+                        >
+                          <img :src="$storage('icon') + item.user.icon" />
+                        </v-avatar>
+                      </v-col>
+
+                      <!-- ユーザー名 -->
+                      <v-col cols="8" class="my-auto text-start">
+                        <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
+                        <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+
+                  <v-spacer></v-spacer>
+
+                  <v-col cols="4" class="my-auto text-center" v-if="item.id">
+                    <!-- コメントボタン -->
+                    <v-btn
+                      icon
+                      class="mx-1"
+                      @click="
+                        $store.dispatch('dialog/open', {
+                          type: 'activity_time' in item ? 'karte' : 'post',
+                          id: item.id,
+                        })
+                      "
+                    >
+                      <v-icon>mdi-message-text</v-icon>
+                      <span>{{ item.comments_count }}</span>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-card>
+            </template>
+          </vue-masonry-wall>
+          <v-row justify="center">
+            <p class="text-h5 my-12" v-if="stopGettingTimeline">これ以上データはありません。</p>
           </v-row>
         </v-container>
       </v-container>
@@ -152,11 +261,10 @@ export default {
       eventSrc: this.$storage('system') + 'event.png?' + Math.random().toString(32).substring(2), // イベント画像のURL
       loading: true, // ローディング制御
       page: 1, // ページング制御
-      stopGetting: false, // データ取得の終了制御
-      show: 'news',
+      stopGettingTimeline: false, // タイムラインデータ取得の終了制御
+      stopGettingQuestion: false, // 質問データ取得の終了制御
+      show: 'news', // 表示種類
       items: [], // 表示データ
-      kartes: [], // カルテ一覧
-      posts: [], // 投稿一覧
       postForm: {
         body: '', // 内容
         max: 1000, // 最大長
@@ -181,18 +289,23 @@ export default {
 
   watch: {
     show: function (show) {
+      this.items = [];
+      this.page = 1;
+
       if (show === 'timeline') {
         this.getTimeline();
+      } else if (show === 'question') {
+        this.getQuestion();
       }
     },
   },
 
   methods: {
     /**
-     * データの取得
+     * タイムラインデータの取得
      */
     getTimeline: async function () {
-      if (!this.loading && !this.stopGetting) {
+      if (!this.loading && !this.stopGettingTimeline) {
         this.loading = true;
 
         let response = await axios.get('/api/timeline?page=' + this.page);
@@ -210,7 +323,7 @@ export default {
           this.page += 1;
         } else if (response.status === NOT_FOUND) {
           // データ取得の終了
-          this.stopGetting = true;
+          this.stopGettingTimeline = true;
         }
 
         this.loading = false;
@@ -281,6 +394,52 @@ export default {
           item.favorite_id_by_auth_user = null;
           item.favorites_count -= 1;
         }
+      }
+    },
+
+    /**
+     * 質問データの取得
+     */
+    getQuestion: async function () {
+      if (!this.loading && !this.stopGettingQuestion) {
+        this.loading = true;
+
+        let response = await axios.get('/api/questions?page=' + this.page);
+
+        if (response.status === OK) {
+          // 現在配列に含まれていないデータのみを取り出す
+          let data = response.data.filter((item) => {
+            return !this.items.includes(item);
+          });
+
+          // データを追加
+          this.items = this.items.concat(data);
+
+          // ページの更新
+          this.page += 1;
+        } else if (response.status === NOT_FOUND) {
+          // データ取得の終了
+          this.stopGettingQuestion = true;
+        }
+
+        this.loading = false;
+      }
+    },
+
+    /**
+     * 投稿
+     */
+    submitQuestion: async function () {
+      if (this.$refs.postForm.validate()) {
+        this.postForm.loading = true;
+
+        let response = await axios.post('/api/posts', { body: this.postForm.body });
+
+        if (response.status === OK) {
+          this.$refs.postForm.reset();
+        }
+
+        this.postForm.loading = false;
       }
     },
   },

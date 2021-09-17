@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
@@ -31,12 +32,11 @@ class QuestionController extends Controller
      * 質問の一覧を取得
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user  質問を取得するユーザー
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, User $user)
+    public function index(Request $request)
     {
-        $data = $user->questions
+        $data = $this->question->all()
             ->sortByDesc('created_at')
             ->forPage($request->page ?? 1, 25)
             ->values()
@@ -50,6 +50,7 @@ class QuestionController extends Controller
         $questions = [];
         foreach ($data as $question) {
             $question['body'] = htmlspecialchars($question['body'], ENT_QUOTES);
+            $question['tried'] = htmlspecialchars($question['tried'], ENT_QUOTES);
             array_push($questions, $question);
         }
 
@@ -70,7 +71,7 @@ class QuestionController extends Controller
         $result = $this->question->create($data);
 
         if (empty($result)) {
-            return response()->json(['message' => 'つぶやきの質問に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => '質問の投稿に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
         broadcast(new TimelineUpdated($result));
@@ -101,9 +102,9 @@ class QuestionController extends Controller
         $result = $question->delete();
 
         if (empty($result)) {
-            return response()->json(['message' => 'つぶやきの削除に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
+            return response()->json(['message' => '質問の削除に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        return response()->json(['message' => 'つぶやきが削除されました。']);
+        return response()->json(['message' => '質問が削除されました。']);
     }
 }
