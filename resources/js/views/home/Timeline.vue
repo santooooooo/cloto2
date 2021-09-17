@@ -17,107 +17,119 @@
         </p>
       </v-card>
 
-      <!-- タイムライン -->
       <v-container fluid>
-        <v-form
-          ref="postForm"
-          v-model="postForm.validation.valid"
-          lazy-validation
-          id="post-form"
-          class="mx-auto my-6"
-        >
-          <v-textarea
-            v-model="postForm.body"
-            :rules="postForm.validation.bodyRules"
-            :maxlength="postForm.max"
-            :disabled="postForm.loading"
-            append-icon="mdi-send"
-            placeholder="つぶやき"
-            counter
-            solo
-            auto-grow
-            rows="1"
-            @click:append="submitPost()"
-          ></v-textarea>
-        </v-form>
+        <v-tabs class="mt-6" fixed-tabs background-color="#f6bf00" color="black">
+          <v-tab @click="show = 'news'">運営からのお知らせ</v-tab>
+          <v-tab @click="show = 'timeline'">タイムライン</v-tab>
+          <v-tab @click="show = 'question'">質問</v-tab>
+        </v-tabs>
 
-        <vue-masonry-wall :items="items" :options="{ width: width, padding: 8 }" @append="getData">
-          <template v-slot:default="{ item }">
-            <v-card :width="width - 50" class="mx-auto pa-3">
-              <!-- カルテ -->
-              <KarteContainer :karte="item" v-if="item.activity_time" />
+        <!-- タイムライン -->
+        <v-container fluid v-if="show === 'timeline'">
+          <v-form
+            ref="postForm"
+            v-model="postForm.validation.valid"
+            lazy-validation
+            id="post-form"
+            class="mx-auto my-6"
+          >
+            <v-textarea
+              v-model="postForm.body"
+              :rules="postForm.validation.bodyRules"
+              :maxlength="postForm.max"
+              :disabled="postForm.loading"
+              append-icon="mdi-send"
+              placeholder="つぶやき"
+              counter
+              solo
+              auto-grow
+              rows="1"
+              @click:append="submitPost()"
+            ></v-textarea>
+          </v-form>
 
-              <!-- 投稿 -->
-              <PostContainer :post="item" @delete="deletePost($event)" v-else />
+          <vue-masonry-wall
+            :items="items"
+            :options="{ width: width, padding: 8 }"
+            @append="getTimeline"
+          >
+            <template v-slot:default="{ item }">
+              <v-card :width="width - 50" class="mx-auto pa-3">
+                <!-- カルテ -->
+                <KarteContainer :karte="item" v-if="item.activity_time" />
 
-              <v-divider></v-divider>
+                <!-- 投稿 -->
+                <PostContainer :post="item" @delete="deletePost($event)" v-else />
 
-              <v-row no-gutters class="mt-3">
-                <v-col
-                  cols="7"
-                  class="ml-2 pointer"
-                  @click="
-                    $store.dispatch('dialog/open', {
-                      type: 'user',
-                      username: item.user.username,
-                    })
-                  "
-                >
-                  <v-row>
-                    <!-- ユーザーアイコン -->
-                    <v-col cols="3" class="my-auto text-center">
-                      <v-avatar
-                        size="40"
-                        :style="{ 'box-shadow': '0 0 0 3px ' + $statusColor(item.user.status) }"
-                      >
-                        <img :src="$storage('icon') + item.user.icon" />
-                      </v-avatar>
-                    </v-col>
+                <v-divider></v-divider>
 
-                    <!-- ユーザー名 -->
-                    <v-col cols="8" class="my-auto text-start">
-                      <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
-                      <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
-                    </v-col>
-                  </v-row>
-                </v-col>
-
-                <v-spacer></v-spacer>
-
-                <v-col cols="4" class="my-auto text-center" v-if="item.id">
-                  <!-- コメントボタン -->
-                  <v-btn
-                    icon
-                    class="mx-1"
+                <v-row no-gutters class="mt-3">
+                  <v-col
+                    cols="7"
+                    class="ml-2 pointer"
                     @click="
                       $store.dispatch('dialog/open', {
-                        type: 'activity_time' in item ? 'karte' : 'post',
-                        id: item.id,
+                        type: 'user',
+                        username: item.user.username,
                       })
                     "
                   >
-                    <v-icon>mdi-message-text</v-icon>
-                    <span>{{ item.comments_count }}</span>
-                  </v-btn>
+                    <v-row>
+                      <!-- ユーザーアイコン -->
+                      <v-col cols="3" class="my-auto text-center">
+                        <v-avatar
+                          size="40"
+                          :style="{ 'box-shadow': '0 0 0 3px ' + $statusColor(item.user.status) }"
+                        >
+                          <img :src="$storage('icon') + item.user.icon" />
+                        </v-avatar>
+                      </v-col>
 
-                  <!-- いいねボタン -->
-                  <v-btn
-                    icon
-                    class="mx-1"
-                    :color="item.favorite_id_by_auth_user ? 'red' : 'gray'"
-                    @click="favorite(item)"
-                  >
-                    <v-icon>mdi-heart</v-icon>
-                    <span>{{ item.favorites_count }}</span>
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-card>
-          </template>
-        </vue-masonry-wall>
-        <v-row justify="center">
-          <p class="text-h5 my-12" v-if="stopGetting">これ以上データはありません。</p>
-        </v-row>
+                      <!-- ユーザー名 -->
+                      <v-col cols="8" class="my-auto text-start">
+                        <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
+                        <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+
+                  <v-spacer></v-spacer>
+
+                  <v-col cols="4" class="my-auto text-center" v-if="item.id">
+                    <!-- コメントボタン -->
+                    <v-btn
+                      icon
+                      class="mx-1"
+                      @click="
+                        $store.dispatch('dialog/open', {
+                          type: 'activity_time' in item ? 'karte' : 'post',
+                          id: item.id,
+                        })
+                      "
+                    >
+                      <v-icon>mdi-message-text</v-icon>
+                      <span>{{ item.comments_count }}</span>
+                    </v-btn>
+
+                    <!-- いいねボタン -->
+                    <v-btn
+                      icon
+                      class="mx-1"
+                      :color="item.favorite_id_by_auth_user ? 'red' : 'gray'"
+                      @click="favorite(item)"
+                    >
+                      <v-icon>mdi-heart</v-icon>
+                      <span>{{ item.favorites_count }}</span>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-card>
+            </template>
+          </vue-masonry-wall>
+          <v-row justify="center">
+            <p class="text-h5 my-12" v-if="stopGetting">これ以上データはありません。</p>
+          </v-row>
+        </v-container>
       </v-container>
     </v-container>
   </v-layout>
@@ -141,6 +153,7 @@ export default {
       loading: true, // ローディング制御
       page: 1, // ページング制御
       stopGetting: false, // データ取得の終了制御
+      show: 'news',
       items: [], // 表示データ
       kartes: [], // カルテ一覧
       posts: [], // 投稿一覧
@@ -166,11 +179,19 @@ export default {
     },
   },
 
+  watch: {
+    show: function (show) {
+      if (show === 'timeline') {
+        this.getTimeline();
+      }
+    },
+  },
+
   methods: {
     /**
      * データの取得
      */
-    getData: async function () {
+    getTimeline: async function () {
       if (!this.loading && !this.stopGetting) {
         this.loading = true;
 
@@ -265,14 +286,15 @@ export default {
   },
 
   async created() {
-    await this.getData();
+    await this.getTimeline();
 
+    // リアルタイム更新は一旦無効化
     /**
      * データの同期開始
      */
-    Echo.channel('timeline').listen('TimelineUpdated', (event) => {
-      this.items.unshift(event);
-    });
+    // Echo.channel('timeline').listen('TimelineUpdated', (event) => {
+    //   this.items.unshift(event);
+    // });
 
     this.loading = false;
   },
@@ -281,7 +303,7 @@ export default {
     /**
      * データの同期終了
      */
-    Echo.leave('timeline');
+    // Echo.leave('timeline');
   },
 };
 </script>
