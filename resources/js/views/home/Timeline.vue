@@ -19,9 +19,9 @@
 
       <v-container fluid>
         <v-tabs class="mt-6" fixed-tabs background-color="#f6bf00" color="black">
-          <v-tab @click="show = 'news'">運営からのお知らせ</v-tab>
-          <v-tab @click="show = 'timeline'">タイムライン</v-tab>
-          <v-tab @click="show = 'question'">質問</v-tab>
+          <v-tab @click="show = 'news'" :disabled="loading">運営からのお知らせ</v-tab>
+          <v-tab @click="show = 'timeline'" :disabled="loading">タイムライン</v-tab>
+          <v-tab @click="show = 'question'" :disabled="loading">質問</v-tab>
         </v-tabs>
 
         <!-- タイムライン -->
@@ -128,57 +128,110 @@
             </template>
           </vue-masonry-wall>
           <v-row justify="center">
-            <p class="text-h5 my-12" v-if="stopGettingTimeline">これ以上データはありません。</p>
+            <p class="text-h5 my-12" v-if="stopGetting">これ以上データはありません。</p>
           </v-row>
         </v-container>
 
         <!-- 質問 -->
         <v-container fluid v-if="show === 'question'">
           <v-row justify="center" class="my-6">
-            <v-btn color="primary">質問する</v-btn>
+            <v-btn color="primary" @click="questionForm.dialog = true">質問する</v-btn>
+
+            <!-- カルテ記入ダイアログ -->
+            <v-dialog persistent v-model="questionForm.dialog" width="1000">
+              <v-form ref="questionForm" v-model="questionForm.validation.valid" lazy-validation>
+                <v-card class="headline grey darken-2 text-center px-2">
+                  <v-container>
+                    <v-row justify="end">
+                      <v-btn
+                        fab
+                        x-small
+                        depressed
+                        color="error"
+                        class="mr-4"
+                        :disabled="questionForm.loading"
+                        @click="questionForm.dialog = false"
+                      >
+                        <v-icon>mdi-close</v-icon>
+                      </v-btn>
+                    </v-row>
+
+                    <v-card-text class="pa-2 white--text title font-weight-bold">
+                      タイトル<span class="red--text">*</span>
+                    </v-card-text>
+                    <v-text-field
+                      v-model="questionForm.title"
+                      :rules="questionForm.validation.titleRules"
+                      :disabled="questionForm.loading"
+                      solo
+                      rounded
+                    >
+                    </v-text-field>
+
+                    <v-card-text class="pa-2 white--text title font-weight-bold">
+                      質問内容<span class="red--text">*</span>
+                    </v-card-text>
+                    <v-textarea
+                      v-model="questionForm.body"
+                      :rules="questionForm.validation.bodyRules"
+                      :disabled="questionForm.loading"
+                      solo
+                      rounded
+                      rows="6"
+                      auto-grow
+                    ></v-textarea>
+
+                    <v-card-text class="pa-2 white--text title font-weight-bold">
+                      試したこと<span class="red--text">*</span>
+                    </v-card-text>
+                    <v-textarea
+                      v-model="questionForm.tried"
+                      :rules="questionForm.validation.triedRules"
+                      :disabled="questionForm.loading"
+                      solo
+                      rounded
+                      rows="6"
+                      auto-grow
+                    ></v-textarea>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        @click="submitQuestion()"
+                        :loading="questionForm.loading"
+                        :disabled="!questionForm.validation.valid"
+                        depressed
+                        class="mt-3 white--text"
+                        color="#f6bf00"
+                      >
+                        投稿
+                      </v-btn>
+                      <v-spacer></v-spacer>
+                    </v-card-actions>
+                  </v-container>
+                </v-card>
+              </v-form>
+            </v-dialog>
           </v-row>
 
           <vue-masonry-wall
             :items="items"
             :options="{ width: width, padding: 8 }"
-            @append="getTimeline"
+            @append="getQuestion"
             v-if="items.length"
           >
             <template v-slot:default="{ item }">
               <v-card :width="width - 50" class="mx-auto pa-3">
                 <v-container class="d-block">
-                  <div
-                    id="karte"
-                    @click="$store.dispatch('dialog/open', { type: 'karte', id: item.id })"
-                  >
-                    <v-img
-                      max-height="300"
-                      class="mx-auto my-2 rounded-xl"
-                      contain
-                      eager
-                      :src="item.path + item.image"
-                      v-if="item.image"
-                    ></v-img>
+                  <h4 class="text-h4 mb-4">{{ item.title }}</h4>
 
-                    <!-- 活動時間 -->
-                    <p
-                      :class="[
-                        'text-body-2',
-                        'font-weight-bold',
-                        item.image || item.tags.length ? 'mt-6' : '',
-                      ]"
-                    >
-                      活動時間：{{ item.activity_time.slice(0, 5) }}
-                    </p>
+                  <!-- 質問内容 -->
+                  <p class="text-body-1">質問内容</p>
+                  <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
 
-                    <!-- 活動内容 -->
-                    <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
-
-                    <!-- 投稿日時 -->
-                    <p class="mt-6 mb-0 text-right small">
-                      {{ $moment(item.created_at).format('MM/DD HH:mm') }}
-                    </p>
-                  </div>
+                  <!-- 試したこと -->
+                  <p class="text-body-1">試したこと</p>
+                  <pre class="text-body-2" v-html="$formatStr(item.tried)"></pre>
                 </v-container>
 
                 <v-divider></v-divider>
@@ -236,7 +289,7 @@
             </template>
           </vue-masonry-wall>
           <v-row justify="center">
-            <p class="text-h5 my-12" v-if="stopGettingTimeline">これ以上データはありません。</p>
+            <p class="text-h5 my-12" v-if="stopGetting">これ以上データはありません。</p>
           </v-row>
         </v-container>
       </v-container>
@@ -261,8 +314,7 @@ export default {
       eventSrc: this.$storage('system') + 'event.png?' + Math.random().toString(32).substring(2), // イベント画像のURL
       loading: true, // ローディング制御
       page: 1, // ページング制御
-      stopGettingTimeline: false, // タイムラインデータ取得の終了制御
-      stopGettingQuestion: false, // 質問データ取得の終了制御
+      stopGetting: false, // データ取得の終了制御
       show: 'news', // 表示種類
       items: [], // 表示データ
       postForm: {
@@ -272,6 +324,19 @@ export default {
         validation: {
           valid: false,
           bodyRules: [(v) => !!v || '内容が無いようです。'],
+        },
+      },
+      questionForm: {
+        dialog: false, // ダイアログ制御
+        title: '', // タイトル
+        body: '', // 質問内容
+        tried: '', // 試したこと
+        loading: false,
+        validation: {
+          valid: false,
+          titleRules: [(v) => !!v || '質問内容は必須項目です。'],
+          bodyRules: [(v) => !!v || '質問内容は必須項目です。'],
+          triedRules: [(v) => !!v || '試したことは必須項目です。'],
         },
       },
     };
@@ -289,8 +354,9 @@ export default {
 
   watch: {
     show: function (show) {
-      this.items = [];
       this.page = 1;
+      this.stopGetting = false;
+      this.items = [];
 
       if (show === 'timeline') {
         this.getTimeline();
@@ -305,7 +371,7 @@ export default {
      * タイムラインデータの取得
      */
     getTimeline: async function () {
-      if (!this.loading && !this.stopGettingTimeline) {
+      if (!this.loading && !this.stopGetting) {
         this.loading = true;
 
         let response = await axios.get('/api/timeline?page=' + this.page);
@@ -323,7 +389,7 @@ export default {
           this.page += 1;
         } else if (response.status === NOT_FOUND) {
           // データ取得の終了
-          this.stopGettingTimeline = true;
+          this.stopGetting = true;
         }
 
         this.loading = false;
@@ -401,7 +467,7 @@ export default {
      * 質問データの取得
      */
     getQuestion: async function () {
-      if (!this.loading && !this.stopGettingQuestion) {
+      if (!this.loading && !this.stopGetting) {
         this.loading = true;
 
         let response = await axios.get('/api/questions?page=' + this.page);
@@ -419,7 +485,7 @@ export default {
           this.page += 1;
         } else if (response.status === NOT_FOUND) {
           // データ取得の終了
-          this.stopGettingQuestion = true;
+          this.stopGetting = true;
         }
 
         this.loading = false;
@@ -430,16 +496,21 @@ export default {
      * 投稿
      */
     submitQuestion: async function () {
-      if (this.$refs.postForm.validate()) {
-        this.postForm.loading = true;
+      if (this.$refs.questionForm.validate()) {
+        this.questionForm.loading = true;
 
-        let response = await axios.post('/api/posts', { body: this.postForm.body });
+        let response = await axios.post('/api/questions', {
+          title: this.questionForm.title,
+          body: this.questionForm.body,
+          tried: this.questionForm.tried,
+        });
 
         if (response.status === OK) {
-          this.$refs.postForm.reset();
+          this.postForm.dialog = false;
+          this.$refs.questionForm.reset();
         }
 
-        this.postForm.loading = false;
+        this.questionForm.loading = false;
       }
     },
   },

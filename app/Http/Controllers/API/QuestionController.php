@@ -74,8 +74,9 @@ class QuestionController extends Controller
             return response()->json(['message' => '質問の投稿に失敗しました。'], config('consts.status.INTERNAL_SERVER_ERROR'));
         }
 
-        broadcast(new TimelineUpdated($result));
-        return response()->json();
+        // リアルタイム更新は一旦無効化
+        // broadcast(new TimelineUpdated($result));
+        return response()->json(['message' => '質問が投稿されました。']);
     }
 
     /**
