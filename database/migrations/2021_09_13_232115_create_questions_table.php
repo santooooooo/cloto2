@@ -20,6 +20,7 @@ class CreateQuestionsTable extends Migration
                 ->cascadeOnDelete();        // ユーザーID
             $table->string('title');        // タイトル
             $table->text('body');           // 内容
+            $table->text('tried');          // 試したこと
             $table->dateTimes();
         });
     }
