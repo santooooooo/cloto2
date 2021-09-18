@@ -222,16 +222,18 @@
           >
             <template v-slot:default="{ item }">
               <v-card :width="width - 50" class="mx-auto pa-3">
-                <v-container class="d-block">
-                  <h4 class="text-h4 mb-4">{{ item.title }}</h4>
+                <v-container class="d-block pointer">
+                  <div @click="$store.dispatch('dialog/open', { type: 'question', id: item.id })">
+                    <h4 class="text-h4 mb-4">{{ item.title }}</h4>
 
-                  <!-- 質問内容 -->
-                  <p class="text-body-1">質問内容</p>
-                  <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
+                    <!-- 質問内容 -->
+                    <p class="text-body-1">質問内容</p>
+                    <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
 
-                  <!-- 試したこと -->
-                  <p class="text-body-1">試したこと</p>
-                  <pre class="text-body-2" v-html="$formatStr(item.tried)"></pre>
+                    <!-- 試したこと -->
+                    <p class="text-body-1">試したこと</p>
+                    <pre class="text-body-2" v-html="$formatStr(item.tried)"></pre>
+                  </div>
                 </v-container>
 
                 <v-divider></v-divider>
@@ -275,7 +277,7 @@
                       class="mx-1"
                       @click="
                         $store.dispatch('dialog/open', {
-                          type: 'activity_time' in item ? 'karte' : 'post',
+                          type: 'question',
                           id: item.id,
                         })
                       "
