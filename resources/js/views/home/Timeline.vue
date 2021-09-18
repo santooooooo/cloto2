@@ -354,19 +354,28 @@ export default {
 
   watch: {
     show: function (show) {
-      this.page = 1;
-      this.stopGetting = false;
-      this.items = [];
-
-      if (show === 'timeline') {
-        this.getTimeline();
-      } else if (show === 'question') {
-        this.getQuestion();
-      }
+      this.load(show);
     },
   },
 
   methods: {
+    /**
+     * データの読み込み
+     *
+     * @param {String} type - 読み込むデータタイプ
+     */
+    load: function (type) {
+      this.page = 1;
+      this.stopGetting = false;
+      this.items = [];
+
+      if (type === 'timeline') {
+        this.getTimeline();
+      } else if (type === 'question') {
+        this.getQuestion();
+      }
+    },
+
     /**
      * タイムラインデータの取得
      */
@@ -506,7 +515,8 @@ export default {
         });
 
         if (response.status === OK) {
-          this.postForm.dialog = false;
+          this.load('question');
+          this.questionForm.dialog = false;
           this.$refs.questionForm.reset();
         }
 
