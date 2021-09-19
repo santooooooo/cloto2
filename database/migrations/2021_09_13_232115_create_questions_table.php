@@ -17,10 +17,11 @@ class CreateQuestionsTable extends Migration
             $table->id();
             $table->foreignId('user_id')
                 ->constrained()
-                ->cascadeOnDelete();        // ユーザーID
-            $table->string('title');        // タイトル
-            $table->text('body');           // 内容
-            $table->text('tried');          // 試したこと
+                ->cascadeOnDelete();            // ユーザーID
+            $table->string('title');            // タイトル
+            $table->text('body');               // 内容
+            $table->text('tried');              // 試したこと
+            $table->json('media')->nullable();  // メディア
             $table->dateTimes();
         });
     }
