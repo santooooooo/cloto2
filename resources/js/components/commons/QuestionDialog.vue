@@ -30,11 +30,10 @@
         </v-row>
       </v-container>
 
-      <!-- コメント欄 -->
-      <CommentContainer
-        item-type="question"
-        :item-id="question.id"
-        :comments="question.answers"
+      <!-- 回答欄 -->
+      <AnswerContainer
+        :question-id="question.id"
+        :answers="question.answers"
         @update="getQuestion()"
       />
     </v-card>
@@ -42,11 +41,11 @@
 </template>
 
 <script>
-import CommentContainer from '@/components/commons/CommentContainer';
+import AnswerContainer from '@/components/commons/AnswerContainer';
 
 export default {
   components: {
-    CommentContainer,
+    AnswerContainer,
   },
 
   data() {
