@@ -117,10 +117,11 @@ Route::group(['middleware' => 'auth'], function () {
 
         /*
         |--------------------------------------------------------------------------
-        | 質問
+        | 質問，回答
         |--------------------------------------------------------------------------
         */
         Route::resource('questions', 'QuestionController', ['only' => ['index', 'store', 'show', 'destroy']]);
+        Route::resource('answers', 'AnswerController', ['only' => ['store', 'destroy']]);
 
 
         /*
