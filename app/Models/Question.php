@@ -23,7 +23,7 @@ class Question extends Model
      *
      * @var array
      */
-    protected $appends = ['user'];
+    protected $appends = ['user', 'answers_count'];
 
     /**
      * User モデルのリレーション
@@ -36,6 +36,16 @@ class Question extends Model
     }
 
     /**
+     * Answer モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function answers()
+    {
+        return $this->hasMany('App\Models\Answer');
+    }
+
+    /**
      * ユーザーデータの追加
      *
      * @return \Illuminate\Database\Eloquent\Model
@@ -43,5 +53,15 @@ class Question extends Model
     public function getUserAttribute()
     {
         return $this->user()->first();
+    }
+
+    /**
+     * 回答数の追加
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getAnswersCountAttribute()
+    {
+        return $this->answers()->count();
     }
 }

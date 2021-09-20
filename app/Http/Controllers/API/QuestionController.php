@@ -87,7 +87,7 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        return response()->json($question->load(['comments' => function ($query) {
+        return response()->json($question->load(['answers' => function ($query) {
             $query->latest();
         }]));
     }
