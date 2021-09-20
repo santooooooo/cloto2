@@ -283,7 +283,7 @@
                       "
                     >
                       <v-icon>mdi-message-text</v-icon>
-                      <span>{{ item.comments_count }}</span>
+                      <span>{{ item.answers_count }}</span>
                     </v-btn>
                   </v-col>
                 </v-row>

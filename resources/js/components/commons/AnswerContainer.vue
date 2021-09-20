@@ -25,11 +25,11 @@
     <v-container v-if="answers.length">
       <v-card class="my-2" v-for="answer in answers" :key="answer.id">
         <v-card-actions class="d-block">
-          <v-row no-gutters justify="end" v-if="answer.user.id === authUser.id">
+          <!-- <v-row no-gutters justify="end" v-if="answer.user.id === authUser.id">
             <v-btn icon x-small @click="deleteAnswer(answer)">
               <v-icon>mdi-close</v-icon>
             </v-btn>
-          </v-row>
+          </v-row> -->
 
           <!-- 内容 -->
           <pre class="ml-3 text-body-1 text-left" v-html="$formatStr(answer.body)"></pre>
@@ -69,14 +69,14 @@
 
           <v-col cols="3" class="my-auto text-right">
             <!-- いいねボタン -->
-            <v-btn
+            <!-- <v-btn
               icon
               :color="answer.favorite_id_by_auth_user ? 'red' : 'gray'"
               @click="favorite(answer)"
             >
               <v-icon>mdi-heart</v-icon>
               <span id="favorite-count">{{ answer.favorites_count }}</span>
-            </v-btn>
+            </v-btn> -->
           </v-col>
 
           <v-spacer></v-spacer>
