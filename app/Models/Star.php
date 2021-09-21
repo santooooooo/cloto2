@@ -36,13 +36,13 @@ class Star extends Model
     }
 
     /**
-     * Question モデルのリレーション
+     * Answer モデルのリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function karte()
+    public function answer()
     {
-        return $this->belongsTo('App\Models\Question');
+        return $this->belongsTo('App\Models\Answer');
     }
 
     /**

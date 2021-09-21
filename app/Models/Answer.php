@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Answer extends Model
 {
@@ -30,7 +31,7 @@ class Answer extends Model
      *
      * @var array
      */
-    protected $appends = ['user'];
+    protected $appends = ['user', 'stars_count', 'star_id_by_auth_user'];
 
     /**
      * User モデルのリレーション
@@ -53,6 +54,16 @@ class Answer extends Model
     }
 
     /**
+     * Star モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stars()
+    {
+        return $this->hasMany('App\Models\Star');
+    }
+
+    /**
      * ユーザーデータの追加
      *
      * @return \Illuminate\Database\Eloquent\Model
@@ -60,5 +71,26 @@ class Answer extends Model
     public function getUserAttribute()
     {
         return $this->user()->first();
+    }
+
+    /**
+     * スター数の追加
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getStarsCountAttribute()
+    {
+        return $this->stars()->count();
+    }
+
+    /**
+     * ログインユーザーによるスターIDの追加
+     *
+     * @return Int|Null
+     */
+    public function getStarIdByAuthUserAttribute()
+    {
+        $star = $this->stars()->select('id')->where('user_id', Auth::id())->first();
+        return $star ? $star->id : null;
     }
 }
