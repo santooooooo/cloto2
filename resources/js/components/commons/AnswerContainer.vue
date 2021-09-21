@@ -1,19 +1,19 @@
 <template>
   <v-container>
     <v-form
-      ref="commentForm"
-      v-model="commentForm.validation.valid"
+      ref="answerForm"
+      v-model="answerForm.validation.valid"
       lazy-validation
-      id="comment-form"
+      id="answer-form"
       class="mx-auto my-6"
     >
       <v-textarea
-        v-model="commentForm.body"
-        :rules="commentForm.validation.bodyRules"
-        :maxlength="commentForm.max"
-        :disabled="commentForm.loading"
+        v-model="answerForm.body"
+        :rules="answerForm.validation.bodyRules"
+        :maxlength="answerForm.max"
+        :disabled="answerForm.loading"
         append-icon="mdi-send"
-        placeholder="コメント"
+        placeholder="回答"
         counter
         solo
         auto-grow
@@ -22,21 +22,15 @@
       ></v-textarea>
     </v-form>
 
-    <v-container v-if="comments.length">
-      <v-card class="my-2" v-for="comment in comments" :key="comment.id">
+    <v-container v-if="answers.length">
+      <v-card class="my-2" v-for="answer in answers" :key="answer.id">
         <v-card-actions class="d-block">
-          <v-row no-gutters justify="end" v-if="comment.user.id === authUser.id">
-            <v-btn icon x-small @click="deleteComment(comment)">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-row>
-
           <!-- 内容 -->
-          <pre class="ml-3 text-body-1 text-left" v-html="$formatStr(comment.body)"></pre>
+          <pre class="ml-3 text-body-1 text-left" v-html="$formatStr(answer.body)"></pre>
 
           <!-- 投稿日時 -->
           <p class="mt-6 mb-0 mr-4 text-right text-body-2">
-            {{ $moment(comment.created_at).format('MM/DD HH:mm') }}
+            {{ $moment(answer.created_at).format('MM/DD HH:mm') }}
           </p>
         </v-card-actions>
 
@@ -45,7 +39,7 @@
             cols="8"
             class="pointer"
             @click="
-              $store.dispatch('dialog/open', { type: 'user', username: comment.user.username })
+              $store.dispatch('dialog/open', { type: 'user', username: answer.user.username })
             "
           >
             <v-row>
@@ -53,29 +47,25 @@
               <v-col cols="3" class="my-auto text-center">
                 <v-avatar
                   size="40"
-                  :style="{ 'box-shadow': '0 0 0 3px ' + $statusColor(comment.user.status) }"
+                  :style="{ 'box-shadow': '0 0 0 3px ' + $statusColor(answer.user.status) }"
                 >
-                  <img :src="$storage('icon') + comment.user.icon" />
+                  <img :src="$storage('icon') + answer.user.icon" />
                 </v-avatar>
               </v-col>
 
               <!-- ユーザー名 -->
               <v-col cols="9" class="my-auto text-start">
-                <p class="mb-0 text-body-1 text-truncate">{{ comment.user.handlename }}</p>
-                <p class="mb-0 text-body-2 text-truncate">@{{ comment.user.username }}</p>
+                <p class="mb-0 text-body-1 text-truncate">{{ answer.user.handlename }}</p>
+                <p class="mb-0 text-body-2 text-truncate">@{{ answer.user.username }}</p>
               </v-col>
             </v-row>
           </v-col>
 
           <v-col cols="3" class="my-auto text-right">
-            <!-- いいねボタン -->
-            <v-btn
-              icon
-              :color="comment.favorite_id_by_auth_user ? 'red' : 'gray'"
-              @click="favorite(comment)"
-            >
-              <v-icon>mdi-heart</v-icon>
-              <span>{{ comment.favorites_count }}</span>
+            <!-- スターボタン -->
+            <v-btn icon :color="answer.star_id_by_auth_user ? 'red' : 'gray'" @click="star(answer)">
+              <v-icon>mdi-star</v-icon>
+              <span>{{ answer.stars_count }}</span>
             </v-btn>
           </v-col>
 
@@ -84,7 +74,7 @@
       </v-card>
     </v-container>
 
-    <!-- コメント削除確認ダイアログ -->
+    <!-- 回答削除確認ダイアログ -->
     <v-dialog v-model="deleteForm.dialog" max-width="500px" persistent>
       <v-card class="headline grey darken-2 text-center pa-2">
         <v-card-title>
@@ -116,14 +106,13 @@ import { OK } from '@/consts/status';
 
 export default {
   props: {
-    itemType: String, // カルテか投稿どちらのコメントか
-    itemId: Number, // コメントが紐付いているアイテムのID
-    comments: Array, // コメント一覧
+    questionId: Number, // 回答が紐付いているアイテムのID
+    answers: Array, // 回答一覧
   },
 
   data() {
     return {
-      commentForm: {
+      answerForm: {
         body: '', // 内容
         max: 1000, // 最大長
         loading: false,
@@ -148,42 +137,34 @@ export default {
 
   methods: {
     /**
-     * コメントの投稿
+     * 回答の投稿
      */
     submit: async function () {
-      if (this.$refs.commentForm.validate()) {
-        this.commentForm.loading = true;
+      if (this.$refs.answerForm.validate()) {
+        this.answerForm.loading = true;
 
-        let response;
-        if (this.itemType === 'karte') {
-          response = await axios.post('/api/comments', {
-            karte_id: this.itemId,
-            body: this.commentForm.body,
-          });
-        } else if (this.itemType === 'post') {
-          response = await axios.post('/api/comments', {
-            post_id: this.itemId,
-            body: this.commentForm.body,
-          });
-        }
+        let response = await axios.post('/api/answers', {
+          question_id: this.questionId,
+          body: this.answerForm.body,
+        });
 
         if (response.status === OK) {
-          // コメントデータの更新
+          // 回答データの更新
           this.$emit('update');
-          this.$refs.commentForm.reset();
+          this.$refs.answerForm.reset();
         }
 
-        this.commentForm.loading = false;
+        this.answerForm.loading = false;
       }
     },
 
     /**
-     * コメントの削除
+     * 回答の削除
      *
-     * @param {Object} comment - 削除するコメント
+     * @param {Object} answer - 削除する回答
      */
-    deleteComment: function (comment) {
-      this.deleteForm.data = comment;
+    deleteAnswer: function (answer) {
+      this.deleteForm.data = answer;
       this.deleteForm.dialog = true;
     },
 
@@ -193,10 +174,10 @@ export default {
     deleteSubmit: async function () {
       this.deleteForm.loading = true;
 
-      let response = await axios.delete('/api/comments/' + this.deleteForm.data.id);
+      let response = await axios.delete('/api/answers/' + this.deleteForm.data.id);
 
       if (response.status === OK) {
-        // コメントデータの更新
+        // 回答データの更新
         this.$emit('update');
         this.deleteForm.dialog = false;
       }
@@ -205,28 +186,28 @@ export default {
     },
 
     /**
-     * いいね処理
+     * スター処理
      *
-     * @param {Object} comment - いいねするコメント
+     * @param {Object} answer - スターする回答
      */
-    favorite: async function (comment) {
-      if (!comment.favorite_id_by_auth_user) {
-        // いいね処理
-        let response = await axios.post('/api/favorites', { comment_id: comment.id });
+    star: async function (answer) {
+      if (!answer.star_id_by_auth_user) {
+        // スター処理
+        let response = await axios.post('/api/stars', { answer_id: answer.id });
 
         if (response.status === OK) {
           // IDの追加とカウントアップ
-          comment.favorite_id_by_auth_user = response.data;
-          comment.favorites_count += 1;
+          answer.star_id_by_auth_user = response.data;
+          answer.stars_count += 1;
         }
       } else {
-        // いいね解除処理
-        let response = await axios.delete('/api/favorites/' + comment.favorite_id_by_auth_user);
+        // スター解除処理
+        let response = await axios.delete('/api/stars/' + answer.star_id_by_auth_user);
 
         if (response.status === OK) {
           // IDの削除とカウントダウン
-          comment.favorite_id_by_auth_user = null;
-          comment.favorites_count -= 1;
+          answer.star_id_by_auth_user = null;
+          answer.stars_count -= 1;
         }
       }
     },

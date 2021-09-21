@@ -117,6 +117,16 @@ Route::group(['middleware' => 'auth'], function () {
 
         /*
         |--------------------------------------------------------------------------
+        | 質問，回答，スター
+        |--------------------------------------------------------------------------
+        */
+        Route::resource('questions', 'QuestionController', ['only' => ['index', 'store', 'show', 'destroy']]);
+        Route::resource('answers', 'AnswerController', ['only' => ['store', 'destroy']]);
+        Route::resource('stars', 'StarController', ['only' => ['store', 'destroy']]);
+
+
+        /*
+        |--------------------------------------------------------------------------
         | タイムライン
         |--------------------------------------------------------------------------
         */

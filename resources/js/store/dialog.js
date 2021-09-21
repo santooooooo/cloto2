@@ -2,12 +2,14 @@ const state = {
   username: null,
   karteId: null,
   postId: null,
+  questionId: null,
 };
 
 const getters = {
   username: (state) => state.username,
   karteId: (state) => state.karteId,
   postId: (state) => state.postId,
+  questionId: (state) => state.questionId,
 };
 
 const mutations = {
@@ -24,6 +26,10 @@ const mutations = {
       case 'post':
         state.postId = data.id;
         break;
+
+      case 'question':
+        state.questionId = data.id;
+        break;
     }
   },
   clearItem(state, data) {
@@ -38,6 +44,10 @@ const mutations = {
 
       case 'post':
         state.postId = null;
+        break;
+
+      case 'question':
+        state.questionId = null;
         break;
     }
   },

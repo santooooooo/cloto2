@@ -49,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
-    protected $appends = ['status', 'follows_count', 'followers_count', 'seat', 'room', 'roadmaps'];
+    protected $appends = ['status', 'stars_count', 'follows_count', 'followers_count', 'seat', 'room', 'roadmaps'];
 
     /**
      * Send the email verification notification.
@@ -132,6 +132,36 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Question モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function questions()
+    {
+        return $this->hasMany('App\Models\Question');
+    }
+
+    /**
+     * Answer モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function answers()
+    {
+        return $this->hasMany('App\Models\Answer');
+    }
+
+    /**
+     * Star モデルのリレーション
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stars()
+    {
+        return $this->hasMany('App\Models\Star');
+    }
+
+    /**
      * Inquiry モデルのリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -189,6 +219,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getStatusAttribute()
     {
         return $this->status();
+    }
+
+    /**
+     * スター数の追加
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getStarsCountAttribute()
+    {
+        return $this->stars()->count();
     }
 
     /**

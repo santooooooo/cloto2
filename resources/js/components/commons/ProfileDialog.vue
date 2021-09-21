@@ -20,6 +20,9 @@
               <v-row class="mt-2 text-body-2" justify="center">
                 累計着席時間：{{ Math.floor(user.sitting_time / 60) }}時間
               </v-row>
+              <v-row class="mt-2 text-body-2" justify="center">
+                <v-icon class="mr-1 text-body-2">mdi-star</v-icon>{{ user.stars_count }}
+              </v-row>
 
               <v-row class="mt-3" justify="center" v-if="user.sns || user.web">
                 <v-btn
@@ -101,12 +104,12 @@
               <pre class="ma-3 text-body-1">{{ user.in_progress || '集中しています！' }}</pre>
             </v-card>
 
-	    <!-- タグ別のカルテ数の表示を行うグラフ -->
+            <!-- タグ別のカルテ数の表示を行うグラフ -->
             <v-card light flat width="90%" class="mx-6 mt-2 text-center">
               <bar-chart :height="90" :graph-data="graphData" v-if="graphShow"></bar-chart>
             </v-card>
 
-	    <!-- 日別のカルテ数の表示を行うグラフ -->
+            <!-- 日別のカルテ数の表示を行うグラフ -->
             <v-card light flat width="90%" class="mx-6 mt-2 p-2">
               <heatmap :map-data="graphData" v-if="graphShow"></heatmap>
             </v-card>

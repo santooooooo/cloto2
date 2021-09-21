@@ -68,6 +68,7 @@
     <ProfileDialog />
     <KarteDialog />
     <PostDialog />
+    <QuestionDialog />
   </v-app>
 </template>
 
@@ -80,6 +81,7 @@ import Tutorial from './Tutorial';
 import ProfileDialog from '@/components/commons/ProfileDialog';
 import KarteDialog from '@/components/commons/KarteDialog';
 import PostDialog from '@/components/commons/PostDialog';
+import QuestionDialog from '@/components/commons/QuestionDialog';
 import { OK, NOT_FOUND, UNPROCESSABLE_ENTITY, INTERNAL_SERVER_ERROR } from '@/consts/status';
 import { ANNOUNCE_SOUND } from '@/consts/sound';
 
@@ -93,6 +95,7 @@ export default {
     ProfileDialog,
     KarteDialog,
     PostDialog,
+    QuestionDialog,
   },
   data() {
     return {
