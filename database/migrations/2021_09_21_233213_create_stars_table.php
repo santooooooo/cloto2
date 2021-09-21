@@ -18,9 +18,9 @@ class CreateStarsTable extends Migration
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnDelete();            // ユーザーID
-            $table->foreignId('question_id')
+            $table->foreignId('answer_id')
                 ->constrained()
-                ->cascadeOnDelete();            // 質問ID
+                ->cascadeOnDelete();            // 回答ID
         });
     }
 

@@ -15,7 +15,7 @@ class Star extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'question_id'
+        'user_id', 'answer_id'
     ];
 
     /**
