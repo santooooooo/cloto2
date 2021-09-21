@@ -75,7 +75,7 @@
               @click="favorite(comment)"
             >
               <v-icon>mdi-heart</v-icon>
-              <span id="favorite-count">{{ comment.favorites_count }}</span>
+              <span>{{ comment.favorites_count }}</span>
             </v-btn>
           </v-col>
 

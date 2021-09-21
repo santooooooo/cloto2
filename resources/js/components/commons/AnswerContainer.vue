@@ -25,12 +25,6 @@
     <v-container v-if="answers.length">
       <v-card class="my-2" v-for="answer in answers" :key="answer.id">
         <v-card-actions class="d-block">
-          <!-- <v-row no-gutters justify="end" v-if="answer.user.id === authUser.id">
-            <v-btn icon x-small @click="deleteAnswer(answer)">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-row> -->
-
           <!-- 内容 -->
           <pre class="ml-3 text-body-1 text-left" v-html="$formatStr(answer.body)"></pre>
 
@@ -68,15 +62,11 @@
           </v-col>
 
           <v-col cols="3" class="my-auto text-right">
-            <!-- いいねボタン -->
-            <!-- <v-btn
-              icon
-              :color="answer.favorite_id_by_auth_user ? 'red' : 'gray'"
-              @click="favorite(answer)"
-            >
-              <v-icon>mdi-heart</v-icon>
-              <span id="favorite-count">{{ answer.favorites_count }}</span>
-            </v-btn> -->
+            <!-- スターボタン -->
+            <v-btn icon :color="answer.star_id_by_auth_user ? 'red' : 'gray'" @click="star(answer)">
+              <v-icon>mdi-star</v-icon>
+              <span>{{ answer.stars_count }}</span>
+            </v-btn>
           </v-col>
 
           <v-spacer></v-spacer>
@@ -196,28 +186,28 @@ export default {
     },
 
     /**
-     * いいね処理
+     * スター処理
      *
-     * @param {Object} answer - いいねする回答
+     * @param {Object} answer - スターする回答
      */
-    favorite: async function (answer) {
-      if (!answer.favorite_id_by_auth_user) {
-        // いいね処理
-        let response = await axios.post('/api/favorites', { answer_id: answer.id });
+    star: async function (answer) {
+      if (!answer.star_id_by_auth_user) {
+        // スター処理
+        let response = await axios.post('/api/stars', { answer_id: answer.id });
 
         if (response.status === OK) {
           // IDの追加とカウントアップ
-          answer.favorite_id_by_auth_user = response.data;
-          answer.favorites_count += 1;
+          answer.star_id_by_auth_user = response.data;
+          answer.stars_count += 1;
         }
       } else {
-        // いいね解除処理
-        let response = await axios.delete('/api/favorites/' + answer.favorite_id_by_auth_user);
+        // スター解除処理
+        let response = await axios.delete('/api/stars/' + answer.star_id_by_auth_user);
 
         if (response.status === OK) {
           // IDの削除とカウントダウン
-          answer.favorite_id_by_auth_user = null;
-          answer.favorites_count -= 1;
+          answer.star_id_by_auth_user = null;
+          answer.stars_count -= 1;
         }
       }
     },

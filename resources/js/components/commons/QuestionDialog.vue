@@ -16,7 +16,7 @@
         </v-row>
 
         <v-row justify="center" class="mt-2">
-          <p class="text-body-1">{{ question.title }}</p>
+          <p class="text-h3 white--text font-weight-bold">{{ question.title }}</p>
 
           <v-card-text class="pa-2 white--text title font-weight-bold">質問内容</v-card-text>
           <v-card rounded="xl" min-height="154" width="90%" class="mb-4 text-left">
