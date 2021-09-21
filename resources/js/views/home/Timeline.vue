@@ -25,112 +25,119 @@
         </v-tabs>
 
         <!-- タイムライン -->
-        <v-container fluid v-if="show === 'timeline'">
-          <v-form
-            ref="postForm"
-            v-model="postForm.validation.valid"
-            lazy-validation
-            id="post-form"
-            class="mx-auto my-6"
-          >
-            <v-textarea
-              v-model="postForm.body"
-              :rules="postForm.validation.bodyRules"
-              :maxlength="postForm.max"
-              :disabled="postForm.loading"
-              append-icon="mdi-send"
-              placeholder="つぶやき"
-              counter
-              solo
-              auto-grow
-              rows="1"
-              @click:append="submitPost()"
-            ></v-textarea>
-          </v-form>
+        <v-layout v-if="show === 'timeline'">
+          <v-container fluid>
+            <v-form
+              ref="postForm"
+              v-model="postForm.validation.valid"
+              lazy-validation
+              id="post-form"
+              class="mx-auto my-6"
+            >
+              <v-textarea
+                v-model="postForm.body"
+                :rules="postForm.validation.bodyRules"
+                :maxlength="postForm.max"
+                :disabled="postForm.loading"
+                append-icon="mdi-send"
+                placeholder="つぶやき"
+                counter
+                solo
+                auto-grow
+                rows="1"
+                @click:append="submitPost()"
+              ></v-textarea>
+            </v-form>
 
-          <vue-masonry-wall
-            :items="items"
-            :options="{ width: width, padding: 8 }"
-            @append="getTimeline"
-            v-if="items.length"
-          >
-            <template v-slot:default="{ item }">
-              <v-card :width="width - 50" class="mx-auto pa-3">
-                <!-- カルテ -->
-                <KarteContainer :karte="item" v-if="item.activity_time" />
+            <vue-masonry-wall
+              :items="items"
+              :options="{ width: width, padding: 8 }"
+              @append="getTimeline"
+              v-if="items.length"
+            >
+              <template v-slot:default="{ item }">
+                <v-card :width="width - 50" class="mx-auto pa-3">
+                  <!-- カルテ -->
+                  <KarteContainer :karte="item" v-if="item.activity_time" />
 
-                <!-- 投稿 -->
-                <PostContainer :post="item" @delete="deletePost($event)" v-else />
+                  <!-- 投稿 -->
+                  <PostContainer :post="item" @delete="deletePost($event)" v-else />
 
-                <v-divider></v-divider>
+                  <v-divider></v-divider>
 
-                <v-row no-gutters class="mt-3">
-                  <v-col
-                    cols="7"
-                    class="ml-2 pointer"
-                    @click="
-                      $store.dispatch('dialog/open', {
-                        type: 'user',
-                        username: item.user.username,
-                      })
-                    "
-                  >
-                    <v-row>
-                      <!-- ユーザーアイコン -->
-                      <v-col cols="3" class="my-auto text-center">
-                        <v-avatar
-                          size="40"
-                          :style="{ 'box-shadow': '0 0 0 3px ' + $statusColor(item.user.status) }"
-                        >
-                          <img :src="$storage('icon') + item.user.icon" />
-                        </v-avatar>
-                      </v-col>
-
-                      <!-- ユーザー名 -->
-                      <v-col cols="8" class="my-auto text-start">
-                        <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
-                        <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-
-                  <v-spacer></v-spacer>
-
-                  <v-col cols="4" class="my-auto text-center" v-if="item.id">
-                    <!-- コメントボタン -->
-                    <v-btn
-                      icon
-                      class="mx-1"
+                  <v-row no-gutters class="mt-3">
+                    <v-col
+                      cols="7"
+                      class="ml-2 pointer"
                       @click="
                         $store.dispatch('dialog/open', {
-                          type: 'activity_time' in item ? 'karte' : 'post',
-                          id: item.id,
+                          type: 'user',
+                          username: item.user.username,
                         })
                       "
                     >
-                      <v-icon>mdi-message-text</v-icon>
-                      <span>{{ item.comments_count }}</span>
-                    </v-btn>
+                      <v-row>
+                        <!-- ユーザーアイコン -->
+                        <v-col cols="3" class="my-auto text-center">
+                          <v-avatar
+                            size="40"
+                            :style="{ 'box-shadow': '0 0 0 3px ' + $statusColor(item.user.status) }"
+                          >
+                            <img :src="$storage('icon') + item.user.icon" />
+                          </v-avatar>
+                        </v-col>
 
-                    <!-- いいねボタン -->
-                    <v-btn
-                      icon
-                      class="mx-1"
-                      :color="item.favorite_id_by_auth_user ? 'red' : 'gray'"
-                      @click="favorite(item)"
-                    >
-                      <v-icon>mdi-heart</v-icon>
-                      <span>{{ item.favorites_count }}</span>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-card>
-            </template>
-          </vue-masonry-wall>
-          <v-row justify="center">
-            <p class="text-h5 my-12" v-if="stopGetting">これ以上データはありません。</p>
-          </v-row>
-        </v-container>
+                        <!-- ユーザー名 -->
+                        <v-col cols="8" class="my-auto text-start">
+                          <p class="mb-0 text-body-1 text-truncate">{{ item.user.handlename }}</p>
+                          <p class="mb-0 text-body-2 text-truncate">@{{ item.user.username }}</p>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+
+                    <v-spacer></v-spacer>
+
+                    <v-col cols="4" class="my-auto text-center" v-if="item.id">
+                      <!-- コメントボタン -->
+                      <v-btn
+                        icon
+                        class="mx-1"
+                        @click="
+                          $store.dispatch('dialog/open', {
+                            type: 'activity_time' in item ? 'karte' : 'post',
+                            id: item.id,
+                          })
+                        "
+                      >
+                        <v-icon>mdi-message-text</v-icon>
+                        <span>{{ item.comments_count }}</span>
+                      </v-btn>
+
+                      <!-- いいねボタン -->
+                      <v-btn
+                        icon
+                        class="mx-1"
+                        :color="item.favorite_id_by_auth_user ? 'red' : 'gray'"
+                        @click="favorite(item)"
+                      >
+                        <v-icon>mdi-heart</v-icon>
+                        <span>{{ item.favorites_count }}</span>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </template>
+            </vue-masonry-wall>
+            <v-row justify="center">
+              <p class="text-h5 my-12" v-if="stopGetting">これ以上データはありません。</p>
+            </v-row>
+          </v-container>
+
+          <!-- カルテ数のランキングの表示 -->
+          <v-card width="30%" max-height="60rem" class="my-2">
+            <Rank />
+          </v-card>
+        </v-layout>
 
         <!-- 質問 -->
         <v-container fluid v-if="show === 'question'">
@@ -301,8 +308,12 @@
 
 <script>
 import { OK, NOT_FOUND } from '@/consts/status';
+import Rank from '@/components/home/Rank';
 
 export default {
+  components: {
+    Rank,
+  },
   head: {
     title() {
       return {
