@@ -15,6 +15,9 @@ class CreateStarsTable extends Migration
     {
         Schema::create('stars', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();            // ユーザーID
             $table->foreignId('question_id')
                 ->constrained()
                 ->cascadeOnDelete();            // 質問ID
