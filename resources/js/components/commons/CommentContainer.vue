@@ -101,7 +101,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="grey" :loading="deleteForm.loading" @click="deleteSubmit()"> 削除 </v-btn>
+          <v-btn color="grey" :loading="deleteForm.loading" @click="deleteSubmit()">削除</v-btn>
           <v-btn color="error" :loading="deleteForm.loading" @click="deleteForm.dialog = false">
             キャンセル
           </v-btn>
