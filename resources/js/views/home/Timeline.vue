@@ -18,11 +18,39 @@
       </v-card>
 
       <v-container fluid>
-        <v-tabs class="mt-6" fixed-tabs background-color="#f6bf00" color="black">
-          <v-tab @click="show = 'news'" :disabled="loading">運営からのお知らせ</v-tab>
+        <v-tabs
+          v-model="selectedTab"
+          class="mt-6"
+          fixed-tabs
+          background-color="#f6bf00"
+          color="black"
+        >
+          <v-tab @click="show = 'informations'" :disabled="loading">運営からのお知らせ</v-tab>
           <v-tab @click="show = 'timeline'" :disabled="loading">タイムライン</v-tab>
-          <v-tab @click="show = 'question'" :disabled="loading">質問</v-tab>
+          <v-tab @click="show = 'questions'" :disabled="loading">質問</v-tab>
         </v-tabs>
+
+        <!-- 運営からのお知らせ -->
+        <v-container fluid v-if="show === 'informations'">
+          <vue-masonry-wall
+            :items="items"
+            :options="{ width: width, padding: 8 }"
+            @append="getData"
+            v-if="items.length"
+          >
+            <template v-slot:default="{ item }">
+              <v-card :width="width - 50" class="mx-auto pa-3">
+                <v-container class="d-block pointer">
+                  <h4 class="text-h4 mb-4">{{ item.title }}</h4>
+                  <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
+                </v-container>
+              </v-card>
+            </template>
+          </vue-masonry-wall>
+          <v-row justify="center">
+            <p class="text-h5 my-12" v-if="stopGetting">これ以上お知らせはありません。</p>
+          </v-row>
+        </v-container>
 
         <!-- タイムライン -->
         <v-layout v-if="show === 'timeline'">
@@ -52,7 +80,7 @@
             <vue-masonry-wall
               :items="items"
               :options="{ width: width, padding: 8 }"
-              @append="getTimeline"
+              @append="getData"
               v-if="items.length"
             >
               <template v-slot:default="{ item }">
@@ -140,11 +168,11 @@
         </v-layout>
 
         <!-- 質問 -->
-        <v-container fluid v-if="show === 'question'">
+        <v-container fluid v-if="show === 'questions'">
           <v-row justify="center" class="my-6">
             <v-btn color="primary" @click="questionForm.dialog = true">質問する</v-btn>
 
-            <!-- カルテ記入ダイアログ -->
+            <!-- 質問記入ダイアログ -->
             <v-dialog persistent v-model="questionForm.dialog" width="1000">
               <v-form ref="questionForm" v-model="questionForm.validation.valid" lazy-validation>
                 <v-card class="headline grey darken-2 text-center px-2">
@@ -224,7 +252,7 @@
           <vue-masonry-wall
             :items="items"
             :options="{ width: width, padding: 8 }"
-            @append="getQuestion"
+            @append="getData"
             v-if="items.length"
           >
             <template v-slot:default="{ item }">
@@ -298,7 +326,7 @@
             </template>
           </vue-masonry-wall>
           <v-row justify="center">
-            <p class="text-h5 my-12" v-if="stopGetting">これ以上データはありません。</p>
+            <p class="text-h5 my-12" v-if="stopGetting">これ以上質問はありません。</p>
           </v-row>
         </v-container>
       </v-container>
@@ -325,10 +353,11 @@ export default {
   data() {
     return {
       eventSrc: this.$storage('system') + 'event.png?' + Math.random().toString(32).substring(2), // イベント画像のURL
-      loading: true, // ローディング制御
+      selectedTab: 0, // タブのデフォルト選択項目用
+      show: 'informations', // 表示種類
+      loading: false, // ローディング制御
       page: 1, // ページング制御
       stopGetting: false, // データ取得の終了制御
-      show: 'news', // 表示種類
       items: [], // 表示データ
       postForm: {
         body: '', // 内容
@@ -366,37 +395,24 @@ export default {
   },
 
   watch: {
-    show: function (show) {
-      this.load(show);
+    show: function () {
+      this.page = 1;
+      this.stopGetting = false;
+      this.items = [];
+
+      this.getData();
     },
   },
 
   methods: {
     /**
-     * データの読み込み
-     *
-     * @param {String} type - 読み込むデータタイプ
+     * データの取得
      */
-    load: function (type) {
-      this.page = 1;
-      this.stopGetting = false;
-      this.items = [];
-
-      if (type === 'timeline') {
-        this.getTimeline();
-      } else if (type === 'question') {
-        this.getQuestion();
-      }
-    },
-
-    /**
-     * タイムラインデータの取得
-     */
-    getTimeline: async function () {
+    getData: async function () {
       if (!this.loading && !this.stopGetting) {
         this.loading = true;
 
-        let response = await axios.get('/api/timeline?page=' + this.page);
+        let response = await axios.get('/api/' + this.show + '?page=' + this.page);
 
         if (response.status === OK) {
           // 現在配列に含まれていないデータのみを取り出す
@@ -419,7 +435,7 @@ export default {
     },
 
     /**
-     * 投稿
+     * つぶやきの投稿
      */
     submitPost: async function () {
       if (this.$refs.postForm.validate()) {
@@ -436,9 +452,9 @@ export default {
     },
 
     /**
-     * 投稿の削除
+     * つぶやきの削除
      *
-     * @param {Object} post - 削除する投稿
+     * @param {Object} post - 削除するつぶやき
      */
     deletePost: function (post) {
       // 表示データから削除
@@ -486,36 +502,7 @@ export default {
     },
 
     /**
-     * 質問データの取得
-     */
-    getQuestion: async function () {
-      if (!this.loading && !this.stopGetting) {
-        this.loading = true;
-
-        let response = await axios.get('/api/questions?page=' + this.page);
-
-        if (response.status === OK) {
-          // 現在配列に含まれていないデータのみを取り出す
-          let data = response.data.filter((item) => {
-            return !this.items.includes(item);
-          });
-
-          // データを追加
-          this.items = this.items.concat(data);
-
-          // ページの更新
-          this.page += 1;
-        } else if (response.status === NOT_FOUND) {
-          // データ取得の終了
-          this.stopGetting = true;
-        }
-
-        this.loading = false;
-      }
-    },
-
-    /**
-     * 投稿
+     * 質問の投稿
      */
     submitQuestion: async function () {
       if (this.$refs.questionForm.validate()) {
@@ -539,7 +526,7 @@ export default {
   },
 
   async created() {
-    await this.getTimeline();
+    await this.getData();
 
     // リアルタイム更新は一旦無効化
     /**
