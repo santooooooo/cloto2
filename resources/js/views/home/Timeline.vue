@@ -1,5 +1,5 @@
 <template>
-  <v-layout class="overflow-y-auto" id="timeline">
+  <v-layout class="overflow-y-auto" id="home">
     <v-container fluid>
       <!-- ローディング -->
       <v-progress-linear indeterminate absolute height="10" v-if="loading"></v-progress-linear>
@@ -40,9 +40,14 @@
           >
             <template v-slot:default="{ item }">
               <v-card :width="width - 50" class="mx-auto pa-3">
-                <v-container class="d-block pointer">
-                  <h4 class="text-h4 mb-4">{{ item.title }}</h4>
+                <v-container class="d-block">
+                  <h5 class="text-h5 mb-4">{{ item.title }}</h5>
                   <pre class="text-body-2" v-html="$formatStr(item.body)"></pre>
+
+                  <!-- 投稿日時 -->
+                  <p class="mt-6 mb-0 text-right small">
+                    {{ $moment(item.created_at).format('MM/DD HH:mm') }}
+                  </p>
                 </v-container>
               </v-card>
             </template>
@@ -259,7 +264,7 @@
               <v-card :width="width - 50" class="mx-auto pa-3">
                 <v-container class="d-block pointer">
                   <div @click="$store.dispatch('dialog/open', { type: 'question', id: item.id })">
-                    <h4 class="text-h4 mb-4">{{ item.title }}</h4>
+                    <h5 class="text-h5 mb-4">{{ item.title }}</h5>
 
                     <!-- 質問内容 -->
                     <p class="text-body-1">質問内容</p>
@@ -268,6 +273,11 @@
                     <!-- 試したこと -->
                     <p class="text-body-1">試したこと</p>
                     <pre class="text-body-2" v-html="$formatStr(item.tried)"></pre>
+
+                    <!-- 投稿日時 -->
+                    <p class="mt-6 mb-0 text-right small">
+                      {{ $moment(item.created_at).format('MM/DD HH:mm') }}
+                    </p>
                   </div>
                 </v-container>
 
@@ -399,7 +409,6 @@ export default {
       this.page = 1;
       this.stopGetting = false;
       this.items = [];
-
       this.getData();
     },
   },
@@ -515,7 +524,11 @@ export default {
         });
 
         if (response.status === OK) {
-          this.load('question');
+          this.page = 1;
+          this.stopGetting = false;
+          this.items = [];
+          this.getData();
+
           this.questionForm.dialog = false;
           this.$refs.questionForm.reset();
         }
@@ -549,7 +562,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#timeline {
+#home {
   max-width: 100%;
   height: calc(100vh - 64px);
 
@@ -567,6 +580,10 @@ export default {
 
   .pointer {
     cursor: pointer;
+  }
+
+  pre {
+    white-space: pre-wrap;
   }
 }
 </style>
