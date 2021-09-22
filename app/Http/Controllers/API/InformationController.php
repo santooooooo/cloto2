@@ -3,22 +3,22 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Announce;
+use App\Models\Information;
 use Illuminate\Http\Request;
 
-class AnnounceController extends Controller
+class InformationController extends Controller
 {
-    /** @var Announce */
-    protected $announce;
+    /** @var Information */
+    protected $information;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Announce $announce)
+    public function __construct(Information $information)
     {
-        $this->announce = $announce;
+        $this->information = $information;
     }
 
 
@@ -30,7 +30,7 @@ class AnnounceController extends Controller
      */
     public function index(Request $request)
     {
-        $announces = $this->announce->all()
+        $informations = $this->information->all()
             ->sortByDesc('created_at')
             ->forPage($request->page ?? 1, 25)
             ->values()
@@ -40,6 +40,6 @@ class AnnounceController extends Controller
             return response()->json(null, config('consts.status.NOT_FOUND'));
         }
 
-        return response()->json($announces);
+        return response()->json($informations);
     }
 }

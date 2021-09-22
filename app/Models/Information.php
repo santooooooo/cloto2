@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Announce extends Model
+class Information extends Model
 {
     protected $primaryKey = 'id';
     protected $dates = ['created_at', 'updated_at'];
