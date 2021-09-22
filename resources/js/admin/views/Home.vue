@@ -35,6 +35,34 @@
 
       <hr />
 
+      <!-- 運営からのお知らせ -->
+      <v-container my-10>
+        <h3 class="mb-4">運営からのお知らせ</h3>
+
+        <v-form ref="informationForm" v-model="informationForm.validation.valid" lazy-validation>
+          <v-text-field
+            v-model="informationForm.title"
+            :rules="informationForm.validation.titleRules"
+            :disabled="informationForm.loading"
+            label="タイトル"
+          ></v-text-field>
+          <v-textarea
+            v-model="informationForm.body"
+            :rules="informationForm.validation.bodyRules"
+            :disabled="informationForm.loading"
+            placeholder="内容"
+            rows="5"
+            solo
+          ></v-textarea>
+
+          <v-btn color="primary" :loading="newsletterForm.loading" @click="submitInformation()">
+            投稿する
+          </v-btn>
+        </v-form>
+      </v-container>
+
+      <hr />
+
       <!-- 一斉メッセージ -->
       <v-container my-10>
         <h3 class="mb-4">一斉メッセージ</h3>
@@ -97,9 +125,20 @@ export default {
       };
     },
   },
+
   data() {
     return {
       loading: false, // ローディング制御
+      informationForm: {
+        loading: false, // ローディング制御
+        title: '', // タイトル
+        body: '', // メール内容
+        validation: {
+          valid: false,
+          titleRules: [(v) => !!v || 'タイトルは必須項目です。'],
+          bodyRules: [(v) => !!v || '内容は必須項目です。'],
+        },
+      },
       inquiryForm: {
         loading: false, // ローディング制御
         message: '', // メッセージ内容
@@ -120,11 +159,13 @@ export default {
       },
     };
   },
+
   computed: {
     authUser() {
       return this.$store.getters['auth/user'];
     },
   },
+
   methods: {
     /**
      * イベント一覧画像の送信
@@ -144,6 +185,27 @@ export default {
         this.loading = false;
       }
     },
+
+    /**
+     * 運営からのお知らせの投稿
+     */
+    submitInformation: async function () {
+      if (this.$refs.informationForm.validate()) {
+        this.informationForm.loading = true;
+
+        let response = await axios.post('/api/admin/information', {
+          title: this.informationForm.title,
+          body: this.informationForm.body,
+        });
+
+        if (response.status === OK) {
+          this.$refs.informationForm.reset();
+        }
+
+        this.informationForm.loading = false;
+      }
+    },
+
     /**
      * 一斉メッセージの送信
      */
@@ -164,6 +226,7 @@ export default {
         this.inquiryForm.loading = false;
       }
     },
+
     /**
      * ニュースレターの送信
      */

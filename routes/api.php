@@ -140,7 +140,7 @@ Route::group(['middleware' => 'auth'], function () {
         | 運営からのお知らせ
         |--------------------------------------------------------------------------
         */
-        Route::resource('informations', 'InformationController', ['only' => ['index']]);
+        Route::resource('information', 'InformationController', ['only' => ['index']]);
 
 
         /*

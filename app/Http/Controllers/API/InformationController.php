@@ -30,16 +30,16 @@ class InformationController extends Controller
      */
     public function index(Request $request)
     {
-        $informations = $this->information->all()
+        $information = $this->information->all()
             ->sortByDesc('created_at')
             ->forPage($request->page ?? 1, 25)
             ->values()
             ->toArray();
 
-        if (empty($data)) {
+        if (empty($information)) {
             return response()->json(null, config('consts.status.NOT_FOUND'));
         }
 
-        return response()->json($informations);
+        return response()->json($information);
     }
 }

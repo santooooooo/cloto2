@@ -63,7 +63,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
         | 運営からのお知らせ
         |--------------------------------------------------------------------------
         */
-        Route::resource('informations', 'InformationController', ['only' => ['store']]);
+        Route::resource('information', 'InformationController', ['only' => ['store']]);
 
 
         /*

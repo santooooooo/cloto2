@@ -25,13 +25,13 @@
           background-color="#f6bf00"
           color="black"
         >
-          <v-tab @click="show = 'informations'" :disabled="loading">運営からのお知らせ</v-tab>
+          <v-tab @click="show = 'information'" :disabled="loading">運営からのお知らせ</v-tab>
           <v-tab @click="show = 'timeline'" :disabled="loading">タイムライン</v-tab>
           <v-tab @click="show = 'questions'" :disabled="loading">質問</v-tab>
         </v-tabs>
 
         <!-- 運営からのお知らせ -->
-        <v-container fluid v-if="show === 'informations'">
+        <v-container fluid v-if="show === 'information'">
           <vue-masonry-wall
             :items="items"
             :options="{ width: width, padding: 8 }"
@@ -354,7 +354,7 @@ export default {
     return {
       eventSrc: this.$storage('system') + 'event.png?' + Math.random().toString(32).substring(2), // イベント画像のURL
       selectedTab: 0, // タブのデフォルト選択項目用
-      show: 'informations', // 表示種類
+      show: 'information', // 表示種類
       loading: false, // ローディング制御
       page: 1, // ページング制御
       stopGetting: false, // データ取得の終了制御
