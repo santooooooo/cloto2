@@ -78,6 +78,16 @@
                   counter
                 ></v-text-field>
 
+                <v-text-field
+                  v-model="registerForm.twitter"
+                  :rules="registerForm.validation.twitterRules"
+                  label="Twitterアカウント"
+                  prefix="@"
+                  placeholder="cloto_jp"
+                  maxlength="32"
+                  counter
+                ></v-text-field>
+
                 <p class="ma-4">
                   当サービスを利用する前に、<br />
                   必ず<a
@@ -143,6 +153,7 @@ export default {
         password: '',
         passwordConfirmation: '',
         handlename: '',
+        twitter: '',
         checkbox: false,
         showPassword: false,
         loading: false,
@@ -172,6 +183,7 @@ export default {
             (v) => (v && v === this.registerForm.password) || 'パスワードが一致しません。',
           ],
           handlenameRules: [(v) => !!v || '表示名は必須項目です。'],
+          twitterRules: [(v) => !!v || 'Twitterアカウントは必須項目です。'],
           checkboxRules: [(v) => !!v || 'アンケートの回答は必須です。'],
         },
       },
@@ -206,6 +218,7 @@ export default {
           password: this.registerForm.password,
           password_confirmation: this.registerForm.passwordConfirmation,
           handlename: this.registerForm.handlename,
+          twitter: this.registerForm.twitter,
         });
 
         if (this.apiStatus) {

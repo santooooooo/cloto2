@@ -70,17 +70,34 @@ class UserController extends Controller
 
         if ($status != null) {
             // ステータスの変更
-            Cache::put('user-' . $this->auth->id, $status, $expires_at);
+            Cache::put('user-' . $this->auth->id . '-status', $status, $expires_at);
 
             if (!empty($this->auth->seat)) {
                 broadcast(new SeatStatusUpdated($this->auth->room['id']));
             }
         } else {
             // 現在のステータスで更新する
-            Cache::put('user-' . $this->auth->id, $this->auth->status, $expires_at);
+            Cache::put('user-' . $this->auth->id . '-status', $this->auth->status, $expires_at);
         }
 
+        $this->setLoginLog();
+
         return response()->json();
+    }
+
+    /**
+     * ログインの記録
+     *
+     * @return void
+     */
+    public function setLoginLog()
+    {
+        if (!Cache::has('user-' . $this->auth->id . '-login')) {
+            // 翌日0:10で期限切れ
+            $expires_at = Carbon::tomorrow()->addMinutes(10);
+
+            Cache::put('user-' . $this->auth->id . '-login', true, $expires_at);
+        }
     }
 
     /**

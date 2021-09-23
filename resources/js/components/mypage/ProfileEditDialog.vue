@@ -71,7 +71,9 @@
               <v-card-text class="pa-1 white--text">Twitter</v-card-text>
               <v-text-field
                 v-model="editProfileForm.data.sns.twitter"
-                placeholder="@以降を入力 例：CLOTO_JP"
+                :rules="editProfileForm.validation.twitterRules"
+                prefix="@"
+                placeholder="cloto_jp"
                 solo
                 rounded
                 class="pa-2"
@@ -84,7 +86,7 @@
               <v-card-text class="pa-1 white--text">GitHub</v-card-text>
               <v-text-field
                 v-model="editProfileForm.data.sns.github"
-                placeholder="GitHub 例：CLOTO_JP"
+                placeholder="CLOTO_JP"
                 solo
                 rounded
                 class="pa-2"
@@ -99,7 +101,7 @@
               <v-card-text class="pa-1 white--text">Qiita</v-card-text>
               <v-text-field
                 v-model="editProfileForm.data.sns.qiita"
-                placeholder="Qiita 例：CLOTO_JP"
+                placeholder="CLOTO_JP"
                 solo
                 rounded
                 class="pa-2"
@@ -112,7 +114,7 @@
               <v-card-text class="pa-1 white--text">Webサイト</v-card-text>
               <v-text-field
                 v-model="editProfileForm.data.web"
-                placeholder="Webサイト 例：https://cloto.jp"
+                placeholder="https://cloto.jp"
                 solo
                 rounded
                 class="pa-2"
@@ -184,6 +186,7 @@ export default {
               return pattern.test(v) || 'メールアドレスが無効です。';
             },
           ],
+          twitterRules: [(v) => !!v || 'Twitterアカウントは必須項目です。'],
         },
       },
     };
