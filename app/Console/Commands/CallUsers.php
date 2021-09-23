@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Abraham\TwitterOAuth\TwitterOAuth;
+use Illuminate\Support\Facades\Cache;
+use App\Models\User;
 
 class CallUsers extends Command
 {
@@ -38,15 +40,26 @@ class CallUsers extends Command
      */
     public function handle()
     {
-        $TWITTER_API_KEY = 'XHVcVVoXjlcKa67a9A6Un9kvi';
-        $TWITTER_API_KEY_SECRET = 'QDAP1MDs8FAlvgXWaHtO1suup4HTGsSTkg3ewlSJuZXbdKhwKc';
-        $TWITTER_ACCESS_TOKEN = "1263375628230782977-owh6ORwPXnJ6dPLzlKgEJK7fXtjvA1";
-        $TWITTER_ACCESS_TOKEN_SECRET = '4MLfCuSIaIetxR4UAm1cwpYbhDuRmdUK6YcWmdsLQeD0L';
+        $twitter = new TwitterOAuth(
+            config('external.twitter.api_key'),
+            config('external.twitter.api_key_secret'),
+            config('external.twitter.access_token'),
+            config('external.twitter.access_token_secret')
+        );
 
-        $twitter = new TwitterOAuth($TWITTER_API_KEY, $TWITTER_API_KEY_SECRET, $TWITTER_ACCESS_TOKEN, $TWITTER_ACCESS_TOKEN_SECRET);
-        $result = $twitter->post("statuses/update", array("status" => "TEST Tweet."));
+        foreach (User::all() as $user) {
+            if (!Cache::has('user-' . $user->id . '-login')) {
+                if (!empty($user->sns) && isset($user->sns['twitter'])) {
+                    $text = '.@' . $user->sns['twitter'] . ' さん\n\n';
+                    $text .= '昨日は着席がありませんでした😭😭😭\n\n';
+                    $text .= '今日は頑張りましょう💪\n\n';
+                    $text .= config('app.url');
 
-        var_dump($result);
+                    $tweet = str_replace('\\n', PHP_EOL, $text);
+                    $twitter->post('statuses/update', ['status' => $tweet]);
+                }
+            }
+        }
 
         return 0;
     }
