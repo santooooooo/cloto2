@@ -93,7 +93,7 @@ class UserController extends Controller
     public function setLoginLog()
     {
         if (!Cache::has('user-' . $this->auth->id . '-login')) {
-            // 翌日00:10で期限切れ
+            // 翌日0:10で期限切れ
             $expires_at = Carbon::tomorrow()->addMinutes(10);
 
             Cache::put('user-' . $this->auth->id . '-login', true, $expires_at);
