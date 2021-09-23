@@ -178,7 +178,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isOnline()
     {
-        return Cache::has('user-' . $this->id);
+        return Cache::has('user-' . $this->id . '-status');
     }
 
     /**
@@ -188,7 +188,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function status()
     {
-        return Cache::get('user-' . $this->id);
+        return Cache::get('user-' . $this->id . '-status');
     }
 
     /**
