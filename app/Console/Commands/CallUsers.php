@@ -51,7 +51,7 @@ class CallUsers extends Command
             if (!Cache::has('user-' . $user->id . '-login')) {
                 if (!empty($user->sns) && isset($user->sns['twitter'])) {
                     $text = '.@' . $user->sns['twitter'] . ' さん\n\n';
-                    $text .= '昨日は着席がありませんでした😭😭😭\n\n';
+                    $text .= '昨日はログインがありませんでした😭😭😭\n\n';
                     $text .= '今日は頑張りましょう💪\n\n';
                     $text .= config('app.url');
 
