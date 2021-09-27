@@ -126,14 +126,22 @@
           </v-container>
         </v-card>
       </div>
+
+      <!-- 着席時間のランキングの表示 -->
+      <Rank />
     </v-navigation-drawer>
+
   </v-card>
 </template>
 
 <script>
 import { OK } from '@/consts/status';
+import Rank from '@/components/room/Drawer/Rank';
 
 export default {
+  components: {
+    Rank,
+  },
   props: {
     roomName: String,
     roomStatus: String,
