@@ -58,53 +58,41 @@ class TimelineController extends Controller
     /**
      * タイムライン上のカルテ数のランキングを取得
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function rank(Request $request)
+    public function rank(string $category)
     {
         // ランキング作成のためのデータ
         $rank = [];
-        switch ($request->category) {
-        // 一週間のランキングに関するデータの作成
+
+        switch ($category) {
+        // 一週間のランキングに関するデータの取得
         case 'week':
          $lastWeek = mktime(0, 0, 0, date("m"), date("d") - 7, date("Y"));
          $data = $this->karte->whereDate('created_at', '>', date("Y-m-d", $lastWeek))->get();
-
-         $count = count($data);
-         for ($i=0;$i<$count;$i++) {
-             $key = $data[$i]->user->username;
-             $rank[$key] = key_exists($key, $rank) ? $rank[$key] + 1 : 1;
-         }
          break;
 
-        // 一か月のランキングに関するデータの作成
+        // 一か月のランキングに関するデータの取得
         case 'month':
          $lastMonth = mktime(0, 0, 0, date("m") - 1, date("d"), date("Y"));
          $data = $this->karte->whereDate('created_at', '>', date("Y-m-d", $lastMonth))->get();
-
-         $count = count($data);
-         for ($i=0;$i<$count;$i++) {
-             $key = $data[$i]->user->username;
-             $rank[$key] = key_exists($key, $rank) ? $rank[$key] + 1 : 1;
-         }
          break;
 
-        // 通算のランキングに関するデータの作成
+        // 通算のランキングに関するデータの取得
         case 'all':
          $data = $this->karte->get();
-
-         $count = count($data);
-         for ($i=0;$i<$count;$i++) {
-             $key = $data[$i]->user->username;
-             $rank[$key] = key_exists($key, $rank) ? $rank[$key] + 1 : 1;
-         }
          break;
 
         // $request->categoryに想定外の値が送られた場合、空の配列データを送信
         default:
          return response()->json($rank);
-         break;
+        }
+
+        // 取得したデータの加工
+        $count = count($data);
+        for ($i=0;$i<$count;$i++) {
+            $key = $data[$i]->user->username;
+            $rank[$key] = key_exists($key, $rank) ? $rank[$key] + 1 : 1;
         }
 
         // データを降順で並び替える

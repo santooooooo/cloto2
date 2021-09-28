@@ -7,7 +7,7 @@
       <v-tab @click="category = 'all'">all</v-tab>
     </v-tabs>
     <v-list>
-      <div v-for="user in ranking" :key="user.username">
+      <div v-for="user in userInfo" :key="user.id">
         <v-subheader
           @click="$store.dispatch('dialog/open', { type: 'user', username: user.username })"
           style="cursor: pointer"
@@ -53,7 +53,7 @@ export default {
     };
   },
   computed: {
-    ranking: function () {
+    userInfo: function () {
       switch (this.category) {
         // 一週間のランキングのデータを表示
         case 'week':
@@ -61,7 +61,7 @@ export default {
           if (this.rank.week.length !== 0) {
             return this.rank.week;
           }
-          this.getWeekData();
+          this.getData();
           return this.rank.week;
 
         // 一か月のランキングのデータを表示
@@ -69,7 +69,7 @@ export default {
           if (this.rank.month.length !== 0) {
             return this.rank.month;
           }
-          this.getMonthData();
+          this.getData();
           return this.rank.month;
 
         // 通算のランキングのデータを表示
@@ -77,7 +77,7 @@ export default {
           if (this.rank.all.length !== 0) {
             return this.rank.all;
           }
-          this.getAllData();
+          this.getData();
           return this.rank.all;
 
         // this.categoryに想定外の値が送られた場合、何も返さない
@@ -88,10 +88,11 @@ export default {
   },
   methods: {
     // 一週間のランキングのデータを取得
-    getWeekData: async function () {
-      let response = await axios.get('/api/timeline/rank?category=' + this.category);
+    getData: async function () {
+      let response = await axios.get('/api/timeline/rank/' + this.category);
       // ランキングに必要なデータの取得とデータの加工
       let id = 0; // ユーザーの順位を表す
+      let userData = [];
 
       for (const username in response.data) {
         let userInfo = await axios.get('/api/users/' + username);
@@ -104,48 +105,27 @@ export default {
           icon: icon,
           handleName: handleName,
         };
-        this.rank.week.push(data);
+        userData.push(data);
         id += 1;
       }
-    },
-    // 一か月のランキングのデータを取得
-    getMonthData: async function () {
-      let response = await axios.get('/api/timeline/rank?category=' + this.category);
-      let id = 0;
 
-      for (const username in response.data) {
-        let userInfo = await axios.get('/api/users/' + username);
-        let icon = userInfo.data.icon;
-        let handleName = userInfo.data.handlename;
-        const data = {
-          id: id + 1,
-          username: username,
-          kartes: response.data[username],
-          icon: icon,
-          handleName: handleName,
-        };
-        this.rank.month.push(data);
-        id += 1;
-      }
-    },
-    // 通算のランキングのデータを取得
-    getAllData: async function () {
-      let response = await axios.get('/api/timeline/rank?category=' + this.category);
-      let id = 0;
+      // 表示するランキングに対応する変数にデータを挿入
+      switch (this.category) {
+        case 'week':
+          this.rank.week = userData;
+          break;
 
-      for (const username in response.data) {
-        let userInfo = await axios.get('/api/users/' + username);
-        let icon = userInfo.data.icon;
-        let handleName = userInfo.data.handlename;
-        const data = {
-          id: id + 1,
-          username: username,
-          kartes: response.data[username],
-          icon: icon,
-          handleName: handleName,
-        };
-        this.rank.all.push(data);
-        id += 1;
+        case 'month':
+          this.rank.month = userData;
+          break;
+
+        case 'all':
+          this.rank.all = userData;
+          break;
+
+        // this.categoryに想定外の値が送られた場合、何もしない
+        default:
+          break;
       }
     },
   },

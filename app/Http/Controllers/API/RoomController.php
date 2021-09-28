@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Room;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\Announced;
@@ -18,9 +19,10 @@ class RoomController extends Controller
      *
      * @return void
      */
-    public function __construct(Room $room)
+    public function __construct(Room $room, User $user)
     {
         $this->room = $room;
+        $this->user = $user;
     }
 
 
@@ -61,5 +63,16 @@ class RoomController extends Controller
 
         broadcast(new Announced($user->room['id'], $request->message));
         return response()->json();
+    }
+
+
+    /**
+     * ランキングの作成に当たり、ユーザーの累計着席時間の上位10人のデータを送信
+     *
+     */
+    public function rank()
+    {
+        $data = $this->user->orderBy('sitting_time', 'desc')->limit(10)->get();
+        return $data;
     }
 }
