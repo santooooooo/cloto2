@@ -12,7 +12,7 @@
       text
       x-large
       class="font-weight-bold"
-      href="https://spark.adobe.com/page/v8FwCCgsdObtI"
+      href="https://cloto-web.github.io/product.html"
       target="_blank"
     >
       使い方とQ&A

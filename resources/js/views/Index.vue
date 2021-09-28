@@ -23,7 +23,7 @@
                 text
                 color="white"
                 class="text-h5 font-weight-bold text-decoration-underline"
-                href="https://spark.adobe.com/page/JwVbQbzQtbSkB"
+                href="https://cloto-web.github.io"
                 target="_blank"
               >
                 ＞ CLOTOについて詳しく見る
