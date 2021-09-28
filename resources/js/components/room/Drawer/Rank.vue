@@ -16,9 +16,7 @@
           <v-list-item-avatar size="30" v-if="user.id === 3"
             ><v-icon color="rgba(196,112,34)">mdi-medal</v-icon></v-list-item-avatar
           >
-          <v-list-item-avatar size="30" v-if="user.id > 3">{{
-            user.id
-          }}</v-list-item-avatar>
+          <v-list-item-avatar size="30" v-if="user.id > 3">{{ user.id }}</v-list-item-avatar>
           <v-list-item-avatar size="32"
             ><img :src="$storage('icon') + user.icon"
           /></v-list-item-avatar>
@@ -28,9 +26,9 @@
               <v-list-item-subtitle>@{{ user.username }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item-title style="font-size: 1.0rem"
-            ><span class="font-weight-bold">{{ Math.floor(user.time / 60) }}</span
-            > h</v-list-item-title
+          <v-list-item-title style="font-size: 1rem"
+            ><span class="font-weight-bold">{{ Math.floor(user.time / 60) }}</span>
+            h</v-list-item-title
           >
         </v-subheader>
         <v-divider></v-divider>
@@ -43,23 +41,24 @@
 export default {
   data() {
     return {
-      rank: [],
+      rank: [], // ランキングのデータ
     };
   },
   computed: {
     showRank() {
+      // 既にデータがある際はサーバーからデータを取るのではなく、そのデータを返す
       if (this.rank.length !== 0) {
         return this.rank;
       }
+      // サーバーからランキングのデータを取得
       this.getData();
       return this.rank;
     },
   },
   methods: {
     getData: async function () {
-      let response = await axios.get('/api/drawer/rank');
-
       // ランキングに必要なデータの取得とデータの加工
+      let response = await axios.get('/api/drawer/rank');
       let id = 0; // ユーザーの順位を表す
 
       for (const user in response.data) {

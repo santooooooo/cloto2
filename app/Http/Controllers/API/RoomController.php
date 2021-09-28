@@ -67,7 +67,7 @@ class RoomController extends Controller
 
 
     /**
-     * ユーザーの累計着席時間のランキングのデータを送信
+     * ランキングの作成に当たり、ユーザーの累計着席時間の上位10人のデータを送信
      *
      */
     public function rank()
