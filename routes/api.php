@@ -135,7 +135,7 @@ Route::group(['middleware' => 'auth'], function () {
         */
         Route::get('/timeline', 'TimelineController@index');
         // カルテ数のランキングデータの取得
-        Route::get('/timeline/rank', 'TimelineController@rank');
+        Route::get('/timeline/rank/{category}', 'TimelineController@rank')->where('category', '[a-z]+');
 
 
         /*
