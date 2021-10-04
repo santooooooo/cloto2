@@ -33,7 +33,7 @@ class Kernel extends ConsoleKernel
         // 0:00にシステムを停止
         $schedule->command('system:down')->dailyAt('0:00');
         // 0:05に未着席ユーザー呼び出しツイート
-        $schedule->command('call')->dailyAt('0:05')->evenInMaintenanceMode();
+        // $schedule->command('call')->dailyAt('0:05')->evenInMaintenanceMode();
 
         //*** cron ***//
         // 0:10にSSL証明書を更新（1回目）
