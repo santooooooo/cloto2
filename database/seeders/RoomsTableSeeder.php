@@ -14,6 +14,6 @@ class RoomsTableSeeder extends Seeder
     public function run()
     {
         $this->call(rooms\Room1Seeder::class);
-        $this->call(rooms\Room2Seeder::class);
+        // $this->call(rooms\Room2Seeder::class);
     }
 }
