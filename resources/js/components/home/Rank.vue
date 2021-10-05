@@ -12,13 +12,13 @@
           @click="$store.dispatch('dialog/open', { type: 'user', username: user.username })"
           style="cursor: pointer"
         >
-          <v-list-item-avatar v-if="user.id === 1"
+          <v-list-item-avatar v-if="user.id === 1" size="30"
             ><v-icon color="rgba(219,180,0)">mdi-medal</v-icon></v-list-item-avatar
           >
-          <v-list-item-avatar v-if="user.id === 2"
+          <v-list-item-avatar v-if="user.id === 2" size="30"
             ><v-icon color="rgba(201,202,202)">mdi-medal</v-icon></v-list-item-avatar
           >
-          <v-list-item-avatar v-if="user.id === 3"
+          <v-list-item-avatar v-if="user.id === 3" size="30"
             ><v-icon color="rgba(196,112,34)">mdi-medal</v-icon></v-list-item-avatar
           >
           <v-list-item-avatar style="font-size: 1.2rem" v-if="user.id > 3">{{
@@ -27,7 +27,7 @@
           <v-list-item-avatar><img :src="$storage('icon') + user.icon" /></v-list-item-avatar>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title v-html="user.handleName"></v-list-item-title>
+              <v-list-item-title style="font-size: 0.9rem" v-html="user.handleName"></v-list-item-title>
               <v-list-item-subtitle>@{{ user.username }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
