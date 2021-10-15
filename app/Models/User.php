@@ -49,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
-    protected $appends = ['status', 'stars_count', 'follows_count', 'followers_count', 'seat', 'room', 'roadmaps'];
+    protected $appends = ['status', 'given_stars_count', 'follows_count', 'followers_count', 'seat', 'room', 'roadmaps'];
 
     /**
      * Send the email verification notification.
@@ -226,9 +226,17 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getStarsCountAttribute()
+    public function getGivenStarsCountAttribute()
     {
-        return $this->stars()->count();
+        $given_stars = 0;
+
+        // 自分の回答についたスターの数を確認
+        $answers = $this->answers()->where('user_id', $this->id)->get();
+        foreach ($answers as $answer) {
+            $given_stars += $answer->stars_count;
+        }
+
+        return $given_stars;
     }
 
     /**

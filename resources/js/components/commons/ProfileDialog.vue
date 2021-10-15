@@ -21,7 +21,7 @@
                 累計着席時間：{{ Math.floor(user.sitting_time / 60) }}時間
               </v-row>
               <v-row class="mt-2 text-body-2" justify="center">
-                <v-icon class="mr-1 text-body-2">mdi-star</v-icon>{{ user.stars_count }}
+                <v-icon class="mr-1 text-body-2">mdi-star</v-icon>{{ user.given_stars_count }}
               </v-row>
 
               <v-row class="mt-3" justify="center" v-if="user.sns || user.web">
