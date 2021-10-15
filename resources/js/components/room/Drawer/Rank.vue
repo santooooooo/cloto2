@@ -7,29 +7,29 @@
           @click="$store.dispatch('dialog/open', { type: 'user', username: user.username })"
           style="cursor: pointer"
         >
-          <v-list-item-avatar size="30" v-if="user.id === 1"
+          <v-list-item-avatar size="20" v-if="user.id === 1"
             ><v-icon color="rgba(219,180,0)">mdi-medal</v-icon></v-list-item-avatar
           >
-          <v-list-item-avatar size="30" v-if="user.id === 2"
+          <v-list-item-avatar size="20" v-if="user.id === 2"
             ><v-icon color="rgba(201,202,202)">mdi-medal</v-icon></v-list-item-avatar
           >
-          <v-list-item-avatar size="30" v-if="user.id === 3"
+          <v-list-item-avatar size="20" v-if="user.id === 3"
             ><v-icon color="rgba(196,112,34)">mdi-medal</v-icon></v-list-item-avatar
           >
-          <v-list-item-avatar size="30" v-if="user.id > 3">{{ user.id }}</v-list-item-avatar>
-          <v-list-item-avatar size="32"
+          <v-list-item-avatar size="20" v-if="user.id > 3">{{ user.id }}</v-list-item-avatar>
+          <v-list-item-avatar size="30"
             ><img :src="$storage('icon') + user.icon"
           /></v-list-item-avatar>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title>{{ user.handleName }}</v-list-item-title>
-              <v-list-item-subtitle>@{{ user.username }}</v-list-item-subtitle>
+              <v-list-item-title style="font-size: 0.8rem;">{{ user.handleName }}</v-list-item-title>
+              <v-list-item-subtitle style="font-size: 0.8rem">@{{ user.username }}</v-list-item-subtitle>
+              <v-list-item-title style="font-size: 1rem" class="ml-15"
+                ><span class="font-weight-bold">{{ Math.floor(user.time / 60) }}</span>
+                h</v-list-item-title
+              >
             </v-list-item-content>
           </v-list-item>
-          <v-list-item-title style="font-size: 1rem"
-            ><span class="font-weight-bold">{{ Math.floor(user.time / 60) }}</span>
-            h</v-list-item-title
-          >
         </v-subheader>
         <v-divider></v-divider>
       </div>
